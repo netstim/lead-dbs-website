@@ -1,0 +1,10 @@
+<footer class="site-footer">
+  <div class="container">
+    <nav class="footer-nav" aria-label="Legal">
+      {{ range $i, $m := site.Menus.footer }}{{ if $i }} | {{ end }}<a href="{{ $m.URL }}">{{ $m.Name }}</a>{{ end }}
+    </nav>
+  </div>
+</footer>
+<div class="socket">
+  <div class="container">© {{ now.Year }} Lead-DBS · Network Stimulation Laboratory · <a href="https://github.com/netstim/lead-dbs-website">Edit this site on GitHub</a></div>
+</div>

@@ -1,0 +1,165 @@
+baseURL = "https://www.lead-dbs.org/"
+title = "Lead-DBS"
+locale = "en"
+enableRobotsTXT = true
+# Old WordPress URLs end in a slash; keep them identical so links in papers keep working.
+uglyURLs = false
+disableKinds = ["taxonomy", "term", "rss"]
+
+[params]
+  description = "Lead-DBS: a toolbox facilitating Deep Brain Stimulation electrode reconstruction and computer simulation based on postoperative MRI & CT imaging."
+  # Forms (download, contact, newsletter) have no backend yet; they render with a notice.
+  formsEnabled = false
+  # Preview deployments (GitHub Pages) set this to true: shows an "under construction"
+  # banner, adds noindex, and points canonical URLs at the live site.
+  preview = false
+  liveSite = "https://www.lead-dbs.org"
+
+[permalinks.page]
+  # News posts lived at the site root in WordPress (/lead-dbs-3-0-out-now/).
+  news = "/:slug/"
+
+[pagination]
+  pagerSize = 10
+
+[markup.goldmark.renderer]
+  unsafe = true # a few imported pages contain raw HTML
+[markup.goldmark.parser.attribute]
+  block = true
+[markup.goldmark.renderHooks.image]
+  useEmbedded = "fallback"
+[markup.goldmark.renderHooks.link]
+  useEmbedded = "fallback"
+
+[privacy.youtube]
+  privacyEnhanced = true
+[privacy.vimeo]
+  enableDNT = true
+
+[menus]
+  [[menus.main]]
+    name = "Home"
+    pageRef = "/"
+    weight = 1
+  [[menus.main]]
+    name = "About"
+    pageRef = "/about"
+    identifier = "about"
+    weight = 2
+  [[menus.main]]
+    name = "News"
+    pageRef = "/news"
+    weight = 3
+  [[menus.main]]
+    name = "Help/Support"
+    pageRef = "/helpsupport"
+    identifier = "help"
+    weight = 4
+  [[menus.main]]
+    name = "Download"
+    pageRef = "/download"
+    weight = 5
+  [[menus.main]]
+    name = "Contact"
+    pageRef = "/contact"
+    weight = 6
+
+  # About
+  [[menus.main]]
+    parent = "about"
+    name = "Deep Brain Stimulation"
+    pageRef = "/about/deep-brain-stimulation-2"
+    weight = 1
+  [[menus.main]]
+    parent = "about"
+    name = "Publications"
+    pageRef = "/about/publications"
+    weight = 2
+  [[menus.main]]
+    parent = "about"
+    name = "Citing Lead-DBS"
+    pageRef = "/about/citing_leaddbs"
+    weight = 3
+  [[menus.main]]
+    parent = "about"
+    name = "Data & Code inclusion philosophy"
+    pageRef = "/about/data-code-inclusion-philosophy"
+    weight = 4
+  [[menus.main]]
+    parent = "about"
+    name = "List of Lead-DBS dependencies"
+    pageRef = "/about/lead-dbs-dependencies"
+    weight = 5
+  [[menus.main]]
+    parent = "about"
+    name = "Lead Connectome"
+    pageRef = "/about/lead-connectome"
+    weight = 6
+  [[menus.main]]
+    parent = "about"
+    name = "Lead-OR"
+    pageRef = "/about/lead-or"
+    weight = 7
+
+  # Help/Support
+  [[menus.main]]
+    parent = "help"
+    name = "Learn Lead-DBS yourself"
+    pageRef = "/helpsupport/learn-lead-dbs-yourself"
+    weight = 1
+  [[menus.main]]
+    parent = "help"
+    name = "Slack User Channel"
+    pageRef = "/helpsupport/slack-user-channel"
+    weight = 2
+  [[menus.main]]
+    parent = "help"
+    name = "Manual"
+    url = "https://netstim.gitbook.io/leaddbs"
+    weight = 3
+  [[menus.main]]
+    parent = "help"
+    name = "Knowledge Base"
+    pageRef = "/helpsupport/knowledge-base"
+    identifier = "kb"
+    weight = 4
+  [[menus.main]]
+    parent = "help"
+    name = "Workshops"
+    pageRef = "/helpsupport/workshops"
+    weight = 5
+
+  [[menus.main]]
+    parent = "kb"
+    name = "Lead-DBS Methods"
+    pageRef = "/helpsupport/knowledge-base/lead-dbs-methods"
+    weight = 1
+  [[menus.main]]
+    parent = "kb"
+    name = "Atlases/Resources"
+    pageRef = "/helpsupport/knowledge-base/atlasesresources"
+    weight = 2
+  [[menus.main]]
+    parent = "kb"
+    name = "Walkthrough-Videos"
+    pageRef = "/helpsupport/knowledge-base/walkthrough-videos"
+    weight = 3
+  [[menus.main]]
+    parent = "kb"
+    name = "Other Videos"
+    pageRef = "/helpsupport/knowledge-base/videos"
+    weight = 4
+  [[menus.main]]
+    parent = "kb"
+    name = "Screenshots"
+    pageRef = "/helpsupport/knowledge-base/screenshots"
+    weight = 5
+
+  [[menus.footer]]
+    name = "Imprint"
+    pageRef = "/impressum-datenschutzerklarung"
+    weight = 1
+  [[menus.footer]]
+    name = "Privacy Policy"
+    pageRef = "/privacy-policy"
+    weight = 2

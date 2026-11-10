@@ -1,0 +1,12 @@
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="{{ site.Home.RelPermalink }}" aria-label="{{ site.Title }} home">
+      <img src="{{ "images/logo.png" | relURL }}" alt="{{ site.Title }}" width="141" height="100">
+    </a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Menu">
+    <label for="nav-toggle" class="nav-toggle-label"><span></span>Menu</label>
+    <nav class="main-nav" aria-label="Main">
+      {{ partial "menu.html" (dict "menu" site.Menus.main "page" .) }}
+    </nav>
+  </div>
+</header>

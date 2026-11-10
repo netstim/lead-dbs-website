@@ -1,0 +1,10 @@
+{{ define "main" }}
+<article class="entry post">
+  {{ partial "post-header.html" . }}
+  {{ with .Resources.GetMatch (.Params.image | default "__none__") }}
+    {{ $img := . }}{{ if gt .Width 1400 }}{{ $img = .Resize "1400x" }}{{ end }}
+    <img class="featured" src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="">
+  {{ end }}
+  {{ .Content }}
+</article>
+{{ end }}

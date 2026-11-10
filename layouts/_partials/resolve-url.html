@@ -1,0 +1,17 @@
+{{/* Turn a link written in content into a working URL: site paths (incl. news posts by slug),
+     page resources, or external links. Works under a sub-path such as the GitHub Pages preview. */}}
+{{ $url := .url }}
+{{ $page := .page }}
+{{ $out := $url }}
+{{ $frag := "" }}
+{{ with findRESubmatch `^([^#]*)(#.*)$` $url 1 }}{{ $url = index (index . 0) 1 }}{{ $frag = index (index . 0) 2 }}{{ end }}
+{{ if eq $url "/" }}
+  {{ $out = site.Home.RelPermalink }}
+{{ else if strings.HasPrefix $url "/" }}
+  {{ $path := strings.TrimSuffix "/" $url }}
+  {{ $target := or (site.GetPage $path) (site.GetPage (printf "/news%s" $path)) }}
+  {{ with $target }}{{ $out = .RelPermalink }}{{ else }}{{ $out = relURL (strings.TrimPrefix "/" $url) }}{{ end }}
+{{ else if and $url (not (strings.Contains $url ":")) }}
+  {{ with $page.Resources.Get $url }}{{ $out = .RelPermalink }}{{ end }}
+{{ end }}
+{{ return (printf "%s%s" $out $frag) }}

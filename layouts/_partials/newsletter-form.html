@@ -1,0 +1,10 @@
+{{/* Newsletter sign-up. No backend yet: replace action/fields once a newsletter service is chosen. */}}
+<form class="newsletter-form{{ if .compact }} compact{{ end }}" action="#" method="post"{{ if not site.Params.formsEnabled }} onsubmit="return false"{{ end }}>
+  {{ if not .compact }}
+  <label>First name<input type="text" name="first_name" autocomplete="given-name"></label>
+  <label>Last name<input type="text" name="last_name" autocomplete="family-name"></label>
+  {{ end }}
+  <label{{ if .compact }} class="visually-hidden-label"{{ end }}><span>Email</span><input type="email" name="email" placeholder="Email" required autocomplete="email"></label>
+  <button type="submit" class="button block"{{ if not site.Params.formsEnabled }} disabled{{ end }}>Subscribe</button>
+  {{ if not site.Params.formsEnabled }}<p class="form-note">Preview: sign-up not connected yet.</p>{{ end }}
+</form>

@@ -1,0 +1,14 @@
+<div class="title-bar">
+  <div class="container title-inner">
+    <h1 class="page-title">{{ if eq .Section "news" }}{{ if .IsPage }}News{{ else }}{{ .Title }}{{ end }}{{ else }}{{ .Title }}{{ end }}</h1>
+    {{ if not .IsHome }}
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <span>You are here:</span>
+      {{ range .Ancestors.Reverse }}<a href="{{ .RelPermalink }}">{{ if .IsHome }}Home{{ else }}{{ .LinkTitle }}{{ end }}</a> / {{ end }}
+      <span>{{ .LinkTitle }}</span>
+    </nav>
+    {{ else }}
+    <nav class="breadcrumb"><span>You are here:</span> <span>Home</span></nav>
+    {{ end }}
+  </div>
+</div>

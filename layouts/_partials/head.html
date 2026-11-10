@@ -1,0 +1,16 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} – {{ site.Title }}{{ end }}</title>
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . | plainify | truncate 160 }}{{ else }}{{ site.Params.description }}{{ end }}{{ end }}">
+{{ if site.Params.preview }}
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="{{ strings.TrimSuffix "/" site.Params.liveSite }}{{ .RelPermalink | strings.TrimPrefix (urls.Parse site.BaseURL).Path | printf "/%s" }}">
+{{ else }}
+<link rel="canonical" href="{{ .Permalink }}">
+{{ end }}
+<link rel="icon" href="{{ "images/favicon-32x32.png" | relURL }}" sizes="32x32">
+<link rel="icon" href="{{ "images/favicon-192x192.png" | relURL }}" sizes="192x192">
+<link rel="apple-touch-icon" href="{{ "images/favicon-180x180.png" | relURL }}">
+{{ $css := resources.Get "css/main.css" | resources.ExecuteAsTemplate "css/main.css" . | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<script>document.documentElement.classList.add('js')</script>

@@ -1,0 +1,21 @@
+{{/* Sub-page navigation for the top-level section the page belongs to, as in the old Enfold sidebar. */}}
+{{ $top := .FirstSection }}
+{{ if and (not .IsHome) (ne $top.Section "news") $top.IsSection (gt (len $top.Pages) 0) }}
+<section class="widget subnav">
+  {{ partial "subnav.html" (dict "section" $top "page" . "depth" 0) }}
+</section>
+{{ end }}
+
+<section class="widget">
+  <h3 class="widget-title">Subscribe to our newsletter</h3>
+  {{ partial "newsletter-form.html" (dict "compact" true) }}
+</section>
+
+<section class="widget recent-posts">
+  <h3 class="widget-title">Recent posts</h3>
+  <ul>
+    {{ range first 5 (where site.RegularPages "Section" "news").ByDate.Reverse }}
+    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{ end }}
+  </ul>
+</section>

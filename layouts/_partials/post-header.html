@@ -1,0 +1,4 @@
+<header class="post-header">
+  <h2 class="post-title">{{ if not (eq page.RelPermalink .RelPermalink) }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ else }}{{ .Title }}{{ end }}</h2>
+  <time class="post-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+</header>

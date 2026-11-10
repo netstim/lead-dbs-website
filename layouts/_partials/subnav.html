@@ -1,0 +1,11 @@
+{{ $page := .page }}
+<ul>
+  {{ range .section.Pages.ByWeight }}
+  <li{{ if eq . $page }} class="current"{{ end }}>
+    <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+    {{ if and .IsSection (or (eq . $page) ($page.IsDescendant .)) (lt $.depth 2) }}
+      {{ partial "subnav.html" (dict "section" . "page" $page "depth" (add $.depth 1)) }}
+    {{ end }}
+  </li>
+  {{ end }}
+</ul>

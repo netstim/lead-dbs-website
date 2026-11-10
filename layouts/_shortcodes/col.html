@@ -1,0 +1,6 @@
+{{- $w := .Get 0 | default "1" -}}
+<div class="col col-{{ replace $w "/" "-" }}">
+
+{{ .Inner }}
+
+</div>

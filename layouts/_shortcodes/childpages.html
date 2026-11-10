@@ -1,0 +1,5 @@
+<div class="child-pages">
+  {{ range .Page.Pages.ByWeight }}
+  <a class="child-page" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+  {{ end }}
+</div>

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="{{ site.Language.Locale }}">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body class="{{ .Kind }}">
+  {{ if site.Params.preview }}
+  <div class="preview-banner" role="note">
+    <strong>Under construction:</strong> this is a preview of the new Lead-DBS website.
+    The official site is <a href="{{ site.Params.liveSite }}">www.lead-dbs.org</a>.
+  </div>
+  {{ end }}
+  {{ partial "header.html" . }}
+  {{ partial "titlebar.html" . }}
+  <div class="container main-wrap">
+    <main class="content">
+      {{ block "main" . }}{{ end }}
+    </main>
+    <aside class="sidebar">
+      {{ partial "sidebar.html" . }}
+    </aside>
+  </div>
+  {{ partial "footer.html" . }}
+  {{ with resources.Get "js/main.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}
+</body>
+</html>

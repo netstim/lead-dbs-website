@@ -1,0 +1,20 @@
+{{/* Forms carried over from Ninja Forms. Fields are defined in data/forms.yaml. No backend yet. */}}
+{{ $id := .Get 0 }}
+{{ with index hugo.Data.forms $id }}
+<form class="site-form" action="{{ .action | default "#" }}" method="post"{{ if not site.Params.formsEnabled }} onsubmit="return false"{{ end }}>
+  {{ range .fields }}
+  <label>
+    <span>{{ .label }}{{ if .required }} <abbr title="required">*</abbr>{{ end }}</span>
+    {{ if eq .type "textarea" }}
+    <textarea name="{{ .name }}" rows="6"{{ if .required }} required{{ end }}></textarea>
+    {{ else }}
+    <input type="{{ .type | default "text" }}" name="{{ .name }}"{{ if .required }} required{{ end }}{{ with .autocomplete }} autocomplete="{{ . }}"{{ end }}>
+    {{ end }}
+  </label>
+  {{ end }}
+  <button type="submit" class="button"{{ if not site.Params.formsEnabled }} disabled{{ end }}>{{ .submit }}</button>
+  {{ if not site.Params.formsEnabled }}<p class="form-note">Preview: this form is not connected yet.</p>{{ end }}
+</form>
+{{ else }}
+{{ errorf "form shortcode: unknown form %q in %s" $id .Page.File.Path }}
+{{ end }}

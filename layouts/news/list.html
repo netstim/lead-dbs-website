@@ -1,0 +1,16 @@
+{{ define "main" }}
+{{ $paginator := .Paginate .Pages.ByDate.Reverse }}
+{{ range $paginator.Pages }}
+<article class="post-summary">
+  {{ partial "post-header.html" . }}
+  {{ $page := . }}
+  {{ with .Resources.GetMatch (.Params.image | default "__none__") }}
+    {{ $thumb := .Fill "710x270 Center" }}
+    <a href="{{ $page.RelPermalink }}"><img class="featured" src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt=""></a>
+  {{ end }}
+  <p>{{ .Summary | plainify | truncate 300 }}</p>
+  <a class="read-more" href="{{ .RelPermalink }}">Read more →</a>
+</article>
+{{ end }}
+{{ partial "pagination.html" $paginator }}
+{{ end }}

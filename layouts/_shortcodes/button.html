@@ -1,0 +1,2 @@
+{{- $href := partial "resolve-url.html" (dict "url" (.Get "href") "page" .Page) -}}
+<div class="button-wrap"><a class="button" href="{{ $href }}"{{ if strings.HasPrefix $href "http" }} target="_blank" rel="noopener"{{ end }}>{{ .Inner | .Page.RenderString }}</a></div>
