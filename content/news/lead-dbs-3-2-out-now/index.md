@@ -1,7 +1,7 @@
 ---
-title: "Lead-DBS 3.2 out now: Lead Tutor, new atlases and a new institute"
+title: "Lead-DBS 3.2 released"
 description: "Lead-DBS 3.2 brings Lead Tutor, an open dataset to practise electrode localization, new atlases and many smaller fixes."
-htmlTitle: "Lead-DBS 3.2: Lead Tutor, new atlases, a new institute"
+htmlTitle: "Version 3.2 released"
 date: 2025-02-28
 slug: "lead-dbs-3-2-out-now"
 image: "lead-tutor.png"
@@ -57,4 +57,4 @@ Neuromodulation is one of the research focus areas of the University Hospital Co
 
 All changes since 3.1 are in the [full list of changes on GitHub](https://github.com/netstim/leaddbs/compare/v3.1...v3.2).
 
-Read the original announcement [in our newsletter](https://www.lead-dbs.org/?na=view&id=31). As always, feel free to connect with us via [Bluesky](https://bsky.app/profile/lead-dbs.org) or the [user Slack](https://inviter.co/lead-dbs), or fork us on [GitHub](https://github.com/netstim/leaddbs) to contribute directly.
+Read the original announcement [in our newsletter](https://www.lead-dbs.org/?na=view&id=31). As always, feel free to connect with us via [Bluesky](https://bsky.app/profile/lead-dbs.org) or the [user Slack](/helpsupport/slack-user-channel/), or fork us on [GitHub](https://github.com/netstim/leaddbs) to contribute directly.

@@ -2,6 +2,10 @@
 title: "Privacy Policy"
 date: "2022-04-18T14:13:06"
 lastmod: "2022-04-18T14:29:09"
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - "/impressum-datenschutzerklarung/"
+  - "/contact/"
 ---
 
 ## Who we are

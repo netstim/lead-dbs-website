@@ -7,6 +7,11 @@ weight: 1
 # the picture shown when the page is shared (head.html)
 share: "maps-1030x440.png"
 keywords: ["network mapping", "connectivity benefit mapping", "CBM", "R-map", "normative connectome", "fibre filtering", "outcome prediction"]
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - "/helpsupport/knowledge-base/atlasesresources/normative-connectomes/"
+  - {name: "Network mapping explorer (video)", url: "/helpsupport/knowledge-base/walkthrough-videos/#sweetspot-fiber-filtering--network-mapping-explorer-walkthroughs"}
+  - {name: "Connectomics in the manual", url: "https://netstim.gitbook.io/leaddbs/connectomics/connectomic-analyses"}
 ---
 
 DBS network mapping (first called connectivity benefit mapping) relates the connections of each
@@ -31,13 +36,17 @@ with an editorial review in
 
 > Ridler, C. (2017). Parkinson disease: Deep brain stimulation — making the right connections. *Nature Reviews Neurology*, *13*(8), 450–451. [Nature](https://www.nature.com/articles/nrneurol.2017.91)
 
-## The concept
+## How it works {#the-concept}
 
 ![Steps of DBS network mapping, from postoperative imaging to connectivity maps](methods-1030x357.png)
 
 *Fig. 1:* First, based on postoperative imaging (A) derived DBS electrode localizations (B), the stimulation volume is estimated (C). Then, normative connectomes are queried to calculate which other brain structures are – in the average human brain – connected to the stimulation volume. This may be done both for functional (D) and structural (E) connectivity.
 
-> Steps A-C may be done using Lead-DBS while steps D-E using Lead Connectome Mapper.
+The connectivity profiles of all patients are then related to their clinical improvement: the result is
+a map of the regions a well-placed electrode is connected to, and it predicts the outcome of new patients.
+
+<details class="more more--wide">
+<summary>The method step by step, from the 2017 paper</summary>
 
 ![Functional connectivity profiles of the DBS sites of 12 patients on cortical surfaces](cbm1-1030x676.png)
 
@@ -65,13 +74,19 @@ Finally, these maps may be used to actually predict outcome (right hand scatter 
 
 *Fig. 6:* Summary of network mapping results for STN-DBS in PD. A) active contacts from two cohorts mapped to the STN in MNI space. B) rs-fMRI connectivity based network map (R-map type) for % UPDRS-III improvement. C) connected fibertracts colored by association with good (red), midline (yellow) or poor (blue) symptom improvement.
 
-## Normative or individualized connectivity
+### Normative or individualized connectivity
 
 Patient-specific connectomes can replace the normative ones used above (and studies are running to do so). The concept could be used to guide DBS programming and/or DBS surgery. Finally, the connectivity profiles may help to define target maps for noninvasive brain stimulation (in this concept, the [2014 PNAS article by Michael Fox et al. is highly enlightening](https://doi.org/10.1073/pnas.1405003111)).
 
+</details>
+
 ## Related approaches
 
-A similar technique maps the symptoms of stroke and other brain lesions to common functional networks:
+The same idea maps the symptoms of stroke and other brain lesions to common networks, and was applied to
+transcranial magnetic stimulation (TMS).
+
+<details class="more">
+<summary>Show the studies</summary>
 
 > - Darby, R. R., Horn, A., Cushman, F., & Fox, M. D. (2017). Lesion network localization of criminal behavior. *Proceedings of the National Academy of Sciences of the United States of America*, *56*, 201706587–6. [doi:10.1073/pnas.1706587115](https://doi.org/10.1073/pnas.1706587115)
 > - Boes, A. D., Prasad, S., Liu, H., Liu, Q., Pascual-Leone, A., Caviness, V. S., Jr, & Fox, M. D. (2015). Network localization of neurological symptoms from focal brain lesions. *Brain : a Journal of Neurology*, *138*(10), 3061–3075. [doi:10.1093/brain/awv228](https://doi.org/10.1093/brain/awv228)
@@ -80,10 +95,12 @@ A similar technique maps the symptoms of stroke and other brain lesions to commo
 > - Laganiere, S., Boes, A. D., & Fox, M. D. (2016). Network localization of hemichorea-hemiballismus. *Neurology*, *86*(23), 2187–2195. [doi:10.1212/WNL.0000000000002741](https://doi.org/10.1212/WNL.0000000000002741)
 > - Fasano, A., Laganiere, S. E., Lam, S., & Fox, M. D. (2017). Lesions causing freezing of gait localize to a cerebellar functional network. *Annals of Neurology*, *81*(1), 129–141. [doi:10.1002/ana.24845](https://doi.org/10.1002/ana.24845)
 
-and was applied to transcranial magnetic stimulation (TMS):
+Applied to TMS:
 
-> - Weigand, A., Horn, A., Caballero, R., Cooke, D., Stern, A. P., Taylor, S. F., et al. (2017). Prospective validation that subgenual connectivity predicts antidepressant efficacy of transcranial magnetic stimulation sites. *Bps*, *0*(0), 888–894. [doi:10.1016/j.biopsych.2017.10.028](https://doi.org/10.1016/j.biopsych.2017.10.028)
+> - Weigand, A., Horn, A., Caballero, R., Cooke, D., Stern, A. P., Taylor, S. F., et al. (2017). Prospective validation that subgenual connectivity predicts antidepressant efficacy of transcranial magnetic stimulation sites. *Biological Psychiatry*. [doi:10.1016/j.biopsych.2017.10.028](https://doi.org/10.1016/j.biopsych.2017.10.028)
+
+</details>
 
 ## Next
 
-The connectomes used here are described under [normative connectomes](/helpsupport/knowledge-base/atlasesresources/normative-connectomes/). All that Lead-DBS does, with the manual chapter and paper for each, is listed under [Methods](/helpsupport/knowledge-base/lead-dbs-methods/).
+The connectomes used here are described under [normative connectomes](/helpsupport/knowledge-base/atlasesresources/normative-connectomes/). Every method and tool, with its manual chapter and paper: [Features](/helpsupport/knowledge-base/lead-dbs-methods/).

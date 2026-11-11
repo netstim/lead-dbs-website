@@ -1,0 +1,11 @@
+{{- /* The picture a page names in its front matter, as an image resource: a file next to the page, or a
+       path under assets/ ("images/renders/cohort-top.jpg", "gallery/li2020_fig1.png"). Stops the build
+       when the file is neither. Returns false for an empty name or a format that cannot be resized (SVG, GIF).
+       Argument: dict "page" "src". */ -}}
+{{- $img := false -}}
+{{- with .src -}}
+  {{- $r := or ($.page.Resources.GetMatch .) (resources.Get .) -}}
+  {{- if not $r }}{{ errorf "%s: picture %q is neither next to the page nor under assets/" $.page.File.Path . }}{{ end -}}
+  {{- if and (eq $r.ResourceType "image") (in (slice "jpeg" "png" "webp") $r.MediaType.SubType) }}{{ $img = $r }}{{ end -}}
+{{- end -}}
+{{- return $img -}}

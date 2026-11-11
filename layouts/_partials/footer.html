@@ -1,23 +1,25 @@
 {{- /* The footer of every page: the main menu's groups in full (hugo.toml [menus.main]; each heading links
      to the group's page), a "Site" column (#site-pages, where the header's menu link leads when script is
      off), the lab's links (data/links.yaml: the institute, its podcast and talks), and the legal line,
-     which also carries the research-use statement. Everything sits on the header's container. */ -}}
+     which also carries the research-use statement. Everything sits on the header's container: the logo
+     and its line on top, then the columns side by side, as many to a row as fit (one row on a desktop). On a
+     phone the columns fold to rows that open with a chevron (assets/js/main.js); without script they stay open. */ -}}
 {{ $r := hugo.Data.release }}
 <footer class="footer footer--dark ground-inverse" id="site-footer">
   <div class="wrap">
     <div class="closing__links">
-      <div class="grid footer__grid">
-        <div class="span-4 stack-4 footer__brand">
-          <a class="nav__logo" href="{{ site.Home.RelPermalink }}">{{ partial "logo.html" (dict "h" 48 "lazy" true) }}Lead-DBS</a>
-          <p class="footer__lede">Open-source DBS imaging toolbox, version {{ $r.version }}.</p>
-        </div>
+      <div class="footer__brand">
+        <a class="nav__logo" href="{{ site.Home.RelPermalink }}">{{ partial "logo.html" (dict "h" 48 "lazy" true) }}Lead-DBS</a>
+        <p class="footer__lede">Open-source DBS imaging toolbox, version {{ $r.version }}.</p>
+      </div>
+      <div class="footer__cols">
         {{ range site.Menus.main }}{{ if .HasChildren }}
-        <nav class="span-2 footer__col" aria-label="{{ .Name }}">
+        <nav class="footer__col" aria-label="{{ .Name }}">
           <h2 class="footer__h"><a href="{{ .URL }}">{{ .Name }}</a></h2>
           <ul>{{ range .Children }}<li><a href="{{ .URL }}">{{ partial "menu-label.html" . }}</a></li>{{ range .Children }}<li class="footer__sub"><a href="{{ .URL }}">{{ partial "menu-label.html" . }}</a></li>{{ end }}{{ end }}</ul>
         </nav>
         {{ end }}{{ end }}
-        <nav class="span-2 footer__col" id="site-pages" aria-label="Site">
+        <nav class="footer__col" id="site-pages" aria-label="Site">
           <h2 class="footer__h">Site</h2>
           <ul>
             {{ range site.Menus.main }}{{ if not .HasChildren }}<li><a href="{{ .URL }}">{{ if eq .Name "Download" }}Download Lead-DBS{{ else }}{{ .Name }}{{ end }}</a></li>{{ end }}{{ end }}
@@ -27,7 +29,7 @@
           </ul>
         </nav>
         {{ range hugo.Data.links.footer }}
-        <nav class="span-2 footer__col" aria-label="{{ .title }}">
+        <nav class="footer__col" aria-label="{{ .title }}">
           <h2 class="footer__h">{{ .title }}</h2>
           <ul>{{ range .links }}<li><a href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .name }}</a></li>{{ end }}</ul>
         </nav>

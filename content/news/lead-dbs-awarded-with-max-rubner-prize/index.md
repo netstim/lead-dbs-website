@@ -4,7 +4,7 @@ date: "2015-01-17T18:01:33"
 slug: "lead-dbs-awarded-with-max-rubner-prize"
 # The prize is listed under Recognition and funding on the About page.
 layout: redirect
-redirect: "/about/#recognition-and-funding"
+redirect: "/about/#history"
 search: false
 build:
   list: never

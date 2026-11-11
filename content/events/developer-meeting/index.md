@@ -5,6 +5,11 @@ description: "Register for the Lead-DBS Developer Meeting on Zoom and download t
 keywords: ["zoom", "register", "registration", "developer meeting", "flyer"]
 # the picture shown when the page is shared (head.html)
 share: "lead-dbs-developer-meeting-flyer.jpg"
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - "/develop/"
+  - "/helpsupport/slack-user-channel/"
+  - "/about/team/"
 ---
 
 The Lead-DBS Developer Meeting is held on Zoom and is open to anyone who wants to contribute to Lead-DBS or to learn about its ongoing development. The meetings are planned monthly; the date and time of the next one are on the [events page](/events/).

@@ -1,5 +1,6 @@
 ---
 title: "Subcortical electrophysiology mapping (SEM)"
+linkTitle: "Electrophysiology mapping"
 description: "Pool recordings from DBS electrodes across patients and map them onto anatomical space."
 date: "2017-04-08T21:01:20"
 lastmod: "2026-11-11"
@@ -7,6 +8,11 @@ lastmod: "2026-11-11"
 weight: 2
 # the picture shown when the page is shared (head.html)
 share: "betaalpha3d.png"
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - "/helpsupport/knowledge-base/atlasesresources/distal-atlas/"
+  - "/helpsupport/knowledge-base/atlasesresources/normative-connectomes/"
+  - "/about/publications/"
 ---
 
 Subcortical electrophysiology mapping (SEM) pools signals recorded from DBS electrodes across many patients and maps them onto anatomical space, so that a recording, such as beta power in the subthalamic nucleus, becomes a 3D map.
@@ -30,7 +36,11 @@ The method was first applied to beta power recorded in the subthalamic nucleus:
 
 ## Studies that used it
 
-The main findings were reproduced and extended by two other labs:
+The main findings were reproduced and extended by two other labs, and the method was applied to the
+pallidum and to recordings during movement.
+
+<details class="more">
+<summary>Show the studies</summary>
 
 > van Wijk BCM, Pogosyan A, Hariz MI, Akram H, Foltynie T, Limousin P, Horn A, Ewert S, Brown P, Litvak V (2017). Localization of beta and high-frequency oscillations within the subthalamic nucleus region. NeuroImage: Clinical. [PubMed](https://www.ncbi.nlm.nih.gov/pubmed/28794978)
 
@@ -44,13 +54,18 @@ Finally, the concept was extended to electrophysiological features recorded duri
 
 > Lofredi, R., Neumann, W.-J., Bock, A., Horn, A., Huebl, J., Siegert, S., et al. (2018). Dopamine-dependent scaling of subthalamic gamma bursts with movement velocity in patients with Parkinson’s disease. eLife, 7, e31895. [eLife](https://elifesciences.org/articles/31895)
 
+</details>
+
 ## Mapping other measures
 
-In theory, this mapping technique could be applied to virtually any measure that is prevalent for each patient, each DBS electrode, each DBS electrode contact or each DBS electrode contact pair. For instance, behavioral measures, electrophysiological recordings / task signatures, clinical outcome measures, patient demographical information, surgical techniques / treating DBS centers could be mapped to the subcortex using DBS electrode reconstructions from multiple patients.
+The same mapping works for any measure known per patient, electrode or contact: behavioural or clinical
+scores, task signals, demographics or the treating centre. Studies have mapped clinical outcome this way,
+some of them with modelled stimulation volumes.
 
-For instance, a similar approach has been used to map *clinical outcome* (instead of electrophysiological measures) to the subcortex in these following (and other) studies. Some of the studies convolved DBS stimulation location by modeling a volume of activated tissue (VTA):
+<details class="more">
+<summary>Show the studies that mapped clinical outcome</summary>
 
-> Butson, C. R., Cooper, S. E., Henderson, J. M., Wolgamuth, B., & McIntyre, C. C. (2011). Probabilistic analysis of activation volumes generated during deep brain stimulation., *54*(3), 2096–2104. [doi:10.1016/j.neuroimage.2010.10.059](https://doi.org/10.1016/j.neuroimage.2010.10.059)
+> Butson, C. R., Cooper, S. E., Henderson, J. M., Wolgamuth, B., & McIntyre, C. C. (2011). Probabilistic analysis of activation volumes generated during deep brain stimulation. *NeuroImage*, *54*(3), 2096–2104. [doi:10.1016/j.neuroimage.2010.10.059](https://doi.org/10.1016/j.neuroimage.2010.10.059)
 >
 > Schönecker, T., Gruber, D., Kivi, A., Müller, B., Lobsien, E., Schneider, G.-H., et al. (2015). Postoperative MRI localisation of electrodes and clinical efficacy of pallidal deep brain stimulation in cervical dystonia. *Journal of Neurology, Neurosurgery, and Psychiatry*, *86*(8), 833–839. [doi:10.1136/jnnp-2014-308159](https://doi.org/10.1136/jnnp-2014-308159)
 >
@@ -64,11 +79,16 @@ For instance, a similar approach has been used to map *clinical outcome* (instea
 >
 > Eisenstein, S. A., Koller, J. M., Black, K. D., Campbell, M. C., Lugar, H. M., Ushe, M., et al. (2014). Functional anatomy of subthalamic nucleus stimulation in Parkinson disease. *Annals of Neurology*, *76*(2), 279–295. [doi:10.1002/ana.24204](https://doi.org/10.1002/ana.24204)
 
+</details>
+
 ## A worked example: beta and alpha power in the STN {#worked-example}
 
-This example summarizes the study [Toward an electrophysiological “sweet spot” for deep brain stimulation in the subthalamic nucleus](https://doi.org/10.1002/hbm.23594) (*Human Brain Mapping*, 2017). The same technique was applied to theta oscillations in the pallidum recorded from dystonia patients in [A localized pallidal physiomarker in cervical dystonia](https://doi.org/10.1002/ana.25095) (*Annals of Neurology*, 2017).
+From the study [Toward an electrophysiological “sweet spot” for deep brain stimulation in the subthalamic nucleus](https://doi.org/10.1002/hbm.23594) (*Human Brain Mapping*, 2017): in recordings from 54 patients with Parkinson’s disease, beta power was highest in the dorsolateral (motor) part of the STN, alpha power in a more ventromedial part. The resulting beta atlas comes with Lead-DBS.
 
-Electrophysiological signals recorded in deep structures of the human brain are of key interest to the neuroscientific community. For instance, in Parkinson’s disease, the beta-rhythm plays a role that has been shown to be tightly coupled with the expression of clinical symptoms (such as bradykinesia). For instance, enhanced beta band activity is suppressed by levodopa [[Geng et al., 2017](http://www.sciencedirect.com/science/article/pii/S096999611630287X); [Kühn et al., 2006a](https://www.ncbi.nlm.nih.gov/pubmed/16364953), [2006b](https://www.ncbi.nlm.nih.gov/pubmed/16623853), [2009](https://www.ncbi.nlm.nih.gov/pubmed/19070616)] and during DBS [[Eusebio et al., 2011](https://www.ncbi.nlm.nih.gov/pubmed/20935326); [Kühn et al., 2008](https://www.ncbi.nlm.nih.gov/pubmed/18550758)] in parallel with improvement of motor symptoms.
+<details class="more more--wide">
+<summary>Read the worked example: question, methods, results</summary>
+
+Electrophysiological signals recorded in deep structures of the human brain are of key interest to the neuroscientific community. For instance, in Parkinson’s disease, the beta-rhythm plays a role that has been shown to be tightly coupled with the expression of clinical symptoms (such as bradykinesia). For instance, enhanced beta band activity is suppressed by levodopa [[Geng et al., 2017](https://www.sciencedirect.com/science/article/pii/S096999611630287X); [Kühn et al., 2006a](https://www.ncbi.nlm.nih.gov/pubmed/16364953), [2006b](https://www.ncbi.nlm.nih.gov/pubmed/16623853), [2009](https://www.ncbi.nlm.nih.gov/pubmed/19070616)] and during DBS [[Eusebio et al., 2011](https://www.ncbi.nlm.nih.gov/pubmed/20935326); [Kühn et al., 2008](https://www.ncbi.nlm.nih.gov/pubmed/18550758)] in parallel with improvement of motor symptoms.
 
 DBS is a treatment option that gives us a unique opportunity to record from deep structures in the brain. However, in each patient, usually, only one or two DBS electrodes are surgically implanted. Common electrodes are composed of four contacts – so in each electrode/hemisphere, one may record from three bipolar channels. Already, this gives great insight into rhythmic activity in the basal ganglia as shown in manifold publications.
 
@@ -80,7 +100,7 @@ After developing Lead-DBS, at Charité in Berlin, we wondered whether the precis
 
 > Could we record an electrophysiological signature in multiple patients, map the recording sites onto (standardized) anatomical space and map out a spatial profile of an electrophysiological signal?
 
-Already, we have done so using multiple signals that were acquired at rest or during tasks. The first study that uses this technique [has now been published](http://onlinelibrary.wiley.com/doi/10.1002/hbm.23594/full).
+Already, we have done so using multiple signals that were acquired at rest or during tasks. The first study that uses this technique [has now been published](https://onlinelibrary.wiley.com/doi/10.1002/hbm.23594/full).
 
 ### Methods
 
@@ -129,7 +149,7 @@ We went ahead and created three-dimensional peak ROI associated with high beta a
 
 We were then interested whether our standardized structural connectomes were equally precise enough to find differences in cortical connectivity associated with these regions. Of note, the two regions are both very small and close to each other.
 
-For this analysis – which could only be performed on group level – a standardized high precision structural connectome [[Horn 2017](http://www.sciencedirect.com/science/article/pii/S1053811917301088)] was used to select fiber-tracts connected to the alpha and beta peaks, respectively.
+For this analysis – which could only be performed on group level – a standardized high precision structural connectome [[Horn 2017](https://www.sciencedirect.com/science/article/pii/S1053811917301088)] was used to select fiber-tracts connected to the alpha and beta peaks, respectively.
 
 However, the two regions exhibited a (slightly) different connectivity profile that was largely consistent with data presented in [[Acolla 2015](https://academic.oup.com/brain/article-abstract/139/9/2503/1744844/Brain-networks-modulated-by-subthalamic-nucleus?redirectedFrom=fulltext)], before (see below).
 
@@ -139,16 +159,14 @@ However, the two regions exhibited a (slightly) different connectivity profile t
 
 ### A beta atlas for programming
 
-Finally, given the importance of the beta rhythm in Parkinson’s Disease, the resulting beta-atlas could serve to guide DBS programming (and potentially targeting) once prospectively validated in follow up studies. The atlas is made publicly available within Lead-DBS software and on [Neurovault](http://neurovault.org/collections/2418/).
+Finally, given the importance of the beta rhythm in Parkinson’s Disease, the resulting beta-atlas could serve to guide DBS programming (and potentially targeting) once prospectively validated in follow up studies. The atlas is made publicly available within Lead-DBS software and on [Neurovault](https://neurovault.org/collections/2418/).
 
 ![DBS electrode in the STN with the beta peak and a volume of tissue activated](fig_7.png)
 
 **Fig. 6:** *The peak of beta-activity (yellow) shown in synopsis with a hypothetical lead. Based on the reconstruction, the second most dorsal contact could represent a first choice in clinical programming.*
 
-### Doing similar work
-
-> Such work uses the *Lead Group* module. So far, the best documentation of *Lead Group* is provided in [these slides](http://www.lead-dbs.org/docs/tutorials/group_analyses_horn.pdf).
+</details>
 
 ## Next
 
-The two atlases made with this method, of STN and GPi activity, come with Lead-DBS: see them among the [sweet spots and response tracts](/helpsupport/knowledge-base/atlasesresources/atlases-2/#dbs-maps). The other methods developed within Lead-DBS are listed under [Methods](/helpsupport/knowledge-base/lead-dbs-methods/).
+The two atlases made with this method, of STN and GPi activity, come with Lead-DBS: see them among the [sweet spots and response tracts](/helpsupport/knowledge-base/atlasesresources/atlases-2/#dbs-maps). The other methods developed within Lead-DBS are listed under [Features](/helpsupport/knowledge-base/lead-dbs-methods/).

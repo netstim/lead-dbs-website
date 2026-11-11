@@ -1,9 +1,9 @@
 ---
 title: "Lead Connectome"
 date: "2015-04-28T13:23:38"
-# Lead Connectome is now a section of the Lead tools page; its old address forwards there.
+# Lead Connectome is now a row of the tools table on the Features page; its old address forwards there.
 layout: redirect
-redirect: "/about/tools/#lead-connectome"
+redirect: "/helpsupport/knowledge-base/lead-dbs-methods/#lead-connectome"
 search: false
 build:
   list: never

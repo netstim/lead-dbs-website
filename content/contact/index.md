@@ -7,6 +7,13 @@ weight: 10
 keywords: ["contact", "email", "e-mail"]
 # In the menu hierarchy the contact page is the last step of "Get help" (breadcrumb Docs and help / Contact).
 menuParent: "/helpsupport"
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - "/helpsupport/slack-user-channel/"
+  - {name: "Report a bug on GitHub", url: "https://github.com/netstim/leaddbs/issues"}
+  - "/helpsupport/first-steps/"
+# the picture shown when the page is shared (head.html)
+share: "images/renders/head-docs.jpg"
 ---
 
 A question about using Lead-DBS, or a bug? Those are answered fastest where users and developers already

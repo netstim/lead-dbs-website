@@ -32,7 +32,7 @@ groups:
   intro: Parcellations of the subcortex and cerebellum by resting-state functional connectivity.
 - id: macaque
   title: Macaque
-  intro: Atlases for the Lead-DBS macaque toolbox.
+  intro: 'Lead-DBS localizes electrodes in macaque MRI and CT too (since version 1.4.9): with the macaque toolbox installed, type `lead macaque` in MATLAB. The atlas for it:'
 atlases:
 - id: distal-atlas-ewert-2018
   group: basal-ganglia
@@ -52,6 +52,19 @@ atlases:
   image: distal_atlas-1030x1030.png
   alt: DISTAL atlas structures in 3D with three DBS electrodes
   caption: Subsection of the DISTAL atlas visualized with three typical DBS electrodes
+- id: focus-atlas-friedrich-2026
+  group: basal-ganglia
+  name: FOCUS atlas
+  ref: Friedrich 2026
+  covers: 95 structures and 82 fibre pathways at 100 microns; by the Lead-DBS team
+  page: /helpsupport/knowledge-base/atlasesresources/focus-atlas
+  about: Made by the Lead-DBS team. A 100-micron atlas of the human subcortex from 7T ex vivo MRI, with 95 manually segmented grey and white matter structures and 82 curated fibre pathways, registered to MNI space.
+  get:
+  - 'Download: [the form on the FOCUS atlas page](/helpsupport/knowledge-base/atlasesresources/focus-atlas/#download), for academic research only'
+  cite:
+  - 'Friedrich, H., Sahin, I. A., Rajamani, N., Alho, E. J. L., Milanese Holanda, V., Oxenford, S., et al. (2026). A precise atlas of the human subcortex. *bioRxiv* (preprint). [doi:10.64898/2026.02.13.705755](https://doi.org/10.64898/2026.02.13.705755)'
+  image: focus-atlas-stn-tracts.jpg
+  alt: 'FOCUS atlas: the subthalamic nucleus, fields of Forel, zona incerta and their tracts in 3D'
 - id: the-allen-human-reference-atlas-ding-2020
   group: basal-ganglia
   name: Allen Human Reference Atlas

@@ -22,7 +22,7 @@
     {{- end }}{{ end }}
     </ul>
   </nav>
-  <p class="atlas-filter__none" hidden data-atlas-none>Nothing on this page matches. Try another word, or <a href="{{ with site.GetPage "/contact" }}{{ .RelPermalink }}{{ end }}">tell us about an atlas we should list</a>.</p>
+  <p class="atlas-filter__none" hidden data-atlas-none>Nothing on this page matches. Try another word, or <a href="{{ with site.GetPage "/contact" }}{{ .RelPermalink }}{{ end }}">tell us about one we should list</a>.</p>
 </div>
 {{- if not (.Page.Store.Get "atlas-filter-script") }}{{ .Page.Store.Set "atlas-filter-script" true }}
 {{ with resources.Get "js/atlas-filter.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}

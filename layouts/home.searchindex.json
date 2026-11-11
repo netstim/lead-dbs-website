@@ -32,6 +32,15 @@
         "h" (delimit $heads " · ")
         "d" (.Description | default "")
         "x" (cond $isLegal "" (substr $text 0 1600))) -}}
+    {{- /* sections that are results of their own (front matter "searchEntries": title, id, keywords,
+           description), such as the tools on Features; the build stops when the page has no such anchor */ -}}
+    {{- $pg := . -}}
+    {{- range .Params.searchEntries -}}
+      {{- $id := .id -}}
+      {{- $found := false }}{{ range $pg.Fragments.HeadingsMap }}{{ if eq .ID $id }}{{ $found = true }}{{ end }}{{ end -}}
+      {{- if not $found }}{{ if not (strings.Contains $pg.Content (printf `id="%s"` $id)) }}{{ errorf "searchEntries: %s: no anchor %q" $pg.File.Path $id }}{{ end }}{{ end -}}
+      {{- $out = $out | append (dict "t" .title "u" (printf "%s#%s" $pg.RelPermalink $id) "s" $pg.LinkTitle "k" (.keywords | default "") "h" "" "d" (.description | default "") "x" "") -}}
+    {{- end -}}
     {{- /* an atlas catalogue: each atlas is found by itself and opens at its entry */ -}}
     {{- $p := . -}}
     {{- with partial "atlas/data.html" . -}}

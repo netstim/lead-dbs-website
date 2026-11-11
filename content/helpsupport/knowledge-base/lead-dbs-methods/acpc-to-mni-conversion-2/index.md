@@ -5,9 +5,13 @@ weight: 2
 date: "2017-04-19T17:07:12"
 lastmod: "2026-11-11"
 keywords: ["AC/PC", "MNI", "coordinates", "targets", "conversion", "IXI", "STN", "GPi", "VIM", "Talairach"]
-aliases: ["/helpsupport/knowledge-base/atlasesresources/ixi-database/"]
 # the picture shown when the page is shared (head.html)
 share: "fig_3.png"
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - "/helpsupport/knowledge-base/atlasesresources/about-the-mni-spaces/"
+  - "/helpsupport/knowledge-base/atlasesresources/atlases-2/"
+  - "/about/publications/"
 ---
 
 Neurosurgeons report DBS targets in AC/PC coordinates, relative to the anterior and posterior
@@ -27,7 +31,7 @@ Open the *AC/PC to MNI conversion tool* from the Tools menu of Lead-DBS.
 ### The IXI reference data {#ixi}
 
 To convert coordinates without patients of your own, use the preprocessed
-[IXI dataset](http://brain-development.org/ixi-dataset/) (open licence) of healthy subjects: Lead-DBS picks
+[IXI dataset](https://brain-development.org/ixi-dataset/) (open licence) of healthy subjects: Lead-DBS picks
 an age-matched sample from it, as described in [Horn et al. 2017](https://doi.org/10.1016/j.neuroimage.2017.02.004).
 
 {{< button href="https://filedn.com/lsPIJ4ragTWjjmV6PvlDQLu/data/IXI.tgz" >}}Download the IXI dataset{{< /button >}}
@@ -40,7 +44,15 @@ A short talk on the method, held at AAN 2017: [slides (PDF)](https://www.lead-db
 
 ## Background: DBS targets in MNI space {#background}
 
-*This section first appeared on 18 April 2017 as the article "DBS targets in MNI space".*
+The method was validated on two DBS cohorts whose coordinates were known: converting with an age-matched
+cohort of healthy brains gave results similar to converting with the patients' own brains. With it, the
+effective DBS targets reported for many diseases were placed in MNI space, where atlases and connectomes
+help to interpret them.
+
+![DBS targets for several diseases mapped on MNI template slices](fig_3.png "DBS targets defined in MNI space, each mapped with a healthy cohort age-matched to the cohort in which its AC/PC coordinate was defined. The atlases available in MNI space help to interpret the anatomy.")
+
+<details class="more more--wide">
+<summary>Read the background, from the 2017 article "DBS targets in MNI space"</summary>
 
 ![Cover of NeuroImage showing DBS targets in MNI space on a histological section](622925-2.gif)
 
@@ -51,19 +63,19 @@ the midcommissural point (MCP), are also called "functional coordinates", since 
 functional neurosurgery, the field largely shaped by DBS surgery.
 
 The system was popularized by two surgical atlases, Schaltenbrand-Wahren
-([1977](http://www.thieme.com/books-main/neurosurgery/product/168-atlas-for-stereotaxy-of-the-human-brain))
+([1977](https://www.thieme.com/books-main/neurosurgery/product/168-atlas-for-stereotaxy-of-the-human-brain))
 and Talairach-Tournoux
-([1988](http://www.thieme.com/books-main/neurosurgery/product/414-co-planar-stereotaxic-atlas-of-the-human-brain))
+([1988](https://www.thieme.com/books-main/neurosurgery/product/414-co-planar-stereotaxic-atlas-of-the-human-brain))
 (the idea of stereotactic coordinates goes back to
 [Clarke and Horsley in 1906](https://www.ncbi.nlm.nih.gov/pubmed/17912057)). As
-[Brett and colleagues (2002)](http://www.nature.com/nrn/journal/v3/n3/abs/nrn756.html) point out, these
+[Brett and colleagues (2002)](https://www.nature.com/nrn/journal/v3/n3/abs/nrn756.html) point out, these
 atlases brought three innovations: a coordinate system relative to anatomical landmarks; a standard
 brain with anatomical labels and the cytoarchitectonic details of Korbinian Brodmann (1925); and a
 9-parameter transformation (position, orientation, size) to match one brain to another.
 
 The AC and PC vary little between people, which makes them good reference points. But both atlases
 were drawn from single brains that were smaller than average, and, as
-[Weiss and colleagues](http://www.ajnr.org/content/24/5/922) point out, the reference points differ:
+[Weiss and colleagues](https://www.ajnr.org/content/24/5/922) point out, the reference points differ:
 sometimes the centres of AC and PC are used, sometimes their borders, sometimes a mix of the two.
 
 ![Comparison of brain size and AC-PC distance in MNI, average and Talairach brains, and electrode positions in three spaces](fig_1-1.png "Figure 1: AC/PC coordinates are ill-defined. A) The Schaltenbrand-Wahren and Talairach-Tournoux atlases are both based on single brains that are smaller than average. B) The anterior and posterior commissures are not always defined in the same way; it depends on the atlas and on the surgeon's preference.")
@@ -85,7 +97,7 @@ matched the brains completely** to the Talairach brain. As a result the MNI brai
 (in particular higher, deeper and longer) than the Talairach brain."
 
 Conversions between Talairach and MNI space have been studied in depth (for example in the
-[work of Lancaster and colleagues](http://www.brainmap.org/icbm2tal/)). The term "MNI space" itself
+[work of Lancaster and colleagues](https://www.brainmap.org/icbm2tal/)). The term "MNI space" itself
 covers several templates: see [About the MNI space(s)](/about-the-mni-spaces/).
 
 ### Surgical coordinates are not Talairach coordinates
@@ -130,7 +142,7 @@ healthy cohort did worse; a disease-matched or disease-severity-matched cohort w
 ### DBS targets in MNI space
 
 With the method validated, the study reviewed the literature for effective DBS targets. For each study
-that reported one, an age-matched cohort from the [IXI dataset](http://brain-development.org/ixi-dataset/)
+that reported one, an age-matched cohort from the [IXI dataset](https://brain-development.org/ixi-dataset/)
 served to warp the AC/PC coordinate into MNI space. The result is an atlas of DBS targets for various
 diseases in MNI space.
 
@@ -142,7 +154,6 @@ atlas common in the neurosurgical literature: for example with the
 or [Chakravarty](https://www.ncbi.nlm.nih.gov/pubmed/16406816) atlases, both based on histology and
 available in MNI space.
 
-![DBS targets for several diseases mapped on MNI template slices](fig_3.png "Figure 3: DBS targets defined in MNI space, each mapped with a healthy cohort age-matched to the cohort in which its AC/PC coordinate was defined. The atlases available in MNI space help to interpret the anatomy.")
 
 ### One target, many resources: essential tremor
 
@@ -166,6 +177,8 @@ the neurosurgical findings:
 
 ![Synopsis of DBS targets with several MNI atlases and connectivity analysis](fig_4-829x1030.png "Figure 4: One DBS target (for essential tremor) characterized with resources in MNI space: atlases based on histology, functional or diffusion-weighted MRI locate the target, and normative functional and structural connectomes give its connectivity profile.")
 
+</details>
+
 Every step described here is built into Lead-DBS: the [conversion tool](#use-it-in-lead-dbs) applies it
 to any AC/PC coordinate with a surrogate cohort of your choice.
 
@@ -173,4 +186,4 @@ to any AC/PC coordinate with a surrogate cohort of your choice.
 
 Why there is more than one MNI space: [About the MNI space(s)](/about-the-mni-spaces/). The atlases to
 compare targets with: [Subcortical atlases](/helpsupport/knowledge-base/atlasesresources/atlases-2/).
-All that Lead-DBS does: [Methods](/helpsupport/knowledge-base/lead-dbs-methods/).
+Everything else Lead-DBS does: [Features](/helpsupport/knowledge-base/lead-dbs-methods/).

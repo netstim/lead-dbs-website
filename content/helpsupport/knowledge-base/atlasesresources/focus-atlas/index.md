@@ -8,34 +8,63 @@ lastmod: "2026-11-11"
 aliases: ["/downloadfocus/"]
 # the picture shown when the page is shared (head.html)
 share: "STN_Forel_ZI_tracts_mediolateral-1030x1019.png"
+# the picture of its card on its group's page (childpages)
+card: "STN_Forel_ZI_tracts_mediolateral-1030x1019.png"
+toc: false
 keywords: ["FOCUS", "atlas", "subcortex", "100 micron", "7T", "ex vivo", "tracts", "download FOCUS"]
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - "/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping/"
+  - {name: "Stimulation modelling", url: "/helpsupport/knowledge-base/lead-dbs-methods/#stimulation"}
+  - "/about/citing_leaddbs/"
 ---
 
-FOCUS is a 100-micron atlas of the human subcortex, with 95 grey and white matter structures and 82
-fibre pathways, built from 7T ex vivo MRI. It is licensed for **academic research only**, not for
-commercial applications, and is downloaded through the [form below](#download).
+FOCUS is a 100-micron atlas of the human subcortex by the Lead-DBS team, built from 7T ex vivo MRI.
 
-**What to cite:** Friedrich, H., Sahin, I. A., Rajamani, N., Alho, E. J. L., Milanese Holanda, V.,
-Oxenford, S., et al. (2026). A precise atlas of the human subcortex. *bioRxiv* (preprint).
-[doi:10.64898/2026.02.13.705755](https://doi.org/10.64898/2026.02.13.705755)
+{{< summary >}}
+What
+: 95 grey and white matter structures, manually segmented, and 82 curated fibre pathways, across the basal ganglia, thalamus, subthalamus, midbrain and cerebellum
+
+Space
+: Registered to MNI space, at 100-micron isotropic resolution
+
+Get it
+: Through the [download form](#download), for academic research only
+
+Cite
+: Friedrich et al. 2026, preprint on *bioRxiv* (February 2026), [doi:10.64898/2026.02.13.705755](https://doi.org/10.64898/2026.02.13.705755) ([full citation](#what-to-cite))
+{{< /summary >}}
 
 ## What it is
 
-A deformable atlas at 100-micron isotropic resolution, validated against 48 additional anatomical
-resources, including histology and fibre dissections. Its 95 structures are manually segmented and its
-82 fibre pathways curated. It keeps near-histological detail while staying compatible with standard
-stereotactic space.
+FOCUS gives submillimetre definitions of the nuclei and fibre tracts of the basal ganglia, thalamus,
+subthalamus, midbrain and cerebellum, including delicate pathways often invisible on conventional MRI: the
+detail needed to model deep brain stimulation (DBS), focused ultrasound and lesion surgery. Its
+registration to MNI space allows it to be transformed into an individual brain.
 
 ![FOCUS atlas: subcortical structures and fibre pathways of the right hemisphere in 3D, medial-lateral view](Fig1_newdraft_rh_segtracts_mediolateral-1030x1019.png)
 
-## What it is for
+## How to get it {#download}
 
-Subcortical anatomy is complex, densely packed, and critically important for interventions such as deep
-brain stimulation (DBS), focused ultrasound and lesion surgery, yet many existing atlases lack the
-resolution needed to model these regions accurately. FOCUS gives submillimetre definitions of nuclei and
-fibre tracts across the basal ganglia, thalamus, subthalamus, midbrain and cerebellum, including delicate
-pathways often invisible on conventional MRI. Its registration to MNI space allows it to be transformed
-into an individual brain.
+Fill in the form below. FOCUS is licensed **for academic research only**, not for commercial
+applications. Downloading also subscribes you to the Lead-DBS [newsletter](/subscribe-to-our-newsletter/),
+which is sent rarely; you can opt out with one click, and your details are not shared with anyone else.
+
+{{< form "downloadfocus" >}}
+
+## What to cite
+
+{{% copybox label="Copy the citation" %}}
+Friedrich, H., Sahin, I. A., Rajamani, N., Alho, E. J. L., Milanese Holanda, V., Oxenford, S., et al. (2026). A precise atlas of the human subcortex. *bioRxiv* (preprint). https://doi.org/10.64898/2026.02.13.705755
+{{% /copybox %}}
+
+## How FOCUS was built
+
+The 95 structures were segmented by hand on 7T ex vivo MRI at 100-micron resolution. Alongside them, a
+pathway atlas was curated from anatomical priors (“tract architectonics”), so that complex fibre systems are
+reconstructed faithfully to the anatomy. The atlas was validated against 48 additional anatomical
+resources, including histology and fibre dissections, and is meant to be refined further, version by
+version.
 
 {{% row %}}
 {{% col "1/2" %}}
@@ -48,19 +77,7 @@ into an individual brain.
 {{% /col %}}
 {{% /row %}}
 
-Alongside the voxel segmentations, FOCUS contains a manually curated pathway atlas based on anatomical
-priors (“tract architectonics”), so that complex fibre systems can be reconstructed faithfully to the
-anatomy. It is meant to be refined further, version by version.
-
 {{< button href="https://doi.org/10.64898/2026.02.13.705755" >}}Read the preprint on bioRxiv{{< /button >}}
-
-## Download {#download}
-
-By downloading the FOCUS atlas, you acknowledge that it is licensed **for academic research only**, not
-for commercial applications. Downloading also subscribes you to the Lead-DBS [newsletter](/subscribe-to-our-newsletter/),
-which is sent rarely; you can opt out with one click, and your details are not shared with anyone else.
-
-{{< form "downloadfocus" >}}
 
 ## Next
 

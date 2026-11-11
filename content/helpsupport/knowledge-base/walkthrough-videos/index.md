@@ -8,6 +8,13 @@ aliases: ["/walkthrough-videos-online/", "/helpsupport/knowledge-base/videos/"]
 keywords: ["video", "videos", "tutorial", "screencast"]
 # the picture shown when the page is shared (head.html)
 share: "video-CYCodpND7TE.jpg"
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - "/helpsupport/learn-lead-dbs-yourself/"
+  - "/helpsupport/knowledge-base/lead-dbs-methods/"
+  - "/helpsupport/slack-user-channel/"
+# the picture of its card on the Docs and help page (childpages)
+card: "video-xobhQDgtVfs.jpg"
 ---
 
 New to Lead-DBS? Start with [First steps](/helpsupport/first-steps/) and practise with [Lead Tutor](/helpsupport/learn-lead-dbs-yourself/); the [manual](https://netstim.gitbook.io/leaddbs) has the current version of every step.

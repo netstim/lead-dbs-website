@@ -1,11 +1,16 @@
-{{- /* The sidebar of inner pages, the same on every page of a menu group (one model):
+{{- /* The sidebar of inner pages, the same model on every page of a menu group:
        1. the group's pages from the main menu (partial nav-place.html, so it agrees with the header and
           the breadcrumb), with the pages under the current entry opened below it, and the pages placed
-          under the group's own page by front matter menuParent; the download page shows "Docs and help";
-       2. on a long page its table of contents, which stays in view while the text scrolls (desktop);
-          on a short page the next event (data/events.yaml), quick links (data/links.yaml) and the
-          newsletter;
-       3. the current release (data/release.yaml) only on the groups' hub pages, not on the download page.
+          under the group's own page by front matter menuParent;
+       2. the current release (data/release.yaml) only on the groups' hub pages, not on the download page;
+       3. two to four pages related to this one (front matter related:, see below);
+       4. on a long page its table of contents, which stays in view while the text scrolls (desktop);
+          on a short page the next event (data/events.yaml), and on News the newsletter.
+     The download page has no group list, only its contents.
+     related: a list of site paths ("/about/citing_leaddbs/", "/develop/#add-your-atlas-or-dataset"; a page
+     with its own url: front matter by its folder, "/helpsupport/knowledge-base/atlasesresources/about-the-mni-spaces/") or
+     full URLs; a path is labelled with its page's linkTitle, unless the entry is {name: "…", url: "…"}
+     (needed for a full URL). The build stops on a path that is not a page or that is the page itself.
      Argument: the page, or dict "page" "toc" (bool). */ -}}
 {{ $page := . }}{{ $toc := false }}
 {{ if reflect.IsMap . }}{{ $page = .page }}{{ $toc = .toc }}{{ end }}
@@ -15,10 +20,9 @@
 {{ $onDownload := false }}{{ with site.GetPage "/download" }}{{ $onDownload = eq $page .  }}{{ end }}
 {{ $place := partial "nav-place.html" $page }}
 {{ $group := $place.group }}
-{{ $isHub := and $group (eq $group.Page $page) }}
-{{- /* the download page is the header's button, not a group: it shows the "Docs and help" pages, where a
-       visitor goes next (first steps, the manual) */}}
-{{ if and $onDownload $group (not $group.HasChildren) }}{{ range site.Menus.main }}{{ if eq .Identifier "docs" }}{{ $group = . }}{{ end }}{{ end }}{{ end }}
+{{ $isHub := and $group (eq $group.Page $page) (not $onDownload) }}
+{{- /* the download page is the header's button, not a group: its sidebar is its own contents list */}}
+{{ if $onDownload }}{{ $group = false }}{{ end }}
 
 {{ if and $group $group.HasChildren }}
 {{ $branch := slice }}{{ range $place.items }}{{ $branch = $branch | append . }}{{ end }}
@@ -76,20 +80,34 @@
 </section>
 {{ end }}
 
+{{ with $page.Params.related }}
+<nav class="side-block related-links" aria-labelledby="side-related">
+  <p class="t-label muted" id="side-related">Related</p>
+  <ul>
+    {{ range . }}
+    {{ $url := . }}{{ $name := "" }}
+    {{ if reflect.IsMap . }}{{ $url = .url }}{{ $name = .name }}{{ end }}
+    {{ if not (strings.HasPrefix $url "http") }}
+      {{ $u := urls.Parse $url }}
+      {{ $path := strings.TrimSuffix "/" $u.Path }}
+      {{ $t := or (site.GetPage $path) (site.GetPage (printf "/news%s" $path)) }}
+      {{ if not $t }}{{ errorf "%s: related %q is not a page" $page.File.Path $url }}{{ end }}
+      {{ if eq $t $page }}{{ errorf "%s: related %q is the page itself" $page.File.Path $url }}{{ end }}
+      {{ $name = $name | default $t.LinkTitle }}
+    {{ else if not $name }}{{ errorf "%s: related %q needs a name" $page.File.Path $url }}{{ end }}
+    <li><a href="{{ partial "resolve-url.html" (dict "url" $url "page" $page) }}">{{ partial "nobreak-html.html" ($name | htmlEscape) }}</a></li>
+    {{ end }}
+  </ul>
+</nav>
+{{ end }}
+
 {{ if $toc }}
 {{ partial "toc.html" (dict "page" $page "variant" "side") }}
 {{ else }}
 
 {{ if ne $page.Section "events" }}{{ partial "events/next.html" (dict "variant" "side" "page" $page) }}{{ end }}
 
-<nav class="side-block quick-links" aria-labelledby="side-quick">
-  <p class="t-label muted" id="side-quick">Quick links</p>
-  <ul>
-    {{ range hugo.Data.links.quick }}<li><a href="{{ partial "resolve-url.html" (dict "url" .url "page" $page) }}">{{ partial "nobreak-html.html" (.name | htmlEscape) }}</a></li>{{ end }}
-  </ul>
-</nav>
-
-{{ if not $onDownload }}
+{{ if eq $page.Section "news" }}
 <section class="side-block newsletter-box" aria-labelledby="side-news">
   <p class="t-label muted" id="side-news">Newsletter</p>
   <p class="t-small">Release and workshop news by email.</p>

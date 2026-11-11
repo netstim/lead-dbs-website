@@ -1,0 +1,9 @@
+{{- /* A summary box at the top of an atlas page: what it is, its space, how to get it, its version.
+       The inner text is a Markdown definition list ("Term" on one line, ": text" on the next):
+         {{< summary >}}
+         Space
+         : MNI ICBM 2009b NLIN Asym
+         {{< /summary >}} */ -}}
+<aside class="summary-box" aria-label="{{ .Get "label" | default "In short" }}">
+{{ .Inner | .Page.RenderString (dict "display" "block") }}
+</aside>

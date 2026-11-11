@@ -1,0 +1,64 @@
+{{- /* One thing Lead-DBS does, as a row: a picture, then what it does, its chapter in the manual and its
+       papers (the Features page). The text between the tags is the description (Markdown).
+         {{< capability title="Electrode localization" id="localization" link="/path/of/its/page/"
+               img="images/renders/lead-closeup.jpg"
+               manual="Reconstruction of electrode trajectories|https://netstim.gitbook.io/…"
+               papers="horn2015 husch2018" >}}Reconstructs the electrodes …{{< /capability >}}
+       img: a lab render under assets/images/renders/ (credited "Render by the Lead-DBS team", alt text
+            from the renders list of content/gallery/_index.md), a published figure "gallery/<file>"
+            (credited with authors, journal and licence from data/gallery.yaml, alt text its "shows"), or
+            a picture of another page, "/path/of/the/page/file.png" (then also give alt= and caption=).
+       fit="contain" shows a figure whole on white instead of filling the frame (renders fill it).
+       manual: "label|url", several separated by ";". papers: ids from data/papers.yaml.
+       link: a page of this site that explains it in depth, listed under the papers by its name (the
+            heading itself is never a link, so every row's heading looks the same).
+       The row is a container (assets/css/content.css): in a wide text column (a page without sidebar)
+       the picture gets the larger share and the rows alternate sides; in a narrow one the picture sits
+       left of the text, and on a phone above it. */ -}}
+{{- $title := .Get "title" -}}
+{{- $src := .Get "img" -}}
+{{- $alt := .Get "alt" -}}
+{{- $caption := "" -}}
+{{- $img := false -}}
+{{- $gallery := site.GetPage "/gallery" -}}
+{{- if hasPrefix $src "gallery/" -}}
+  {{- $img = resources.Get $src -}}
+  {{- $f := false }}{{ range hugo.Data.gallery.figures }}{{ if eq (printf "gallery/%s" .file) $src }}{{ $f = . }}{{ end }}{{ end -}}
+  {{- if not $f }}{{ errorf "capability %q: %s is not in data/gallery.yaml" $title $src }}{{ end -}}
+  {{- $alt = $alt | default $f.shows -}}
+  {{- $first := index (split $f.authors " ") 0 -}}
+  {{- $caption = printf `<a href="%s#fig-%s">%s, %s et al., <em>%s</em> %d</a> (%s)` $gallery.RelPermalink (path.BaseName $f.file) $f.figure $first $f.journal $f.year $f.license -}}
+{{- else if hasPrefix $src "/" -}}
+  {{- $p := site.GetPage (path.Dir $src) -}}
+  {{- if not $p }}{{ errorf "capability %q: no page %s" $title (path.Dir $src) }}{{ end -}}
+  {{- $img = $p.Resources.GetMatch (path.Base $src) -}}
+  {{- $caption = .Get "caption" -}}
+{{- else -}}
+  {{- $img = resources.Get $src -}}
+  {{- range $gallery.Params.renders }}{{ if eq (printf "images/renders/%s" .file) $src }}{{ $alt = $alt | default .alt }}{{ end }}{{ end -}}
+  {{- $caption = printf `<a href="%s#renders-h">Render by the Lead-DBS team</a>, Lead Tutor data` $gallery.RelPermalink -}}
+{{- end -}}
+{{- if not $img }}{{ errorf "capability %q: no picture %q (%s)" $title $src .Page.File.Path }}{{ end -}}
+{{- if not $alt }}{{ errorf "capability %q: the picture needs alt text (%s)" $title .Page.File.Path }}{{ end -}}
+{{- $contain := eq (.Get "fit") "contain" -}}
+{{- $set := slice }}{{ $mid := false -}}
+{{- range slice 480 800 1200 1520 }}{{ $r := cond $contain ($img.Fit (printf "%dx%d webp q82" . (div (mul . 3) 4))) ($img.Fill (printf "%dx%d webp q82 Center" . (div (mul . 3) 4))) }}{{ $set = $set | append (printf "%s %dw" $r.RelPermalink $r.Width) }}{{ if eq . 800 }}{{ $mid = $r }}{{ end }}{{ end -}}
+{{- $id := .Get "id" | default (anchorize $title) -}}
+{{- $more := false }}{{ with .Get "link" }}{{ $more = site.GetPage (strings.TrimSuffix "/" (urls.Parse .).Path) }}{{ if not $more }}{{ errorf "capability %q: link %q is not a page" $title . }}{{ end }}{{ end -}}
+<section class="capability" id="{{ $id }}" aria-labelledby="{{ $id }}-h">
+  <div class="capability__row">
+    <figure class="capability__fig{{ if $contain }} capability__fig--contain{{ end }}">
+      <img src="{{ $mid.RelPermalink }}" srcset="{{ delimit $set ", " }}" sizes="(min-width: 1280px) 720px, (min-width: 1024px) 56vw, (min-width: 640px) 42vw, 100vw" width="{{ $mid.Width }}" height="{{ $mid.Height }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+      {{ with $caption }}<figcaption>{{ . | safeHTML }}</figcaption>{{ end }}
+    </figure>
+    <div class="capability__text">
+      <h3 id="{{ $id }}-h">{{ partial "nobreak.html" $title }}</h3>
+      {{ .Inner | $.Page.RenderString (dict "display" "block") }}
+      <dl class="capability__refs">
+        {{ with .Get "manual" }}<div><dt>Manual</dt><dd>{{ range $i, $m := split . ";" }}{{ $kv := split (strings.TrimSpace $m) "|" }}{{ if $i }}, {{ end }}<a href="{{ index $kv 1 }}">{{ index $kv 0 }}</a>{{ end }}</dd></div>{{ end }}
+        {{ with .Get "papers" }}<div><dt>{{ if gt (len (split . " ")) 1 }}Papers{{ else }}Paper{{ end }}</dt><dd>{{ range $i, $k := split . " " }}{{ $p := index hugo.Data.papers.papers $k }}{{ if not $p }}{{ errorf "capability %q: no paper %q in data/papers.yaml" $title $k }}{{ end }}{{ if $i }}, {{ end }}<a href="https://doi.org/{{ $p.doi }}">{{ $p.short }}</a>{{ end }}</dd></div>{{ end }}
+        {{ with $more }}<div><dt>In depth</dt><dd><a href="{{ .RelPermalink }}">{{ partial "nobreak.html" .LinkTitle }}</a></dd></div>{{ end }}
+      </dl>
+    </div>
+  </div>
+</section>

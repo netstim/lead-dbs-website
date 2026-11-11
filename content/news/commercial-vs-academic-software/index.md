@@ -1,13 +1,13 @@
 ---
-title: "Commercial vs. Academic Software"
+title: "Commercial vs. academic software"
 date: "2017-07-03T00:39:18"
 lastmod: "2017-07-08T21:47:41"
-# A background article, first published as a news post; it keeps its address.
-url: "/commercial-vs-academic-software/"
-description: "Pros and cons of commercial and academic software for modelling DBS electrodes, and why Lead-DBS is built as academic research software (2017)."
-showDate: true
+# An essay of 2017, kept in the news archive under its date.
+slug: "commercial-vs-academic-software"
+description: "An essay of 2017: pros and cons of commercial and academic software for modelling DBS electrodes, and why Lead-DBS is academic research software."
 keywords: ["commercial", "academic", "open source", "GUIDE", "SureTune", "Brainlab"]
-menuParent: "/develop"
+# the picture shown when the page is shared (head.html)
+share: "images/renders/lead-closeup.jpg"
 ---
 
 > Recently, I had the pleasure to meet with an R&D representative of a major DBS electrode manufacturer and we talked about software built to model deep brain stimulation electrodes in computer simulations, such as Lead-DBS.
@@ -47,7 +47,7 @@ I hope this post could elaborate some pros and cons about commercial and academi
 3. *to the best of our knowledge*
 4. *referring to Boston Scientific GUIDE system, Medtronic OptiVize and the initial version of Medtronic SureTune*
 
-## Alternatives {#alternatives}
+## Other tools, as listed some years ago {#alternatives}
 
 DBS imaging spans co-registration, multimodal image fusion, 3D image processing and localization, spatial statistics, surface and volumetric meshing and finite element modeling; connectivity adds fMRI and diffusion tractography, and electrophysiology (local field potentials, EEG, MEG) can add more. Lead-DBS includes the best open tools for each step it can, and other tools, with a different focus, may suit a specific step better. The list was last reviewed some years ago, so some of these tools may have changed or been discontinued. Also see the discussion of our [Lead-DBS v2 paper](https://www.researchgate.net/publication/327380509_Lead-DBS_v2_Towards_a_comprehensive_pipeline_for_deep_brain_stimulation_imaging).
 
@@ -67,5 +67,4 @@ DBS imaging spans co-registration, multimodal image fusion, 3D image processing 
 
 ## Next
 
-What this means for what goes into Lead-DBS: the [data and code inclusion philosophy](/about/data-code-inclusion-philosophy/).
-How to contribute: [Develop Lead-DBS](/develop/).
+How to contribute to Lead-DBS today: [Develop Lead-DBS](/develop/).

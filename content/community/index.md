@@ -1,6 +1,13 @@
 ---
 title: "Community"
 description: "How to take part in Lead-DBS: events and the developer meeting, the user Slack, contributing code and data, and the newsletter."
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - "/news/"
+  - {name: "Get help", url: "/helpsupport/#get-help"}
+  - "/about/team/"
+# the picture shown when the page is shared (head.html)
+share: "images/renders/head-community.jpg"
 ---
 
 Lead-DBS is developed in the open by researchers from many institutions, and its users help each other.

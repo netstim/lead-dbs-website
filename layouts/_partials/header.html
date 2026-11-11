@@ -3,7 +3,8 @@
      children open a small panel on hover and keyboard focus. Below 1200px the words move into a
      full-screen sheet that the menu button opens (assets/js/main.js); below 640px GitHub and the
      Download button live in that sheet too, so nothing in the bar is pushed off a phone's screen.
-     Without script the menu button is a link to the footer's list of pages. */ -}}
+     Without script (no "js" class on <html>, head.html) the menu button is a link to #site-menu, which
+     opens the same sheet with every group's pages listed (assets/css/content.css). */ -}}
 {{ $page := . }}
 {{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Name "Download" }}{{ $dl = .URL }}{{ end }}{{ end }}
 {{ $search := "" }}{{ with site.GetPage "/search" }}{{ $search = .RelPermalink }}{{ end }}
@@ -20,6 +21,7 @@
     <a class="skip-link" href="#top">Skip to content</a>
     <a class="nav__logo" href="{{ site.Home.RelPermalink }}">{{ partial "logo.html" (dict "h" 34) }}<span class="nav__name">Lead-DBS</span></a>
     <nav class="nav__links" id="site-menu" aria-label="Main">
+      <a class="nav__nojs-close" href="#top">Close the menu</a>
       {{ range site.Menus.main }}
       {{ if ne .Name "Download" }}{{ $m := . }}
       {{ $current := eq (.Identifier | default .Name) $best }}
@@ -34,7 +36,12 @@
             {{ $plain := slice }}{{ $groups := slice }}
             {{ range .Children }}{{ if .HasChildren }}{{ $groups = $groups | append . }}{{ else }}{{ $plain = $plain | append . }}{{ end }}{{ end }}
             <div class="menu-col">
-              {{ range $plain }}<a href="{{ .URL }}">{{ partial "menu-label.html" . }}</a>{{ end }}
+              {{- /* params.divider: a line above the entry that starts a small group of its own; when it is a
+                     text, that text is the group's caption ("Method articles"). The manual is a first-level
+                     word of the phone sheet, so its copy here is hidden there. */}}
+              {{ range $plain }}{{ $d := .Params.divider | default false }}{{ $cap := cond (eq (printf "%T" $d) "string") $d "" -}}
+              {{ with $cap }}<span class="menu-caption t-label">{{ partial "nobreak-html.html" (. | htmlEscape) }}</span>{{ end -}}
+              <a href="{{ .URL }}"{{ with (cond (eq .Name "Manual") "menu-sheet-dup" (cond (and $d (not $cap)) "menu-divider" "")) }} class="{{ . }}"{{ end }}>{{ partial "menu-label.html" . }}</a>{{ end }}
             </div>
             {{ range $groups }}
             <div class="menu-col">
@@ -46,6 +53,11 @@
         </div>
         {{ end }}
       </div>
+      {{- /* on a phone the manual is a first-level word of the sheet, right under the documentation group
+             (a link to another site, so it is not a group of its own on a desktop) */}}
+      {{ range .Children }}{{ if and (eq .Name "Manual") (strings.HasPrefix .URL "http") }}
+      <div class="nav__item nav__item--sheet nav__item--manual"><a class="nav__link" href="{{ .URL }}">{{ partial "menu-label.html" . }}</a></div>
+      {{ end }}{{ end }}
       {{ end }}
       {{ end }}
       {{ with site.Params.github }}
@@ -68,6 +80,6 @@
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open the menu">
       <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
     </button>
-    <a class="nav__nojs-menu" href="#site-pages">Menu</a>
+    <a class="nav__nojs-menu" href="#site-menu">Menu</a>
   </div>
 </header>

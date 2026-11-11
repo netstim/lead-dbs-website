@@ -1,0 +1,278 @@
+# Papers about Lead-DBS, its methods and its tools: the one list. Publications prints all of them
+# (shortcode {{% papers %}}); Features, Cite and other pages link single papers with
+# {{< paper id >}} ("Ewert 2019") or print the full reference with {{< paper id "full" >}}.
+# Add a paper here once, with its DOI checked at doi.org, and it appears everywhere it is used.
+#
+# Fields: short (link text), group (one of the groups below), authors (as printed: up to six, then
+# "et al."), year, title, journal, volume, issue, pages, doi, note (printed after the journal,
+# e.g. "preprint").
+
+groups:
+  - id: toolbox
+    title: "Lead-DBS"
+  - id: methods
+    title: "Methods in Lead-DBS"
+  - id: mapping
+    title: "Mapping stimulation effects"
+  - id: tools
+    title: "Tools and connectomes"
+  - id: origins
+    title: "Earlier work Lead-DBS builds on"
+
+papers:
+  neudorfer2023:
+    short: "Neudorfer 2023"
+    group: toolbox
+    authors: "Neudorfer, C., Butenko, K., Oxenford, S., Rajamani, N., Achtzehn, J., Goede, L., et al."
+    year: 2023
+    title: "Lead-DBS v3.0: Mapping deep brain stimulation effects to local anatomy and global networks"
+    journal: "NeuroImage"
+    volume: "268"
+    pages: "119862"
+    doi: "10.1016/j.neuroimage.2023.119862"
+
+  horn2019:
+    short: "Horn 2019"
+    group: toolbox
+    authors: "Horn, A., Li, N., Dembek, T. A., Kappel, A., Boulay, C., Ewert, S., et al."
+    year: 2019
+    title: "Lead-DBS v2: Towards a comprehensive pipeline for deep brain stimulation imaging"
+    journal: "NeuroImage"
+    volume: "184"
+    pages: "293–316"
+    doi: "10.1016/j.neuroimage.2018.08.068"
+
+  horn2015:
+    short: "Horn & Kühn 2015"
+    group: toolbox
+    authors: "Horn, A., & Kühn, A. A."
+    year: 2015
+    title: "Lead-DBS: A toolbox for deep brain stimulation electrode localizations and visualizations"
+    journal: "NeuroImage"
+    volume: "107"
+    pages: "127–135"
+    doi: "10.1016/j.neuroimage.2014.12.002"
+
+  oxenford2024:
+    short: "Oxenford 2024"
+    group: methods
+    authors: "Oxenford, S., Ríos, A. S., Hollunder, B., Neudorfer, C., Boutet, A., Elias, G. J. B., et al."
+    year: 2024
+    title: "WarpDrive: Improving spatial normalization using manual refinements"
+    journal: "Medical Image Analysis"
+    volume: "91"
+    pages: "103041"
+    doi: "10.1016/j.media.2023.103041"
+
+  pijar2025:
+    short: "Pijar 2025"
+    group: methods
+    authors: "Pijar, J., Goede, L. L., Butenko, K., Hart, L. A., Madan, S., Dembek, T. A., et al."
+    year: 2025
+    title: "Modeling deep brain stimulation effects in native patient or template space – Does it matter?"
+    journal: "Brain Stimulation"
+    volume: "18"
+    issue: "4"
+    pages: "1113–1115"
+    doi: "10.1016/j.brs.2025.05.004"
+
+  lofredi2022:
+    short: "Lofredi 2022"
+    group: methods
+    authors: "Lofredi, R., Auernig, C. G., Ewert, S., Irmen, F., Steiner, L. A., Scheller, U., et al."
+    year: 2022
+    title: "Interrater reliability of deep brain stimulation electrode localizations"
+    journal: "NeuroImage"
+    volume: "262"
+    pages: "119552"
+    doi: "10.1016/j.neuroimage.2022.119552"
+
+  treu2020:
+    short: "Treu 2020"
+    group: methods
+    authors: "Treu, S., Strange, B., Oxenford, S., Neumann, W.-J., Kühn, A., Li, N., et al."
+    year: 2020
+    title: "Deep brain stimulation: Imaging on a group level"
+    journal: "NeuroImage"
+    volume: "219"
+    pages: "117018"
+    doi: "10.1016/j.neuroimage.2020.117018"
+
+  ewert2019:
+    short: "Ewert 2019"
+    group: methods
+    authors: "Ewert, S., Horn, A., Finkel, F., Li, N., Kühn, A. A., & Herrington, T. M."
+    year: 2019
+    title: "Optimization and comparative evaluation of nonlinear deformation algorithms for atlas-based segmentation of DBS target nuclei"
+    journal: "NeuroImage"
+    volume: "184"
+    pages: "586–598"
+    doi: "10.1016/j.neuroimage.2018.09.061"
+
+  dembek2019:
+    short: "Dembek 2019"
+    group: methods
+    authors: "Dembek, T. A., Hoevels, M., Hellerbach, A., Horn, A., Petry-Schmelzer, J. N., Borggrefe, J., et al."
+    year: 2019
+    title: "Directional DBS leads show large deviations from their intended implantation orientation"
+    journal: "Parkinsonism & Related Disorders"
+    volume: "67"
+    pages: "117–121"
+    doi: "10.1016/j.parkreldis.2019.08.017"
+
+  husch2018:
+    short: "Husch 2018"
+    group: methods
+    authors: "Husch, A., Petersen, M. V., Gemmar, P., Goncalves, J., & Hertel, F."
+    year: 2018
+    title: "PaCER – A fully automated method for electrode trajectory and contact reconstruction in deep brain stimulation"
+    journal: "NeuroImage: Clinical"
+    volume: "17"
+    pages: "80–89"
+    doi: "10.1016/j.nicl.2017.10.004"
+
+  ewert2018:
+    short: "Ewert 2018"
+    group: methods
+    authors: "Ewert, S., Plettig, P., Li, N., Chakravarty, M. M., Collins, D. L., Herrington, T. M., et al."
+    year: 2018
+    title: "Toward defining deep brain stimulation targets in MNI space: A subcortical atlas based on multimodal MRI, histology and structural connectivity"
+    journal: "NeuroImage"
+    volume: "170"
+    pages: "271–282"
+    doi: "10.1016/j.neuroimage.2017.05.015"
+
+  horn2017acpc:
+    short: "Horn 2017"
+    group: methods
+    authors: "Horn, A., Kühn, A. A., Merkl, A., Shih, L., Alterman, R., & Fox, M."
+    year: 2017
+    title: "Probabilistic conversion of neurosurgical DBS electrode coordinates into MNI space"
+    journal: "NeuroImage"
+    volume: "150"
+    pages: "395–404"
+    doi: "10.1016/j.neuroimage.2017.02.004"
+
+  horn2017ana:
+    short: "Horn 2017"
+    group: mapping
+    authors: "Horn, A., Reich, M., Vorwerk, J., Li, N., Wenzel, G., Fang, Q., et al."
+    year: 2017
+    title: "Connectivity predicts deep brain stimulation outcome in Parkinson disease"
+    journal: "Annals of Neurology"
+    volume: "82"
+    issue: "1"
+    pages: "67–78"
+    doi: "10.1002/ana.24974"
+
+  horn2017hbm:
+    short: "Horn 2017"
+    group: mapping
+    authors: "Horn, A., Neumann, W.-J., Degen, K., Schneider, G.-H., & Kühn, A. A."
+    year: 2017
+    title: "Toward an electrophysiological “sweet spot” for deep brain stimulation in the subthalamic nucleus"
+    journal: "Human Brain Mapping"
+    volume: "38"
+    issue: "7"
+    pages: "3377–3390"
+    doi: "10.1002/hbm.23594"
+
+  zimmermann2026:
+    short: "Zimmermann 2026"
+    group: tools
+    authors: "Zimmermann, J., Payonk, J. P., Che, L. V., Schöberl, J., Dembek, T. A., Horn, A., et al."
+    year: 2026
+    title: "OSS-DBS v2: Simulation platform for biophysical modelling of deep brain stimulation"
+    journal: "medRxiv"
+    note: "preprint"
+    doi: "10.64898/2026.10.10.26365197"
+
+  madan2025:
+    short: "Madan 2025"
+    group: tools
+    authors: "Madan, S., Hart, L. A., Li, N., Dembek, T. A., Butenko, K., Meyer, G. M., et al."
+    year: 2025
+    title: "Lead-Tutor: An open-access educational resource for deep brain stimulation electrode localizations"
+    journal: "Aperture Neuro"
+    volume: "5"
+    doi: "10.52294/001c.129658"
+
+  oxenford2022:
+    short: "Oxenford 2022"
+    group: tools
+    authors: "Oxenford, S., Roediger, J., Neudorfer, C., Milosevic, L., Güttler, C., Spindler, P., et al."
+    year: 2022
+    title: "Lead-OR: A multimodal platform for deep brain stimulation surgery"
+    journal: "eLife"
+    volume: "11"
+    pages: "e72929"
+    doi: "10.7554/eLife.72929"
+
+  butenko2020:
+    short: "Butenko 2020"
+    group: tools
+    authors: "Butenko, K., Bahls, C., Schröder, M., Köhling, R., & van Rienen, U."
+    year: 2020
+    title: "OSS-DBS: Open-source simulation platform for deep brain stimulation with a comprehensive automated modeling"
+    journal: "PLOS Computational Biology"
+    volume: "16"
+    issue: "7"
+    pages: "e1008023"
+    doi: "10.1371/journal.pcbi.1008023"
+
+  horn2016:
+    short: "Horn & Blankenburg 2016"
+    group: tools
+    authors: "Horn, A., & Blankenburg, F."
+    year: 2016
+    title: "Toward a standardized structural–functional group connectome in MNI space"
+    journal: "NeuroImage"
+    volume: "124"
+    pages: "310–322"
+    doi: "10.1016/j.neuroimage.2015.08.048"
+
+  horn2015dib:
+    short: "Horn 2015"
+    group: tools
+    authors: "Horn, A."
+    year: 2015
+    title: "A structural group-connectome in standard stereotactic (MNI) space"
+    journal: "Data in Brief"
+    volume: "5"
+    pages: "292–296"
+    doi: "10.1016/j.dib.2015.08.035"
+
+  horn2014:
+    short: "Horn 2014"
+    group: tools
+    authors: "Horn, A., Ostwald, D., Reisert, M., & Blankenburg, F."
+    year: 2014
+    title: "The structural–functional connectome and the default mode network of the human brain"
+    journal: "NeuroImage"
+    volume: "102"
+    pages: "142–151"
+    doi: "10.1016/j.neuroimage.2013.09.069"
+
+  schonecker2015:
+    short: "Schönecker 2015"
+    group: origins
+    authors: "Schönecker, T., Gruber, D., Kivi, A., Müller, B., Lobsien, E., Schneider, G.-H., et al."
+    year: 2015
+    title: "Postoperative MRI localisation of electrodes and clinical efficacy of pallidal deep brain stimulation in cervical dystonia"
+    journal: "Journal of Neurology, Neurosurgery & Psychiatry"
+    volume: "86"
+    issue: "8"
+    pages: "833–839"
+    doi: "10.1136/jnnp-2014-308159"
+
+  schonecker2009:
+    short: "Schönecker 2009"
+    group: origins
+    authors: "Schönecker, T., Kupsch, A., Kühn, A. A., Schneider, G.-H., & Hoffmann, K.-T."
+    year: 2009
+    title: "Automated optimization of subcortical cerebral MR imaging–atlas coregistration for improved postoperative electrode localization in deep brain stimulation"
+    journal: "American Journal of Neuroradiology"
+    volume: "30"
+    issue: "10"
+    pages: "1914–1921"
+    doi: "10.3174/ajnr.A1741"

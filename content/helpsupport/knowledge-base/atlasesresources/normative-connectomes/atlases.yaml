@@ -1,0 +1,107 @@
+# The normative connectomes on this page, shown by the shortcodes atlas-index and atlas-group, built like
+# the atlas catalogues (see the comment at the top of ../atlases-2/atlases.yaml for the fields).
+groups:
+- id: structural
+  title: Structural
+  intro: Average tractography of many subjects' diffusion MRI.
+- id: functional
+  title: Functional
+  intro: Average resting-state fMRI connectivity of many subjects.
+atlases:
+- id: group-connectome-2013
+  group: structural
+  name: Group connectome 2013
+  ref: Horn 2013
+  covers: 19 healthy subjects · Gibbs tracker
+  about: Gibbs tracking in 19 healthy subjects; the first connectome of this series.
+  get:
+  - '[Version 1.0 from lead-dbs.org](https://www.lead-dbs.org/release/download.php?id=group2013)'
+  cite:
+  - '[Horn 2013](https://www.ncbi.nlm.nih.gov/pubmed/24099851)'
+- id: nki-rs-group-connectome
+  group: structural
+  name: NKI-RS group connectome
+  ref: Horn 2016
+  covers: 169 NKI-RS subjects · Gibbs tracker
+  about: A larger cohort that replicated and validated the use of normative connectomes.
+  get:
+  - '[Version 1.0 from lead-dbs.org](https://www.lead-dbs.org/release/download.php?id=group2016)'
+  - '[Gibbs connectome on NITRC](https://www.nitrc.org/projects/gibbsconnectome/)'
+  cite:
+  - '[Horn 2016](https://www.ncbi.nlm.nih.gov/pubmed/26327244)'
+- id: hcp-mgh-usc-group-connectome
+  group: structural
+  name: HCP MGH-USC group connectome
+  ref: Horn 2017
+  covers: 32 adult diffusion subjects of the MGH-USC HCP · GQI fibre tracking
+  about: From the high-quality multishell diffusion data of the Human Connectome Project's MGH-USC adult diffusion study ([Setsompop 2013](https://doi.org/10.1016/j.neuroimage.2013.05.078)).
+  get:
+  - '[Version 1.2 from lead-dbs.org](https://www.lead-dbs.org/release/download.php?id=group2017)'
+  - 'Older versions: [1.1](https://filedn.com/lsPIJ4ragTWjjmV6PvlDQLu/data/older_versions/groupconnectome_HCP_MGH_32fold_horn_2017_v1.1.zip), [1.0](https://filedn.com/lsPIJ4ragTWjjmV6PvlDQLu/data/older_versions/groupconnectome_HCP_MGH_30fold_horn_2017_v1.0.zip)'
+  cite:
+  - '[Horn 2017](https://www.ncbi.nlm.nih.gov/pubmed/28163141)'
+- id: ppmi-group-connectome
+  group: structural
+  name: PPMI group connectome
+  ref: Ewert 2017
+  covers: 85 patients with Parkinson's disease (PPMI) · GQI fibre tracking
+  about: From patients with Parkinson's disease of the PPMI ([Marek 2011](https://doi.org/10.1016/j.pneurobio.2011.09.005)).
+  get:
+  - '[Version 1.1 from lead-dbs.org](https://www.lead-dbs.org/release/download.php?id=group2017_ppmi)'
+  - 'Older version: [1.0](https://filedn.com/lsPIJ4ragTWjjmV6PvlDQLu/data/older_versions/groupconnectome_ppmi_90_ewert_2017_v1.0.zip)'
+  cite:
+  - '[Ewert 2017](https://www.ncbi.nlm.nih.gov/pubmed/28536045)'
+- id: dtor-985
+  group: structural
+  name: dTOR-985
+  ref: Elias 2024
+  covers: 985 HCP subjects · GQI fibre tracking
+  about: The largest structural connectome here, in three sizes; scripts and data are on FigShare.
+  get:
+  - 'From lead-dbs.org: [quarter](https://www.lead-dbs.org/release/download.php?id=dTOR985_Quarter), [half](https://www.lead-dbs.org/release/download.php?id=dTOR985_Half) or [full](https://www.lead-dbs.org/release/download.php?id=dTOR985_Full) version'
+  - '[Scripts and data on FigShare](https://doi.org/10.6084/m9.figshare.c.6844890.v1)'
+  cite:
+  - '[Elias 2024](https://doi.org/10.1038/s41597-024-03197-0)'
+- id: gsp-1000
+  group: functional
+  name: GSP 1000 v2
+  ref: Cohen 2023
+  covers: 1000 healthy subjects of the GSP · resting-state fMRI
+  about: |-
+    Resting-state fMRI of 1000 healthy subjects of the [Brain Genomics Superstruct Project](https://www.neuroinfo.org/gsp/), preprocessed by Bassam Al-Fatly. It can be used directly for network mapping in Lead-DBS (Lead Mapper and the NetworkMapping Explorer).
+
+    **To install it:** download and extract all **\*.tar** files from the Harvard Dataverse repository, rename the extracted connectome folder to **GSP 1000 v2 (Cohen 2023)**, then download **dataset_info.json**, **dataset_info.mat** and **dataset_volsurf.mat** from the same repository and place them into the renamed folder.
+  get:
+  - '[Harvard Dataverse](https://doi.org/10.7910/DVN/KKTJQC)'
+  cite:
+  - '[Cohen 2023](https://doi.org/10.7910/DVN/KKTJQC)'
+- id: ppmi-functional-connectome
+  group: functional
+  name: PPMI functional connectome
+  ref: Horn 2017
+  covers: 74 patients with Parkinson's disease and 15 controls (PPMI) · resting-state fMRI
+  about: From patients with Parkinson's disease and controls of the PPMI ([Marek 2011](https://doi.org/10.1016/j.pneurobio.2011.09.005)).
+  get:
+  - '[Version 1.0 from lead-dbs.org](https://www.lead-dbs.org/release/download.php?id=fgroup2017_ppmi)'
+  cite:
+  - '[Horn 2017](https://doi.org/10.1002/ana.24974)'
+- id: toronto-pd-connectome
+  group: functional
+  name: Toronto PD connectome
+  ref: Horn 2017
+  covers: 75 patients with Parkinson's disease, Toronto · resting-state fMRI
+  about: From patients with Parkinson's disease in Toronto ([description on Zenodo](https://doi.org/10.5281/zenodo.4310182)).
+  get:
+  - '[Version 1.0 from lead-dbs.org](https://www.lead-dbs.org/release/download.php?id=TorPD)'
+  cite:
+  - '[Horn 2017](https://doi.org/10.1002/ana.24974)'
+- id: paediatric-connectome
+  group: functional
+  name: Paediatric connectome
+  ref: Al-Fatly 2023
+  covers: 100 typically developing children, 6–18 years · resting-state fMRI, paediatric MNI space
+  about: Assembled from the [NYU 2](http://fcon_1000.projects.nitrc.org/indi/CoRR/html/nyu_2.html) sub-cohort of the [Consortium for Reliability and Reproducibility](http://fcon_1000.projects.nitrc.org/indi/CoRR/html/index.html), preprocessed with SPM, FSL and Lead-DBS, and normalized to the [paediatric MNI space](https://nist.mni.mcgill.ca/pediatric-atlases-4-5-18-5y/). For data normalized to that space.
+  get:
+  - '[Download from lead-dbs.org](https://www.lead-dbs.org/release/download.php?id=PedrsfMRI)'
+  cite:
+  - '[Al-Fatly 2023](https://doi.org/10.1016/j.nicl.2023.103449)'

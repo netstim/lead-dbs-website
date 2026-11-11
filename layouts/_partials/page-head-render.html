@@ -1,16 +1,23 @@
 {{- /* The render behind an inner page's title: black ground like the home page's hero, faint, on the
-       right, cut to its subject (focus: the object-position kept in the crop). Each part of the site has
-       its own scene, so a visitor does not meet the same picture on every page. Decorative (alt="");
-       WebP copies made by Hugo (1800 px wide too where the source is, for wide retina screens). */ -}}
+       right, cut to its subject (focus: the object-position kept in the crop). Each group of the main
+       menu has its own scene, chosen by the group the page belongs to (partial nav-place.html, the same
+       place the breadcrumb shows), not by its folder, and no scene is used by two groups. Pages in no
+       group (imprint, privacy, search, 404) share the last one. The key is the group's menu identifier,
+       or its name where it has none. Decorative (alt=""); WebP copies made by Hugo (1800 px wide too
+       where the source is, for wide retina screens). */ -}}
 {{- $scenes := dict
-    "helpsupport" (dict "file" "fiber-filtering-wide.jpg" "focus" "50% 45%")
-    "community"   (dict "file" "pathway-activation-2.jpg" "focus" "50% 40%")
-    "news"        (dict "file" "pathway-activation-2.jpg" "focus" "50% 40%")
-    "events"      (dict "file" "pathway-activation-2.jpg" "focus" "50% 40%")
-    "about"       (dict "file" "cohort-hero.jpg" "focus" "62% 52%")
-    "develop"     (dict "file" "cohort-hero.jpg" "focus" "62% 52%")
+    "features"  (dict "file" "head-features.jpg" "focus" "70% 55%")
+    "docs"      (dict "file" "head-docs.jpg" "focus" "74% 50%")
+    "data"      (dict "file" "head-data.jpg" "focus" "68% 55%")
+    "community" (dict "file" "head-community.jpg" "focus" "68% 62%")
+    "News"      (dict "file" "lead-closeup.jpg" "focus" "50% 55%")
+    "about"     (dict "file" "head-about.jpg" "focus" "70% 55%")
+    "Download"  (dict "file" "cohort-front.jpg" "focus" "50% 60%")
 -}}
-{{- $scene := index $scenes (.Section | default "") | default (dict "file" "cohort-black.jpg" "focus" "50% 72%") -}}
+{{- $other := dict "file" "cohort-top.jpg" "focus" "50% 50%" -}}
+{{- $group := (partial "nav-place.html" .).group -}}
+{{- $scene := $other -}}
+{{- with $group }}{{ $scene = index $scenes (.Identifier | default .Name) | default $other }}{{ end -}}
 {{- with resources.Get (printf "images/renders/%s" $scene.file) -}}
 {{- $s := .Resize "640x webp q70" }}{{ $m := .Resize "1200x webp q70" -}}
 {{- $set := printf "%s 640w, %s 1200w" $s.RelPermalink $m.RelPermalink -}}

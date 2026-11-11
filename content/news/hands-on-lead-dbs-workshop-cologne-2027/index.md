@@ -1,7 +1,7 @@
 ---
 title: "Save the date: Hands-on Lead-DBS Workshop, 11–12 February 2027"
 description: "Hands-on Lead-DBS Workshop, 11–12 February 2027, Cologne: be among the first to try Lead-DBS 4.0. Details and registration will follow."
-htmlTitle: "Save the date: Hands-on Lead-DBS Workshop, February 2027"
+htmlTitle: "Save the date: hands-on workshop, February 2027"
 date: 2026-11-10
 slug: "hands-on-lead-dbs-workshop-cologne-2027"
 image: "workshop-2027-flyer.png"

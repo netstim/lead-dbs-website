@@ -5,6 +5,12 @@ enableRobotsTXT = true
 # Old WordPress URLs end in a slash; keep them identical so links in papers keep working.
 uglyURLs = false
 disableKinds = ["taxonomy", "term"]
+# A page's last-modified date (sitemap, JSON-LD, the "updated" line of a background article): its front
+# matter lastmod when it has one, otherwise the date of the last commit that changed its file, so it is
+# never the build day. The Pages workflow checks out the full history for this.
+enableGitInfo = true
+[frontmatter]
+  lastmod = ["lastmod", ":git", "modified", "date", "publishDate"]
 
 # Files of a page (images, PDFs) are published only when a template or the Markdown uses them
 # (a picture shown resized does not ship its unused original twice).
@@ -72,33 +78,84 @@ disableKinds = ["taxonomy", "term"]
   # not the folders (layouts/_partials/nav-place.html). A page that is not in the menu belongs to the
   # entry of its nearest folder that is, or to the page named by its front matter "menuParent".
   [[menus.main]]
+    name = "Features"
+    pageRef = "/helpsupport/knowledge-base/lead-dbs-methods"
+    identifier = "features"
+    weight = 1
+  [[menus.main]]
     name = "Docs and help"
     pageRef = "/helpsupport"
     identifier = "docs"
-    weight = 1
+    weight = 2
   [[menus.main]]
     name = "Atlases and data"
     pageRef = "/helpsupport/knowledge-base/atlasesresources"
     identifier = "data"
-    weight = 2
+    weight = 3
   [[menus.main]]
     name = "Community"
     pageRef = "/community"
     identifier = "community"
-    weight = 3
+    weight = 4
   [[menus.main]]
     name = "News"
     pageRef = "/news"
-    weight = 4
+    weight = 5
   [[menus.main]]
     name = "About"
     pageRef = "/about"
     identifier = "about"
-    weight = 5
+    weight = 6
   [[menus.main]]
     name = "Download"
     pageRef = "/download"
+    weight = 7
+
+  # Features: what the software does. The group's own page is the overview: every capability as a row
+  # with a picture, its manual chapter and paper, grouped by single patients, groups of patients and the
+  # operating theatre, then the tools (Lead Group, Lead Connectome, OSS-DBS, Lead Tutor; the "Tools"
+  # entry). Under it Lead-OR and the figures made with Lead-DBS; after a captioned line
+  # (params.divider), the three method articles.
+  [[menus.main]]
+    parent = "features"
+    name = "Overview"
+    pageRef = "/helpsupport/knowledge-base/lead-dbs-methods"
+    weight = 1
+  [[menus.main]]
+    parent = "features"
+    name = "Tools"
+    url = "/helpsupport/knowledge-base/lead-dbs-methods/#tools"
+    weight = 2
+    [menus.main.params]
+      description = "Lead Group, Lead Connectome, OSS-DBS and Lead Tutor: what each is for, its manual chapter and its paper."
+  [[menus.main]]
+    parent = "features"
+    name = "Lead-OR"
+    pageRef = "/about/lead-or"
+    weight = 4
+  [[menus.main]]
+    parent = "features"
+    name = "Made with Lead-DBS"
+    pageRef = "/gallery"
+    weight = 5
+  [[menus.main]]
+    parent = "features"
+    name = "DBS network mapping"
+    pageRef = "/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping"
     weight = 6
+    [menus.main.params]
+      # a line above the entry, with this caption over the entries from here on
+      divider = "Method articles"
+  [[menus.main]]
+    parent = "features"
+    name = "Electrophysiology mapping"
+    pageRef = "/helpsupport/knowledge-base/lead-dbs-methods/subcortical-electrophysiology-mapping-sem"
+    weight = 7
+  [[menus.main]]
+    parent = "features"
+    name = "AC/PC to MNI conversion"
+    pageRef = "/helpsupport/knowledge-base/lead-dbs-methods/acpc-to-mni-conversion-2"
+    weight = 8
 
   # Docs and help: the documentation (the manual is on another site) and the one list of where to ask
   # (/helpsupport/#get-help; the contact page sits under it through its front matter menuParent)
@@ -117,6 +174,8 @@ disableKinds = ["taxonomy", "term"]
       description = "The documentation of Lead-DBS: installation, every step of an analysis, and the tools, on the manual's own site."
       # words the site search finds it by
       keywords = "documentation docs manual handbook guide installation install how to"
+      # the picture of its card on the Docs and help page (a render under assets/)
+      image = "images/renders/cohort-top.jpg"
   [[menus.main]]
     parent = "docs"
     name = "Lead Tutor"
@@ -129,19 +188,14 @@ disableKinds = ["taxonomy", "term"]
     weight = 4
   [[menus.main]]
     parent = "docs"
-    name = "Methods"
-    pageRef = "/helpsupport/knowledge-base/lead-dbs-methods"
-    weight = 5
-  [[menus.main]]
-    parent = "docs"
     name = "Get help"
     url = "/helpsupport/#get-help"
     weight = 6
     [menus.main.params]
       description = "Where to ask: the user Slack for questions, GitHub for bugs, the contact form for anything else."
 
-  # Atlases and data: the catalogues first, then the atlases made for Lead-DBS as a small group of
-  # their own
+  # Atlases and data: the three catalogues, then (after a captioned line: params.divider) the two
+  # atlases the Lead-DBS team made
   [[menus.main]]
     parent = "data"
     name = "Subcortical atlases"
@@ -159,20 +213,16 @@ disableKinds = ["taxonomy", "term"]
     weight = 3
   [[menus.main]]
     parent = "data"
-    name = "Atlases by the Lead-DBS team"
-    identifier = "builtfor"
-    url = "/helpsupport/knowledge-base/atlasesresources/#built-for-lead-dbs"
-    weight = 4
-  [[menus.main]]
-    parent = "builtfor"
     name = "DISTAL atlas"
     pageRef = "/helpsupport/knowledge-base/atlasesresources/distal-atlas"
-    weight = 1
+    weight = 4
+    [menus.main.params]
+      divider = "By the Lead-DBS team"
   [[menus.main]]
-    parent = "builtfor"
+    parent = "data"
     name = "FOCUS atlas"
     pageRef = "/helpsupport/knowledge-base/atlasesresources/focus-atlas"
-    weight = 2
+    weight = 5
 
   # Community (the past workshops sit under Events: front matter menuParent)
   [[menus.main]]
@@ -196,7 +246,7 @@ disableKinds = ["taxonomy", "term"]
     pageRef = "/subscribe-to-our-newsletter"
     weight = 4
 
-  # About; "Lead tools" (a page of its own, /about/tools/) holds Lead-OR, which has a page too
+  # About: who makes Lead-DBS, how to cite it, its papers
   [[menus.main]]
     parent = "about"
     name = "Cite Lead-DBS"
@@ -209,25 +259,9 @@ disableKinds = ["taxonomy", "term"]
     weight = 2
   [[menus.main]]
     parent = "about"
-    name = "Made with Lead-DBS"
-    pageRef = "/gallery"
-    weight = 3
-  [[menus.main]]
-    parent = "about"
     name = "Contributors"
     pageRef = "/about/team"
-    weight = 4
-  [[menus.main]]
-    parent = "about"
-    name = "Lead tools"
-    identifier = "tools"
-    pageRef = "/about/tools"
-    weight = 5
-  [[menus.main]]
-    parent = "tools"
-    name = "Lead-OR"
-    pageRef = "/about/lead-or"
-    weight = 1
+    weight = 3
 
   # The footer's legal line; Contact is also listed under "Get help"
   [[menus.footer]]

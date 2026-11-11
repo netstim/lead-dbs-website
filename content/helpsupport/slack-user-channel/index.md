@@ -5,6 +5,13 @@ weight: 4
 date: "2017-01-04T21:29:10"
 lastmod: "2026-11-10"
 keywords: ["slack", "chat", "question", "help", "support", "community"]
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - {name: "Get help", url: "/helpsupport/#get-help"}
+  - "/events/developer-meeting/"
+  - "/contact/"
+# the picture shown when the page is shared (head.html)
+share: "images/renders/head-community.jpg"
 ---
 
 The Lead-DBS user Slack provides fast and uncomplicated help from users to users. Members of the development team read along and help where they can. If you have not used Slack before: it works like a group chat, in the browser or with the [Slack apps](https://slack.com/downloads) for desktop and phone.

@@ -4,19 +4,24 @@
 {{- with strings.TrimSpace .Description }}{{ $desc = . }}{{ else }}{{ with .Summary | replaceRE ` ?\(open the full-size image\)` "" | plainify | htmlUnescape | strings.TrimSpace }}{{ $desc = . | replaceRE `\s+` " " | truncate 154 }}{{ end }}{{ end -}}
 {{- if eq .Kind "404" }}{{ $desc = "This address is not on lead-dbs.org: search the site, or start from its main sections." }}{{ end -}}
 {{- if not $desc }}{{ $desc = site.Params.description }}{{ end -}}
-{{- /* The browser title: "Page – Lead-DBS"; a title that names Lead-DBS already, or a long one, goes
-       without the suffix, so search results show the words that matter. A page whose title is too long
-       for a search result (over about 60 characters) sets a shorter htmlTitle in its front matter. */ -}}
+{{- /* The browser title, on every page: "Page – Lead-DBS" (the home page: its headline – Lead-DBS); a name
+       that ends in "Lead-DBS" ("Cite Lead-DBS", "Made with Lead-DBS") stands alone. A page whose title is
+       too long for a search result (over about 45 characters), or names Lead-DBS in the middle, sets a
+       shorter htmlTitle in its front matter ("Version 3.1 released" for "Lead-DBS 3.1 released"). */ -}}
 {{- $title := .Params.htmlTitle | default .Title -}}
-{{- if .IsHome }}{{ $title = printf "%s: %s" site.Title (.Params.hero.title | default "") -}}
+{{- if .IsHome }}{{ $title = .Params.hero.title | default site.Params.description -}}
 {{- end -}}
 {{- /* the pages of the news list after the first: "News, page 2" (layouts/news/list.html uses the same paginator) */ -}}
-{{- if and (eq .Kind "section") (eq .Section "news") }}{{ with .Paginator }}{{ if gt .PageNumber 1 }}{{ $title = printf "%s, page %d" $title .PageNumber }}{{ $desc = printf "%s Page %d of %d." $desc .PageNumber .TotalPages }}{{ end }}{{ end }}{{ end -}}
-{{- if and (not .IsHome) (not (strings.Contains (lower $title) "lead-dbs")) (le (len $title) 48) }}{{ $title = printf "%s – %s" $title site.Title }}{{ end }}
+{{- $rel := .RelPermalink -}}
+{{- if and (eq .Kind "section") (eq .Section "news") }}{{ with .Paginator }}{{ if gt .PageNumber 1 }}{{ $title = printf "%s, page %d" $title .PageNumber }}{{ $desc = printf "%s Page %d of %d." $desc .PageNumber .TotalPages }}{{ $rel = .URL }}{{ end }}{{ end }}{{ end -}}
+{{- if not (strings.HasSuffix $title site.Title) }}{{ $title = printf "%s – %s" $title site.Title }}{{ end }}
 <title>{{ $title }}</title>
 <meta name="description" content="{{ $desc }}">
-{{- $canonical := .Permalink -}}
-{{- if site.Params.preview }}{{ $canonical = printf "%s%s" (strings.TrimSuffix "/" site.Params.liveSite) (.RelPermalink | strings.TrimPrefix (urls.Parse site.BaseURL).Path | printf "/%s") }}{{ end }}
+{{- /* the canonical address: the page's own (a later page of the news list is its own page, not page 1);
+       a preview deployment points it at the live site */ -}}
+{{- $base := urls.Parse site.BaseURL -}}
+{{- $canonical := $rel -}}{{- with $base.Host }}{{ $canonical = printf "%s://%s%s" $base.Scheme . $rel }}{{ end -}}
+{{- if site.Params.preview }}{{ $canonical = printf "%s%s" (strings.TrimSuffix "/" site.Params.liveSite) ($rel | strings.TrimPrefix $base.Path | printf "/%s") }}{{ end }}
 {{ if site.Params.preview }}
 <meta name="robots" content="noindex, nofollow">
 {{ else if or (eq .Params.search false) (eq .Params.robots "noindex") (eq .Kind "404") }}
@@ -49,13 +54,15 @@
 <link rel="icon" href="{{ "images/favicon-192x192.png" | relURL }}" sizes="192x192">
 <link rel="apple-touch-icon" href="{{ "images/favicon-180x180.png" | relURL }}">
 <link rel="preload" href="{{ "fonts/open-sans-latin-400.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="{{ "fonts/open-sans-latin-600.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ "fonts/open-sans-latin-700.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 {{- /* one stylesheet: assets/css/base.css (tokens, grid, buttons, links, forms), then assets/css/site.css
      (palette, fonts, header, pages, footer), then assets/css/content.css (content building blocks); see README, Design */}}
 {{ $site := resources.Get "css/site.css" | resources.ExecuteAsTemplate "css/site.css" . }}
 {{ $css := slice (resources.Get "css/base.css") $site (resources.Get "css/content.css") | resources.Concat "css/style.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
-{{- /* the home hero's entrance waits for assets/js/main.js; after 700ms the style sheet shows the hero without it */}}
-<script>document.documentElement.classList.add('hero-wait');setTimeout(()=>document.documentElement.classList.add('hero-late'),700)</script>
+{{- /* "js": script runs, so the phone menu is a button (without it, a link that opens the menu as a target,
+     assets/css/content.css). The home hero's entrance waits for assets/js/main.js; after 700ms the style
+     sheet shows the hero without it. */}}
+<script>document.documentElement.classList.add('js','hero-wait');setTimeout(()=>document.documentElement.classList.add('hero-late'),700)</script>
 {{- /* without script a <video> shows its own controls: the hero clip is a still picture then */}}
 <noscript><style>.hero__bg{pointer-events:none}.hero__bg::-webkit-media-controls{display:none!important}</style></noscript>

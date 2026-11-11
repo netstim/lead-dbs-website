@@ -1,0 +1,11 @@
+{{- /* A paper from data/papers.yaml, so each paper is written once.
+         {{< paper ewert2019 >}}         a link with its short name: "Ewert 2019"
+         {{< paper ewert2019 "full" >}}  the full reference with its DOI link */ -}}
+{{- $id := .Get 0 -}}
+{{- $p := index hugo.Data.papers.papers $id -}}
+{{- if not $p }}{{ errorf "paper shortcode: no paper %q in data/papers.yaml (%s)" $id .Page.File.Path }}{{ end -}}
+{{- if eq (.Get 1) "full" -}}
+{{- partial "paper/full.html" $p -}}
+{{- else -}}
+<a href="https://doi.org/{{ $p.doi }}">{{ $p.short }}</a>{{ with $p.note }} ({{ . }}){{ end }}
+{{- end -}}

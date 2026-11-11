@@ -1,5 +1,6 @@
 {{- /* Structured data (JSON-LD) for search engines: the software on the home and download pages, the
-       upcoming events (data/events.yaml) on /events/, and an article for each news post. */ -}}
+       upcoming events (data/events.yaml) on /events/, an article for each news post, and on every inner
+       page its breadcrumb trail. */ -}}
 {{- $r := hugo.Data.release -}}
 {{- $org := dict "@type" "Organization" "name" "Institute for Network Stimulation, University Hospital Cologne" "url" "https://www.netstim.org" -}}
 {{- $logo := "" }}{{ with resources.Get "logo/logo.png" }}{{ $logo = .Permalink }}{{ end -}}
@@ -61,6 +62,16 @@
       "publisher" (merge $org (dict "logo" (dict "@type" "ImageObject" "url" $logo))) -}}
   {{- with .Params.image }}{{ with $.Resources.GetMatch . }}{{ if and (eq .ResourceType "image") (in (slice "jpeg" "png" "webp") .MediaType.SubType) }}{{ $a = merge $a (dict "image" (.Resize "1200x jpg q82").Permalink) }}{{ end }}{{ end }}{{ end -}}
   {{- $out = $out | append $a -}}
+{{- end -}}
+
+{{- /* where the page sits: the visible breadcrumb's trail (partial crumbs.html), on every inner page */ -}}
+{{- if and (not .IsHome) (in (slice "page" "section") .Kind) (ne .Layout "redirect") -}}
+  {{- $items := slice -}}
+  {{- range $i, $c := partial "crumbs.html" . -}}
+    {{- $url := cond (ne $c.page nil) $c.page.Permalink (printf "%s%s" (strings.TrimSuffix "/" site.Home.Permalink | replaceRE `^(https?://[^/]+).*$` "$1") $c.url) -}}
+    {{- $items = $items | append (dict "@type" "ListItem" "position" (add $i 1) "name" $c.name "item" $url) -}}
+  {{- end -}}
+  {{- $out = $out | append (dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $items) -}}
 {{- end -}}
 
 {{- range $out }}

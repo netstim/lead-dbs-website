@@ -2,6 +2,10 @@
 title: "Imprint"
 date: "2020-02-06T17:27:36"
 lastmod: "2022-04-18T14:27:06"
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - "/privacy-policy/"
+  - "/contact/"
 ---
 
 Name

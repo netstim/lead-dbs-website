@@ -33,7 +33,7 @@ events:
     also_in: "America/New_York"
     where: "Online (Zoom)"
     online: true
-    text: "Open to anyone who wants to contribute to Lead-DBS or learn about its ongoing development. The meetings are planned monthly; further dates are not set yet."
+    text: "Monthly, online and open to anyone who wants to contribute or follow the development."
     # Zoom's registration page: people leave their e-mail address and Zoom sends them the link
     register_url: "https://uni-koeln.zoom.us/meeting/register/UiZRfHxiRHyyxCMEM0iSPg"
     links:

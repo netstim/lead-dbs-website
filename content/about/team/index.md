@@ -1,11 +1,20 @@
 ---
 title: "Contributors to Lead-DBS"
+# the browser title (head.html adds " – Lead-DBS")
+htmlTitle: "Contributors"
 linkTitle: "Contributors"
 description: "The people who build Lead-DBS: core and feature development, code, atlases and data, and testing; and who coordinates it today."
 date: "2014-06-17T15:06:49"
 lastmod: "2026-11-11"
 weight: 4
 keywords: ["team", "people", "developers", "contributors", "authors"]
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - "/develop/"
+  - "/events/developer-meeting/"
+  - "/about/publications/"
+# the picture shown when the page is shared (head.html)
+share: "images/renders/head-about.jpg"
 ---
 
 Lead-DBS is coordinated today by the [Institute for Network Stimulation](https://www.netstim.org) at the

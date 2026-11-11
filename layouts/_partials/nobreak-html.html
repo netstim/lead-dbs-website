@@ -5,7 +5,7 @@
          {{ partial "nobreak-html.html" .Content }}
        Returns HTML. */ -}}
 {{- $html := string . -}}
-{{- $re := `\b(Lead|LEAD)-DBS\b` -}}
+{{- $re := `\b(Lead|LEAD|OSS)-DBS\b` -}}
 {{- $wrap := `<span class="nowrap">$1-DBS</span>` -}}
 {{- if not (findRE $re $html 1) -}}
   {{- return ($html | safeHTML) -}}
@@ -24,7 +24,8 @@
   {{- $text := delimit (after 1 $bits) ">" -}}
   {{- $name := lower (replaceRE `^/?([A-Za-z0-9]*).*$` "$1" $tag) -}}
   {{- if in (slice "script" "style" "textarea") $name }}{{ $skip = not (hasPrefix $tag "/") }}{{ end -}}
-  {{- if and (not $skip) (gt (len $bits) 1) }}{{ $text = replaceRE $re $wrap $text }}{{ end -}}
+  {{- /* text that is already wrapped (a heading inside rendered content) stays as it is */ -}}
+  {{- if and (not $skip) (gt (len $bits) 1) (ne $tag `span class="nowrap"`) }}{{ $text = replaceRE $re $wrap $text }}{{ end -}}
   {{- if gt (len $bits) 1 }}{{ $out = $out | append (printf "<%s>%s" $tag $text) }}{{ else }}{{ $out = $out | append (printf "<%s" $tag) }}{{ end -}}
 {{- end -}}
 {{- return (delimit $out "" | safeHTML) -}}

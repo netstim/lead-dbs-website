@@ -7,10 +7,11 @@
 - {version: "3.2", date: 2025-02-28, notes: "/lead-dbs-3-2-out-now/", summary: "Lead Tutor; Morel, updated THOMAS, PD non-motor tract and Von Economo–Koskinas atlases"}
 - {version: "3.1", date: 2024-02-13, notes: "/lead-dbs-3-1-out-now/", summary: "OSS-DBS v2 integrated; WarpDrive updates; built-in Python environment"}
 - {version: "3.0.1", date: 2023-12-20}
-- {version: "3.0", date: 2023-08-17, notes: "/lead-dbs-3-0-out-now/"}
-- {version: "2.6", date: 2022-02-24, notes: "https://www.lead-dbs.org/?na=view&id=26"}
-- {version: "2.5", date: 2021-01-08, notes: "/lead-dbs-v2-5-out-now/"}
+- {version: "3.0", date: 2023-08-17, notes: "/lead-dbs-3-0-out-now/", summary: "Projects in the BIDS format; sweetspot, fibre filtering and network mapping explorers; WarpDrive; OSS-DBS"}
+- {version: "2.6", date: 2022-02-24, notes: "/lead-dbs-v2-6-out-now/", summary: "Many more electrode models; six new atlases; the last release before the move to BIDS"}
+- {version: "2.5", date: 2021-01-08, notes: "/lead-dbs-v2-5-out-now/", summary: "Three tools to map DBS effects on a group level; unilateral leads; new atlases"}
 - {version: "2.3", date: 2020-01-24}
 - {version: "2.2", date: 2019-02-23}
 - {version: "2.1", tag: "v2.1.0", date: 2018-02-09}
 - {version: "2.0", date: 2017-09-09, notes: "/lead-dbs-v2-0-is-out-now/"}
+- {version: "1.4", tag: "v1.4.0", date: 2015-11-01, summary: "Any lead design, including directional leads; more robust MRI–CT coregistration (BRAINSFit); connectivity in the 3D viewer"}

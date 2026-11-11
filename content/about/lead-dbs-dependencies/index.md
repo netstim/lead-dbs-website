@@ -1,5 +1,7 @@
 ---
 title: "Lead-DBS dependencies"
+# the browser title (head.html adds " – Lead-DBS")
+htmlTitle: "Dependencies"
 description: "The open-source tools Lead-DBS builds on, from SPM and ANTs to OSS-DBS v1 and v2, and the papers to cite for them."
 date: "2016-06-13T16:26:54"
 lastmod: "2026-11-11"
@@ -7,6 +9,13 @@ weight: 7
 menuParent: "/about/citing_leaddbs"
 # the old "portfolio" of software Lead-DBS works with
 aliases: ["/portfolio-item/spm/", "/portfolio-item/dtifibertools/", "/portfolio-item/132/", "/portfolio_entries/interfaces/"]
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - "/develop/"
+  - {name: "OSS-DBS in Lead-DBS", url: "/helpsupport/knowledge-base/lead-dbs-methods/#oss-dbs"}
+  - "/about/publications/"
+# the picture shown when the page is shared (head.html)
+share: "images/renders/head-about.jpg"
 ---
 
 Lead-DBS brings together some of the best open-source neuroimaging tools and adds code of its own
@@ -59,11 +68,12 @@ and on the original method (in the table below).
 | fMRI processing | Resting-State fMRI Data Analysis Toolkit  (used for band-pass filtering) | [restfmri.net](http://restfmri.net/forum/index.php?q=rest) | Song, X.-W., Dong, Z.-Y., Long, X.-Y., Li, S.-F., Zuo, X.-N., Zhu, C.-Z., et al. (2011). REST: A Toolkit for Resting-State Functional Magnetic Resonance Imaging Data Processing. PLoS ONE, 6(9), e25031. [doi:10.1371/journal.pone.0025031](https://doi.org/10.1371/journal.pone.0025031) |
 | Coordinate transposition | map_coords.m, resize_img.m |  | Ged Ridgway |
 | Normalizing Values / Generalized Linear Modeling | normal.m | [scholar.google.com](https://scholar.google.com/citations?user=pdpt9EMAAAAJ) | van Albada, S. J., & Robinson, P. A. (2007). Transformation of arbitrary distributions to the normal distribution with application to EEG test-retest reliability. Journal of Neuroscience Methods, 161(2), 205–211. [doi:10.1016/j.jneumeth.2006.11.004](https://doi.org/10.1016/j.jneumeth.2006.11.004) |
-| Stimulation modelling: electric field, volume of tissue activated, pathway activation (Lead-DBS 3.1 and later) | OSS-DBS v2 | [github.com/SFB-ELAINE/OSS-DBSv2](https://github.com/SFB-ELAINE/OSS-DBSv2) | Zimmermann, J., Payonk, J. P., Che, L. V., Schöberl, J., Dembek, T. A., Horn, A., van Rienen, U., & Butenko, K. (2026). OSS-DBS v2: Simulation platform for biophysical modelling of deep brain stimulation. *medRxiv* (preprint). [doi:10.64898/2026.10.10.26365197](https://doi.org/10.64898/2026.10.10.26365197) |
-|  | OSS-DBS (v1) | [github.com/SFB-ELAINE/OSS-DBS](https://github.com/SFB-ELAINE/OSS-DBS) | Butenko, K., Bahls, C., Schröder, M., Köhling, R., & van Rienen, U. (2020). OSS-DBS: Open-source simulation platform for deep brain stimulation with a comprehensive automated modeling. *PLOS Computational Biology*, *16*(7), e1008023. [doi:10.1371/journal.pcbi.1008023](https://doi.org/10.1371/journal.pcbi.1008023) |
+| Stimulation modelling: electric field, volume of tissue activated, pathway activation (Lead-DBS 3.1 and later) | OSS-DBS v2 | [github.com/SFB-ELAINE/OSS-DBSv2](https://github.com/SFB-ELAINE/OSS-DBSv2) | {{< paper zimmermann2026 "full" >}} |
+|  | OSS-DBS (v1) | [github.com/SFB-ELAINE/OSS-DBS](https://github.com/SFB-ELAINE/OSS-DBS) | {{< paper butenko2020 "full" >}} |
 | Estimating the Volume of Activated Tissue (VAT) | SimBio (FEM-based field modeling) and FieldTrip (Mesh generation) toolboxes | [fieldtriptoolbox.org](http://fieldtriptoolbox.org/)  [mrt.uni-jena.de](https://www.mrt.uni-jena.de/simbio/index.php/Main_Page) | Oostenveld, R., Fries, P., Maris, E., & Schoffelen, J.-M. (2010). FieldTrip: Open Source Software for Advanced Analysis of MEG, EEG, and Invasive Electrophysiological Data. Computational Intelligence and Neuroscience, 2011(1), 1–9. [doi:10.1155/2011/156869](https://doi.org/10.1155/2011/156869)  Wolters, C. H., Anwander, A., & Tricoche, X. (2005). Influence of local and remote white matter conductivity anisotropy for a thalamic source on EEG/MEG field and return current computation. |
 | Network stats | Network based statistics (NBS) | [sites.google.com](https://sites.google.com/site/bctnet/comparison/nbs)  [nitrc.org](https://www.nitrc.org/projects/nbs/) | Zalesky, A., Fornito, A., & Bullmore, E. T. (2010). Network-based statistic: identifying differences in brain networks., 53(4), 1197–1207. [doi:10.1016/j.neuroimage.2010.06.041](https://doi.org/10.1016/j.neuroimage.2010.06.041) |
+{.table--stack caption="Software that Lead-DBS uses, with its papers"}
 
 ## Next
 
-How to cite Lead-DBS itself is on [Cite Lead-DBS](/about/citing_leaddbs/); how to get your own code or data into Lead-DBS is on the [data and code inclusion philosophy](/about/data-code-inclusion-philosophy/) page.
+How to cite Lead-DBS itself is on [Cite Lead-DBS](/about/citing_leaddbs/); how to get your own code or data into Lead-DBS is on [Develop Lead-DBS](/develop/#add-your-atlas-or-dataset).

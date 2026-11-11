@@ -1,5 +1,29 @@
+{{- /* A grid of small pictures that open large (the journal covers on Publications). Each line is a
+       Markdown picture that links to its full-size file:
+         {{% gallery %}}
+         [![Cover of NeuroImage, volume 150](cover-224x300.png)](cover-768x1030.png)
+         {{% /gallery %}}
+       The pictures are shown as WebP copies 240 and 480 px wide (one tile is about 160 to 230 px wide),
+       whatever the size of the file; any other line is rendered as Markdown. */ -}}
+{{- $p := .Page -}}
+{{- $tiles := slice }}{{ $rest := slice -}}
+{{- range split (strings.TrimSpace .Inner) "\n" -}}
+  {{- $line := strings.TrimSpace . -}}
+  {{- with findRESubmatch `^\[!\[([^\]]*)\]\(([^)\s]+)\)\]\(([^)\s]+)\)$` $line 1 -}}
+    {{- $m := index . 0 }}{{ $alt := index $m 1 }}{{ $src := index $m 2 }}{{ $full := index $m 3 -}}
+    {{- $r := $p.Resources.Get $src -}}
+    {{- if not $r }}{{ errorf "gallery: %s: no picture %q next to the page" $p.File.Path $src }}{{ end -}}
+    {{- if not $alt }}{{ errorf "gallery: %s: picture %q has no alt text" $p.File.Path $src }}{{ end -}}
+    {{- $href := $full }}{{ with $p.Resources.Get $full }}{{ $href = .RelPermalink }}{{ end -}}
+    {{- $set := slice }}{{ $fb := $r -}}
+    {{- range slice 240 480 }}{{ if lt . $r.Width }}{{ $x := $r.Resize (printf "%dx webp q80" .) }}{{ $set = $set | append (printf "%s %dw" $x.RelPermalink $x.Width) }}{{ if eq . 240 }}{{ $fb = $r.Resize "240x" }}{{ end }}{{ end }}{{ end -}}
+    {{- if le $r.Width 480 }}{{ $x := $r.Resize (printf "%dx webp q80" $r.Width) }}{{ $set = $set | append (printf "%s %dw" $x.RelPermalink $x.Width) }}{{ end -}}
+    {{- $tiles = $tiles | append (printf `<a href="%s"><picture><source type="image/webp" srcset="%s" sizes="(min-width: 640px) 230px, 50vw"><img src="%s" alt="%s" width="%d" height="%d" loading="lazy" decoding="async"></picture></a>` $href (delimit $set ", ") $fb.RelPermalink ($alt | htmlEscape) $fb.Width $fb.Height) -}}
+  {{- else -}}
+    {{- with $line }}{{ $rest = $rest | append . }}{{ end -}}
+  {{- end -}}
+{{- end -}}
 <div class="gallery">
-
-{{ .Inner }}
-
+{{ with $tiles }}<p>{{ delimit . "\n" | safeHTML }}</p>{{ end }}
+{{ with $rest }}{{ delimit . "\n" | $p.RenderString (dict "display" "block") }}{{ end }}
 </div>

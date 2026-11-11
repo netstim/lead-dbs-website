@@ -1,0 +1,5 @@
+{{- /* The row of data/releases.yaml whose announcement ("notes") is this page, or false. Argument: the page. */ -}}
+{{- $page := . -}}
+{{- $row := false -}}
+{{- range $r := hugo.Data.releases }}{{ with $r.notes }}{{ if eq (partial "resolve-url.html" (dict "url" . "page" $page)) $page.RelPermalink }}{{ $row = $r }}{{ end }}{{ end }}{{ end -}}
+{{- return $row -}}

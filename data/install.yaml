@@ -1,0 +1,15 @@
+# Installing Lead-DBS, printed on the download page (shortcodes {{< install "requirements" >}} and
+# {{< install "steps" >}}, at /download/#what-you-need and /download/#install; First steps links
+# there). The software requirements (MATLAB, toolboxes, SPM12, memory) come from data/release.yaml. Follows the manual's installation page,
+# https://netstim.gitbook.io/leaddbs/installation ("Normal installation"). Markdown works.
+
+# Printed after the software requirements.
+requirements_more:
+  - "**Disk space** for the zip file of about 11 GB and the unpacked folder."
+  - "**Your data:** postoperative (and, if available, preoperative) structural MRI, or postoperative CT together with preoperative MRI."
+
+steps:
+  - "Unzip Lead-DBS into your MATLAB toolbox folder, for example `Documents/MATLAB/toolbox` in your home folder. Avoid the MATLAB installation folder, folders that need administrator rights, and paths with spaces."
+  - "In MATLAB, add SPM12 to the search path: right-click the SPM12 folder and choose *Add to Path → Selected Folders* (not *and Subfolders*)."
+  - "Add Lead-DBS to the search path: right-click the Lead-DBS folder and choose *Add to Path → Selected Folders and Subfolders*."
+  - "Type `lead dbs` in the MATLAB Command Window: the Lead-DBS window opens."

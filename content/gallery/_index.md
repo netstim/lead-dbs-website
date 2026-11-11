@@ -44,4 +44,9 @@ keywords: ["gallery", "figures", "renders", "pictures", "images"]
 next: "Made a figure with Lead-DBS? [Tell us about it](/contact/). To make your own, [download Lead-DBS](/download/) and take the [first steps](/helpsupport/first-steps/); the papers behind the software are under [Publications](/about/publications/)."
 # the picture shown when the page is shared (head.html)
 share: "images/renders/lead-closeup.jpg"
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - "/about/publications/"
+  - "/helpsupport/knowledge-base/atlasesresources/distal-atlas/"
+  - "/download/"
 ---

@@ -13,9 +13,14 @@ keywords: ["workshop", "workshops", "archive", "Berlin", "Shanghai", "Hamburg", 
 toc: true
 # the picture shown when the page is shared (head.html)
 share: "foto_postcard-1030x728.png"
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - "/news/hands-on-lead-dbs-workshop-cologne-2027/"
+  - "/helpsupport/learn-lead-dbs-yourself/"
+  - "/helpsupport/knowledge-base/walkthrough-videos/"
 ---
 
-The next workshop, on 11–12 February 2027 in Cologne, and the monthly developer meetings are on the [events page](/events/).
+The next workshop and the developer meetings are on the [events page](/events/).
 
 ## Brisbane, February 2020 {#brisbane-2020}
 
@@ -25,13 +30,6 @@ The next workshop, on 11–12 February 2027 in Cologne, and the monthly develope
 ![Lead-DBS Workshop Brisbane 2020, 22–23 February: banner over the Brisbane skyline](flyer-2-1030x728.png)
 
 The workshop took place in Brisbane City at the [Customs House](https://customshouse.com.au/). It gave an overview of the Lead-DBS software and its applications in research, with interactive hands-on practice sessions. It covered precise electrode localizations, multispectral spatial normalization, brain shift correction and related topics. Participants were expected to have at least minimal experience with MATLAB and Lead-DBS.
-
-<details class="more">
-<summary>Places and fees in 2020</summary>
-
-Places were allocated on a first come, first served basis and limited to 25 seats. Registration fees were AUD $200 for students and PhD students, AUD $300 for postdocs and AUD $600 for faculty and industry. The cancellation policy was: full refund up to 8 weeks before the meeting (28 December 2019), 50% refund up to 4 weeks before (24 January 2020), no refund from 2 weeks before (8 February 2020).
-
-</details>
 
 ## Berlin, September 2019 {#berlin-2019}
 
@@ -43,20 +41,6 @@ Places were allocated on a first come, first served basis and limited to 25 seat
 It gave an overview of the Lead-DBS software and its applications in research, with interactive hands-on practice sessions. It covered precise electrode localizations, multispectral spatial normalization, brain shift correction and related topics. Participants were expected to have at least minimal experience with MATLAB and Lead-DBS.
 
 Directly afterwards, on 16–17 September, a [workshop on deep learning for intracranial neurophysiology](#deep-learning-2019) took place.
-
-<details class="more">
-<summary>Fees in 2019</summary>
-
-Registering for both workshops saved half the fee of one:
-
-| Participant | One workshop (Lead-DBS or deep learning) | Both workshops |
-|---|---|---|
-| Students and PhD students | 70 € | 105 € |
-| Postdocs | 250 € | 375 € |
-| Faculty and industry | 350 € | 525 € |
-{caption="Workshop fees, Berlin 2019"}
-
-</details>
 
 ### Deep learning for intracranial neurophysiology, 16–17 September 2019 {#deep-learning-2019}
 
@@ -91,7 +75,7 @@ The workshop at Fudan University in Shanghai had over 45 participants from acros
 
 **1st Lead-DBS Workshop**, 27–28 November 2016, Berlin, Germany.
 
-The first Lead-DBS workshop was a hands-on workshop and a satellite event to the International DBS Symposium of the Clinical Research Group KFO 247. It gave an extensive overview of the possibilities and potential applications of Lead-DBS, for students and researchers interested in analyses of DBS electrode placements. It took place in the library of the Kaiserin-Friedrich-Haus (Robert-Koch-Platz 7, 10115 Berlin); participants could bring their own data, and the fee to cover the course's expenses was 70 €.
+The first Lead-DBS workshop was a hands-on workshop and a satellite event to the International DBS Symposium of the Clinical Research Group KFO 247. It gave an extensive overview of the possibilities and potential applications of Lead-DBS, for students and researchers interested in analyses of DBS electrode placements. It took place in the library of the Kaiserin-Friedrich-Haus (Robert-Koch-Platz 7, 10115 Berlin); participants could bring their own data.
 
 {{% row %}}
 {{% col "1/2" %}}
@@ -108,4 +92,4 @@ The first Lead-DBS workshop was a hands-on workshop and a satellite event to the
 
 ## Next
 
-The next workshop: the Hands-on Lead-DBS Workshop on 11–12 February 2027 in Cologne, where participants will be among the first to try the Lead-DBS 4.0 pre-release. Details and registration will follow in the [newsletter](/subscribe-to-our-newsletter/) and on the [user Slack](/helpsupport/slack-user-channel/); see the [events page](/events/).
+The next workshop, with its dates, is on the [events page](/events/); details and registration follow in the [newsletter](/subscribe-to-our-newsletter/) and on the [user Slack](/helpsupport/slack-user-channel/).

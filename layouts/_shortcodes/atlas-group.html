@@ -17,7 +17,8 @@
   {{- $fig := "" }}{{ $thumb := "" -}}
   {{- with (or $a.image $a.poster) -}}
     {{- with $p.Resources.Get . -}}
-      {{- $t := .Resize (printf "%dx webp q78" (math.Min .Width 192 | int)) -}}
+      {{- /* the box shows it at most 86 px on a side: a copy twice that size, never enlarged */ -}}
+      {{- $t := .Fit "172x172 webp q78" -}}
       {{- $thumb = printf `<span class="atlas__thumb" aria-hidden="true"><img src="%s" alt="" width="%d" height="%d" loading="lazy" decoding="async"></span>` $t.RelPermalink $t.Width $t.Height -}}
     {{- end -}}
   {{- end -}}

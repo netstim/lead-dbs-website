@@ -2,9 +2,11 @@
 {{- /* /gallery/: figures from published papers (data/gallery.yaml, files in static/gallery/), in the order
      of that file, then the lab's renders (content/gallery/_index.md, files in assets/images/renders/).
      The page's own text (content/gallery/_index.md) is the introduction; front matter "next" is the
-     line at the end. Each figure is shown whole (resized copies) on a white mat cut to its size, two to a row on
-     a desktop, with its plain-language description, the attribution its licence requires and a link to the
-     original file. A figure with a missing field stops the build. */ -}}
+     line at the end. Each figure is shown whole (resized copies) in a tile of one shape on a grey mat, three
+     to a row on a desktop, with its plain-language description and a short citation; the full attribution
+     its licence requires is in a "Source and licence" disclosure. The tile opens a full-size WebP copy (at
+     most 1750 px wide, much lighter than the PNG originals); the disclosure links the original file.
+     A figure with a missing field stops the build. */ -}}
 {{ $p := .Params }}
 <main id="top" class="page">
   {{ partial "page-head.html" . }}
@@ -23,22 +25,24 @@
         {{ $set := slice }}{{ $mid := $src }}
         {{ range slice 640 1000 1400 }}{{ if lt . $src.Width }}{{ $r := $src.Resize (printf "%dx webp q82" .) }}{{ $set = $set | append (printf "%s %dw" $r.RelPermalink $r.Width) }}{{ if eq . 1000 }}{{ $mid = $r }}{{ end }}{{ end }}{{ end }}
         {{ if eq $mid $src }}{{ $mid = $src.Resize (printf "%dx webp q82" $src.Width) }}{{ $set = $set | append (printf "%s %dw" $mid.RelPermalink $mid.Width) }}{{ end }}
-        {{ $full := printf "gallery/%s" $f.file | relURL }}
+        {{ $orig := printf "gallery/%s" $f.file | relURL }}
+        {{ $full := $src.Resize (printf "%dx webp q85" (int (math.Min $src.Width 1750))) }}
+        {{ $first := index (split $f.authors " ") 0 }}
         <li class="paper-fig" id="fig-{{ path.BaseName $f.file }}">
-          {{- /* the picture links to the same file as the text link below, so keyboard users skip it
-                 (tabindex -1); screen readers get the picture with its description as alt text */}}
-          <a class="paper-fig__img" href="{{ $full }}" tabindex="-1">
-            <img src="{{ $mid.RelPermalink }}" srcset="{{ delimit $set ", " }}" sizes="(min-width: 1440px) 600px, (min-width: 1024px) 42vw, 100vw" width="{{ $src.Width }}" height="{{ $src.Height }}" alt="{{ $f.shows }}" loading="lazy" decoding="async">
+          {{- /* the picture's alt text is what it shows; the link's name says where it leads, without
+                 repeating that sentence */}}
+          <a class="paper-fig__img" href="{{ $full.RelPermalink }}" aria-label="Open {{ $f.figure }} of {{ $first }} et al. {{ $f.year }} at full size">
+            <img src="{{ $mid.RelPermalink }}" srcset="{{ delimit $set ", " }}" sizes="{{ if and (eq $i 0) (eq (mod (len $figs) 3) 1) }}(min-width: 1280px) 845px, (min-width: 1200px) 64vw{{ else }}(min-width: 1200px) 400px{{ end }}, (min-width: 640px) 46vw, 100vw" width="{{ $src.Width }}" height="{{ $src.Height }}" alt="{{ $f.shows }}" loading="lazy" decoding="async">
           </a>
           <div class="paper-fig__text">
             {{ with $f.tool }}<p class="paper-fig__tool">Made with {{ . }}, the sister tool of Lead-DBS</p>{{ end }}
             <p class="paper-fig__shows">{{ $f.shows }}</p>
-            <p class="paper-fig__cite">
-              {{ $f.figure }} from {{ $f.authors }} ({{ $f.year }}). <span class="paper-fig__title">{{ $f.title }}</span>. <em>{{ $f.journal }}</em>.
-              <a href="https://doi.org/{{ $f.doi }}">doi:{{ $f.doi }}</a>
-            </p>
-            <p class="paper-fig__full"><a href="{{ $full }}">Open the figure at full size</a> <span class="muted">({{ $src.Width }} × {{ $src.Height }} pixels)</span></p>
-            <p class="paper-fig__licence">Licence: <a href="{{ $f.license_url }}">{{ $f.license }}</a>.{{ if ne (lower $f.modification) "none" }} Changed from the original: {{ $f.modification }}.{{ end }}</p>
+            <p class="paper-fig__short">{{ $first }} et al., <em>{{ $f.journal }}</em> {{ $f.year }}</p>
+            <details class="paper-fig__more">
+              <summary>Source and licence</summary>
+              <p class="paper-fig__cite">{{ $f.figure }} from {{ $f.authors }} ({{ $f.year }}). <span class="paper-fig__title">{{ $f.title }}</span>. <em>{{ $f.journal }}</em>. <a href="https://doi.org/{{ $f.doi }}">doi:{{ $f.doi }}</a></p>
+              <p class="paper-fig__licence">Licence: <a href="{{ $f.license_url }}">{{ $f.license }}</a>.{{ if ne (lower $f.modification) "none" }} Changed from the original: {{ $f.modification }}.{{ end }} The original file: <a href="{{ $orig }}">{{ upper (strings.TrimPrefix "." (path.Ext $f.file)) }}, {{ $src.Width }} × {{ $src.Height }} pixels</a>.</p>
+            </details>
           </div>
         </li>
         {{ else }}

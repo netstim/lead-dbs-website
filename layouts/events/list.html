@@ -12,10 +12,13 @@
     <article class="prose events-page">
       {{ partial "nobreak-html.html" .Content }}
       <h2 id="upcoming">Upcoming</h2>
-      <ol class="event-list" data-ev-upcoming>
+      {{- /* the line for no dates is in the page only when nothing was upcoming at build time;
+             assets/js/main.js adds it when the listed events are over by the visitor's clock */}}
+      {{ $nl := relref $ "/subscribe-to-our-newsletter" }}
+      <ol class="event-list" data-ev-upcoming data-ev-newsletter="{{ $nl }}">
         {{ range $up }}{{ partial "events/card.html" (dict "ev" . "page" $) }}{{ end }}
       </ol>
-      <p class="event-empty" data-ev-empty{{ if $up }} hidden{{ end }}>No dates are set right now. New ones are announced in the <a href="{{ relref $ "/subscribe-to-our-newsletter" }}">newsletter</a>.</p>
+      {{ if not $up }}<p class="event-empty" data-ev-empty>No dates are set right now. New ones are announced in the <a href="{{ $nl }}">newsletter</a>.</p>{{ end }}
       {{- /* the past workshops: one link per workshop section of the archive page (its h2 headings that
              name a year), newest first, as they stand on that page */}}
       {{ $archive := site.GetPage "/helpsupport/workshops" }}

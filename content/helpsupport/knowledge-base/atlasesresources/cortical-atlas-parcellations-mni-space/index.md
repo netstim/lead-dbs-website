@@ -1,5 +1,5 @@
 ---
-title: "Cortical parcellations (MNI space)"
+title: "Cortical parcellations"
 description: "Cortical and whole-brain parcellations in MNI space for connectivity analyses in Lead-DBS: how to get them and what to cite."
 weight: 2
 keywords: ["atlas", "parcellation", "cortex", "cortical", "connectome", "MNI"]
@@ -8,6 +8,13 @@ date: "2016-05-29T15:28:14"
 lastmod: "2026-11-11"
 # the picture shown when the page is shared (head.html)
 share: "CAREN-1-1030x761.png"
+# the picture of its card on its group's page (childpages)
+card: "CAREN-1-1030x761.png"
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - {name: "Connectivity in Lead-DBS", url: "/helpsupport/knowledge-base/lead-dbs-methods/#connectivity"}
+  - "/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping/"
+  - "/helpsupport/knowledge-base/atlasesresources/about-the-mni-spaces/"
 ---
 For connectivity analyses. Most come with Lead-DBS (nothing to download); the others are a download
 away. Open an entry for how to get it and which paper to cite.
@@ -15,7 +22,7 @@ away. Open an entry for how to get it and which paper to cite.
 {{< atlas-index noun="parcellations" >}}
 
 Looking for atlases of the deep nuclei? See [Subcortical atlases](/helpsupport/knowledge-base/atlasesresources/atlases-2/).
-To get the most out of them, and to add your own, see [how data gets into Lead-DBS](/about/data-code-inclusion-philosophy/).
+Tips on [choosing and using an atlas](/helpsupport/knowledge-base/atlasesresources/#choosing); to add your own, see [Add your atlas or dataset](/develop/#add-your-atlas-or-dataset).
 
 {{% atlas-group "anatomical" %}}
 

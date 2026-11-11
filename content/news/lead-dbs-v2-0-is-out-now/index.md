@@ -1,9 +1,13 @@
 ---
-title: "Lead-DBS v2.0 is out now!"
+title: "Lead-DBS 2.0 released"
+# the browser title (head.html adds " – Lead-DBS")
+htmlTitle: "Version 2.0 released"
 description: "Lead-DBS 2.0: new major features to model deep brain stimulation electrodes in computer simulations."
 date: "2017-09-09T20:19:44"
 lastmod: "2017-09-10T14:04:59"
 slug: "lead-dbs-v2-0-is-out-now"
+# the picture shown when the page is shared (head.html)
+share: "images/renders/lead-closeup.jpg"
 ---
 
 ## New features in Lead-DBS 2.0
@@ -88,15 +92,15 @@ The new VTA model works for both constant voltage and current stimulations, is a
 
 **The VTA model is in “beta” state but we hope to finish it soon**
 
-Unfortunately, the model may still not be seen as “stable” software and requires some troubleshooting here and there (see [this page](/helpsupport/knowledge-base/atlasesresources/ixi-database/), our [Slack channel](/helpsupport/slack-user-channel/) and [Forum](/helpsupport/slack-user-channel/) for support options). Also, it does not yet work with segmented leads. We are working on getting this done with some support from Till Dembek out of Cologne.
+Unfortunately, the model may still not be seen as “stable” software and requires some troubleshooting here and there (see our [Slack channel](/helpsupport/slack-user-channel/) for support options). Also, it does not yet work with segmented leads. We are working on getting this done with some support from Till Dembek out of Cologne.
 
-*Note (2026): the forum is closed; please ask on the [user Slack](https://inviter.co/lead-dbs).*
+*Note (2026): the forum is closed; please ask on the [user Slack](/helpsupport/slack-user-channel/).*
 
-*Of note, this model represents the first open-source FEM based VTA model and numerous people invested countless hours to make this happen. **Great thanks go out to Johannes Vorwerk (Utah), Qianqian Fang (Boston), Ningfei Li (Berlin) & Robert Oostenfeld (Nijmegen), [also see here](/helpsupport/knowledge-base/atlasesresources/ixi-database/).***
+*Of note, this model represents the first open-source FEM based VTA model and numerous people invested countless hours to make this happen. **Great thanks go out to Johannes Vorwerk (Utah), Qianqian Fang (Boston), Ningfei Li (Berlin) & Robert Oostenfeld (Nijmegen).***
 
 {{% row %}}
 {{% col "1/2" %}}
-{{< button href="/helpsupport/knowledge-base/atlasesresources/ixi-database/" >}}Find out more about the VTA model here{{< /button >}}
+{{< button href="/helpsupport/knowledge-base/lead-dbs-methods/" >}}Stimulation modelling in Lead-DBS today{{< /button >}}
 
 {{% /col %}}
 {{% col "1/2" %}}

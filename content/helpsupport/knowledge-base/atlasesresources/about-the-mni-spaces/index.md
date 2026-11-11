@@ -10,6 +10,11 @@ keywords: ["MNI", "MNI space", "MNI152", "ICBM 2009b", "template", "coordinates"
 menuParent: "/helpsupport/knowledge-base/atlasesresources"
 # the picture shown when the page is shared (head.html)
 share: "MNI6thgenvs2009-poster.jpg"
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - "/helpsupport/knowledge-base/lead-dbs-methods/acpc-to-mni-conversion-2/"
+  - {name: "Registration and normalization", url: "/helpsupport/knowledge-base/lead-dbs-methods/#normalization"}
+  - "/helpsupport/knowledge-base/atlasesresources/distal-atlas/"
 ---
 
 There is no single “MNI space”: there are several MNI templates, and they differ slightly. In fMRI or
