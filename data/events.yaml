@@ -8,15 +8,18 @@
 #   end           optional: last day (2027-02-12), or the end time (2026-11-18T16:30)
 #                 Without it the event counts as over at the end of its start day.
 #   timezone      the IANA time zone of start and end, e.g. "Europe/Berlin". The site prints the
-#                 zone from it and the date: "15:00 CET (Berlin time)", in summer "15:00 CEST".
+#                 zone from it and the date: "15:00 CET", in summer "15:00 CEST".
+#   also_in       optional: a second IANA time zone printed after it, e.g. "America/New_York"
+#                 gives "15:00 CET (09:00 EST)"; summer and winter time are handled by the site.
 #   tz_label      optional, rarely needed: text that replaces the printed zone
 #   where         place, or "Online (Zoom)"
 #   online        true for an online meeting whose link people receive by registering
 #   host          optional: who hosts it
 #   text          one or two sentences
 #   register_url  optional: the registration page. For an online meeting this is the page where
-#                 people leave their e-mail address and receive the meeting link. Never put a
-#                 meeting (Zoom) link here or anywhere else on the site. While it is empty, an
+#                 people leave their e-mail address and receive the meeting link (e.g. Zoom's
+#                 /meeting/register/ page). Never put the meeting's own join link here or anywhere
+#                 else on the site. While it is empty, an
 #                 online event says that registration opens soon and that the link is shared in
 #                 the user Slack; an event on site says that details and registration will follow.
 #   links         optional: more links, each {label, url}; url is a site path or a full URL
@@ -27,13 +30,17 @@ events:
   - title: "Lead-DBS Developer Meeting"
     start: "2026-11-18T15:00"
     timezone: "Europe/Berlin"
+    also_in: "America/New_York"
     where: "Online (Zoom)"
     online: true
-    text: "Open to anyone who wants to contribute to Lead-DBS or learn about its ongoing development. The meetings are planned monthly; further dates are not set yet."
-    register_url: ""
+    text: "Monthly, online and open to anyone who wants to contribute or follow the development."
+    # Zoom's registration page: people leave their e-mail address and Zoom sends them the link
+    register_url: "https://uni-koeln.zoom.us/meeting/register/UiZRfHxiRHyyxCMEM0iSPg"
+    links:
+      - {label: "Flyer and details", url: "/events/developer-meeting/"}
 
   - title: "Hands-on Lead-DBS Workshop"
-    start: "2027-02-11"
+    start: "2027-02-11T09:00"
     end: "2027-02-12"
     timezone: "Europe/Berlin"
     where: "Cologne"
@@ -42,4 +49,4 @@ events:
     register_url: ""
     links:
       - {label: "Read the announcement", url: "/hands-on-lead-dbs-workshop-cologne-2027/"}
-      - {label: "Workshops", url: "/helpsupport/workshops/"}
+      - {label: "Past workshops", url: "/helpsupport/workshops/"}

@@ -10,38 +10,49 @@
 {{ $arrow := `<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg>` | safeHTML }}
 <main id="top" class="home">
 
-  <p class="forum-note notice" role="note" hidden data-forum-note>The Lead-DBS forum has closed. Questions are answered on the <a href="https://inviter.co/lead-dbs">user Slack</a>.</p>
+  <p class="forum-note notice" role="note" hidden data-forum-note>The Lead-DBS forum has closed. Questions are answered on the <a href="{{ with site.GetPage "/helpsupport/slack-user-channel" }}{{ .RelPermalink }}{{ end }}">user Slack</a>.</p>
 
   {{/* 1. Hero: the render clip, the words, the main action and the facts that matter, in that order */}}
   {{ with $p.hero }}
   {{ $poster := resources.Get (printf "images/renders/%s" .poster) }}
   {{ $pd := $poster.Resize "1600x webp q78" }}
   <section class="hero home-hero" data-enter aria-labelledby="hero-h">
-    <div class="home-hero__media">
+    <div class="home-hero__media" data-nav-dark>
+      {{- /* three encodes, chosen by the window: 1600 px for wide and high-density screens, 1280 px for
+             the rest from 640 px up, and a square crop of the render for phones (README, "hero clip") */}}
       <video class="hero__bg" muted loop playsinline preload="metadata" poster="{{ $pd.RelPermalink }}" width="1600" height="1000" aria-hidden="true" data-hero-video>
-        <source src="{{ .video | relURL }}" type="video/mp4" media="(min-width: 640px)">
+        <source src="{{ .video | relURL }}" type="video/mp4" media="(min-width: 1441px), (min-width: 640px) and (min-resolution: 1.5dppx)">
+        <source src="{{ .video_medium | relURL }}" type="video/mp4" media="(min-width: 640px)">
         <source src="{{ .video_phone | relURL }}" type="video/mp4">
       </video>
     </div>
-    <button class="hero__pause" type="button" aria-label="Pause the video" hidden data-hero-pause>
-      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-    </button>
     <div class="wrap home-hero__wrap">
       <div class="home-hero__text">
         <h1 id="hero-h">{{ partial "nobreak.html" .title }}</h1>
-        <p class="hero__lead">{{ .lead }}</p>
+        <p class="hero__lead">{{ .lead }}{{ with .lead_more }} <span class="hero__lead-more">{{ . }}</span>{{ end }}</p>
         <div class="btn-row">
           <a class="btn btn--primary" href="{{ $dl }}">{{ .primary.label }}{{ $arrow }}</a>
-          <a class="btn btn--secondary" href="{{ partial "resolve-url.html" (dict "url" .secondary.url "page" $) }}">{{ .secondary.label }}</a>
+          <a class="btn btn--secondary" href="{{ partial "resolve-url.html" (dict "url" .secondary.url "page" $) }}">{{ .secondary.label }}{{ $arrow }}</a>
+          {{ with .manual }}<a class="btn btn--secondary hero__manual" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></a>{{ end }}
         </div>
+        {{- /* the proof: short parts on one line, each kept whole; a narrow screen breaks the line between them */}}
+        {{ with .proof }}<ul class="hero__proof" aria-label="About Lead-DBS">{{ range . }}<li>{{ $.RenderString . }}</li>{{ end }}</ul>{{ end }}
       </div>
+      {{- /* the facts row, four facts, and the clip's pause button: above the row's right end on a desktop,
+             at the picture's corner below 1024px (assets/css/site.css, "the pause button"). A linked fact
+             ends in the site's chevron; a second line under a fact is a quieter link, kept on one line
+             with its chevron. */}}
+      <div class="home-hero__foot">
+      <button class="hero__pause" type="button" aria-label="Pause the video" hidden data-hero-pause>
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
       <dl class="home-hero__facts">
-        <div><dt>Current release</dt><dd><a href="{{ partial "resolve-url.html" (dict "url" $r.notes "page" $) }}">{{ $r.version }}, {{ $date | time.Format "2 Jan 2006" }}</a></dd></div>
-        <div><dt>Runs on</dt><dd>MATLAB {{ $r.matlab }} or later</dd></div>
-        <div><dt>Licence</dt><dd>{{ $r.licence }}, open source</dd></div>
-        <div><dt>Intended use</dt><dd><a href="{{ with site.GetPage "/about" }}{{ .RelPermalink }}{{ end }}#research-use">Research only</a></dd></div>
+        <div><dt>Release</dt><dd><a href="{{ partial "resolve-url.html" (dict "url" $r.notes "page" $) }}">{{ $r.version }}, {{ $date | time.Format "2 Jan 2006" }}{{ $arrow }}</a></dd></div>
+        <div><dt>Runs on</dt><dd>MATLAB {{ $r.matlab }} or later{{ with $r.standalone }}<a class="hero__fact-more" href="{{ $dl }}#standalone-version">Standalone builds{{ $arrow }}</a>{{ end }}</dd></div>
+        <div><dt>Licence</dt><dd>{{ $r.licence }}<a class="hero__fact-more" href="{{ with site.GetPage "/about" }}{{ .RelPermalink }}{{ end }}#research-use">For research use only{{ $arrow }}</a></dd></div>
         {{ partial "events/next.html" (dict "variant" "fact" "page" $) }}
       </dl>
+      </div>
     </div>
   </section>
   {{ end }}
@@ -84,202 +95,194 @@
   </section>
   {{ end }}
 
-  {{/* 3. What else it does: three compact cards */}}
+  {{/* 3. What else it does: three pictures with their words (media cards, each a link to its part of the
+       overview of everything Lead-DBS does); beside the heading that overview and the atlases and data */}}
   {{ with $p.features }}
+  {{ $more := partial "resolve-url.html" (dict "url" .more.url "page" $) }}
   <section class="section home-sec home-sec--tight" id="features" aria-labelledby="features-h">
     <div class="wrap">
-      <h2 id="features-h" class="home-h2">{{ partial "nobreak.html" .title }}</h2>
+      <div class="section-head section-head--row">
+        <h2 id="features-h" class="home-h2 features__h">{{ partial "nobreak.html" .title }}</h2>
+        <ul class="section-head__more section-head__links">
+          <li><a class="link" href="{{ $more }}">{{ .more.label }}{{ $arrow }}</a></li>
+          {{ with .data }}<li><a class="link" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}{{ $arrow }}</a></li>{{ end }}
+        </ul>
+      </div>
       <ul class="feature-row">
         {{ range .cards }}
         <li class="feature">
           {{ partial "render.html" (dict "file" .image "alt" .alt "class" "feature__img" "sizes" "(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 30vw") }}
           <div class="feature__text">
-            <h3>{{ partial "nobreak.html" .title }}</h3>
+            <h3><a class="feature__link" href="{{ $more }}{{ with .anchor }}#{{ . }}{{ end }}">{{ partial "nobreak.html" .title }}</a></h3>
             <p>{{ .text }}</p>
           </div>
         </li>
         {{ end }}
       </ul>
-      <p class="home-note">{{ .note }} <a class="link" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a></p>
+      <p class="home-note">{{ .note }} <a href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}</a></p>
     </div>
   </section>
   {{ end }}
 
-  {{/* 4. The current release and what it needs (data/release.yaml) */}}
-  {{ with $p.release }}
-  <section class="section home-sec" id="release" aria-labelledby="release-h">
-    <div class="wrap">
-      <div class="grid release-grid">
-        <div class="span-5 release__text">
-          <p class="t-label muted">Current release</p>
-          <h2 id="release-h">Lead-DBS {{ $r.version }}</h2>
-          <p class="release__date">Released {{ $date | time.Format "2 January 2006" }}</p>
-          <p>{{ $r.summary }}</p>
-          <div class="btn-row"><a class="btn btn--primary" href="{{ $dl }}">Download Lead-DBS{{ $arrow }}</a></div>
-        </div>
-        <div class="span-6 start-7 release__req">
-          <h3>{{ .requirements_title }}</h3>
-          <dl class="spec-rows">
-            <div><dt>MATLAB</dt><dd>{{ $r.matlab }} or later, with the {{ $r.toolboxes }}</dd></div>
-            <div><dt>Optional</dt><dd>{{ $r.toolboxes_optional }}</dd></div>
-            <div><dt>Also needs</dt><dd>{{ $r.needs }}</dd></div>
-            <div><dt>Memory</dt><dd>{{ $r.memory }}</dd></div>
-            <div><dt>Without MATLAB</dt><dd>Standalone build {{ $r.standalone }}: {{ lower (substr $r.standalone_note 0 1) }}{{ substr $r.standalone_note 1 }}</dd></div>
-          </dl>
-          <p><a class="link" href="{{ .install.url }}">{{ .install.label }}{{ $arrow }}</a></p>
-        </div>
+  {{/* 4. A render across the whole width, the voices of researchers over its dark lower part: the
+       pause between what Lead-DBS does and the published work made with it */}}
+  {{ with $p.voices }}
+  <section class="render-band" id="voices" aria-labelledby="voices-h" data-nav-dark>
+    {{ partial "render.html" (dict "file" .image "alt" .alt "class" "render-band__img" "sizes" "100vw") }}
+    <div class="wrap render-band__wrap">
+      <h2 id="voices-h" class="render-band__h">{{ .title }}</h2>
+      <div class="quote-row">
+        {{ range $p.quotes }}{{ partial "quote.html" . }}{{ end }}
       </div>
     </div>
   </section>
   {{ end }}
 
-  {{/* 5. Lead-DBS 4.0: text only */}}
-  {{ with $p.next }}
-  <section class="section home-sec next-band" id="next" aria-labelledby="next-h">
-    <div class="wrap next-band__inner">
-      <p class="t-label next-band__label">{{ .label }}</p>
-      <h2 id="next-h">{{ partial "nobreak.html" .title }}</h2>
-      <p class="next-band__text">{{ .text }}</p>
-      <p><a class="link" href="{{ .link.url }}">{{ .link.label }}{{ $arrow }}</a></p>
-    </div>
-  </section>
-  {{ end }}
-
-  {{/* 6. Events: the workshop's flyer beside the upcoming events (data/events.yaml) */}}
-  {{ with $p.events }}
-  {{ $up := where (partial "events/list.html" $) "over" false }}
-  <section class="section home-sec ground-surface" id="events" aria-labelledby="events-h">
+  {{/* 5. Made with Lead-DBS: a strip of figures from papers (data/gallery.yaml, the files named in
+       research.figures), each shown whole on the same mat and linking to its entry on /gallery/ */}}
+  {{ with $p.research }}
+  {{ $gallery := site.GetPage "/gallery" }}
+  {{ $byFile := dict }}{{ range hugo.Data.gallery.figures }}{{ $byFile = merge $byFile (dict .file .) }}{{ end }}
+  <section class="section home-sec" id="research" aria-labelledby="research-h">
     <div class="wrap">
-      <div class="grid events-grid">
-        <div class="span-7 events__text">
-          <h2 id="events-h">{{ partial "nobreak.html" .title }}</h2>
-          <p class="t-lead">{{ .text }}</p>
-          <ol class="home-events" data-ev-next-list>
-            {{ range $up }}
-            <li class="home-event" data-ev data-ev-ends="{{ .iso_ends }}">
-              <p class="home-event__date"><time datetime="{{ .iso_start }}">{{ .when }}{{ with .time }}, {{ . }}{{ end }}</time></p>
-              <h3 class="home-event__title"><a href="{{ with site.GetPage "/events" }}{{ .RelPermalink }}{{ end }}#{{ .id }}">{{ .e.title }}</a></h3>
-              <p class="home-event__where">{{ .e.where }}{{ with .e.host }} · {{ . }}{{ end }}</p>
-              {{ with .e.text }}<p class="home-event__text">{{ . }}</p>{{ end }}
-            </li>
-            {{ end }}
-          </ol>
-          <p class="home-events__empty" data-ev-next-empty{{ if $up }} hidden{{ end }}>No dates are set right now; new ones are announced in the newsletter.</p>
-          <p><a class="link" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a></p>
+      <div class="section-head section-head--row">
+        <div>
+          <h2 id="research-h">{{ partial "nobreak.html" .title }}</h2>
+          <p>{{ .text }}</p>
         </div>
-        {{ with resources.Get (printf "images/%s" .image) }}
-        {{ $s := .Resize "420x webp q82" }}{{ $l := .Resize "800x webp q82" }}
-        <figure class="flyer span-4 start-9">
-          <img src="{{ $s.RelPermalink }}" srcset="{{ $s.RelPermalink }} 420w, {{ $l.RelPermalink }} 800w" sizes="(min-width: 1024px) 26vw, (min-width: 640px) 34vw, 60vw" width="{{ $l.Width }}" height="{{ $l.Height }}" alt="{{ $p.events.alt }}" loading="lazy" decoding="async">
-        </figure>
-        {{ end }}
+        {{ with $gallery }}<p class="section-head__more"><a class="link" href="{{ .RelPermalink }}">{{ $p.research.link_label }}{{ $arrow }}</a></p>{{ end }}
       </div>
-    </div>
-  </section>
-  {{ end }}
-
-  {{/* 7. Help: one line icon style */}}
-  {{ with $p.help }}
-  <section class="section home-sec" id="help" aria-labelledby="help-h">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 id="help-h">{{ partial "nobreak.html" .title }}</h2>
-        <p>{{ .text }}</p>
-      </div>
-      <ul class="help-grid">
-        {{ range .cards }}
-        <li>
-          <a class="help-card" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">
-            <span class="help-card__icon" aria-hidden="true">{{ os.ReadFile (printf "static/images/icons/%s.svg" .icon) | replaceRE `#0d7480` "currentColor" | replaceRE `<svg ` `<svg aria-hidden="true" focusable="false" ` | safeHTML }}</span>
-            <span class="help-card__title">{{ .title }}</span>
-            <span class="help-card__text">{{ .text }}</span>
+      <ul class="fig-strip">
+        {{ range .figures }}
+        {{ $f := index $byFile . }}
+        {{ if not $f }}{{ errorf "home: research.figures names %q, which is not in data/gallery.yaml" . }}{{ end }}
+        {{ with resources.Get (printf "gallery/%s" $f.file) }}
+        {{ $s := .Resize "560x webp q80" }}{{ $m := .Resize (printf "%dx webp q80" (int (math.Min .Width 1000))) }}
+        {{ $ar := div (float .Width) .Height }}
+        <li class="fig-strip__item" style="--ar: {{ $ar | lang.FormatNumber 3 }}">
+          <a class="fig-strip__link" href="{{ with $gallery }}{{ .RelPermalink }}{{ end }}#fig-{{ path.BaseName $f.file }}">
+            <span class="fig-strip__mat"><img src="{{ $s.RelPermalink }}" srcset="{{ $s.RelPermalink }} 560w, {{ $m.RelPermalink }} {{ $m.Width }}w" sizes="(min-width: 1024px) 34vw, 80vw" width="{{ $m.Width }}" height="{{ $m.Height }}" alt="{{ $f.shows }}" loading="lazy" decoding="async"></span>
+            <span class="fig-strip__cite">{{ index (split $f.authors " ") 0 }} et al., <em>{{ $f.journal }}</em> {{ $f.year }}</span>
           </a>
         </li>
+        {{ end }}
         {{ end }}
       </ul>
     </div>
   </section>
   {{ end }}
 
-  {{/* 8. Quotes: all at once, in columns */}}
-  <section class="section home-sec ground-surface" id="quotes" aria-labelledby="quotes-h">
+  {{/* 6. Lead-DBS 4.0: words only. The name large across the band, the three statements in three
+       columns under it; the link leads to the workshop's announcement. Date ranges ("11–12 February
+       2027") are kept on one line. */}}
+  {{ with $p.next }}
+  <section class="section home-sec home-sec--tight next-band" id="next" aria-labelledby="next-h" data-nav-dark>
     <div class="wrap">
-      <h2 id="quotes-h" class="home-h2">{{ partial "nobreak.html" $p.quotes_title }}</h2>
-      <div class="quote-wall">
-        {{ range $p.quotes }}{{ partial "quote.html" . }}{{ end }}
+      <div class="next-band__head">
+        <p class="t-label next-band__label">{{ .label }}</p>
+        <h2 id="next-h" class="next-band__title"><span class="nowrap">{{ .title }}</span></h2>
       </div>
+      <ul class="next-band__points">
+        {{ range .points }}<li><p class="next-band__point">{{ partial "nobreak.html" .title }}</p><p class="next-band__detail">{{ .text | htmlEscape | replaceRE `(\d{1,2}–\d{1,2} [A-Z][a-z]+ \d{4})` `<span class="nowrap">$1</span>` | safeHTML }}</p></li>{{ end }}
+      </ul>
+      <p class="next-band__more"><a class="link" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a></p>
     </div>
   </section>
+  {{ end }}
 
-  {{/* 9. Who develops it, who funded it, how to cite it */}}
-  {{ with $p.team }}
-  <section class="section home-sec" id="team" aria-labelledby="team-h">
+  {{/* 7. What is coming up and what is new, in one band: the upcoming events (data/events.yaml) as compact
+       cards (date, title, place, how to register; their text is on /events/), beside them the three
+       latest news posts. Both headings are section headings, on one line. */}}
+  {{ with $p.events }}
+  {{ $up := where (partial "events/list.html" $) "over" false }}
+  {{ $posts := first 3 (where site.RegularPages "Section" "news").ByDate.Reverse }}
+  <section class="section home-sec ground-surface" id="events" aria-labelledby="events-h">
     <div class="wrap">
-      <div class="grid grid--top">
-        <div class="span-5 stack-4">
-          <h2 id="team-h">{{ partial "nobreak.html" .title }}</h2>
-          <ol class="history">
-            {{ range .history }}<li><span class="history__year">{{ .year }}</span><span>{{ .text }}</span></li>{{ end }}
+      <div class="grid grid--top updates-grid">
+        <div class="updates__events">
+          <h2 id="events-h" class="updates__h">{{ partial "nobreak.html" .title }}</h2>
+          {{- /* the line for no dates is in the page only when nothing was upcoming at build time;
+                 assets/js/main.js adds it when the listed events are over by the visitor's clock */}}
+          {{ $nl := "" }}{{ with site.GetPage "/subscribe-to-our-newsletter" }}{{ $nl = .RelPermalink }}{{ end }}
+          <ol class="event-list event-list--home" data-ev-next-list data-ev-newsletter="{{ $nl }}">
+            {{ range $up }}{{ partial "events/card.html" (dict "ev" . "page" $ "compact" true) }}{{ end }}
           </ol>
-          <p><a class="link" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a></p>
-          {{ with .tools }}
-          <h3 class="team__tools">{{ $p.team.tools_title }}</h3>
-          <dl class="spec-rows tool-rows">
-            {{ range . }}<div><dt><a href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .name }}</a></dt><dd>{{ .text }}</dd></div>{{ end }}
-          </dl>
-          {{ end }}
+          {{ if not $up }}<p class="event-empty" data-ev-empty>No dates are set right now. New ones are announced in the <a href="{{ $nl }}">newsletter</a>.</p>{{ end }}
+          <p class="events__more"><a class="link" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a></p>
         </div>
-        <div class="span-6 start-7 stack-4">
-          {{ with $p.cite }}
-          <div class="cite">
-            <h3>{{ partial "nobreak.html" .title }}</h3>
-            <p>{{ .reference }} <a href="https://doi.org/{{ .doi }}">doi:{{ .doi }}</a></p>
-            <p><a class="link" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a></p>
-          </div>
-          {{ end }}
-          <h3 class="funders__h">{{ .funders_title }}</h3>
-          <ul class="funders">
-            {{ range .funders }}
-            {{ $f := . }}
-            {{ with $.Resources.Get .file }}
-            {{ $img := . }}{{ range $f.crop }}{{ $img = $img.Crop . }}{{ end }}{{ if gt $img.Height 96 }}{{ $img = $img.Resize "x96" }}{{ end }}
-            <li>{{ with $f.url }}<a href="{{ . }}">{{ end }}<img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ $f.name }}" loading="lazy" decoding="async">{{ if $f.url }}</a>{{ end }}</li>
+        {{ with $posts }}
+        <div class="updates__news" id="news">
+          <h2 class="updates__h" id="news-h">{{ $p.news.title }}</h2>
+          <ol class="news-list">
+            {{ range . }}
+            <li class="news-item">
+              <p class="news-item__date"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time></p>
+              <h3 class="news-item__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+            </li>
             {{ end }}
-            {{ end }}
-          </ul>
+          </ol>
+          <p class="events__more"><a class="link" href="{{ partial "resolve-url.html" (dict "url" $p.news.link.url "page" $) }}">{{ $p.news.link.label }}{{ $arrow }}</a></p>
         </div>
+        {{ end }}
       </div>
     </div>
   </section>
   {{ end }}
 
-  {{/* 10. From the lab: Stimulating Brains, a project of the institute (not part of Lead-DBS) */}}
-  {{ with $p.lab }}
-  <section class="section home-sec home-sec--tight lab ground-surface" id="lab" aria-labelledby="lab-h">
+  {{/* 8. The close: one band of three columns under headings of one size, tops aligned: where to get help
+       (a link to another site ends in ↗), who develops Lead-DBS (the history is on /about/) and how to cite
+       it; the funders in one row under all three */}}
+  {{ with $p.team }}
+  <section class="section home-sec home-sec--tight closing" id="team">
     <div class="wrap">
-      <div class="grid grid--top">
-        <div class="span-5">
-          <p class="t-label muted">{{ .label }}</p>
-          <h2 id="lab-h">{{ partial "nobreak.html" .title }}</h2>
-          <p>{{ .text }}</p>
-        </div>
-        <div class="span-6 start-7">
-          <ul class="lab-list">
-            {{ range .items }}
-            <li>
-              <a class="help-card" href="{{ .url }}">
-                <span class="help-card__icon" aria-hidden="true">{{ os.ReadFile (printf "static/images/icons/%s.svg" .icon) | replaceRE `#0d7480` "currentColor" | replaceRE `<svg ` `<svg aria-hidden="true" focusable="false" ` | safeHTML }}</span>
-                <span class="help-card__title">{{ .title }}</span>
-                <span class="help-card__text">{{ .text }}</span>
-              </a>
-            </li>
+      <div class="closing__cols">
+        {{ with $p.help }}
+        <div class="closing__col" id="help">
+          <h2 class="closing__h">{{ .title }}</h2>
+          <ul class="closing__list">
+            {{ range .links }}{{ $ext := strings.HasPrefix .url "http" }}
+            <li><a class="link{{ if $ext }} link--ext{{ end }}" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}{{ if $ext }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ else }}{{ $arrow }}{{ end }}</a></li>
             {{ end }}
           </ul>
-          {{ with .links }}
-          <p class="lab__links"><span class="muted">{{ $p.lab.links_title }}:</span> {{ range $i, $l := . }}{{ if $i }} · {{ end }}<a href="{{ $l.url }}">{{ $l.name }}</a>{{ end }}</p>
-          {{ end }}
         </div>
+        {{ end }}
+        <div class="closing__col" id="who">
+          <h2 class="closing__h">{{ partial "nobreak.html" .title }}</h2>
+          <p>{{ $.RenderString .text }}</p>
+          <ul class="closing__list">
+            {{ range .links }}<li><a class="link" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}{{ $arrow }}</a></li>{{ end }}
+          </ul>
+        </div>
+        {{ with $p.cite }}
+        <div class="closing__col cite" id="cite">
+          <h2 class="closing__h">{{ partial "nobreak.html" .title }}</h2>
+          <p class="cite__ref">{{ .reference }} <a href="https://doi.org/{{ .doi }}">doi:{{ .doi }}</a></p>
+          <ul class="closing__list">
+            <li><a class="link" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a></li>
+          </ul>
+        </div>
+        {{ end }}
       </div>
+      {{ with .funders }}
+      <div class="funders-row">
+        <h3 class="funders__h">{{ $p.team.funders_title }}</h3>
+        <ul class="funders">
+          {{ range . }}
+          {{ $f := . }}
+          {{ with $.Resources.Get .file }}
+          {{ $img := . }}{{ range $f.crop }}{{ $img = $img.Crop . }}{{ end }}
+          {{- /* every logo gets about the same area, so a wide word mark is lower and a compact mark taller;
+                 scale (front matter) corrects a logo that still looks too heavy or too light */ -}}
+          {{ $aspect := div (float $img.Width) $img.Height }}
+          {{ $h := mul (math.Sqrt (div 5000.0 $aspect)) ($f.scale | default 1.0) | math.Round }}{{ $h = math.Max 28 (math.Min 54 $h) }}
+          {{ $w := math.Round (mul $h $aspect) }}
+          {{ if gt $img.Height (mul $h 2) }}{{ $img = $img.Resize (printf "x%d" (int (mul $h 2))) }}{{ end }}
+          <li>{{ with $f.url }}<a href="{{ . }}">{{ end }}<img src="{{ $img.RelPermalink }}" width="{{ int $w }}" height="{{ int $h }}" style="height: {{ int $h }}px" alt="{{ $f.name }}" loading="lazy" decoding="async">{{ if $f.url }}</a>{{ end }}</li>
+          {{ end }}
+          {{ end }}
+        </ul>
+      </div>
+      {{ end }}
     </div>
   </section>
   {{ end }}

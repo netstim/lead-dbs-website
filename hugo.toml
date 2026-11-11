@@ -4,7 +4,13 @@ locale = "en"
 enableRobotsTXT = true
 # Old WordPress URLs end in a slash; keep them identical so links in papers keep working.
 uglyURLs = false
-disableKinds = ["taxonomy", "term", "rss"]
+disableKinds = ["taxonomy", "term"]
+# A page's last-modified date (sitemap, JSON-LD, the "updated" line of a background article): its front
+# matter lastmod when it has one, otherwise the date of the last commit that changed its file, so it is
+# never the build day. The Pages workflow checks out the full history for this.
+enableGitInfo = true
+[frontmatter]
+  lastmod = ["lastmod", ":git", "modified", "date", "publishDate"]
 
 # Files of a page (images, PDFs) are published only when a template or the Markdown uses them
 # (a picture shown resized does not ship its unused original twice).
@@ -21,9 +27,13 @@ disableKinds = ["taxonomy", "term", "rss"]
   permalinkable = false
 [outputs]
   home = ["html", "searchindex"]
+  section = ["html"]
+  page = ["html"]
+  # The news feed is /news/index.xml (content/news/_index.md sets outputs: html, rss); the old
+  # WordPress feeds /feed/ and /news/feed/ point to it.
 
 [params]
-  description = "Lead-DBS: a toolbox facilitating Deep Brain Stimulation electrode reconstruction and computer simulation based on postoperative MRI & CT imaging."
+  description = "Lead-DBS: an open-source toolbox for deep brain stimulation electrode localization, stimulation modelling and connectomic imaging from postoperative MRI and CT."
   # Forms (download, contact, newsletter) have no backend yet; they render with a notice.
   formsEnabled = false
   # Preview deployments (GitHub Pages) set this to true: shows an "under construction"
@@ -43,6 +53,9 @@ disableKinds = ["taxonomy", "term", "rss"]
 [pagination]
   pagerSize = 10
 
+[services.rss]
+  limit = 20
+
 [markup.goldmark.renderer]
   unsafe = true # a few imported pages contain raw HTML
 [markup.goldmark.parser.attribute]
@@ -58,47 +71,186 @@ disableKinds = ["taxonomy", "term", "rss"]
   enableDNT = true
 
 [menus]
+  # The main menu, grouped by what visitors come for. Each word's label is also the page's linkTitle
+  # (breadcrumb, footer, search), so a page has one name everywhere. "Download" is drawn as the
+  # header's button ("Download Lead-DBS"), not as a menu word. The footer lists the same groups.
+  # The menu is also the site's one hierarchy: breadcrumbs and the sidebar's section list follow it,
+  # not the folders (layouts/_partials/nav-place.html). A page that is not in the menu belongs to the
+  # entry of its nearest folder that is, or to the page named by its front matter "menuParent".
   [[menus.main]]
-    name = "Home"
-    pageRef = "/"
+    name = "Features"
+    pageRef = "/helpsupport/knowledge-base/lead-dbs-methods"
+    identifier = "features"
     weight = 1
+  [[menus.main]]
+    name = "Docs and help"
+    pageRef = "/helpsupport"
+    identifier = "docs"
+    weight = 2
+  [[menus.main]]
+    name = "Atlases and data"
+    pageRef = "/helpsupport/knowledge-base/atlasesresources"
+    identifier = "data"
+    weight = 3
+  [[menus.main]]
+    name = "Community"
+    pageRef = "/community"
+    identifier = "community"
+    weight = 4
+  [[menus.main]]
+    name = "News"
+    pageRef = "/news"
+    weight = 5
   [[menus.main]]
     name = "About"
     pageRef = "/about"
     identifier = "about"
-    weight = 2
-  [[menus.main]]
-    name = "News"
-    pageRef = "/news"
-    weight = 3
-  [[menus.main]]
-    name = "Help/Support"
-    pageRef = "/helpsupport"
-    identifier = "help"
-    weight = 4
-  [[menus.main]]
-    name = "Events"
-    pageRef = "/events"
-    weight = 5
-  [[menus.main]]
-    name = "Gallery"
-    pageRef = "/gallery"
     weight = 6
-  # "Download" is drawn as the header's button ("Download Lead-DBS"), not as a menu word.
   [[menus.main]]
     name = "Download"
     pageRef = "/download"
     weight = 7
+
+  # Features: what the software does. The group's own page is the overview: every capability as a row
+  # with a picture, its manual chapter and paper, grouped by single patients, groups of patients and the
+  # operating theatre, then the tools (Lead Group, Lead Connectome, OSS-DBS, Lead Tutor; the "Tools"
+  # entry). Under it Lead-OR and the figures made with Lead-DBS; after a captioned line
+  # (params.divider), the three method articles.
   [[menus.main]]
-    name = "Contact"
-    pageRef = "/contact"
+    parent = "features"
+    name = "Overview"
+    pageRef = "/helpsupport/knowledge-base/lead-dbs-methods"
+    weight = 1
+  [[menus.main]]
+    parent = "features"
+    name = "Tools"
+    url = "/helpsupport/knowledge-base/lead-dbs-methods/#tools"
+    weight = 2
+    [menus.main.params]
+      description = "Lead Group, Lead Connectome, OSS-DBS and Lead Tutor: what each is for, its manual chapter and its paper."
+  [[menus.main]]
+    parent = "features"
+    name = "Lead-OR"
+    pageRef = "/about/lead-or"
+    weight = 4
+  [[menus.main]]
+    parent = "features"
+    name = "Made with Lead-DBS"
+    pageRef = "/gallery"
+    weight = 5
+  [[menus.main]]
+    parent = "features"
+    name = "DBS network mapping"
+    pageRef = "/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping"
+    weight = 6
+    [menus.main.params]
+      # a line above the entry, with this caption over the entries from here on
+      divider = "Method articles"
+  [[menus.main]]
+    parent = "features"
+    name = "Electrophysiology mapping"
+    pageRef = "/helpsupport/knowledge-base/lead-dbs-methods/subcortical-electrophysiology-mapping-sem"
+    weight = 7
+  [[menus.main]]
+    parent = "features"
+    name = "AC/PC to MNI conversion"
+    pageRef = "/helpsupport/knowledge-base/lead-dbs-methods/acpc-to-mni-conversion-2"
     weight = 8
 
-  # About
+  # Docs and help: the documentation (the manual is on another site) and the one list of where to ask
+  # (/helpsupport/#get-help; the contact page sits under it through its front matter menuParent)
+  [[menus.main]]
+    parent = "docs"
+    name = "First steps"
+    pageRef = "/helpsupport/first-steps"
+    weight = 1
+  [[menus.main]]
+    parent = "docs"
+    name = "Manual"
+    url = "https://netstim.gitbook.io/leaddbs"
+    weight = 2
+    [menus.main.params]
+      # printed on the hub's card for the manual (pages bring their own front matter description)
+      description = "The documentation of Lead-DBS: installation, every step of an analysis, and the tools, on the manual's own site."
+      # words the site search finds it by
+      keywords = "documentation docs manual handbook guide installation install how to"
+      # the picture of its card on the Docs and help page (a render under assets/)
+      image = "images/renders/cohort-top.jpg"
+  [[menus.main]]
+    parent = "docs"
+    name = "Lead Tutor"
+    pageRef = "/helpsupport/learn-lead-dbs-yourself"
+    weight = 3
+  [[menus.main]]
+    parent = "docs"
+    name = "Walkthrough videos"
+    pageRef = "/helpsupport/knowledge-base/walkthrough-videos"
+    weight = 4
+  [[menus.main]]
+    parent = "docs"
+    name = "Get help"
+    url = "/helpsupport/#get-help"
+    weight = 6
+    [menus.main.params]
+      description = "Where to ask: the user Slack for questions, GitHub for bugs, the contact form for anything else."
+
+  # Atlases and data: the three catalogues, then (after a captioned line: params.divider) the two
+  # atlases the Lead-DBS team made
+  [[menus.main]]
+    parent = "data"
+    name = "Subcortical atlases"
+    pageRef = "/helpsupport/knowledge-base/atlasesresources/atlases-2"
+    weight = 1
+  [[menus.main]]
+    parent = "data"
+    name = "Cortical parcellations"
+    pageRef = "/helpsupport/knowledge-base/atlasesresources/cortical-atlas-parcellations-mni-space"
+    weight = 2
+  [[menus.main]]
+    parent = "data"
+    name = "Normative connectomes"
+    pageRef = "/helpsupport/knowledge-base/atlasesresources/normative-connectomes"
+    weight = 3
+  [[menus.main]]
+    parent = "data"
+    name = "DISTAL atlas"
+    pageRef = "/helpsupport/knowledge-base/atlasesresources/distal-atlas"
+    weight = 4
+    [menus.main.params]
+      divider = "By the Lead-DBS team"
+  [[menus.main]]
+    parent = "data"
+    name = "FOCUS atlas"
+    pageRef = "/helpsupport/knowledge-base/atlasesresources/focus-atlas"
+    weight = 5
+
+  # Community (the past workshops sit under Events: front matter menuParent)
+  [[menus.main]]
+    parent = "community"
+    name = "Events"
+    pageRef = "/events"
+    weight = 1
+  [[menus.main]]
+    parent = "community"
+    name = "User Slack"
+    pageRef = "/helpsupport/slack-user-channel"
+    weight = 2
+  [[menus.main]]
+    parent = "community"
+    name = "Develop Lead-DBS"
+    pageRef = "/develop"
+    weight = 3
+  [[menus.main]]
+    parent = "community"
+    name = "Newsletter"
+    pageRef = "/subscribe-to-our-newsletter"
+    weight = 4
+
+  # About: who makes Lead-DBS, how to cite it, its papers
   [[menus.main]]
     parent = "about"
-    name = "Deep Brain Stimulation"
-    pageRef = "/about/deep-brain-stimulation-2"
+    name = "Cite Lead-DBS"
+    pageRef = "/about/citing_leaddbs"
     weight = 1
   [[menus.main]]
     parent = "about"
@@ -107,84 +259,15 @@ disableKinds = ["taxonomy", "term", "rss"]
     weight = 2
   [[menus.main]]
     parent = "about"
-    name = "Citing Lead-DBS"
-    pageRef = "/about/citing_leaddbs"
+    name = "Contributors"
+    pageRef = "/about/team"
     weight = 3
-  [[menus.main]]
-    parent = "about"
-    name = "Data & Code inclusion philosophy"
-    pageRef = "/about/data-code-inclusion-philosophy"
-    weight = 4
-  [[menus.main]]
-    parent = "about"
-    name = "List of Lead-DBS dependencies"
-    pageRef = "/about/lead-dbs-dependencies"
-    weight = 5
-  [[menus.main]]
-    parent = "about"
-    name = "Lead Connectome"
-    pageRef = "/about/lead-connectome"
-    weight = 6
-  [[menus.main]]
-    parent = "about"
-    name = "Lead-OR"
-    pageRef = "/about/lead-or"
-    weight = 7
 
-  # Help/Support
-  [[menus.main]]
-    parent = "help"
-    name = "Learn Lead-DBS yourself"
-    pageRef = "/helpsupport/learn-lead-dbs-yourself"
-    weight = 1
-  [[menus.main]]
-    parent = "help"
-    name = "User Slack"
-    pageRef = "/helpsupport/slack-user-channel"
-    weight = 2
-  [[menus.main]]
-    parent = "help"
-    name = "Manual"
-    url = "https://netstim.gitbook.io/leaddbs"
-    weight = 3
-  [[menus.main]]
-    parent = "help"
-    name = "Knowledge Base"
-    pageRef = "/helpsupport/knowledge-base"
-    identifier = "kb"
-    weight = 4
-  [[menus.main]]
-    parent = "help"
-    name = "Workshops"
-    pageRef = "/helpsupport/workshops"
-    weight = 5
-
-  [[menus.main]]
-    parent = "kb"
-    name = "Lead-DBS Methods"
-    pageRef = "/helpsupport/knowledge-base/lead-dbs-methods"
-    weight = 1
-  [[menus.main]]
-    parent = "kb"
-    name = "Atlases/Resources"
-    pageRef = "/helpsupport/knowledge-base/atlasesresources"
-    weight = 2
-  [[menus.main]]
-    parent = "kb"
-    name = "Walkthrough videos"
-    pageRef = "/helpsupport/knowledge-base/walkthrough-videos"
-    weight = 3
-  [[menus.main]]
-    parent = "kb"
-    name = "Other Videos"
-    pageRef = "/helpsupport/knowledge-base/videos"
-    weight = 4
-  [[menus.main]]
-    parent = "kb"
-    name = "Screenshots"
-    pageRef = "/helpsupport/knowledge-base/screenshots"
-    weight = 5
-
+  # The footer's legal line; Contact is also listed under "Get help"
+  [[menus.footer]]
+    name = "Contact"
+    pageRef = "/contact"
+    weight = 0
   [[menus.footer]]
     name = "Imprint"
     pageRef = "/impressum-datenschutzerklarung"

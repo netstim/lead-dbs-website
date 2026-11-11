@@ -5,8 +5,10 @@
 
 // ------------------------------------------------------------------ header
 // Below 1200px the menu words live in a sheet the menu button opens; a panel's links open with the
-// chevron beside its word. Escape closes the sheet (or a desktop panel) and leaves the focus on the
-// button (or the word); a tap on any link in the sheet closes it; Tab stays inside the open sheet.
+// chevron beside its word. Opening the sheet moves the focus to its first word; Tab and Shift+Tab then
+// stay inside the sheet, its bar along the bottom (a phone) and the menu button, which now closes it.
+// Escape closes the sheet (or a desktop panel) and leaves the focus on the menu button (or the word); a
+// tap on any link in the sheet closes it.
 (() => {
   const nav = document.querySelector('.nav');
   const toggle = nav?.querySelector('.nav__toggle');
@@ -16,14 +18,20 @@
     open: '<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
     close: '<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
   };
-  const setOpen = (open) => {
+  const menu = nav.querySelector('#site-menu');
+  // what Tab may reach while the sheet is open: the sheet's links and buttons, the header's own actions
+  // (in the sheet's bottom bar on a phone, in the bar above it on a tablet) and the menu button
+  const inSheet = () => [...nav.querySelectorAll('#site-menu a[href], #site-menu button, .nav__actions a[href], .nav__toggle')]
+    .filter((el) => el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden');
+  const setOpen = (open, focus = false) => {
     nav.classList.toggle('is-open', open);
     document.body.classList.toggle('nav-locked', open);
     toggle.setAttribute('aria-expanded', String(open));
     toggle.setAttribute('aria-label', open ? 'Close the menu' : 'Open the menu');
     toggle.innerHTML = open ? icon.close : icon.open;
+    if (open && focus) inSheet().find((el) => menu?.contains(el))?.focus();
   };
-  toggle.addEventListener('click', () => setOpen(!nav.classList.contains('is-open')));
+  toggle.addEventListener('click', () => setOpen(!nav.classList.contains('is-open'), true));
   wide.addEventListener('change', (e) => { if (e.matches) setOpen(false); });
   nav.querySelectorAll('.nav__item').forEach((item) => {
     const menu = item.querySelector('.nav__menu');
@@ -46,6 +54,22 @@
     const reset = () => item.classList.remove('is-dismissed');
     item.addEventListener('focusout', (e) => { if (!item.contains(e.relatedTarget)) reset(); });
     item.addEventListener('pointerleave', reset);
+    // the word says whether its panel is open (CSS opens it on hover and focus): aria-expanded follows,
+    // on a desktop only; in the sheet the chevron button carries it
+    let wait = 0;
+    const state = () => {
+      if (!wide.matches) { word.removeAttribute('aria-expanded'); return; }
+      const open = !item.classList.contains('is-dismissed') && (item.matches(':focus-within') || item.matches(':hover'));
+      word.setAttribute('aria-expanded', String(open));
+    };
+    const later = (ms) => { clearTimeout(wait); wait = setTimeout(state, ms); };
+    item.addEventListener('pointerenter', () => later(160));
+    item.addEventListener('pointerleave', () => later(0));
+    item.addEventListener('focusin', () => later(0));
+    item.addEventListener('focusout', () => later(0));
+    item.addEventListener('keydown', (e) => { if (e.key === 'Escape') later(0); });
+    wide.addEventListener('change', state);
+    state();
   });
   // a desktop panel opens after the pointer has rested 150ms on its word (assets/css/site.css); once one
   // is open, the panels of the other words open at once (.is-browsing) until the pointer leaves the header
@@ -70,20 +94,93 @@
       return;
     }
     if (e.key !== 'Tab' || !nav.classList.contains('is-open')) return;
-    const f = [...nav.querySelectorAll('a[href], button:not([disabled])')]
-      .filter((el) => !el.classList.contains('skip-link') && el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden');
+    const f = inSheet();
     if (!f.length) return;
     const first = f[0], last = f[f.length - 1];
-    if (!nav.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+    if (!f.includes(document.activeElement)) { e.preventDefault(); (e.shiftKey ? last : first).focus(); }
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
   });
 })();
 
+// ------------------------------------------------------------------ the footer on a phone
+// Below 640px each column of the footer folds to its heading, with a chevron button that opens its links
+// (assets/css/site.css, "footer"); a heading that links to its group's page keeps that link. Without
+// script, and from 640px up, every column is open.
+(() => {
+  const footer = document.querySelector('.footer');
+  const cols = footer ? [...footer.querySelectorAll('.footer__col')] : [];
+  if (!cols.length) return;
+  cols.forEach((col, i) => {
+    const h = col.querySelector('.footer__h');
+    const list = col.querySelector('ul');
+    if (!h || !list) return;
+    if (!list.id) list.id = `footer-list-${i + 1}`;
+    const btn = document.createElement('button');
+    btn.className = 'footer__expand';
+    btn.type = 'button';
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-controls', list.id);
+    btn.setAttribute('aria-label', `${h.textContent.trim()}: show the links`);
+    btn.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    h.after(btn);
+    btn.addEventListener('click', () => {
+      const open = !col.classList.contains('is-expanded');
+      col.classList.toggle('is-expanded', open);
+      btn.setAttribute('aria-expanded', String(open));
+    });
+  });
+  footer.classList.add('is-foldable');
+})();
+
+// ------------------------------------------------------------------ the home page's figure strip
+// Where the strip scrolls sideways (a phone or a tablet), its right edge fades out while more figures
+// follow, and its left edge once the first has moved away (assets/css/site.css, .fig-strip).
+document.querySelectorAll('.fig-strip').forEach((strip) => {
+  let queued = false;
+  const update = () => {
+    queued = false;
+    strip.classList.toggle('is-moved', strip.scrollLeft > 4);
+    strip.classList.toggle('is-end', strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 4);
+  };
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+  strip.addEventListener('scroll', queue, { passive: true });
+  addEventListener('resize', queue);
+  update();
+});
+
+// ------------------------------------------------------------------ the header over a dark ground
+// While a black ground ([data-nav-dark]: the home page's hero clip, its voices and its 4.0 band; every
+// .page-head) lies under the header, the header takes the black too (.nav.is-dark, assets/css/site.css); past it, the light bar returns.
+// Until this has run, a page that starts on a black ground (body.top-dark) shows the dark header from
+// the first paint; html.nav-ready hands the state to this script, and only then do the colours fade.
+// .nav.is-scrolled: the page is scrolled at all, so the home page's clear header turns solid before
+// any of the hero's words pass under it.
+(() => {
+  const nav = document.querySelector('.nav');
+  if (!nav) return;
+  const grounds = [...document.querySelectorAll('[data-nav-dark], .page-head')];
+  let queued = false;
+  const update = () => {
+    queued = false;
+    const line = nav.getBoundingClientRect().bottom;
+    nav.classList.toggle('is-dark', grounds.some((g) => {
+      const r = g.getBoundingClientRect();
+      return r.height > 0 && r.top < line + 1 && r.bottom > line;
+    }));
+    nav.classList.toggle('is-scrolled', window.scrollY > 0);
+  };
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+  addEventListener('scroll', queue, { passive: true });
+  addEventListener('resize', queue);
+  update();
+  requestAnimationFrame(() => document.documentElement.classList.add('nav-ready'));
+})();
+
 // ------------------------------------------------------------------ the home page's hero: its entrance
 // The page head sets html.hero-wait, which keeps the hero's words hidden and its clip a little larger
 // (assets/css/site.css). Here the title's words rise line by line out of their own lines, then the lead,
-// the buttons and the facts fade up one after another while the clip settles. The hero simply shows under
+// the buttons, the proof line and the facts fade up one after another while the clip settles. The hero simply shows under
 // reduced motion and when the page opens scrolled past it; if this runs late (html.hero-late, set 700ms
 // after the head), the style sheet has already faded it in.
 (() => {
@@ -157,7 +254,7 @@
       [{ transform: 'translateY(calc(100% + .2em))' }, { transform: 'none' }],
       { duration: 700, delay: 80 + i * step, easing: ease, fill: 'both' }))));
     const after = 80 + (lines.length - 1) * step + 220;
-    const rest = [hero.querySelector('.hero__lead'), ...hero.querySelectorAll('.btn-row > *'), hero.querySelector('.home-hero__facts')];
+    const rest = [hero.querySelector('.hero__lead'), ...hero.querySelectorAll('.btn-row > *'), hero.querySelector('.hero__proof'), hero.querySelector('.home-hero__facts')];
     rest.filter(Boolean).forEach((el, k) => anims.push(el.animate(
       [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }],
       { duration: 520, delay: after + Math.min(k, 6) * 60, easing: ease, fill: 'both' })));
@@ -168,7 +265,11 @@
 
 // ------------------------------------------------------------------ the home page's render clip
 // Muted and looping; it starts only when the visitor has not asked for reduced motion or to save data
-// (and not on a slow connection). The round button pauses and plays it; the poster shows otherwise.
+// (and not on a slow connection), and plays only while the hero is on the screen: it starts when the
+// hero comes into view and rests while it is scrolled away. The round button pauses and plays it; a
+// visitor's pause holds until they press play again. The poster shows while it is not playing. The
+// browser picks the encode from the <source> media queries (layouts/home.html). Nothing of the clip
+// beyond its metadata loads before the page has loaded and painted: the poster is the first picture.
 (() => {
   const video = document.querySelector('[data-hero-video]');
   const btn = document.querySelector('[data-hero-pause]');
@@ -182,24 +283,53 @@
     btn.setAttribute('aria-label', playing ? 'Pause the video' : 'Play the video');
     btn.innerHTML = playing ? icons.pause : icons.play;
   };
-  const play = () => video.play().then(() => show(true)).catch(() => show(false));
-  btn.addEventListener('click', () => (video.paused ? play() : (video.pause(), show(false))));
+  let wanted = true, visible = false;
+  const play = () => video.play().then(() => show(true)).catch(() => { wanted = false; show(false); });
+  btn.addEventListener('click', () => {
+    wanted = video.paused;
+    if (wanted) play(); else { video.pause(); show(false); }
+  });
   const c = navigator.connection;
   const slow = c && (c.saveData || /(^|-)(2g|3g)$/.test(c.effectiveType || ''));
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || slow) show(false);
-  else play();
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || slow) { wanted = false; show(false); return; }
+  show(true);
+  const start = () => {
+    if (!('IntersectionObserver' in window)) { if (wanted) play(); return; }
+    new IntersectionObserver((es) => {
+      visible = es.some((e) => e.isIntersecting);
+      if (visible && wanted && video.paused) play();
+      else if (!visible && !video.paused) video.pause();
+    }, { threshold: 0.15 }).observe(video.closest('.home-hero') || video);
+  };
+  // after the load event and the next paint, so the clip never competes with the page's own files
+  const afterPaint = () => requestAnimationFrame(() => setTimeout(start, 0));
+  if (document.readyState === 'complete') afterPaint();
+  else addEventListener('load', afterPaint, { once: true });
 })();
 
 // ------------------------------------------------------------------ events (data/events.yaml)
 // The build already left out what was over when the site was built; this checks again by the
 // visitor's clock, so a page built days ago still shows the right next event.
 // [data-ev-next]: show the first [data-ev] that has not ended, hide the block when none is left.
-// [data-ev-next-list] (home page): hide every ended event, show the empty line when none is left.
-// /events/: move ended events from the upcoming list to the past list (latest first).
+// [data-ev-next-list] (home page): hide every ended event, add the line for no dates when none is left.
+// /events/: move ended events from the upcoming list to the past list (latest first), and add the same
+// line when the upcoming list is empty. The line is not in the page while events are listed.
 // [data-ev-local]: add the start time in the visitor's own time zone when it differs.
 (() => {
   const now = Date.now();
   const over = (el) => Date.parse(el.dataset.evEnds) <= now;
+  const noDates = (list) => {
+    if (list.parentElement.querySelector('[data-ev-empty]')) return;
+    const p = document.createElement('p');
+    p.className = 'event-empty';
+    p.dataset.evEmpty = '';
+    p.append('No dates are set right now. New ones are announced in the ');
+    const a = document.createElement('a');
+    a.href = list.dataset.evNewsletter || '';
+    a.textContent = 'newsletter';
+    p.append(a, '.');
+    list.after(p);
+  };
   document.querySelectorAll('[data-ev-next]').forEach((box) => {
     const items = [...box.querySelectorAll('[data-ev]')];
     const next = items.find((el) => !over(el));
@@ -209,8 +339,7 @@
   document.querySelectorAll('[data-ev-next-list]').forEach((list) => {
     const items = [...list.querySelectorAll('[data-ev]')];
     items.forEach((el) => { el.hidden = over(el); });
-    const empty = list.parentElement.querySelector('[data-ev-next-empty]');
-    if (empty) empty.hidden = items.some((el) => !el.hidden);
+    if (items.length && items.every((el) => el.hidden)) noDates(list);
   });
   const up = document.querySelector('[data-ev-upcoming]');
   const past = document.querySelector('[data-ev-past]');
@@ -221,8 +350,7 @@
       [...past.children].sort((a, b) => b.dataset.evStart - a.dataset.evStart).forEach((el) => past.append(el));
       const h = document.querySelector('[data-ev-past-h]');
       if (h) h.hidden = false;
-      const empty = document.querySelector('[data-ev-empty]');
-      if (empty) empty.hidden = up.children.length > 0;
+      if (!up.children.length) noDates(up);
     }
   }
   document.querySelectorAll('[data-ev-local]').forEach((el) => {

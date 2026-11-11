@@ -1,4 +1,5 @@
-# The current Lead-DBS release: the one place for its version, date, requirements and summary.
+# The current Lead-DBS release: the one place for its version, date, requirements and summary. The
+# requirements are printed by {{< install "requirements" >}} (download page and First steps).
 # The home page, the sidebar card, the footer and every page that uses {{< release … >}} read this
 # file. What else a release needs is listed in README.md, "Cut a release".
 version: "3.2.1"
@@ -12,10 +13,11 @@ matlab: "R2024b"
 # MATLAB toolboxes it needs, and the optional ones.
 toolboxes: "Image Processing, Signal Processing, and Statistics and Machine Learning Toolboxes"
 toolboxes_optional: "Curve Fitting and Parallel Computing Toolboxes"
-# Other software it needs.
+# Other software it needs, and where to get it.
 needs: "SPM12"
-# Memory recommendation.
-memory: "32 GB of RAM or more recommended"
+needs_url: "https://www.fil.ion.ucl.ac.uk/spm/software/spm12/"
+# Recommended memory (the manual's installation page: "32GB or more").
+memory: "32 GB"
 # Version of the experimental standalone build (runs without MATLAB), and what to say about it.
 standalone: "3.1"
 standalone_note: "Experimental, for Linux, macOS and Windows, without regular updates or hotfixes"

@@ -1,0 +1,25 @@
+{{- /* The news feed, /news/index.xml (the old /feed/ and /news/feed/ lead here): the latest posts, each
+       with a plain-text summary and a link to the post. */ -}}
+{{- $pages := first (site.Config.Services.RSS.Limit | default 20) .Pages.ByDate.Reverse -}}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lead-DBS news</title>
+    <link>{{ .Permalink }}</link>
+    <description>{{ .Description | default "News about Lead-DBS: releases, papers and workshops." }}</description>
+    <language>en</language>
+    {{- with $pages }}<lastBuildDate>{{ (index . 0).Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>{{ end }}
+    {{- with .OutputFormats.Get "rss" }}
+    <atom:link href="{{ .Permalink }}" rel="self" type="{{ .MediaType.Type }}"/>
+    {{- end }}
+    {{- range $pages }}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      <guid>{{ .Permalink }}</guid>
+      <description>{{ .Summary | replaceRE ` ?\(open the full-size image\)` "" | plainify | htmlUnescape | truncate 400 }}</description>
+    </item>
+    {{- end }}
+  </channel>
+</rss>

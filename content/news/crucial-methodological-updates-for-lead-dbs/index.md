@@ -1,9 +1,13 @@
 ---
 title: "Crucial methodological updates for Lead-DBS"
 date: "2018-09-28T15:05:10"
-lastmod: "2018-09-28T15:05:29"
 slug: "crucial-methodological-updates-for-lead-dbs"
-image: "1-s2.0-S221315821830305X-gr1.jpg"
+# The 2018 methods papers (Lead-DBS v2, the comparison of normalization methods) are listed on Publications; this address forwards there.
+layout: redirect
+redirect: "/about/publications/#methodological-publications"
+search: false
+build:
+  list: never
+sitemap:
+  disable: true
 ---
-
-We are thrilled that the Lead-DBS v2 methodological paper is out in NeuroImage.[Lead-DBS v2: Towards a comprehensive pipeline for deep brain…](https://www.researchgate.net/publication/327380509_Lead-DBS_v2_Towards_a_comprehensive_pipeline_for_deep_brain_stimulation_imaging)[An unpaywalled preprint can be found here: [https://www.biorxiv.org/content/early/2018/08/28/322008](https://www.researchgate.net/deref/https%3A%2F%2Fwww.biorxiv.org%2Fcontent%2Fearly%2F2018%2F08%2F28%2F322008)].Lead-DBS was developed since 2012 and the first methods paper published in 2014. Since then, nearly everything has changed – and this led us to writing up the aforementioned updated methods paper. In the manuscript, we describe tools for multispectral nonlinear registration, structural/functional connectivity analyses, brain shift correction, reconstruction of microelectrode recordings and orientation detection of segmented DBS leads. The long author list reflects how many people have contributed to Lead-DBS development since then.One particularly important processing step is nonlinear registration (patient brains to an atlas or the other way around). Currently, ten approaches to do so are readily built into Lead-DBS and each comes with adjustable settings. Thus, it became very important to investigate and quantify results that may originate from those different approaches. In a marathon effort spearheaded by [Siobhan Ewert](https://www.researchgate.net/profile/Siobhan_Ewert) and led by [Todd M Herrington](https://www.researchgate.net/profile/Todd_Herrington) that involved >11,000 nonlinear warps, the two most promising normalization approaches were identified – ANTs based multispectral SyN registration as well as multispectram SPM-based segmentation – which are now the default choices in Lead-DBS. In fact, automatic segmentations of the STN/GPi performed using those approaches were marginally if not at all significantly worse than manual expert segmentations.Their article can be found here:[Optimization and comparative evaluation of nonlinear deforma…](https://www.researchgate.net/publication/327908494_Optimization_and_comparative_evaluation_of_nonlinear_deformation_algorithms_for_atlas-based_segmentation_of_DBS_target_nuclei)Finally, a new study out of Bern/Oxford validated the default STN atlas defined in Lead-DBS (Siobhan Ewert’s DISTAL atlas, [Toward defining deep brain stimulation targets in MNI space:…](https://www.researchgate.net/publication/317032527_Toward_defining_deep_brain_stimulation_targets_in_MNI_space_A_subcortical_atlas_based_on_multimodal_MRI_histology_and_structural_connectivity)) using microelectrode recordings. This important work showed that anatomical and electrophysiological accuracy was highest for the DISTAL atlas when comparing it to two different atlases of the STN. The article can be found here:[Accuracy of different three-dimensional subcortical human br…](https://www.researchgate.net/publication/327921854_Accuracy_of_different_three-dimensional_subcortical_human_brain_atlases_for_DBS_-lead_localisation)

@@ -1,6 +1,26 @@
-{{- /* The render behind every inner page's title: the same black ground and electrodes as the home
-       page's hero, faint, on the right. Decorative (alt=""); small WebP copies made by Hugo. */ -}}
-{{- with resources.Get "images/renders/cohort-black.jpg" -}}
+{{- /* The render behind an inner page's title: black ground like the home page's hero, faint, on the
+       right, cut to its subject (focus: the object-position kept in the crop). Each group of the main
+       menu has its own scene, chosen by the group the page belongs to (partial nav-place.html, the same
+       place the breadcrumb shows), not by its folder, and no scene is used by two groups. Pages in no
+       group (imprint, privacy, search, 404) share the last one. The key is the group's menu identifier,
+       or its name where it has none. Decorative (alt=""); WebP copies made by Hugo (1800 px wide too
+       where the source is, for wide retina screens). */ -}}
+{{- $scenes := dict
+    "features"  (dict "file" "head-features.jpg" "focus" "70% 55%")
+    "docs"      (dict "file" "head-docs.jpg" "focus" "74% 50%")
+    "data"      (dict "file" "head-data.jpg" "focus" "68% 55%")
+    "community" (dict "file" "head-community.jpg" "focus" "68% 62%")
+    "News"      (dict "file" "lead-closeup.jpg" "focus" "50% 55%")
+    "about"     (dict "file" "head-about.jpg" "focus" "70% 55%")
+    "Download"  (dict "file" "cohort-front.jpg" "focus" "50% 60%")
+-}}
+{{- $other := dict "file" "cohort-top.jpg" "focus" "50% 50%" -}}
+{{- $group := (partial "nav-place.html" .).group -}}
+{{- $scene := $other -}}
+{{- with $group }}{{ $scene = index $scenes (.Identifier | default .Name) | default $other }}{{ end -}}
+{{- with resources.Get (printf "images/renders/%s" $scene.file) -}}
 {{- $s := .Resize "640x webp q70" }}{{ $m := .Resize "1200x webp q70" -}}
-<img class="page-head__render" src="{{ $s.RelPermalink }}" srcset="{{ $s.RelPermalink }} 640w, {{ $m.RelPermalink }} 1200w" sizes="(min-width: 1024px) 60vw, 100vw" width="{{ $m.Width }}" height="{{ $m.Height }}" alt="" decoding="async" fetchpriority="low">
+{{- $set := printf "%s 640w, %s 1200w" $s.RelPermalink $m.RelPermalink -}}
+{{- if ge .Width 1800 }}{{ $l := .Resize "1800x webp q66" }}{{ $set = printf "%s, %s 1800w" $set $l.RelPermalink }}{{ end -}}
+<img class="page-head__render" src="{{ $s.RelPermalink }}" srcset="{{ $set }}" sizes="(min-width: 1024px) 62vw, 100vw" width="{{ $m.Width }}" height="{{ $m.Height }}" style="--focus: {{ $scene.focus }}" alt="" decoding="async" fetchpriority="low">
 {{- end -}}

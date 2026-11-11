@@ -1,8 +1,13 @@
 ---
-title: "Lead-DBS v2.0 is out now!"
+title: "Lead-DBS 2.0 released"
+# the browser title (head.html adds " – Lead-DBS")
+htmlTitle: "Version 2.0 released"
+description: "Lead-DBS 2.0: new major features to model deep brain stimulation electrodes in computer simulations."
 date: "2017-09-09T20:19:44"
 lastmod: "2017-09-10T14:04:59"
 slug: "lead-dbs-v2-0-is-out-now"
+# the picture shown when the page is shared (head.html)
+share: "images/renders/lead-closeup.jpg"
 ---
 
 ## New features in Lead-DBS 2.0
@@ -37,7 +42,7 @@ The [DISTAL atlas](/helpsupport/knowledge-base/atlasesresources/distal-atlas/) i
 
 It uses three sources of information, namely MRI, histology (graciously shared by Mallar Chakravarty and Louis Collins) and structural connectivity, where appropriate to define all structures that have so far played a role in deep brain stimulation and it was validated to perform atlas based segmentation on MR acquisitions with clinical quality.
 
-{{< vimeo 228993216 >}}
+{{< vimeo id="228993216" title="The DISTAL atlas in the Lead-DBS 3D viewer (2017)" >}}
 
 **A rosetta stone for thalamic nomenclatures**
 
@@ -87,15 +92,15 @@ The new VTA model works for both constant voltage and current stimulations, is a
 
 **The VTA model is in “beta” state but we hope to finish it soon**
 
-Unfortunately, the model may still not be seen as “stable” software and requires some troubleshooting here and there (see [this page](/helpsupport/knowledge-base/atlasesresources/ixi-database/), our [Slack channel](/helpsupport/slack-user-channel/) and [Forum](/helpsupport/slack-user-channel/) for support options). Also, it does not yet work with segmented leads. We are working on getting this done with some support from Till Dembek out of Cologne.
+Unfortunately, the model may still not be seen as “stable” software and requires some troubleshooting here and there (see our [Slack channel](/helpsupport/slack-user-channel/) for support options). Also, it does not yet work with segmented leads. We are working on getting this done with some support from Till Dembek out of Cologne.
 
-*Note (2026): the forum is closed; please ask on the [user Slack](https://inviter.co/lead-dbs).*
+*Note (2026): the forum is closed; please ask on the [user Slack](/helpsupport/slack-user-channel/).*
 
-*Of note, this model represents the first open-source FEM based VTA model and numerous people invested countless hours to make this happen. **Great thanks go out to Johannes Vorwerk (Utah), Qianqian Fang (Boston), Ningfei Li (Berlin) & Robert Oostenfeld (Nijmegen), [also see here](/helpsupport/knowledge-base/atlasesresources/ixi-database/).***
+*Of note, this model represents the first open-source FEM based VTA model and numerous people invested countless hours to make this happen. **Great thanks go out to Johannes Vorwerk (Utah), Qianqian Fang (Boston), Ningfei Li (Berlin) & Robert Oostenfeld (Nijmegen).***
 
 {{% row %}}
 {{% col "1/2" %}}
-{{< button href="/helpsupport/knowledge-base/atlasesresources/ixi-database/" >}}Find out more about the VTA model here{{< /button >}}
+{{< button href="/helpsupport/knowledge-base/lead-dbs-methods/" >}}Stimulation modelling in Lead-DBS today{{< /button >}}
 
 {{% /col %}}
 {{% col "1/2" %}}
@@ -130,7 +135,7 @@ PaCER is fast and precise, in most cases there is no manual refinement needed at
 
 In meticulous work, Ari Kappel (Richardson lab, U Pittsburg) and Chadwick Boulay (Sachs lab, U Ottawa) created a tool to map microelectrode recordings (MER) onto the subcortical anatomy of the brain.
 
-![Microelectrode recording trajectories through atlas structures in 3D](MER.gif)
+{{< clip src="MER.mp4" poster="MER-poster.jpg" alt="Microelectrode recording trajectories through atlas structures in 3D" >}}
 
 **A fusion of electrophysiology and MRI in space**
 

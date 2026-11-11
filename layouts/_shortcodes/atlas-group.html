@@ -1,0 +1,65 @@
+{{- /* One group of an atlas catalogue: its heading (in the page's table of contents), a line on what
+       the group holds, then every atlas of the group in one fixed pattern: a small thumbnail, name and
+       paper, what it covers, whether it comes with Lead-DBS; then, folded away in a <details> so the page
+       stays short, a few lines on what it is (55 to 70 characters per line), "Get it" and "Cite" beside
+       the picture. A link to an entry's anchor opens it (assets/js/atlas-filter.js); the browser's
+       find-in-page opens it too. Data: the page's atlases.yaml (partial atlas/data.html). Use the % form,
+       so the heading takes part in the table of contents:
+         {{% atlas-group "thalamus" %}} */ -}}
+{{- $d := partial "atlas/data.html" .Page -}}
+{{- $id := .Get 0 -}}
+{{- $g := index (where $d.groups "id" $id) 0 -}}
+{{- if not $g }}{{ errorf "atlas-group: %s has no group %q in atlases.yaml" .Page.File.Path $id }}{{ end -}}
+{{- $p := .Page -}}
+{{- $html := "" -}}
+{{- range where $d.atlases "group" $id -}}
+  {{- $a := . -}}
+  {{- $fig := "" }}{{ $thumb := "" -}}
+  {{- with (or $a.image $a.poster) -}}
+    {{- with $p.Resources.Get . -}}
+      {{- /* the box shows it at most 86 px on a side: a copy twice that size, never enlarged */ -}}
+      {{- $t := .Fit "172x172 webp q78" -}}
+      {{- $thumb = printf `<span class="atlas__thumb" aria-hidden="true"><img src="%s" alt="" width="%d" height="%d" loading="lazy" decoding="async"></span>` $t.RelPermalink $t.Width $t.Height -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $a.image -}}
+    {{- $r := $p.Resources.Get . -}}
+    {{- if not $r }}{{ errorf "atlas-group: %s: no picture %q next to the page" $p.File.Path . }}{{ end -}}
+    {{- $set := slice -}}
+    {{- range slice 320 480 640 }}{{ if lt . $r.Width }}{{ $x := $r.Resize (printf "%dx webp q82" .) }}{{ $set = $set | append (printf "%s %dw" $x.RelPermalink $x.Width) }}{{ end }}{{ end -}}
+    {{- $top := $r.Resize (printf "%dx webp q82" (math.Min $r.Width 640 | int)) -}}
+    {{- $set = $set | append (printf "%s %dw" $top.RelPermalink $top.Width) -}}
+    {{- $fb := $r }}{{ if gt $r.Width 640 }}{{ $fb = $r.Resize "640x" }}{{ end -}}
+    {{- $img := printf `<picture><source type="image/webp" srcset="%s" sizes="(min-width: 768px) 280px, 100vw"><img src="%s" alt="%s" width="%d" height="%d" loading="lazy" decoding="async"></picture>` (delimit $set ", ") $fb.RelPermalink ($a.alt | htmlEscape) $fb.Width $fb.Height -}}
+    {{- if ge $r.Width 800 }}{{ $img = printf `<a class="atlas__zoom" href="%s">%s<span class="sr-only"> (open the full-size image)</span></a>` $r.RelPermalink $img }}{{ end -}}
+    {{- $fig = printf `<figure class="atlas__fig"><div class="atlas__mat">%s</div>%s</figure>` $img (cond (isset $a "caption") (printf `<figcaption>%s</figcaption>` ($p.RenderString (default "" $a.caption))) "") -}}
+  {{- end -}}
+  {{- with $a.clip -}}
+    {{- $v := $p.Resources.Get . }}{{ $po := $p.Resources.Get $a.poster -}}
+    {{- if not (and $v $po) }}{{ errorf "atlas-group: %s: clip %q or its poster is missing" $p.File.Path . }}{{ end -}}
+    {{- $fig = printf `<figure class="atlas__fig clip"><div class="atlas__mat"><video src="%s" poster="%s" width="%d" height="%d" muted loop playsinline preload="none" controls aria-label="%s" data-clip></video></div></figure>` $v.RelPermalink $po.RelPermalink $po.Width $po.Height ($a.alt | htmlEscape) -}}
+    {{- $p.Store.Set "atlas-clip" true -}}
+  {{- end -}}
+  {{- $also := "" }}{{ range $a.also }}{{ $also = printf `%s<span id="%s"></span>` $also . }}{{ end -}}
+  {{- $get := slice }}{{ if $a.preinstalled }}{{ $get = $get | append "Comes with Lead-DBS." }}{{ end -}}
+  {{- range $a.get }}{{ $get = $get | append . }}{{ end -}}
+  {{- $getHTML := "" }}{{ range $get }}{{ $getHTML = printf "%s<li>%s</li>" $getHTML ($p.RenderString .) }}{{ end -}}
+  {{- $citeHTML := "" }}{{ range $a.cite }}{{ $citeHTML = printf "%s<li>%s</li>" $citeHTML ($p.RenderString .) }}{{ end -}}
+  {{- $list := cond (isset $a "cite_numbered") "ol" "ul" -}}
+  {{- $more := "" }}{{ with $a.page }}{{ with site.GetPage . }}{{ $more = printf `<p class="atlas__more"><a href="%s">%s: the full description</a></p>` .RelPermalink .LinkTitle }}{{ end }}{{ end -}}
+  {{- $html = printf `%s<section class="atlas" aria-labelledby="%s" data-atlas-entry>%s<div class="atlas__head">%s<div class="atlas__title"><h3 id="%s">%s <span class="atlas__ref">(%s)</span><a class="heading-anchor" href="#%s" aria-label="Link to this atlas">#</a></h3><p class="atlas__meta"><span>%s</span>%s</p></div></div><details class="atlas__details"><summary>About, get it, cite<span class="sr-only">: %s</span></summary><div class="atlas__body%s"><div class="atlas__about">%s%s</div><div class="atlas__refs"><h4 class="atlas__label">Get it</h4><ul>%s</ul>%s</div>%s</div></details></section>`
+      $html $a.id $also $thumb $a.id $a.name $a.ref $a.id $a.covers
+      (cond $a.preinstalled `<span class="atlas__tag">Preinstalled</span>` "")
+      $a.name
+      (cond (gt (len $fig) 0) " atlas__body--fig" "")
+      (cond (isset $a "about") ($p.RenderString (dict "display" "block") (default "" $a.about)) "") $more
+      $getHTML
+      (cond (gt (len $citeHTML) 0) (printf `<h4 class="atlas__label">Cite</h4><%s class="atlas__cite">%s</%s>` $list $citeHTML $list) "")
+      $fig -}}
+{{- end }}
+## {{ $g.title }} {#{{ $id }}}
+
+{{ $g.intro }}
+
+<div class="atlas-list" data-atlas-group="{{ $id }}">{{ partial "nobreak-html.html" ($html | replaceRE `\n\s*\n` "\n") }}<p class="atlas-list__back"><a href="#atlas-index">Back to the filter and the groups</a></p></div>
+{{ if $p.Store.Get "atlas-clip" }}{{ partial "clip-script.html" $p }}{{ end }}

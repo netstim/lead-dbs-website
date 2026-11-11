@@ -1,41 +1,68 @@
 ---
-title: "Learn Lead-DBS yourself"
+title: "Lead Tutor"
+description: "The open training dataset of ten DBS patients with expert electrode localizations: what it holds, how to get it and what to cite."
+weight: 1
+linkTitle: "Lead Tutor"
 date: "2025-02-28T17:20:40"
-lastmod: "2025-02-28T17:20:41"
+lastmod: "2026-11-11"
+keywords: ["Lead Tutor", "Lead-Tutor", "tutorial", "training", "training dataset", "practise", "practice", "dataset", "exercise", "OSF", "ground truth", "expert localizations"]
+# the picture shown when the page is shared (head.html)
+share: "Screenshot-2025-02-28-at-11.18.44-AM-1030x1005.png"
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - {name: "Install Lead-DBS", url: "/download/#install"}
+  - "/helpsupport/knowledge-base/walkthrough-videos/"
+  - "/events/"
+# the picture of its card on the Docs and help page (childpages): a render of the Lead Tutor patients
+card: "images/renders/cohort-hero.jpg"
 ---
 
-## Lead Tutor {#learn-lead-dbs-yourself}
+<span id="learn-lead-dbs-yourself"></span>
 
-{{% row %}}
-{{% col "1/2" %}}
-Lead Tutor lets you practise electrode localization with Lead-DBS on your own. It includes
+Lead Tutor is the first open training dataset for DBS electrode localization, with a tool built into
+Lead-DBS that scores your localizations against those of experts. The exercise is step 2 of
+[First steps](/helpsupport/first-steps/#lead-tutor).
 
-- A [scientific paper](https://apertureneuro.org/article/129658-lead-tutor-an-open-access-educational-resource-for-deep-brain-stimulation-electrode-localizations) summarizing the effort
-- A [dataset](https://osf.io/jxecg/?view_only=f2765a6aa3604dea8afa14365b70381c) of anonymized imaging data from ten DBS patients
-- A tool (integrated into Lead-DBS) that you can use to check your results against those of experts
+{{< summary >}}
+Patients
+: Ten, implanted on both sides: eight with Parkinson's disease, one with dystonia, one with epilepsy
 
-{{% /col %}}
-{{% col "1/2" %}}
+Imaging
+: Preoperative MRI (T1- and T2-weighted, in some patients FLAIR) and postoperative CT, defaced and anonymized, as NIfTI files in BIDS
+
+Electrodes
+: Boston Scientific Vercise Cartesia (six patients), Medtronic SenSight (two) and 3387 (one), Abbott Infinity (one); directional in nine patients
+
+Benchmark
+: Localizations by two experts, and those of ten trained non-experts for the range of usual results
+
+Get it
+: Free download from OSF; shared openly with the approval of the institutional review board of Brigham and Women's Hospital, Boston, where the images were acquired
+
+Cite
+: Madan et al. 2025, *Aperture Neuro* 5, [doi:10.52294/001c.129658](https://doi.org/10.52294/001c.129658) ([full citation](#what-to-cite))
+{{< /summary >}}
+
+{{< button href="https://osf.io/jxecg/?view_only=f2765a6aa3604dea8afa14365b70381c" >}}Download the Lead Tutor dataset{{< /button >}}
+
+## Your report
+
+After *Submit Results…*, Lead Tutor shows for each patient how far your electrodes lie from the experts'
+in distance and rotation, colour-coded by how non-experts usually do. The patients are ordered from
+easiest to hardest; a few were included on purpose because their images are hard to read.
+
+![Lead Tutor report comparing a user's localizations with those of experts, per patient](Screenshot-2025-02-28-at-11.18.44-AM-1030x1005.png "Lead Tutor's feedback: the Euclidean and rotational distances of your electrode placements from the expert benchmark, per patient. Colours mark standard deviations, calculated from the performance of non-experts relative to experts, so you see whether a localization falls within or outside the optimal range.")
+
+The manual explains each step: [Self-tutoring with Lead Tutor](https://netstim.gitbook.io/leaddbs/lead-dbs/self-tutoring-with-lead-tutor).
+
+## What to cite
+
+{{% paper madan2025 "full" %}}
+
 ![First page of the Lead-Tutor paper in Aperture Neuro](Screenshot-2025-02-28-at-11.14.43-AM.png)
 
-{{% /col %}}
-{{% /row %}}
+## Next
 
-{{% row %}}
-{{% col "1/4" %}}
-{{< button href="https://osf.io/jxecg/?view_only=f2765a6aa3604dea8afa14365b70381c" >}}Download the Tutor Dataset{{< /button >}}
-
-{{% /col %}}
-{{% col "1/4" %}}
-{{< button href="https://apertureneuro.org/article/129658-lead-tutor-an-open-access-educational-resource-for-deep-brain-stimulation-electrode-localizations" >}}Check out the Paper{{< /button >}}
-
-{{% /col %}}
-{{% col "1/2" %}}
-![Lead Tutor report comparing a user's localizations with those of experts, per patient](Screenshot-2025-02-28-at-11.18.44-AM-1030x1005.png)  
-
-**Example of Lead Tutor feedback.** A screenshot from the Lead Tutor interface, displaying user localization results for each patient. The interface visualizes the Euclidean and rotational distances of electrode placements compared to expert benchmarks. The results are color-coded based on standard deviations, which are calculated from the performance of non-experts relative to experts for each patient. This feedback helps users identify whether their localizations fall within or outside the optimal range, guiding improvements in their accuracy and consistency.
-
-{{% /col %}}
-{{% /row %}}
-
-How to load the dataset and submit your results is explained in the manual: [Self-tutoring with Lead Tutor](https://netstim.gitbook.io/leaddbs/lead-dbs/self-tutoring-with-lead-tutor). New to Lead-DBS altogether? Start with the [installation guide](https://netstim.gitbook.io/leaddbs/installation) and the [walkthrough videos](/helpsupport/knowledge-base/walkthrough-videos/).
+The [walkthrough videos](/helpsupport/knowledge-base/walkthrough-videos/) show whole analyses on screen,
+and [Features](/helpsupport/knowledge-base/lead-dbs-methods/) lists every method and tool, with its
+manual chapter.

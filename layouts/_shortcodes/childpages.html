@@ -2,15 +2,67 @@
          {{< childpages >}}                         by weight (the order in the menu)
          {{< childpages order="date" >}}            newest first, by each page's date
          {{< childpages order="title" >}}           A to Z
-       include="/path/a, /path/b" adds pages that live elsewhere (sorted in with the rest). */ -}}
-{{- $pages := .Page.Pages -}}
-{{- with .Get "include" }}{{ range split . "," }}{{ with site.GetPage (strings.TrimSpace .) }}{{ $pages = $pages | append . }}{{ end }}{{ end }}{{ end -}}
+       include="/path/a, /path/b" adds pages that live elsewhere (sorted in with the rest).
+       order="include" keeps the order of include= (and lists only those pages).
+       section="/path" lists the pages of that section instead of this page's own.
+       descriptions="true" prints each page's description (front matter) under its title.
+         {{< childpages menu="true" >}}             the entries under this page in the main menu, in menu
+                                                    order, each with its description (a group's hub page)
+         {{< childpages menu="data" >}}             the entries under the menu entry with that identifier
+       In the menu form an entry without children is a card; an entry that leads to another site says so,
+       and an entry that is not a page (the manual, an anchor) takes its line from the menu's
+       params.description. Entries that have entries of their own are left out. An entry that
+       points to this same page or a section of it (Get help on the Docs hub) is left out too.
+       A card starts with a picture when every card of the list has one, so a row never mixes cards with
+       and without: the page's front matter "card" (a file next to the page or a path under assets/), or
+       for an entry that is not a page the menu's params.image. The share picture is never used: it is
+       often the render behind the group's page head. Without a picture on every card, all cards are text.
+       The build stops when two cards of one hub show the same picture, or a card shows the render behind
+       the hub's own page head (partial page-head-render.html), so no picture appears twice on a page. */ -}}
+{{- with .Get "menu" -}}
+{{- $want := . -}}
+{{- $entry := false -}}
+{{- if eq $want "true" }}{{ $entry = (partial "nav-place.html" $.Page).group }}{{ if and $entry (ne $entry.Page $.Page) }}{{ $entry = false }}{{ end -}}
+{{- else }}{{ range site.Menus.main }}{{ if eq .Identifier $want }}{{ $entry = . }}{{ end }}{{ range .Children }}{{ if eq .Identifier $want }}{{ $entry = . }}{{ end }}{{ end }}{{ end }}{{ end -}}
+{{- if not $entry }}{{ errorf "childpages: %s: no menu entry %q for this page" $.Page.File.Path $want }}{{ end -}}
+{{- $cards := slice -}}
+{{- range $entry.Children }}{{ if and (not .HasChildren) (not (hasPrefix .URL (printf "%s#" $.Page.RelPermalink))) (ne .Page $.Page) }}
+  {{- $src := .Params.image }}{{ with .Page }}{{ $src = .Params.card }}{{ end -}}
+  {{- $img := partial "page-image.html" (dict "page" (.Page | default $.Page) "src" $src) -}}
+  {{- $cards = $cards | append (dict "e" . "img" $img) -}}
+{{- end }}{{ end -}}
+{{- $pics := true }}{{ range $cards }}{{ if not .img }}{{ $pics = false }}{{ end }}{{ end -}}
+{{- if $pics -}}
+  {{- /* the head render is a resized copy named after its source ("head-about_hu_….webp") */ -}}
+  {{- $head := partial "page-head-render.html" $.Page -}}
+  {{- $seen := dict -}}
+  {{- range $cards -}}
+    {{- $name := .e.Name }}{{ $file := .img.Name -}}
+    {{- $key := .img.Content | md5 -}}
+    {{- with index $seen $key }}{{ errorf "childpages: %s: the cards %q and %q show the same picture" $.Page.File.Path . $name }}{{ end -}}
+    {{- $seen = merge $seen (dict $key $name) -}}
+    {{- if strings.Contains $head (printf "/%s_hu" (path.BaseName $file)) }}{{ errorf "childpages: %s: the card %q shows %s, the render behind this page's head" $.Page.File.Path $name $file }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+<ul class="child-pages child-pages--described{{ if $pics }} child-pages--pictures{{ end }}">
+  {{- range $cards }}{{ $img := .img }}{{ with .e }}
+  {{- $text := .Params.description }}{{ if and (not $text) .Page }}{{ $text = .Page.Description }}{{ end -}}
+  <li><a class="card child-page" href="{{ .URL }}">{{ if $pics }}{{ $s := $img.Fill "720x405 webp q80 Center" }}<span class="child-page__img"><img src="{{ $s.RelPermalink }}" width="{{ $s.Width }}" height="{{ $s.Height }}" alt="" loading="lazy" decoding="async"></span>{{ end }}<span class="child-page__body"><span class="child-page__title">{{ partial "menu-label.html" . }}</span>{{ with $text }}<span class="child-page__text">{{ partial "nobreak-html.html" (. | htmlEscape) }}</span>{{ end }}</span><svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a></li>
+  {{- end }}{{ end }}
+</ul>
+{{- else -}}
 {{- $order := .Get "order" | default "weight" -}}
+{{- $pages := cond (eq $order "include") (slice) .Page.Pages -}}
+{{- with .Get "section" }}{{ with site.GetPage . }}{{ $pages = .Pages }}{{ else }}{{ errorf "childpages: no section %q (in %s)" . $.Page.File.Path }}{{ end }}{{ end -}}
+{{- with .Get "include" }}{{ range split . "," }}{{ $p := strings.TrimSpace . }}{{ with site.GetPage $p }}{{ $pages = $pages | append . }}{{ else }}{{ errorf "childpages: no page %q (in %s)" $p $.Page.File.Path }}{{ end }}{{ end }}{{ end -}}
+{{- $desc := eq (.Get "descriptions") "true" -}}
 {{- if eq $order "date" }}{{ $pages = sort $pages "Date" "desc" }}
+{{- else if eq $order "include" }}
 {{- else if eq $order "title" }}{{ $pages = sort $pages "LinkTitle" }}
 {{- else }}{{ $pages = sort $pages "Weight" }}{{ end -}}
-<ul class="child-pages">
+<ul class="child-pages{{ if $desc }} child-pages--described{{ end }}">
   {{ range $pages }}
-  <li><a class="card child-page" href="{{ .RelPermalink }}"><span>{{ .LinkTitle }}</span><svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a></li>
+  <li><a class="card child-page" href="{{ .RelPermalink }}">{{ if $desc }}<span class="child-page__body"><span class="child-page__title">{{ partial "nobreak-html.html" (.LinkTitle | htmlEscape) }}</span>{{ with .Description }}<span class="child-page__text">{{ partial "nobreak-html.html" (. | htmlEscape) }}</span>{{ end }}</span>{{ else }}<span>{{ partial "nobreak-html.html" (.LinkTitle | htmlEscape) }}</span>{{ end }}<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a></li>
   {{ end }}
 </ul>
+{{- end -}}

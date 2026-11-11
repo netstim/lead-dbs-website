@@ -1,37 +1,38 @@
 ---
-title: "Help"
+title: "Docs and help"
+description: "The Lead-DBS documentation and where to get help: first steps, the manual, Lead Tutor, walkthrough videos, the user Slack and bug reports."
+linkTitle: "Docs and help"
 date: "2017-01-04T21:27:30"
-lastmod: "2026-11-10"
+lastmod: "2026-11-11"
 weight: 1
+aliases: ["/helpsupport/knowledge-base/"]
+keywords: ["help", "support", "documentation", "docs", "manual", "faq", "tutorial", "tutorials", "learn", "getting started", "question", "forum", "contact"]
+# the picture shown when the page is shared (head.html)
+share: "images/renders/head-about.jpg"
+# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
+related:
+  - "/download/"
+  - "/helpsupport/slack-user-channel/"
+  - "/about/citing_leaddbs/"
 ---
 
-How to get help with Lead-DBS, in the order most people need it.
+New to Lead-DBS? Start with
+[First steps](/helpsupport/first-steps/): install it, then localize your first electrodes with Lead Tutor.
+Every method and tool, with its manual chapter: [Features](/helpsupport/knowledge-base/lead-dbs-methods/).
+Writing a paper? See [Cite Lead-DBS](/about/citing_leaddbs/).
 
-## 1. Read the manual
+{{< childpages menu="true" >}}
 
-The [Lead-DBS manual](https://netstim.gitbook.io/leaddbs) covers [installation](https://netstim.gitbook.io/leaddbs/installation) and every main step of the pipeline.
+## Get help {#get-help}
 
-## 2. Watch the walkthrough videos
+- **Questions about using Lead-DBS:** ask on the [user Slack](/helpsupport/slack-user-channel/), where users help each other and members of the development team read along. You invite yourself, no approval needed.
+- **How do I …?** Look it up in the [manual](https://netstim.gitbook.io/leaddbs) first; its [installation guide](https://netstim.gitbook.io/leaddbs/installation) covers most setup problems.
+- **Bugs:** open an issue on [GitHub](https://github.com/netstim/leaddbs/issues), with your Lead-DBS version, operating system and the full error message.
+- **Anything else:** write to us through the [contact page](/contact/).
 
-The [walkthrough videos](/helpsupport/knowledge-base/walkthrough-videos/) show a whole analysis from raw patient files to normative connectomes. The general walkthrough was published in January 2018, when Lead-DBS v2 was current, so some menus look different today: for the current steps, follow the manual. A separate video explains the [BIDS file structure and how old file names map to new ones](/helpsupport/knowledge-base/walkthrough-videos/#bids-walkthrough).
+{{< notice >}}**The old support forum is closed.** Its posts were not moved to this website. Please ask on the [user Slack](/helpsupport/slack-user-channel/) and report bugs on [GitHub](https://github.com/netstim/leaddbs/issues).{{< /notice >}}
 
-## 3. Practise with Lead Tutor
+## Next
 
-[Lead Tutor](/helpsupport/learn-lead-dbs-yourself/) is an open training dataset: localize the electrodes yourself and compare your result with those of experts.
-
-## 4. Ask on the user Slack
-
-The [user Slack](https://inviter.co/lead-dbs) is where users help each other, and members of the development team read along. Join through the [self-invite link](https://inviter.co/lead-dbs). Already a member? [Open the workspace](https://leadsuite.slack.com/). More on the [user Slack page](/helpsupport/slack-user-channel/).
-
-## 5. Report a bug
-
-If you think you have found a bug, please open an issue on [GitHub](https://github.com/netstim/leaddbs/issues).
-
-{{< notice >}}**The old support forum is closed.** Its posts were not moved to this website. Please ask questions on the [user Slack](https://inviter.co/lead-dbs) and report bugs on [GitHub](https://github.com/netstim/leaddbs/issues).{{< /notice >}}
-
-## More
-
-- [Knowledge Base](/helpsupport/knowledge-base/): atlases, parcellations, normative connectomes and methods
-- [Workshops](/helpsupport/workshops/) and [events](/events/), including the developer meeting
-- [Develop Lead-DBS](/develop/): the source code, how to contribute and the developer meeting
-- If you just wish to get a quick overview of what Lead-DBS does, see the [screenshots](/helpsupport/knowledge-base/screenshots/) or [Made with Lead-DBS](/gallery/).
+Meet the people behind Lead-DBS at the [events](/events/): a monthly developer meeting online, and the
+next hands-on workshop. Want to contribute? See [Develop Lead-DBS](/develop/).

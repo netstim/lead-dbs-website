@@ -1,0 +1,13 @@
+{{- /* A row of links to the sections of a long page, under its intro:
+         {{< jumps "Single patients|#single-patients; Groups of patients|#groups-of-patients; Tools|#tools" >}}
+       Each item is "label|#anchor"; the build stops when the page has no heading with that anchor. */ -}}
+{{- $page := .Page -}}
+{{- $ids := slice }}{{ range $page.Fragments.HeadingsMap }}{{ $ids = $ids | append .ID }}{{ end -}}
+<nav class="jumps" aria-label="On this page">
+  <ul>
+  {{- range split (.Get 0) ";" }}{{ $parts := split (strings.TrimSpace .) "|" }}{{ $label := strings.TrimSpace (index $parts 0) }}{{ $href := strings.TrimSpace (index $parts 1) -}}
+    {{- if not (in $ids (strings.TrimPrefix "#" $href)) }}{{ errorf "jumps: %s: no heading with the anchor %q" $page.File.Path $href }}{{ end }}
+    <li><a href="{{ $href }}">{{ partial "nobreak-html.html" ($label | htmlEscape) }}</a></li>
+  {{- end }}
+  </ul>
+</nav>

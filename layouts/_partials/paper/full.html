@@ -1,0 +1,12 @@
+{{- /* One paper of data/papers.yaml as a full reference: authors (year). Title. Journal, volume(issue),
+       pages. doi link. Context: the paper's map. */ -}}
+{{- $p := . -}}
+{{- $title := $p.title -}}
+{{- if not (findRE `[.?!]$` $title) }}{{ $title = printf "%s." $title }}{{ end -}}
+{{- $out := printf "%s (%v). %s <em>%s</em>" $p.authors $p.year $title $p.journal -}}
+{{- with $p.volume }}{{ $out = printf "%s, <em>%s</em>" $out . }}{{ end -}}
+{{- with $p.issue }}{{ $out = printf "%s(%s)" $out . }}{{ end -}}
+{{- with $p.pages }}{{ $out = printf "%s, %s" $out . }}{{ end -}}
+{{- with $p.note }}{{ $out = printf "%s (%s)" $out . }}{{ end -}}
+{{- $out = printf "%s. <a href=\"https://doi.org/%s\">doi:%s</a>" $out $p.doi $p.doi -}}
+{{- $out | safeHTML -}}

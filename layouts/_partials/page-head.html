@@ -1,15 +1,26 @@
 {{- /* The head of every inner page: breadcrumbs and the title on the black ground of the renders
-       (the home page's look carried over), the date under a news post's title. */ -}}
-<header class="page-head page-head--render">
+       (the home page's look carried over), the date under a news post's title. The breadcrumb follows
+       the main menu (partial crumbs.html, which nav-place.html feeds), not the folders: Home / menu group /
+       menu entry / page; it ends with the page's own name, except on a news post, where the title follows
+       right under "News" (the BreadcrumbList for search engines still ends with the post). A background
+       article that began as a post (front matter showDate: true) shows when it was written and last
+       changed. */ -}}
+{{ $crumbs := partial "crumbs.html" . }}
+{{ $post := and (eq .Section "news") .IsPage }}
+<header class="page-head page-head--render" data-nav-dark>
   {{ partial "page-head-render.html" . }}
   <div class="wrap">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <ol>
-        {{ range .Ancestors.Reverse }}<li><a href="{{ .RelPermalink }}">{{ if .IsHome }}Home{{ else }}{{ .LinkTitle }}{{ end }}</a></li>{{ end }}
-        <li aria-current="page">{{ .LinkTitle }}</li>
+        {{- range $i, $c := $crumbs }}
+        {{- if lt (add $i 1) (len $crumbs) }}<li><a href="{{ $c.url }}">{{ partial "nobreak-html.html" ($c.name | htmlEscape) }}</a></li>
+        {{- else if not $post }}<li aria-current="page">{{ partial "nobreak-html.html" ($c.name | htmlEscape) }}</li>{{ end }}
+        {{- end }}
       </ol>
     </nav>
     <h1>{{ partial "nobreak.html" .Title }}</h1>
-    {{ if and (eq .Section "news") .IsPage }}<p class="page-head__meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time></p>{{ end }}
+    {{- /* a release's announcement that came later than the release itself says both (data/releases.yaml) */}}
+    {{ if $post }}<p class="page-head__meta">{{ with partial "release-of.html" . }}{{ if ne (time.Format "2006-01-02" .date) ($.Date.Format "2006-01-02") }}Released <time datetime="{{ time.Format "2006-01-02" .date }}">{{ time.Format "2 January 2006" .date }}</time> · announced {{ end }}{{ end }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time></p>
+    {{ else if .Params.showDate }}<p class="page-head__meta">Written <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2006" }}</time>{{ if gt (.Lastmod.Sub .Date).Hours 720.0 }}, updated <time datetime="{{ .Lastmod.Format "2006-01-02" }}">{{ .Lastmod.Format "January 2006" }}</time>{{ end }}</p>{{ end }}
   </div>
 </header>

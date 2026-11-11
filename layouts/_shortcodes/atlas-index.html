@@ -1,0 +1,29 @@
+{{- /* The top of an atlas catalogue page: a filter box and one link per group. The entries below
+       (shortcode atlas-group) are the index themselves: each shows a thumbnail, its name, paper, what it
+       covers and whether it comes with Lead-DBS, and folds its text away. As you type, the filter
+       (assets/js/atlas-filter.js) keeps the entries whose head holds every word typed and hides groups
+       left empty; ?atlas=word in the address fills it in. Without script the box stays hidden and every
+       entry shows. Data: the page's atlases.yaml (partial atlas/data.html).
+         {{< atlas-index >}} */ -}}
+{{- $d := partial "atlas/data.html" .Page -}}
+{{- if not $d.atlases }}{{ errorf "atlas-index: %s has no atlases.yaml" .Page.File.Path }}{{ end -}}
+{{- $n := len $d.atlases -}}
+{{- $noun := .Get "noun" | default "atlases" -}}
+<div class="atlas-index" id="atlas-index" data-atlas-index>
+  <div class="atlas-filter" hidden data-atlas-filter-box>
+    <label for="atlas-filter">Filter the {{ $n }} {{ $noun }}</label>
+    <input id="atlas-filter" type="search" placeholder="Name, structure, disease or author" autocomplete="off" data-atlas-filter>
+    <p class="atlas-filter__count" aria-live="polite" data-atlas-count></p>
+  </div>
+  <nav class="atlas-groups" aria-label="Groups on this page">
+    <ul>
+    {{- range $d.groups }}{{ $c := len (where $d.atlases "group" .id) }}{{ if $c }}
+      <li><a href="#{{ .id }}">{{ .title }} <span class="atlas-groups__n">{{ $c }}</span></a></li>
+    {{- end }}{{ end }}
+    </ul>
+  </nav>
+  <p class="atlas-filter__none" hidden data-atlas-none>Nothing on this page matches. Try another word, or <a href="{{ with site.GetPage "/contact" }}{{ .RelPermalink }}{{ end }}">tell us about one we should list</a>.</p>
+</div>
+{{- if not (.Page.Store.Get "atlas-filter-script") }}{{ .Page.Store.Set "atlas-filter-script" true }}
+{{ with resources.Get "js/atlas-filter.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}
+{{- end }}

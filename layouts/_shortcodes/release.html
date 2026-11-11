@@ -1,9 +1,14 @@
 {{- /* Prints one field of data/release.yaml inside page text, so a release is one edit.
-       {{< release version >}}  {{< release date >}}  {{< release matlab >}}  {{< release standalone >}} */ -}}
+       {{< release version >}}  {{< release date >}}  {{< release matlab >}}  {{< release standalone >}}
+       {{< release standalone_date >}} is the release date of the standalone builds' version, from
+       data/releases.yaml. */ -}}
 {{- $field := .Get 0 | default "version" -}}
 {{- $r := hugo.Data.release -}}
 {{- if eq $field "date" -}}
 {{- (time.AsTime (index $r "date")) | time.Format "2 January 2006" -}}
+{{- else if eq $field "standalone_date" -}}
+{{- $v := index $r "standalone" -}}
+{{- with index (where hugo.Data.releases "version" $v) 0 }}{{ (time.AsTime .date) | time.Format "2 January 2006" }}{{ else }}{{ errorf "release shortcode: version %q (standalone) is not in data/releases.yaml (%s)" $v $.Page.File.Path }}{{ end -}}
 {{- else -}}
 {{- with index $r $field }}{{ . }}{{ else }}{{ errorf "release shortcode: no field %q in data/release.yaml (%s)" $field $.Page.File.Path }}{{ end -}}
 {{- end -}}

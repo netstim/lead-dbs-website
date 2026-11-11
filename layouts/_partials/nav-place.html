@@ -1,0 +1,43 @@
+{{- /* Where a page sits in the site's one hierarchy, the main menu (hugo.toml [menus.main]). The header
+       marks the group, the breadcrumb and the sidebar's section list are drawn from it, so the three
+       always agree, whatever folder the page lives in (folders keep the old WordPress addresses).
+       The page belongs to the first of these that is a menu entry: itself, its folder, the folder above
+       and so on. A page or folder can name its place with front matter menuParent: "/path/of/a/page/in/the/menu"
+       (the past workshops sit under Events, the dependencies page under Cite Lead-DBS).
+       Returns a dict:
+         group  the top-level menu entry (nil if the page is in no group: imprint, privacy, search)
+         items  the menu entries below the group down to the page's own entry (may be empty)
+         trail  pages between that entry and this page, for the breadcrumb (may be empty)
+         base   the page whose entry or menuParent placed it */ -}}
+{{- $page := . -}}
+{{- $all := slice -}}
+{{- range site.Menus.main }}{{ $all = $all | append . }}{{ range .Children }}{{ $all = $all | append . }}{{ range .Children }}{{ $all = $all | append . }}{{ end }}{{ end }}{{ end -}}
+{{- $entry := false }}{{ $base := false }}{{ $byParent := false -}}
+{{- range slice $page | append $page.Ancestors -}}
+  {{- if not $entry -}}
+    {{- $x := . -}}
+    {{- with $x.Params.menuParent -}}
+      {{- $t := site.GetPage . -}}
+      {{- if not $t }}{{ errorf "%s: menuParent %q is not a page" $x.File.Path . }}{{ end -}}
+      {{- range $all }}{{ if and (not $entry) .Page (eq .Page $t) }}{{ $entry = . }}{{ $base = $x }}{{ $byParent = true }}{{ end }}{{ end -}}
+      {{- if not $entry }}{{ errorf "%s: menuParent %q is not in the main menu" $x.File.Path . }}{{ end -}}
+    {{- else -}}
+      {{- range $all }}{{ if and (not $entry) .Page (eq .Page $x) }}{{ $entry = . }}{{ $base = $x }}{{ end }}{{ end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $group := false }}{{ $items := slice }}{{ $trail := slice -}}
+{{- with $entry -}}
+  {{- $up := slice $entry }}{{ $cur := $entry -}}
+  {{- range seq 3 -}}
+    {{- with $cur.Parent }}{{ $pid := . }}{{ range $all }}{{ if eq .Identifier $pid }}{{ $cur = . }}{{ end }}{{ end }}{{ $up = $up | append $cur }}{{ end -}}
+  {{- end -}}
+  {{- $up = collections.Reverse $up -}}
+  {{- $group = index $up 0 -}}
+  {{- $items = after 1 $up -}}
+  {{- if ne $base $page -}}
+    {{- if $byParent }}{{ $trail = $trail | append $base }}{{ end -}}
+    {{- range $page.Ancestors.Reverse }}{{ if and (.IsDescendant $base) (ne . $base) }}{{ $trail = $trail | append . }}{{ end }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+{{- return dict "group" $group "items" $items "trail" $trail "base" $base -}}

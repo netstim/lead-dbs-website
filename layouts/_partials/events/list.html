@@ -27,14 +27,13 @@
     {{- $when = printf "%s – %s" ($day.Format "2 January 2006") ($lastDay.Format "2 January 2006") -}}
   {{- end -}}
   {{- /* the zone is printed from the date and the IANA zone, so a summer date reads CEST by itself:
-         "15:00 CET (Berlin time)" in full, "15:00 CET" where space is short. tz_label overrides both. */ -}}
+         "15:00 CET (09:00 EST)" in full when also_in is set, "15:00 CET" where space is short.
+         tz_label overrides the zone. */ -}}
   {{- $time := "" }}{{ $timeShort := "" -}}
   {{- if $timed -}}
-    {{- $parts := split $tz "/" -}}
-    {{- $city := replace (index $parts (sub (len $parts) 1)) "_" " " -}}
-    {{- $abbr := $start.Format "MST" -}}
-    {{- $time = printf "%s %s" ($start.Format "15:04") (.tz_label | default (printf "%s (%s time)" $abbr $city)) -}}
-    {{- $timeShort = printf "%s %s" ($start.Format "15:04") (.tz_label | default $abbr) -}}
+    {{- $timeShort = printf "%s %s" ($start.Format "15:04") (.tz_label | default ($start.Format "MST")) -}}
+    {{- $time = $timeShort -}}
+    {{- with .also_in -}}{{- $time = printf "%s (%s)" $timeShort ((time.In . $start).Format "15:04 MST") -}}{{- end -}}
   {{- end -}}
   {{- $iso := "2006-01-02T15:04:05Z07:00" -}}
   {{- $out = $out | append (dict

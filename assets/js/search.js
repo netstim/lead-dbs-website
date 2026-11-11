@@ -1,15 +1,17 @@
 // The site search. Hugo writes the index (/search-index.json, layouts/home.searchindex.json); this
-// loads it the first time a search box is used and ranks pages by where the words occur (title,
-// headings, description, text). The header's button (and the "/" key) opens it in a dialog; /search/
+// loads it the first time a search box is used and ranks pages by where the words occur: a page whose
+// title (or keywords) holds the words comes before any page that only mentions them in its text, and
+// news posts come after other pages with the same score. The header's button (and the "/" key) opens it in a dialog; /search/
 // shows the same box on a page and reads ?q= from the address. Without script the button is a link
 // to /search/.
 (() => {
   const dialog = document.getElementById('site-search');
   const indexUrl = dialog?.dataset.index;
   if (!indexUrl) return;
+  const MANUAL = 'https://netstim.gitbook.io/leaddbs';
   let index = null;
   const load = () => (index ||= fetch(indexUrl).then((r) => r.json()).then((rows) => rows.map((r) => ({
-    ...r, lt: fold(r.t), lh: fold(r.h), ld: fold(r.d), lx: fold(r.x),
+    ...r, lt: fold(r.t), lk: fold(r.k), lh: fold(r.h), ld: fold(r.d), lx: fold(r.x),
   }))));
   const fold = (s) => (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[‐-‑]/g, '-');
   const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -17,19 +19,25 @@
   const rank = (rows, q) => {
     const words = fold(q).split(/[\s,;]+/).filter((w) => w.length > 1 || /\d/.test(w));
     if (!words.length) return [];
+    const phrase = words.join(' ');
     const out = [];
     for (const r of rows) {
       let score = 0;
       for (const w of words) {
         let s = 0;
-        if (r.lt.includes(w)) s += r.lt.startsWith(w) || r.lt.includes(' ' + w) ? 12 : 8;
-        if (r.lh.includes(w)) s += 4;
-        if (r.ld.includes(w)) s += 3;
+        const wordStart = (t) => t.startsWith(w) || t.includes(' ' + w) || t.includes('-' + w);
+        if (r.lt.includes(w)) s += (wordStart(r.lt) ? 40 : 25) + Math.max(0, 12 - r.lt.length / 6); // short titles first
+        if (r.lk.includes(w)) s += 20;
+        if (r.lh.includes(w)) s += 6;
+        if (r.ld.includes(w)) s += 4;
         if (r.lx.includes(w)) s += 1 + Math.min(3, r.lx.split(w).length - 2);
         if (!s) { score = 0; break; } // every word must occur somewhere
         score += s;
       }
-      if (score) out.push([score - (r.s.startsWith('News') ? 1 : 0), r]);
+      if (!score) continue;
+      if (words.length > 1 && r.lt.includes(phrase)) score += 20; // the words together, as typed
+      if (r.s.startsWith('News')) score = score * 0.85 - 1; // a post after a page that says the same
+      out.push([score, r]);
     }
     return out.sort((a, b) => b[0] - a[0]).slice(0, 12).map(([, r]) => r);
   };
@@ -53,8 +61,10 @@
       let rows;
       try { rows = await load(); } catch { status.textContent = 'The search index could not be loaded.'; return; }
       const hits = rank(rows, q);
-      status.textContent = hits.length ? `${hits.length}${hits.length === 12 ? ' or more' : ''} pages found` : 'No page found. Try fewer or other words.';
-      list.innerHTML = hits.map((r) => `<li><a class="search__hit" href="${esc(r.u)}"><span class="search__title">${esc(r.t)}</span>${r.s ? `<span class="search__section">${esc(r.s)}</span>` : ''}<span class="search__snippet">${snippet(r, q)}</span></a></li>`).join('');
+      status.textContent = hits.length ? `${hits.length}${hits.length === 12 ? ' or more' : ''} results` : 'Nothing found on this website. Try fewer or other words.';
+      // how to do something in Lead-DBS is in the manual (another site): offered after the results, and in their place when there are none
+      const manual = `<li><a class="search__hit search__hit--manual" href="${MANUAL}"><span class="search__title">${hits.length ? 'Not here? ' : ''}Look it up in the Lead-DBS manual<span class="ext-mark" aria-hidden="true">↗</span></span><span class="search__section">netstim.gitbook.io, another site</span><span class="search__snippet">How to install Lead-DBS and do each step of an analysis.</span></a></li>`;
+      list.innerHTML = hits.map((r) => `<li><a class="search__hit" href="${esc(r.u)}"><span class="search__title">${esc(r.t)}</span>${r.s ? `<span class="search__section">${esc(r.s)}</span>` : ''}<span class="search__snippet">${snippet(r, q)}</span></a></li>`).join('') + manual;
     };
     input.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(run, 120); });
     box.querySelector('form').addEventListener('submit', (e) => { e.preventDefault(); const first = list.querySelector('a'); if (first) first.click(); else run(); });

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{{- /* A page that only forwards to a place on another page, for an old address whose content now lives
+       in a section of that page (front matter layout: redirect, redirect: "/path/#anchor"). Like the
+       alias pages: sends the browser on at once and stays out of search engines, lists and the sitemap. */}}
+{{- $to := .Params.redirect -}}
+{{- if not $to }}{{ errorf "%s: layout redirect needs a redirect target" .File.Path }}{{ end -}}
+{{- $u := urls.Parse $to -}}
+{{- $p := site.GetPage $u.Path -}}
+{{- if not $p }}{{ errorf "%s: redirect target %q is not a page" .File.Path $to }}{{ end -}}
+{{- $href := $p.Permalink }}{{ with $u.Fragment }}{{ $href = printf "%s#%s" $href . }}{{ end }}
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Moved to {{ $p.LinkTitle }}</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="{{ $href }}">
+<meta http-equiv="refresh" content="0; url={{ $href }}">
+</head>
+<body>
+<p>This page has moved to <a href="{{ $href }}">{{ $p.LinkTitle }}</a>.</p>
+</body>
+</html>

@@ -1,8 +1,13 @@
 ---
-title: "Bug in Lead-DBS v2.5"
+title: "Bug in Lead-DBS 2.5"
+# the browser title (head.html adds " – Lead-DBS")
+htmlTitle: "Bug in version 2.5"
+description: "A bug in Lead-DBS 2.5 to 2.5.2 affected fMRI maps seeded from VTAs with normative functional connectomes. Version 2.5.3 fixes it."
 date: "2021-07-16T13:58:53"
 lastmod: "2021-07-30T15:24:53"
 slug: "bug-in-lead-dbs-v2-5"
+# the picture shown when the page is shared (head.html)
+share: "images/renders/lead-closeup.jpg"
 ---
 
 {{% row %}}

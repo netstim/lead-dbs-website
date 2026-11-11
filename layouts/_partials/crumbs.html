@@ -1,0 +1,15 @@
+{{- /* The breadcrumb trail of a page, from the main menu (partial nav-place.html), not the folders:
+       Home / menu group / menu entry / pages between / the page itself. The visible breadcrumb
+       (page-head.html) and the BreadcrumbList for search engines (head-jsonld.html) both use it, so they
+       never disagree. Returns a list of dicts: name, url (relative), page (the page, or nil for a menu
+       entry that is not a page); the last one is the page itself. */ -}}
+{{- $place := partial "nav-place.html" . -}}
+{{- $out := slice (dict "name" "Home" "url" site.Home.RelPermalink "page" site.Home) -}}
+{{- with $place.group -}}
+  {{- range slice . | append $place.items }}{{ if ne .Page $ }}{{ $out = $out | append (dict "name" .Name "url" .URL "page" .Page) }}{{ end }}{{ end -}}
+  {{- range $place.trail }}{{ $out = $out | append (dict "name" .LinkTitle "url" .RelPermalink "page" .) }}{{ end -}}
+{{- else -}}
+  {{- range .Ancestors.Reverse }}{{ if not .IsHome }}{{ $out = $out | append (dict "name" .LinkTitle "url" .RelPermalink "page" .) }}{{ end }}{{ end -}}
+{{- end -}}
+{{- $out = $out | append (dict "name" .LinkTitle "url" .RelPermalink "page" .) -}}
+{{- return $out -}}
