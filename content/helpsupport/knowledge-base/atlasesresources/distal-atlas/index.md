@@ -1,15 +1,27 @@
 ---
 title: "The DISTAL atlas"
+description: "The DISTAL atlas (Ewert et al. 2018): a subcortical atlas in MNI space built from multimodal MRI, histology and structural connectivity."
+linkTitle: "DISTAL atlas"
 date: "2017-08-09T18:24:26"
 lastmod: "2022-03-16T14:37:28"
-weight: 2
+weight: 4
+# the picture shown when the page is shared (head.html)
+share: "distal_fig_6-1030x728.png"
 ---
+
+DISTAL is a subcortical atlas of DBS targets and the structures around them in MNI space (ICBM 2009b
+NLIN Asym), built for Lead-DBS from multimodal MRI, histology and structural connectivity. **It comes
+with Lead-DBS** (current version 1.1), so there is nothing to download.
+
+**What to cite:**
+
+{{% copybox label="Copy the citation" %}}
+Ewert, S., Plettig, P., Li, N., Chakravarty, M. M., Collins, D. L., Herrington, T. M., et al. (2018). Toward defining deep brain stimulation targets in MNI space: A subcortical atlas based on multimodal MRI, histology and structural connectivity. *NeuroImage*, 170, 271–282. https://doi.org/10.1016/j.neuroimage.2017.05.015
+{{% /copybox %}}
 
 ## Motivation
 
-The following is a summary of the methods paper:
-
-> [Ewert, S., Plettig, P., Li, N., Chakravarty, M. M., Collins, D. L., Herrington, T. M., et al. (2018). Toward defining deep brain stimulation targets in MNI space: A subcortical atlas based on multimodal MRI, histology and structural connectivity. *NeuroImage*, 170, 271–282.](https://doi.org/10.1016/j.neuroimage.2017.05.015)
+Summarized from the methods paper above (2017).
 
 When work on Lead-DBS was started in 2012, we began [collecting subcortical atlases](/helpsupport/knowledge-base/atlasesresources/atlases-2/) of the brain to best define anatomy. For instance, the ATAG atlas [was made freely available](https://www.nitrc.org/projects/atag) by the Forstmann group in Amsterdam.
 
@@ -141,11 +153,11 @@ The final result is an atlas that is i) precisely coregistered to the ICBM 2009b
 
 *For instance, you can choose to show “DBS relevant structures” only. Another example is to quickly turn on functional parcellations of the STN/GPi or rather show them as solid structures.*
 
-**The video below showcases these features:**
+The video below shows these features (recorded in 2017):
 
 {{% /col %}}
 {{% /row %}}
-{{< vimeo 228993216 >}}
+{{< vimeo id="228993216" title="The DISTAL atlas in the Lead-DBS 3D viewer (2017)" >}}
 
 {{% row %}}
 {{% col "2/3" %}}
@@ -155,13 +167,13 @@ The final result is an atlas that is i) precisely coregistered to the ICBM 2009b
 
 ### Some release notes
 
-- The DISTAL atlas (soon) published within Lead-DBS slightly differs from the one described in the paper in the following ways:
+- The DISTAL atlas published within Lead-DBS slightly differs from the one described in the paper in the following ways:
   - Writing the paper and running all the analyses led to a much broader understanding of anatomy on our part. Thus, the final manual segmentations of core regions / anchor points were further refined by the first author of the study who has become an expert in subcortical anatomy while pursuing the complete endeavor.
   - Based on these novel manual segmentations, connectivity-based parcellations were re-run (which is a fully automated approach and yielded extremely similar results).
   - We further refined histology to template warps by iteratively registering pseudo-MRIs to templates and re-generating novel pseudo-MRIs based on the warps until an equilibrium was reached. This further refines registration of histology to the template.
   - In comparison to the manuscript version, we also used the PD weighted template series to do this, leading to a four-fold multispectral warp between pseudo-MRI (histology) and template series / anchor points.
   - We performed this iterative histology-to-template registration only on the left hemisphere and nonlinearly warped the structures to the right hemisphere by applying a multispectral nonlinear left to right warp that is accessible within Lead-DBS.
-- Needless to say, the original (manuscript version) atlas is available upon request. We still prefer to only provide this adapted, much better version of the atlas within Lead-DBS to avoid confusion.
+- The original (manuscript version) atlas is available upon request. We still prefer to only provide this adapted, much better version of the atlas within Lead-DBS to avoid confusion.
 
 {{% /col %}}
 {{% col "1/3" %}}
@@ -169,7 +181,13 @@ The final result is an atlas that is i) precisely coregistered to the ICBM 2009b
 
 {{% /col %}}
 {{% /row %}}
-## Change-log
+## Change-log {#change-log}
 
 - 09/09/2017: v. 1.0 released
 - 05/02/2018: v. 1.1 released: improved registration of left hemispheric histology, symmetrized functional parcellations of STN / GPi subregions.
+
+## Next
+
+DISTAL is one of more than 60 [subcortical atlases](/helpsupport/knowledge-base/atlasesresources/atlases-2/)
+you can use in Lead-DBS. To see it with your own patients' electrodes, [download Lead-DBS](/download/)
+and take the [first steps](/helpsupport/first-steps/).

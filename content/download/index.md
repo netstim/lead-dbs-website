@@ -1,5 +1,6 @@
 ---
 title: "Download Lead-DBS"
+description: "Download Lead-DBS: requirements, the download servers, installation and what to do next."
 date: "2014-06-17T15:07:00"
 lastmod: "2026-11-10"
 weight: 7
@@ -17,35 +18,37 @@ aliases:
   - "/sdm_downloads/download-standalone-windows/"
   - "/sdm_downloads/download-standalone-mac-x86_64/"
   - "/sdm_downloads/download-standalone-mac-arm64/"
+toc: false
+keywords: ["download", "release history", "changelog", "release notes", "version history", "versions", "install", "installation", "setup", "requirements", "matlab", "standalone", "licence", "license"]
 ---
 
-Lead-DBS {{< release version >}}, released on {{< release date >}}, is free and open source. Pick any download server below: no form and no sign-up.
+## Lead-DBS {{% release version %}} {#normal-version}
+
+{{< download-release >}}
+- [pCloud](https://www.lead-dbs.org/release/download.php?id=leaddbs_pcloud)
+- [OneDrive](https://www.lead-dbs.org/release/download.php?id=leaddbs_onedrive)
+- [Sciebo](https://www.lead-dbs.org/release/download.php?id=leaddbs_sciebo)
+- [Lead-DBS.org](https://www.lead-dbs.org/release/download.php?id=latest)
+- [BaiduPan](https://www.lead-dbs.org/release/download.php?id=leaddbs_baidu)
+{{< /download-release >}}
+
+It includes several [subcortical atlases](/helpsupport/knowledge-base/atlasesresources/atlases-2/). What
+changed: the [announcement of this release]({{% release notes %}}) and the [release history](#releases).
 
 ## What you need
 
 - **MATLAB {{< release matlab >}} or later**, with the Image Processing, Signal Processing, and Statistics and Machine Learning Toolboxes. The Curve Fitting and Parallel Computing Toolboxes are optional.
 - **[SPM12](https://www.fil.ion.ucl.ac.uk/spm/software/download/)**
 - **32 GB of RAM** or more (recommended)
-- **Disk space:** the download is a single zip file of about 11 GB. You need room for the zip file and for the unpacked folder.
+- **Disk space:** room for the zip file of about 11 GB and for the unpacked folder.
 - **Your data:** postoperative (and, if available, preoperative) structural MRI, or postoperative CT together with preoperative MRI.
-
-## Normal version ({{% release version %}}) {#normal-version}
-
-Lead-DBS with several [subcortical atlases](/helpsupport/knowledge-base/atlasesresources/atlases-2/) included. The five servers hold the same file: pick any one.
-
-{{< downloads >}}
-- [pCloud](https://www.lead-dbs.org/release/download.php?id=leaddbs_pcloud)
-- [OneDrive](https://www.lead-dbs.org/release/download.php?id=leaddbs_onedrive)
-- [Sciebo](https://www.lead-dbs.org/release/download.php?id=leaddbs_sciebo)
-- [Lead-DBS.org](https://www.lead-dbs.org/release/download.php?id=latest)
-- [BaiduPan](https://www.lead-dbs.org/release/download.php?id=leaddbs_baidu)
-{{< /downloads >}}
 
 ## Standalone version ({{% release standalone %}}), no MATLAB needed {#standalone-version}
 
-Experimental builds that run without MATLAB, one per system. They are older than the normal version and won't receive regular updates or hotfixes, so we recommend the normal version where possible. The Windows build is about 13 GB.
+Experimental builds that run without MATLAB, one per system. They are older than the version above and won't receive regular updates or hotfixes, so we recommend the MATLAB version where possible. The Windows build is about 13 GB.
+Lead-DBS 4.0, rebuilt completely in Python, will not need MATLAB at all; it is not released yet.
 
-{{< downloads prefix="Download for" >}}
+{{< downloads prefix="Download for" variant="secondary" >}}
 - [Linux](https://www.lead-dbs.org/release/download.php?id=leaddbs_standalone_linux)
 - [macOS (Intel)](https://www.lead-dbs.org/release/download.php?id=leaddbs_standalone_mac_x86_64)
 - [macOS (Apple silicon)](https://www.lead-dbs.org/release/download.php?id=leaddbs_standalone_mac_arm64)
@@ -66,15 +69,18 @@ By downloading Lead-DBS, you accept the following:
 Unzip Lead-DBS into your MATLAB toolbox folder, add SPM12 and Lead-DBS to the MATLAB path, and start it by typing `lead dbs` in the MATLAB Command Window. The [installation guide in the manual](https://netstim.gitbook.io/leaddbs/installation#normal-installation) explains each step.
 
 - Want daily fixes, or to change the code? [Install from GitHub](https://netstim.gitbook.io/leaddbs/installation#installation-via-github) instead; see also [Develop Lead-DBS](/develop/).
-- New to Lead-DBS? Practise on a first dataset with [Lead Tutor](/helpsupport/learn-lead-dbs-yourself/).
-- What changed: read the [announcement of this release]({{% release notes %}}); every released version is listed among the [tags on GitHub](https://github.com/netstim/leaddbs/tags).
+- New to Lead-DBS? The [first steps](/helpsupport/first-steps/) take you from here to your first localization; [Lead Tutor](/helpsupport/learn-lead-dbs-yourself/) gives you a first dataset to practise on.
+
+## Release history {#releases}
+
+{{< release-history >}}
 
 ## Help
 
-Stuck during installation or later? The [manual](https://netstim.gitbook.io/leaddbs), the [walkthrough videos](/helpsupport/knowledge-base/walkthrough-videos/) and the [user Slack](https://inviter.co/lead-dbs) are the places to start; bugs go to [GitHub issues](https://github.com/netstim/leaddbs/issues). More on the [help page](/helpsupport/).
+Stuck during installation or later? The manual's [installation guide](https://netstim.gitbook.io/leaddbs/installation) covers most problems; where to ask about the rest is under [Get help](/helpsupport/#get-help).
 
 ## Newsletter (optional)
 
-You do not need to subscribe to download Lead-DBS. If you like, the newsletter tells you about new releases, critical bug fixes and workshops. It is sent rarely.
+The newsletter tells you about new releases, critical bug fixes and workshops. It is sent rarely.
 
 {{< newsletter >}}

@@ -1,115 +1,87 @@
 ---
-title: "About"
+title: "About Lead-DBS"
+description: "What Lead-DBS is and does, its history, recognition and funding, the Lead tools, and where to find its papers, figures and contributors."
+linkTitle: "About"
 date: "2014-06-17T15:06:49"
-lastmod: "2023-08-22T09:53:56"
+lastmod: "2026-11-11"
+# the long list of people moved to /about/team/ (Contributors); the section #development-team here links to it
+# /hallo-welt/ was the old site's "Welcome to Lead-DBS" post
+aliases: ["/hallo-welt/"]
+keywords: ["about", "deep brain stimulation", "DBS", "team", "history", "funding", "Lead-OR", "Lead Connectome", "Lead Group", "OSS-DBS"]
 ---
 
-Lead-DBS is an open-source MATLAB toolbox for deep brain stimulation (DBS) imaging: it reconstructs DBS electrodes from postoperative MRI and CT, visualizes them in 2D and 3D, analyses electrode placement across patient groups, simulates stimulation and estimates its connectivity to other brain regions.
-
-It was started at the Movement Disorders Unit of Andrea Kühn, Department of Neurology, Charité – Universitätsmedizin Berlin. Since 2016 it has been developed by researchers from several institutions, and since 2019 the work has been coordinated by the Network Stimulation Laboratory led by Andreas Horn, which in May 2025 became the [Institute for Network Stimulation](https://www.netstim.org) at the University Hospital Cologne.
-
-The current release is Lead-DBS {{< release version >}}, released on {{< release date >}}. Developer meetings are planned monthly and listed on the [events page](/events/); to take part, see [Develop Lead-DBS](/develop/).
+Lead-DBS is an open-source MATLAB toolbox for deep brain stimulation (DBS) imaging. It is developed
+by researchers from several institutions and coordinated by the [Institute for Network Stimulation](https://www.netstim.org)
+at the University Hospital Cologne. It is free software under the GNU General Public Licence, with its
+code on [GitHub](https://github.com/netstim/leaddbs). The current release is Lead-DBS {{< release version >}}, released on {{< release date >}}.
 
 {{< notice id="research-use" >}}**For research use only.** Lead-DBS is research software for retrospective scientific analysis; it is not intended for diagnosis, treatment planning or any other clinical decision about an individual patient. The full statement is on the [download page](/download/#research-use).{{< /notice >}}
 
-## Prerequisites
+{{< childpages menu="true" >}}
 
-To work with Lead-DBS you need postoperative (and if available preoperative) structural MRI, or postoperative CT and preoperative MRI. It runs in MATLAB {{< release matlab >}} or later with a few MATLAB toolboxes and SPM12; the [download page](/download/) lists everything, and the [installation guide in the manual](https://netstim.gitbook.io/leaddbs/installation) explains the setup.
+## What Lead-DBS does
 
-## Development Team
+- **Localizes DBS electrodes** in the brain from postoperative MRI or CT, together with preoperative MRI.
+- **Shows the result** in 2D and 3D, together with [atlases of the brain](/helpsupport/knowledge-base/atlasesresources/).
+- **Compares patients**: electrode placement across a group and its relation to clinical outcome (Lead Group).
+- **Simulates the stimulation**: the volume of tissue activated, electric fields and pathway activation (with OSS-DBS).
+- **Maps networks**: the connectivity of a stimulation site to the rest of the brain, using [normative connectomes](/helpsupport/knowledge-base/atlasesresources/normative-connectomes/) or the patient's own data.
 
-This list is being updated. Names and affiliations below date from 2023 or earlier and may be out of date. Everyone who has contributed code is shown in the [contributors graph on GitHub](https://github.com/netstim/leaddbs/graphs/contributors).
+How each step works is described in the [manual](https://netstim.gitbook.io/leaddbs); what you need to run it is on the [download page](/download/).
 
-### Core Development
+![Atlas structures and a DBS electrode in 3D over a histological section](LEAD_Scene-1030x541.jpg)
 
-- [Ningfei Li](https://www.netstim.org/about-us/about-us/), Charité Berlin
-- [Simón Oxenford](https://www.netstim.org/about-us/about-us/), Charité Berlin
-- Till Dembek, University of Cologne
-- Nanditha Rajamani, Charité Berlin
-- Konstantin Butenko, Harvard Medical School
-- Garance Meyer, Harvard Medical School
-- Enrico Opri, Emory University, Atlanta
-- Johannes Achtzehn, Charité Berlin
-- Andreas Husch, University of Luxembourg
-- Lauren Hart, Harvard Medical School
-- Khoa Nguyen, University of Bern
-- Kavisha Fernando, University of Melbourne
-- [Andreas Horn](https://www.netstim.org/about-us/about-us/andreashorn/), Institute for Network Stimulation, University Hospital Cologne
+## Deep brain stimulation {#deep-brain-stimulation}
 
-### Feature Development
+In deep brain stimulation, electrodes are **surgically implanted** into deep (subcortical) areas of the
+brain, and an implanted impulse generator **stimulates** these structures chronically. It is used
+predominantly in movement disorders such as Parkinson’s disease, essential tremor and dystonia, and more
+rarely in other disorders such as depression or Alzheimer’s disease. Where exactly an electrode sits, and
+which brain networks it reaches, matters for its effect: this is what Lead-DBS helps researchers study.
 
-- Andrea Kühn, Charité, Germany
-- Harald Treuer, University of Cologne
-- Veerle Visser-Vandewalle, University of Cologne
-- Todd Herrington, Mark Richardson, Massachusetts General Hospital, Boston
-- Frank Hertel, Centre Hospitalier de Luxembourg
+## History
 
-### Contributors (Code)
+- **2012**: work on a toolbox to reconstruct DBS electrode placement from postoperative imaging begins, at the Movement Disorders Unit of Andrea Kühn, Department of Neurology, Charité – Universitätsmedizin Berlin.
+- **2015**: the first paper ([Horn & Kühn, NeuroImage 2015](https://doi.org/10.1016/j.neuroimage.2014.12.002)).
+- **2016**: researchers from several institutions join the development.
+- **2019**: the Network Stimulation Laboratory led by Andreas Horn coordinates it; Lead-DBS v2 is published ([Horn, Li et al., NeuroImage 2019](https://doi.org/10.1016/j.neuroimage.2018.08.068)).
+- **2023**: Lead-DBS v3.0 ([Neudorfer et al., NeuroImage 2023](https://doi.org/10.1016/j.neuroimage.2023.119862)).
+- **2025**: the lab becomes the Institute for Network Stimulation at the University Hospital Cologne.
 
-- Wolf-Julian Neumann, Charité Berlin
-- Jan Roediger, Charité Berlin
-- Johannes Vorwerk, University of Münster
-- Ari Kappel, University of Pittsburgh
-- Chadwick Boulay, University of Ottawa
-- Qianqian Fang, Northeastern University, Boston
+## Recognition and funding
 
-### Contributions of Atlases / Data from following authors
+In January 2015, Lead-DBS was awarded the **Max Rubner Prize** for Innovation and Technology of [Stiftung Charité](https://www.stiftung-charite.de/); the prize money went into the further development of the toolbox. In 2016 it received a **Harvard Radcliffe Exploratory Ventures Grant** from the [Harvard Radcliffe Institute for Advanced Study](https://www.radcliffe.harvard.edu/), and in 2017 the **Robert Koch Prize** of Charité, Berlin. Further development was [funded by a six-year grant of the German Research Foundation (DFG)](https://gepris.dfg.de/gepris/projekt/410169619?context=projekt&task=showDetail&id=410169619&).
 
-- Siobhán Ewert, Charité, Germany
-- Ettore Accolla, University of Fribourg
-- Erik Middlebrooks, Mayo Clinic, Jacksonville
-- Bogdan Draganski, University of Lausanne
-- Brian Edlow, Martinos Center / MGH, Boston
-- Lingzhong Fan, Chinese Academy of Sciences
-- Birte Forstmann / Max Keuken, University of Amsterdam
-- Alexander Hammers, Imperial College London
-- Marc Joliot / Natalie Tzourio-Mazoyer, University of Bordeaux
-- Antonio Meola, Brigham and Women’s Hospital, Boston
-- Janey Prodoehl, Midwestern University
-- Anqi Qiu, National University of Singapore
-- Verena Rozanski, University of Munich
-- Thomas Yeo, National University of Singapore
-- Dongyang Zhang, Washington University, St. Louis
-- Eduardo Alho, University of Sao Paulo
+Lead-DBS has been supported by the Berlin Institute of Health, KFO 247, the German Research Foundation (DFG), Stiftung Charité and the Prof. Dr. Klaus Thiemann Foundation.
 
-### Testing
+### What others write
 
-- Pierre Deman, Astrid Kibleur, Grenoble Institut des Neurosciences
-- Juan Carlos Baldermann, University Hospital Cologne
-- Kristen Kanoff, Massachusetts General Hospital, USA
-- Konrad Schumacher, University Hospital Freiburg
+{{< quote source="Husch, Petersen, Gemmar, Goncalves & Hertel (2018), PaCER – A fully automated method for electrode trajectory and contact reconstruction in deep brain stimulation. *NeuroImage: Clinical* 17, 80–89" doi="10.1016/j.nicl.2017.10.004" >}}The MATLAB™-based LeadDBS is arguably the most established toolbox providing a semi-automatic framework for electrode localization based on automatic pre-processing and a manual refinement step.{{< /quote >}}
 
-**Please feel free to join the team!** See [Develop Lead-DBS](/develop/) for how to contribute, or [fork us on GitHub](https://github.com/netstim/leaddbs).
+{{< quote source="Nowacki, Nguyen, Tinkhauser, Petermann, Debove, Wiest & Pollo (2018), Accuracy of different three-dimensional subcortical human brain atlases for DBS-lead localisation. *NeuroImage: Clinical* 20, 868–874" doi="10.1016/j.nicl.2018.09.030" >}}Lead reconstruction after normalisation into the MNI template space and application of four different atlases led to different results in terms of the DBS lead position relative to the STN. Based on electrophysiological and imaging data, the DISTAL atlas led to the most accurate display of the reconstructed DBS lead relative to the DISTAL-based STN.{{< /quote >}}
 
----
+{{< quote source="Alkemade, Groot & Forstmann (2018), Do We Need a Human post mortem Whole-Brain Anatomical Ground Truth in in vivo Magnetic Resonance Imaging? *Frontiers in Neuroanatomy* 12, 110" doi="10.3389/fnana.2018.00110" >}}Two elegant examples were published by Horn et al. (2017) in which a method was described to warp DBS electrode coordinates, and histological data to MNI-space (Ewert et al., 2017).{{< /quote >}}
 
-## Lead-DBS Downloads Across the Globe
+{{< quote source="Latorre, Rocchi & Sadnicka (2021), The Expanding Horizon of Neural Stimulation for Hyperkinetic Movement Disorders. *Frontiers in Neurology*" url="https://www.researchgate.net/publication/351579677_The_Expanding_Horizon_of_Neural_Stimulation_for_Hyperkinetic_Movement_Disorders" label="The paper on ResearchGate" >}}A commitment of the community to open science will also democratize and increase the speed of advances with high uptake of currently available initiatives such as LEAD-DBS (61). This freely available toolbox can be downloaded to allow electrode reconstructions and computer simulations based on post-operative MRI and CT imaging.{{< /quote >}}
 
-[![Map of the world with the countries Lead-DBS was downloaded from marked in blue (opens the map on ipinfo.io)](image-1536x614.png "Historical snapshot of a download map from the old website. It is undated and no longer updated.")](https://ipinfo.io/tools/map/a5760510-a7df-4fc0-b9b4-996b85965ff4)
+{{< quote source="Milchenko, Snyder, Campbell, Dowling, Rich, Brier, et al. (2018), ESM-CT: a precise method for localization of DBS electrodes in CT images. *Journal of Neuroscience Methods*" doi="10.1016/j.jneumeth.2018.09.009" >}}… (method 2) available via the LEAD-DBS MATLAB package, which is widely used{{< /quote >}}
 
----
+<span id="related-tools"></span>
 
-## Alternatives
+## Lead tools {#lead-tools}
 
-DBS imaging involves a complex pipeline spanning several disciplines such as precise co-registration, multimodal image fusion, 3D image processing & localization, spatial statistics, surface & volumetric meshing as well as physical modeling using the finite element approach.
+Lead-DBS comes with tools of its own (Lead Group, Lead Connectome, OSS-DBS for stimulation modelling) and
+has sister tools from the same team (Lead-OR in the operating theatre, Lead Tutor for training). Each is
+described, with its manual and paper, on [Lead tools](/about/tools/).
 
-If incorporating connectivity measures, it expands to functional magnetic resonance imaging and diffusion-weighted imaging based tractography. Finally, electrophysiological measures such as local field potentials and electro-/magnetoencephalographic data may be incorporated to better understand DBS and enhance DBS modeling.
+## People {#development-team}
 
-Thus, creating a “one-step solution” for DBS imaging is a non-trivial task. Although we aim at incorporating the best tools that are openly available for each sub-task into the Lead-DBS pipeline and constantly work hard to improve our tool, alternatives exist (with slight differences in focus) that may be better suited to specific subtasks of the whole collection. Below is a non-exhaustive list of alternatives we are aware of. It has not been reviewed for some years, so some of these tools may have changed or been discontinued. Also see our [blog post on academic vs. commercial software tools](/commercial-vs-academic-software/) or the discussion of our [Lead-DBS v.2 paper](https://www.researchgate.net/publication/327380509_Lead-DBS_v2_Towards_a_comprehensive_pipeline_for_deep_brain_stimulation_imaging).
+Who built Lead-DBS is listed on [Contributors](/about/team/); everyone who has contributed
+code is in the [contributors graph on GitHub](https://github.com/netstim/leaddbs/graphs/contributors).
+To join, see [Develop Lead-DBS](/develop/).
 
-- **Academic endeavors / Open source tools**
-  - DBSproc ([Lauro 2016](http://onlinelibrary.wiley.com/doi/10.1002/hbm.23039/abstract)), openly available, part of the [AFNI imaging suite](https://afni.nimh.nih.gov/afni/)
-  - ELMA ([Johansson 2019](https://pubmed.ncbi.nlm.nih.gov/31947033/)), openly available [here](https://liu.se/en/research/dbs)
-  - PyDBS ([D’Albis ‎2015](https://www.ncbi.nlm.nih.gov/pubmed/24799270)), available to the ACouStiC community
-  - [PaCER](https://adhusch.github.io/PaCER/), developed in Luxembourg (also a part of Lead-DBS)
-  - StimVision ([Noecker 2021](https://onlinelibrary.wiley.com/doi/abs/10.1111/ner.13350)), developed at Case Western University
-  - DBSmapping ([Moreira da Silva 2015](https://ieeexplore.ieee.org/document/7146617/?tp=&arnumber=7146617&openedRefinements%3D*%26filter%3DAND(NOT(4283010803))%26pageNumber%3D11%26rowsPerPage%3D100%26queryText%3D(3d%20user%20interfaces)metadata)), developed by a group in Porto
-  - There is a similar software at MGH, described in [Bonmassar 2014](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4334388/)
-  - The CiceroneDBS ([Miocinovic 2007](https://www.ncbi.nlm.nih.gov/pubmed/17691348), discont.) software which had similar aims made its way into the Boston Scientific GUIDE software (see below)
-- **Commercial products**
-  - [Boston Scientific GUIDE XT](https://news.bostonscientific.com/2013-05-27-Boston-Scientific-Receives-CE-Mark-Approval-For-GUIDE-DBS-System) software, now a commercial alternative
-  - Commercial tools under the name [Optivise](http://www.trademarkia.com/optivise-85498999.html) (discont.) and [SureTune](https://neuronewsinternational.com/ce-mark-granted-to-medtronic-for-suretune2-deep-brain-stimulation-therapy/) are/were available at Medtronic
-  - CranialCloud, developed by the spinoff Neurotargeting LLC out of Vanderbilt University
+## Next
 
-## Citing Lead-DBS
-Please find out how to [best cite Lead-DBS if you use it on this page](/about/citing_leaddbs/).
+- Use it in a paper: [Cite Lead-DBS](/about/citing_leaddbs/), then the [publications](/about/publications/) and figures [made with Lead-DBS](/gallery/).
+- Try it: [download Lead-DBS](/download/) and take the [first steps](/helpsupport/first-steps/).
+- Ask a question: the [user Slack](/helpsupport/slack-user-channel/) or [contact us](/contact/).

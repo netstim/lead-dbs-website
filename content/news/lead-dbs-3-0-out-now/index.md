@@ -1,5 +1,6 @@
 ---
 title: "Lead-DBS 3.0 out now!"
+description: "Lead-DBS 3.0, the largest update yet: new features, tools and explorers, and a file structure based on the BIDS standard."
 date: "2023-10-27T13:59:14"
 lastmod: "2023-10-27T13:59:15"
 slug: "lead-dbs-3-0-out-now"

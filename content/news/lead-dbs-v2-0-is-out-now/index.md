@@ -1,5 +1,6 @@
 ---
 title: "Lead-DBS v2.0 is out now!"
+description: "Lead-DBS 2.0: new major features to model deep brain stimulation electrodes in computer simulations."
 date: "2017-09-09T20:19:44"
 lastmod: "2017-09-10T14:04:59"
 slug: "lead-dbs-v2-0-is-out-now"
@@ -37,7 +38,7 @@ The [DISTAL atlas](/helpsupport/knowledge-base/atlasesresources/distal-atlas/) i
 
 It uses three sources of information, namely MRI, histology (graciously shared by Mallar Chakravarty and Louis Collins) and structural connectivity, where appropriate to define all structures that have so far played a role in deep brain stimulation and it was validated to perform atlas based segmentation on MR acquisitions with clinical quality.
 
-{{< vimeo 228993216 >}}
+{{< vimeo id="228993216" title="The DISTAL atlas in the Lead-DBS 3D viewer (2017)" >}}
 
 **A rosetta stone for thalamic nomenclatures**
 
@@ -130,7 +131,7 @@ PaCER is fast and precise, in most cases there is no manual refinement needed at
 
 In meticulous work, Ari Kappel (Richardson lab, U Pittsburg) and Chadwick Boulay (Sachs lab, U Ottawa) created a tool to map microelectrode recordings (MER) onto the subcortical anatomy of the brain.
 
-![Microelectrode recording trajectories through atlas structures in 3D](MER.gif)
+{{< clip src="MER.mp4" poster="MER-poster.jpg" alt="Microelectrode recording trajectories through atlas structures in 3D" >}}
 
 **A fusion of electrophysiology and MRI in space**
 

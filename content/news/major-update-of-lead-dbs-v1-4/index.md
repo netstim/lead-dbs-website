@@ -1,5 +1,6 @@
 ---
 title: "Major update of Lead-DBS (v1.4)"
+description: "Lead-DBS 1.4: a new electrode format for any lead design, including directed leads, and more robust MRI–CT co-registration."
 date: "2015-11-01T23:24:35"
 lastmod: "2015-11-01T23:25:08"
 slug: "major-update-of-lead-dbs-v1-4"

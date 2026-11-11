@@ -1,6 +1,6 @@
 ---
 title: "Made with Lead-DBS"
-linkTitle: "Gallery"
+linkTitle: "Made with Lead-DBS"
 description: "Renders by the Lead-DBS team and figures from published papers that used Lead-DBS."
 # The page shows the published figures first (data/gallery.yaml, images in static/gallery/), then
 # the lab's own renders (files in assets/images/renders/).
@@ -37,6 +37,11 @@ renders:
     alt: "Example analysis on the Lead Tutor dataset: the fibre filtering result from a wider angle"
     caption: "The same fiber filtering example from the other side."
 papers_title: "Figures from papers that used Lead-DBS or Lead-OR"
-papers_text: "Figures from open-access papers whose authors used Lead-DBS, or its sister tool Lead-OR for surgery (marked under the figure), reproduced under their licences. Open a figure at full size from the link below it; the paper is linked there too."
+papers_text: "Figures from open-access papers whose authors used Lead-DBS, or its sister tool Lead-OR for surgery (marked under the figure), reproduced under their licences."
 papers_empty: "The first figures are being collected. To suggest one from your paper, write to us through the [contact page](/contact/)."
+aliases: ["/helpsupport/knowledge-base/screenshots/"]
+keywords: ["gallery", "figures", "renders", "pictures", "images"]
+next: "Made a figure with Lead-DBS? [Tell us about it](/contact/). To make your own, [download Lead-DBS](/download/) and take the [first steps](/helpsupport/first-steps/); the papers behind the software are under [Publications](/about/publications/)."
+# the picture shown when the page is shared (head.html)
+share: "images/renders/lead-closeup.jpg"
 ---

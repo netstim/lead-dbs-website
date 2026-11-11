@@ -2,6 +2,7 @@
 title: "Develop Lead-DBS"
 date: "2026-11-10"
 description: "Source code, licence, how to contribute, bug reports and the developer meeting."
+keywords: ["contribute", "code", "github", "developer", "pull request", "bug", "changelog", "release notes", "source"]
 ---
 
 Lead-DBS is open source, and contributions are welcome: code, fixes, atlases and data, or simply a well-described bug report.
@@ -24,7 +25,7 @@ To work on the code, install Lead-DBS from GitHub instead of the download:
 
 The manual's [installation via GitHub](https://netstim.gitbook.io/leaddbs/installation#installation-via-github) describes each step.
 
-Before including a dataset or a piece of code, please read our [philosophy on including code and datasets into Lead-DBS](/about/data-code-inclusion-philosophy/). Lead-DBS builds on many shared libraries; they are listed on the [dependencies page](/about/lead-dbs-dependencies/).
+Bringing an atlas, a dataset or a method? [How to get it into Lead-DBS](/about/data-code-inclusion-philosophy/) is a short read. Why Lead-DBS is built as academic research software: [Commercial vs. academic software](/commercial-vs-academic-software/). The libraries it builds on: the [dependencies page](/about/lead-dbs-dependencies/).
 
 ## Report a bug
 
@@ -32,14 +33,16 @@ Please open an issue on [GitHub](https://github.com/netstim/leaddbs/issues). Que
 
 ## Developer meeting
 
-The first Lead-DBS Developer Meeting is on **Wednesday, 18 November 2026, at 15:00 Berlin time (CET)**, on Zoom. It is open to anyone who wants to contribute or to learn about the ongoing development. The meetings are planned monthly; further dates are not set yet.
-
-To receive the Zoom link, register through the [events page](/events/): you leave your e-mail address and are sent the link. Until registration opens there, the link is shared on the [user Slack](https://inviter.co/lead-dbs). The link is not published on this website.
+Held online and planned monthly, open to anyone who wants to contribute or follow the development: see [Join the developer meeting](/events/developer-meeting/).
 
 ## What changed in each release
 
-Every release is a tag in the repository: see the [list of tags](https://github.com/netstim/leaddbs/tags). GitHub shows all changes between two releases, for example [3.2 to 3.2.1](https://github.com/netstim/leaddbs/compare/v3.2...v3.2.1). Each release is also announced in the [news](/news/) and the [newsletter](/subscribe-to-our-newsletter/).
+The [release history](/download/#releases) on the download page lists every version with its date, its announcement and the changes on GitHub.
 
 ## What comes next
 
-Lead-DBS 4.0 is coming, rebuilt completely in Python. Participants of the [Hands-on Lead-DBS Workshop](/helpsupport/workshops/) on 11–12 February 2027 will be among the first to try the pre-release.
+Lead-DBS 4.0 is coming, rebuilt completely in Python. Participants of the [Hands-on Lead-DBS Workshop](/hands-on-lead-dbs-workshop-cologne-2027/) on 11–12 February 2027 will be among the first to try the pre-release.
+
+## Next
+
+Join the [user Slack](/helpsupport/slack-user-channel/) to talk to other developers, or see who [contributed atlases and data](/about/team/#atlases-and-data-contributed-by).

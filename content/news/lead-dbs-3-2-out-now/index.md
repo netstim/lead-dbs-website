@@ -1,8 +1,11 @@
 ---
 title: "Lead-DBS 3.2 out now: Lead Tutor, new atlases and a new institute"
+description: "Lead-DBS 3.2 brings Lead Tutor, an open dataset to practise electrode localization, new atlases and many smaller fixes."
+htmlTitle: "Lead-DBS 3.2: Lead Tutor, new atlases, a new institute"
 date: 2025-02-28
 slug: "lead-dbs-3-2-out-now"
 image: "lead-tutor.png"
+image_alt: "Title of the Lead Tutor paper in Aperture Neuro, over electrodes on a brain section"
 ---
 
 Ningfei Li just pushed Lead-DBS v3.2 to our servers. It comes with many minor fixes and a few larger updates, including [the Lead Tutor package](https://netstim.gitbook.io/leaddbs/lead-dbs/self-tutoring-with-lead-tutor) to self-train DBS electrode localizations with Lead-DBS.
@@ -33,7 +36,7 @@ Ever wondered how accurate your DBS localizations were? Or are you a new user wh
 
 ## New atlases
 
-Besides numerous small fixes and improvements of the code, Lead-DBS v3.2 comes with the following new atlas resources:
+New atlas resources in v3.2:
 
 - [Morel Atlas](https://zenodo.org/records/13918589) (Jakab 2008)
 - The THOMAS Atlas was updated ([Saranathan 2021](https://www.nature.com/articles/s41597-021-01062-y))

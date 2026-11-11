@@ -1,8 +1,10 @@
 ---
 title: "Lead-DBS 3.1 out now"
+description: "Lead-DBS 3.1 integrates OSS-DBS v2.0 for stimulation modelling, updates WarpDrive and brings a built-in Python environment."
 date: 2024-02-13
 slug: "lead-dbs-3-1-out-now"
 image: "oss-dbs-v2.png"
+image_alt: "OSS-DBS v2: the electric field around a DBS electrode (left), and fibre tracts in red and blue next to an electrode (right)"
 ---
 
 While 3.0 had not been around for long, we are excited to announce the release of Lead-DBS v3.1, which Ningfei Li just pushed to our servers. This version brings many updates; its key feature is the integration of OSS-DBS v2.0, which is much faster, more lightweight and more powerful than v1.0.
@@ -13,7 +15,7 @@ Since a lot has changed, it may make sense to [download Lead-DBS again](/downloa
 
 ## OSS-DBS v2.0
 
-The biggest new feature in Lead-DBS v3.1 is the integration of OSS-DBS v2.0, which has been developed around the team of Ursula van Rienen at the University of Rostock.
+OSS-DBS v2.0 has been developed around the team of Ursula van Rienen at the University of Rostock.
 
 OSS-DBS employs heterogeneous, anisotropic and dispersive volume conductor modeling for an accurate estimation of the electric field. In turn, the field can be used to conduct pathway activation modeling using biophysical axon models. Version 2 offers significantly higher efficiency, simpler installation and more transparent code.
 
@@ -29,7 +31,7 @@ Limitations: advanced modeling assumes an understanding of the underlying parame
 
 The WarpDrive tool received multiple updates and refinements. It now features a shrink & expand tool, an inverse mode to carry out segmentations in native space, and the ability to move already placed fiducials during additional refinements.
 
-![WarpDrive in action](warpdrive.gif "WarpDrive in action.")
+{{< clip src="warpdrive.mp4" poster="warpdrive-poster.jpg" alt="WarpDrive in action" caption="WarpDrive in action." >}}
 
 ## Built-in conda environment (using miniforge)
 
@@ -55,7 +57,7 @@ Both tools can be called from the Tools menu in the Lead-DBS main window.
 
 ## New atlases
 
-The following new atlases are included with Lead-DBS v3.1. We would like to thank all colleagues who contributed their work to the toolbox:
+New in v3.1; we would like to thank all colleagues who contributed their work to the toolbox:
 
 - [TWH Thalamotomy Sweetspot (Boutet 2018)](https://doi.org/10.1093/brain/awy278)
 - [Harvard AAN Atlas (v2.0)](https://doi.org/10.5061/dryad.zw3r228d2)

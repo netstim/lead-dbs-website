@@ -1,5 +1,6 @@
 ---
 title: "Lead-DBS v2.5 out now!"
+description: "Lead-DBS 2.5 is out; its release notes are in the newsletter."
 date: "2021-03-04T09:27:29"
 lastmod: "2021-03-04T09:30:13"
 slug: "lead-dbs-v2-5-out-now"
