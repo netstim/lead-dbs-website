@@ -1,13 +1,15 @@
 ---
 title: "Brisbane February 2020"
-date: "2019-08-03T09:58:10"
+date: "2020-02-22"  # the day the workshop began (orders the list of past workshops)
 lastmod: "2022-03-16T14:41:39"
 weight: 2
 ---
 
-## 5th INTERNATIONAL LEAD-DBS WORKSHOP 02/2020, BRISBANE
+{{< notice >}}This workshop took place on 22–23 February 2020 in Brisbane. This page is kept as an archive.{{< /notice >}}
 
-![](flyer-2-1030x728.png)  
+## 5th International Lead-DBS Workshop 02/2020, BRISBANE
+
+![Lead-DBS Workshop Brisbane 2020, 22–23 February: banner over the Brisbane skyline](flyer-2-1030x728.png)  
 
 Dear friends of Lead-DBS,
 
@@ -19,22 +21,22 @@ In this workshop, we give you an overview on the Lead-DBS software and its appli
 
 {{% row %}}
 {{% col "1/2" %}}
-{{< button href="https://payments.uq.edu.au/OneStopWeb/ECET103QBI002" >}}Register here{{< /button >}}
+Registration is closed.
 
 {{% /col %}}
 {{% col "1/2" %}}
-{{< button href="http://www.lead-dbs.org/docs/workshops/Lead-DBS_Workshop2020_Programme_BRIS.pdf" >}}See the schedule here{{< /button >}}
+{{< button href="https://www.lead-dbs.org/docs/workshops/Lead-DBS_Workshop2020_Programme_BRIS.pdf" >}}See the schedule here{{< /button >}}
 
 {{% /col %}}
 {{% /row %}}
 
-Registration fees are:
+Registration fees were:
 
 - Students/PhD students: AUD $200
 - Postdocs: AUD $300
 - Faculty/Industry: AUD $600
 
-Cancelation policy is as follows:
+The cancellation policy was:
 
 - Full refund if cancellation is 8 weeks before the meeting  (28 Dec 2019)
 - 50% refund if cancellation is 4 weeks before the meeting (24 Jan 2020)
@@ -42,7 +44,6 @@ Cancelation policy is as follows:
 
 Places will be allocated on a first come first serve basis and are limited to 25 seats.
 
-If the meeting is fully booked please email workshop@lead-dbs.org with your interest and we will place you on a waiting list.
 
 Kind regards,
 

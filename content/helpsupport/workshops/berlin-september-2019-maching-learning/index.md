@@ -1,9 +1,11 @@
 ---
-title: "Machine Learning – Berlin September 2019"
-date: "2019-02-23T22:29:24"
+title: "Deep Learning for Intracranial Neurophysiology – Berlin September 2019"
+date: "2019-09-16"  # the day the workshop began (orders the list of past workshops)
 lastmod: "2022-03-16T14:41:45"
 weight: 3
 ---
+
+{{< notice >}}This workshop took place on 16–17 September 2019 in Berlin. This page is kept as an archive.{{< /notice >}}
 
 ## 2-day workshop on Deep Learning for intracranial neurophysiology (spikes and LFPs), 09/2019
 
@@ -19,7 +21,7 @@ Please find a short description by Chadwick Boulay in the bullet points below.
 
 - Attendees are expected to have a basic understanding of machine learning concepts, have basic familiarity with Python syntax, and have an interest in applying deep learning to extracellular neurophysiology data. For each topic, attendees will work through prepared examples using real data and thus are expected to bring their own laptop and have configured their deep learning environment (instructions will be provided in the weeks before the workshop).
 
-{{< button href="http://www.lead-dbs.org/docs/workshops/Applied_Deep_Learning_in_Intracranial_Neurophysiology_Workshop.pdf" >}}Download the program{{< /button >}}
+{{< button href="https://www.lead-dbs.org/docs/workshops/Applied_Deep_Learning_in_Intracranial_Neurophysiology_Workshop.pdf" >}}Download the program{{< /button >}}
 
 {{% row %}}
 {{% col "2/3" %}}
@@ -30,7 +32,7 @@ Registration is now closed.
 
 {{% /col %}}
 {{% /row %}}
-Registration fees are:
+Registration fees were:
 
 - Students/PhD students:
   - [Lead-DBS](/helpsupport/workshops/berlin-september-2019/) OR Machine Learning workshop: 70€
@@ -42,7 +44,7 @@ Registration fees are:
   - [Lead-DBS](/helpsupport/workshops/berlin-september-2019/) OR Machine Learning workshop: 350€
   - Both workshops: 525 €
 
-Payment details and invoice will be provided upon successful registration.
+Payment details and invoices were sent after registration.
 
 Kind regards,
 

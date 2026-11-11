@@ -1,13 +1,15 @@
 ---
 title: "Berlin September 2019"
-date: "2019-01-22T13:11:42"
+date: "2019-09-13"  # the day the workshop began (orders the list of past workshops)
 lastmod: "2022-03-16T14:41:50"
 weight: 4
 ---
 
-## 4th INTERNATIONAL LEAD-DBS WORKSHOP 09/2019, BERLIN
+{{< notice >}}This workshop took place on 13–15 September 2019 in Berlin. This page is kept as an archive.{{< /notice >}}
 
-![](Logo-1030x798.png)
+## 4th International Lead-DBS Workshop 09/2019, BERLIN
+
+![Lead-DBS Workshop Berlin 2019, 13–15 September: banner over a building](Logo-1030x798.png)
 
 Dear friends of Lead-DBS,
 
@@ -15,7 +17,7 @@ after a wonderful event in Shanghai 2018, we are pleased to announce our 4th Lea
 
 In this workshop, we give you an overview on the Lead-DBS software and its applications in research while at the same time providing you with the opportunity of interactive hands-on practice sessions. We will cover the processes of precise electrode localizations, multispectral spatial normalization, brain shift correction, and related topics. Ideally, you should have at least minimal pre-existing experience with the use of MATLAB and Lead-DBS.
 
-{{< button href="http://www.lead-dbs.org/docs/workshops/Lead-DBS_Workshop2019_Programme_BER.pdf" >}}Click here for the schedule{{< /button >}}
+{{< button href="https://www.lead-dbs.org/docs/workshops/Lead-DBS_Workshop2019_Programme_BER.pdf" >}}Click here for the schedule{{< /button >}}
 
 Of note, directly after the workshop, a 2-day workshop on [Deep Learning for intracranial neurophysiology (spikes and LFPs) will take place (16th-17th September)](/helpsupport/workshops/berlin-september-2019-maching-learning/), as well. Save half the fee of one workshop by registering for both – and enjoy four days of DBS research and a weekend in Berlin!
 
@@ -28,7 +30,7 @@ Registration is now closed.
 
 {{% /col %}}
 {{% /row %}}
-Registration fees are:
+Registration fees were:
 
 - Students/PhD students:
   - Lead-DBS OR [Machine Learning](/helpsupport/workshops/berlin-september-2019-maching-learning/) workshop: 70€
@@ -40,7 +42,7 @@ Registration fees are:
   - Lead-DBS OR [Machine Learning](/helpsupport/workshops/berlin-september-2019-maching-learning/) workshop: 350€
   - Both workshops: 525 €
 
-Payment details and invoice will be provided upon successful registration.
+Payment details and invoices were sent after registration.
 
 Kind regards,
 

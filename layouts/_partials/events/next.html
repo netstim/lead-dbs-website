@@ -1,0 +1,50 @@
+{{- /* The next event, as one of the home hero's facts ("fact", a desktop), a line under the hero's release notice ("line", below
+       1024px), a strip ("strip", not used now) or a
+       sidebar block ("side"). Argument: dict "variant" ("fact" | "line" | "strip" | "side") "page". Every event still upcoming at build time is
+       in the markup, all but the first hidden; assets/js/main.js shows the first one that is not over
+       by the visitor's clock, and hides the block when none is left. Without script, the build's
+       choice shows. */ -}}
+{{- $up := where (partial "events/list.html" .) "over" false -}}
+{{- $events := site.GetPage "/events" -}}
+{{- $all := cond (ne $events nil) $events.RelPermalink ("events/" | relURL) -}}
+{{- $arrow := `<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg>` | safeHTML -}}
+{{- with $up -}}
+{{- if eq $.variant "fact" -}}
+<div class="hero__event" data-ev-next>
+  <dt>Next event</dt>
+  {{- range $i, $ev := . }}
+  <dd data-ev data-ev-ends="{{ $ev.iso_ends }}"{{ if gt $i 0 }} hidden{{ end }}><a href="{{ $all }}#{{ $ev.id }}">{{ $ev.e.title | replaceRE "^Lead-DBS " "" }}, <time datetime="{{ $ev.iso_start }}">{{ $ev.start.Format "2 Jan" }}{{ with $ev.time_short }}, {{ . }}{{ end }}</time></a></dd>
+  {{- end }}
+</div>
+{{- else if eq $.variant "line" -}}
+<p class="hero-notice hero__next" data-ev-next>
+  {{- range $i, $ev := . }}
+  <a href="{{ $all }}#{{ $ev.id }}" data-ev data-ev-ends="{{ $ev.iso_ends }}"{{ if gt $i 0 }} hidden{{ end }}>Next event: {{ $ev.e.title | replaceRE "^Lead-DBS " "" }}, <time datetime="{{ $ev.iso_start }}">{{ $ev.start.Format "2 Jan" }}{{ with $ev.time_short }}, {{ . }}{{ end }}</time></a>
+  {{- end }}
+</p>
+{{- else if eq $.variant "strip" -}}
+<aside class="event-strip" aria-labelledby="next-event-h" data-ev-next>
+  <div class="wrap event-strip__inner">
+    <p class="t-label event-strip__label" id="next-event-h">Next event</p>
+    {{- range $i, $ev := . }}
+    <div class="event-strip__item" data-ev data-ev-ends="{{ $ev.iso_ends }}"{{ if gt $i 0 }} hidden{{ end }}>
+      <a class="event-strip__title" href="{{ $all }}#{{ $ev.id }}">{{ $ev.e.title }}{{ $arrow }}</a>
+      <p class="event-strip__meta"><time datetime="{{ $ev.iso_start }}">{{ $ev.when }}{{ with $ev.time }}, {{ . }}{{ end }}</time><span aria-hidden="true"> · </span><span>{{ $ev.e.where }}</span></p>
+    </div>
+    {{- end }}
+    <a class="link event-strip__all" href="{{ $all }}">All events</a>
+  </div>
+</aside>
+{{- else -}}
+<section class="side-block next-event" aria-labelledby="side-event" data-ev-next>
+  <p class="t-label muted" id="side-event">Next event</p>
+  {{- range $i, $ev := . }}
+  <div class="next-event__item" data-ev data-ev-ends="{{ $ev.iso_ends }}"{{ if gt $i 0 }} hidden{{ end }}>
+    <p class="next-event__title"><a href="{{ $all }}#{{ $ev.id }}">{{ $ev.e.title }}</a></p>
+    <p class="t-small muted"><time datetime="{{ $ev.iso_start }}">{{ $ev.when }}{{ with $ev.time }}, {{ . }}{{ end }}</time><br>{{ $ev.e.where }}</p>
+  </div>
+  {{- end }}
+  <a class="link t-small" href="{{ $all }}">All events</a>
+</section>
+{{- end -}}
+{{- end -}}

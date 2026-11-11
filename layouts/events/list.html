@@ -1,0 +1,27 @@
+{{ define "main" }}
+{{- /* /events/: every entry of data/events.yaml, upcoming first (soonest first), then past (latest
+     first). Split at build time; assets/js/main.js moves an event that is over by the visitor's clock
+     to "Past events", so a page built some days ago still reads right. */ -}}
+{{ $all := partial "events/list.html" . }}
+{{ $up := where $all "over" false }}
+{{ $past := sort (where $all "over" true) "start_unix" "desc" }}
+<main id="top" class="page">
+  {{ partial "page-head.html" . }}
+  <div class="wrap doc-layout">
+    <article class="prose events-page">
+      {{ .Content }}
+      <h2 id="upcoming">Upcoming</h2>
+      <ol class="event-list" data-ev-upcoming>
+        {{ range $up }}{{ partial "events/card.html" (dict "ev" . "page" $) }}{{ end }}
+      </ol>
+      <p class="event-empty" data-ev-empty{{ if $up }} hidden{{ end }}>No dates are set right now. New ones are announced in the <a href="{{ relref $ "/subscribe-to-our-newsletter" }}">newsletter</a>.</p>
+      <h2 id="past"{{ if not $past }} hidden{{ end }} data-ev-past-h>Past events</h2>
+      <ol class="event-list event-list--past" data-ev-past>
+        {{ range $past }}{{ partial "events/card.html" (dict "ev" . "page" $) }}{{ end }}
+      </ol>
+      <p class="t-small muted">Earlier workshops have pages of their own: see <a href="{{ relref $ "/helpsupport/workshops/past-workshops" }}">past workshops</a>.</p>
+    </article>
+    <aside class="sidebar" aria-label="Release and quick links">{{ partial "sidebar.html" . }}</aside>
+  </div>
+</main>
+{{ end }}

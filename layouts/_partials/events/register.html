@@ -1,0 +1,11 @@
+{{- /* How to take part in one event (argument: one entry of events/list.html, plus "page").
+       Never prints a meeting link: an online meeting's link is sent by its registration page. */ -}}
+{{- $e := .ev.e -}}
+{{- $slack := "" }}{{ with site.GetPage "/helpsupport/slack-user-channel" }}{{ $slack = .RelPermalink }}{{ end -}}
+{{- if $e.register_url -}}
+<p class="event__register"><a class="btn btn--primary" href="{{ partial "resolve-url.html" (dict "url" $e.register_url "page" .page) }}">{{ if $e.online }}Register to get the meeting link{{ else }}Register{{ end }}</a></p>
+{{- else if $e.online -}}
+<p class="event__note">Registration opens soon: leave your e-mail address and you get the {{ if strings.Contains (lower $e.where) "zoom" }}Zoom {{ end }}link. Until then, the link is shared in the <a href="{{ $slack }}">user Slack</a>.</p>
+{{- else -}}
+<p class="event__note">Details and registration will follow in the <a href="{{ with site.GetPage "/subscribe-to-our-newsletter" }}{{ .RelPermalink }}{{ end }}">newsletter</a> and on the <a href="{{ $slack }}">user Slack</a>.</p>
+{{- end -}}

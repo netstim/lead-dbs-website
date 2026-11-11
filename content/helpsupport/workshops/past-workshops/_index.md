@@ -5,10 +5,6 @@ lastmod: "2022-03-16T14:41:55"
 weight: 5
 ---
 
-Dear friends of Lead-DBS,
+Earlier Lead-DBS workshops, newest first. These pages are kept as an archive. For upcoming workshops and meetings, see the [workshops page](/helpsupport/workshops/) and [events](/events/).
 
-on this page we will inform you about past and future workshops. You can see future and past workshops on the right hand side.
-
-Kind regards,
-
-your Lead-DBS Team
+{{< childpages order="date" include="/helpsupport/workshops/brisbane-february-2020, /helpsupport/workshops/berlin-september-2019, /helpsupport/workshops/berlin-september-2019-maching-learning" >}}
