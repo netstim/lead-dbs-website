@@ -1,0 +1,64 @@
+{{ define "main" }}
+{{- /* /gallery/: figures from published papers (data/gallery.yaml, files in static/gallery/), in the order
+     of that file, then the lab's renders (content/gallery/_index.md, files in assets/images/renders/).
+     Each figure is shown whole (resized copies), with its plain-language description, the attribution
+     its licence requires and a link to the original file. A figure with a missing field stops the build. */ -}}
+{{ $p := .Params }}
+<main id="top" class="page">
+  {{ partial "page-head.html" . }}
+  <div class="wrap gallery-page">
+    <section class="gallery-section" aria-labelledby="papers-h">
+      <h2 id="papers-h">{{ partial "nobreak.html" $p.papers_title }}</h2>
+      {{ $figs := hugo.Data.gallery.figures | default slice }}
+      {{ if $figs }}
+      <p class="lead">{{ $p.papers_text }}</p>
+      <ol class="paper-list">
+        {{ range $i, $f := $figs }}
+        {{ range slice "authors" "title" "journal" "year" "figure" "doi" "license" "license_url" "modification" "shows" }}{{ if not (index $f .) }}{{ errorf "gallery: %s has no %q (data/gallery.yaml)" $f.file . }}{{ end }}{{ end }}
+        {{ with resources.Get (printf "gallery/%s" $f.file) }}
+        {{ $src := . }}
+        {{ $set := slice }}{{ $mid := $src }}
+        {{ range slice 640 1000 1400 }}{{ if lt . $src.Width }}{{ $r := $src.Resize (printf "%dx webp q82" .) }}{{ $set = $set | append (printf "%s %dw" $r.RelPermalink $r.Width) }}{{ if eq . 1000 }}{{ $mid = $r }}{{ end }}{{ end }}{{ end }}
+        {{ if eq $mid $src }}{{ $mid = $src.Resize (printf "%dx webp q82" $src.Width) }}{{ $set = $set | append (printf "%s %dw" $mid.RelPermalink $mid.Width) }}{{ end }}
+        {{ $full := printf "gallery/%s" $f.file | relURL }}
+        <li class="paper-fig" id="fig-{{ path.BaseName $f.file }}">
+          {{- /* the picture links to the same file as the text link below, so it is skipped by keyboard and screen readers */}}
+          <a class="paper-fig__img" href="{{ $full }}" tabindex="-1" aria-hidden="true">
+            <img src="{{ $mid.RelPermalink }}" srcset="{{ delimit $set ", " }}" sizes="(min-width: 1024px) 58vw, 100vw" width="{{ $src.Width }}" height="{{ $src.Height }}" alt="" loading="lazy" decoding="async">
+          </a>
+          <div class="paper-fig__text">
+            {{ with $f.tool }}<p class="paper-fig__tool">Made with {{ . }}, the sister tool of Lead-DBS</p>{{ end }}
+            <p class="paper-fig__shows">{{ $f.shows }}</p>
+            <p class="paper-fig__cite">
+              {{ $f.figure }} from {{ $f.authors }} ({{ $f.year }}). <span class="paper-fig__title">{{ $f.title }}</span>. <em>{{ $f.journal }}</em>.
+              <a href="https://doi.org/{{ $f.doi }}">doi:{{ $f.doi }}</a>
+            </p>
+            <p class="paper-fig__full"><a href="{{ $full }}">Open the figure at full size</a> <span class="muted">({{ $src.Width }} × {{ $src.Height }} pixels)</span></p>
+            <p class="paper-fig__licence">Licence: <a href="{{ $f.license_url }}">{{ $f.license }}</a>.{{ if ne (lower $f.modification) "none" }} Changed from the original: {{ $f.modification }}.{{ end }}</p>
+          </div>
+        </li>
+        {{ else }}
+        {{ errorf "gallery: no file static/gallery/%s (data/gallery.yaml)" $f.file }}
+        {{ end }}
+        {{ end }}
+      </ol>
+      {{ else }}
+      <p class="gallery-empty">{{ $.RenderString $p.papers_empty }}</p>
+      {{ end }}
+    </section>
+
+    <section class="gallery-section" aria-labelledby="renders-h">
+      <h2 id="renders-h">{{ partial "nobreak.html" $p.renders_title }}</h2>
+      <p class="lead">{{ $p.renders_text }}</p>
+      <div class="render-grid">
+        {{ range $p.renders }}
+        <div class="render-item">
+          {{ partial "render.html" (dict "file" .file "alt" .alt "class" "render-fig" "sizes" "(min-width: 1280px) 30vw, (min-width: 640px) 46vw, 100vw") }}
+          {{ with .caption }}<p class="render-item__caption">{{ . }}</p>{{ end }}
+        </div>
+        {{ end }}
+      </div>
+    </section>
+  </div>
+</main>
+{{ end }}

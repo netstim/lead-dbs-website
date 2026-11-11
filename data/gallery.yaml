@@ -1,0 +1,149 @@
+# Figures from published papers made with Lead-DBS (or, marked with "tool", its sister tool Lead-OR),
+# shown on /gallery/ ("Made with Lead-DBS"),
+# in the order listed here. Each entry is one block starting with "- file:"; to drop a figure,
+# delete its whole block (and, if you like, its file in static/gallery/).
+#
+# Every field is printed with the figure; the build stops when a required one is missing. The citation, DOI and licence are attribution requirements
+# of CC BY: fill them all. "modification" says how the figure was changed from the published one
+# (CC BY requires changes to be stated); "none" prints nothing. "shows" is one plain sentence
+# printed under the figure and used as its alt text. The page shows a resized copy; a click opens
+# the file itself.
+#
+# - file: "author2025_fig2.png"          # file name in static/gallery/
+#   authors: "Author A et al."
+#   title: "Title of the paper"
+#   journal: "Journal"
+#   year: 2025
+#   figure: "Figure 2"
+#   doi: "10.xxxx/xxxxx"
+#   license: "CC BY 4.0"
+#   license_url: "https://creativecommons.org/licenses/by/4.0/"
+#   modification: "none"                  # or how it was changed: "cropped to panel a"
+#   tool: "Lead-OR"                       # optional: when the figure was made with a sister tool, not Lead-DBS itself
+#   shows: "One plain sentence: what the figure shows."
+figures:
+
+  - file: "li2020_fig4_top.png"
+    authors: "Li N et al."
+    title: "A unified connectomic target for deep brain stimulation in obsessive-compulsive disorder"
+    journal: "Nature Communications"
+    year: 2020
+    figure: "Figure 4"
+    doi: "10.1038/s41467-020-16734-3"
+    license: "CC BY 4.0"
+    license_url: "https://creativecommons.org/licenses/by/4.0/"
+    modification: "cropped to the top 3D panel (title line and the two scatter plots below removed)"
+    shows: "Electrodes from two OCD patient groups with the nerve fibre tracts they reach: red tracts were linked to better improvement, blue tracts to less."
+
+  - file: "hollunder2024_fig2_right.png"
+    authors: "Hollunder B et al."
+    title: "Mapping dysfunctional circuits in the frontal cortex using deep brain stimulation"
+    journal: "Nature Neuroscience"
+    year: 2024
+    figure: "Figure 2"
+    doi: "10.1038/s41593-024-01570-1"
+    license: "CC BY 4.0"
+    license_url: "https://creativecommons.org/licenses/by/4.0/"
+    modification: "cropped to the large right-hand panel (four left-hand panels removed)"
+    shows: "Hundreds of electrodes implanted in the subthalamic nucleus, seen from above on a histological brain section and coloured by the disorder they treat."
+
+  - file: "edlow2019_fig7_panela.png"
+    authors: "Edlow BL et al."
+    title: "7 Tesla MRI of the ex vivo human brain at 100 micron resolution"
+    journal: "Scientific Data"
+    year: 2019
+    figure: "Figure 7"
+    doi: "10.1038/s41597-019-0254-8"
+    license: "CC BY 4.0"
+    license_url: "https://creativecommons.org/licenses/by/4.0/"
+    modification: "cropped to panel a (panels b and c removed)"
+    shows: "Two electrodes of a hypothetical patient among labelled deep brain structures, displayed over an ultra-high-resolution brain scan."
+
+  - file: "oxenford2022_fig1.jpg"
+    authors: "Oxenford S et al."
+    title: "Lead-OR: A multimodal platform for deep brain stimulation surgery"
+    journal: "eLife"
+    year: 2022
+    figure: "Figure 1"
+    tool: "Lead-OR"
+    doi: "10.7554/eLife.72929"
+    license: "CC BY 4.0"
+    license_url: "https://creativecommons.org/licenses/by/4.0/"
+    modification: "none"
+    shows: "A 3D scene of a patient's skull in the stereotactic frame during surgery, with the planned electrode paths leading to small target structures deep in the brain."
+
+  - file: "li2020_fig1.png"
+    authors: "Li N et al."
+    title: "A unified connectomic target for deep brain stimulation in obsessive-compulsive disorder"
+    journal: "Nature Communications"
+    year: 2020
+    figure: "Figure 1"
+    doi: "10.1038/s41467-020-16734-3"
+    license: "CC BY 4.0"
+    license_url: "https://creativecommons.org/licenses/by/4.0/"
+    modification: "none"
+    shows: "Electrodes of four OCD patient groups from Cologne, Madrid, Grenoble and London, shown in 3D among the deep brain structures they target."
+
+  - file: "krause2020_fig1.jpg"
+    authors: "Krause P et al."
+    title: "Long-term effects of bilateral pallidal deep brain stimulation in dystonia: a follow-up between 8 and 16 years"
+    journal: "Journal of Neurology"
+    year: 2020
+    figure: "Figure 1"
+    doi: "10.1007/s00415-020-09745-z"
+    license: "CC BY 4.0"
+    license_url: "https://creativecommons.org/licenses/by/4.0/"
+    modification: "none"
+    shows: "Electrodes in the internal pallidum (green) of two groups of dystonia patients, generalised and cervical or segmental, and below them of two patients with a poor result, next to the subthalamic nucleus (orange) and red nucleus; active contacts in red."
+
+  - file: "rajamani2024_fig7.png"
+    authors: "Rajamani N et al."
+    title: "Deep brain stimulation of symptom-specific networks in Parkinson's disease"
+    journal: "Nature Communications"
+    year: 2024
+    figure: "Figure 7"
+    doi: "10.1038/s41467-024-48731-1"
+    license: "CC BY 4.0"
+    license_url: "https://creativecommons.org/licenses/by/4.0/"
+    modification: "none"
+    shows: "Symptom-related nerve fibre tracts near the subthalamic nucleus, reached by today's single stimulation volume (A) and by two separate volumes from a hypothetical future electrode (B)."
+
+
+  - file: "hollunder2024_fig4_panela.png"
+    authors: "Hollunder B et al."
+    title: "Mapping dysfunctional circuits in the frontal cortex using deep brain stimulation"
+    journal: "Nature Neuroscience"
+    year: 2024
+    figure: "Figure 4"
+    doi: "10.1038/s41593-024-01570-1"
+    license: "CC BY 4.0"
+    license_url: "https://creativecommons.org/licenses/by/4.0/"
+    modification: "cropped to panel a (statistics panel b removed)"
+    shows: "For four brain disorders, the nerve fibre tracts passing the subthalamic nucleus are narrowed down, row by row, to the bundle whose stimulation went along with the best outcomes."
+
+  - file: "oxenford2022_fig6.jpg"
+    authors: "Oxenford S et al."
+    title: "Lead-OR: A multimodal platform for deep brain stimulation surgery"
+    journal: "eLife"
+    year: 2022
+    figure: "Figure 6"
+    tool: "Lead-OR"
+    doi: "10.7554/eLife.72929"
+    license: "CC BY 4.0"
+    license_url: "https://creativecommons.org/licenses/by/4.0/"
+    modification: "none"
+    shows: "As test stimulation during surgery is raised from 2.0 to 3.5 mA, more nerve fibres near the electrode are reached, alongside the arm-muscle activity recorded at the same time."
+
+  - file: "rios2022_fig6_panela.png"
+    authors: "Ríos AS et al."
+    title: "Optimal deep brain stimulation sites and networks for stimulation of the fornix in Alzheimer's disease"
+    journal: "Nature Communications"
+    year: 2022
+    figure: "Figure 6"
+    doi: "10.1038/s41467-022-34510-3"
+    license: "CC BY 4.0"
+    license_url: "https://creativecommons.org/licenses/by/4.0/"
+    modification: "cropped to panel a (panel b, which includes a reproduction of Penfield & Perot 1963, removed)"
+    shows: "Nerve fibre tracts whose stimulation went along with flashback-like experiences during fornix stimulation for Alzheimer's disease, shown in 3D on high-resolution brain sections."
+
+
