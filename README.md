@@ -37,12 +37,13 @@ The main menu is grouped by what visitors come for; the footer lists the same gr
 
 | Menu | Page | Holds |
 |---|---|---|
-| Docs and help | `/helpsupport/` | First steps, the manual (another site), Lead Tutor, walkthrough videos (current recordings first, then "Older recordings"), methods (an index of everything Lead-DBS does, one row per method with its manual chapter and paper; the method pages DBS network mapping, AC/PC to MNI conversion with the former article "DBS targets in MNI space" as its background section, subcortical electrophysiology mapping), get help (`/helpsupport/#get-help`, the one list of where to ask; the contact page sits under it) |
-| Atlases and data | `/helpsupport/knowledge-base/atlasesresources/` | Subcortical atlases (with the macaque atlas), cortical parcellations, normative connectomes; "Atlases by the Lead-DBS team": DISTAL, FOCUS; the background article "About the MNI space(s)" |
-| Community | `/community/` | Events (with the developer meeting's sign-up and the past workshops), user Slack, Develop Lead-DBS (with the data and code inclusion philosophy and "Commercial vs. academic software"), newsletter |
-| News | `/news/` | Releases and announcements (each post at `/<slug>/`), the RSS feed `/news/index.xml` |
-| About | `/about/` ("About Lead-DBS": cards for its pages, then what it does, deep brain stimulation, history, recognition and funding, Lead tools) | Cite Lead-DBS (with the dependencies to cite, OSS-DBS among them), publications, Made with Lead-DBS (gallery), contributors (who coordinates Lead-DBS today and who built it), Lead tools (`/about/tools/`: Lead Group, Lead Connectome, OSS-DBS, Lead-OR, Lead Tutor, each built alike) with Lead-OR's own page |
-| Download | `/download/` (the header's button; its sidebar shows "Docs and help") | The current release, requirements, standalone builds, licence, release history |
+| Features | `/helpsupport/knowledge-base/lead-dbs-methods/` ("Features": what Lead-DBS does, one row per capability with a picture, its manual chapter and papers, under "Single patients" `#single-patients`, "Groups of patients" `#groups-of-patients` and "In the operating theatre" `#operating-theatre`, reached from a row of links under the intro (`{{< jumps >}}`); then a "Tools" table `#tools`: Lead Group, Lead Connectome, OSS-DBS, Lead Tutor; full width, no sidebar) | Overview, Tools (`#tools` on the overview), Lead-OR (`/about/lead-or/`), Made with Lead-DBS (`/gallery/`); under the caption "Method articles", the three method articles in depth: DBS network mapping, electrophysiology mapping, AC/PC to MNI conversion (with the former article "DBS targets in MNI space" as its background section). Each article shows what the method is, how to run it and what to cite; the paper summary is folded. The former "Lead tools" page `/about/tools/` forwards to the overview |
+| Docs and help | `/helpsupport/` | First steps (step 1 links to the install steps on the download page), the manual (another site; on a phone a first-level word of the menu instead), Lead Tutor (the dataset's reference page; the exercise itself is step 2 of First steps), walkthrough videos (current recordings first, then "Older recordings"), get help (`/helpsupport/#get-help`, the one list of where to ask; the contact page sits under it) |
+| Atlases and data | `/helpsupport/knowledge-base/atlasesresources/` | Three catalogues built alike (subcortical atlases with the macaque atlas, DISTAL and FOCUS; cortical parcellations; normative connectomes), then under the caption "By the Lead-DBS team" in the menu the two atlases by the Lead-DBS team, DISTAL and FOCUS (both pages built alike: summary box, What it is, How to get it `#download`, What to cite, How it was built, folded); "Choosing and using an atlas or connectome" (`#choosing` on the hub); the background article "About the MNI space(s)" |
+| Community | `/community/` | Events (with the developer meeting's sign-up and the past workshops), user Slack, Develop Lead-DBS (code, atlases and datasets, bug reports; `/about/data-code-inclusion-philosophy/` forwards to its section `#add-your-atlas-or-dataset`), newsletter (with links to recent issues) |
+| News | `/news/` | Releases and announcements (each post at `/<slug>/`); posts more than three calendar years older than the newest are listed under "Archive" (with the 2017 essay "Commercial vs. academic software"); the RSS feed `/news/index.xml` |
+| About | `/about/` ("About Lead-DBS": a paragraph, cards for its pages, then deep brain stimulation, and history with recognition and funding) | Cite Lead-DBS (with the dependencies to cite, OSS-DBS among them), publications (every paper of `data/papers.yaml`, the library of studies that used Lead-DBS, cover art, what other researchers write), contributors (who coordinates Lead-DBS today and who built it) |
+| Download | `/download/` (the header's button; its sidebar is its contents list) | The current release, requirements and the install steps (`#install`, the only place they are written), standalone builds, licence, release history (versions before 3.0 folded) |
 
 The footer's legal line lists Contact, Imprint and Privacy Policy (`[menus.footer]`).
 
@@ -64,20 +65,36 @@ but it starts with, or contains, the menu's words. When you rename a page, chang
 **Hub pages** are built alike: a paragraph, then a card with one line for each page of the group, then at
 most two short sections. `{{< childpages menu="true" >}}` draws the cards from the menu, in menu order; a
 card's line is the page's `description` (also the text search engines show; keep it to 155 characters),
-or for a menu entry that is not a page (the manual) the entry's `params.description` in `hugo.toml`. A
-small group inside a group ("Atlases by the Lead-DBS team") gets a heading of its own and
-`{{< childpages menu="builtfor" >}}`. A menu entry that points to a section of the hub itself (Get help)
-gets no card.
+or for a menu entry that is not a page (the manual) the entry's `params.description` in `hugo.toml`. A menu
+entry that points to the hub itself or a section of it (Get help) gets no card. Cards start with a picture
+when every card of the list has one: the page's `card:` (a file next to the page, or a path under
+`assets/` such as `images/renders/cohort-hero.jpg`), or for a menu entry that is not a page its
+`params.image`; otherwise all cards are text (About). The `share:` picture is never used for a card. No picture
+appears twice on a page: the build stops when two cards of one hub show the same picture, or a card shows the
+render behind the hub's own page head. A menu entry with `params.divider` gets a line above it in the
+header's panel; when the value is a text, that text is the caption over the entries from there on ("Method
+articles" on Features, "By the Lead-DBS team" over DISTAL and FOCUS).
 
 **Background articles** (long, lasting texts that began as news posts) live in the folder of the group they
-belong to and keep their old address with `url:` in the front matter (`/about-the-mni-spaces/`,
-`/commercial-vs-academic-software/`); `showDate: true` prints when they were
-written under the title. They are not in the news list or feed.
+belong to and keep their old address with `url:` in the front matter (`/about-the-mni-spaces/`); `showDate: true`
+prints when they were written under the title. They are not in the news list or feed. An old opinion piece
+that no longer describes the project stays a news post under its date instead ("Commercial vs. academic
+software", 2017), so it carries the archive note.
 
 **The sidebar** has one model: the group's pages (the open entry shows the pages under it, and pages whose
-`menuParent` is the group's own page follow the entries), then on a long
-page its table of contents, on a short page the next event, quick links and the newsletter; the current
-release only on the groups' hub pages.
+`menuParent` is the group's own page follow the entries); the current release only on the groups' hub
+pages; then two to four pages related to this one, from the page's front matter:
+
+```yaml
+related:
+  - "/about/citing_leaddbs/"                                   # labelled with the page's linkTitle
+  - {name: "Add your atlas", url: "/develop/#add-your-atlas-or-dataset"}
+  - {name: "Connectomics in the manual", url: "https://netstim.gitbook.io/leaddbs/connectomics/connectomic-analyses"}
+```
+
+A page with its own `url:` is named by its folder; the build stops on a path that is not a page or is the
+page itself. Pick pages of other groups where you can (the group's own pages are listed above). Then on a
+long page its table of contents, on a short page the next event, and on News the newsletter.
 
 **Every page ends with a next step**: a link to the related page, the next tutorial step or the section's
 hub. News posts link the newer and older post by themselves.
@@ -90,12 +107,15 @@ hub. News posts link the newer and older post by themselves.
 | Images of a page | Same folder as its `index.md`: `![What the picture shows](figure.png)` (see [Pictures in pages](#pictures-in-pages)) |
 | A news post | `content/news/<slug>/index.md`; appears at `/<slug>/` (see [Add a news post](#add-a-news-post)) |
 | **A new release** | `data/release.yaml` and `data/releases.yaml`, plus a news post (see [Cut a release](#cut-a-release)) |
+| A paper about Lead-DBS, a method or a tool | `data/papers.yaml` (see [Building blocks](#building-blocks): `paper`, `papers`) |
+| Requirements and install steps (download page; First steps links there) | `data/release.yaml` (MATLAB, toolboxes, SPM12, memory) and `data/install.yaml` (the steps) |
 | An atlas or parcellation | `atlases.yaml` next to the atlas page's `index.md` (see [Atlas catalogues](#atlas-catalogues)) |
-| Home page texts, quotes, help links, history, funders, citation | `content/_index.md` (front matter only; the layout is `layouts/home.html`) |
+| Home page texts, quotes, help links, history, funders, citation; the hero's `proof` (a list of short parts) and `manual` (`{label, link, url}`, shown as a fact) | `content/_index.md` (front matter only; the layout is `layouts/home.html`) |
 | **Events** (developer meetings, workshops) | `data/events.yaml` (see [Events](#events)) |
 | Home page pictures | `assets/images/renders/` (see [Pictures on the home page](#pictures-on-the-home-page)) |
 | Gallery ("Made with Lead-DBS", `/gallery/`) | Figures from papers: `data/gallery.yaml` + image files in `static/gallery/`. Lab renders: `content/gallery/_index.md` (see [Gallery](#the-gallery-of-published-figures)) |
-| Sidebar quick links, the footer's "Lab" column | `data/links.yaml` |
+| The footer's "Lab" column | `data/links.yaml` |
+| A page's related links (sidebar) | its front matter `related:` (see [Site structure](#site-structure)) |
 | Main menu (also the footer's columns), legal links, the GitHub link in the header | `hugo.toml` → `[menus]` (the entry named "Download" is drawn as the header's button) and `[params] github`; see [Site structure](#site-structure) |
 | Download / contact / developer-meeting form fields | `data/forms.yaml` |
 | Colours, fonts, page styles | `assets/css/site.css` (tokens, buttons, grid: `assets/css/base.css`) |
@@ -141,13 +161,15 @@ text scrolls and marks the section being read. `toc: true` in the front matter f
 hides it; the threshold is `tocMinHeadings` in `hugo.toml`. It lists `##` and `###`, so give long
 pages real headings in order: the page's title is its only `h1` (a `#` heading in the Markdown is
 drawn as `h2`).
+`sidebar: false` in the front matter drops the sidebar: the page uses the full width (running text keeps its
+line length), as on Features.
 
 ### Writing for the site
 
 - **Short and scannable**: a sentence or two on what the page is for, then `##` headings and lists. Put a
   long list that only some readers need (old fees, early papers) in a fold:
   `<details class="more"><summary>What is inside</summary>` … `</details>` (blank lines around the
-  Markdown inside).
+  Markdown inside; `class="more more--wide"` for a fold that holds figures in columns).
 - **"Lead-DBS" never breaks at its hyphen**: the templates wrap it in a no-wrap span
   (`layouts/_partials/nobreak-html.html`; headings, links, tables, menus, cards, news and atlas entries).
   Write the ordinary hyphen.
@@ -159,8 +181,8 @@ drawn as `h2`).
 
 From the top, the home page shows: the hero clip (one directional electrode in the subthalamic nucleus),
 the electrode insertion beside "Electrode localization from MRI and CT" (the nine-patient cohort from the
-front), three cards (pathway activation, fibre filtering, the cohort from above), and the workshop flyer
-beside the events. Each picture shows a different scene; keep it that way when swapping one.
+front), three cards (pathway activation, fibre filtering, the cohort from above), a full-width render
+with the quotes, and figures from the gallery. Each picture shows a different scene; keep it that way when swapping one.
 
 Every still is a file in `assets/images/renders/`, named in `content/_index.md` (`image:`).
 **To swap one**, replace the file with a new one of the same name (any size, JPG or PNG; Hugo makes the
@@ -174,11 +196,16 @@ illustrations, not findings; the texts say so where an analysis is shown.
 The renders are BrainDeer renders of **nine** of the ten Lead Tutor patients (2026-11-10: `cohort-*.jpg`,
 the insertion frames; `lead-closeup.jpg` and the hero clip show one lead of one of them); the
 pathway-activation and fibre-filtering pictures are older example analyses of all ten. A caption or alt text
-that gives a number of patients must match its picture. The same `cohort-black.jpg` is the faint picture
-behind every inner page's title; `lead-closeup.jpg` is in the gallery.
+that gives a number of patients must match its picture. The faint picture behind an inner page's title
+depends on the page's menu group (`layouts/_partials/page-head-render.html`): `head-features.jpg` (one lead
+with its stimulation volume and activated fibres), `head-docs.jpg` (a lead on the axes of MNI space),
+`head-data.jpg` (DISTAL atlas structures, no leads), `head-community.jpg` (the cohort's 18 leads from below),
+`head-about.jpg` (a 7T slab from above), plus `lead-closeup.jpg` for News and `cohort-front.jpg` for
+Download; each group has its own, so keep them distinct. All are 3200×1440 BrainDeer renders of template-
+space data (Lead Tutor, DISTAL, 7T Edlow 2019), black on the left so the title stays readable.
 
 The hero clip comes in three files in `static/media/`: `hero-lead-stn.mp4` (1600×1000, 1.25 MB, for
-screens wider than 1440 px and high-density screens), `hero-lead-stn-1280.mp4` (1280×800, 0.85 MB, other
+screens wider than 1440 px and high-density screens), `hero-lead-stn-1280.mp4` (1280×800, 0.49 MB, other
 screens from 640 px) and `hero-lead-stn-phone.mp4` (640×640, 0.49 MB, a square crop around the render for
 phones). It shows one Boston Scientific Vercise Directed lead with its
 segmented contacts in the subthalamic nucleus, the red nucleus behind it, over the 7T slice. The camera sways
@@ -204,7 +231,7 @@ X264="aq-mode=3:aq-strength=0.9:deblock=-1,-1"
 ffmpeg -framerate 24 -i loop/%04d.png -an -c:v libx264 -preset veryslow -tune film -crf 25 -maxrate 700k -bufsize 1400k \
   -x264-params "$X264" -g 96 -pix_fmt yuv420p -movflags +faststart static/media/hero-lead-stn.mp4
 ffmpeg -framerate 24 -i loop/%04d.png -an -vf scale=1280:800:flags=lanczos+accurate_rnd+full_chroma_int \
-  -c:v libx264 -preset veryslow -tune film -crf 25 -maxrate 480k -bufsize 960k -x264-params "$X264" -g 96 -pix_fmt yuv420p -movflags +faststart static/media/hero-lead-stn-1280.mp4
+  -c:v libx264 -preset veryslow -tune film -crf 29 -maxrate 360k -bufsize 720k -x264-params "$X264:bframes=8:ref=8" -g 384 -pix_fmt yuv420p -movflags +faststart static/media/hero-lead-stn-1280.mp4
 ffmpeg -framerate 24 -i loop/%04d.png -an -vf crop=1000:1000:520:0,scale=640:640:flags=lanczos+accurate_rnd+full_chroma_int \
   -c:v libx264 -preset veryslow -tune film -crf 26 -maxrate 260k -bufsize 520k -x264-params "$X264" -g 96 -pix_fmt yuv420p -movflags +faststart static/media/hero-lead-stn-phone.mp4
 ```
@@ -225,7 +252,8 @@ drawn on a canvas by scroll position:
   reduced motion and without script. It must be the same image as the last frame.
 - `data/insertion.yaml`: its alt text and the caption printed under it.
 
-The frames load only after the visitor scrolls and the section is within a quarter screen; a phone loads every third frame of the small set, and a
+The frames load only after the visitor scrolls and the section is within a quarter screen; a desktop loads
+every second frame and blends between them, a phone loads every third frame of the small set, and a
 visitor who asks to save data keeps the still. Without the frame folders the section shows a still
 render instead. Keep it the only scroll-linked motion on the site.
 
@@ -313,13 +341,15 @@ slug: "lead-dbs-3-3-released"   # the address: /lead-dbs-3-3-released/ (without 
 image: "teaser.png"   # optional, a file in the same folder
 image_alt: "What the picture shows"   # its alt text, for the top of the post
 image_in_post: false  # optional: do not show the teaser at the top of the post
+description: "One sentence on what the post says (the news list and search engines show it)."
 ---
 
 Text in Markdown …
 ```
 
-The news list fits every teaser whole into the same 16:10 box (nothing is cut off); a post without one shows
-its year there. At the top of the post the teaser is shown unless the text shows the same file already.
+The news list shows each post's date, title and its front matter `description` (write one, at most 155
+characters: it is also the search snippet). The teaser is the post's share picture and is shown at the top of
+the post unless the text shows the same file already.
 
 A post appears on its `date`: one dated in the future is left out of the build (Hugo prints no warning)
 until the nightly build of that day. `hugo server -F` shows it now. Pictures in the post: see
@@ -329,12 +359,15 @@ until the nightly build of that day. `hugo server -F` shows it now. Pictures in 
 
 1. `data/release.yaml`: `version`, `date`, `summary` (one or two sentences for the home page), `notes`
    (the post about the release), `changes_url` (the GitHub compare view from the release before),
-   and `matlab`, `toolboxes`, `standalone` and the rest if they changed. Every version, date and requirement
+   and `matlab`, `toolboxes`, `memory`, `standalone` and the rest if they changed (the manual's
+   [installation page](https://netstim.gitbook.io/leaddbs/installation) is the reference for the requirements). Every version, date and requirement
    on the site comes from this file: the home page, the sidebar card, the footer, and pages that write
    `{{< release version >}}`, `{{< release date >}}`, `{{< release matlab >}}` or `{{< release standalone >}}`.
 2. `data/releases.yaml`: the same version, date and announcement as a new first row of the release history
    (the table at `/download/#releases`); the build stops if its first row is not the version in `release.yaml`.
-3. A news post about the release (above), and its address in `notes`.
+3. A news post about the release (above), titled "Lead-DBS 3.3 released" (a few words may follow after a
+   colon when there is something urgent to say), and its address in `notes`. The post's date is the day it
+   was announced; when that differs from the release date, the post's head and the release history show both.
 4. The download links on `/download/` if the files' names changed (they point to `/release/download.php` on
    the current server; see [Deployment](#deployment)).
 5. Search the content for the old version number (`grep -rn "3\.2\.1" content/`): old news posts keep theirs,
@@ -357,10 +390,11 @@ Text on the left …
 {{% /row %}}
 
 {{< youtube id="VIDEO_ID" title="…" >}}      {{< vimeo id="VIDEO_ID" title="…" >}}
-{{% gallery %}} images {{% /gallery %}}        {{% slideshow %}} images {{% /slideshow %}}
+{{< gallery >}} linked pictures {{< /gallery >}}  {{% slideshow %}} images {{% /slideshow %}}
 {{% logos %}} linked logos {{% /logos %}}      {{% testimonials %}} > quotes {{% /testimonials %}}
 {{< form "contact" >}}            {{< newsletter >}}            {{< childpages >}}
 {{< release version >}}           {{< release date >}}          {{< release matlab >}}        {{< release standalone >}}
+{{< release standalone_date >}}   the release date of the standalone builds' version (from data/releases.yaml)
 
 {{< notice title="For research use only" id="research-use" >}}Text with **Markdown** …{{< /notice >}}
 
@@ -387,15 +421,29 @@ Text on the left …
   (`url` and `label` instead of `doi` for a source without one). Keep the wording exactly as printed.
 - `chapters` lists a video's chapters, one `Title: hh:mm:ss` per line, the time on the left.
 - **Citations** in lists are plain text with only the DOI linked: `Author, A. (2020). Title. *Journal*, 1, 2–3. [doi:10.1000/xyz](https://doi.org/10.1000/xyz)`.
-- `copybox` holds a text to copy as a whole (the methods paragraph on `/about/citing_leaddbs/`); the button
+- **Papers about Lead-DBS, its methods and tools** are written once, in `data/papers.yaml`: `{{< paper ewert2019 >}}`
+  links one by its short name ("Ewert 2019", as in the tools table on Features), `{{< paper ewert2019 "full" >}}`
+  prints the full reference (Cite, Lead-OR, Lead Tutor, dependencies), and `{{% papers %}}` lists them all by group
+  (Publications). A paper added there appears on Publications by itself.
+- `install "requirements"` and `install "steps"` print what Lead-DBS needs and how to install it, from
+  `data/release.yaml` and `data/install.yaml`, on the download page (First steps links to `/download/#install`).
+- `capability` is one row of the Features page: a picture (a lab render, a gallery figure credited from
+  `data/gallery.yaml`, or a picture of another page with `alt` and `caption`), what it does, its manual chapters,
+  papers and the page that explains it in depth; the shortcode's comment lists the parameters. A row lays
+  itself out by the width it gets (a CSS container): wide rows alternate the picture's side.
+- `copybox` holds a text to copy as a whole (the main citation and the methods paragraph on `/about/citing_leaddbs/`, an atlas's citation); the button
   copies it as plain text and is hidden where the browser cannot copy.
 - `clip` is a short silent animation (see [Pictures in pages](#pictures-in-pages)).
 - `downloads` turns a list of links into a grid of download buttons (one column on a phone);
-  `variant="secondary"` draws them as outline buttons, for downloads that are not the recommended one.
+  `variant="secondary"` draws them as underlined words, for downloads that are not the recommended one.
 - `download-release` is the block under the download page's title: the current release in one line, one
-  large button for the first server listed, and the other servers as outline buttons.
-- `release-history` is the table of released versions (`data/releases.yaml`).
+  large button for the first server listed, and the other servers as underlined words.
+- `release-history` is the table of released versions (`data/releases.yaml`); versions before 3.0 are folded under it.
 - `childpages section="/path"` lists the pages of another section.
+- `jumps` is a row of links to the sections of a long page, under its intro (Features):
+  `{{< jumps "Single patients|#single-patients; Tools|#tools" >}}`; the build stops on an anchor the page lacks.
+- `gallery` is a grid of small pictures that open large (the journal covers): one `[![alt](small.png)](large.png)`
+  per line; each is shown as WebP copies 240 and 480 px wide, whatever the size of the file.
 - `button` labels may be long: they wrap on a phone.
 - A retired address is kept as `aliases:` in the front matter of the page that replaces it; Hugo writes a
   redirect page there (`layouts/alias.html`, marked `noindex`). When the content now lives in one section of
@@ -407,7 +455,7 @@ Vimeo id), and the player shows it before it is started; nothing loads from the 
 
 #### Atlas catalogues
 
-The subcortical atlases and the cortical parcellations are catalogues: the page's own `atlases.yaml`
+The subcortical atlases, the cortical parcellations and the normative connectomes are catalogues: the page's own `atlases.yaml`
 (next to its `index.md`) holds one entry per atlas, and the page only places them:
 
 ```markdown
@@ -422,6 +470,27 @@ typed (`?atlas=word` in the address fills it in), and a link to an entry's `#id`
 add an entry with a new `id` to the right group and put its picture next to the page; to add a group, add it
 under `groups` and a `{{% atlas-group %}}` line on the page. The site search finds every atlas by itself and
 opens the page at its entry. Never change an existing `id`: it is the entry's address (`#id`).
+
+**An atlas page of its own** (DISTAL, FOCUS) opens with one sentence, then a summary box and what to cite;
+background and change-logs follow, longer parts folded:
+
+```markdown
+{{< summary >}}
+What
+: The structures it holds
+
+Space
+: MNI ICBM 2009b NLIN Asym
+
+Get it
+: Comes with Lead-DBS
+
+Version
+: 1.1, released 5 February 2018
+{{< /summary >}}
+```
+
+Such an atlas is also an entry in the catalogue, with `page:` pointing to its page.
 
 Column widths: `1/2`, `1/3`, `2/3`, `1/4`, `3/4`, `1/5`, `2/5`, `3/5`, `4/5`. Columns stack on a phone.
 `slideshow` shows its pictures as a still grid.
@@ -462,14 +531,14 @@ and checks events against the visitor's clock.
   after 700 ms; under reduced motion nothing moves.
 
 - Palette: off-white ground `#f7f9fa`, ink `#1f3038`, one accent `#0d7480` (buttons, links, focus);
-  the renders sit on black, and so does every inner page's title. Font: Open Sans, self-hosted in `static/fonts/`.
+  the renders sit on black, and so does every inner page's title. Font: Open Sans, self-hosted in `static/fonts/` (from the `@fontsource/open-sans` release, licence in `OFL.txt`) in four weights: 400 text, 500 labels and the menu, 600 buttons and card or block titles, 700 page and section headings.
 - Text pages: 18 px on a desktop (17 on a phone), lines of about 70 characters.
 - Motion: the hero's entrance and clip, and the electrode insertion in the localization section. Nothing else
   moves by itself; hover and press feedback are short CSS transitions.
 - Nothing loads from other servers (no web fonts, analytics or scripts from elsewhere); YouTube and Vimeo
   players load only when a visitor starts a video.
 - The research-use statement is a short line, not a feature: the hero's "Intended use", the
-  footer's legal line, a quiet `notice` on /about/ and the download page.
+  footer's legal line, and one small-print sentence on /about/ and the download page.
 - Icons: Lucide line icons (`static/images/icons/ui-*.svg`, ISC licence, listed in `icons-credits.json`), drawn
   in the accent colour; the header's search and GitHub icons are inline in `layouts/_partials/header.html`.
 - After a change to a layout, check the home page at 1366×768, 1440×900 and 390×844, and that no page scrolls
@@ -483,7 +552,10 @@ description and the start of the text of each page); `assets/js/search.js` loads
 whose title holds the searched words comes first, then pages with them in their `keywords`, headings,
 description and text; news posts come after a page that scores the same. Add `keywords: ["install", …]` to
 a page's front matter for words that visitors search for but the title does not contain. Each atlas of an
-atlas catalogue is a result of its own that opens at its entry. Below the results (or in their place when
+atlas catalogue is a result of its own that opens at its entry; so is each section a page lists in its
+front matter `searchEntries` (`{title, id, keywords, description}`; the build stops when the page has no
+anchor `id`): the tools on Features, "Lead-DBS 4.0" on the download page (`/download/#lead-dbs-4`, the one
+place that says what may be said about it), troubleshooting on First steps. Below the results (or in their place when
 there are none) a last line offers the manual, for questions about how to do something in Lead-DBS. The manual has a
 result of its own (its menu entry's `params.keywords`), and each result names the page above it as the breadcrumb
 does. Left out of the index: pages with `search: false` and the closed forum's page; the footer's pages (contact,
@@ -501,8 +573,13 @@ A page without a `description` gets the start of its text, cut at 155 characters
 (`/news/page/2/`) and the closed forum's page are `noindex` and not in the sitemap; `static/favicon.ico` is
 there for browsers that ask for it. `head-jsonld.html` adds structured data:
 the software (`SoftwareApplication`) on the home and download pages, the upcoming events (`Event`) on
-`/events/`, and `NewsArticle` on every post. The browser title is "Page – Lead-DBS"; a title over about
-60 characters sets a shorter `htmlTitle` in its front matter.
+`/events/`, `NewsArticle` on every post, and on every inner page a `BreadcrumbList` from the same trail as the
+visible breadcrumb (`layouts/_partials/crumbs.html`). A later page of the news list is its own canonical address. A page's last-modified date (sitemap, `dateModified`) is its
+front matter `lastmod`, else the date of the last commit that changed its file (`enableGitInfo`; the Pages
+workflow checks out the full history), never the build day. The browser title is "Page – Lead-DBS" on every page (the home page:
+its headline – Lead-DBS); a name that ends in "Lead-DBS" stands alone ("Cite Lead-DBS", "Made with Lead-DBS"). A
+title that is over about 45 characters, or names Lead-DBS in the middle, sets a shorter `htmlTitle` in its front
+matter ("Version 3.1 released" for "Lead-DBS 3.1 released"); use the page's name or its short form, never a different word.
 
 ## Old URLs
 
