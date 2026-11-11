@@ -125,14 +125,6 @@
 .ext-mark { display: inline-block; margin-left: 0.25em; font-size: 0.8em; color: var(--muted); }
 .footer__sub a { padding-left: var(--s-4); }
 
-/* news list: every teaser fitted whole into the same 16:10 box on a light mat; a post without a picture
-   shows its year there instead */
-.post-thumb { display: grid; grid-template: 100% / 100%; place-items: center; padding: var(--s-2); border: 1px solid var(--line); background: #fff; }
-.post-thumb img { width: auto; max-width: 100%; height: auto; max-height: 100%; object-fit: contain; }
-.post-summary__thumb.post-thumb img { width: auto; height: auto; }
-.post-thumb--text { background: var(--surface); border-color: transparent; }
-.post-thumb--text span { font: var(--display-weight, 600) 40px/1 var(--font-display, inherit); letter-spacing: -0.02em; color: var(--muted); }
-
 /* a video before it is started: the still saved next to the page (video-<id>.jpg) under the play button,
    darkened at the bottom left so the title stays readable */
 .video-embed__poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; margin: 0; border-radius: 0; }
@@ -154,7 +146,7 @@
    the source in small type) */
 .prose .cite-quote { max-width: var(--measure); margin: 0 0 var(--s-6); padding-top: var(--s-4); border-top: 2px solid var(--action); }
 .prose .cite-quote blockquote { margin: 0; padding: 0; border: 0; background: none; }
-.prose .cite-quote blockquote p { margin: 0; font-size: 19px; line-height: 1.55; color: var(--ink); text-wrap: pretty; }
+.prose .cite-quote blockquote p { margin: 0; font-size: var(--t-lead); line-height: 1.55; color: var(--ink); text-wrap: pretty; }
 .prose .cite-quote figcaption { margin-top: var(--s-3); font-size: var(--t-small); line-height: 1.5; color: var(--muted); }
 
 /* {{< chapters >}}: a video's chapters, the time on the left in figures of equal width */
@@ -174,6 +166,8 @@
   .prose .table--stack tr { padding: var(--s-3) 0; border-top: 1px solid var(--line); }
   .prose .table--stack td { padding: 2px 0; border: 0; }
   .prose .table--stack td:first-child { font-weight: 600; }
+  /* an empty cell (a row that continues the group above, a tool without a link) takes no line */
+  .prose .table--stack td:empty { display: none; }
   .prose .table--stack td:not(:first-child)::before { content: attr(data-label) ": "; color: var(--muted); font-size: var(--t-small); }
   /* a row heading (the release history's version) is the block's first line */
   .prose .table--stack th[scope="row"] { display: block; padding: 0; border: 0; }
@@ -182,11 +176,125 @@
 
 /* <details class="more">: a long list or a long entry folded away under one line, opened on demand */
 .prose details.more { max-width: var(--measure); margin: 0 0 var(--s-5); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.prose details.more > summary { display: flex; align-items: center; gap: var(--s-2); min-height: 44px; padding: var(--s-2) 0; cursor: pointer; font-weight: 600; list-style: none; }
+/* block, not flex: a flex summary would turn the no-wrap "Lead-DBS" span into an item with gaps around it */
+.prose details.more > summary { display: block; min-height: 44px; padding: 10px 0; cursor: pointer; font-weight: 600; list-style: none; }
 .prose details.more > summary::-webkit-details-marker { display: none; }
-.prose details.more > summary::before { content: "+"; display: inline-block; width: 1.2em; color: var(--action); font-weight: 700; text-align: center; }
+.prose details.more > summary::before { content: "+"; display: inline-block; width: 1.2em; margin-right: var(--s-2); color: var(--action); font-weight: 700; text-align: center; }
 .prose details.more[open] > summary::before { content: "−"; }
 .prose details.more > :not(summary):last-child { margin-bottom: var(--s-4); }
-/* the "About, get it, cite" line sits under the name, beside the thumbnail's column */
-.atlas__head:has(.atlas__thumb) + .atlas__details > summary { margin-left: calc(72px + var(--s-4)); }
-@media (min-width: 768px) { .atlas__head:has(.atlas__thumb) + .atlas__details > summary { margin-left: calc(96px + var(--s-4)); margin-top: calc(-1 * var(--s-6)); } }
+/* an entry with a thumbnail is a two-column grid: the thumbnail on the left, the name and the
+   "About, get it, cite" line right under it on the right, with no gap between them. On a phone the
+   opened entry uses the full width; from 768px the thumbnail spans both rows and the text keeps its
+   column. The empty anchors of an entry's old addresses sit outside the grid. */
+.atlas:has(> .atlas__head .atlas__thumb) { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--s-4); }
+.atlas:has(> .atlas__head .atlas__thumb) > .atlas__head { display: contents; }
+.atlas:has(> .atlas__head .atlas__thumb) .atlas__thumb { grid-column: 1; grid-row: 1; }
+.atlas:has(> .atlas__head .atlas__thumb) .atlas__title { grid-column: 2; grid-row: 1; }
+.atlas:has(> .atlas__head .atlas__thumb) > .atlas__details { grid-column: 2; grid-row: 2; margin-top: 0; }
+.atlas:has(> .atlas__head .atlas__thumb) > .atlas__details[open] { grid-column: 1 / -1; }
+.atlas > span[id]:empty { position: absolute; top: 0; }
+@media (min-width: 768px) {
+  .atlas:has(> .atlas__head .atlas__thumb) .atlas__thumb { grid-row: 1 / span 2; }
+  .atlas:has(> .atlas__head .atlas__thumb) > .atlas__details[open] { grid-column: 2; }
+}
+
+/* A fold that holds figures in columns (the DISTAL atlas's background): as wide as the text column */
+.prose details.more--wide { max-width: none; }
+
+/* {{< summary >}}: the box at the top of an atlas page, a definition list of what, space, get it, version */
+.summary-box { max-width: var(--measure); margin: 0 0 var(--s-5); padding: var(--s-4) var(--s-5); border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); }
+.prose .summary-box dl { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-1) var(--s-5); margin: 0; }
+.prose .summary-box dt { font-weight: 600; color: var(--ink); }
+.prose .summary-box dd { margin: 0 0 var(--s-2); }
+@media (min-width: 640px) {
+  .prose .summary-box dl { grid-template-columns: max-content minmax(0, 1fr); }
+  .prose .summary-box dd { margin: 0; }
+}
+
+/* {{% papers %}}: the full references on Publications, one per row */
+.prose .paper-refs { list-style: none; padding: 0; margin: 0 0 var(--s-6); max-width: var(--measure); }
+.prose .paper-refs li { margin: 0; padding: var(--s-3) 0; border-top: 1px solid var(--line); font-size: var(--t-small); line-height: 1.55; overflow-wrap: anywhere; }
+
+/* the phone menu without script (no "js" class on <html>, set in head.html): the menu button is not
+   shown; a "Menu" link targets #site-menu, which then opens as the sheet, with every group's pages
+   listed under its word. "Close the menu" leaves the target. */
+.nav__nojs-close { display: none; }
+@media (max-width: 1199px) {
+  html:not(.js) .nav__toggle { display: none !important; }
+  html:not(.js) .nav__nojs-menu { display: inline-flex !important; align-items: center; height: 44px; padding: 0 var(--s-3); border: 1px solid var(--line-strong); border-radius: var(--r-btn); color: inherit; font-weight: 500; font-size: 15px; flex: none; }
+  html:not(.js) .nav__links:target { --ink: var(--p-ink); --bg: var(--p-bg); --surface: var(--p-surface); --muted: var(--p-muted); --line: color-mix(in oklab, var(--p-ink) 11%, transparent);
+    display: flex !important; flex-direction: column; position: fixed; inset: var(--nav) 0 0; overflow-y: auto; padding: var(--s-4) var(--gut) var(--s-8); background: var(--bg); color: var(--ink); }
+  html:not(.js) .nav__links:target .nav__nojs-close { display: inline-flex; align-items: center; align-self: flex-end; min-height: 44px; font-weight: 600; }
+  html:not(.js) .nav__links:target .nav__item { display: block; height: auto; border-bottom: 1px solid var(--line); }
+  html:not(.js) .nav__links:target .nav__link { display: flex; height: 56px; padding: 0; font-size: 20px; color: var(--ink); }
+  html:not(.js) .nav__links:target .nav__link::before, html:not(.js) .nav__links:target .chev { display: none; }
+  html:not(.js) .nav__links:target .nav__menu { display: block; padding: 0 0 var(--s-4); }
+  html:not(.js) .nav__links:target .nav__menu-cols { display: grid; gap: var(--s-3); }
+  html:not(.js) .nav__links:target .menu-col { display: grid; gap: var(--s-2); }
+  html:not(.js) .nav__links:target .menu-col a { padding: 10px 0; color: var(--ink); }
+  html:not(.js) .nav__links:target .menu-col > p.t-label { margin: var(--s-2) 0 0; }
+}
+
+/* the header's panels: a line above an entry that starts a small group of its own (hugo.toml
+   params.divider: DISTAL and FOCUS after the catalogues). In the phone sheet the manual is a first-level
+   word right under "Docs and help", so the panel's own copy is hidden there (with and without script). */
+.nav__menu .menu-col a.menu-divider { border-top: 1px solid var(--line); margin-top: var(--s-2); padding-top: calc(7px + var(--s-2)); }
+.nav__menu .menu-col .menu-caption { display: block; border-top: 1px solid var(--line); margin-top: var(--s-2); padding-top: calc(7px + var(--s-2)); color: var(--muted); }
+@media (max-width: 1199px) { .nav__menu a.menu-sheet-dup { display: none !important; } }
+
+/* {{< capability >}}: one row per thing Lead-DBS does (Features). Each row is a container, so it
+   lays itself out by the width it gets, whatever the page around it: on a phone the picture above
+   the text; in the column of a page with a sidebar the picture left (5 : 7); in a wide column (the
+   Features page has no sidebar) the picture takes up to 720px at 3:2 and the rows alternate sides, the
+   text centred beside it. Pictures are 4:3 otherwise: renders fill the frame, paper figures sit whole
+   on white. */
+.prose .capability { container-type: inline-size; margin: 0 0 var(--s-7); max-width: none; }
+.prose .capability__row { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); }
+.prose .capability__fig { margin: 0; }
+.prose .capability__fig img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r-md); background: var(--render); }
+.prose .capability__fig--contain img { object-fit: contain; background: var(--surface); border: 1px solid var(--line); }
+.prose .capability__fig figcaption { margin-top: var(--s-2); font-size: 14px; line-height: 1.45; color: var(--muted); }
+.prose .capability__fig figcaption a { color: inherit; }
+.prose .capability__text h3 { margin-top: 0; }
+.prose .capability__text > p { margin: 0 0 var(--s-3); }
+.prose .capability__refs { display: grid; gap: var(--s-1); margin: 0; font-size: var(--t-small); line-height: 1.5; }
+.prose .capability__refs > div { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: var(--s-3); }
+.prose .capability__refs dt { font-weight: 600; color: var(--ink); }
+.prose .capability__refs dd { margin: 0; }
+@container (min-width: 600px) {
+  .prose .capability__row { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-6); align-items: start; }
+}
+@container (min-width: 1040px) {
+  .prose .capability__row { grid-template-columns: minmax(0, min(720px, 60%)) minmax(0, 1fr); column-gap: var(--s-8); align-items: center; padding-block: var(--s-4); }
+  .prose .capability__fig img { aspect-ratio: 3 / 2; }
+  .prose .capability__text { max-width: 30rem; }
+  .prose .capability__fig figcaption { max-width: none; }
+  /* every second row: the picture on the right */
+  .prose .capability:nth-of-type(even) .capability__row { grid-template-columns: minmax(0, 1fr) minmax(0, min(720px, 60%)); }
+  .prose .capability:nth-of-type(even) .capability__fig { order: 2; }
+  .prose .capability:nth-of-type(even) .capability__text { justify-self: end; }
+}
+
+/* a hub card with a picture (childpages, every card of the list has one): the picture spans the card's
+   top edge to edge; its flex basis counts the card's padding it reaches into, so the title always wraps
+   below it */
+.prose ul.child-pages--pictures .child-page__img { flex-basis: calc(100% + 2 * var(--s-5)); }
+@media (max-width: 639px) {
+  .prose ul.child-pages--pictures .child-page__img { flex-basis: calc(100% + 2 * var(--s-4)); margin: calc(-1 * var(--s-4)) calc(-1 * var(--s-4)) var(--s-2); }
+}
+
+/* {{< jumps >}}: links to the sections of a long page, under its intro (Features) */
+.prose .jumps { margin: var(--s-5) 0 var(--s-7); max-width: none; }
+.prose .jumps ul { display: flex; flex-wrap: wrap; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+.prose .jumps li { margin: 0; }
+/* (!important: the prose link colour and underline rule in site.css is more specific) */
+.prose .jumps a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--ink) !important; font-weight: 500; text-decoration: none !important; }
+.prose .jumps a:hover { border-color: var(--action); color: var(--action) !important; }
+@media (max-width: 639px) {
+  .prose .jumps ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .prose .jumps a { display: flex; justify-content: center; padding: 0 var(--s-2); text-align: center; font-size: 15px; }
+}
+
+/* the news list: the heading over posts more than three years older than the newest (layouts/news/list.html) */
+.prose .news-archive { margin: var(--s-8) 0 var(--s-2); }
+.prose .news-archive + .post-summary { border-top: 1px solid var(--line); }

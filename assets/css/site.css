@@ -7,9 +7,19 @@
 @font-face { font-family: "Open Sans"; font-weight: 400; font-style: normal; font-display: swap; src: url("{{ "fonts/open-sans-latin-400.woff2" | relURL }}") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 @font-face { font-family: "Open Sans"; font-weight: 400; font-style: normal; font-display: swap; src: url("{{ "fonts/open-sans-latin-ext-400.woff2" | relURL }}") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
 @font-face { font-family: "Open Sans"; font-weight: 400; font-style: italic; font-display: swap; src: url("{{ "fonts/open-sans-latin-400-italic.woff2" | relURL }}") format("woff2"); }
-/* one semibold file serves 500 to 700, so labels, buttons and headings share it */
-@font-face { font-family: "Open Sans"; font-weight: 500 700; font-style: normal; font-display: swap; src: url("{{ "fonts/open-sans-latin-600.woff2" | relURL }}") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122, U+FEFF; }
-@font-face { font-family: "Open Sans"; font-weight: 500 700; font-style: normal; font-display: swap; src: url("{{ "fonts/open-sans-latin-ext-600.woff2" | relURL }}") format("woff2"); unicode-range: U+0100-02BA, U+1E00-1EFF, U+2C60-2C7F, U+A720-A7FF; }
+/* three more weights of the same files (@fontsource/open-sans 5.1.1, OFL): 500 for labels, the menu and
+   small headings, 600 for buttons and card titles, 700 for the large headings (H1, H2). Each file is
+   fetched only when a page uses its weight. */
+@font-face { font-family: "Open Sans"; font-weight: 500; font-style: normal; font-display: swap; src: url("{{ "fonts/open-sans-latin-500.woff2" | relURL }}") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122, U+FEFF; }
+@font-face { font-family: "Open Sans"; font-weight: 500; font-style: normal; font-display: swap; src: url("{{ "fonts/open-sans-latin-ext-500.woff2" | relURL }}") format("woff2"); unicode-range: U+0100-02BA, U+1E00-1EFF, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Open Sans"; font-weight: 600; font-style: normal; font-display: swap; src: url("{{ "fonts/open-sans-latin-600.woff2" | relURL }}") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122, U+FEFF; }
+@font-face { font-family: "Open Sans"; font-weight: 600; font-style: normal; font-display: swap; src: url("{{ "fonts/open-sans-latin-ext-600.woff2" | relURL }}") format("woff2"); unicode-range: U+0100-02BA, U+1E00-1EFF, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Open Sans"; font-weight: 700; font-style: normal; font-display: swap; src: url("{{ "fonts/open-sans-latin-700.woff2" | relURL }}") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122, U+FEFF; }
+@font-face { font-family: "Open Sans"; font-weight: 700; font-style: normal; font-display: swap; src: url("{{ "fonts/open-sans-latin-ext-700.woff2" | relURL }}") format("woff2"); unicode-range: U+0100-02BA, U+1E00-1EFF, U+2C60-2C7F, U+A720-A7FF; }
+/* until Open Sans has loaded, the text is set in a system sans scaled to Open Sans's width and line
+   height, so nothing moves when the font arrives */
+@font-face { font-family: "Open Sans Fallback"; src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Helvetica");
+  size-adjust: 105.2%; ascent-override: 101.6%; descent-override: 27.9%; line-gap-override: 0%; }
 
 /* ---------------------------------------------------------------- palette: cool-white-slate */
 :root {
@@ -18,17 +28,23 @@
   /* the one dark of the site is the black of the renders: hero, page heads, the 4.0 band, videos, footer */
   --p-inv-bg: #000; --p-inv-surface: #171b1d; --p-inv-ink: #f7f9fa; --p-inv-muted: #a3abaf;
   --p-inv-accent: #f7f9fa; --p-inv-accent-ink: #1f3038; --p-inv-action: #f7f9fa; --p-inv-action-ink: #1f3038;
-  --font-display: "Open Sans", system-ui, sans-serif;
-  --font-text: "Open Sans", system-ui, sans-serif;
+  --font-display: "Open Sans", "Open Sans Fallback", system-ui, sans-serif;
+  --font-text: "Open Sans", "Open Sans Fallback", system-ui, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  --display-weight: 500;
-  --display-tracking: -0.03em;
-  --display-tracking-xl: -0.04em;
+  /* three weights carry the levels: 700 the large headings (80 and 48), 600 the titles at 28 and 20 px,
+     the buttons and the logo's name, 500 labels, the menu and small headings; the text is 400 */
+  --display-weight: 700;
+  --title-weight: 600;
+  --display-tracking: -0.02em;
+  --display-tracking-xl: -0.025em;
   --render: #000;           /* the black of the BrainDeer renders */
   --measure: 59ch;          /* documentation line length: about 72 characters of Open Sans at 18px */
-  --rhythm: clamp(48px, 5vw + 8px, 96px);   /* the space above and below a home section: 80px at 1440 */
-  /* the home page's four heading sizes: --t-display (the hero's title and the 4.0 band, 80px at 1440),
-     --t-h2 (48), --t-h3 (28) and --t-card (20); base.css sets the last three */
+  --rhythm: clamp(48px, 4.4vw + 8px, 88px);   /* the space above and below a home section: 71px at 1440 */
+  /* one six-step scale, sized by importance (at 1440): --t-display 80 (the hero's title and the 4.0
+     band), --t-h2 48 (a home section, an inner page's title), --t-h3 28 (a block within a section: the
+     4.0 statements; a page's sections), --t-card 20 (cards, news and event
+     titles, the lead), 16 the text and 14 small print and labels (--t-small, --t-label). base.css sets
+     all but the first; the header's logo and words have their own sizes */
   --t-display: clamp(44px, 3.429vw + 30.63px, 80px);
 }
 /* browsers without color-mix() (Safari before 16.2): the hairlines would vanish */
@@ -37,6 +53,9 @@
   .ground-inverse, .footer--dark { --line: rgb(247 249 250 / .16); --line-strong: rgb(247 249 250 / .3); }
 }
 .nowrap { white-space: nowrap; }
+/* in a button or a link with an arrow (flex boxes) the kept-together name joins the words around it,
+   so it does not become an item of its own with a gap on either side ("Lead-DBS .org") */
+:is(.btn, .link, .footer ul a, .footer__h a) .nowrap { display: contents; }
 html { overflow-x: clip; }
 body { overflow-x: clip; }
 
@@ -50,9 +69,10 @@ html.is-preview .nav { display: flex; flex-direction: column; }
 html.is-preview .nav__bar { flex: 1; height: auto; min-height: 0; width: min(100% - 2 * var(--gut), var(--container)); }
 
 /* ---------------------------------------------------------------- header
-   1280 and up: logo, the words in the middle, search, GitHub and "Download Lead-DBS" on the right.
-   1200 to 1279: the same in one row, the button says "Download". Below 1200: logo, search, GitHub,
-   "Download" and the menu button; the words open in a sheet. Below 640: logo, search, menu button.
+   1440 and up: logo, the six words in the middle, search, GitHub and "Download Lead-DBS" on the right.
+   1200 to 1439: the same in one row, the words closer together; below 1366 the button says "Download",
+   below 1280 the words are a size smaller. Below 1200: logo, search, GitHub, "Download" and the menu
+   button; the words open in a sheet. Below 640: logo, search, menu button.
    The script for the sheet and the panels is in assets/js/main.js. */
 .nav { position: fixed; inset: 0 0 auto; z-index: 50; height: var(--nav); background: var(--bg); color: var(--ink); border-bottom: 1px solid var(--line); }
 .nav__bar { height: 100%; display: flex; align-items: center; gap: var(--s-3); }
@@ -72,17 +92,19 @@ html body.kind-home .nav.is-dark:not(.is-scrolled, .is-open) { background: linea
   html:not(.nav-ready) body.kind-home .nav:not(.is-open) { background: linear-gradient(rgb(0 0 0 / .6), rgb(0 0 0 / 0)) border-box; }
 }
 /* a tablet: the lead leaves the picture where the header's Download button sits, so over the hero that
-   button gives way (the hero's own Download button is right below) and comes back once the page scrolls */
+   button gives way (the hero's own Download button is right below), and search, GitHub and the menu
+   button stay together at the right end; it comes back, fading in, once the page scrolls */
 @media (min-width: 640px) and (max-width: 1023px) {
-  html body.kind-home .nav:not(.is-scrolled, .is-open) .nav__download { visibility: hidden; opacity: 0; }
-  html.nav-ready body.kind-home .nav .nav__download { transition: opacity 240ms var(--ease), visibility 0s; }
+  html body.kind-home .nav:not(.is-scrolled, .is-open) .nav__download { display: none; }
+  html.nav-ready body.kind-home .nav .nav__download { transition: opacity 240ms var(--ease); }
+  @starting-style { html.nav-ready body.kind-home .nav .nav__download { opacity: 0; } }
 }
 /* the menu button may stand over the render: a dark ground of its own keeps its lines readable */
 html body.kind-home .nav:not(.is-scrolled, .is-open) .nav__toggle { background: rgb(0 0 0 / .5); }
 .nav.is-dark .nav__icon:hover, html:not(.nav-ready) .top-dark .nav .nav__icon:hover { color: #fff; }
 :is(.nav.is-dark, html:not(.nav-ready) .top-dark .nav) .nav__menu { --ink: var(--p-ink); --bg: var(--p-bg); --surface: var(--p-surface); --muted: var(--p-muted);
   --line: color-mix(in oklab, var(--p-ink) 11%, transparent); color: var(--p-ink); }
-.nav__logo { display: inline-flex; align-items: center; gap: var(--s-2); flex: none; font: 500 22px/1 var(--font-display); letter-spacing: -0.02em; }
+.nav__logo { display: inline-flex; align-items: center; gap: var(--s-2); flex: none; font: var(--title-weight) 22px/1 var(--font-display); letter-spacing: -0.02em; }
 .nav__logo img { height: 34px; width: auto; }
 .footer .nav__logo { font-size: 28px; gap: var(--s-3); }
 .footer .nav__logo img { height: 48px; }
@@ -95,12 +117,12 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) .nav__toggle { background: 
 .nav__actions .btn { height: var(--btn-h); padding-inline: var(--s-5); font-size: 15px; }
 .nav__actions .nav__download { margin-left: var(--s-2); }
 .nav__item.nav__item--sheet, .nav__nojs-menu, .nav__expand, .nav__toggle { display: none; }
-@media (max-width: 1279px) { .nav__dl-more { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } }
+@media (max-width: 1365px) { .nav__dl-more { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } }
 /* "Skip to content" shows over the bar's left end while it has the keyboard focus */
 .skip-link { position: absolute; z-index: 2; top: 50%; left: max(var(--gut), (100% - var(--container)) / 2);
   width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .skip-link:focus { width: auto; height: var(--btn-h); padding: 0 var(--s-5); clip-path: none; translate: 0 -50%; display: inline-flex; align-items: center;
-  background: var(--bg); color: var(--ink); border: 1px solid var(--line-strong); border-radius: var(--r-btn); font: 500 var(--t-body)/1 var(--font-text); }
+  background: var(--p-bg); color: var(--p-ink); border: 1px solid var(--p-ink); border-radius: var(--r-btn); font: 500 var(--t-body)/1 var(--font-text); }
 
 /* the words: a line grows under a word on hover and focus, and stays under the current page's */
 .nav__link { position: relative; display: inline-flex; align-items: center; gap: var(--s-1); height: 36px; padding: 0 var(--s-3); border-radius: var(--r-sm);
@@ -141,13 +163,18 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) .nav__toggle { background: 
   .nav__menu .t-label a:hover { color: var(--action); }
 }
 @media (min-width: 1200px) and (prefers-reduced-motion: reduce) { .nav__menu, .nav__item.is-dismissed > .nav__menu { transform: none; } }
-@media (min-width: 1200px) and (max-width: 1279px) {
+@media (min-width: 1200px) and (max-width: 1439px) {
   .nav__link { padding: 0 var(--s-2); }
   .nav__link::before { left: var(--s-2); right: var(--s-2); }
 }
+@media (min-width: 1200px) and (max-width: 1279px) {
+  .nav__bar { gap: var(--s-4); }
+  .nav__link { font-size: 14px; }
+  .nav__actions { gap: var(--s-1); margin-left: auto; }
+}
 /* 1280 and up: three columns, so the words sit in the middle of the window */
 @media (min-width: 1280px) {
-  .nav__bar { display: grid; grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr); gap: var(--s-8); }
+  .nav__bar { display: grid; grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr); gap: var(--s-5); }
   .nav__logo { justify-self: start; }
   .nav__links { gap: var(--s-1); }
   .nav__actions { justify-self: end; }
@@ -194,12 +221,6 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) .nav__toggle { background: 
   .nav.is-open .nav__actions .nav__download { width: 100%; height: 48px; margin: 0; font-size: var(--t-body); }
   .nav.is-open .nav__actions .nav__dl-more { position: static; width: auto; height: auto; clip-path: none; }
 }
-/* without script the sheet cannot open: the menu button becomes a link to the footer's list of pages */
-@media (scripting: none) and (max-width: 1199px) {
-  .nav__links { display: none !important; }
-  .nav__toggle { display: none !important; }
-  .nav__nojs-menu { display: inline-flex; align-items: center; height: 44px; padding: 0 var(--s-3); border: 1px solid var(--line-strong); border-radius: var(--r-btn); font-weight: 500; font-size: 15px; flex: none; }
-}
 
 /* ---------------------------------------------------------------- home: the hero
    Desktop (1024 and up): the clip fills the hero behind the words, which sit on its black left half;
@@ -207,9 +228,8 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) .nav__toggle { background: 
    facts row under the buttons never overlaps them and no strip of the next section shows under it.
    Below 1024: the clip is a box from the window's top edge (the header is clear over it), cut to the
    electrodes, and the words follow on the same black, the title over the box's dark lower edge. The lead
-   always leaves the picture through the window's top or right edge, never through a bar.
-   The hero is a size container, so the pause button can sit at the box's lower corner (cqw). */
-main > .home-hero { position: relative; isolation: isolate; container-type: inline-size; background: var(--render); color: #fff;
+   always leaves the picture through the window's top or right edge, never through a bar. */
+main > .home-hero { position: relative; isolation: isolate; background: var(--render); color: #fff;
   --ink: #fff; --muted: rgb(255 255 255 / .78); --line: rgb(255 255 255 / .22); --line-strong: rgb(255 255 255 / .55); overflow: hidden; }
 .home-hero__media { position: absolute; inset: 0; z-index: 0; overflow: hidden; background: var(--render); }
 .home-hero__media > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 100% 40%; }
@@ -221,21 +241,42 @@ main > .home-hero { position: relative; isolation: isolate; container-type: inli
 .home-hero .btn-row { margin-top: var(--s-6); --ink: var(--p-ink); --bg: var(--p-bg); --action: var(--p-action); --action-ink: var(--p-action-ink); }
 .home-hero .btn--secondary { color: #fff; text-decoration-color: rgb(255 255 255 / .6); }
 .home-hero .btn--secondary:hover { text-decoration-color: currentColor; }
-/* who coordinates it and where it is published: a quiet line under the buttons, every part a link */
-.hero__proof { margin-top: var(--s-5); max-width: 64ch; font-size: 15px; line-height: 1.55; color: var(--muted); }
+/* the manual, on another site: the ↗ instead of the chevron */
+.home-hero .hero__manual::after { content: none; }
+.home-hero .hero__manual .ext-mark { margin-left: 2px; opacity: .7; font-weight: 400; }
+/* who coordinates it, where it is published, how to cite it: one quiet line under the two buttons, its
+   parts kept whole and parted by a dot; a narrow screen breaks the line between parts, never inside one.
+   Every part starts with its dot, the list starts one dot to the left and clips that strip, so a line
+   never starts with a dot. */
+.hero__proof { --dot: 1.3em; list-style: none; margin: var(--s-5) 0 0 calc(-1 * var(--dot)); padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-1) 0;
+  clip-path: inset(-6px -6px -6px calc(var(--dot) - 4px)); font-size: var(--t-small); line-height: 1.55; color: var(--muted); }
+.hero__proof li { white-space: nowrap; }
+.hero__proof li::before { content: "·"; display: inline-block; width: var(--dot); text-align: center; color: rgb(255 255 255 / .5); }
 .hero__proof a { color: #fff; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; text-decoration-color: rgb(255 255 255 / .45); }
 .hero__proof a:hover { text-decoration-color: currentColor; }
 .hero__proof em { font-style: italic; }
-.home-hero__facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--s-4) var(--gutter); margin: 0; padding-top: var(--s-5); border-top: 1px solid var(--line); }
+/* the facts: four on one row from 1024px, two by two on a tablet and a phone */
+.home-hero__facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4) var(--gutter); margin: 0; padding-top: var(--s-5); border-top: 1px solid var(--line); }
+@media (min-width: 1024px) { .home-hero__facts { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+/* the second line of a fact (the builds that run without MATLAB, the research-use statement): close
+   under its value, on one line with its chevron */
+.home-hero__facts .hero__fact-more { display: block; width: fit-content; margin-top: 2px; font-size: var(--t-small); font-weight: 400; color: var(--muted); white-space: nowrap; }
+.home-hero__facts > div:not(.hero__event) dd > a:only-child { white-space: nowrap; }
+.home-hero__facts .hero__fact-more:hover { color: #fff; }
 .home-hero__facts > div { display: grid; gap: var(--s-1); align-content: start; }
 .home-hero__facts dt { font-size: var(--t-small); color: var(--muted); }
 .home-hero__facts dd { margin: 0; font-weight: 500; line-height: 1.4; }
-.home-hero__facts a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgb(255 255 255 / .45); }
-.home-hero__facts a:hover { text-decoration-color: currentColor; }
+/* a linked fact is marked by the site's chevron (or ↗ for the manual), underlined only under the pointer */
+.home-hero__facts a { color: inherit; text-decoration: none; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.home-hero__facts a:hover { text-decoration: underline; }
+.home-hero__facts a .m-arrow { display: inline-block; width: 10px; height: 10px; margin: 0 0 0 .35em; vertical-align: 0; }
+.home-hero__facts .ext-mark { color: inherit; opacity: .7; }
 .hero__event[hidden], .hero__event dd[hidden] { display: none; }
-/* the pause button: at the lower right corner of the picture at every width (below 1024 the picture is a
-   box of a known shape, so its corner is a fraction of the hero's width), 44px, clear of the words */
-.hero__pause { position: absolute; z-index: 3; bottom: var(--s-4); right: var(--s-4);
+/* the pause button, 44px, clear of the words, on the content's right edge: on a desktop above the right
+   end of the facts row; below 1024 over the picture's lower edge, just above the line where the title
+   starts (the top of .home-hero__wrap, its containing block there) */
+.home-hero__foot { position: relative; }
+.hero__pause { position: absolute; z-index: 3; bottom: calc(100% + var(--s-4)); right: 0;
   width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; border: 1px solid rgb(255 255 255 / .35); padding: 0; cursor: pointer;
   background: rgb(0 0 0 / .45); color: #fff; }
 .hero__pause:hover { background: rgb(0 0 0 / .7); }
@@ -260,6 +301,11 @@ main > .home-hero { position: relative; isolation: isolate; container-type: inli
 @media (min-width: 1200px) {
   .home-hero__media > video { inset: auto auto 0 0; width: 112%; height: 112%; object-position: 0% 100%; }
 }
+/* up to 1439 the window is too narrow for that: the lead would leave the frame right behind the header's
+   button, so the clip moves right until it leaves past the button's end */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .home-hero__media > video { left: 7%; }
+}
 @media (min-width: 1024px) {
   .home-hero__wrap { gap: var(--s-6); padding-bottom: var(--s-6); }
 }
@@ -274,12 +320,31 @@ main > .home-hero { position: relative; isolation: isolate; container-type: inli
 /* a small laptop: the title one step smaller and the render a little further right, so they do not meet */
 @media (min-width: 1024px) and (max-width: 1199px) {
   .home-hero h1 { font-size: 60px; }
-  .home-hero__media > video { object-position: 50% 40%; }
+  .home-hero__media > video { object-position: 0% 40%; }
+  /* the words take a wider column (the title on two lines, the buttons and the manual on one row), so the
+     facts row still ends inside a 768px-high screen; the render moves right and the black under the
+     words reaches further */
+  .home-hero__text { max-width: 580px; }
+  .home-hero__media::after { background: linear-gradient(90deg, #000 0%, rgb(0 0 0 / .88) 46%, rgb(0 0 0 / 0) 70%); }
+}
+/* a short small-laptop screen (1024 × 768, 1280 × 720): a little less of everything, so the second row
+   of facts is still on the first screen */
+@media (min-width: 1024px) and (max-width: 1199px) and (max-height: 820px), (min-width: 1024px) and (max-height: 740px) {
+  .home-hero h1 { font-size: 52px; }
+  .home-hero__wrap { gap: var(--s-5); padding-top: calc(var(--nav) + var(--s-5)); padding-bottom: var(--s-5); }
+  .home-hero .hero__lead { margin-top: var(--s-4); }
+  .home-hero .btn-row, .hero__proof { margin-top: var(--s-4); }
 }
 /* the next event is the longest fact: it gets the room it needs, the other four share the rest */
 @media (min-width: 1200px) {
-  .home-hero__facts:has(> .hero__event:not([hidden])) { grid-template-columns: repeat(4, minmax(0, 1fr)) max-content; }
+  .home-hero__facts:has(> .hero__event:not([hidden])) { grid-template-columns: repeat(3, minmax(0, 1fr)) max-content; }
 }
+/* the top of the clip fades into black under the header, so the lead, the brightest thing on the
+   screen, never runs out behind the header's button, icons or menu button: it leaves the frame into
+   the dark. It is also the header's scrim: down to 8px above the header's lower edge the clip is at least
+   92 % black, so the white words and icons keep well over 4.5:1 on any frame, even a white one. */
+.home-hero__media::before { content: ""; position: absolute; inset: 0 0 auto; z-index: 1; height: calc(var(--nav) + var(--s-7)); pointer-events: none;
+  background: linear-gradient(#000 0, rgb(0 0 0 / .92) calc(var(--nav) - 8px), rgb(0 0 0 / 0)); }
 @media (max-width: 1023px) {
   /* the clip is cut to its subject: the electrodes sit right of centre on the 16:10 canvas
      (x 41-99 %, centre 70 % / 44 %), so the video is drawn larger and moved until they fill the box */
@@ -290,7 +355,8 @@ main > .home-hero { position: relative; isolation: isolate; container-type: inli
     background: linear-gradient(rgb(0 0 0 / 0), rgb(0 0 0 / .7) 55%, #000); }
   .home-hero__wrap { min-height: 0; margin-top: -5%; padding: 0 0 var(--s-8); }
   .home-hero__text { max-width: 640px; }
-  .hero__pause { bottom: auto; top: calc(100cqw * 9 / 16 - 44px - var(--s-4)); }
+  .home-hero__foot { position: static; }
+  .hero__pause { bottom: auto; top: calc(-44px - var(--s-4)); }
 }
 /* a phone: the clip has its own square encode, cropped around the render (canvas x 520-1520 of 1600),
    so the render fills the width; the poster (the whole 16:10 canvas) is framed the same way by
@@ -302,20 +368,23 @@ main > .home-hero { position: relative; isolation: isolate; container-type: inli
   .home-hero__wrap { margin-top: -30%; padding: 0 0 var(--s-7); }
   .home-hero h1 { font-size: clamp(34px, 10vw, 44px); }
   .home-hero .hero__lead { margin-top: var(--s-4); font-size: 17px; }
-  .hero__pause { top: calc(100cqw - 44px - var(--s-3)); right: var(--s-3); }
+  .hero__pause { top: calc(-44px - var(--s-3)); }
   .home-hero .btn-row { margin-top: var(--s-5); }
-  .hero__proof { font-size: 14px; }
+  /* the main button across the width, First steps and the manual side by side under it */
+  .home-hero .btn-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-1) var(--s-3); }
+  .home-hero .btn-row > .btn--primary { grid-column: 1 / -1; }
   /* the facts in two compact columns: release, MATLAB, licence and research use stay on the first screens */
-  .home-hero__facts { grid-template-columns: 1fr 1fr; gap: var(--s-3) var(--s-4); padding-top: var(--s-4); font-size: 15px; }
-  .home-hero__facts dt { font-size: 13px; }
-  .home-hero__facts a { display: inline-block; padding-block: 4px; margin-block: -4px; }
+  .home-hero__facts { gap: var(--s-4) var(--s-4); padding-top: var(--s-4); font-size: var(--t-small); }
+  .home-hero__facts .hero__fact-more { font-size: var(--t-label); }
+  .home-hero__facts dt { font-size: var(--t-label); }
+  .home-hero__facts a { display: inline-block; padding-block: 10px; margin-block: -10px; }
+  .home-hero__facts .hero__fact-more { margin-top: -8px; }
 }
 /* a short phone (320 × 568 and the like): the box a little lower and the words a little smaller, so the
    Download button is on the first screen */
 @media (max-width: 639px) and (max-height: 700px) {
   .home-hero__media { aspect-ratio: 4 / 3; }
   .home-hero__media > video { object-fit: cover; object-position: 86.7% 30%; }
-  .hero__pause { top: calc(75cqw - 44px - var(--s-3)); }
   .home-hero__wrap { margin-top: -20%; }
   .home-hero h1 { font-size: 32px; }
   .home-hero .hero__lead { margin-top: var(--s-3); font-size: 16px; line-height: 1.5; }
@@ -336,7 +405,10 @@ main > .home-hero { position: relative; isolation: isolate; container-type: inli
 .section-head--row { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--s-4) var(--s-7); }
 .home .section-head--row { display: flex; max-width: none; }
 .section-head__more { flex: none; }
-.home h3 { font: var(--display-weight) var(--t-card)/1.3 var(--font-display); letter-spacing: -0.01em; }
+/* two links at the end of a section head: side by side, wrapping under each other on a phone */
+.section-head__links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0 var(--s-6); }
+@media (max-width: 639px) { .section-head__links { flex: 1 1 100%; flex-direction: column; } }
+.home h3 { font: var(--title-weight) var(--t-card)/1.3 var(--font-display); letter-spacing: -0.01em; }
 .home-split { align-items: center; row-gap: var(--s-7); }
 .split__text > * + * { margin-top: var(--s-5); }
 .split__text h2 { margin-bottom: 0; }
@@ -368,169 +440,196 @@ main > .home-hero { position: relative; isolation: isolate; container-type: inli
 .insertion__caption { margin-top: var(--s-3); font-size: var(--t-small); line-height: 1.5; color: var(--muted); max-width: 60ch; }
 
 /* three things it does: media cards (a picture, the words under it) */
-.feature-row { list-style: none; margin: var(--s-7) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6) var(--gutter); }
+.home .features__h { max-width: none; }
+.feature-row { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6) var(--gutter); }
 .feature { display: grid; gap: var(--s-4); align-content: start; }
 .feature__img { margin: 0; aspect-ratio: 16 / 10; border-radius: var(--r-md); overflow: hidden; background: var(--render); }
 .feature__img > img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .feature__text p { margin-top: var(--s-2); max-width: 38ch; }
+/* each card leads to the overview of what Lead-DBS does: the title is the link, its area the whole card */
+.feature { position: relative; }
+.feature__link { color: var(--ink); transition: color var(--t-out) var(--ease); }
+.feature__link::after { content: ""; position: absolute; inset: 0; border-radius: var(--r-md); }
+.feature:hover .feature__link { color: var(--action); transition-duration: var(--t-in); }
+.feature__img { transition: opacity var(--t-out) var(--ease); }
+.feature:hover .feature__img { opacity: .88; }
 .home-note { margin-top: var(--s-6); font-size: var(--t-small); line-height: 1.55; color: var(--muted); max-width: 80ch; }
-.home-note .link { display: inline; min-height: 0; color: var(--action); }
-.home-note .link .m-arrow { display: inline-block; vertical-align: -1px; margin-left: var(--s-1); }
 @media (max-width: 1023px) { .feature-row { grid-template-columns: minmax(0, 1fr); gap: var(--s-5); } .feature { grid-template-columns: minmax(120px, 34%) minmax(0, 1fr); align-items: center; gap: var(--s-5); } }
-@media (max-width: 639px) { .feature { grid-template-columns: 112px minmax(0, 1fr); gap: var(--s-4); } .feature__img { aspect-ratio: 1; } .feature__text p { font-size: 15px; } }
+@media (max-width: 639px) { .feature { grid-template-columns: 112px minmax(0, 1fr); gap: var(--s-4); } .feature__img { aspect-ratio: 1; } .feature__text p { font-size: 15px; line-height: 1.5; } }
 
-/* the atlases, connectomes and methods: one row of links under the three cards, like the help row */
-.link-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-6); margin-top: var(--s-7); padding-top: var(--s-5); border-top: 1px solid var(--line); }
-.home .link-row__h { font: 500 var(--t-body)/1.4 var(--font-text); letter-spacing: 0; color: var(--ink); }
-.link-row__list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0 var(--s-6); }
-.link-row__list .link { min-height: 44px; color: var(--action); }
-@media (max-width: 639px) {
-  .link-row { display: grid; gap: var(--s-2); margin-top: var(--s-6); }
-  .link-row__list { display: grid; grid-template-columns: minmax(0, 1fr); }
-}
 /* the arrow of a .card (hub cards, the 404 page) */
 .card .m-arrow { display: inline-block; vertical-align: -1px; margin-left: var(--s-2); color: var(--action); }
 /* a hub card drawn without its own arrow (the 404 page) gets the same one */
 .child-page:not(:has(.m-arrow))::after { content: ""; flex: none; width: 12px; height: 12px; margin-left: auto; background: var(--action);
   -webkit-mask: var(--arrow) center / contain no-repeat; mask: var(--arrow) center / contain no-repeat; }
 
-/* the current release in one band: its words on the left, the download on the right */
-.release-band { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-5) var(--gutter); align-items: end; }
-.release-band__text > * + * { margin-top: var(--s-3); }
-.release-band__text .t-label { margin: 0; }
-.release-band__text p { max-width: 64ch; }
-.home .release-band__h { margin-top: var(--s-1); font-size: var(--t-h3); line-height: 1.2; letter-spacing: -0.015em; }
-.release-band__needs { color: var(--muted); font-size: var(--t-small); line-height: 1.55; }
-.release-band__needs a { color: var(--action); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in oklab, var(--action) 45%, transparent); }
-.release-band__actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--s-3) var(--s-5); }
-@media (max-width: 1023px) { .release-band { grid-template-columns: minmax(0, 1fr); } .release-band__actions { justify-content: flex-start; } }
-/* where to get help: one row of links with line icons under the release */
-.help-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-4) var(--s-6); margin-top: var(--s-7); padding-top: var(--s-5); border-top: 1px solid var(--line); }
-.home .help-row__h { font: 500 var(--t-body)/1.4 var(--font-text); letter-spacing: 0; color: var(--ink); }
-.help-row__list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); }
-.help-row__link { display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; font-weight: 500; color: var(--ink); transition: color var(--t-out) var(--ease); }
-.help-row__link:hover { color: var(--action); transition-duration: var(--t-in); }
-.help-row__link > span:last-child { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; text-decoration-color: var(--line-strong); }
-.help-row__link:hover > span:last-child { text-decoration-color: currentColor; }
-.help-row__icon { display: inline-grid; place-items: center; width: 20px; height: 20px; color: var(--action); }
-.help-row__icon svg { width: 20px; height: 20px; }
-@media (max-width: 639px) {
-  .help-row { display: grid; gap: var(--s-3); margin-top: var(--s-6); }
-  .help-row__list { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--s-4); }
-}
-
-/* Lead-DBS 4.0: words only, on the black of the renders. The name set large on the left, the three
-   statements as ruled rows on the right */
+/* Lead-DBS 4.0: words only, on the black of the renders. The name set large across the band, the three
+   statements in three columns under it, each under a rule */
 .home > .next-band { background: var(--render); color: #fff; --ink: #fff; --muted: rgb(255 255 255 / .72); --action: #7fd3dc; --line: rgb(255 255 255 / .2); --line-strong: rgb(255 255 255 / .5); }
-.next-band__grid { align-items: start; row-gap: var(--s-7); }
 .next-band__label { margin: 0 0 var(--s-3); color: var(--muted); }
-.home .next-band__title { font-size: var(--t-display); line-height: 1; letter-spacing: var(--display-tracking-xl); max-width: none; }
-.next-band__points { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--line-strong); }
-.next-band__points > li { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--s-2) var(--gutter); align-items: baseline; padding: var(--s-5) 0; border-bottom: 1px solid var(--line); }
-.next-band__point { font: var(--display-weight) var(--t-h3)/1.2 var(--font-display); letter-spacing: var(--display-tracking); }
-.next-band__detail { max-width: 40ch; color: var(--muted); font-size: 16px; line-height: 1.5; }
-.next-band__more { margin-top: var(--s-5); }
+/* the name is a section heading (48), so the hero's title stays the one large line of the page; it never
+   breaks */
+.home .next-band__title { font-size: var(--t-h2); line-height: 1.1; max-width: none; }
+.next-band__points { list-style: none; margin: var(--s-6) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5) var(--gutter); }
+.next-band__points > li { display: grid; gap: var(--s-3); align-content: start; padding-top: var(--s-4); border-top: 1px solid var(--line-strong); }
+.next-band__point { font: var(--title-weight) var(--t-h3)/1.2 var(--font-display); letter-spacing: var(--display-tracking); }
+.next-band__detail { max-width: 40ch; color: var(--muted); font-size: var(--t-body); line-height: 1.5; }
+.next-band__more { margin-top: var(--s-6); }
 .next-band .link { color: #fff; }
-@media (min-width: 1024px) { .next-band__head { position: sticky; top: calc(var(--nav) + var(--s-6)); } }
-@media (max-width: 1023px) { .next-band__grid > * { grid-column: 1 / -1; } }
-@media (max-width: 639px) { .next-band__points > li { grid-template-columns: minmax(0, 1fr); padding: var(--s-4) 0; } }
+@media (max-width: 1023px) { .next-band__points { grid-template-columns: minmax(0, 1fr); gap: var(--s-4); } .next-band__points > li { gap: var(--s-2); } }
 
-/* events: the upcoming entries (two compact cards side by side) beside the workshop's flyer;
-   .event (one design for /events/ too) is below */
-.events-grid { align-items: start; row-gap: var(--s-7); }
-.events__text .section-head { margin-bottom: var(--s-6); }
-.event-list--home { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); align-items: stretch; }
+/* what is coming up and what is new: the upcoming events (compact cards side by side, .event below is
+   the one design for /events/ too) in seven columns, the latest news as a ruled list in the last four.
+   Both headings are section headings on one line. A card's register button follows its rows, so a
+   short card ends early instead of opening a gap above its button. */
+.updates-grid { row-gap: var(--s-7); }
+.home .updates__h { max-width: none; margin: 0 0 var(--s-6); }
+@media (min-width: 1024px) { .updates__events { grid-column: 1 / span 7; } .updates__news { grid-column: 9 / span 4; } }
+.event-list--home { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); align-items: stretch; gap: var(--gutter); }
+/* cards side by side are one height, each with its action at the foot */
 .event-list--home > li { display: flex; flex-direction: column; }
-.event-list--home .event__upcoming-only { margin-top: auto; padding-top: var(--s-4); }
+.event-list--home .event__upcoming-only { padding-top: var(--s-5); margin-top: auto; }
+.event__upcoming-only > .event__note + .event__register { margin-top: var(--s-4); }
 .events__more { margin-top: var(--s-5); }
-.flyer { margin: 0; }
-.flyer img { display: block; width: 100%; height: auto; border-radius: var(--r-md); border: 1px solid var(--line); }
-/* a desktop (two cards side by side): the text in nine columns, the flyer in the last three, its foot on
-   the cards' foot */
-@media (min-width: 1200px) {
-  .events-grid > .events__text { grid-column: 1 / span 9; }
-  .events-grid { align-items: stretch; } .flyer { align-self: end; }
-}
-/* a small laptop or a tablet (the cards one under the other): the flyer at a fixed width beside the
-   heading, so no column stands empty above it; a phone: no flyer */
-@media (min-width: 640px) and (max-width: 1199px) {
-  .events-grid { grid-template-columns: minmax(0, 1fr) 200px; column-gap: var(--s-6); }
-  .events-grid > .events__text { grid-column: 1; }
-  .events-grid > .flyer { grid-column: 2; grid-row: 1; align-self: start; }
-}
-@media (min-width: 1024px) and (max-width: 1199px) { .events-grid { grid-template-columns: minmax(0, 1fr) 240px; column-gap: var(--s-7); } }
-/* a phone: no flyer; the workshop's card says the same */
-@media (max-width: 639px) { .events-grid > .flyer { display: none; } }
-
-/* the latest news, a row of its own: three columns of date, title and a line */
-.news-row { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6) var(--gutter); }
-.news-item { display: grid; gap: var(--s-2); align-content: start; padding-top: var(--s-4); border-top: 1px solid var(--line); }
+.news-list { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--line); }
+.news-item { display: grid; gap: var(--s-1); padding: var(--s-4) 0; border-bottom: 1px solid var(--line); }
 .news-item__date { font-size: var(--t-small); color: var(--muted); }
-.home .news-item__title { font-size: var(--t-card); }
+.home .news-item__title { font-size: var(--t-card); line-height: 1.3; }
 .news-item__title a { color: var(--ink); }
 .news-item__title a:hover { color: var(--action); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
-.news-item__text { font-size: 15px; line-height: 1.5; color: var(--muted); max-width: 46ch; }
-@media (max-width: 1023px) { .news-row { grid-template-columns: minmax(0, 1fr); gap: var(--s-4); } .news-item__text { display: none; } }
 
-/* in published research: figures from papers in one row, each whole on the same white mat, their widths
+/* in published research: figures from papers in one row, each whole on the same mat (the surface grey, as
+   on /gallery/), their widths
    in proportion to their shapes so all are the same height; a phone scrolls the row sideways */
 .fig-strip { list-style: none; margin: 0; padding: 0; display: flex; gap: var(--gutter); }
 /* the mat adds the same width to each, so that is the basis; the rest is shared by shape */
 .fig-strip__item { flex: var(--ar) 1 calc(2 * var(--s-3) + 2px); min-width: 0; }
 .fig-strip__link { display: grid; gap: var(--s-3); color: var(--ink); }
-.fig-strip__mat { display: block; padding: var(--s-3); background: #fff; border: 1px solid var(--line); border-radius: var(--r-md); transition: border-color var(--t-out) var(--ease); }
+.fig-strip__mat { display: block; padding: var(--s-3); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); transition: border-color var(--t-out) var(--ease); }
 .fig-strip__mat img { display: block; width: 100%; height: auto; border-radius: 2px; }
 .fig-strip__link:hover .fig-strip__mat { border-color: color-mix(in oklab, var(--action) 55%, transparent); transition-duration: var(--t-in); }
 .fig-strip__cite { font-size: var(--t-small); line-height: 1.45; color: var(--muted); }
 .fig-strip__link:hover .fig-strip__cite { color: var(--action); }
+/* a strip that scrolls sideways shows it: its right edge fades while more figures follow (assets/js/main.js
+   sets .is-end at the last one, .is-moved once it has scrolled) */
+@media (max-width: 1023px) {
+  .fig-strip { --fade-l: 0px; --fade-r: 56px;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%); }
+  .fig-strip.is-moved { --fade-l: 24px; }
+  .fig-strip.is-end { --fade-r: 0px; }
+}
 @media (max-width: 639px) {
   .fig-strip { overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(-1 * var(--gut)); padding: 0 var(--gut) var(--s-2); scroll-padding-inline: var(--gut); }
   .fig-strip__item { flex: none; width: auto; scroll-snap-align: start; }
   .fig-strip__mat img { width: auto; height: 260px; max-width: none; }
 }
-.home .research__quotes-h { margin: var(--s-8) 0 0; font-size: var(--t-h3); line-height: 1.2; letter-spacing: -0.015em; }
+/* the voices: a render across the whole width, on the black of the renders, its subject on the right;
+   the three quotes in white on its black left side, one under the other. Below 1024 the render is a box
+   on top and the quotes follow on the same black. */
+.home > .render-band { position: relative; isolation: isolate; overflow: hidden; background: var(--render); color: #fff;
+  --ink: #fff; --muted: rgb(255 255 255 / .72); --line: rgb(255 255 255 / .2); --action: #7fd3dc; }
+.render-band__img { margin: 0; }
+.render-band__img > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.render-band__wrap { position: relative; z-index: 1; }
+/* the band's heading is a small label over the quotes (the quotes are the band's large words) */
+.home .render-band__h { font: 500 var(--t-label)/1.4 var(--font-text); letter-spacing: .01em; color: var(--muted); max-width: none; }
+@media (min-width: 1024px) {
+  .home > .render-band { padding: var(--rhythm) 0; }
+  .render-band__img { position: absolute; inset: 0; z-index: -1; }
+  .render-band__img > img { object-position: 85% 62%; }
+  .render-band__img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #000 28%, rgb(0 0 0 / .6) 42%, rgb(0 0 0 / 0) 58%); }
+  .render-band__wrap > * { max-width: 520px; }
+  .render-band .quote-row { grid-template-columns: minmax(0, 1fr); gap: var(--s-5); }
+  .render-band .quote-card blockquote { font-size: var(--t-lead); }
+}
+@media (min-width: 1440px) { .render-band__img > img { object-position: 100% 62%; } }
+/* a small laptop: the render comes closer, so the quotes take a narrower column on a deeper black */
+@media (min-width: 1024px) and (max-width: 1365px) {
+  .render-band__img > img { object-position: 100% 62%; }
+  .render-band__img::after { background: linear-gradient(90deg, #000 36%, rgb(0 0 0 / .65) 48%, rgb(0 0 0 / 0) 64%); }
+  .render-band__wrap > * { max-width: 400px; }
+}
+@media (max-width: 1023px) {
+  .render-band__img { position: relative; aspect-ratio: 16 / 9; }
+  .render-band__img > img { object-position: 72% 30%; }
+  .render-band__wrap { margin-top: calc(-1 * var(--s-6)); padding-bottom: var(--rhythm); }
+  .render-band__img::after { content: ""; position: absolute; inset: auto 0 0; height: 40%; background: linear-gradient(rgb(0 0 0 / 0), #000); }
+}
 
 /* three voices: side by side on a desktop; below 1200 one column (a long quote would wrap to a few words
    a line). No sideways scroller, so a keyboard reaches everything without one */
-.quote-row { margin-top: var(--s-6); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); align-items: stretch; }
+.quote-row { margin-top: var(--s-5); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); align-items: stretch; }
 .quote-card { margin: 0; display: flex; flex-direction: column; justify-content: space-between; gap: var(--s-5); }
-.quote-card blockquote { margin: 0; font: 400 clamp(18px, .4vw + 15px, 21px)/1.5 var(--font-text); color: var(--ink); text-wrap: pretty; }
+.quote-card blockquote { margin: 0; font: 400 var(--t-lead)/1.5 var(--font-text); color: var(--ink); text-wrap: pretty; }
 .quote-card figcaption { display: grid; gap: 2px; padding-top: var(--s-4); border-top: 1px solid var(--line); font-size: var(--t-small); line-height: 1.4; }
 .quote-card__name { font-weight: 500; color: var(--ink); }
 .quote-card__role { color: var(--muted); }
-/* under the figures the quotes are words on the ground, not boxes: a rule above each, the name right under
+/* in the band the quotes are words on the render, not boxes: a rule above each, the name right under
    the quote, so a short quote leaves no empty card */
 .quote-row .quote-card { background: none; border-radius: 0; padding: var(--s-5) 0 0; border-top: 2px solid var(--action); justify-content: flex-start; gap: var(--s-4); }
 .quote-row .quote-card figcaption { margin-top: 0; padding-top: 0; border-top: 0; }
 @media (max-width: 1199px) { .quote-row { grid-template-columns: minmax(0, 1fr); gap: var(--s-3); } .quote-card blockquote { max-width: 62ch; } }
-@media (max-width: 639px) { .quote-row { gap: var(--s-5); margin-top: var(--s-5); } .quote-row .quote-card { padding-top: var(--s-4); gap: var(--s-3); } .quote-card blockquote { font-size: 17px; } }
+@media (max-width: 639px) { .quote-row { gap: var(--s-5); } .quote-row .quote-card { padding-top: var(--s-4); gap: var(--s-3); } }
 
-/* who develops it, the citation; the funders in one row under both */
-.team-grid { row-gap: var(--s-7); }
-#team h2 { margin-bottom: var(--s-6); }
-.history { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--line); }
-.history li { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); gap: var(--s-4); padding: var(--s-3) 0; border-bottom: 1px solid var(--line); }
-.history__year { font-weight: 500; font-variant-numeric: tabular-nums; }
-.team__more { margin-top: var(--s-5); }
-.team__tools { margin: var(--s-7) 0 var(--s-4); }
-.tool-rows dt a { color: var(--action); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in oklab, var(--action) 40%, transparent); }
-.tool-rows > div { grid-template-columns: 10rem minmax(0, 1fr); }
-@media (max-width: 639px) { .tool-rows > div { grid-template-columns: 8.5rem minmax(0, 1fr); gap: var(--s-3); } }
-.cite > * + * { margin-top: var(--s-3); }
-.cite p { overflow-wrap: anywhere; }
-.cite p a:not(.link) { color: var(--action); }
-.funders-row { margin-top: var(--s-8); padding-top: var(--s-6); border-top: 1px solid var(--line); }
-.home .funders__h { margin: 0 0 var(--s-5); font: 500 var(--t-label)/1.4 var(--font-text); letter-spacing: .01em; color: var(--muted); }
+/* the close: where to get help, who develops it, how to cite it, in three equal columns under headings of
+   one size, each under the same rule, each ending in a list of links of one style (.closing__list). A tablet: who develops it
+   across the width, help and citation side by side under it; a phone: one column. */
+.link--ext::after { content: none; }
+.link--ext .ext-mark { margin-left: .2em; color: var(--muted); }
+.closing__cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-7) var(--gutter); align-items: start; }
+.closing__col { display: grid; gap: var(--s-4); align-content: start; padding-top: var(--s-4); border-top: 1px solid var(--line-strong); }
+.home .closing__h { font: var(--title-weight) var(--t-card)/1.3 var(--font-display); letter-spacing: -0.01em; max-width: none; }
+.closing__col > p { max-width: 62ch; }
+.closing__list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-1); justify-items: start; }
+.cite__ref { font-size: var(--t-small); line-height: 1.6; overflow-wrap: anywhere; }
+.cite__ref a { color: var(--action); }
+@media (min-width: 640px) and (max-width: 1023px) {
+  .closing__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .closing__col#who { grid-column: 1 / -1; order: -1; }
+}
+@media (min-width: 1024px) { .closing__cols { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 639px) { .closing__list { gap: 0; } .closing__list .link { min-height: 44px; } }
+.funders-row { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--line); }
+.home .funders__h { margin: 0 0 var(--s-4); font: 500 var(--t-label)/1.4 var(--font-text); letter-spacing: .01em; color: var(--muted); }
 /* one equal cell per logo, each logo centred in it, so the gaps between them are the same */
 .funders { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); align-items: center; gap: var(--s-5) var(--gutter); }
 .funders li { display: flex; align-items: center; justify-content: center; min-height: 56px; }
 .funders a { display: inline-flex; align-items: center; min-height: 44px; }
-/* in grey, so no logo shouts over the others; the template gives each about the same area */
-.funders img { display: block; width: auto; max-width: 190px; object-fit: contain; filter: grayscale(1); opacity: .72; mix-blend-mode: multiply; transition: opacity var(--t-out) var(--ease), filter var(--t-out) var(--ease); }
+/* all in one grey, so no logo shouts over the others and none fades: each is drawn as a dark silhouette
+   (a pale mark darkened, a white ground kept white and dropped by the multiply), then set at one opacity.
+   The template gives each about the same area; scale in content/_index.md evens out the weight. Under the
+   pointer a logo shows its own colours. */
+.funders img { display: block; width: auto; max-width: 190px; object-fit: contain; filter: grayscale(1) brightness(.6) contrast(6); opacity: .55; mix-blend-mode: multiply;
+  transition: opacity var(--t-out) var(--ease), filter var(--t-out) var(--ease); }
 .funders li:hover img { filter: none; opacity: 1; }
-@media (max-width: 1023px) { #team .grid > * { grid-column: 1 / -1; } }
-@media (max-width: 639px) { .funders { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4) var(--gutter); } .funders img { max-width: 140px; } }
+@media (max-width: 639px) { .funders { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4) var(--gutter); } .funders img { max-width: 140px; }
+  .funders > li:last-child:nth-child(odd) { grid-column: 1 / -1; } }
 .forum-note { position: relative; z-index: 5; margin: calc(var(--nav) + var(--s-4)) auto 0; width: min(100% - 2 * var(--gut), var(--container)); }
+
+/* ---------------------------------------------------------------- home: a tablet (640 to 1023)
+   Not a stretched phone: where the content allows, two or three columns. From 768 the three capability
+   cards stand side by side, the 4.0 statements in three columns and the citation beside "who develops";
+   from 640 the news beside the events. The published figures scroll sideways at a readable height, as
+   on a phone; the funders' five logos in one row. */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .updates-grid > .updates__events { grid-column: 1 / span 7; }
+  .updates-grid > .updates__news { grid-column: 8 / span 5; }
+  .event-list--home { grid-template-columns: minmax(0, 1fr); }
+  .fig-strip { overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(-1 * var(--gut)); padding: 0 var(--gut) var(--s-2); scroll-padding-inline: var(--gut); }
+  .fig-strip__item { flex: none; width: auto; scroll-snap-align: start; }
+  .fig-strip__mat img { width: auto; height: 320px; max-width: none; }
+  .funders { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .funders img { max-width: 100%; }
+  .home-split > .insertion, .home-split > .frame--split { max-width: 720px; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .feature-row { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6) var(--gutter); }
+  .feature { grid-template-columns: minmax(0, 1fr); align-items: start; gap: var(--s-4); }
+  .feature__img { aspect-ratio: 4 / 3; }
+  .next-band__points { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5) var(--gutter); }
+  .next-band__point { font-size: 22px; }
+}
 
 /* ---------------------------------------------------------------- inner pages: the head
    The title on the black ground of the renders, a faint render on the right: the home page's look */
@@ -541,51 +640,88 @@ main.page { padding-top: var(--nav); }
   opacity: .6; pointer-events: none;
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 50%); mask-image: linear-gradient(90deg, transparent 0%, #000 50%); }
 .page-head > .wrap { position: relative; }
-.page-head h1 { font-size: clamp(34px, 2.3vw + 21px, 56px); line-height: 1.08; letter-spacing: var(--display-tracking); max-width: 22ch; margin: var(--s-3) 0 0; overflow-wrap: break-word; color: #fff; }
+.page-head h1 { font-size: var(--t-h2); line-height: 1.08; letter-spacing: var(--display-tracking); max-width: 22ch; margin: var(--s-3) 0 0; overflow-wrap: break-word; color: #fff; }
 .page-head__meta { margin-top: var(--s-3); color: var(--muted); }
 .page-head__kicker { margin: 0; color: var(--muted); font-size: 14px; font-weight: 500; }
 .breadcrumb ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-2); font-size: 14px; color: var(--muted); }
 .breadcrumb li + li::before { content: "/"; margin-right: var(--s-2); opacity: .6; }
 .breadcrumb ol { align-items: center; }
-/* each crumb a target at least 24px tall (32px on a phone) */
+/* each crumb a target at least 24px tall (44px below 1024px, where it is tapped) */
 .breadcrumb a { display: inline-block; padding-block: 4px; color: var(--muted); }
-@media (max-width: 639px) { .breadcrumb a { padding-block: 7px; } .breadcrumb ol { row-gap: 0; } }
+@media (max-width: 1023px) {
+  .breadcrumb a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding-block: 0; }
+  .breadcrumb ol { row-gap: 0; }
+  .page-head h1 { margin-top: var(--s-1); }
+}
 .breadcrumb a:hover { color: #fff; text-decoration: underline; }
+/* a phone: the breadcrumb on one line. The current page is the title right under it, so it is left out,
+   and of a deeper path only Home and the parent stay ("Home / … / Parent"); a long parent name ends in
+   an ellipsis rather than wrapping */
+@media (max-width: 639px) {
+  .breadcrumb ol { flex-wrap: nowrap; min-width: 0; }
+  .breadcrumb li { flex: none; white-space: nowrap; }
+  .breadcrumb li[aria-current="page"], .breadcrumb li:not(:first-child, :nth-last-child(2)) { display: none; }
+  .breadcrumb li:nth-last-child(2):not(:first-child, :nth-child(2))::before { content: "/ … /"; }
+  .breadcrumb li:nth-last-child(2) { flex: 0 1 auto; min-width: 0; overflow: hidden; }
+  .breadcrumb li:nth-last-child(2) a { display: block; overflow: hidden; text-overflow: ellipsis; line-height: 44px; }
+  .breadcrumb li:nth-last-child(2):not(:first-child) { display: flex; align-items: center; }
+}
 @media (max-width: 639px) {
   .page-head { padding: var(--s-6) 0 var(--s-6); }
   .page-head__render { width: 100%; opacity: .3; }
-  .page-head h1 { font-size: clamp(30px, 8vw, 38px); }
 }
 
 /* the text and the sidebar on the header's container, so the logo, the breadcrumb, the title and the
-   text share one left edge, and the sidebar ends where the header's button ends. 1280 and up on the 12
-   columns: the text in the first 8 (paragraphs keep their measure; pictures, tables and cards use all 8),
-   the sidebar in the last 3. 1024 to 1279: the text and a 260px sidebar. */
+   text share one left edge, and the sidebar ends where the header's button ends.
+   Two right edges: the text (paragraphs, lists, the lead, notes, boxes, forms) stops at --text, about 36em
+   of the 18px text, so a line holds about 70 characters; pictures, tables, videos, rows of cards and
+   figures use the whole column (--col). 1280 and up on the 12 columns: the column in the first 7, the
+   sidebar in the last 4. 1024 to 1279: the column and a sidebar of about 30 %, so the column stays
+   within --col. Below 1024 the column is at most --col wide and the sidebar follows it. */
+:root { --col: 740px; --text: 612px; }
+@media (min-width: 1024px) { :root { --text: 648px; } }
 .doc-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-7); padding: var(--s-7) 0 var(--s-9); align-items: start; }
+.doc-layout > :not(.sidebar) { max-width: var(--col); --measure: min(100%, var(--text)); }
 @media (min-width: 1024px) {
-  .doc-layout { grid-template-columns: minmax(0, 1fr) 260px; column-gap: var(--s-7); }
+  .doc-layout { grid-template-columns: minmax(0, 1fr) minmax(260px, 30%); column-gap: var(--s-7); }
   .doc-layout--single { grid-template-columns: minmax(0, 1fr); }
 }
 @media (min-width: 1280px) {
   .doc-layout { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
-  .doc-layout > :not(.sidebar) { grid-column: 1 / span 8; }
-  .doc-layout > .sidebar { grid-column: 10 / span 3; }
+  .doc-layout > :not(.sidebar) { grid-column: 1 / span 7; }
+  .doc-layout > .sidebar { grid-column: 9 / span 4; }
+}
+/* the sidebar stays in view while the text scrolls, so it never leaves an empty column beside a long
+   page: on a page with a table of contents that list is the sticky part (below), on the others the
+   whole sidebar, scrolling inside itself if it is taller than the window */
+@media (min-width: 1024px) {
+  .doc-layout:not(.doc-layout--toc) > .sidebar { position: sticky; top: calc(var(--nav) + var(--s-5)); max-height: calc(100svh - var(--nav) - 2 * var(--s-5));
+    overflow-y: auto; overscroll-behavior: contain; padding: 3px; margin: -3px; scrollbar-width: thin; }
 }
 @media (min-width: 640px) and (max-width: 1023px) { .page-head__render { width: 80%; opacity: .45; } }
+/* a tablet and a small laptop: the title reaches further into the render, so its left part fades later */
+@media (min-width: 640px) and (max-width: 1199px) {
+  .page-head__render { -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 20%, #000 72%); mask-image: linear-gradient(90deg, transparent 0%, transparent 20%, #000 72%); }
+}
+/* a page without a sidebar (front matter "sidebar: false", a showcase page): the text uses the
+   container's full width; running text keeps the column's measure, rows and figures may use it all
+   (assets/css/content.css). Its table of contents, if any, stays at the top at every width. */
+.doc-layout.doc-layout--wide { grid-template-columns: minmax(0, 1fr); }
+.doc-layout--wide > .prose { grid-column: 1 / -1; max-width: none; --measure: min(100%, var(--text)); }
+.doc-layout--wide .toc--top { display: block; max-width: var(--col); }
 
 /* ---------------------------------------------------------------- documentation text
-   17px on phones and tablets, 18px on a desktop, line height 1.7; lines of about 70 characters */
+   17px on phones and tablets, 18px on a desktop, line height 1.7; lines of about 70 characters (--text).
+   Inner pages use the home page's steps (base.css): the title --t-h2 (48), sections --t-h3 (28),
+   subsections --t-card (20), the lead --t-lead (20), the text 18, small print --t-small (14) and
+   labels --t-label (13); below 1024px each step is a little smaller. */
 .prose { min-width: 0; font-size: 17px; line-height: 1.7; color: var(--ink); }
 @media (min-width: 1024px) { .prose { font-size: 18px; } }
 .prose > :first-child { margin-top: 0; }
 /* the first paragraph under the title is the page's lead: larger, so the eye has a way in */
 .prose > p:first-child:not([class]):not(:has(> img, > picture, > .img-zoom, > .btn, > iframe, > video)),
 .prose > .toc--top:first-child + p:not([class]):not(:has(> img, > picture, > .img-zoom, > .btn, > iframe, > video)) {
-  font-size: 19px; line-height: 1.55; max-width: 36em; margin-bottom: 1.3em; }
-@media (min-width: 1024px) {
-  .prose > p:first-child:not([class]):not(:has(> img, > picture, > .img-zoom, > .btn, > iframe, > video)),
-  .prose > .toc--top:first-child + p:not([class]):not(:has(> img, > picture, > .img-zoom, > .btn, > iframe, > video)) { font-size: 21px; }
-}
+  font-size: var(--t-lead); line-height: 1.55; max-width: var(--measure); margin-bottom: 1.3em; }
 @media (min-width: 1024px) { .prose > .toc--top:first-child + * { margin-top: 0; } }
 .prose :is(p, ul, ol, dl, blockquote, figure, pre, .table-scroll, table, iframe) { margin: 0 0 1.1em; }
 .prose :is(p, li, dd, blockquote) { max-width: var(--measure); }
@@ -593,11 +729,16 @@ main.page { padding-top: var(--nav); }
    and the grids use the whole main column, so a wide figure is not squeezed to the line length */
 .prose > p:has(> .img-zoom:only-child, > img:only-child, > picture:only-child),
 .prose > :is(.img-figure, .video-embed, .table-scroll, .row, .gallery, .slideshow, .logos, .testimonials, figure) { max-width: none; }
-.prose > p:has(> .img-zoom:only-child, > img:only-child) img { max-height: 80svh; width: auto; }
+/* a tall picture is held to the window's height, shrinking inside its own box (no "width: auto": a
+   picture that waits for lazy loading would then be 0px wide and push the text down when it comes) */
+.prose > p:has(> .img-zoom:only-child, > img:only-child) img { max-height: 80svh; object-fit: contain; object-position: left center; }
 .prose :is(h1, h2, h3, h4, h5, h6) { position: relative; font-family: var(--font-display); font-weight: var(--display-weight); color: var(--ink); line-height: 1.25; letter-spacing: -0.015em; text-wrap: balance; text-transform: none; scroll-margin-top: calc(var(--nav) + var(--s-4)); }
-.prose h2 { font-size: clamp(25px, .6vw + 22px, 30px); margin: 1.8em 0 .5em; }
-.prose h3 { font-size: clamp(21px, .3vw + 19px, 23px); margin: 1.5em 0 .4em; }
-.prose :is(h4, h5, h6) { font-size: 18px; margin: 1.4em 0 .4em; }
+/* one weight per size: a page's sections at 28px are 600, as every 28px title of the site; 700 is kept
+   for the two large steps (48, 80) */
+.prose h2 { font-size: var(--t-h3); font-weight: var(--title-weight); margin: 1.8em 0 .5em; }
+.prose h3 { font-size: var(--t-card); line-height: 1.3; margin: 1.5em 0 .4em; }
+.prose :is(h3, h4, h5, h6) { font-weight: var(--title-weight); }
+.prose :is(h4, h5, h6) { font-size: 1em; margin: 1.4em 0 .4em; }
 .prose :is(h1, h2, h3, h4) + :is(h1, h2, h3, h4) { margin-top: .4em; }
 .heading-anchor { margin-left: .35em; padding: 0 .15em; color: var(--muted); font-weight: 400; text-decoration: none !important; opacity: 0; transition: opacity var(--dur) var(--ease); }
 .prose :is(h2, h3, h4, h5, h6):hover .heading-anchor, .heading-anchor:focus-visible { opacity: 1; }
@@ -609,7 +750,12 @@ main.page { padding-top: var(--nav); }
 .prose li + li { margin-top: .35em; }
 .prose li > :is(ul, ol) { margin: .35em 0 0; }
 /* links in text: one underline, in the accent */
-.prose a:not(.btn):not(.card):not(.link):not(.m-zoom):not(.img-zoom):not(.heading-anchor):not(.search__hit):not(.video-embed__start):not(.post-summary__title > a):not(blockquote a) { color: var(--action); background-image: none; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: color-mix(in oklab, var(--action) 45%, transparent); overflow-wrap: anywhere; }
+.prose a:not(.btn):not(.card):not(.link):not(.m-zoom):not(.img-zoom):not(.heading-anchor):not(.search__hit):not(.video-embed__start):not(.post-summary__title > a):not(blockquote a) { color: var(--action); background-image: none; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: color-mix(in oklab, var(--action) 45%, transparent); }
+/* a long address breaks anywhere rather than run out of its column; in a table a link's words stay whole
+   (the column takes their width; a long address still breaks), so no cell splits a word such as
+   "Connectomics" to save width */
+.prose a { overflow-wrap: anywhere; }
+.prose :is(td, th) :is(a, code) { overflow-wrap: break-word; }
 .prose a:not(.btn):not(.card):hover { text-decoration-color: currentColor; }
 .prose strong, .prose b { font-weight: 600; color: inherit; }
 .prose em { font-style: italic; }
@@ -617,7 +763,7 @@ main.page { padding-top: var(--nav); }
 .prose picture { display: contents; }
 .prose hr { border: 0; border-top: 1px solid var(--line); margin: 2.5em 0; }
 .prose code { font-family: var(--font-mono); font-size: .88em; background: var(--surface); padding: .1em .35em; border-radius: 4px; overflow-wrap: anywhere; }
-.prose pre { font-family: var(--font-mono); font-size: 15px; background: var(--surface); padding: var(--s-4); border-radius: var(--r-md); overflow-x: auto; }
+.prose pre { font-family: var(--font-mono); font-size: var(--t-small); background: var(--surface); padding: var(--s-4); border-radius: var(--r-md); overflow-x: auto; }
 .prose pre code { background: none; padding: 0; }
 .prose blockquote { padding: var(--s-4) var(--s-5); border-left: 3px solid var(--accent); background: var(--surface); border-radius: 0 var(--r-md) var(--r-md) 0; }
 .prose blockquote > :last-child { margin-bottom: 0; }
@@ -644,7 +790,22 @@ main.page { padding-top: var(--nav); }
 /* a Markdown image with a title: the picture and its caption under it, upright */
 .img-figure { display: block; margin: 0 0 .6em; }
 .img-figure > :is(img, a, picture) { display: block; }
-.img-figure__caption { display: block; margin-top: var(--s-2); font-size: 15px; font-style: normal; line-height: 1.5; color: var(--muted); max-width: var(--measure); }
+.img-figure__caption { display: block; margin-top: var(--s-2); font-size: var(--t-small); font-style: normal; line-height: 1.5; color: var(--muted); max-width: var(--measure); }
+/* one caption style on every page (the one above: 14px, muted, upright, right under the picture): a
+   paragraph set wholly in italics right after a picture (the old pages' captions) is drawn the same */
+.prose > p:has(> .img-zoom, > picture, > img) + p:has(> em:only-child) { margin-top: calc(var(--s-2) - .6em); font-size: var(--t-small); line-height: 1.5; color: var(--muted); }
+.prose > p:has(> .img-zoom, > picture, > img) + p > em:only-child { font-style: normal; }
+.prose > p:has(> .img-zoom:only-child, > picture:only-child, > img:only-child) { margin-bottom: .6em; }
+
+/* the history (and the prizes) on /about/: the home page's ruled timeline, as a Markdown list marked
+   {.history} whose items start with the year in bold ("**2015** The first paper ..."); the year stands in
+   a column of its own */
+.history { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--line); }
+.history li { position: relative; padding: var(--s-3) 0 var(--s-3) calc(4.5rem + var(--s-4)); border-bottom: 1px solid var(--line); }
+.history li > strong:first-child { position: absolute; left: 0; top: var(--s-3); font-weight: 600; font-variant-numeric: tabular-nums; }
+.prose ul.history { list-style: none; padding: 0; max-width: var(--measure); margin-bottom: 1.4em; }
+.prose .history li, .prose .history li + li { margin: 0; max-width: none; }
+@media (max-width: 639px) { .history li { padding-left: calc(3.5rem + var(--s-3)); } }
 
 /* row / col (the old page builder): equal columns fit as many as the width allows (stacking on a phone);
    rows that mix widths (1/3 + 2/3) keep their proportions and wrap when a column gets too narrow */
@@ -658,10 +819,12 @@ main.page { padding-top: var(--nav); }
 .prose .col > :last-child { margin-bottom: 0; }
 .prose .col img { display: block; }
 /* a caption beside a picture in a narrow column: under it, upright, smaller */
-.prose .col em:only-child, .prose .col p > em:only-child { font-style: normal; font-size: 15px; line-height: 1.5; color: var(--muted); }
+.prose .col em:only-child, .prose .col p > em:only-child { font-style: normal; font-size: var(--t-small); line-height: 1.5; color: var(--muted); }
 
 /* button shortcode: long labels wrap, so no page is wider than a phone */
 .button-wrap { margin: 0 0 1.1em; }
+/* a secondary button (a word and an arrow) starts on the text's edge */
+.prose .button-wrap .btn--secondary { padding-inline: 0; }
 .prose .button-wrap .btn { text-decoration: none; white-space: normal; height: auto; min-height: var(--btn-h); padding-block: 10px; line-height: 1.35; text-align: left; max-width: 100%; }
 .btn { max-width: 100%; }
 @media (max-width: 639px) { .btn { white-space: normal; height: auto; min-height: var(--btn-h); padding-block: 10px; line-height: 1.3; text-align: center; } }
@@ -670,7 +833,7 @@ main.page { padding-top: var(--nav); }
 .child-pages li, .prose .child-pages li + li { margin: 0; max-width: none; }
 .prose .child-pages { padding: 0; max-width: none; margin-bottom: 1.6em; }
 .prose .child-page { flex-direction: row; align-items: center; justify-content: flex-start; gap: var(--s-4); height: 100%; min-height: 72px; padding: var(--s-4) var(--s-5);
-  font-weight: 500; text-decoration: none; text-align: left; font-size: 17px; line-height: 1.35; }
+  font-weight: 500; text-decoration: none; text-align: left; font-size: inherit; line-height: 1.35; }
 .prose .child-page:hover { color: var(--action); }
 .child-page .m-arrow { width: 12px; height: 12px; flex: none; margin-left: auto; color: var(--action); }
 /* a hub page's cards (childpages with descriptions): two columns from 640px, the title at the card size
@@ -679,13 +842,28 @@ main.page { padding-top: var(--nav); }
 .prose ul.child-pages--described { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: var(--gutter); }
 .prose ul.child-pages--described .child-page { flex-wrap: wrap; align-items: flex-start; align-content: flex-start; padding: var(--s-5); gap: var(--s-3) var(--s-4); }
 .prose ul.child-pages--described .child-page__body { flex: 1 1 0; min-width: 0; gap: var(--s-2); }
-.prose ul.child-pages--described .child-page__title { font: var(--display-weight) var(--t-card)/1.3 var(--font-display); letter-spacing: -0.01em; }
+.prose ul.child-pages--described .child-page__title { font: var(--title-weight) var(--t-card)/1.3 var(--font-display); letter-spacing: -0.01em; }
 .prose ul.child-pages--described .child-page__text { font-size: 16px; line-height: 1.5; }
 .prose ul.child-pages--described .child-page .m-arrow { margin-top: .45em; }
 .child-page__img { flex: 0 0 100%; display: block; margin: calc(-1 * var(--s-5)) calc(-1 * var(--s-5)) var(--s-2); aspect-ratio: 16 / 9; overflow: hidden;
   border-radius: var(--r-lg) var(--r-lg) 0 0; background: var(--render); }
 .child-page__img img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 0; }
 @media (max-width: 639px) { .prose ul.child-pages--described { grid-template-columns: minmax(0, 1fr); } .prose ul.child-pages--described .child-page { padding: var(--s-4); } }
+/* two or four cards: two to a row from 640px. Three, five or six: three to a row from 768px (five as
+   three and two), so no card ever spans a row on its own; between 640 and 767 the odd last card takes
+   the row. */
+@media (min-width: 640px) {
+  .prose ul.child-pages--described:not(.notfound__doors) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .prose ul.child-pages--described:not(.notfound__doors) > li:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+@media (min-width: 768px) {
+  .prose ul.child-pages--described:not(.notfound__doors):has(> li:nth-child(3):last-child, > li:nth-child(5)) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .prose ul.child-pages--described:not(.notfound__doors):has(> li:nth-child(3):last-child, > li:nth-child(5)) > li:last-child:nth-child(odd) { grid-column: auto; }
+  /* three across: the card a little tighter, its title a step smaller */
+  .prose ul.child-pages--described:has(> li:nth-child(3):last-child, > li:nth-child(5)) .child-page { padding: var(--s-4); }
+  .prose ul.child-pages--described:has(> li:nth-child(3):last-child, > li:nth-child(5)) .child-page__img { margin: calc(-1 * var(--s-4)) calc(-1 * var(--s-4)) var(--s-2); flex-basis: calc(100% + 2 * var(--s-4)); }
+  .prose ul.child-pages--described:has(> li:nth-child(3):last-child, > li:nth-child(5)) .child-page__title { font-size: 18px; }
+}
 /* a hub page shows its pages as these cards, so the sidebar does not list them a second time (the hub
    is the page whose group heading the sidebar marks as current) */
 .doc-layout:has(.child-pages--described) .side-section:has(> .t-label a[aria-current="page"]) { display: none; }
@@ -710,9 +888,13 @@ main.page { padding-top: var(--nav); }
 .video-embed__start:hover .video-embed__play { transform: scale(1.06); }
 .video-embed__start:focus-visible { outline: 3px solid #7fd3dc; outline-offset: -3px; }
 .video-embed__text { display: grid; gap: var(--s-1); }
-.video-embed__title { font: var(--display-weight) 20px/1.3 var(--font-display); }
+.video-embed__title { font: var(--title-weight) var(--t-card)/1.3 var(--font-display); }
 .video-embed__note { font-size: 14px; color: rgb(255 255 255 / .72); }
-@media (max-width: 639px) { .video-embed__start { padding: var(--s-4); } .video-embed__play { width: 48px; height: 48px; } .video-embed__title { font-size: 17px; } }
+/* over a poster the title and the note sit on a dark band along the bottom edge, so they read on any
+   still */
+html .video-embed--poster .video-embed__start { background: linear-gradient(to top, rgb(0 0 0 / .86) 0, rgb(0 0 0 / .72) 30%, rgb(0 0 0 / .2) 58%, rgb(0 0 0 / 0) 75%); }
+.video-embed--poster .video-embed__note { color: rgb(255 255 255 / .8); }
+@media (max-width: 639px) { .video-embed__start { padding: var(--s-4); } .video-embed__play { width: 48px; height: 48px; } .video-embed__title { font-size: var(--t-body); } }
 
 /* forms (labels above, 48px fields) */
 .form { display: grid; gap: var(--s-4); max-width: var(--measure); margin: 0 0 1.5em; }
@@ -722,59 +904,78 @@ main.page { padding-top: var(--nav); }
 .field__req { font-weight: 400; color: var(--muted); }
 .field input, .field textarea { width: 100%; min-height: 48px; padding: 12px 14px; font: 16px/1.4 var(--font-text); color: var(--ink);
   background: #fff; border: 1px solid var(--line-strong); border-radius: var(--r-sm); }
-.form .btn[disabled] { opacity: .55; cursor: not-allowed; }
-.form-note { margin: 0; font-size: 13px; color: var(--muted); }
+.form .btn[disabled] { opacity: .55; cursor: not-allowed; transform: none; }
+.form-note { margin: 0; font-size: var(--t-label); color: var(--muted); }
 
-/* news */
-.post-summary { display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: var(--s-2) var(--s-6); padding: var(--s-6) 0; border-top: 1px solid var(--line); }
+/* news: a plain list, the date on the left and the title with two lines of summary on the right (one
+   column on a phone). No thumbnails: the posts' pictures are of too many kinds (flyers, screenshots,
+   title pages) to sit side by side; each post shows its own. */
+.post-summary { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: var(--s-2) var(--gutter); padding: var(--s-5) 0; border-top: 1px solid var(--line); }
 .post-summary:last-of-type { border-bottom: 1px solid var(--line); }
-.post-summary__date { grid-column: 1 / -1; font-size: var(--t-small); color: var(--muted); }
+.post-summary__date { padding-top: 3px; font-size: var(--t-small); color: var(--muted); }
 /* the title of a news entry: the card size in ink, not a documentation heading */
-.prose .post-summary__title { font-size: 22px; line-height: 1.3; letter-spacing: -0.01em; margin: 0 0 var(--s-2); max-width: 40ch; }
+.prose .post-summary__title { font-size: var(--t-card); font-weight: var(--title-weight); line-height: 1.3; letter-spacing: -0.01em; margin: 0 0 var(--s-2); max-width: var(--measure); text-wrap: pretty; }
 .prose .post-summary__title a { color: var(--ink); text-decoration: none; }
 .prose .post-summary__title a:hover { color: var(--action); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
-.post-summary p { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.6; }
-.post-summary__thumb { display: block; overflow: hidden; border-radius: var(--r-md); align-self: start; aspect-ratio: 8 / 5; background: var(--surface); }
-.post-summary__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 0; }
-@media (max-width: 639px) { .post-summary { grid-template-columns: minmax(0, 1fr); } .post-summary__thumb { grid-row: 2; max-width: 320px; } }
+.post-summary p { margin: 0; color: var(--muted); font-size: var(--t-body); line-height: 1.6;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+@media (max-width: 639px) { .post-summary { grid-template-columns: minmax(0, 1fr); gap: var(--s-1); padding: var(--s-4) 0; } .post-summary__date { padding-top: 0; } }
 img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md); max-width: 100%; height: auto; }
+/* a news post's pictures all take the text column's width, so one post shows one picture width (the
+   column is the measure, 740px at most; a smaller picture is drawn a little larger), and a caption
+   starts at the picture's left edge. Pictures inside a row of columns keep their column. */
+.section-news .prose > p > :is(.img-zoom, .img-figure, img):only-child,
+.section-news .prose > p > .img-figure > :is(a, img) { display: block; width: 100%; }
+.section-news .prose > p img, .section-news .prose > picture > img.featured { display: block; width: 100%; height: auto; max-height: none; }
 .pagination { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); margin-top: var(--s-7); }
-.pagination__count { font-size: 14px; color: var(--muted); }
+.pagination__count { font-size: var(--t-small); color: var(--muted); }
 .post-back { margin-top: var(--s-7); }
-.post-summary__thumb--whole { justify-self: start; max-width: 200px; aspect-ratio: auto; border: 1px solid var(--line); }
-.post-summary__thumb--whole img { height: auto; }
-@media (max-width: 639px) { .post-summary__thumb--whole { max-width: 240px; } }
 
 /* ---------------------------------------------------------------- sidebar */
 .sidebar { display: grid; gap: var(--s-6); font-size: 16px; line-height: 1.5; position: static; align-content: start; }
 .sidebar .t-label { margin: 0 0 var(--s-3); }
 .side-card { display: grid; gap: var(--s-2); padding: var(--s-5); background: var(--surface); border-radius: var(--r-lg); }
 /* "In this section" above a table of contents: the section's pages, compact */
-.side-section ul { list-style: none; margin: 0; padding: 0; display: grid; font-size: 15px; }
+.side-section ul { list-style: none; margin: 0; padding: 0; display: grid; font-size: var(--t-small); }
 .side-block.side-section li a { display: block; padding: 5px 0 5px var(--s-3); border: 0; border-left: 2px solid var(--line); color: var(--ink); line-height: 1.35; }
 .side-section li a:hover { color: var(--action); }
 .side-block.side-section li a[aria-current="page"] { color: var(--action); border-left-color: var(--action); font-weight: 500; }
 .side-section .t-label a { color: inherit; background: none; padding: 0; }
 .side-section .t-label a:hover { color: var(--action); }
 .side-card .t-label { margin: 0; }
-.release-card__version { font: var(--display-weight) 24px/1.2 var(--font-display); letter-spacing: -0.02em; margin: 0; }
+.release-card__version { font: var(--title-weight) var(--t-card)/1.2 var(--font-display); letter-spacing: -0.02em; margin: 0; }
 .release-card .btn { margin-top: var(--s-3); width: 100%; }
 .release-card .link { justify-self: start; }
 .side-block ul { list-style: none; margin: 0; padding: 0; display: grid; }
 .side-block li a { display: block; padding: 9px 0; color: var(--ink); border-bottom: 1px solid var(--line); line-height: 1.35; }
 .side-block li a:hover { color: var(--action); }
 .subnav ul ul { padding-left: var(--s-4); }
-.subnav ul ul a { font-size: 15px; }
+.subnav ul ul a { font-size: var(--t-small); }
 .subnav a[aria-current="page"] { font-weight: 600; color: var(--action); }
 .subnav .t-label a { color: inherit; }
 .newsletter-box .form { grid-template-columns: minmax(0, 1fr); gap: var(--s-3); margin: var(--s-3) 0 0; max-width: none; }
 .newsletter-box .field input { width: 100%; }
 .newsletter-box .btn-row { display: block; }
-.newsletter-box .btn { width: 100%; }
-.newsletter-box .btn--secondary { background: var(--bg); border: 1px solid var(--line-strong); text-decoration: none; padding-inline: var(--s-5); justify-content: center; }
+.newsletter-box .btn--secondary { padding-inline: 0; }
 @media (min-width: 640px) and (max-width: 1023px) { .sidebar { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; } }
 /* a phone: the sidebar after the text keeps the release and the next event; the links are in the footer */
 @media (max-width: 639px) { .sidebar .quick-links, .sidebar .newsletter-box { display: none; } }
+/* below 1024px every row of the sidebar and of the table of contents is a 44px target */
+@media (max-width: 1023px) {
+  :is(.side-block li, .toc li, .sidebar .t-label, .next-event__title, .side-card) > a,
+  .side-block.side-section li a { display: flex; align-items: center; min-height: 44px; padding-block: 4px; }
+  .sidebar .link, .next-event .link { min-height: 44px; }
+}
+
+/* below 1024px a link that stands on its own (in a list item, a table cell or a definition, a news or
+   event title, "Back to the filter") is a 44px target: vertical padding on the inline link widens the
+   area a finger hits without moving a line of text. Text links in a paragraph keep their size. */
+@media (max-width: 1023px) {
+  .prose :is(ul, ol):not([class]) > li > a:not([class]), .prose :is(ul, ol):not([class]) > li > :is(strong, b) > a:not([class]),
+  .prose :is(td, dd) > a:not([class]), .prose .atlas-list__back a, .prose .atlas__more a,
+  .prose .atlas__cite li > a:not([class]), .prose .atlas__cite li > strong > a, .prose .install-needs li > a, .prose .install-needs li > strong > a,
+  .prose .post-summary__title a, :is(.event__title, .news-item__title) > a { padding-block: calc(23px - .68em); }
+}
 
 /* the table of contents: sticky in the sidebar on a desktop, a collapsible list on top below 1024 */
 .toc ol { list-style: none; margin: 0; padding: 0; }
@@ -782,12 +983,12 @@ img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md
 .toc a { display: block; padding: 5px 0 5px var(--s-3); border-left: 2px solid transparent; color: var(--ink); line-height: 1.35; text-decoration: none !important; }
 .toc a:hover { color: var(--action); }
 .toc a[aria-current] { color: var(--action); border-left-color: var(--action); font-weight: 500; }
-.toc ol ol a { padding-left: var(--s-5); font-size: 15px; color: var(--muted); }
+.toc ol ol a { padding-left: var(--s-5); color: var(--muted); }
 .toc--side { display: none; }
 @media (min-width: 1024px) {
   .doc-layout--toc .sidebar { align-self: stretch; }
   .toc--side { display: block; position: sticky; top: calc(var(--nav) + var(--s-5)); max-height: calc(100svh - var(--nav) - 2 * var(--s-5)); overflow-y: auto;
-    font-size: 15px; border-left: 1px solid var(--line); padding: var(--s-1) 0 var(--s-1) 0; overscroll-behavior: contain; }
+    font-size: var(--t-small); border-left: 1px solid var(--line); padding: var(--s-1) 0 var(--s-1) 0; overscroll-behavior: contain; }
   .toc--side .t-label { padding-left: var(--s-3); }
   .toc--side > ol > li > a { font-weight: 500; }
   .toc--side .toc__top { display: inline-block; margin: var(--s-4) 0 0; padding-left: var(--s-3); border-left: 0; font-size: 14px; color: var(--muted); }
@@ -805,42 +1006,66 @@ img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md
 /* ---------------------------------------------------------------- gallery page */
 .gallery-page { padding: var(--s-8) 0 var(--s-9); }
 .gallery-section + .gallery-section { margin-top: var(--s-9); }
-.gallery-section > h2 { font-size: clamp(25px, .6vw + 22px, 30px); line-height: 1.2; margin: 0 0 var(--s-3); max-width: 30ch; }
-.gallery-section > .lead { max-width: 62ch; color: var(--ink); margin: 0 0 var(--s-7); font-size: 19px; line-height: 1.55; }
+.gallery-section > h2 { font-size: var(--t-h3); font-weight: var(--title-weight); line-height: 1.2; margin: 0 0 var(--s-3); max-width: none; }
+.gallery-section > .lead { max-width: 62ch; color: var(--ink); margin: 0 0 var(--s-7); font-size: var(--t-lead); line-height: 1.55; }
 .render-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-7) var(--gutter); }
-@media (min-width: 1280px) { .render-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1200px) { .render-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .render-item { display: grid; gap: var(--s-3); align-content: start; }
 .render-grid figure { margin: 0; background: var(--render); border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 16 / 9; }
 .render-grid img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.render-item__caption { margin: 0; font-size: 16px; line-height: 1.55; color: var(--muted); max-width: 60ch; }
-/* published figures: each figure first, whole, on a white mat cut to its own size; its plain-language
-   description under it, then the credits and the licence in small type. Two columns from 1024px, so a
-   portrait figure does not sit in a wide empty mat */
-.paper-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-8) var(--s-7); align-items: start; }
-@media (min-width: 1024px) { .paper-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-8) var(--s-7); } }
+.render-item__caption { margin: 0; font-size: var(--t-small); line-height: 1.5; color: var(--muted); max-width: 60ch; }
+/* published figures: tiles of one shape (4:3), each figure whole and centred on its mat (the surface grey,
+   the one mat of every paper figure on the site, so a figure's own white or black ground reads as its edge); under it
+   one sentence on what it shows and a short citation, the full source and licence behind a disclosure.
+   Three to a row from 1200px, two from 640px, so the rows keep one edge on both sides. The tile and the
+   rows have their size before the pictures and the font arrive, so nothing moves while they load. */
+.paper-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-7) var(--gutter); align-items: start; }
+@media (min-width: 640px) { .paper-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1200px) {
+  .paper-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  /* ten figures: the first leads, its tile over two columns and its words beside it, the other nine
+     fill three rows of three, so no row ends with a lone figure */
+  .paper-fig:first-child:nth-last-child(3n + 1) { grid-column: 1 / -1; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--gutter); align-items: start; }
+  /* the lead figure's mat takes the figure's own shape, so no white band runs above and below it, and
+     its words start at its top edge */
+  .paper-fig:first-child:nth-last-child(3n + 1) > .paper-fig__img { grid-column: span 2; aspect-ratio: auto; }
+  .paper-fig:first-child:nth-last-child(3n + 1) > .paper-fig__img img { height: auto; }
+  /* its words beside it, centred on the figure's height and set a step larger, so no empty column runs
+     under a short caption */
+  .paper-fig:first-child:nth-last-child(3n + 1) > .paper-fig__text { align-self: center; padding: 0 0 0 var(--s-5); gap: var(--s-3); }
+  .paper-fig:first-child:nth-last-child(3n + 1) .paper-fig__shows { font-size: var(--t-lead); line-height: 1.5; }
+}
 .paper-fig { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); align-content: start; scroll-margin-top: calc(var(--nav) + var(--s-4)); }
-.paper-fig__img { position: relative; justify-self: start; display: block; width: fit-content; max-width: 100%; padding: var(--s-3); background: #fff; border: 1px solid var(--line); border-radius: var(--r-md); cursor: zoom-in;
+.paper-fig__img { position: relative; display: block; aspect-ratio: 4 / 3; padding: var(--s-4); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); cursor: zoom-in;
   transition: border-color var(--t-out) var(--ease); }
 .paper-fig__img:hover { border-color: color-mix(in oklab, var(--action) 55%, transparent); transition-duration: var(--t-in); }
-.paper-fig__img img { display: block; width: auto; height: auto; max-width: 100%; max-height: min(72svh, 480px); object-fit: contain; border-radius: 2px; }
+.paper-fig__img img { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: 2px; }
+/* the same "open large" mark as the pictures in the text */
+.paper-fig__img::after { content: ""; position: absolute; right: 8px; bottom: 8px; width: 28px; height: 28px; border-radius: 50%; opacity: 0; transition: opacity var(--dur) var(--ease);
+  background: rgb(31 48 56 / .72) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7'/%3E%3C/svg%3E") center / 14px no-repeat; }
+.paper-fig__img:is(:hover, :focus-visible)::after { opacity: 1; }
 .paper-fig__text { display: grid; gap: var(--s-2); align-content: start; justify-items: start; }
 .paper-fig__text p { margin: 0; }
-.paper-fig__tool { align-self: start; font-size: 13px; font-weight: 500; line-height: 1.4; color: var(--action); padding: 3px 10px; border: 1px solid color-mix(in oklab, var(--action) 40%, transparent); border-radius: 999px; }
-.paper-fig__shows { font-size: 17px; line-height: 1.55; color: var(--ink); max-width: 52ch; }
-.paper-fig__cite, .paper-fig__licence, .paper-fig__full { font-size: 14px; line-height: 1.5; color: var(--muted); max-width: 62ch; overflow-wrap: anywhere; }
-.paper-fig__shows + .paper-fig__cite { margin-top: var(--s-1); }
+.paper-fig__tool { align-self: start; }
+.paper-fig__shows { font-size: var(--t-body); line-height: 1.55; color: var(--ink); max-width: 52ch; }
+.paper-fig__short { font-size: var(--t-small); line-height: 1.5; color: var(--muted); }
+.paper-fig__more { font-size: var(--t-small); line-height: 1.5; color: var(--muted); }
+.paper-fig__more > summary { display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; margin-block: calc(-1 * var(--s-2)); cursor: pointer; list-style: none; color: var(--ink); font-weight: 500; }
+.paper-fig__more > summary::-webkit-details-marker { display: none; }
+.paper-fig__more > summary::after { content: ""; width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; rotate: 45deg; translate: 0 -2px; transition: rotate var(--dur) var(--ease); }
+.paper-fig__more[open] > summary::after { rotate: 225deg; translate: 0 2px; }
+.paper-fig__more > summary:hover { color: var(--action); }
+.paper-fig__more > p { margin: var(--s-2) 0 0; max-width: 62ch; overflow-wrap: break-word; }
 .paper-fig__title { color: var(--ink); font-weight: 500; }
 .paper-fig__text a { color: var(--action); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
 .gallery-empty { padding: var(--s-6); border: 1px dashed var(--line-strong); border-radius: var(--r-lg); color: var(--muted); max-width: 62ch; }
 /* the closing line: its own section gap, at the text's measure */
-.gallery-next { margin: var(--s-9) 0 0; padding-top: var(--s-6); border-top: 1px solid var(--line); max-width: 62ch; font-size: 17px; line-height: 1.6; }
+.gallery-next { margin: var(--s-9) 0 0; padding-top: var(--s-6); border-top: 1px solid var(--line); max-width: 62ch; font-size: var(--t-body); line-height: 1.6; }
 .gallery-next a { color: var(--action); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in oklab, var(--action) 45%, transparent); }
 @media (max-width: 639px) {
   .render-grid { grid-template-columns: minmax(0, 1fr); }
-  .paper-list { gap: var(--s-7); }
   .paper-fig { gap: var(--s-3); }
-  .paper-fig__img { padding: var(--s-2); }
-  .paper-fig__shows { font-size: 16px; }
+  .paper-fig__img { padding: var(--s-3); }
   .gallery-next { margin-top: var(--s-8); }
 }
 
@@ -863,16 +1088,19 @@ img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md
 .event > * + *, .prose .event > * + * { margin-top: var(--s-4); }
 .event > .event__title, .prose .event > .event__title { margin-top: var(--s-1); }
 .event__date { font-size: var(--t-small); font-weight: 500; color: var(--action); }
-.event .event__title, .prose .event__title { font: var(--display-weight) var(--t-card)/1.3 var(--font-display); letter-spacing: -0.01em; }
+.event .event__title, .prose .event__title { font: var(--title-weight) var(--t-card)/1.3 var(--font-display); letter-spacing: -0.01em; }
 .event__title a { color: var(--ink); text-decoration: none; }
 .event__title a:hover { color: var(--action); }
 .event .event__facts { margin-top: var(--s-4); font-size: 16px; }
 .event__facts > div { grid-template-columns: 7rem minmax(0, 1fr); padding: var(--s-2) 0; }
-.event__local { display: block; color: var(--muted); font-size: 15px; }
+.event__local { display: block; color: var(--muted); font-size: var(--t-small); }
 .event .event__text, .prose .event .event__text { max-width: 62ch; }
-.event .event__note, .prose .event .event__note { color: var(--ink); font-size: 15px; line-height: 1.55; max-width: 62ch; margin: 0; }
+.event .event__note, .prose .event .event__note { color: var(--ink); font-size: var(--t-small); line-height: 1.55; max-width: 62ch; margin: 0; }
 .event__upcoming-only > p, .prose .event__upcoming-only > p { margin: 0; }
-.event__note a { color: var(--action); text-decoration: underline; text-underline-offset: 3px; }
+/* the note's links in the card's own link style (ink, underlined), like its other links */
+.event__note a, .prose .event__note a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
+.event__note a:hover, .prose .event__note a:hover { color: var(--action); text-decoration-color: currentColor; }
+@media (max-width: 639px) { .event .event__note, .prose .event .event__note { font-size: 15px; } }
 .prose .event__register .btn { text-decoration: none; }
 .event__links, .prose .event__links { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-6); }
 .event__links li, .prose .event__links li { margin: 0; }
@@ -881,11 +1109,17 @@ img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md
 .event-list--past .event__date { color: var(--muted); }
 .event-list--past .event__upcoming-only { display: none; }
 .event-empty { color: var(--muted); }
+.event-empty a { color: var(--action); text-decoration: underline; text-underline-offset: 3px; }
+.event-list--home + .event-empty { margin-top: var(--s-4); }
 /* /events/: the past workshops, a ruled list of links in two columns */
 .prose .past-workshops__h { margin-top: var(--s-5); }
 .prose .past-workshops { list-style: none; padding: 0; margin: 0 0 var(--s-5); max-width: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); column-gap: var(--gutter); }
 .prose .past-workshops li { margin: 0; max-width: none; border-bottom: 1px solid var(--line); }
-.prose .past-workshops a { display: flex; align-items: center; min-height: 48px; }
+/* each a row in the documentation's row style (the sidebar's): ink, no underline, the arrow at its end */
+.prose .past-workshops a { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); min-height: 48px; font-weight: 500;
+  color: var(--ink) !important; text-decoration: none !important; transition: color var(--t-out) var(--ease); }
+.prose .past-workshops a::after { content: ""; flex: none; width: 12px; height: 12px; background: var(--action); -webkit-mask: var(--arrow) center / contain no-repeat; mask: var(--arrow) center / contain no-repeat; }
+.prose .past-workshops a:hover { color: var(--action) !important; transition-duration: var(--t-in); }
 @media (max-width: 639px) { .event .event__facts > div { grid-template-columns: 5.5rem minmax(0, 1fr); gap: var(--s-3); } }
 
 /* ---------------------------------------------------------------- notice shortcode: a quiet callout */
@@ -895,6 +1129,36 @@ img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md
 .prose .notice > * { margin: 0; max-width: none; }
 .prose .notice > * + * { margin-top: .6em; }
 .prose .notice__title { font-weight: 600; }
+/* the research-use statement: present where it matters, never prominent. A short line in small print
+   (About), and on the download page the full statement as plain small text, not a callout */
+.prose .fine-print, .prose .notice#research-use { margin: 1.4em 0 0; padding: 0; background: none; border: 0; border-radius: 0;
+  font-size: var(--t-small); line-height: 1.6; color: var(--muted); max-width: var(--measure); }
+.prose .notice#research-use { margin: 0 0 1.4em; }
+.prose .fine-print a, .prose .notice#research-use a { color: inherit; text-decoration-color: currentColor; }
+
+/* ---------------------------------------------------------------- one pill
+   Every small rounded label of the site has one look: the surface colour, ink, 14px semibold, no border.
+   A pill that is a link (the atlas groups with their counts) is a 44px target and takes the accent's
+   tint on hover. (The atlas and release-table rules in content.css come later in the bundle, so these
+   name the page's .prose to win.) */
+.pill, .prose .atlas__tag, .prose .release-table__current, .paper-fig__tool {
+  display: inline-flex; align-items: center; padding: 2px 10px; border: 0; border-radius: 999px;
+  background: var(--surface); color: var(--ink); font-size: var(--t-label); font-weight: 600; line-height: 1.5; letter-spacing: 0; }
+html .prose .atlas-groups a { min-height: 44px; padding: 0 var(--s-4); border: 0; border-radius: 999px; background: var(--surface); color: var(--ink);
+  font-size: var(--t-label); font-weight: 600; transition: background-color var(--t-out) var(--ease), color var(--t-out) var(--ease); }
+html .prose .atlas-groups a:hover { background: color-mix(in oklab, var(--action) 14%, var(--surface)); color: var(--action); transition-duration: var(--t-in); }
+html .prose .atlas-groups .atlas-groups__n { color: var(--muted); font-weight: 500; }
+
+/* ---------------------------------------------------------------- buttons: two looks, no third
+   A second choice next to a filled button (the other download servers, the standalone builds) is drawn
+   in the secondary look, an underlined word, not as an outlined box. */
+html .prose .btn.btn--outline { min-height: 44px; height: auto; padding: 0; border: 0; background: none; color: var(--ink);
+  text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; text-decoration-color: var(--line-strong); }
+html .prose .btn.btn--outline:hover { text-decoration-color: currentColor; transform: none; }
+html .prose .dl-alt, html .prose .download-grid--secondary { gap: 0 var(--s-6); }
+html .prose .download-grid--secondary li { flex: 0 1 auto; min-width: 0; }
+html .prose .download-grid--secondary .download-btn { width: auto; min-height: 44px; gap: var(--s-2); }
+@media (max-width: 639px) { html .prose .download-grid--secondary li { flex-basis: auto; } html .prose .download-grid--secondary .download-btn { width: auto; } }
 
 /* ---------------------------------------------------------------- downloads shortcode: one button per mirror */
 .prose .download-grid { list-style: none; padding: 0; margin: 0 0 1.6em; display: flex; flex-wrap: wrap; gap: var(--s-3); max-width: none; }
@@ -903,11 +1167,21 @@ img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md
 .prose .download-btn::after { margin-left: auto; }
 .download-btn__icon { width: 18px; height: 18px; flex: none; }
 @media (max-width: 639px) { .prose .download-grid li { flex-basis: 100%; } }
+/* the download page's main button on a phone: the whole width, one line ("Download Lead-DBS 3.2.1"
+   fits at 320px), with the box around it a little narrower in padding */
+@media (max-width: 639px) {
+  .prose .dl-release { padding: var(--s-4); }
+  .prose .dl-release .dl-release__btn { width: 100%; padding-inline: var(--s-3); gap: var(--s-2); font-size: var(--t-body); white-space: nowrap; }
+  .prose .dl-release .dl-release__via { flex-basis: 100%; }
+}
 
 /* ---------------------------------------------------------------- search (dialog, /search/, 404) */
 .search-dialog { width: min(720px, calc(100% - 2 * var(--s-4))); max-height: min(80svh, 760px); margin: calc(var(--nav) + var(--s-4)) auto auto; padding: 0; border: 1px solid var(--line); border-radius: var(--r-lg);
   background: var(--bg); color: var(--ink); box-shadow: 0 24px 64px -24px rgb(31 48 56 / .45); overflow: hidden; }
-.search-dialog::backdrop { background: rgb(15 24 28 / .45); }
+/* a dark, blurred scrim, so the page behind does not compete with the results; one close control (the
+   field's own clear button is hidden: Escape and the close button do its job) */
+.search-dialog::backdrop { background: rgb(10 16 19 / .72); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.search-dialog input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; display: none; }
 .search-dialog__box { position: relative; padding: var(--s-5); max-height: inherit; overflow-y: auto; }
 .search-dialog__close { position: absolute; top: var(--s-4); right: var(--s-4); display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: var(--r-btn); background: none; color: var(--ink); cursor: pointer; }
 .search-dialog__close:hover { background: var(--surface); }
@@ -924,14 +1198,16 @@ img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md
 .search__results li { margin: 0; max-width: none; }
 .search__hit { display: grid; gap: 2px; padding: var(--s-3) var(--s-3); border-radius: var(--r-md); color: var(--ink); text-decoration: none !important; }
 .search__hit:is(:hover, :focus-visible) { background: var(--surface); outline-offset: -2px; }
-.search__title { font-weight: 500; color: var(--action); font-size: 17px; line-height: 1.35; }
-.search__section { font-size: 13px; color: var(--muted); }
-.search__snippet { font-size: 15px; line-height: 1.5; color: var(--ink); }
-.search__hint { margin: var(--s-4) 0 0; font-size: 13px; color: var(--muted); }
+.search__title { font-weight: 500; color: var(--action); font-size: var(--t-body); line-height: 1.35; }
+.search__section { font-size: var(--t-label); color: var(--muted); }
+.search__snippet { font-size: var(--t-small); line-height: 1.5; color: var(--ink); }
+.search__hint { margin: var(--s-4) 0 0; font-size: var(--t-label); color: var(--muted); }
 @media (hover: none) { .search__hint { display: none; } }
 .search-page .search { max-width: var(--measure); }
-/* the 404 page's doors: four across the text column, so seven make two rows */
-.notfound__doors { margin-top: var(--s-7) !important; grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 1fr)); }
+/* the 404 page's doors: on a desktop the page's text uses the whole width, so eight doors make two rows
+   of four wide tiles (the paragraphs keep their measure); three, two or one across below */
+@media (min-width: 1280px) { .doc-layout--single > .prose:has(> .notfound__doors) { grid-column: 1 / -1; } }
+.notfound__doors { margin-top: var(--s-7) !important; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
 .prose .search { margin: var(--s-6) 0; max-width: var(--measure); }
 
 /* ---------------------------------------------------------------- footer
@@ -939,29 +1215,50 @@ img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md
    the site's own pages; the legal line under them. */
 .footer { padding: var(--band) 0 var(--s-6); }
 .closing__links { display: grid; gap: var(--s-7); }
-.footer .grid { row-gap: var(--s-7); }
+/* the logo with its line beside it; under them the columns, as many to a row as fit (one row of seven
+   from 1200px), two to a row on a phone */
+.footer__brand { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-6); }
+.footer__cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 128px), 1fr)); gap: var(--s-6) var(--gutter); }
 .footer ul { display: grid; gap: var(--s-1); font-size: var(--t-small); }
-/* every footer link a target at least 28px tall (44px on a phone, below) */
+/* every footer link a target at least 28px tall (44px below 1024px); every column heading the same
+   height, with or without a link, so the columns' first links line up */
 :is(.footer ul, .footer__legal) a { display: inline-flex; align-items: center; min-height: 28px; }
+.footer__h { display: flex; align-items: center; min-height: 28px; }
 .footer__h a { display: inline-flex; align-items: center; min-height: 28px; }
 .footer ul a:hover { color: var(--ink); }
 .footer__legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-4) var(--s-6); padding-top: var(--s-5);
   border-top: 1px solid var(--line); font-size: var(--t-label); color: var(--muted); }
 .footer__lede { font-size: var(--t-small); line-height: 1.55; color: var(--muted); max-width: 40ch; }
+@media (min-width: 640px) and (max-width: 1023px) { .footer__cols { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 639px) { .footer__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* a tablet and a phone (two columns on a phone): each link a 44px target */
 @media (max-width: 1023px) {
-  .footer .grid > .span-4 { grid-column: 1 / -1; }
-  .footer .footer__col { grid-column: auto / span 6; }
+  .footer ul:has(> li > a) { gap: 0; }
+  :is(.footer ul, .footer__legal, .footer__h) a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
+  /* a heading without a link gets the same 44px box as a linked one, so all column headings share a line */
+  .footer .footer__h { min-height: 44px; margin-bottom: var(--s-2); }
 }
-@media (min-width: 640px) and (max-width: 1023px) { .footer .footer__col { grid-column: auto / span 3; } }
-/* a phone: two columns of links, each link a 44px target */
 @media (max-width: 639px) {
   .closing__links { gap: var(--s-5); }
-  .closing__links > .grid { row-gap: var(--s-5); }
-  .footer ul:has(> li > a) { gap: 0; }
-  :is(.footer ul, .footer__legal) a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
+  .footer__cols { row-gap: var(--s-5); }
 }
 .footer__h { font: 500 var(--t-small)/1.4 var(--font-text); letter-spacing: 0; color: var(--muted); margin: 0 0 var(--s-4); }
-.footer__credits { flex-basis: 100%; font-size: 13px; color: var(--muted); }
+.footer__expand { display: none; }
+/* a phone (with script, .is-foldable from assets/js/main.js): one column of rows, each a heading and a
+   chevron that opens its links, as in the menu sheet; a heading without a page of its own opens its
+   links from anywhere on its row */
+@media (max-width: 639px) {
+  .footer.is-foldable .footer__cols { grid-template-columns: minmax(0, 1fr); gap: 0; border-top: 1px solid var(--line); }
+  .footer.is-foldable .footer__col { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; border-bottom: 1px solid var(--line); }
+  .footer.is-foldable .footer__h { min-height: 48px; margin: 0; font-size: var(--t-body); color: var(--ink); }
+  .footer.is-foldable .footer__h a { min-height: 48px; }
+  .footer.is-foldable .footer__expand { display: inline-grid; place-items: center; width: 48px; height: 48px; margin-right: -12px; padding: 0; border: 0; background: none; color: var(--muted); cursor: pointer; }
+  .footer.is-foldable .footer__col:not(:has(.footer__h a)) .footer__expand { position: absolute; inset: 0 -12px auto 0; width: auto; justify-items: end; padding-right: 16px; margin: 0; }
+  .footer__expand svg { width: 16px; height: 16px; transition: transform var(--dur) var(--ease); }
+  .footer__col.is-expanded .footer__expand svg { transform: rotate(180deg); }
+  .footer.is-foldable .footer__col > ul { grid-column: 1 / -1; display: none; padding-bottom: var(--s-3); }
+  .footer.is-foldable .footer__col.is-expanded > ul { display: grid; }
+}
+.footer__credits { flex-basis: 100%; font-size: var(--t-label); color: var(--muted); }
 .footer .wrap { min-width: 0; }
 
-@media (max-width: 639px) { .tool-rows dt a { display: inline-flex; align-items: center; min-height: 44px; } }

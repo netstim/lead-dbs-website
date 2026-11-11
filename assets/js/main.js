@@ -5,8 +5,10 @@
 
 // ------------------------------------------------------------------ header
 // Below 1200px the menu words live in a sheet the menu button opens; a panel's links open with the
-// chevron beside its word. Escape closes the sheet (or a desktop panel) and leaves the focus on the
-// button (or the word); a tap on any link in the sheet closes it; Tab stays inside the open sheet.
+// chevron beside its word. Opening the sheet moves the focus to its first word; Tab and Shift+Tab then
+// stay inside the sheet, its bar along the bottom (a phone) and the menu button, which now closes it.
+// Escape closes the sheet (or a desktop panel) and leaves the focus on the menu button (or the word); a
+// tap on any link in the sheet closes it.
 (() => {
   const nav = document.querySelector('.nav');
   const toggle = nav?.querySelector('.nav__toggle');
@@ -16,14 +18,20 @@
     open: '<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
     close: '<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
   };
-  const setOpen = (open) => {
+  const menu = nav.querySelector('#site-menu');
+  // what Tab may reach while the sheet is open: the sheet's links and buttons, the header's own actions
+  // (in the sheet's bottom bar on a phone, in the bar above it on a tablet) and the menu button
+  const inSheet = () => [...nav.querySelectorAll('#site-menu a[href], #site-menu button, .nav__actions a[href], .nav__toggle')]
+    .filter((el) => el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden');
+  const setOpen = (open, focus = false) => {
     nav.classList.toggle('is-open', open);
     document.body.classList.toggle('nav-locked', open);
     toggle.setAttribute('aria-expanded', String(open));
     toggle.setAttribute('aria-label', open ? 'Close the menu' : 'Open the menu');
     toggle.innerHTML = open ? icon.close : icon.open;
+    if (open && focus) inSheet().find((el) => menu?.contains(el))?.focus();
   };
-  toggle.addEventListener('click', () => setOpen(!nav.classList.contains('is-open')));
+  toggle.addEventListener('click', () => setOpen(!nav.classList.contains('is-open'), true));
   wide.addEventListener('change', (e) => { if (e.matches) setOpen(false); });
   nav.querySelectorAll('.nav__item').forEach((item) => {
     const menu = item.querySelector('.nav__menu');
@@ -86,19 +94,64 @@
       return;
     }
     if (e.key !== 'Tab' || !nav.classList.contains('is-open')) return;
-    const f = [...nav.querySelectorAll('a[href], button:not([disabled])')]
-      .filter((el) => !el.classList.contains('skip-link') && el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden');
+    const f = inSheet();
     if (!f.length) return;
     const first = f[0], last = f[f.length - 1];
-    if (!nav.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+    if (!f.includes(document.activeElement)) { e.preventDefault(); (e.shiftKey ? last : first).focus(); }
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
   });
 })();
 
+// ------------------------------------------------------------------ the footer on a phone
+// Below 640px each column of the footer folds to its heading, with a chevron button that opens its links
+// (assets/css/site.css, "footer"); a heading that links to its group's page keeps that link. Without
+// script, and from 640px up, every column is open.
+(() => {
+  const footer = document.querySelector('.footer');
+  const cols = footer ? [...footer.querySelectorAll('.footer__col')] : [];
+  if (!cols.length) return;
+  cols.forEach((col, i) => {
+    const h = col.querySelector('.footer__h');
+    const list = col.querySelector('ul');
+    if (!h || !list) return;
+    if (!list.id) list.id = `footer-list-${i + 1}`;
+    const btn = document.createElement('button');
+    btn.className = 'footer__expand';
+    btn.type = 'button';
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-controls', list.id);
+    btn.setAttribute('aria-label', `${h.textContent.trim()}: show the links`);
+    btn.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    h.after(btn);
+    btn.addEventListener('click', () => {
+      const open = !col.classList.contains('is-expanded');
+      col.classList.toggle('is-expanded', open);
+      btn.setAttribute('aria-expanded', String(open));
+    });
+  });
+  footer.classList.add('is-foldable');
+})();
+
+// ------------------------------------------------------------------ the home page's figure strip
+// Where the strip scrolls sideways (a phone or a tablet), its right edge fades out while more figures
+// follow, and its left edge once the first has moved away (assets/css/site.css, .fig-strip).
+document.querySelectorAll('.fig-strip').forEach((strip) => {
+  let queued = false;
+  const update = () => {
+    queued = false;
+    strip.classList.toggle('is-moved', strip.scrollLeft > 4);
+    strip.classList.toggle('is-end', strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 4);
+  };
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+  strip.addEventListener('scroll', queue, { passive: true });
+  addEventListener('resize', queue);
+  update();
+});
+
 // ------------------------------------------------------------------ the header over a dark ground
-// While a black ground ([data-nav-dark]: the home page's hero clip; every .page-head) lies under the
-// header, the header takes the black too (.nav.is-dark, assets/css/site.css); past it, the light bar returns.
+// While a black ground ([data-nav-dark]: the home page's hero clip, its voices and its 4.0 band; every
+// .page-head) lies under the header, the header takes the black too (.nav.is-dark, assets/css/site.css); past it, the light bar returns.
 // Until this has run, a page that starts on a black ground (body.top-dark) shows the dark header from
 // the first paint; html.nav-ready hands the state to this script, and only then do the colours fade.
 // .nav.is-scrolled: the page is scrolled at all, so the home page's clear header turns solid before
@@ -258,12 +311,25 @@
 // The build already left out what was over when the site was built; this checks again by the
 // visitor's clock, so a page built days ago still shows the right next event.
 // [data-ev-next]: show the first [data-ev] that has not ended, hide the block when none is left.
-// [data-ev-next-list] (home page): hide every ended event, show the empty line when none is left.
-// /events/: move ended events from the upcoming list to the past list (latest first).
+// [data-ev-next-list] (home page): hide every ended event, add the line for no dates when none is left.
+// /events/: move ended events from the upcoming list to the past list (latest first), and add the same
+// line when the upcoming list is empty. The line is not in the page while events are listed.
 // [data-ev-local]: add the start time in the visitor's own time zone when it differs.
 (() => {
   const now = Date.now();
   const over = (el) => Date.parse(el.dataset.evEnds) <= now;
+  const noDates = (list) => {
+    if (list.parentElement.querySelector('[data-ev-empty]')) return;
+    const p = document.createElement('p');
+    p.className = 'event-empty';
+    p.dataset.evEmpty = '';
+    p.append('No dates are set right now. New ones are announced in the ');
+    const a = document.createElement('a');
+    a.href = list.dataset.evNewsletter || '';
+    a.textContent = 'newsletter';
+    p.append(a, '.');
+    list.after(p);
+  };
   document.querySelectorAll('[data-ev-next]').forEach((box) => {
     const items = [...box.querySelectorAll('[data-ev]')];
     const next = items.find((el) => !over(el));
@@ -273,8 +339,7 @@
   document.querySelectorAll('[data-ev-next-list]').forEach((list) => {
     const items = [...list.querySelectorAll('[data-ev]')];
     items.forEach((el) => { el.hidden = over(el); });
-    const empty = list.parentElement.querySelector('[data-ev-next-empty]');
-    if (empty) empty.hidden = items.some((el) => !el.hidden);
+    if (items.length && items.every((el) => el.hidden)) noDates(list);
   });
   const up = document.querySelector('[data-ev-upcoming]');
   const past = document.querySelector('[data-ev-past]');
@@ -285,8 +350,7 @@
       [...past.children].sort((a, b) => b.dataset.evStart - a.dataset.evStart).forEach((el) => past.append(el));
       const h = document.querySelector('[data-ev-past-h]');
       if (h) h.hidden = false;
-      const empty = document.querySelector('[data-ev-empty]');
-      if (empty) empty.hidden = up.children.length > 0;
+      if (!up.children.length) noDates(up);
     }
   }
   document.querySelectorAll('[data-ev-local]').forEach((el) => {

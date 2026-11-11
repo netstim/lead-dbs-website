@@ -7,10 +7,11 @@
 //   a quarter of a screen of the window, so a visitor who never scrolls down does not load them, on a
 //   desktop either (where the section starts just under the first screen). The set is chosen by the
 //   picture's width in CSS pixels, not device pixels: the small set (720 px wide) wherever the picture
-//   is drawn 900 CSS px wide or less, which is every screen up to 1920 px wide, at any pixel density
-//   (about 1.4 MB instead of 3.1 MB on a retina laptop); while the frames move, the difference does not
-//   show, and at rest the sharp still is the picture. On a phone only every third frame of it is loaded
-//   (40 instead of 120, about 0.45 MB). Visitors who ask to save data keep the still.
+//   is drawn 900 CSS px wide or less, which is every screen up to 1920 px wide, at any pixel density;
+//   while the frames move, the difference does not show, and at rest the sharp still is the picture.
+//   Only every second frame is loaded (60 of 120, about 0.7 MB), every third on a phone (40, about
+//   0.45 MB); between two loaded frames the next one is blended in by scroll position, so the motion
+//   stays smooth. Visitors who ask to save data keep the still.
 // - The canvas lies exactly over the still, in a box of fixed aspect ratio: nothing on the page moves.
 (() => {
   const fig = document.querySelector('[data-insertion]');
@@ -27,10 +28,11 @@
     const small = fig.dataset.listSmall && stage.clientWidth <= 900;
     const base = small ? fig.dataset.framesSmall : fig.dataset.frames;
     let names = (small ? fig.dataset.listSmall : fig.dataset.list).split(',').filter(Boolean).sort();
-    // a phone: every third frame, always ending on the last one (the leads in place)
-    if (window.innerWidth < 640 && names.length > 60) {
+    // every second frame (every third on a phone), always ending on the last one (the leads in place)
+    const step = window.innerWidth < 640 ? 3 : 2;
+    if (names.length > 60) {
       const last = names[names.length - 1];
-      names = names.filter((n, i) => i % 3 === 0);
+      names = names.filter((n, i) => i % step === 0);
       if (names[names.length - 1] !== last) names.push(last);
     }
     return names.map((n) => base + n);
@@ -45,16 +47,25 @@
     const start = vh * 0.95, end = vh * 0.4 - r.height / 2;
     return Math.min(1, Math.max(0, (start - r.top) / (start - end)));
   };
+  // the position between two loaded frames, in sixteenths: frame i, with frame i + 1 blended over it
   const draw = () => {
     queued = false;
     if (!live) return;
-    const i = Math.round(progress() * (frames.length - 1));
-    if (i === shown) return;
-    shown = i;
+    const pos = Math.round(progress() * (frames.length - 1) * 16) / 16;
+    if (pos === shown) return;
+    shown = pos;
+    const i = Math.floor(pos), t = pos - i;
     // at rest the sharper still shows (the last frame is the same picture, compressed harder)
-    const rest = i === frames.length - 1;
+    const rest = i >= frames.length - 1;
     fig.classList.toggle('is-rest', rest);
-    if (!rest) ctx.drawImage(frames[i], 0, 0, canvas.width, canvas.height);
+    if (rest) return;
+    ctx.globalAlpha = 1;
+    ctx.drawImage(frames[i], 0, 0, canvas.width, canvas.height);
+    if (t > 0) {
+      ctx.globalAlpha = t;
+      ctx.drawImage(frames[i + 1], 0, 0, canvas.width, canvas.height);
+      ctx.globalAlpha = 1;
+    }
   };
   const queue = () => { if (!queued) { queued = true; requestAnimationFrame(draw); } };
 
