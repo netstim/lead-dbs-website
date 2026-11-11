@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{{- /* The redirect page Hugo writes for every old address in a page's aliases: it sends the browser on
+       at once and keeps the old address out of search engines. The old WordPress feeds (/feed/,
+       /news/feed/) redirect to the news page, which names its RSS feed, so feed readers find it.
+       An alias of a page that itself only forwards (layout: redirect) goes straight to that page's
+       target, so no visitor is sent on twice. */}}
+{{- $href := .Permalink }}{{ $name := .Page.LinkTitle -}}
+{{- with .Page.Params.redirect }}{{ $u := urls.Parse . }}{{ with site.GetPage $u.Path }}{{ $name = .LinkTitle }}{{ $href = .Permalink }}{{ with $u.Fragment }}{{ $href = printf "%s#%s" $href . }}{{ end }}{{ end }}{{ end }}
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Moved to {{ $name }}</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="{{ $href }}">
+{{- if eq .Page.Section "news" }}{{ with .Page.OutputFormats.Get "rss" }}
+<link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="Lead-DBS news">
+{{- end }}{{ end }}
+<meta http-equiv="refresh" content="0; url={{ $href }}">
+</head>
+<body>
+<p>This page has moved to <a href="{{ $href }}">{{ $name }}</a>.</p>
+</body>
+</html>

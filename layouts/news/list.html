@@ -3,28 +3,31 @@
   {{ partial "page-head.html" . }}
   <div class="wrap doc-layout">
     <div class="prose news-list">
-      {{ .Content }}
-      {{ $paginator := .Paginate .Pages.ByDate.Reverse }}
+      {{ partial "nobreak-html.html" .Content }}
+      {{- /* the default order (newest first); the page title in head.html reads the same paginator */}}
+      {{ $paginator := .Paginator }}
       {{ range $paginator.Pages }}
       {{ $page := . }}
       <article class="post-summary">
         <time class="post-summary__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
         <div class="post-summary__body">
-          <h2 class="post-summary__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-          <p>{{ .Summary | plainify | htmlUnescape | truncate 220 }}</p>
+          <h2 class="post-summary__title"><a href="{{ .RelPermalink }}">{{ partial "nobreak-html.html" (.Title | htmlEscape) }}</a></h2>
+          <p>{{ partial "nobreak-html.html" (.Summary | replaceRE ` ?\(open the full-size image\)` "" | plainify | htmlUnescape | truncate 220 | htmlEscape) }}</p>
         </div>
-        {{- /* image: the teaser (a file of the post). It is cut to a 480×300 strip unless the post
-             sets image_whole: true (a flyer or poster), which shows it whole. */}}
+        {{- /* the picture: the post's teaser (front matter image) fitted whole into one 16:10 box on a light
+             mat, so covers and slides are never cut; a post without one gets its year in that box, so the
+             list keeps one rhythm. Hidden from screen readers: the title link next to it goes to the same post. */}}
         {{ with .Resources.GetMatch (.Params.image | default "__none__") }}
-          {{ $whole := $page.Params.image_whole }}
-          {{ $thumb := cond $whole (.Resize "400x webp q80") (.Fill "480x300 Center webp q78") }}
-          <a class="post-summary__thumb m-zoom{{ if $whole }} post-summary__thumb--whole{{ end }}" href="{{ $page.RelPermalink }}" tabindex="-1" aria-hidden="true"><img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="" loading="lazy" decoding="async"></a>
+          {{ $thumb := .Fit "480x300 webp q80" }}
+          <a class="post-summary__thumb post-thumb" href="{{ $page.RelPermalink }}" tabindex="-1" aria-hidden="true"><img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="" loading="lazy" decoding="async"></a>
+        {{ else }}
+          <a class="post-summary__thumb post-thumb post-thumb--text" href="{{ $page.RelPermalink }}" tabindex="-1" aria-hidden="true"><span>{{ $page.Date.Format "2006" }}</span></a>
         {{ end }}
       </article>
       {{ end }}
       {{ partial "pagination.html" $paginator }}
     </div>
-    <aside class="sidebar" aria-label="Release and quick links">{{ partial "sidebar.html" . }}</aside>
+    <aside class="sidebar" aria-label="In this section">{{ partial "sidebar.html" . }}</aside>
   </div>
 </main>
 {{ end }}

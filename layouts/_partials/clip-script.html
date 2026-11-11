@@ -1,0 +1,14 @@
+{{- /* The script of the silent clips on a page (shortcodes clip and atlas-group), printed once per page:
+       plays a clip while it is in view, unless the visitor asks for reduced motion. Argument: the page. */ -}}
+{{- if not (.Store.Get "clip-script") }}{{ .Store.Set "clip-script" true }}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const clips = document.querySelectorAll('video[data-clip]');
+  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (e.isIntersecting) e.target.play().catch(() => {}); else e.target.pause();
+  }), { threshold: 0.25 });
+  clips.forEach((v) => { v.controls = false; io.observe(v); });
+});
+</script>
+{{- end }}

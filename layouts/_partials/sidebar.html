@@ -1,24 +1,78 @@
-{{- /* The sidebar of inner pages: the current release (data/release.yaml), the section's own pages
-     where it has some, the next event (data/events.yaml), quick links (data/links.yaml) and the newsletter.
-     Argument: the page, or dict "page" "toc" (bool). On a long page with a table of contents the sidebar
-     holds the release card and the contents, which stay in view while the text scrolls (desktop). */ -}}
+{{- /* The sidebar of inner pages, the same on every page of a menu group (one model):
+       1. the group's pages from the main menu (partial nav-place.html, so it agrees with the header and
+          the breadcrumb), with the pages under the current entry opened below it, and the pages placed
+          under the group's own page by front matter menuParent; the download page shows "Docs and help";
+       2. on a long page its table of contents, which stays in view while the text scrolls (desktop);
+          on a short page the next event (data/events.yaml), quick links (data/links.yaml) and the
+          newsletter;
+       3. the current release (data/release.yaml) only on the groups' hub pages, not on the download page.
+     Argument: the page, or dict "page" "toc" (bool). */ -}}
 {{ $page := . }}{{ $toc := false }}
 {{ if reflect.IsMap . }}{{ $page = .page }}{{ $toc = .toc }}{{ end }}
 {{ $r := hugo.Data.release }}
 {{ $date := time.AsTime $r.date }}
 {{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Name "Download" }}{{ $dl = .URL }}{{ end }}{{ end }}
-{{ $downloadPages := slice $dl }}
-{{ range slice "/download-lead-dbs" "/downloadfocus" }}{{ with site.GetPage . }}{{ $downloadPages = $downloadPages | append .RelPermalink }}{{ end }}{{ end }}
-{{ $onDownload := in $downloadPages $page.RelPermalink }}
-{{ $onContact := eq $page.RelPermalink (site.GetPage "/contact").RelPermalink }}
-{{ if not (or $onDownload $onContact) }}
+{{ $onDownload := false }}{{ with site.GetPage "/download" }}{{ $onDownload = eq $page .  }}{{ end }}
+{{ $place := partial "nav-place.html" $page }}
+{{ $group := $place.group }}
+{{ $isHub := and $group (eq $group.Page $page) }}
+{{- /* the download page is the header's button, not a group: it shows the "Docs and help" pages, where a
+       visitor goes next (first steps, the manual) */}}
+{{ if and $onDownload $group (not $group.HasChildren) }}{{ range site.Menus.main }}{{ if eq .Identifier "docs" }}{{ $group = . }}{{ end }}{{ end }}{{ end }}
+
+{{ if and $group $group.HasChildren }}
+{{ $branch := slice }}{{ range $place.items }}{{ $branch = $branch | append . }}{{ end }}
+<nav class="side-block side-section" aria-label="{{ $group.Name }}: pages">
+  <p class="t-label muted"><a href="{{ $group.URL }}"{{ if $isHub }} aria-current="page"{{ end }}>{{ $group.Name }}</a></p>
+  <ul>
+    {{ range $group.Children }}
+    {{ $e := . }}
+    {{ $here := and .Page (eq .Page $page) }}
+    {{ $open := in $branch $e }}
+    <li{{ if $open }} class="is-open"{{ end }}>
+      <a href="{{ .URL }}"{{ if $here }} aria-current="page"{{ end }}>{{ partial "menu-label.html" . }}</a>
+      {{ if $open }}
+        {{ $subs := slice }}
+        {{ if .HasChildren }}{{ range .Children }}{{ $subs = $subs | append (dict "url" .URL "name" .Name "page" .Page) }}{{ end }}
+        {{ else }}{{ with .Page }}{{ $ep := . }}
+          {{ range .Pages.ByWeight }}{{ $subs = $subs | append (dict "url" .RelPermalink "name" .LinkTitle "page" .) }}{{ end }}
+          {{ range site.Pages }}{{ $mp := . }}{{ with .Params.menuParent }}{{ if eq (site.GetPage .) $ep }}{{ $subs = $subs | append (dict "url" $mp.RelPermalink "name" $mp.LinkTitle "page" $mp) }}{{ end }}{{ end }}{{ end }}
+        {{ end }}{{ end }}
+        {{ with $subs }}
+        <ul>
+          {{ range . }}
+          {{ $sp := .page }}
+          {{ $subHere := and $sp (eq $sp $page) }}
+          {{ $subOpen := and $sp (or $subHere ($page.IsDescendant $sp) (in $place.trail $sp)) }}
+          <li><a href="{{ .url }}"{{ if $subHere }} aria-current="page"{{ end }}>{{ partial "nobreak-html.html" (.name | htmlEscape) }}</a>
+            {{ if and $subOpen $sp.IsSection (gt (len $sp.Pages) 0) }}
+            <ul>{{ range $sp.Pages.ByWeight }}<li><a href="{{ .RelPermalink }}"{{ if eq . $page }} aria-current="page"{{ end }}>{{ partial "nobreak-html.html" (.LinkTitle | htmlEscape) }}</a></li>{{ end }}</ul>
+            {{ end }}
+          </li>
+          {{ end }}
+        </ul>
+        {{ end }}
+      {{ end }}
+    </li>
+    {{ end }}
+    {{- /* pages placed directly under the group's own page (front matter menuParent), such as a
+           background article: after the group's entries */}}
+    {{ with $group.Page }}{{ $gp := . }}
+    {{ range site.Pages }}{{ $mp := . }}{{ with .Params.menuParent }}{{ if eq (site.GetPage .) $gp }}
+    <li><a href="{{ $mp.RelPermalink }}"{{ if eq $mp $page }} aria-current="page"{{ end }}>{{ partial "nobreak-html.html" ($mp.LinkTitle | htmlEscape) }}</a></li>
+    {{ end }}{{ end }}{{ end }}
+    {{ end }}
+  </ul>
+</nav>
+{{ end }}
+
+{{ if and $isHub (not $onDownload) }}
 <section class="side-card release-card" aria-labelledby="side-release">
   <p class="t-label muted" id="side-release">Current release</p>
   <p class="release-card__version">Lead-DBS {{ $r.version }}</p>
   <p class="t-small muted">Released {{ $date | time.Format "2 January 2006" }} · MATLAB {{ $r.matlab }} or later</p>
   <a class="btn btn--primary" href="{{ $dl }}">Download Lead-DBS</a>
   {{ with $r.notes }}<a class="link t-small" href="{{ partial "resolve-url.html" (dict "url" . "page" $page) }}">The {{ $r.version }} announcement</a>{{ end }}
-  {{ with $r.changes_url }}<a class="link t-small" href="{{ . }}">Full list of changes on GitHub</a>{{ end }}
 </section>
 {{ end }}
 
@@ -28,18 +82,10 @@
 
 {{ if ne $page.Section "events" }}{{ partial "events/next.html" (dict "variant" "side" "page" $page) }}{{ end }}
 
-{{ $top := $page.FirstSection }}
-{{ if and (not $page.IsHome) (ne $top.Section "news") (ne $top.Section "search") $top.IsSection (gt (len $top.Pages) 0) }}
-<nav class="side-block subnav" aria-label="{{ $top.LinkTitle }} pages">
-  <p class="t-label muted"><a href="{{ $top.RelPermalink }}"{{ if eq $top $page }} aria-current="page"{{ end }}>{{ $top.LinkTitle }}</a></p>
-  {{ partial "subnav.html" (dict "section" $top "page" $page "depth" 0) }}
-</nav>
-{{ end }}
-
 <nav class="side-block quick-links" aria-labelledby="side-quick">
   <p class="t-label muted" id="side-quick">Quick links</p>
   <ul>
-    {{ range hugo.Data.links.quick }}<li><a href="{{ partial "resolve-url.html" (dict "url" .url "page" $page) }}">{{ .name }}</a></li>{{ end }}
+    {{ range hugo.Data.links.quick }}<li><a href="{{ partial "resolve-url.html" (dict "url" .url "page" $page) }}">{{ partial "nobreak-html.html" (.name | htmlEscape) }}</a></li>{{ end }}
   </ul>
 </nav>
 

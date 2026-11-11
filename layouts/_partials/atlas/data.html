@@ -1,0 +1,16 @@
+{{- /* The atlas catalogue of a page: its own file atlases.yaml (next to index.md), with "groups" (id,
+       title, intro) and "atlases" (one entry each; see README, Atlas catalogues). Returns the parsed
+       data, or nothing when the page has no such file. Checks that every atlas names a known group
+       and has an id, a name and alt text for its picture. */ -}}
+{{- $out := dict -}}
+{{- with .Resources.Get "atlases.yaml" -}}
+  {{- $d := . | transform.Unmarshal -}}
+  {{- $ids := slice }}{{ range $d.groups }}{{ $ids = $ids | append .id }}{{ end -}}
+  {{- range $d.atlases -}}
+    {{- if not (and .id .name) }}{{ errorf "%s: an atlas needs an id and a name" $.File.Path }}{{ end -}}
+    {{- if not (in $ids .group) }}{{ errorf "%s: atlas %q names an unknown group %q" $.File.Path .id .group }}{{ end -}}
+    {{- if and (or .image .clip) (not .alt) }}{{ errorf "%s: atlas %q: its picture needs alt text" $.File.Path .id }}{{ end -}}
+  {{- end -}}
+  {{- $out = $d -}}
+{{- end -}}
+{{- return $out -}}

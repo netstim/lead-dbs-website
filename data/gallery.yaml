@@ -98,7 +98,7 @@ figures:
 
   - file: "rajamani2024_fig7.png"
     authors: "Rajamani N et al."
-    title: "Deep brain stimulation of symptom-specific networks in Parkinson's disease"
+    title: "Deep brain stimulation of symptom-specific networks in Parkinson’s disease"
     journal: "Nature Communications"
     year: 2024
     figure: "Figure 7"
@@ -136,7 +136,7 @@ figures:
 
   - file: "rios2022_fig6_panela.png"
     authors: "Ríos AS et al."
-    title: "Optimal deep brain stimulation sites and networks for stimulation of the fornix in Alzheimer's disease"
+    title: "Optimal deep brain stimulation sites and networks for stimulation of the fornix in Alzheimer’s disease"
     journal: "Nature Communications"
     year: 2022
     figure: "Figure 6"

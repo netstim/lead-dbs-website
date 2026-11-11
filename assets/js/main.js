@@ -46,6 +46,22 @@
     const reset = () => item.classList.remove('is-dismissed');
     item.addEventListener('focusout', (e) => { if (!item.contains(e.relatedTarget)) reset(); });
     item.addEventListener('pointerleave', reset);
+    // the word says whether its panel is open (CSS opens it on hover and focus): aria-expanded follows,
+    // on a desktop only; in the sheet the chevron button carries it
+    let wait = 0;
+    const state = () => {
+      if (!wide.matches) { word.removeAttribute('aria-expanded'); return; }
+      const open = !item.classList.contains('is-dismissed') && (item.matches(':focus-within') || item.matches(':hover'));
+      word.setAttribute('aria-expanded', String(open));
+    };
+    const later = (ms) => { clearTimeout(wait); wait = setTimeout(state, ms); };
+    item.addEventListener('pointerenter', () => later(160));
+    item.addEventListener('pointerleave', () => later(0));
+    item.addEventListener('focusin', () => later(0));
+    item.addEventListener('focusout', () => later(0));
+    item.addEventListener('keydown', (e) => { if (e.key === 'Escape') later(0); });
+    wide.addEventListener('change', state);
+    state();
   });
   // a desktop panel opens after the pointer has rested 150ms on its word (assets/css/site.css); once one
   // is open, the panels of the other words open at once (.is-browsing) until the pointer leaves the header
@@ -80,10 +96,38 @@
   });
 })();
 
+// ------------------------------------------------------------------ the header over a dark ground
+// While a black ground ([data-nav-dark]: the home page's hero clip; every .page-head) lies under the
+// header, the header takes the black too (.nav.is-dark, assets/css/site.css); past it, the light bar returns.
+// Until this has run, a page that starts on a black ground (body.top-dark) shows the dark header from
+// the first paint; html.nav-ready hands the state to this script, and only then do the colours fade.
+// .nav.is-scrolled: the page is scrolled at all, so the home page's clear header turns solid before
+// any of the hero's words pass under it.
+(() => {
+  const nav = document.querySelector('.nav');
+  if (!nav) return;
+  const grounds = [...document.querySelectorAll('[data-nav-dark], .page-head')];
+  let queued = false;
+  const update = () => {
+    queued = false;
+    const line = nav.getBoundingClientRect().bottom;
+    nav.classList.toggle('is-dark', grounds.some((g) => {
+      const r = g.getBoundingClientRect();
+      return r.height > 0 && r.top < line + 1 && r.bottom > line;
+    }));
+    nav.classList.toggle('is-scrolled', window.scrollY > 0);
+  };
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+  addEventListener('scroll', queue, { passive: true });
+  addEventListener('resize', queue);
+  update();
+  requestAnimationFrame(() => document.documentElement.classList.add('nav-ready'));
+})();
+
 // ------------------------------------------------------------------ the home page's hero: its entrance
 // The page head sets html.hero-wait, which keeps the hero's words hidden and its clip a little larger
 // (assets/css/site.css). Here the title's words rise line by line out of their own lines, then the lead,
-// the buttons and the facts fade up one after another while the clip settles. The hero simply shows under
+// the buttons, the proof line and the facts fade up one after another while the clip settles. The hero simply shows under
 // reduced motion and when the page opens scrolled past it; if this runs late (html.hero-late, set 700ms
 // after the head), the style sheet has already faded it in.
 (() => {
@@ -157,7 +201,7 @@
       [{ transform: 'translateY(calc(100% + .2em))' }, { transform: 'none' }],
       { duration: 700, delay: 80 + i * step, easing: ease, fill: 'both' }))));
     const after = 80 + (lines.length - 1) * step + 220;
-    const rest = [hero.querySelector('.hero__lead'), ...hero.querySelectorAll('.btn-row > *'), hero.querySelector('.home-hero__facts')];
+    const rest = [hero.querySelector('.hero__lead'), ...hero.querySelectorAll('.btn-row > *'), hero.querySelector('.hero__proof'), hero.querySelector('.home-hero__facts')];
     rest.filter(Boolean).forEach((el, k) => anims.push(el.animate(
       [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }],
       { duration: 520, delay: after + Math.min(k, 6) * 60, easing: ease, fill: 'both' })));
@@ -168,7 +212,11 @@
 
 // ------------------------------------------------------------------ the home page's render clip
 // Muted and looping; it starts only when the visitor has not asked for reduced motion or to save data
-// (and not on a slow connection). The round button pauses and plays it; the poster shows otherwise.
+// (and not on a slow connection), and plays only while the hero is on the screen: it starts when the
+// hero comes into view and rests while it is scrolled away. The round button pauses and plays it; a
+// visitor's pause holds until they press play again. The poster shows while it is not playing. The
+// browser picks the encode from the <source> media queries (layouts/home.html). Nothing of the clip
+// beyond its metadata loads before the page has loaded and painted: the poster is the first picture.
 (() => {
   const video = document.querySelector('[data-hero-video]');
   const btn = document.querySelector('[data-hero-pause]');
@@ -182,12 +230,28 @@
     btn.setAttribute('aria-label', playing ? 'Pause the video' : 'Play the video');
     btn.innerHTML = playing ? icons.pause : icons.play;
   };
-  const play = () => video.play().then(() => show(true)).catch(() => show(false));
-  btn.addEventListener('click', () => (video.paused ? play() : (video.pause(), show(false))));
+  let wanted = true, visible = false;
+  const play = () => video.play().then(() => show(true)).catch(() => { wanted = false; show(false); });
+  btn.addEventListener('click', () => {
+    wanted = video.paused;
+    if (wanted) play(); else { video.pause(); show(false); }
+  });
   const c = navigator.connection;
   const slow = c && (c.saveData || /(^|-)(2g|3g)$/.test(c.effectiveType || ''));
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || slow) show(false);
-  else play();
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || slow) { wanted = false; show(false); return; }
+  show(true);
+  const start = () => {
+    if (!('IntersectionObserver' in window)) { if (wanted) play(); return; }
+    new IntersectionObserver((es) => {
+      visible = es.some((e) => e.isIntersecting);
+      if (visible && wanted && video.paused) play();
+      else if (!visible && !video.paused) video.pause();
+    }, { threshold: 0.15 }).observe(video.closest('.home-hero') || video);
+  };
+  // after the load event and the next paint, so the clip never competes with the page's own files
+  const afterPaint = () => requestAnimationFrame(() => setTimeout(start, 0));
+  if (document.readyState === 'complete') afterPaint();
+  else addEventListener('load', afterPaint, { once: true });
 })();
 
 // ------------------------------------------------------------------ events (data/events.yaml)

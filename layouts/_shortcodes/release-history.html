@@ -1,0 +1,29 @@
+{{- /* The table of released versions (data/releases.yaml), newest first: version, date, the
+       announcement, and the changes since the version below it on GitHub. Stops the build if its first
+       row is not the current release of data/release.yaml.
+         {{< release-history >}} */ -}}
+{{- $rows := hugo.Data.releases -}}
+{{- $cur := hugo.Data.release -}}
+{{- if ne (index $rows 0).version $cur.version }}{{ errorf "data/releases.yaml starts with %s, but data/release.yaml says %s is current" (index $rows 0).version $cur.version }}{{ end -}}
+{{- $repo := site.Params.github -}}
+<div class="table-scroll" role="region" aria-label="Release history" tabindex="0">
+<table class="release-table table--stack">
+  <thead><tr><th scope="col">Version</th><th scope="col">Released</th><th scope="col">What changed</th></tr></thead>
+  <tbody>
+  {{- range $i, $r := $rows }}
+    {{- $tag := $r.tag | default (printf "v%s" $r.version) }}
+    {{- $prev := "" }}{{ if lt (add $i 1) (len $rows) }}{{ $p := index $rows (add $i 1) }}{{ $prev = $p.tag | default (printf "v%s" $p.version) }}{{ end }}
+    <tr>
+      <th scope="row">{{ $r.version }}{{ if eq $i 0 }} <span class="release-table__current">current</span>{{ end }}</th>
+      <td data-label="Released"><time datetime="{{ time.Format "2006-01-02" $r.date }}">{{ time.Format "2 January 2006" $r.date }}</time></td>
+      <td data-label="What changed">
+        {{- with $r.summary }}{{ . }}. {{ end -}}
+        {{- with $r.notes }}<a href="{{ partial "resolve-url.html" (dict "url" . "page" $.Page) }}">Announcement</a> · {{ end -}}
+        {{- if $prev }}<a href="{{ $repo }}/compare/{{ $prev }}...{{ $tag }}">Changes since {{ strings.TrimPrefix "v" $prev }}<span class="sr-only"> on GitHub</span></a>{{ else }}<a href="{{ $repo }}/tree/{{ $tag }}">Code of {{ $r.version }}<span class="sr-only"> on GitHub</span></a>{{ end -}}
+      </td>
+    </tr>
+  {{- end }}
+  </tbody>
+</table>
+</div>
+<p class="t-small muted">Older versions (1.x) and every intermediate version are listed among the <a href="{{ $repo }}/tags">tags on GitHub</a>.</p>

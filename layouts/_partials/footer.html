@@ -1,30 +1,40 @@
-{{- /* The footer of every page: the link columns (data/links.yaml and the main menu) and the legal line.
-     The column "Site" (#site-pages) is where the header's menu link leads when script is off. */ -}}
+{{- /* The footer of every page: the main menu's groups in full (hugo.toml [menus.main]; each heading links
+     to the group's page), a "Site" column (#site-pages, where the header's menu link leads when script is
+     off), the lab's links (data/links.yaml: the institute, its podcast and talks), and the legal line,
+     which also carries the research-use statement. Everything sits on the header's container. */ -}}
 {{ $r := hugo.Data.release }}
 <footer class="footer footer--dark ground-inverse" id="site-footer">
   <div class="wrap">
     <div class="closing__links">
-      <div class="grid">
-        <div class="span-4 stack-4">
+      <div class="grid footer__grid">
+        <div class="span-4 stack-4 footer__brand">
           <a class="nav__logo" href="{{ site.Home.RelPermalink }}">{{ partial "logo.html" (dict "h" 48 "lazy" true) }}Lead-DBS</a>
-          <p class="footer__lede">Open-source DBS imaging toolbox, version {{ $r.version }}. For research use only, not for clinical use.</p>
+          <p class="footer__lede">Open-source DBS imaging toolbox, version {{ $r.version }}.</p>
         </div>
-        {{ range hugo.Data.links.footer }}
-        <div class="span-2 footer__col">
-          <h2 class="footer__h">{{ .title }}</h2>
-          <ul>{{ range .links }}<li><a href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .name }}</a></li>{{ end }}</ul>
-        </div>
-        {{ end }}
-        <div class="span-2 footer__col" id="site-pages">
+        {{ range site.Menus.main }}{{ if .HasChildren }}
+        <nav class="span-2 footer__col" aria-label="{{ .Name }}">
+          <h2 class="footer__h"><a href="{{ .URL }}">{{ .Name }}</a></h2>
+          <ul>{{ range .Children }}<li><a href="{{ .URL }}">{{ partial "menu-label.html" . }}</a></li>{{ range .Children }}<li class="footer__sub"><a href="{{ .URL }}">{{ partial "menu-label.html" . }}</a></li>{{ end }}{{ end }}</ul>
+        </nav>
+        {{ end }}{{ end }}
+        <nav class="span-2 footer__col" id="site-pages" aria-label="Site">
           <h2 class="footer__h">Site</h2>
           <ul>
-            {{ range site.Menus.main }}{{ if ne .Name "Home" }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}{{ end }}
+            {{ range site.Menus.main }}{{ if not .HasChildren }}<li><a href="{{ .URL }}">{{ if eq .Name "Download" }}Download Lead-DBS{{ else }}{{ .Name }}{{ end }}</a></li>{{ end }}{{ end }}
+            {{ with site.Params.github }}<li><a href="{{ . }}">Source code on GitHub</a></li><li><a href="{{ . }}/issues">Bug reports</a></li>{{ end }}
+            {{ with site.GetPage "/news" }}{{ with .OutputFormats.Get "rss" }}<li><a href="{{ .RelPermalink }}">News feed (RSS)</a></li>{{ end }}{{ end }}
             {{ with site.GetPage "/search" }}<li><a href="{{ .RelPermalink }}">Search</a></li>{{ end }}
           </ul>
-        </div>
+        </nav>
+        {{ range hugo.Data.links.footer }}
+        <nav class="span-2 footer__col" aria-label="{{ .title }}">
+          <h2 class="footer__h">{{ .title }}</h2>
+          <ul>{{ range .links }}<li><a href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .name }}</a></li>{{ end }}</ul>
+        </nav>
+        {{ end }}
       </div>
       <div class="footer__legal">
-        <span>&copy; {{ now.Year }} Lead-DBS, Institute for Network Stimulation.{{ range site.Menus.footer }} &nbsp; <a href="{{ .URL }}">{{ .Name }}</a>{{ end }} &nbsp; <a href="https://github.com/netstim/lead-dbs-website">Edit this site on GitHub</a></span>
+        <span>&copy; {{ now.Year }} Lead-DBS, Institute for Network Stimulation. For research use only, not for clinical use.{{ range site.Menus.footer }} &nbsp; <a href="{{ .URL }}">{{ .Name }}</a>{{ end }} &nbsp; <a href="https://github.com/netstim/lead-dbs-website">Edit this site on GitHub</a></span>
         <span class="footer__credits">Renders made with BrainDeer from the Lead Tutor dataset (Hart et al.), with the DISTAL atlas (Ewert et al. 2018), the 100 µm 7T ex vivo MRI (Edlow et al. 2019) and the MNI ICBM 2009b template. Product names and logos are trademarks of their owners.</span>
       </div>
     </div>

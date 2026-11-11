@@ -1,23 +1,58 @@
-{{- /* The site search's index (assets/js/search.js): one entry per page, with its title, section,
-       headings and the start of its text. Pages with "search: false" in their front matter, and
-       form-only pages without text, are left out. */ -}}
+{{- /* The site search's index (assets/js/search.js): one entry per page, with its title, the page it sits
+       under (as the breadcrumb names it: partial nav-place.html, the menu's hierarchy), keywords (front
+       matter "keywords"), headings, description and the start of its text; and one entry per atlas of
+       an atlas catalogue (atlases.yaml), pointing at its entry.
+       Left out: pages with "search: false" in their front matter, pages that are not listed anywhere
+       (build list: never, such as the closed forum's page) and redirects. The footer's pages (contact,
+       imprint, privacy) are found by their title only; the manual, on another site, by its menu entry. */ -}}
 {{- $out := slice -}}
+{{- $legal := slice -}}{{- range site.Menus.footer }}{{ with .Page }}{{ $legal = $legal | append .RelPermalink }}{{ end }}{{ end -}}
 {{- range where site.Pages "Kind" "in" (slice "page" "section" "home") -}}
-  {{- if and (ne .Params.search false) (not .Params.private) .Title -}}
-    {{- $text := .Plain | replaceRE ` ?\(open the full-size image\)` "" | replaceRE `(\S)#(\s|$)` "$1$2" | replaceRE `\s+` " " | strings.TrimSpace -}}
+  {{- if and (ne .Params.search false) (not .Params.private) .Title (ne .Params.build.list "never") -}}
+    {{- $isLegal := in $legal .RelPermalink -}}
+    {{- /* a heading and the text after it are kept apart, so a snippet does not read "Motivation The following …" */ -}}
+    {{- $text := .Content | replaceRE `</h[1-6]>` ": " | replaceRE `<span class="sr-only img-zoom__hint">[^<]*</span>` "" | plainify | htmlUnescape -}}
+    {{- $text = $text | replaceRE `(\S)#(\s|$)` "$1$2" | replaceRE `\s+` " " | strings.TrimSpace -}}
     {{- $heads := slice -}}
     {{- range .Fragments.HeadingsMap }}{{ $heads = $heads | append .Title }}{{ end -}}
     {{- $section := "" -}}
-    {{- $top := .FirstSection -}}
-    {{- if eq .Section "news" }}{{ $section = printf "News, %s" (.Date.Format "2006") -}}
-    {{- else if and $top (not $top.IsHome) (ne $top .) }}{{ $section = $top.LinkTitle }}{{ end -}}
+    {{- if and (eq .Section "news") .IsPage }}{{ $section = printf "News, %s" (.Date.Format "2006") -}}
+    {{- else -}}
+      {{- /* the last step of the breadcrumb above the page */ -}}
+      {{- $pg := . }}{{ $place := partial "nav-place.html" . -}}
+      {{- with $place.group }}{{ if ne .Page $pg }}{{ $section = .Name }}{{ end }}{{ end -}}
+      {{- range $place.items }}{{ if ne .Page $pg }}{{ $section = .Name }}{{ end }}{{ end -}}
+      {{- range $place.trail }}{{ $section = .LinkTitle }}{{ end -}}
+    {{- end -}}
     {{- $out = $out | append (dict
         "t" .Title
         "u" .RelPermalink
         "s" $section
+        "k" (delimit (.Params.keywords | default slice) " ")
         "h" (delimit $heads " · ")
         "d" (.Description | default "")
-        "x" (substr $text 0 1600)) -}}
+        "x" (cond $isLegal "" (substr $text 0 1600))) -}}
+    {{- /* an atlas catalogue: each atlas is found by itself and opens at its entry */ -}}
+    {{- $p := . -}}
+    {{- with partial "atlas/data.html" . -}}
+      {{- range .atlases -}}
+        {{- $out = $out | append (dict
+            "t" (printf "%s (%s)" .name .ref)
+            "u" (printf "%s#%s" $p.RelPermalink .id)
+            "s" $p.LinkTitle
+            "k" (printf "atlas %s" (.included | default (cond .preinstalled "preinstalled" "")))
+            "h" ""
+            "d" .covers
+            "x" (substr ((.about | default "") | $p.RenderString | plainify | htmlUnescape | replaceRE `\s+` " ") 0 600)) -}}
+      {{- end -}}
+    {{- end -}}
   {{- end -}}
 {{- end -}}
+{{- /* menu entries that lead to another site (the manual) are results of their own, found by their
+       name, description and front matter keywords in hugo.toml (params.keywords) */ -}}
+{{- range site.Menus.main }}{{ $g := . }}{{ range .Children -}}
+  {{- if strings.HasPrefix .URL "http" -}}
+    {{- $out = $out | append (dict "t" (printf "%s (another site)" .Name) "u" .URL "s" $g.Name "k" (.Params.keywords | default "") "h" "" "d" (.Params.description | default "") "x" "") -}}
+  {{- end -}}
+{{- end }}{{ end -}}
 {{- $out | jsonify -}}

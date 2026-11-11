@@ -15,7 +15,7 @@
 {{- if not $alt }}{{ warnidf "image-alt" "%s: image %q has no alt text" .Page.File.Path .Destination }}{{ end -}}
 {{- $attrs := "" }}{{ $setW := "" -}}
 {{- range $k, $v := .Attributes }}{{ if $v }}{{ if eq $k "width" }}{{ $setW = $v }}{{ else if ne $k "height" }}{{ $attrs = printf "%s %s=%q" $attrs $k (string $v) }}{{ end }}{{ end }}{{ end -}}
-{{- $sizes := "auto, (min-width: 1280px) 900px, (min-width: 1024px) 66vw, 100vw" -}}
+{{- $sizes := "(min-width: 1280px) 900px, (min-width: 1024px) 66vw, 100vw" -}}
 {{- $html := "" }}{{ $full := "" -}}
 {{- $raster := and $res (eq $res.ResourceType "image") (in (slice "jpeg" "png" "webp" "tiff" "bmp") $res.MediaType.SubType) -}}
 {{- if $raster -}}
@@ -26,6 +26,10 @@
   {{- $fb := $res }}{{ if gt $W 1200 }}{{ $fb = $res.Resize "1200x" }}{{ end -}}
   {{- $w := $W }}{{ $h := $H -}}
   {{- with $setW }}{{ $w = int . }}{{ $h = int (math.Round (div (mul (float $H) $w) $W)) }}{{ end -}}
+  {{- /* the width the browser should plan for: the text column, but never more than the picture's own
+         width (a small picture is not blown up). No "auto": the picture's box takes its width from
+         the chosen file, so "auto" would fall back to 300 px for lazy pictures. */ -}}
+  {{- $sizes = printf "(min-width: 1280px) min(900px, %dpx), (min-width: 1024px) min(66vw, %dpx), min(100vw, %dpx)" $w $w $w -}}
   {{- $img := printf `<img src="%s" alt="%s" width="%d" height="%d" sizes="%s" loading="lazy" decoding="async"%s>` $fb.RelPermalink ($alt | htmlEscape) $w $h $sizes $attrs -}}
   {{- $html = printf `<picture><source type="image/webp" srcset="%s" sizes="%s">%s</picture>` (delimit $set ", ") $sizes $img -}}
   {{- if and (gt $W 900) (not $setW) }}{{ $full = $res.RelPermalink }}{{ end -}}

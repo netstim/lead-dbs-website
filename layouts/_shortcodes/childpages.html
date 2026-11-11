@@ -2,15 +2,43 @@
          {{< childpages >}}                         by weight (the order in the menu)
          {{< childpages order="date" >}}            newest first, by each page's date
          {{< childpages order="title" >}}           A to Z
-       include="/path/a, /path/b" adds pages that live elsewhere (sorted in with the rest). */ -}}
-{{- $pages := .Page.Pages -}}
-{{- with .Get "include" }}{{ range split . "," }}{{ with site.GetPage (strings.TrimSpace .) }}{{ $pages = $pages | append . }}{{ end }}{{ end }}{{ end -}}
+       include="/path/a, /path/b" adds pages that live elsewhere (sorted in with the rest).
+       order="include" keeps the order of include= (and lists only those pages).
+       section="/path" lists the pages of that section instead of this page's own.
+       descriptions="true" prints each page's description (front matter) under its title.
+         {{< childpages menu="true" >}}             the entries under this page in the main menu, in menu
+                                                    order, each with its description (a group's hub page)
+         {{< childpages menu="builtfor" >}}         the entries under the menu entry with that identifier
+       In the menu form an entry without children is a card; an entry that leads to another site says so,
+       and an entry that is not a page (the manual, an anchor) takes its line from the menu's
+       params.description. Sub-groups are left out: give them their own heading and line. An entry that
+       points to a section of this same page (Get help on the Docs hub) is left out too. */ -}}
+{{- with .Get "menu" -}}
+{{- $want := . -}}
+{{- $entry := false -}}
+{{- if eq $want "true" }}{{ $entry = (partial "nav-place.html" $.Page).group }}{{ if and $entry (ne $entry.Page $.Page) }}{{ $entry = false }}{{ end -}}
+{{- else }}{{ range site.Menus.main }}{{ if eq .Identifier $want }}{{ $entry = . }}{{ end }}{{ range .Children }}{{ if eq .Identifier $want }}{{ $entry = . }}{{ end }}{{ end }}{{ end }}{{ end -}}
+{{- if not $entry }}{{ errorf "childpages: %s: no menu entry %q for this page" $.Page.File.Path $want }}{{ end -}}
+<ul class="child-pages child-pages--described">
+  {{- range $entry.Children }}{{ if and (not .HasChildren) (not (hasPrefix .URL (printf "%s#" $.Page.RelPermalink))) }}
+  {{- $ext := strings.HasPrefix .URL "http" -}}
+  {{- $text := .Params.description }}{{ if and (not $text) .Page }}{{ $text = .Page.Description }}{{ end -}}
+  <li><a class="card child-page" href="{{ .URL }}"><span class="child-page__body"><span class="child-page__title">{{ partial "menu-label.html" . }}</span>{{ with $text }}<span class="child-page__text">{{ partial "nobreak-html.html" (. | htmlEscape) }}</span>{{ end }}</span><svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a></li>
+  {{- end }}{{ end }}
+</ul>
+{{- else -}}
 {{- $order := .Get "order" | default "weight" -}}
+{{- $pages := cond (eq $order "include") (slice) .Page.Pages -}}
+{{- with .Get "section" }}{{ with site.GetPage . }}{{ $pages = .Pages }}{{ else }}{{ errorf "childpages: no section %q (in %s)" . $.Page.File.Path }}{{ end }}{{ end -}}
+{{- with .Get "include" }}{{ range split . "," }}{{ $p := strings.TrimSpace . }}{{ with site.GetPage $p }}{{ $pages = $pages | append . }}{{ else }}{{ errorf "childpages: no page %q (in %s)" $p $.Page.File.Path }}{{ end }}{{ end }}{{ end -}}
+{{- $desc := eq (.Get "descriptions") "true" -}}
 {{- if eq $order "date" }}{{ $pages = sort $pages "Date" "desc" }}
+{{- else if eq $order "include" }}
 {{- else if eq $order "title" }}{{ $pages = sort $pages "LinkTitle" }}
 {{- else }}{{ $pages = sort $pages "Weight" }}{{ end -}}
-<ul class="child-pages">
+<ul class="child-pages{{ if $desc }} child-pages--described{{ end }}">
   {{ range $pages }}
-  <li><a class="card child-page" href="{{ .RelPermalink }}"><span>{{ .LinkTitle }}</span><svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a></li>
+  <li><a class="card child-page" href="{{ .RelPermalink }}">{{ if $desc }}<span class="child-page__body"><span class="child-page__title">{{ partial "nobreak-html.html" (.LinkTitle | htmlEscape) }}</span>{{ with .Description }}<span class="child-page__text">{{ partial "nobreak-html.html" (. | htmlEscape) }}</span>{{ end }}</span>{{ else }}<span>{{ partial "nobreak-html.html" (.LinkTitle | htmlEscape) }}</span>{{ end }}<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a></li>
   {{ end }}
 </ul>
+{{- end -}}

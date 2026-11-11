@@ -1,0 +1,192 @@
+/* Styles for content building blocks that the site.css does not cover: hub cards with a line of
+   description, the copyable citation box, the "next" line at the end of a page, newer/older links on
+   news posts, inline videos (the clip shortcode) and the footer's column layout. Bundled after
+   site.css by layouts/_partials/head.html. */
+
+/* {{< childpages descriptions="true" >}}: one card per row, title over a line of text */
+.prose .child-pages--described { grid-template-columns: 1fr; }
+.prose .child-pages--described .child-page { align-items: center; padding-block: var(--s-4); }
+.child-page__body { display: grid; gap: 4px; }
+.child-page__title { font-weight: 600; }
+.child-page__text { font-weight: 400; font-size: var(--t-small); line-height: 1.45; color: var(--muted); }
+.prose .child-page:hover .child-page__text { color: var(--muted); }
+
+/* news posts: the newer and older post side by side (stacked on a phone), drawn as .card */
+.post-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: var(--s-3); margin-top: var(--s-7); max-width: var(--measure); }
+.prose a.post-nav__link { text-decoration: none; }
+@media (min-width: 640px) { .post-nav__link--older { text-align: right; } .post-nav__link--older:only-child { grid-column: -2; } }
+.post-nav__label { font-size: var(--t-label); color: var(--muted); }
+.post-nav__title { font-weight: 600; line-height: 1.35; }
+.post-nav__link:hover .post-nav__title { color: var(--action); }
+.post-nav + .post-back { margin-top: var(--s-5); }
+
+/* footer: the name and line on a row of their own, then six link columns (the menu's four groups,
+   "Site" and "Lab") */
+@media (min-width: 1024px) {
+  .footer .grid > .footer__brand { grid-column: 1 / -1; }
+}
+.footer__h a { color: inherit; text-decoration: none; }
+.footer__h a:hover { color: var(--ink); text-decoration: underline; }
+
+/* {{% copybox %}}: a text to copy (the methods paragraph on the citing page) */
+.copy-box { max-width: var(--measure); margin: 0 0 1.4em; padding: var(--s-5); border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); }
+.copy-box__text > :last-child { margin-bottom: 0; }
+.copy-box__text p { font-size: var(--t-small); line-height: 1.6; }
+.prose .copy-box__bar { display: flex; align-items: center; gap: var(--s-4); margin: var(--s-4) 0 0; }
+.copy-box__bar:not(:has(.copy-box__btn:not([hidden]))) { display: none; }
+.copy-box__done { font-size: var(--t-small); color: var(--muted); }
+
+/* {{< clip >}}: a short silent animation in the text */
+.clip { margin: 0 0 1.4em; max-width: var(--measure); }
+.clip video { display: block; max-width: 100%; height: auto; border-radius: var(--r-sm); background: var(--surface); }
+.clip figcaption { margin-top: var(--s-2); font-size: var(--t-small); color: var(--muted); }
+
+/* atlas catalogues (shortcodes atlas-index and atlas-group): a filter and the group links, then every
+   atlas in one pattern: thumbnail, name and paper, what it covers; folded out, its text, "Get it",
+   "Cite", and its picture on the same light mat at the same width */
+.atlas-index { margin: var(--s-6) 0 var(--s-7); }
+.atlas-filter__none[hidden], .atlas-groups li[hidden], [data-atlas-entry][hidden], .prose [data-atlas-group][hidden] { display: none; }
+.prose .atlas-groups ul { display: flex; flex-wrap: wrap; gap: var(--s-2); margin: 0; padding: 0; list-style: none; max-width: none; }
+.prose .atlas-groups li { margin: 0; }
+.prose .atlas-groups a { display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; padding: 0 var(--s-3); border: 1px solid var(--line-strong); border-radius: 999px; color: var(--ink); font-size: var(--t-small); text-decoration: none !important; }
+.prose .atlas-groups a:hover { border-color: var(--ink); }
+.atlas-groups__n { color: var(--muted); }
+.atlas-filter { display: grid; gap: var(--s-2); max-width: 30rem; margin-bottom: var(--s-4); }
+.atlas-filter[hidden] { display: none; }
+.atlas-filter label { font-weight: 600; }
+.atlas-filter input { font: inherit; padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: var(--r-sm); background: var(--bg); color: var(--ink); }
+.atlas-filter input:focus-visible { outline: 2px solid var(--action); outline-offset: 1px; }
+.prose .atlas-filter__count { margin: 0; min-height: 1.4em; font-size: var(--t-small); color: var(--muted); }
+.prose .atlas-list { max-width: none; }
+.atlas { padding: var(--s-4) 0; border-top: 1px solid var(--line); scroll-margin-top: 90px; }
+.prose .atlas h3 { margin: 0 0 var(--s-1); scroll-margin-top: 90px; }
+/* the entry's head: a small thumbnail, the name, what it covers; the rest folds out below */
+.atlas__head { display: flex; align-items: flex-start; gap: var(--s-4); }
+.atlas__title { min-width: 0; flex: 1; }
+.atlas__thumb { flex: none; display: grid; place-items: center; width: 72px; height: 72px; padding: 4px; border: 1px solid var(--line); border-radius: var(--r-sm); background: #fff; }
+.atlas__thumb img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+@media (min-width: 768px) { .atlas__thumb { width: 96px; height: 96px; } }
+.prose .atlas .atlas__meta { margin-bottom: 0; }
+.atlas__details { margin-top: var(--s-2); }
+.atlas__details > summary { display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; cursor: pointer; color: var(--action); font-size: var(--t-small); font-weight: 600; list-style: none; }
+.atlas__details > summary::-webkit-details-marker { display: none; }
+.atlas__details > summary::before { content: "+"; display: inline-block; width: 1em; font-weight: 700; text-align: center; }
+.atlas__details[open] > summary::before { content: "−"; }
+.atlas__details[open] > .atlas__body { padding-top: var(--s-3); }
+.atlas__ref { font-weight: 400; color: var(--muted); }
+.prose .atlas__meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); margin: 0 0 var(--s-4); font-size: var(--t-small); color: var(--muted); }
+.atlas__tag { padding: 2px 8px; border-radius: 999px; background: var(--surface); color: var(--ink); font-size: var(--t-label); font-weight: 600; }
+.atlas__body { display: grid; gap: var(--s-4) var(--s-5); }
+.atlas__about { max-width: var(--measure); }
+.atlas__about:empty { display: none; }
+.atlas__about > :last-child, .atlas__refs > :last-child { margin-bottom: 0; }
+.prose .atlas__refs > .atlas__label:first-child { margin-top: 0; }
+@media (min-width: 768px) {
+  .atlas__body--fig { grid-template-columns: minmax(0, 1fr) 240px; grid-template-areas: "about about" "refs fig"; }
+  .atlas__body--fig .atlas__about { grid-area: about; }
+  .atlas__body--fig .atlas__refs { grid-area: refs; }
+  .atlas__body--fig .atlas__fig { grid-area: fig; align-self: start; }
+}
+.prose .atlas__label { margin: var(--s-4) 0 var(--s-1); font-size: var(--t-small); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.prose .atlas__cite { font-size: var(--t-small); line-height: 1.55; color: var(--muted); }
+.prose .atlas__cite li { overflow-wrap: anywhere; }
+.prose .atlas__cite li + li { margin-top: var(--s-2); }
+.prose .atlas__fig { margin: 0; max-width: none; }
+.atlas__mat { display: grid; place-items: center; aspect-ratio: 4 / 3; padding: var(--s-3); border: 1px solid var(--line); border-radius: var(--r-md); background: #fff; }
+.atlas__mat :is(img, video) { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+.atlas__mat picture, .atlas__zoom { display: contents; }
+.prose .atlas__fig figcaption { margin-top: var(--s-2); font-size: var(--t-small); color: var(--muted); }
+.prose .atlas__more { margin-top: var(--s-3); }
+.prose .atlas-list__back { margin: var(--s-4) 0 0; font-size: var(--t-small); }
+
+/* the download page: the current release with one main button, the other servers as outline buttons */
+.dl-release { margin: 0 0 var(--s-6); padding: var(--s-5); border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); max-width: none; }
+.prose .dl-release__meta { margin: 0 0 var(--s-4); font-size: var(--t-small); color: var(--muted); }
+.prose .dl-release__main { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-4); margin: 0; }
+.prose .dl-release__btn { min-height: 56px; padding-inline: var(--s-6); gap: var(--s-3); font-size: 18px; text-decoration: none; }
+.prose .dl-release__btn::after { content: none; }
+.dl-release__via { font-size: var(--t-small); color: var(--muted); }
+.prose .dl-release__alt-label { margin: var(--s-5) 0 var(--s-2); font-size: var(--t-small); }
+.prose .dl-alt { display: flex; flex-wrap: wrap; gap: var(--s-2); list-style: none; padding: 0; margin: 0; }
+.prose .dl-alt li { margin: 0; }
+.prose .dl-alt .btn { min-height: 44px; text-decoration: none; }
+.prose .dl-alt .btn::after { content: none; }
+@media (max-width: 639px) { .prose .dl-release__btn { width: 100%; justify-content: center; } }
+.prose .download-grid--secondary .download-btn { min-height: 48px; }
+/* release history */
+.prose .release-table th[scope="row"] { white-space: nowrap; background: none; }
+.prose .release-table td:nth-child(2) { white-space: nowrap; }
+.release-table__current { margin-left: var(--s-1); padding: 1px 8px; border-radius: 999px; background: var(--surface); font-size: var(--t-label); font-weight: 600; }
+/* an outline button for the second choice next to a filled one (other servers, standalone builds) */
+.btn--outline { background: var(--bg); color: var(--ink); border-color: var(--line-strong); text-decoration: none; }
+.btn--outline:hover { border-color: var(--ink); }
+
+/* a link to another site in the menus and the sidebar: a small arrow after the label */
+.ext-mark { display: inline-block; margin-left: 0.25em; font-size: 0.8em; color: var(--muted); }
+.footer__sub a { padding-left: var(--s-4); }
+
+/* news list: every teaser fitted whole into the same 16:10 box on a light mat; a post without a picture
+   shows its year there instead */
+.post-thumb { display: grid; grid-template: 100% / 100%; place-items: center; padding: var(--s-2); border: 1px solid var(--line); background: #fff; }
+.post-thumb img { width: auto; max-width: 100%; height: auto; max-height: 100%; object-fit: contain; }
+.post-summary__thumb.post-thumb img { width: auto; height: auto; }
+.post-thumb--text { background: var(--surface); border-color: transparent; }
+.post-thumb--text span { font: var(--display-weight, 600) 40px/1 var(--font-display, inherit); letter-spacing: -0.02em; color: var(--muted); }
+
+/* a video before it is started: the still saved next to the page (video-<id>.jpg) under the play button,
+   darkened at the bottom left so the title stays readable */
+.video-embed__poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; margin: 0; border-radius: 0; }
+.video-embed--poster .video-embed__start { align-items: flex-end; background: linear-gradient(to top, rgb(0 0 0 / .78), rgb(0 0 0 / .25) 55%, rgb(0 0 0 / .05)); }
+.prose .download-grid--secondary li { flex: 0 1 auto; }
+.prose .download-grid--secondary .download-btn { width: auto; }
+.prose .download-grid--secondary .download-btn::after { content: none; }
+@media (max-width: 639px) { .prose .download-grid--secondary li { flex-basis: 100%; } .prose .download-grid--secondary .download-btn { width: 100%; } }
+
+/* the sidebar's list of a group's pages: the pages under the open entry, indented */
+.side-section ul ul { padding-left: var(--s-4); margin: 2px 0 4px; }
+.side-section ul ul a { font-size: 14px; }
+
+/* a scrolling table holds its screen-reader-only labels (absolutely positioned) inside its own box,
+   so they cannot widen the page on a phone */
+.table-scroll { position: relative; }
+
+/* {{< quote >}}: a typed quotation from a paper, in the home page's quote style (a rule, the words,
+   the source in small type) */
+.prose .cite-quote { max-width: var(--measure); margin: 0 0 var(--s-6); padding-top: var(--s-4); border-top: 2px solid var(--action); }
+.prose .cite-quote blockquote { margin: 0; padding: 0; border: 0; background: none; }
+.prose .cite-quote blockquote p { margin: 0; font-size: 19px; line-height: 1.55; color: var(--ink); text-wrap: pretty; }
+.prose .cite-quote figcaption { margin-top: var(--s-3); font-size: var(--t-small); line-height: 1.5; color: var(--muted); }
+
+/* {{< chapters >}}: a video's chapters, the time on the left in figures of equal width */
+.chapters { margin: 0 0 1.4em; max-width: var(--measure); }
+.prose .chapters__h { margin: 0 0 var(--s-2); font-size: var(--t-small); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.prose .chapters__list { list-style: none; padding: 0; margin: 0; font-size: var(--t-small); line-height: 1.45; }
+.prose .chapters__list li { display: grid; grid-template-columns: 4.2em minmax(0, 1fr); gap: var(--s-3); margin: 0; padding: 5px 0; border-top: 1px solid var(--line); }
+.chapters__t { font-variant-numeric: tabular-nums; color: var(--muted); text-align: right; }
+@media (min-width: 900px) { .prose .chapters__list { columns: 2; column-gap: var(--s-6); } .prose .chapters__list li { break-inside: avoid; } }
+
+/* a Markdown table marked {.table--stack}: on a phone each row is a block, each cell under its column's
+   name, so nothing scrolls sideways (the normative connectomes, the release history) */
+@media (max-width: 639px) {
+  .table-scroll:has(> .table--stack) { overflow: visible; border: 0; }
+  .prose .table--stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .prose .table--stack, .prose .table--stack tbody, .prose .table--stack tr, .prose .table--stack td { display: block; }
+  .prose .table--stack tr { padding: var(--s-3) 0; border-top: 1px solid var(--line); }
+  .prose .table--stack td { padding: 2px 0; border: 0; }
+  .prose .table--stack td:first-child { font-weight: 600; }
+  .prose .table--stack td:not(:first-child)::before { content: attr(data-label) ": "; color: var(--muted); font-size: var(--t-small); }
+  /* a row heading (the release history's version) is the block's first line */
+  .prose .table--stack th[scope="row"] { display: block; padding: 0; border: 0; }
+  .prose .release-table.table--stack td:nth-child(2) { white-space: normal; }
+}
+
+/* <details class="more">: a long list or a long entry folded away under one line, opened on demand */
+.prose details.more { max-width: var(--measure); margin: 0 0 var(--s-5); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.prose details.more > summary { display: flex; align-items: center; gap: var(--s-2); min-height: 44px; padding: var(--s-2) 0; cursor: pointer; font-weight: 600; list-style: none; }
+.prose details.more > summary::-webkit-details-marker { display: none; }
+.prose details.more > summary::before { content: "+"; display: inline-block; width: 1.2em; color: var(--action); font-weight: 700; text-align: center; }
+.prose details.more[open] > summary::before { content: "−"; }
+.prose details.more > :not(summary):last-child { margin-bottom: var(--s-4); }
+/* the "About, get it, cite" line sits under the name, beside the thumbnail's column */
+.atlas__head:has(.atlas__thumb) + .atlas__details > summary { margin-left: calc(72px + var(--s-4)); }
+@media (min-width: 768px) { .atlas__head:has(.atlas__thumb) + .atlas__details > summary { margin-left: calc(96px + var(--s-4)); margin-top: calc(-1 * var(--s-6)); } }

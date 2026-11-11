@@ -1,12 +1,14 @@
 <!doctype html>
 {{- /* Styles: assets/css/base.css and assets/css/site.css, bundled in head.html (see README, Design). Font: Open Sans,
      self-hosted. Sections take the height of their content. The one scroll-linked motion is the electrode
-     insertion on the home page. The research-use statement is a short line (hero facts, footer, about, download). */}}
+     insertion on the home page. The research-use statement is a short line (hero facts, footer, about, download).
+     body.top-dark: every page starts on a black ground (the home page's hero, an inner page's head), so
+     the header is dark from the first paint (see "header" in site.css). */}}
 <html lang="{{ site.Language.Locale }}"{{ if site.Params.preview }} class="is-preview"{{ end }}>
 <head>
   {{ partial "head.html" . }}
 </head>
-<body class="kind-{{ .Kind }}{{ with .Section }} section-{{ . }}{{ end }}">
+<body class="kind-{{ .Kind }}{{ with .Section }} section-{{ . }}{{ end }} top-dark">
   {{ partial "header.html" . }}
   {{ block "main" . }}{{ end }}
   {{ partial "footer.html" . }}

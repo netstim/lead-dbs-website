@@ -1,0 +1,68 @@
+{{- /* Structured data (JSON-LD) for search engines: the software on the home and download pages, the
+       upcoming events (data/events.yaml) on /events/, and an article for each news post. */ -}}
+{{- $r := hugo.Data.release -}}
+{{- $org := dict "@type" "Organization" "name" "Institute for Network Stimulation, University Hospital Cologne" "url" "https://www.netstim.org" -}}
+{{- $logo := "" }}{{ with resources.Get "logo/logo.png" }}{{ $logo = .Permalink }}{{ end -}}
+{{- $dl := "" }}{{ with site.GetPage "/download" }}{{ $dl = .Permalink }}{{ end -}}
+{{- $out := slice -}}
+
+{{- if or .IsHome (eq .RelPermalink (site.GetPage "/download").RelPermalink) -}}
+  {{- $out = $out | append (dict
+      "@context" "https://schema.org"
+      "@type" "SoftwareApplication"
+      "name" "Lead-DBS"
+      "description" (site.Home.Description | default site.Params.description)
+      "url" site.Home.Permalink
+      "applicationCategory" "Scientific research software"
+      "operatingSystem" "Windows, macOS, Linux"
+      "softwareVersion" $r.version
+      "datePublished" (time.Format "2006-01-02" $r.date)
+      "softwareRequirements" (printf "MATLAB %s or later, %s" $r.matlab $r.needs)
+      "license" $r.licence_url
+      "downloadUrl" $dl
+      "codeRepository" site.Params.github
+      "isAccessibleForFree" true
+      "offers" (dict "@type" "Offer" "price" "0" "priceCurrency" "EUR")
+      "publisher" $org) -}}
+{{- end -}}
+
+{{- if and (eq .Section "events") .IsSection -}}
+  {{- $page := . -}}
+  {{- range where (partial "events/list.html" .) "over" false -}}
+    {{- $e := .e -}}
+    {{- $ev := dict
+        "@context" "https://schema.org"
+        "@type" "Event"
+        "name" $e.title
+        "startDate" .iso_start
+        "eventStatus" "https://schema.org/EventScheduled"
+        "url" (printf "%s#%s" $page.Permalink .id)
+        "organizer" $org -}}
+    {{- with $e.end }}{{ $ev = merge $ev (dict "endDate" (cond (gt (len (string .)) 10) (printf "%s:00" (string .)) (string .))) }}{{ end -}}
+    {{- with $e.text }}{{ $ev = merge $ev (dict "description" .) }}{{ end -}}
+    {{- if $e.online -}}
+      {{- $ev = merge $ev (dict "eventAttendanceMode" "https://schema.org/OnlineEventAttendanceMode" "location" (dict "@type" "VirtualLocation" "url" (printf "%s#%s" $page.Permalink .id))) -}}
+    {{- else -}}
+      {{- $ev = merge $ev (dict "eventAttendanceMode" "https://schema.org/OfflineEventAttendanceMode" "location" (dict "@type" "Place" "name" ($e.host | default $e.where) "address" $e.where)) -}}
+    {{- end -}}
+    {{- $out = $out | append $ev -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and (eq .Section "news") .IsPage -}}
+  {{- $a := dict
+      "@context" "https://schema.org"
+      "@type" "NewsArticle"
+      "headline" (.Title | truncate 110)
+      "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
+      "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
+      "mainEntityOfPage" .Permalink
+      "author" (dict "@type" "Organization" "name" "The Lead-DBS team" "url" site.Home.Permalink)
+      "publisher" (merge $org (dict "logo" (dict "@type" "ImageObject" "url" $logo))) -}}
+  {{- with .Params.image }}{{ with $.Resources.GetMatch . }}{{ if and (eq .ResourceType "image") (in (slice "jpeg" "png" "webp") .MediaType.SubType) }}{{ $a = merge $a (dict "image" (.Resize "1200x jpg q82").Permalink) }}{{ end }}{{ end }}{{ end -}}
+  {{- $out = $out | append $a -}}
+{{- end -}}
+
+{{- range $out }}
+<script type="application/ld+json">{{ . | jsonify | safeJS }}</script>
+{{- end }}

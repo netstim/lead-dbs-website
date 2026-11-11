@@ -1,12 +1,15 @@
 {{ define "main" }}
 {{- /* /gallery/: figures from published papers (data/gallery.yaml, files in static/gallery/), in the order
      of that file, then the lab's renders (content/gallery/_index.md, files in assets/images/renders/).
-     Each figure is shown whole (resized copies), with its plain-language description, the attribution
-     its licence requires and a link to the original file. A figure with a missing field stops the build. */ -}}
+     The page's own text (content/gallery/_index.md) is the introduction; front matter "next" is the
+     line at the end. Each figure is shown whole (resized copies) on a white mat cut to its size, two to a row on
+     a desktop, with its plain-language description, the attribution its licence requires and a link to the
+     original file. A figure with a missing field stops the build. */ -}}
 {{ $p := .Params }}
 <main id="top" class="page">
   {{ partial "page-head.html" . }}
   <div class="wrap gallery-page">
+    {{ with .Content }}<div class="prose gallery-intro">{{ partial "nobreak-html.html" . }}</div>{{ end }}
     <section class="gallery-section" aria-labelledby="papers-h">
       <h2 id="papers-h">{{ partial "nobreak.html" $p.papers_title }}</h2>
       {{ $figs := hugo.Data.gallery.figures | default slice }}
@@ -22,9 +25,10 @@
         {{ if eq $mid $src }}{{ $mid = $src.Resize (printf "%dx webp q82" $src.Width) }}{{ $set = $set | append (printf "%s %dw" $mid.RelPermalink $mid.Width) }}{{ end }}
         {{ $full := printf "gallery/%s" $f.file | relURL }}
         <li class="paper-fig" id="fig-{{ path.BaseName $f.file }}">
-          {{- /* the picture links to the same file as the text link below, so it is skipped by keyboard and screen readers */}}
-          <a class="paper-fig__img" href="{{ $full }}" tabindex="-1" aria-hidden="true">
-            <img src="{{ $mid.RelPermalink }}" srcset="{{ delimit $set ", " }}" sizes="(min-width: 1024px) 58vw, 100vw" width="{{ $src.Width }}" height="{{ $src.Height }}" alt="" loading="lazy" decoding="async">
+          {{- /* the picture links to the same file as the text link below, so keyboard users skip it
+                 (tabindex -1); screen readers get the picture with its description as alt text */}}
+          <a class="paper-fig__img" href="{{ $full }}" tabindex="-1">
+            <img src="{{ $mid.RelPermalink }}" srcset="{{ delimit $set ", " }}" sizes="(min-width: 1440px) 600px, (min-width: 1024px) 42vw, 100vw" width="{{ $src.Width }}" height="{{ $src.Height }}" alt="{{ $f.shows }}" loading="lazy" decoding="async">
           </a>
           <div class="paper-fig__text">
             {{ with $f.tool }}<p class="paper-fig__tool">Made with {{ . }}, the sister tool of Lead-DBS</p>{{ end }}
@@ -59,6 +63,7 @@
         {{ end }}
       </div>
     </section>
+    {{ with $p.next }}<p class="gallery-next">{{ $.RenderString . }}</p>{{ end }}
   </div>
 </main>
 {{ end }}

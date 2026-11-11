@@ -3,23 +3,36 @@
 // up): a sequence of WebP frames (static/media/insertion/) drawn on a canvas by scroll position.
 // - The final still (an <img>) is the picture until every frame has loaded, and stays the picture
 //   under reduced motion, without script, and when a frame fails to load.
-// - Frames load only after the page has loaded, when the section is within a screen of the window;
-//   the small set (720 px) when the picture is drawn at 900 device pixels or less.
+// - Frames load only after the page has loaded, once the visitor has scrolled and the section is within
+//   a quarter of a screen of the window, so a visitor who never scrolls down does not load them, on a
+//   desktop either (where the section starts just under the first screen). The set is chosen by the
+//   picture's width in CSS pixels, not device pixels: the small set (720 px wide) wherever the picture
+//   is drawn 900 CSS px wide or less, which is every screen up to 1920 px wide, at any pixel density
+//   (about 1.4 MB instead of 3.1 MB on a retina laptop); while the frames move, the difference does not
+//   show, and at rest the sharp still is the picture. On a phone only every third frame of it is loaded
+//   (40 instead of 120, about 0.45 MB). Visitors who ask to save data keep the still.
 // - The canvas lies exactly over the still, in a box of fixed aspect ratio: nothing on the page moves.
 (() => {
   const fig = document.querySelector('[data-insertion]');
   if (!fig || !('IntersectionObserver' in window)) return;
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (reduced.matches) return;
+  if (navigator.connection?.saveData) return;
   const canvas = fig.querySelector('canvas');
   const stage = fig.querySelector('.insertion__stage');
   const ctx = canvas.getContext('2d', { alpha: false });
   if (!ctx) return;
 
   const pick = () => {
-    const small = fig.dataset.listSmall && stage.clientWidth * (window.devicePixelRatio || 1) <= 900;
+    const small = fig.dataset.listSmall && stage.clientWidth <= 900;
     const base = small ? fig.dataset.framesSmall : fig.dataset.frames;
-    const names = (small ? fig.dataset.listSmall : fig.dataset.list).split(',').filter(Boolean).sort();
+    let names = (small ? fig.dataset.listSmall : fig.dataset.list).split(',').filter(Boolean).sort();
+    // a phone: every third frame, always ending on the last one (the leads in place)
+    if (window.innerWidth < 640 && names.length > 60) {
+      const last = names[names.length - 1];
+      names = names.filter((n, i) => i % 3 === 0);
+      if (names[names.length - 1] !== last) names.push(last);
+    }
     return names.map((n) => base + n);
   };
 
@@ -68,12 +81,20 @@
     });
   };
   // not before the page itself has loaded and the browser is idle, so the frames never compete with
-  // the hero; then as soon as the section is within a screen of the window
+  // the hero; then once the visitor has scrolled (a page opened further down counts) and the section
+  // is within a quarter of a screen of the window
   const watch = () => {
+    let near = false, moved = window.scrollY > 0, started = false;
+    const go = () => {
+      if (started || !near || !moved) return;
+      started = true; io.disconnect(); removeEventListener('scroll', onScroll); load();
+    };
+    const onScroll = () => { if (window.scrollY > 0) { moved = true; go(); } };
     const io = new IntersectionObserver((es) => {
-      if (es.some((e) => e.isIntersecting)) { io.disconnect(); load(); }
-    }, { rootMargin: '100% 0px 100% 0px' });
+      near = es.some((e) => e.isIntersecting); go();
+    }, { rootMargin: '25% 0px 25% 0px' });
     io.observe(stage);
+    addEventListener('scroll', onScroll, { passive: true });
   };
   const idle = window.requestIdleCallback || ((f) => setTimeout(f, 300));
   if (document.readyState === 'complete') idle(watch, { timeout: 2000 });

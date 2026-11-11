@@ -1,5 +1,5 @@
 {{- $href := partial "resolve-url.html" (dict "url" .Destination "page" .Page) -}}
 {{- /* a picture inside a link keeps that link only (render-image.html's own link to the full image goes) */ -}}
 {{- $text := .Text | replaceRE `(?s)<a class="img-zoom" href="[^"]*">(.*?)<span class="sr-only img-zoom__hint">[^<]*</span></a>` "$1" -}}
-<a href="{{ $href }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if strings.HasPrefix $href "http" }} rel="noopener"{{ end }}>{{ $text | safeHTML }}</a>
+<a href="{{ $href }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if strings.HasPrefix $href "http" }} rel="noopener"{{ end }}>{{ partial "nobreak-html.html" $text }}</a>
 {{- /* chomp trailing newline */ -}}

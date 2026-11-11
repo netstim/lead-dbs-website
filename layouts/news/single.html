@@ -3,15 +3,34 @@
   {{ partial "page-head.html" . }}
   <div class="wrap doc-layout">
     <article class="prose post">
-      {{- /* the teaser on top of the post, unless image_in_post: false (the picture is in the text already) */}}
+      {{- /* the teaser on top of the post (front matter image, with image_alt), as resized WebP copies;
+             left out when the post's text shows the same picture already, or with image_in_post: false */}}
       {{ with and (ne .Params.image_in_post false) (.Resources.GetMatch (.Params.image | default "__none__")) }}
-        {{ $img := . }}{{ if gt .Width 1400 }}{{ $img = .Resize "1400x" }}{{ end }}
-        <img class="featured" src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="">
+        {{ $src := . }}
+        {{ if not (strings.Contains $.RawContent $src.Name) }}
+        {{ $set := slice }}
+        {{ range slice 480 800 1200 }}{{ if lt . $src.Width }}{{ $r := $src.Resize (printf "%dx webp q82" .) }}{{ $set = $set | append (printf "%s %dw" $r.RelPermalink $r.Width) }}{{ end }}{{ end }}
+        {{ $top := $src.Resize (printf "%dx webp q82" (math.Min $src.Width 1400 | int)) }}{{ $set = $set | append (printf "%s %dw" $top.RelPermalink $top.Width) }}
+        {{ $fb := $src }}{{ if gt $src.Width 1200 }}{{ $fb = $src.Resize "1200x" }}{{ end }}
+        <picture><source type="image/webp" srcset="{{ delimit $set ", " }}" sizes="(min-width: 1280px) 760px, (min-width: 1024px) 60vw, 100vw"><img class="featured" src="{{ $fb.RelPermalink }}" width="{{ $fb.Width }}" height="{{ $fb.Height }}" alt="{{ $.Params.image_alt }}" decoding="async"></picture>
+        {{ end }}
       {{ end }}
-      {{ .Content }}
+      {{- /* a post older than three years says so above its text, so nobody mistakes it for current advice */}}
+      {{ if gt (now.Sub .Date).Hours (mul 24 365 3) }}{{ with hugo.Data.release }}
+      <p class="notice post-archive" role="note">From the archive: this post is from {{ $.Date.Format "2006" }}, and Lead-DBS has changed since. The current version is <a href="{{ with site.GetPage "/download" }}{{ .RelPermalink }}{{ end }}">Lead-DBS&nbsp;{{ .version }}</a>.</p>
+      {{ end }}{{ end }}
+      {{ partial "nobreak-html.html" .Content }}
+      {{- /* onward: the next newer and older post (by date), then all news */}}
+      {{ $newer := .NextInSection }}{{ $older := .PrevInSection }}
+      {{ if or $newer $older }}
+      <nav class="post-nav" aria-label="More news">
+        {{ with $newer }}<a class="card post-nav__link post-nav__link--newer" href="{{ .RelPermalink }}" rel="next"><span class="post-nav__label">Newer</span><span class="post-nav__title">{{ partial "nobreak-html.html" (.Title | htmlEscape) }}</span></a>{{ end }}
+        {{ with $older }}<a class="card post-nav__link post-nav__link--older" href="{{ .RelPermalink }}" rel="prev"><span class="post-nav__label">Older</span><span class="post-nav__title">{{ partial "nobreak-html.html" (.Title | htmlEscape) }}</span></a>{{ end }}
+      </nav>
+      {{ end }}
       <p class="post-back"><a class="link" href="{{ .Parent.RelPermalink }}">All news</a></p>
     </article>
-    <aside class="sidebar" aria-label="Release and quick links">{{ partial "sidebar.html" . }}</aside>
+    <aside class="sidebar" aria-label="In this section">{{ partial "sidebar.html" . }}</aside>
   </div>
 </main>
 {{ end }}

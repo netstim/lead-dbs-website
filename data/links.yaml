@@ -1,32 +1,19 @@
-# Quick links shown in the sidebar of documentation and news pages, and in the footer.
+# Quick links shown in the sidebar of documentation and news pages.
 # url: a site path ("/about/citing_leaddbs/") or a full URL.
 quick:
   - {name: "Manual", url: "https://netstim.gitbook.io/leaddbs"}
   - {name: "Walkthrough videos", url: "/helpsupport/knowledge-base/walkthrough-videos/"}
-  - {name: "User Slack", url: "https://inviter.co/lead-dbs"}
+  - {name: "User Slack (self-invite)", url: "https://inviter.co/lead-dbs"}
   - {name: "Source code on GitHub", url: "https://github.com/netstim/leaddbs"}
-  - {name: "How to cite Lead-DBS", url: "/about/citing_leaddbs/"}
+  - {name: "Cite Lead-DBS", url: "/about/citing_leaddbs/"}
+  - {name: "Atlases and data", url: "/helpsupport/knowledge-base/atlasesresources/"}
 
-# Footer columns (besides the main menu). Same fields as above.
+# Footer columns after the main menu's groups (hugo.toml [menus.main]). Same fields as above.
 footer:
-  - title: "Tools"
-    links:
-      - {name: "Lead-DBS on GitHub", url: "https://github.com/netstim/leaddbs"}
-      - {name: "Bug reports", url: "https://github.com/netstim/leaddbs/issues"}
-      - {name: "Develop Lead-DBS", url: "/develop/"}
-      - {name: "Lead-OR", url: "/about/lead-or/"}
-      - {name: "Lead Connectome", url: "/about/lead-connectome/"}
-  - title: "Help"
-    links:
-      - {name: "Manual", url: "https://netstim.gitbook.io/leaddbs"}
-      - {name: "Walkthrough videos", url: "/helpsupport/knowledge-base/walkthrough-videos/"}
-      - {name: "User Slack", url: "https://inviter.co/lead-dbs"}
-      - {name: "Workshops", url: "/helpsupport/workshops/"}
-      - {name: "Newsletter", url: "/subscribe-to-our-newsletter/"}
   - title: "Lab"
     links:
       - {name: "Institute for Network Stimulation", url: "https://www.netstim.org"}
       - {name: "netstim on GitHub", url: "https://github.com/netstim"}
       - {name: "The institute on LinkedIn", url: "https://www.linkedin.com/company/institute-for-network-stimulation/"}
-      - {name: "Stimulating Brains podcast and talks", url: "https://stimulatingbrains.org"}
       - {name: "Lead-DBS on Bluesky", url: "https://bsky.app/profile/lead-dbs.org"}
+      - {name: "Stimulating Brains podcast and talks", url: "https://stimulatingbrains.org"}

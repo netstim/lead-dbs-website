@@ -7,6 +7,9 @@
 {{ $page := . }}
 {{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Name "Download" }}{{ $dl = .URL }}{{ end }}{{ end }}
 {{ $search := "" }}{{ with site.GetPage "/search" }}{{ $search = .RelPermalink }}{{ end }}
+{{- /* The menu word to mark as current: the group the page belongs to (partial nav-place.html, which the
+       breadcrumb and the sidebar use too). */}}
+{{ $best := "" }}{{ with (partial "nav-place.html" $page).group }}{{ if ne .Name "Download" }}{{ $best = .Identifier | default .Name }}{{ end }}{{ end }}
 <header class="nav nav--centre">
   {{ if site.Params.preview }}
   <div class="preview-banner" role="note">
@@ -19,22 +22,24 @@
     <nav class="nav__links" id="site-menu" aria-label="Main">
       {{ range site.Menus.main }}
       {{ if ne .Name "Download" }}{{ $m := . }}
-      {{ $current := or ($page.IsMenuCurrent "main" .) (and (ne .URL site.Home.RelPermalink) ($page.HasMenuCurrent "main" .)) }}
-      {{ if and (eq .URL site.Home.RelPermalink) $page.IsHome }}{{ $current = true }}{{ end }}
+      {{ $current := eq (.Identifier | default .Name) $best }}
       <div class="nav__item">
-        <a class="nav__link" href="{{ .URL }}"{{ if $current }} aria-current="page"{{ end }}>{{ .Name }}{{ if .HasChildren }} <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ end }}</a>
+        {{- /* a word with a panel names it (aria-controls); main.js keeps aria-expanded in step with the
+               panel. No aria-haspopup: the panel is a list of links (a disclosure), not an ARIA menu. */}}
+        {{- $panel := printf "menu-%s" (.Identifier | default (.Name | urlize)) }}
+        <a class="nav__link" href="{{ .URL }}"{{ if $current }} aria-current="page"{{ end }}{{ if .HasChildren }} aria-controls="{{ $panel }}"{{ end }}>{{ partial "nobreak-html.html" (.Name | htmlEscape) }}{{ if .HasChildren }} <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ end }}</a>
         {{ if .HasChildren }}
-        <div class="nav__menu">
+        <div class="nav__menu" id="{{ $panel }}">
           <div class="nav__menu-cols">
             {{ $plain := slice }}{{ $groups := slice }}
             {{ range .Children }}{{ if .HasChildren }}{{ $groups = $groups | append . }}{{ else }}{{ $plain = $plain | append . }}{{ end }}{{ end }}
             <div class="menu-col">
-              {{ range $plain }}<a href="{{ .URL }}">{{ .Name }}</a>{{ end }}
+              {{ range $plain }}<a href="{{ .URL }}">{{ partial "menu-label.html" . }}</a>{{ end }}
             </div>
             {{ range $groups }}
             <div class="menu-col">
-              <p class="t-label"><a href="{{ .URL }}">{{ .Name }}</a></p>
-              {{ range .Children }}<a href="{{ .URL }}">{{ .Name }}</a>{{ end }}
+              <p class="t-label"><a href="{{ .URL }}">{{ partial "nobreak-html.html" (.Name | htmlEscape) }}</a></p>
+              {{ range .Children }}<a href="{{ .URL }}">{{ partial "menu-label.html" . }}</a>{{ end }}
             </div>
             {{ end }}
           </div>

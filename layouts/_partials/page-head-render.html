@@ -1,6 +1,19 @@
-{{- /* The render behind every inner page's title: the same black ground and electrodes as the home
-       page's hero, faint, on the right. Decorative (alt=""); small WebP copies made by Hugo. */ -}}
-{{- with resources.Get "images/renders/cohort-black.jpg" -}}
+{{- /* The render behind an inner page's title: black ground like the home page's hero, faint, on the
+       right, cut to its subject (focus: the object-position kept in the crop). Each part of the site has
+       its own scene, so a visitor does not meet the same picture on every page. Decorative (alt="");
+       WebP copies made by Hugo (1800 px wide too where the source is, for wide retina screens). */ -}}
+{{- $scenes := dict
+    "helpsupport" (dict "file" "fiber-filtering-wide.jpg" "focus" "50% 45%")
+    "community"   (dict "file" "pathway-activation-2.jpg" "focus" "50% 40%")
+    "news"        (dict "file" "pathway-activation-2.jpg" "focus" "50% 40%")
+    "events"      (dict "file" "pathway-activation-2.jpg" "focus" "50% 40%")
+    "about"       (dict "file" "cohort-hero.jpg" "focus" "62% 52%")
+    "develop"     (dict "file" "cohort-hero.jpg" "focus" "62% 52%")
+-}}
+{{- $scene := index $scenes (.Section | default "") | default (dict "file" "cohort-black.jpg" "focus" "50% 72%") -}}
+{{- with resources.Get (printf "images/renders/%s" $scene.file) -}}
 {{- $s := .Resize "640x webp q70" }}{{ $m := .Resize "1200x webp q70" -}}
-<img class="page-head__render" src="{{ $s.RelPermalink }}" srcset="{{ $s.RelPermalink }} 640w, {{ $m.RelPermalink }} 1200w" sizes="(min-width: 1024px) 60vw, 100vw" width="{{ $m.Width }}" height="{{ $m.Height }}" alt="" decoding="async" fetchpriority="low">
+{{- $set := printf "%s 640w, %s 1200w" $s.RelPermalink $m.RelPermalink -}}
+{{- if ge .Width 1800 }}{{ $l := .Resize "1800x webp q66" }}{{ $set = printf "%s, %s 1800w" $set $l.RelPermalink }}{{ end -}}
+<img class="page-head__render" src="{{ $s.RelPermalink }}" srcset="{{ $set }}" sizes="(min-width: 1024px) 62vw, 100vw" width="{{ $m.Width }}" height="{{ $m.Height }}" style="--focus: {{ $scene.focus }}" alt="" decoding="async" fetchpriority="low">
 {{- end -}}

@@ -1,0 +1,17 @@
+{{- /* A short silent animation (instead of an animated GIF): a muted, looping MP4 next to the page,
+       with its first frame as the poster picture.
+         {{< clip src="melbourne.mp4" poster="melbourne-poster.jpg" alt="What it shows" caption="Optional caption" >}}
+       Nothing is loaded until the clip comes near the screen; it plays while it is in view and stops
+       outside it. For visitors who ask for reduced motion, and without script, it shows the poster
+       with the player's controls instead. Make the MP4 from a GIF with ffmpeg (see README). */ -}}
+{{- $src := .Page.Resources.Get (.Get "src") -}}
+{{- if not $src }}{{ errorf "clip: no file %q next to %s" (.Get "src") .Page.File.Path }}{{ end -}}
+{{- $poster := .Page.Resources.Get (.Get "poster") -}}
+{{- if not $poster }}{{ errorf "clip: no poster %q next to %s" (.Get "poster") .Page.File.Path }}{{ end -}}
+{{- $alt := .Get "alt" -}}
+{{- if not $alt }}{{ errorf "clip: %q needs alt text (in %s)" (.Get "src") .Page.File.Path }}{{ end -}}
+<figure class="clip">
+  <video src="{{ $src.RelPermalink }}" poster="{{ $poster.RelPermalink }}" width="{{ $poster.Width }}" height="{{ $poster.Height }}" muted loop playsinline preload="none" controls aria-label="{{ $alt }}" data-clip></video>
+  {{ with .Get "caption" }}<figcaption>{{ . | $.Page.RenderString }}</figcaption>{{ end }}
+</figure>
+{{- partial "clip-script.html" .Page }}

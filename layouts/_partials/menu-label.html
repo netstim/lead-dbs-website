@@ -1,0 +1,6 @@
+{{- /* A menu entry's label, with a small arrow and a screen-reader note when it leads to another site
+       (the manual on GitBook); "Lead-DBS" in it never breaks at its hyphen. One element, so it stays one item in grid and flex layouts.
+       Argument: the menu entry. */ -}}
+{{- if strings.HasPrefix .URL "http" -}}
+<span class="menu-label">{{ partial "nobreak-html.html" (.Name | htmlEscape) }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></span>
+{{- else }}{{ partial "nobreak-html.html" (.Name | htmlEscape) }}{{ end -}}

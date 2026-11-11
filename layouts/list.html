@@ -7,9 +7,9 @@
   <div class="wrap doc-layout{{ if $toc }} doc-layout--toc{{ end }}">
     <article class="prose">
       {{ if $toc }}{{ partial "toc.html" (dict "page" . "variant" "top") }}{{ end }}
-      {{ .Content }}
+      {{ partial "nobreak-html.html" .Content }}
     </article>
-    <aside class="sidebar" aria-label="{{ if $toc }}On this page, release and quick links{{ else }}Release and quick links{{ end }}">{{ partial "sidebar.html" (dict "page" . "toc" $toc) }}</aside>
+    <aside class="sidebar" aria-label="In this section">{{ partial "sidebar.html" (dict "page" . "toc" $toc) }}</aside>
   </div>
 </main>
 {{ end }}

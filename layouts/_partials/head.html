@@ -1,20 +1,48 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 {{- $desc := "" -}}
-{{- with .Description }}{{ $desc = . }}{{ else }}{{ with .Summary }}{{ $desc = . | plainify | htmlUnescape | truncate 160 }}{{ else }}{{ $desc = site.Params.description }}{{ end }}{{ end }}
-{{- $title := cond .IsHome (printf "%s: %s" site.Title (.Params.hero.title | default "")) (printf "%s – %s" .Title site.Title) }}
+{{- with strings.TrimSpace .Description }}{{ $desc = . }}{{ else }}{{ with .Summary | replaceRE ` ?\(open the full-size image\)` "" | plainify | htmlUnescape | strings.TrimSpace }}{{ $desc = . | replaceRE `\s+` " " | truncate 154 }}{{ end }}{{ end -}}
+{{- if eq .Kind "404" }}{{ $desc = "This address is not on lead-dbs.org: search the site, or start from its main sections." }}{{ end -}}
+{{- if not $desc }}{{ $desc = site.Params.description }}{{ end -}}
+{{- /* The browser title: "Page – Lead-DBS"; a title that names Lead-DBS already, or a long one, goes
+       without the suffix, so search results show the words that matter. A page whose title is too long
+       for a search result (over about 60 characters) sets a shorter htmlTitle in its front matter. */ -}}
+{{- $title := .Params.htmlTitle | default .Title -}}
+{{- if .IsHome }}{{ $title = printf "%s: %s" site.Title (.Params.hero.title | default "") -}}
+{{- end -}}
+{{- /* the pages of the news list after the first: "News, page 2" (layouts/news/list.html uses the same paginator) */ -}}
+{{- if and (eq .Kind "section") (eq .Section "news") }}{{ with .Paginator }}{{ if gt .PageNumber 1 }}{{ $title = printf "%s, page %d" $title .PageNumber }}{{ $desc = printf "%s Page %d of %d." $desc .PageNumber .TotalPages }}{{ end }}{{ end }}{{ end -}}
+{{- if and (not .IsHome) (not (strings.Contains (lower $title) "lead-dbs")) (le (len $title) 48) }}{{ $title = printf "%s – %s" $title site.Title }}{{ end }}
 <title>{{ $title }}</title>
 <meta name="description" content="{{ $desc }}">
+{{- $canonical := .Permalink -}}
+{{- if site.Params.preview }}{{ $canonical = printf "%s%s" (strings.TrimSuffix "/" site.Params.liveSite) (.RelPermalink | strings.TrimPrefix (urls.Parse site.BaseURL).Path | printf "/%s") }}{{ end }}
 {{ if site.Params.preview }}
 <meta name="robots" content="noindex, nofollow">
-<link rel="canonical" href="{{ strings.TrimSuffix "/" site.Params.liveSite }}{{ .RelPermalink | strings.TrimPrefix (urls.Parse site.BaseURL).Path | printf "/%s" }}">
-{{ else }}
-<link rel="canonical" href="{{ .Permalink }}">
+{{ else if or (eq .Params.search false) (eq .Params.robots "noindex") (eq .Kind "404") }}
+<meta name="robots" content="noindex">
+{{- /* the news list's later pages: followed to the posts (which are in the sitemap), not listed themselves */}}
+{{ else if and (eq .Kind "section") (eq .Section "news") (gt .Paginator.PageNumber 1) }}
+<meta name="robots" content="noindex, follow">
 {{ end }}
-<meta property="og:type" content="website">
+<link rel="canonical" href="{{ $canonical }}">
+{{- with site.GetPage "/news" }}{{ with .OutputFormats.Get "rss" }}
+<link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="Lead-DBS news">
+{{- end }}{{ end }}
+<meta property="og:type" content="{{ if and (eq .Section "news") .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:url" content="{{ $canonical }}">
+<meta property="og:site_name" content="{{ site.Title }}">
 <meta property="og:title" content="{{ $title }}">
 <meta property="og:description" content="{{ $desc }}">
-{{ with resources.Get "images/share.jpg" }}<meta property="og:image" content="{{ .Permalink }}">{{ end }}
+{{- /* the share picture: the page's own (front matter share: a file next to the page, or a path under
+       assets/ such as "images/renders/cohort-top.jpg"), else a news post's teaser (image), else the site's */ -}}
+{{- $share := resources.Get "images/share.jpg" -}}
+{{- $own := false -}}
+{{- with .Params.share }}{{ $own = or ($.Resources.GetMatch .) (resources.Get .) }}{{ if not $own }}{{ errorf "%s: share picture %q is neither next to the page nor under assets/" $.File.Path . }}{{ end }}
+{{- else }}{{ with .Params.image }}{{ $own = $.Resources.GetMatch . }}{{ end }}{{ end -}}
+{{- with $own }}{{ if and (eq .ResourceType "image") (in (slice "jpeg" "png" "webp") .MediaType.SubType) }}{{ $share = cond (gt .Width 1200) (.Resize "1200x jpg q82") (.Process "jpg q82") }}{{ end }}{{ end }}
+{{ with $share }}<meta property="og:image" content="{{ .Permalink }}">{{ end }}
+{{ partial "head-jsonld.html" . }}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#f7f9fa">
 <link rel="icon" href="{{ "images/favicon-32x32.png" | relURL }}" sizes="32x32">
@@ -23,9 +51,9 @@
 <link rel="preload" href="{{ "fonts/open-sans-latin-400.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{{ "fonts/open-sans-latin-600.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 {{- /* one stylesheet: assets/css/base.css (tokens, grid, buttons, links, forms), then assets/css/site.css
-     (palette, fonts, header, pages, footer); see README, Design */}}
+     (palette, fonts, header, pages, footer), then assets/css/content.css (content building blocks); see README, Design */}}
 {{ $site := resources.Get "css/site.css" | resources.ExecuteAsTemplate "css/site.css" . }}
-{{ $css := slice (resources.Get "css/base.css") $site | resources.Concat "css/style.css" | minify | fingerprint }}
+{{ $css := slice (resources.Get "css/base.css") $site (resources.Get "css/content.css") | resources.Concat "css/style.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 {{- /* the home hero's entrance waits for assets/js/main.js; after 700ms the style sheet shows the hero without it */}}
 <script>document.documentElement.classList.add('hero-wait');setTimeout(()=>document.documentElement.classList.add('hero-late'),700)</script>

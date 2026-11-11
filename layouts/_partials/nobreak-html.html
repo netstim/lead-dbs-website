@@ -1,0 +1,30 @@
+{{- /* Rendered HTML in which the product's name never breaks at its hyphen: every "Lead-DBS" (also
+       "LEAD-DBS") in the text, not inside tags, attributes, scripts, styles or text areas, is wrapped in
+       <span class="nowrap">. The characters stay the ordinary ones, so find in page, copying and search
+       work as before. Use it wherever rendered text is printed:
+         {{ partial "nobreak-html.html" .Content }}
+       Returns HTML. */ -}}
+{{- $html := string . -}}
+{{- $re := `\b(Lead|LEAD)-DBS\b` -}}
+{{- $wrap := `<span class="nowrap">$1-DBS</span>` -}}
+{{- if not (findRE $re $html 1) -}}
+  {{- return ($html | safeHTML) -}}
+{{- end -}}
+{{- /* plain text (a menu label, a title): one span around it all, so that in a flex container (the
+       footer's links) the words beside the name keep their spaces */ -}}
+{{- if not (strings.Contains $html "<") -}}
+  {{- return (printf `<span>%s</span>` (replaceRE $re $wrap $html) | safeHTML) -}}
+{{- end -}}
+{{- $parts := split $html "<" -}}
+{{- $out := slice (replaceRE $re $wrap (index $parts 0)) -}}
+{{- $skip := false -}}
+{{- range after 1 $parts -}}
+  {{- $bits := split . ">" -}}
+  {{- $tag := index $bits 0 -}}
+  {{- $text := delimit (after 1 $bits) ">" -}}
+  {{- $name := lower (replaceRE `^/?([A-Za-z0-9]*).*$` "$1" $tag) -}}
+  {{- if in (slice "script" "style" "textarea") $name }}{{ $skip = not (hasPrefix $tag "/") }}{{ end -}}
+  {{- if and (not $skip) (gt (len $bits) 1) }}{{ $text = replaceRE $re $wrap $text }}{{ end -}}
+  {{- if gt (len $bits) 1 }}{{ $out = $out | append (printf "<%s>%s" $tag $text) }}{{ else }}{{ $out = $out | append (printf "<%s" $tag) }}{{ end -}}
+{{- end -}}
+{{- return (delimit $out "" | safeHTML) -}}
