@@ -1,0 +1,16 @@
+{{- /* One render or still from assets/images/renders/, as WebP in several widths.
+     Arguments: file (name in assets/images/renders/), alt, class (of the frame), sizes, eager (bool),
+     focus (optional: the part kept in a phone's tall crop, as an object-position like "30% 50%"). */ -}}
+{{ with resources.Get (printf "images/renders/%s" .file) }}
+{{ $src := . }}
+{{ $widths := slice 640 960 1400 1920 }}
+{{ $set := slice }}{{ $last := "" }}
+{{ range $widths }}{{ if le . $src.Width }}{{ $i := $src.Resize (printf "%dx webp q80" .) }}{{ $set = $set | append (printf "%s %dw" $i.RelPermalink $i.Width) }}{{ $last = $i }}{{ end }}{{ end }}
+{{ if not $last }}{{ $last = $src.Resize (printf "%dx webp q80" $src.Width) }}{{ $set = $set | append (printf "%s %dw" $last.RelPermalink $last.Width) }}{{ end }}
+{{ $mid := $src.Resize "960x webp q80" }}
+<figure class="{{ $.class }}"{{ with $.focus }} style="--focus-phone: {{ . }}"{{ end }}>
+  <img class="frame__img" src="{{ $mid.RelPermalink }}" srcset="{{ delimit $set ", " }}" sizes="{{ $.sizes | default "100vw" }}" width="{{ $mid.Width }}" height="{{ $mid.Height }}" alt="{{ $.alt }}"{{ if $.eager }} fetchpriority="high"{{ else }} loading="lazy" decoding="async"{{ end }} data-source="client" data-subject="Lead-DBS render">
+</figure>
+{{ else }}
+{{ errorf "render.html: no file assets/images/renders/%s" .file }}
+{{ end }}
