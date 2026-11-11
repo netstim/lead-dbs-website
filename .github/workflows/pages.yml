@@ -42,6 +42,15 @@ jobs:
         env:
           HUGO_PARAMS_PREVIEW: "true"
         run: hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+      # Fails the run on a broken internal link, image or #anchor, a redirect to nowhere, a relative
+      # canonical, og:image or sitemap address, or front matter shown as page text
+      # (.github/scripts/check-site.py says what it checks).
+      - name: Check the preview build
+        run: python3 .github/scripts/check-site.py public "${{ steps.pages.outputs.base_url }}/"
+      - name: Check a production build (https://www.lead-dbs.org/)
+        run: |
+          hugo --gc --minify --destination "$RUNNER_TEMP/production"
+          python3 .github/scripts/check-site.py "$RUNNER_TEMP/production" https://www.lead-dbs.org/
       - uses: actions/upload-pages-artifact@v5
         with:
           path: public
