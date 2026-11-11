@@ -12,14 +12,14 @@ We introduce the FOCUS atlas — a high-resolution, deformable atlas of the huma
 
 {{% /col %}}
 {{% col "2/3" %}}
-![](Fig1_newdraft_rh_segtracts_mediolateral-1030x1019.png)
+![FOCUS atlas: subcortical structures and fibre pathways of the right hemisphere in 3D, medial-lateral view](Fig1_newdraft_rh_segtracts_mediolateral-1030x1019.png)
 
 {{% /col %}}
 {{% /row %}}
 
 {{% row %}}
 {{% col "3/5" %}}
-![](STN_Forel_ZI_tracts_mediolateral-1030x1019.png)
+![FOCUS atlas: STN, fields of Forel, zona incerta and their tracts in 3D](STN_Forel_ZI_tracts_mediolateral-1030x1019.png)
 
 {{% /col %}}
 {{% col "2/5" %}}
@@ -38,7 +38,7 @@ FOCUS is more than an atlas — it is a flexible, open platform for subcortical 
 
 {{% /col %}}
 {{% col "3/5" %}}
-![](STN_tracts_mediolateral-1030x1019.png)
+![FOCUS atlas: the STN and its tracts in 3D](STN_tracts_mediolateral-1030x1019.png)
 
 {{% /col %}}
 {{% /row %}}

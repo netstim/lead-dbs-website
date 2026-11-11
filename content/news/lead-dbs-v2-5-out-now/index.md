@@ -16,7 +16,7 @@ We’re more than happy that Lead-DBS v2.5 is out now!
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](t-1-1030x782.png)  
+![Network mapping, sweetspot and fiber filtering explorer windows in Lead-DBS](t-1-1030x782.png)  
 
 *Three new GUIs to analyze relationships between stimulation site and clinical or behavioral changes following DBS on a group level.*
 

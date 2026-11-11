@@ -19,14 +19,14 @@ Thank you so much for your help and for supporting open source software in DBS i
 
 {{% row %}}
 {{% col "1/2" %}}
-![](demo_eauto2-1030x506.png)  
-![](bg_with_fibres-1030x524.png)  
+![Subcortical structures in 3D](demo_eauto2-1030x506.png)  
+![Fibre tracts around subcortical structures in 3D](bg_with_fibres-1030x524.png)  
 
 *Very early figures made with Lead-DBS (~2012)*
 
 {{% /col %}}
 {{% col "1/2" %}}
-![](Meola_fibers_zoom-1-1013x1030.png)  
+![Brainstem connectome: colour-coded fibre tracts beside two DBS electrodes](Meola_fibers_zoom-1-1013x1030.png)  
 
 *Figure made with a more recent version of Lead-DBS (~2016)*
 

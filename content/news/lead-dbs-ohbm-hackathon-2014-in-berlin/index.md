@@ -7,4 +7,4 @@ slug: "lead-dbs-ohbm-hackathon-2014-in-berlin"
 
 At OHBM Hackathon 2014 @ c-base Berlin, LEAD-DBS was presented to a wider audience for the first time. Together with [Tarek Sherif](http://tareksherif.ca/) from Montreal, an export function to the web-visualization software [Brainbrowser](https://brainbrowser.cbrain.mcgill.ca/) was written, which makes it possible to view localization results on standard web-browsers.
 
-[![IMG_2931](http://andreas-horn.de/leaddbs/wp-content/uploads/2014/06/IMG_2931-1030x772.jpg)](http://andreas-horn.de/leaddbs/wp-content/uploads/2014/06/IMG_2931.jpg)
+

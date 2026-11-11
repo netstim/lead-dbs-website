@@ -9,7 +9,7 @@ We are happy to share the current NeuroImage cover art with you, which shows a 3
 
 The accompanying text for the image is the following:
 
-Depicted is a thr![](neuroimage_coverart_horn_lead_dbs_2015-223x300.png)ee-dimensional reconstruction of deep brain stimulation electrode placements in a patient suffering from Parkinson’s disease. Using a novel open-source toolbox that is introduced in this issue of NeuroImage, the electrodes are modeled in their accurate position in the brain based on postoperative magnetic resonance imaging and using the accurate dimensions of the electrode lead model implanted in the patient’s brain.
+Depicted is a thr![Cover of NeuroImage, volume 107, 15 February 2015](neuroimage_coverart_horn_lead_dbs_2015-223x300.png)ee-dimensional reconstruction of deep brain stimulation electrode placements in a patient suffering from Parkinson’s disease. Using a novel open-source toolbox that is introduced in this issue of NeuroImage, the electrodes are modeled in their accurate position in the brain based on postoperative magnetic resonance imaging and using the accurate dimensions of the electrode lead model implanted in the patient’s brain.
 
 Using such a reconstruction of the stimulation setting, it can be determined, whether deep brain stimulation electrodes are accurately placed within the target structure – in this case the sensorimotor functional zone of the subthalamic nucleus. Moreover, the volume of tissue activated by the stimulation can be modeled using the actual stimulation parameters applied in the patient’s treatment.
 

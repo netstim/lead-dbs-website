@@ -5,11 +5,11 @@ lastmod: "2022-03-16T14:37:28"
 weight: 2
 ---
 
-# Motivation
+## Motivation
 
 The following is a summary of the methods paper:
 
-> [Ewert, S., Plettig, P., Li, N., Chakravarty, M. M., Collins, D. L., Herrington, T. M., et al. (2017). Toward defining deep brain stimulation targets in MNI space: A subcortical atlas based on multimodal MRI, histology and structural connectivity. *NeuroImage*.](http://doi.org/10.1016/j.neuroimage.2017.05.015)
+> [Ewert, S., Plettig, P., Li, N., Chakravarty, M. M., Collins, D. L., Herrington, T. M., et al. (2018). Toward defining deep brain stimulation targets in MNI space: A subcortical atlas based on multimodal MRI, histology and structural connectivity. *NeuroImage*, 170, 271–282.](https://doi.org/10.1016/j.neuroimage.2017.05.015)
 
 When work on Lead-DBS was started in 2012, we began [collecting subcortical atlases](/helpsupport/knowledge-base/atlasesresources/atlases-2/) of the brain to best define anatomy. For instance, the ATAG atlas [was made freely available](https://www.nitrc.org/projects/atag) by the Forstmann group in Amsterdam.
 
@@ -19,7 +19,7 @@ One limitation of most available atlases (when used in Lead-DBS) can be seen in 
 
 {{% row %}}
 {{% col "2/3" %}}
-![](distal_fig_1-768x1030.png)
+![Panels of the STN region on the MNI template, each overlaid with a different published STN atlas](distal_fig_1-768x1030.png)
 
 {{% /col %}}
 {{% col "1/3" %}}
@@ -34,7 +34,7 @@ Your patient data will (if quality allows) show a similar hypointense region tha
 
 > If you now combine this image with an atlas that doesn’t exactly fit the MNI template, a systematic mismatch will result!
 
-![](misplacement-1030x366.png)
+![Diagram of how a misregistered atlas leads to a wrong electrode placement model, in four steps](misplacement-1030x366.png)
 
 *Above: This figure further illustrates the systematic error introduced by a misplaced atlas (i.e. an atlas not precisely matching the template that is used for normalization).*
 
@@ -42,29 +42,29 @@ Your patient data will (if quality allows) show a similar hypointense region tha
 
 ---
 
-# Methods
+## Methods
 
 We wanted to create an atlas that is i) very precisely aligned to the ICBM 2009b MNI template and ii) accurate enough to visualize all structures relevant for DBS surgery. This resulted in three separate stages.
 
-#### Stage 1: A multimodal region-growing algorithm applied to MNI templates
+### Stage 1: A multimodal region-growing algorithm applied to MNI templates
 In this stage, the T1-, T2-, PD- and T2rlx weighted templates were segmented simultaneously, incorporating all information in parallel. First, a multimodel region-growing-like algorithm was applied that produced probability maps. These maps were then used to manually segment subthalamic nucleus, red nucleus, internal and external pallidum directly within the space of the template series.
 
 {{% row %}}
 {{% col "1/3" %}}
-*Right: The final result of manual segmentations that were performed directly on the MNI template using it’s four spectra simultaneously. These four structures i) align perfectly with the template and ii) were used as anchorpoints to warp histology to the template.*
+*Right: The final result of manual segmentations that were performed directly on the MNI template using its four spectra simultaneously. These four structures i) align perfectly with the template and ii) were used as anchorpoints to warp histology to the template.*
 
 {{% /col %}}
 {{% col "2/3" %}}
-![](distal_fig_3-1030x624.png)
+![Manual segmentations of pallidum, STN and red nucleus on the MNI template, in 3D and on T1 and T2 slices](distal_fig_3-1030x624.png)
 
 {{% /col %}}
 {{% /row %}}
-#### Stage 2: Precise co-registration of histology, using Stage 1 as additional anchor points
+### Stage 2: Precise co-registration of histology, using Stage 1 as additional anchor points
 To “fill the gaps” between the regions defined on the template itself, a precise histological atlas was graciously provided by Mallar Chakravarty (Douglas Institute) and Louis Collins (MNI). To align this data as precisely as possible to the MNI space, manual structures were used as additional anchorpoints in a nonlinear pseudo-MRI to template warp.
 
 {{% row %}}
 {{% col "2/3" %}}
-![](distal_fig_4-1030x804.png)
+![Comparison of histology-to-template warps without and with template-based anchor structures](distal_fig_4-1030x804.png)
 
 {{% /col %}}
 {{% col "1/3" %}}
@@ -79,16 +79,16 @@ To “fill the gaps” between the regions defined on the template itself, a pre
 
 {{% /col %}}
 {{% col "2/3" %}}
-![](distal_fig_5-1023x1030.png)
+![STN warped from histology onto the template in three views, without (top) and with (bottom) anchor points](distal_fig_5-1023x1030.png)
 
 {{% /col %}}
 {{% /row %}}
-#### Stage 3: Further parcellation of core DBS targets by means of structural connectivity
-The final stage was to further subdivide the primary DBS targets, namely the STN and the GPi by means of structural connectivity. This has been done in multiple studies for the STN, subdividing it into sensorimotor, associative and limbic subregions. It has not been done for the GPi, potentially given it’s closeness to efferent and afferent structures. We used the efferent connectivity of the GPi that projects to thalamic functional zones as they were defined in the famous [Behrens 2003](https://www.ncbi.nlm.nih.gov/pubmed/12808459) study.
+### Stage 3: Further parcellation of core DBS targets by means of structural connectivity
+The final stage was to further subdivide the primary DBS targets, namely the STN and the GPi by means of structural connectivity. This has been done in multiple studies for the STN, subdividing it into sensorimotor, associative and limbic subregions. It has not been done for the GPi, potentially given its closeness to efferent and afferent structures. We used the efferent connectivity of the GPi that projects to thalamic functional zones as they were defined in the famous [Behrens 2003](https://www.ncbi.nlm.nih.gov/pubmed/12808459) study.
 
 {{% row %}}
 {{% col "2/3" %}}
-![](distal_fig_6-1030x728.png)
+![Connectivity-based parcellation of the STN into sensorimotor, associative and limbic zones](distal_fig_6-1030x728.png)
 
 {{% /col %}}
 {{% col "1/3" %}}
@@ -103,15 +103,15 @@ The final stage was to further subdivide the primary DBS targets, namely the STN
 
 {{% /col %}}
 {{% col "2/3" %}}
-![](distal_fig_7-1030x343.png)
+![Connectivity-based parcellation of the GPi into functional zones, in 3D and on a slice](distal_fig_7-1030x343.png)
 
 {{% /col %}}
 {{% /row %}}
-#### Methods summary
+### Methods summary
 
 {{% row %}}
 {{% col "2/3" %}}
-![](distal_fig_8-996x1030.png)
+![Methods summary: the three stages of building the DISTAL atlas, with axial, coronal and sagittal results](distal_fig_8-996x1030.png)
 
 {{% /col %}}
 {{% col "1/3" %}}
@@ -121,17 +121,17 @@ The final stage was to further subdivide the primary DBS targets, namely the STN
 {{% /row %}}
 ---
 
-# Results
+## Results
 
 The final result is an atlas that is i) precisely coregistered to the ICBM 2009b nonlinear asymmetric MNI template and ii) very detailed (based on histology and structural connectivity).
 
-![](distal_fig_9-1030x501.png)
+![The final DISTAL atlas in 3D with labelled structures and a DBS electrode](distal_fig_9-1030x501.png)
 
-*Above: The “final product”. Structures marked in red werde defined based on the multimodal template itself, structures marked in black based on histology. Finally, blue text defines functional zones that further subdivide STN and GPi based on structural connectivity.*
+*Above: The “final product”. Structures marked in red were defined based on the multimodal template itself, structures marked in black based on histology. Finally, blue text defines functional zones that further subdivide STN and GPi based on structural connectivity.*
 
 {{% row %}}
 {{% col "1/3" %}}
-![](Screen-Shot-2017-08-09-at-4.35.26-PM-643x1030.png)
+![Lead-DBS atlas control window listing DISTAL structures and nomenclature options](Screen-Shot-2017-08-09-at-4.35.26-PM-643x1030.png)
 
 {{% /col %}}
 {{% col "3/5" %}}
@@ -153,7 +153,7 @@ The final result is an atlas that is i) precisely coregistered to the ICBM 2009b
 
   
 
-**Some release notes**
+### Some release notes
 
 - The DISTAL atlas (soon) published within Lead-DBS slightly differs from the one described in the paper in the following ways:
   - Writing the paper and running all the analyses led to a much broader understanding of anatomy on our part. Thus, the final manual segmentations of core regions / anchor points were further refined by the first author of the study who has become an expert in subcortical anatomy while pursuing the complete endeavor.
@@ -165,11 +165,11 @@ The final result is an atlas that is i) precisely coregistered to the ICBM 2009b
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](distal_fig_10-531x1030.png)
+![Atlas-based STN and GPi segmentations from DISTAL, BGHAT and ATAG compared with manual segmentations](distal_fig_10-531x1030.png)
 
 {{% /col %}}
 {{% /row %}}
-# Change-log
+## Change-log
 
-- 09/09/2017: [v. 1.0](https://my.pcloud.com/publink/show?code=XZRfrm7ZPSwdqHpocsbFMSsyAfxI5mQnigpk) released
+- 09/09/2017: v. 1.0 released
 - 05/02/2018: v. 1.1 released: improved registration of left hemispheric histology, symmetrized functional parcellations of STN / GPi subregions.

@@ -8,11 +8,11 @@ image: "SingleCase-1030x446.png"
 
 {{% row %}}
 {{% col "1/2" %}}
-![](Bildschirmfoto-2021-08-16-um-09.09.51-1030x649.png)
+![Title page of the Lead-OR preprint: A Multimodal Platform for Deep Brain Stimulation Surgery](Bildschirmfoto-2021-08-16-um-09.09.51-1030x649.png)
 
 {{% /col %}}
 {{% col "1/2" %}}
-![](SingleCase-1030x446.png)
+![Lead-OR views of a single case: microelectrode recordings along trajectories and the STN in 3D](SingleCase-1030x446.png)
 
 {{% /col %}}
 {{% /row %}}

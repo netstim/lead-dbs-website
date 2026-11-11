@@ -12,7 +12,7 @@ We’re excited that a visualization made with Lead-DBS from [the connectomic DB
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](S0006322318X00092-753x1030.png)
+![Cover of Biological Psychiatry, volume 85, number 9, 1 May 2019](S0006322318X00092-753x1030.png)
 
 {{% /col %}}
 {{% /row %}}

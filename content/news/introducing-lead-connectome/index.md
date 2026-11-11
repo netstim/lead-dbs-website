@@ -9,4 +9,4 @@ Let’s push the frontier a bit, shall we? Michael Okun recently published a NEJ
 
 Thus, from now on, [LEAD-DBS features a fully functional connectomic processing pipeline (DTI, rs-fMRI)](/about/lead-connectome/ "LEAD Connectome") that is simple to use and integrate to your work. In this way, you can now also use LEAD-DBS for patients who did not even undergo surgery (e.g. for connectomic analyses or visualizations).
 
-[![lc_screen](lc_screen-1030x877.png)](/about/lead-connectome/ "LEAD Connectome")
+[![Screenshot of the Lead-DBS and Lead Connectome windows (opens the Lead Connectome page)](lc_screen-1030x877.png)](/about/lead-connectome/ "LEAD Connectome")

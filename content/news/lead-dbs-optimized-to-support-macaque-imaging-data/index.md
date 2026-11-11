@@ -17,4 +17,4 @@ Furthermore, the detailed [INIA19 macaque atlas](/helpsupport/knowledge-base/atl
 
 Please do not hesitate to contact us in case of questions or suggestions.
 
-![Lead_dbs_macaques2](Lead_dbs_macaques2-300x169.png)
+![Macaque atlas structures in 3D with a DBS electrode, over an MRI slice](Lead_dbs_macaques2-300x169.png)

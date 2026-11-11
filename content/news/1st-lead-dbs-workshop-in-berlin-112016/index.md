@@ -19,4 +19,4 @@ To register for the course, please send an email to [ws2016@lead-dbs.org](mailto
 
 We look forward to meeting you in person!
 
-[![2016_leaddbs_workshop_berlin-front](2016_leaddbs_workshop_berlin-front-212x300.png)](http://www.lead-dbs.org/2016_leaddbs_workshop_berlin.pdf)
+[![Flyer of the 1st Lead-DBS Workshop, Berlin, 27–28 November 2016 (opens the PDF)](2016_leaddbs_workshop_berlin-front-212x300.png)](http://www.lead-dbs.org/2016_leaddbs_workshop_berlin.pdf)

@@ -3,25 +3,18 @@ title: "Subcortical Atlases (MNI-Space)"
 date: "2014-06-17T17:32:39"
 lastmod: "2025-01-13T23:16:49"
 weight: 1
+aliases: ["/helpsupport/knowledge-base/atlasesresources/atlases/"]
 ---
 
 ## Subcortical Atlases in MNI space
 
-Below you find information about how and where to obtain subcortical atlases suitable for 2D/3D-visualization using Lead-DBS.   If an atlas you know of is missing, please [contact us](http://andreas-horn.de/leaddbs/?page_id=74 "Contact"). Also, we are interested in distributing subcortical atlases preinstalled within Lead-DBS, if possible.
+Below you find information about how and where to obtain subcortical atlases suitable for 2D/3D-visualization using Lead-DBS.   If an atlas you know of is missing, please [contact us](/contact/). Also, we are interested in distributing subcortical atlases preinstalled within Lead-DBS, if possible.
 
 **Looking for atlases of the cortex / whole-brain parcellations?** Please see [this page](/helpsupport/knowledge-base/atlasesresources/cortical-atlas-parcellations-mni-space/).
 
-{{% row %}}
-{{% col "4/5" %}}
-> ##### **Please read our [philosophy on including code and datasets into Lead-DBS](/about/data-code-inclusion-philosophy/). In brief, inclusion of datasets does not mean endorsement or approval of the datasets you find within Lead-DBS.**
+{{< notice >}}Please read our [philosophy on including code and datasets into Lead-DBS](/about/data-code-inclusion-philosophy/). In brief, inclusion of datasets does not mean endorsement or approval of the datasets you find within Lead-DBS.{{< /notice >}}
 
-{{% /col %}}
-{{% col "1/5" %}}
-
-{{% /col %}}
-{{% /row %}}
-
-### DISTAL Atlas (Ewert 2017)
+### DISTAL Atlas (Ewert 2018) {#distal-atlas-ewert-2017}
 
 This atlas was created especially for use in Lead-DBS and combines multimodal MRI-, histology- and connectivity data into the same atlas to precisely define DBS targets and surrounding structures in [2009b NLIN Asym ICBM space](http://nist.mni.mcgill.ca/?p=904) ([the most modern “MNI space” in highest resolution currently available](/about-the-mni-spaces/)). The histology of this atlas is based on the Chakravarty atlas (see below).
 
@@ -30,16 +23,16 @@ This atlas was created especially for use in Lead-DBS and combines multimodal MR
 *How to obtain the atlas:*
 
 - The atlas is preinstalled in Lead-DBS
-- Current version is [v1.1](https://my.pcloud.com/publink/show?code=XZpLdb7ZcioalECab47YN7AJhkdayuXBnmzy) | Older version: [v1.0](https://my.pcloud.com/publink/show?code=XZRfrm7ZPSwdqHpocsbFMSsyAfxI5mQnigpk)
+- Current version is v1.1 | Older version: v1.0 (separate downloads of these versions are no longer available)
 
 *Related citations:*
 
-- [Ewert, S., Plettig, P., Li, N., Chakravarty, M. M., Collins, D. L., Herrington, T. M., et al. (2017). Toward defining deep brain stimulation targets in MNI space: A subcortical atlas based on multimodal MRI, histology and structural connectivity. *NeuroImage*.](http://doi.org/10.1016/j.neuroimage.2017.05.015)
-- [Chakravarty, M. M., Bertrand, G., Hodge, C. P., Sadikot, A. F., & Collins, D. L. (2006). The creation of a brain atlas for image guided neurosurgery using serial histological data. *NeuroImage*, *30*(2), 359–376.](http://doi.org/10.1016/j.neuroimage.2005.09.041)
+- [Ewert, S., Plettig, P., Li, N., Chakravarty, M. M., Collins, D. L., Herrington, T. M., et al. (2018). Toward defining deep brain stimulation targets in MNI space: A subcortical atlas based on multimodal MRI, histology and structural connectivity. *NeuroImage*, 170, 271–282.](https://doi.org/10.1016/j.neuroimage.2017.05.015)
+- [Chakravarty, M. M., Bertrand, G., Hodge, C. P., Sadikot, A. F., & Collins, D. L. (2006). The creation of a brain atlas for image guided neurosurgery using serial histological data. *NeuroImage*, *30*(2), 359–376.](https://doi.org/10.1016/j.neuroimage.2005.09.041)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](distal_atlas-1030x1030.png)  
+![DISTAL atlas structures in 3D with three DBS electrodes](distal_atlas-1030x1030.png)  
 
 Subsection of the DISTAL atlas visualized with three typical DBS electrodes
 
@@ -64,7 +57,7 @@ The Allen Human Reference Atlas is a parcellation of the adult human brain, labe
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Selection_256-300x282.png)
+![Allen Human Reference Atlas: subcortical structures in 3D](Selection_256-300x282.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -86,7 +79,7 @@ The AHEAD atlas is a freely available multi-modal, 7 Tesla MRI database. Sub-mil
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Screen-Shot-2021-03-18-at-15.48.13-300x216.png)
+![AHEAD atlas: subcortical structures in 3D over a coronal MRI slice](Screen-Shot-2021-03-18-at-15.48.13-300x216.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -112,7 +105,7 @@ This is a unique set of images in that the motor related nuclei are outlined bas
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](hmt-1030x937.png)
+![Human Motor Thalamus atlas: thalamic nuclei in 3D](hmt-1030x937.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -127,15 +120,15 @@ Initially built to study structures involved in reinforcement learning processes
 
 - You can get information about this atlas and download it [here](https://osf.io/jkzwp/).
 - The atlas nuclei in ICBM 2009c space are available [here](https://neurovault.org/collections/3145/).
-- The atlas was migrated from CIT168 space to ICBM 2009b space and comes preinstalled within Lead-DBS. A refined warp was created in 02/20 and resulted in current version [v1.1](https://my.pcloud.com/publink/show?code=XZb3uskZsmX1nfDPTb5kpwag3qU9tJReoQqX) | older version: [v1.0](https://my.pcloud.com/publink/show?code=XZg3uskZVwHzOmE0ipL8rJ8k4nE3nzeVdSGy)
+- The atlas was migrated from CIT168 space to ICBM 2009b space and comes preinstalled within Lead-DBS. A refined warp was created in 02/20 and resulted in current version v1.1 | older version: v1.0 (separate downloads of these versions are no longer available)
 
 *Related citations:*
 
-- [Pauli, W. M., Nili, A. N., & Tyszka, J. M. (2018). A high-resolution probabilistic in vivo atlas of human subcortical brain nuclei. *Scientific Data*, *5*, 180063.](http://doi.org/10.1038/sdata.2018.63)
+- [Pauli, W. M., Nili, A. N., & Tyszka, J. M. (2018). A high-resolution probabilistic in vivo atlas of human subcortical brain nuclei. *Scientific Data*, *5*, 180063.](https://doi.org/10.1038/sdata.2018.63)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](bg-1030x592.png)
+![CIT168 atlas: striatum and nearby structures in 3D over a sagittal MRI slice](bg-1030x592.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -152,11 +145,11 @@ This atlas parcellates the thalamus based on connectivity – including a region
 
 *Related citations:*
 
-- [Akram, H., Dayal, V., Mahlknecht, P., Georgiev, D., Hyam, J., Foltynie, T., et al. (2018). Connectivity derived thalamic segmentation in deep brain stimulation for tremor. *NeuroImage. Clinical*, *18*, 130–142.](http://doi.org/10.1016/j.nicl.2018.01.008)
+- [Akram, H., Dayal, V., Mahlknecht, P., Georgiev, D., Hyam, J., Foltynie, T., et al. (2018). Connectivity derived thalamic segmentation in deep brain stimulation for tremor. *NeuroImage. Clinical*, *18*, 130–142.](https://doi.org/10.1016/j.nicl.2018.01.008)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](dbs_thal_atlas-1030x774.png)
+![Thalamic DBS Connectivity atlas: thalamic parcels in 3D over a histological section](dbs_thal_atlas-1030x774.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -174,14 +167,14 @@ This atlas is defined on a specialized, Parkinson Disease specific template base
 
 *Related citations:*
 
-- [Xiao, Y., Fonov, V., Chakravarty, M. M., Bériault, S., Al-Subaie, F., Sadikot, A., et al. (2017). A dataset of multi-contrast population-averaged brain MRI atlases of a Parkinson׳s disease cohort. *NeuroImage*, *12*, 370–379.](http://doi.org/10.1016/j.dib.2017.04.013)
-- [Xiao, Y., Bériault, S., Pike, G. B., & Collins, D. L. (2012). Multicontrast multiecho FLASH MRI for targeting the subthalamic nucleus. *Magnetic Resonance Imaging*, *30*(5), 627–640.](http://doi.org/10.1016/j.mri.2012.02.006)
-- [Xiao, Y., Fonov, V., Bériault, S., Subaie, F. A., Chakravarty, M. M., Sadikot, A. F., et al. (2014). Multi-contrast unbiased MRI atlas of a Parkinson’s disease population. *International Journal of Computer Assisted Radiology and Surgery*, *10*(3), 329–341.](http://doi.org/10.1007/s11548-014-1068-y)
+- [Xiao, Y., Fonov, V., Chakravarty, M. M., Bériault, S., Al-Subaie, F., Sadikot, A., et al. (2017). A dataset of multi-contrast population-averaged brain MRI atlases of a Parkinson׳s disease cohort. *NeuroImage*, *12*, 370–379.](https://doi.org/10.1016/j.dib.2017.04.013)
+- [Xiao, Y., Bériault, S., Pike, G. B., & Collins, D. L. (2012). Multicontrast multiecho FLASH MRI for targeting the subthalamic nucleus. *Magnetic Resonance Imaging*, *30*(5), 627–640.](https://doi.org/10.1016/j.mri.2012.02.006)
+- [Xiao, Y., Fonov, V., Bériault, S., Subaie, F. A., Chakravarty, M. M., Sadikot, A. F., et al. (2014). Multi-contrast unbiased MRI atlas of a Parkinson’s disease population. *International Journal of Computer Assisted Radiology and Surgery*, *10*(3), 329–341.](https://doi.org/10.1007/s11548-014-1068-y)
 - [Chakravarty, M. M., Bertrand, G., Hodge, C. P., Sadikot, A. F., & Collins, D. L. (2006). The creation of a brain atlas for image guided neurosurgery using serial histological data. *NeuroImage*, *30*(2), 359–376.](http://www.sciencedirect.com/science/article/pii/S1053811905006993)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](mni_pd25.jpg)
+![MNI PD25 atlas in 3D, labelled caudate, putamen, thalamus, GPe, GPi, STN, SN and RN](mni_pd25.jpg)
 
 {{% /col %}}
 {{% /row %}}
@@ -199,21 +192,21 @@ The CoBrALab produces manually segmented MNI-based atlases of brain anatomy on t
 
 *Related citations:*
 
-- [Multi-atlas segmentation of the whole hippocampus and subfields using multiple automatically generated templates. (2014). Multi-atlas segmentation of the whole hippocampus and subfields using multiple automatically generated templates., *101*, 494–512.](http://doi.org/10.1016/j.neuroimage.2014.04.054)
-- [Chakravarty, M. M., Steadman, P., van Eede, M. C., Calcott, R. D., Gu, V., Shaw, P., et al. (2012). Performing label-fusion-based segmentation using multiple automatically generated templates. *Human Brain Mapping*, *34*(10), 2635–2654.](http://doi.org/10.1002/hbm.22092)
-- Amygdala label: [A reliable protocol for the manual segmentation of the human amygdala and its subregions using ultra-high resolution MRI. (2012). A reliable protocol for the manual segmentation of the human amygdala and its subregions using ultra-high resolution MRI., *60*(2), 1226–1235.](http://doi.org/10.1016/j.neuroimage.2011.12.073)
+- [Multi-atlas segmentation of the whole hippocampus and subfields using multiple automatically generated templates. (2014). Multi-atlas segmentation of the whole hippocampus and subfields using multiple automatically generated templates., *101*, 494–512.](https://doi.org/10.1016/j.neuroimage.2014.04.054)
+- [Chakravarty, M. M., Steadman, P., van Eede, M. C., Calcott, R. D., Gu, V., Shaw, P., et al. (2012). Performing label-fusion-based segmentation using multiple automatically generated templates. *Human Brain Mapping*, *34*(10), 2635–2654.](https://doi.org/10.1002/hbm.22092)
+- Amygdala label: [A reliable protocol for the manual segmentation of the human amygdala and its subregions using ultra-high resolution MRI. (2012). A reliable protocol for the manual segmentation of the human amygdala and its subregions using ultra-high resolution MRI., *60*(2), 1226–1235.](https://doi.org/10.1016/j.neuroimage.2011.12.073)
   - [More info here](https://github.com/CobraLab/atlases/tree/master/amygdala)
-- Striatum, pallidum and thamalus: [Warping an atlas derived from serial histology to 5 high-resolution MRIs. (2018). Warping an atlas derived from serial histology to 5 high-resolution MRIs., *5*, 180107.](http://doi.org/10.1038/sdata.2018.107)
+- Striatum, pallidum and thamalus: [Warping an atlas derived from serial histology to 5 high-resolution MRIs. (2018). Warping an atlas derived from serial histology to 5 high-resolution MRIs., *5*, 180107.](https://doi.org/10.1038/sdata.2018.107)
   - [More info here](https://github.com/CobraLab/atlases/tree/master/5-atlas-subcortical)
-- Hippocampus subfields: [A novel in vivo atlas of human hippocampal subfields using high-resolution 3 T magnetic resonance imaging. (2013). A novel in vivo atlas of human hippocampal subfields using high-resolution 3 T magnetic resonance imaging., *74*, 254–265.](http://doi.org/10.1016/j.neuroimage.2013.02.003)
+- Hippocampus subfields: [A novel in vivo atlas of human hippocampal subfields using high-resolution 3 T magnetic resonance imaging. (2013). A novel in vivo atlas of human hippocampal subfields using high-resolution 3 T magnetic resonance imaging., *74*, 254–265.](https://doi.org/10.1016/j.neuroimage.2013.02.003)
 
   - [More info here](https://github.com/CobraLab/atlases/tree/master/hippocampus-subfields)
-- Hippocampus / other: [Manual segmentation of the fornix, fimbria, and alveus on high-resolution 3T MRI: Application via fully-automated mapping of the human memory circuit white and grey matter in healthy and pathological aging. (2018). Manual segmentation of the fornix, fimbria, and alveus on high-resolution 3T MRI: Application via fully-automated mapping of the human memory circuit white and grey matter in healthy and pathological aging., *170*, 132–150.](http://doi.org/10.1016/j.neuroimage.2016.10.027)
+- Hippocampus / other: [Manual segmentation of the fornix, fimbria, and alveus on high-resolution 3T MRI: Application via fully-automated mapping of the human memory circuit white and grey matter in healthy and pathological aging. (2018). Manual segmentation of the fornix, fimbria, and alveus on high-resolution 3T MRI: Application via fully-automated mapping of the human memory circuit white and grey matter in healthy and pathological aging., *170*, 132–150.](https://doi.org/10.1016/j.neuroimage.2016.10.027)
   - [More info here](https://github.com/CobraLab/atlases/tree/master/hippocampus-subfields)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Cobralab-1.png)
+![CoBrALab atlas: subcortical structures in 3D](Cobralab-1.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -247,7 +240,7 @@ These tractograms were generated using the IT Human template [8]
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Avecillas_atlas-976x1030.png)
+![Subcortical white matter pathways (Avecillas atlas) in 3D](Avecillas_atlas-976x1030.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -269,7 +262,7 @@ A set of probabilistic sweetspots based on 449 DBS settings in 21 PD patients wh
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Dembek_Atlas_frei-1030x995.png)
+![STN sweetspot atlas: subthalamic nucleus with coloured regions in 3D](Dembek_Atlas_frei-1030x995.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -286,11 +279,11 @@ An atlas of DBS sweet- & sourspots for PD (STN & GPi), Dystonia, Essential Tremo
 
 Related citations:
 
-- [Probabilistic Mapping of Deep Brain Stimulation: Insights from 15 Years of Therapy. (2020). Annals of Neurology, ana.25975–48.](http://doi.org/10.1002/ana.25975)
+- [Probabilistic Mapping of Deep Brain Stimulation: Insights from 15 Years of Therapy. (2020). Annals of Neurology, ana.25975–48.](https://doi.org/10.1002/ana.25975)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](EqkYNvZXAAA6yRF-1030x636.jpg)
+![TOR-PSM atlas: probabilistic stimulation maps in 3D around both thalami](EqkYNvZXAAA6yRF-1030x636.jpg)
 
 {{% /col %}}
 {{% /row %}}
@@ -312,7 +305,7 @@ Related citations:
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](LEAD_Scene-5-894x1030.png)
+![TOR-signPD atlas: subcortical structures in 3D](LEAD_Scene-5-894x1030.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -332,11 +325,11 @@ Related citations:
 - [Li N, Baldermann JC, Kibleur A, Treu S, Akram H, Elias GJB, Boutet A, Lozano AM, Al-Fatly B, Strange B, Barcia JA, Zrinzo L, Joyce E, Chabardes S, Visser-Vandewalle V, Polosan M, Kuhn J, Kühn AA, Horn A. A unified connectomic target for deep brain stimulation in obsessive-compulsive disorder. Nature Communications 2020.](https://www.nature.com/articles/s41467-020-16734-3) **[♦ Preprint](https://www.biorxiv.org/content/10.1101/608786v4)** **[♦ Open Access](https://www.nature.com/articles/s41467-020-16734-3)**
 - [Li N, Hollunder B, Baldermann JC, Kibleur A, Treu S, Akram H, Al-Fatly B, Strange B, Barcia JA, Zrinzo L, Joyce E, Chabardes S, Visser-Vandewalle V, Polosan M, Kuhn J, Kühn AA, Horn A. A unified functional network target for deep brain stimulation in obsessive-compulsive disorder. Biological Psychiatry. 2021.](https://www.biologicalpsychiatryjournal.com/article/S0006-3223(21)01223-3/fulltext) **[♦ PDF](http://www.netstim.org/published_manuscripts/Li_Hollunder_et_al_2021_Biological_Psychiatry.pdf)**
 - [Baldermann JC, Schüller T, Kohl S, Voon V, Li N, Hollunder B, Figee M, Haber SN, Sheth SA, Mosley PE, Huys D, Johnson KA, Butson C, Ackermans L, van der Vlis TB, Leentjens AFG, Barbe M, Visser-Vandewalle V, Kuhn J, Horn A. Connectomic deep brain stimulation for obsessive-compulsive disorder. Biological Psychiatry. 2021.](https://www.biologicalpsychiatryjournal.com/article/S0006-3223(21)01461-X/fulltext) **[♦ Open Access](https://www.biologicalpsychiatryjournal.com/article/S0006-3223(21)01461-X/fulltext) [♦ PDF](http://www.netstim.org/published_manuscripts/Baldermann_et_al_2021_BioPsych.pdf)**
-- [Baldermann, M. D., Corina Melzer, M. S., Alexandra Zapf, M. S., Sina Kohl, P. D., Lars Timmermann, P., Marc Tittgemeyer, P. D., et al. (2019). Connectivity profile predictive of effective deep brain stimulation in obsessive compulsive disorder. *Biological Psychiatry*, 1–35.](http://doi.org/10.1016/j.biopsych.2018.12.019) **[♦ PDF](http://netstim.berlin/published_manuscripts/Baldermann_et_al_2019_BioPsych.pdf)**
+- [Baldermann, M. D., Corina Melzer, M. S., Alexandra Zapf, M. S., Sina Kohl, P. D., Lars Timmermann, P., Marc Tittgemeyer, P. D., et al. (2019). Connectivity profile predictive of effective deep brain stimulation in obsessive compulsive disorder. *Biological Psychiatry*, 1–35.](https://doi.org/10.1016/j.biopsych.2018.12.019) **[♦ PDF](https://www.netstim.org/published_manuscripts/Baldermann_et_al_2019_BioPsych.pdf)**
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](screenshot_ocd_asym-1030x660.png)
+![OCD response tract atlas: fibre tracts and subcortical structures in 3D](screenshot_ocd_asym-1030x660.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -357,7 +350,7 @@ Related citations:
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](screenshot_blank_oblique-1030x950.png)
+![Dystonia response tract atlas: fibre tracts of both hemispheres in 3D](screenshot_blank_oblique-1030x950.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -378,7 +371,7 @@ Related citations:
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Hypo_atlas-1030x943.png)
+![Essential tremor hypointensity atlas: tracts in red over an MRI slice](Hypo_atlas-1030x943.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -399,7 +392,7 @@ Related citations:
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](LEAD_Scene-7-754x1030.png)
+![Essential tremor probabilistic map in 3D with nearby fibre tracts and nuclei](LEAD_Scene-7-754x1030.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -416,11 +409,11 @@ The enhanced Tissue Probability Maps are a set of gray-, white- and csf- priors 
 
 *Related citations:*
 
-- [Lorio, S., Fresard, S., Adaszewski, S., Kherif, F., Chowdhury, R., Frackowiak, R. S., et al. (2016). New tissue priors for improved automated classification of subcortical brain structures on MRI. *NeuroImage*, *130*, 157–166.](http://doi.org/10.1016/j.neuroimage.2016.01.062)
+- [Lorio, S., Fresard, S., Adaszewski, S., Kherif, F., Chowdhury, R., Frackowiak, R. S., et al. (2016). New tissue priors for improved automated classification of subcortical brain structures on MRI. *NeuroImage*, *130*, 157–166.](https://doi.org/10.1016/j.neuroimage.2016.01.062)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Bildschirmfoto-2019-03-07-um-08.32.29.png)
+![Enhanced tissue probability maps: coronal slice of the template](Bildschirmfoto-2019-03-07-um-08.32.29.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -432,7 +425,7 @@ This set of canonical fiber tracts in MNI space have been defined using human co
 {{% col "2/3" %}}
 *How to obtain the atlas:*
 
-- The atlas comes pre-installed with LEAD-DBS.
+- The atlas comes pre-installed with Lead-DBS.
 
 *Related citations:*
 
@@ -441,7 +434,7 @@ This set of canonical fiber tracts in MNI space have been defined using human co
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Meola_fibers_zoom-1-295x300.png)
+![Brainstem connectome: colour-coded fibre tracts beside two DBS electrodes](Meola_fibers_zoom-1-295x300.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -454,16 +447,16 @@ In this atlas, beta power estimates recorded from >50 PD patients were mapped to
 {{% col "2/3" %}}
 *How to obtain the atlas:*
 
-- The atlas comes pre-installed with LEAD-DBS.
+- The atlas comes pre-installed with Lead-DBS.
 - More information on the subcortical electrophysiology mapping (SEM) approach and the atlas can be found [here](/subcortical-electrophysiology-mapping/).
 
 *Related citations:*
 
-- [Horn, A., Neumann, W.-J., Degen, K., Schneider, G.-H., & Kühn, A. A. (2017). Toward an electrophysiological “sweet spot” for deep brain stimulation in the subthalamic nucleus. *Human Brain Mapping*.](http://doi.org/10.1002/hbm.23594)
+- [Horn, A., Neumann, W.-J., Degen, K., Schneider, G.-H., & Kühn, A. A. (2017). Toward an electrophysiological “sweet spot” for deep brain stimulation in the subthalamic nucleus. *Human Brain Mapping*.](https://doi.org/10.1002/hbm.23594)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](betaatlas-1-1030x592.png)
+![Electrophysiological atlas of STN activity: region of beta activity inside the STN](betaatlas-1-1030x592.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -476,17 +469,17 @@ In this atlas, theta power estimates recorded from 27 dystonia patients were map
 {{% col "2/3" %}}
 *How to obtain the atlas:*
 
-- The atlas comes pre-installed with LEAD-DBS.
+- The atlas comes pre-installed with Lead-DBS.
 - More information on the atlas can be found [here](https://us8.campaign-archive.com/?u=a5b93846a3a2a714edbcce8ef&id=5d0c76f0df).
 - More information on the subcortical electrophysiology mapping (SEM) approach can be found [here](/subcortical-electrophysiology-mapping/).
 
 *Related citations:*
 
-- [Neumann, W.-J., Horn, A., Ewert, S., Huebl, J., Brücke, C., Slentz, C., et al. (2017). A localized pallidal physiomarker in cervical dystonia. *Annals of Neurology*.](http://doi.org/10.1002/ana.25095)
+- [Neumann, W.-J., Horn, A., Ewert, S., Huebl, J., Brücke, C., Slentz, C., et al. (2017). A localized pallidal physiomarker in cervical dystonia. *Annals of Neurology*.](https://doi.org/10.1002/ana.25095)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](thetaatlas-1030x586.png)
+![Electrophysiological atlas of GPi activity: region of theta activity inside the GPi](thetaatlas-1030x586.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -498,7 +491,7 @@ Atlas with a parcellation of the BGHAT-volume (see above) of the STN into three 
 {{% col "2/3" %}}
 *How to obtain the atlas:*
 
-- The atlas comes pre-installed with LEAD-DBS.
+- The atlas comes pre-installed with Lead-DBS.
 
 *Related citations:*
 
@@ -506,7 +499,7 @@ Atlas with a parcellation of the BGHAT-volume (see above) of the STN into three 
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Accolla-300x221.png)
+![Accolla STN atlas: three coloured functional zones of the STN](Accolla-300x221.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -521,7 +514,7 @@ Atlas including STN, pallidum and red nucleus made on 7T data from 12 healthy co
 
 - An MNI version of the atlas comes preinstalled within Lead-DBS
 - Original 7T template space atlases and templates can be downloaded via the Lead-DBS spaces menu, as well
-- The raw data can be downloaded [here](http://www.nitrc.org/projects/deepbrain7t/)
+- The raw data can be downloaded [here](https://www.nitrc.org/projects/deepbrain7t/)
 
 *Related citations:*
 
@@ -529,7 +522,7 @@ Atlas including STN, pallidum and red nucleus made on 7T data from 12 healthy co
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](7twang-1-300x236.png)
+![Ultra-high field atlas: subcortical structures in 3D](7twang-1-300x236.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -553,11 +546,11 @@ This hierarchical functional MRI Atlas of the human subcortex features
 
 *Related citations:*
 
-- [Tian, Y., Margulies, D. S., Breakspear, M., & Zalesky, A. (2020). Hierarchical organization of the human subcortex unveiled with functional connectivity gradients. bioRxiv, 2020.01.13.903542.](http://doi.org/10.1101/2020.01.13.903542)
+- [Tian, Y., Margulies, D. S., Breakspear, M., & Zalesky, A. (2020). Hierarchical organization of the human subcortex unveiled with functional connectivity gradients. bioRxiv, 2020.01.13.903542.](https://doi.org/10.1101/2020.01.13.903542)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](melbourne.gif)
+![Melbourne Subcortex Atlas: subcortical regions in 3D (animated)](melbourne.gif)
 
 {{% /col %}}
 {{% /row %}}
@@ -574,11 +567,11 @@ This atlas was generated in a hybrid manner using both structural and functional
 
 *Related citations:*
 
-- [He, X., Chaitanya, G., Asma, B., Caciagli, L., Bassett, D. S., Tracy, J. I., & Sperling, M. R. (2020). Disrupted basal ganglia–thalamocortical loops in focal to bilateral tonic-clonic seizures. *Brain : a Journal of Neurology*, *143*(1), 175–190.](http://doi.org/10.1093/brain/awz361)
+- [He, X., Chaitanya, G., Asma, B., Caciagli, L., Bassett, D. S., Tracy, J. I., & Sperling, M. R. (2020). Disrupted basal ganglia–thalamocortical loops in focal to bilateral tonic-clonic seizures. *Brain : a Journal of Neurology*, *143*(1), 175–190.](https://doi.org/10.1093/brain/awz361)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](He_atlas-1030x730.png)
+![Atlas of the Basal Ganglia and Thalamus: colour-coded parcels in 3D](He_atlas-1030x730.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -591,15 +584,15 @@ Atlas defining DBS targets for nine diseases in MNI space. A systematic literatu
 *How to obtain the atlas:*
 
 - The atlas comes preinstalled within Lead-DBS
-- Current version is [v1.1](https://my.pcloud.com/publink/show?code=XZpJdb7Z7WBmGg3yplJLXfWdoLkpq42IJntX) | Older version: [v1.0](https://my.pcloud.com/publink/show?code=XZ55db7ZnccI5aC7vx0Kv9oIjzsx0kJqzx8k)
+- Current version is v1.1 | Older version: v1.0 (separate downloads of these versions are no longer available)
 
 *Related citations:*
 
-- [Horn, A., Kühn, A. A., Merkl, A., Shih, L., Alterman, R., & Fox, M. (2017). Probabilistic conversion of neurosurgical DBS electrode coordinates into MNI space. *NeuroImage*. http://doi.org/10.1016/j.neuroimage.2017.02.004](http://doi.org/10.1016/j.neuroimage.2017.02.004)
+- [Horn, A., Kühn, A. A., Merkl, A., Shih, L., Alterman, R., & Fox, M. (2017). Probabilistic conversion of neurosurgical DBS electrode coordinates into MNI space. *NeuroImage*. http://doi.org/10.1016/j.neuroimage.2017.02.004](https://doi.org/10.1016/j.neuroimage.2017.02.004)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](dbstargets-1-300x195.png)
+![DBS targets atlas: small coloured target regions over an MRI slice](dbstargets-1-300x195.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -615,18 +608,18 @@ The VLpv is the nucleus of the atlas best corresponding to the VIM although it m
 {{% col "2/3" %}}
 *How to obtain the atlas:*
 
-- The atlas comes pre-installed with Lead-DBS.
+- The atlas comes pre-installed with Lead-DBS. It has been made [openly available by its authors](https://zenodo.org/records/13918589).
 - [A surface based version can be downloaded from here](https://www.research-collection.ethz.ch/handle/20.500.11850/669887).
 
 *Related citations:*
 
 - [Generation of Individualized Thalamus Target Maps by Using Statistical Shape Models and Thalamocortical Tractography. A Jakab, R Blanc, E L Berenyi, and G Szekely. AJNR Am J Neuroradiol, 2012 vol. 33 (11) pp. 2110-2116. http://www.ajnr.org/content/33/11/2110.full](http://www.ncbi.nlm.nih.gov/pubmed/22700756)
 - [A mean three-dimensional atlas of the human thalamus: Generation from multiple histological data. Axel Krauth, Remi Blanc, Alejandra Poveda, Daniel Jeanmonod, Anne Morel, and Gábor Székely. NeuroImage, 2010 vol. 49 (3) pp. 2053-2062.http://linkinghub.elsevier.com/retrieve/pii/S1053811909011136](http://www.ncbi.nlm.nih.gov/pubmed/19853042)
-- [Morel, A. (2013). Stereotactic Atlas of the Human Thalamus and Basal Ganglia. CRC Press.](http://www.crcpress.com/Stereotactic-Atlas-of-the-Human-Thalamus-and-Basal-Ganglia/Morel/9780824728946)
+- Morel, A. (2013). Stereotactic Atlas of the Human Thalamus and Basal Ganglia. CRC Press.
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Morel-300x172.png)
+![Morel atlas: thalamic and basal ganglia structures of both hemispheres in 3D](Morel-300x172.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -650,7 +643,7 @@ Please note that the original version of this atlas was registered to the MNI co
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Chakravarty_Atlas-300x300.png)  
+![Chakravarty atlas: labelled nuclei outlined on a histological section](Chakravarty_Atlas-300x300.png)  
 
 2D slice visualization of the atlas
 
@@ -675,7 +668,7 @@ This atlas has been generated by label fusion of the 20 manually segmented WMn-M
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Thomas-1030x893.png)
+![THOMAS atlas: thalamic nuclei in 3D](Thomas-1030x893.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -697,7 +690,7 @@ As opposed to the Saranathan THOMAS atlas in MNI space, this is a multi-atlas ba
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](HIPS_THOMAS-300x238.png)
+![HIPS-THOMAS segmentation: thalamic nuclei in 3D over a histological section](HIPS_THOMAS-300x238.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -710,16 +703,16 @@ An atlas displaying the anatomical and functional organization of the human subs
 {{% col "2/3" %}}
 *How to obtain the atlas:*
 
-- The atlas comes pre-installed with LEAD-DBS.
+- The atlas comes pre-installed with Lead-DBS.
 - The atlas can be downloaded from [Neurovault](https://neurovault.org/collections/2860/).
 
 *Related citations:*
 
-- [Zhang, Y., Larcher, K. M.-H., Misic, B., & Dagher, A. (2017). Anatomical and functional organization of the human substantia nigra and its connections. *eLife*, *6*.](http://doi.org/10.7554/eLife.26653)
+- [Zhang, Y., Larcher, K. M.-H., Misic, B., & Dagher, A. (2017). Anatomical and functional organization of the human substantia nigra and its connections. *eLife*, *6*.](https://doi.org/10.7554/eLife.26653)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](nigral-1030x880.png)
+![Nigral organization atlas: substantia nigra subregions in 3D](nigral-1030x880.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -731,8 +724,8 @@ An atlas of the basal ganglia that is based on 7T MR imaging
 {{% col "2/3" %}}
 *How to obtain the atlas:*
 
-- The atlas comes pre-installed with LEAD-DBS.
-- The atlas can be downloaded [here](http://www.nitrc.org/projects/atag)
+- The atlas comes pre-installed with Lead-DBS.
+- The atlas can be downloaded [here](https://www.nitrc.org/projects/atag)
 
 *Related citations:*
 
@@ -740,7 +733,7 @@ An atlas of the basal ganglia that is based on 7T MR imaging
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](ATAG_subcortical_atlas-300x293.png)
+![ATAG atlas: subcortical structures in 3D](ATAG_subcortical_atlas-300x293.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -752,8 +745,8 @@ An atlas of the STN based on 7T MR imaging
 {{% col "2/3" %}}
 *How to obtain the atlas:*
 
-- The atlas comes pre-installed with LEAD-DBS.
-- The atlas can be downloaded [here](http://www.nitrc.org/projects/atag)
+- The atlas comes pre-installed with Lead-DBS.
+- The atlas can be downloaded [here](https://www.nitrc.org/projects/atag)
 
 *Related citations:*
 
@@ -761,7 +754,7 @@ An atlas of the STN based on 7T MR imaging
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](ATAG_ages1-300x277.png)
+![ATAG STN atlas: subthalamic nuclei of three age groups in 3D](ATAG_ages1-300x277.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -778,11 +771,11 @@ In this atlas, the pedunculopontine nucleus has been segmented based on postmort
 
 *Related citations:*
 
-- [Alho, A. T. D. L., Hamani, C., Alho, E. J. L., da Silva, R. E., Santos, G. A. B., Neves, R. C., et al. (2017). Magnetic resonance diffusion tensor imaging for the pedunculopontine nucleus: proof of concept and histological correlation. *Brain Structure and Function*, *12*(1), 26.](http://doi.org/10.1007/s00429-016-1356-0)
+- [Alho, A. T. D. L., Hamani, C., Alho, E. J. L., da Silva, R. E., Santos, G. A. B., Neves, R. C., et al. (2017). Magnetic resonance diffusion tensor imaging for the pedunculopontine nucleus: proof of concept and histological correlation. *Brain Structure and Function*, *12*(1), 26.](https://doi.org/10.1007/s00429-016-1356-0)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](ppn_alho-1030x784.png)
+![PPN histological atlas: pedunculopontine nuclei in 3D over a histological section](ppn_alho-1030x784.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -800,12 +793,12 @@ Not in particular an atlas but rather a highly detailed whole-brain histological
 
 *Related citations:*
 
-- [Amunts, K., Lepage, C., Borgeat, L., Mohlberg, H., Dickscheid, T., Rousseau, M.-É. et al. (2013). BigBrain: an ultrahigh-resolution 3D human brain model. *Science (New York, NY)*, *340*(6139), 1472–1475.](http://doi.org/10.1126/science.1235381)
-- Warp into 2009b space: [Xiao, Y., Lau, J. C., Anderson, T., DeKraker, J., Collins, D. L., Peters, T., & Khan, A. R. (2019). Bridging micro and macro: accurate registration of the BigBrain dataset with the MNI PD25 and ICBM152 atlases. *bioRxiv*, *4*, 561118.](http://doi.org/10.1101/561118)
+- [Amunts, K., Lepage, C., Borgeat, L., Mohlberg, H., Dickscheid, T., Rousseau, M.-É. et al. (2013). BigBrain: an ultrahigh-resolution 3D human brain model. *Science (New York, NY)*, *340*(6139), 1472–1475.](https://doi.org/10.1126/science.1235381)
+- Warp into 2009b space: [Xiao, Y., Lau, J. C., Anderson, T., DeKraker, J., Collins, D. L., Peters, T., & Khan, A. R. (2019). Bridging micro and macro: accurate registration of the BigBrain dataset with the MNI PD25 and ICBM152 atlases. *bioRxiv*, *4*, 561118.](https://doi.org/10.1101/561118)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](bigbrain.png)
+![BigBrain: axial histological section in false colour](bigbrain.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -822,11 +815,11 @@ An atlas parcellating the GPi by structural connectivity to brainstem, GPe and c
 
 *Related citations:*
 
-- [da Silva, N. M., Ahmadi, S.-A., Tafula, S. N., Cunha, J. P. S., Bötzel, K., Vollmar, C., & Rozanski, V. E. (2016). A diffusion-based connectivity map of the GPi for optimised stereotactic targeting in DBS. *NeuroImage*, *, 1–9* http://doi.org/10.1016/j.neuroimage.2016.06.018](http://doi.org/10.1016/j.neuroimage.2016.06.018)
+- [da Silva, N. M., Ahmadi, S.-A., Tafula, S. N., Cunha, J. P. S., Bötzel, K., Vollmar, C., & Rozanski, V. E. (2016). A diffusion-based connectivity map of the GPi for optimised stereotactic targeting in DBS. *NeuroImage*, *, 1–9* http://doi.org/10.1016/j.neuroimage.2016.06.018](https://doi.org/10.1016/j.neuroimage.2016.06.018)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](gpi_parc_atlas-300x236.png)
+![GPi probabilistic parcellation atlas: GPi subregions in 3D](gpi_parc_atlas-300x236.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -843,11 +836,11 @@ An atlas parcellating the thalamus into Motor/Premotor, Somatosensory, Parietal/
 
 *Related citations:*
 
-- [Zhang, D., Snyder, A. Z., Fox, M. D., Sansbury, M. W., Shimony, J. S., & Raichle, M. E. (2008). Intrinsic functional relations between human cerebral cortex and thalamus. *Journal of Neurophysiology*, *100*(4), 1740–1748. http://doi.org/10.1152/jn.90463.2008](http://doi.org/10.1152/jn.90463.2008)
+- [Zhang, D., Snyder, A. Z., Fox, M. D., Sansbury, M. W., Shimony, J. S., & Raichle, M. E. (2008). Intrinsic functional relations between human cerebral cortex and thalamus. *Journal of Neurophysiology*, *100*(4), 1740–1748. http://doi.org/10.1152/jn.90463.2008](https://doi.org/10.1152/jn.90463.2008)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](zhang-495x400.png)
+![Zhang thalamic connectivity atlas: colour-coded thalamic parcels in 3D](zhang-495x400.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -865,11 +858,11 @@ An atlas parcellating the thalamus into seven functional zones based on structur
 
 *Related citations:*
 
-- [Behrens, T. E. J., Johansen-Berg, H., Woolrich, M. W., Smith, S. M., Wheeler-Kingshott, C. A. M., Boulby, P. A., et al. (2003). Non-invasive mapping of connections between human thalamus and cortex using diffusion imaging., *6*(7), 750–757. http://doi.org/10.1038/nn1075](http://doi.org/10.1038/nn1075)
+- [Behrens, T. E. J., Johansen-Berg, H., Woolrich, M. W., Smith, S. M., Wheeler-Kingshott, C. A. M., Boulby, P. A., et al. (2003). Non-invasive mapping of connections between human thalamus and cortex using diffusion imaging., *6*(7), 750–757. http://doi.org/10.1038/nn1075](https://doi.org/10.1038/nn1075)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](oxf-495x400.png)
+![Oxford thalamic connectivity atlas: colour-coded thalamic parcels in 3D](oxf-495x400.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -886,11 +879,11 @@ A reproduction of the Oxford thalamic connectivity atlas – obtained on 169 sub
 
 *Related citations:*
 
-- [Horn, A., & Blankenburg, F. (2016). Toward a standardized structural-functional group connectome in MNI space. *NeuroImage*, *124*(Pt A), 310–322. http://doi.org/10.1016/j.neuroimage.2015.08.048](http://doi.org/10.1016/j.neuroimage.2015.08.048)
+- [Horn, A., & Blankenburg, F. (2016). Toward a standardized structural-functional group connectome in MNI space. *NeuroImage*, *124*(Pt A), 310–322. http://doi.org/10.1016/j.neuroimage.2015.08.048](https://doi.org/10.1016/j.neuroimage.2015.08.048)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](thal_conn_horn-300x258.png)
+![Thalamic connectivity atlas (Horn 2016): colour-coded thalamic parcels in 3D](thal_conn_horn-300x258.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -912,7 +905,7 @@ An atlas focusing on the Ascending Arousal Network of the brainstem which also i
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](harvard_aan-300x288.png)
+![Harvard Ascending Arousal Network atlas: brainstem nuclei in 3D](harvard_aan-300x288.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -932,7 +925,7 @@ An atlas of the basal ganglia based on MR-imaging data – including pallidum, s
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Screen-Shot-2020-06-27-at-11.01.42-AM-300x298.png)
+![Ahsan basal ganglia atlas: numbered outlines on a coronal MRI slice](Screen-Shot-2020-06-27-at-11.01.42-AM-300x298.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -944,7 +937,7 @@ An atlas of the basal ganglia based on MR-imaging data
 {{% col "2/3" %}}
 *How to obtain the atlas:*
 
-- The atlas comes pre-installed with LEAD-DBS.
+- The atlas comes pre-installed with Lead-DBS.
 - The atlas can be obtained by contacting the author of the paper cited below.
 
 *Related citations:*
@@ -953,7 +946,7 @@ An atlas of the basal ganglia based on MR-imaging data
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](BGHAT_Prodoehl-300x278.png)
+![BGHAT atlas: basal ganglia and thalamus in 3D](BGHAT_Prodoehl-300x278.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -966,7 +959,7 @@ As in the Yeo 2011 brain parcellation atlas, 1000 rs-fMRI scans were used to cre
 *How to obtain the atlas:*
 
 - The atlas comes preinstalled within Lead-DBS and matches with the Yeo 2011 parcellation (labeling atlas).
-- More info about the atlas can be found [here](http://surfer.nmr.mgh.harvard.edu/fswiki/StriatumParcellation_Choi2012).
+- More info about the atlas can be found [here](https://surfer.nmr.mgh.harvard.edu/fswiki/StriatumParcellation_Choi2012).
 
 *Related citations:*
 
@@ -974,15 +967,13 @@ As in the Yeo 2011 brain parcellation atlas, 1000 rs-fMRI scans were used to cre
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Yeostriatum-300x238.png)
+![Functional striatum parcellation: striatum coloured by functional network](Yeostriatum-300x238.png)
 
 {{% /col %}}
 {{% /row %}}
 
 ### Cortical Functional Networks (Yeo 2011)
 Combining results from multiple landmark studies around Thomas Yeo, Randy Buckner and others, we have built a combined atlas that divides the cortex, striatum, cerebellum and thalamus into the famous seven or seventeen networks based on resting-state functional connectivity acquired in 1000 subjects. The atlas of the thalamus is unpublished.
-
-###
 
 {{% row %}}
 {{% col "2/3" %}}
@@ -999,7 +990,7 @@ Combining results from multiple landmark studies around Thomas Yeo, Randy Buckne
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](yeo-1-212x300.png)
+![Yeo functional networks: a subcortical structure coloured by network](yeo-1-212x300.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -1015,11 +1006,11 @@ Not really an “atlas” but rather an MNI coordinate defining the position of 
 
 *Related citations:*
 
-- [Snijders, A. H., Takakusaki, K., Debu, B., Lozano, A. M., Krishna, V., Fasano, A., et al. (2016). Physiology of freezing of gait. *Annals of Neurology*, *80*(5), 644–659. http://doi.org/10.1002/ana.24778](http://doi.org/10.1002/ana.24778)
+- [Snijders, A. H., Takakusaki, K., Debu, B., Lozano, A. M., Krishna, V., Fasano, A., et al. (2016). Physiology of freezing of gait. *Annals of Neurology*, *80*(5), 644–659. http://doi.org/10.1002/ana.24778](https://doi.org/10.1002/ana.24778)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](ppn-293x300.png)
+![PPN atlas (Snijders 2016): small red region on a brainstem section](ppn-293x300.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -1036,11 +1027,11 @@ The AICHA atlas is an atlas of intrinsic connectivity of homotopic areas. It als
 
 *Related citations:*
 
-- [Joliot, M., Jobard, G., Naveau, M., Delcroix, N., Petit, L., Zago, L., et al. (2015). AICHA: An atlas of intrinsic connectivity of homotopic areas. Journal of Neuroscience Methods, 254, 46–59. http://doi.org/10.1016/j.jneumeth.2015.07.013](http://doi.org/10.1016/j.jneumeth.2015.07.013)
+- [Joliot, M., Jobard, G., Naveau, M., Delcroix, N., Petit, L., Zago, L., et al. (2015). AICHA: An atlas of intrinsic connectivity of homotopic areas. Journal of Neuroscience Methods, 254, 46–59. http://doi.org/10.1016/j.jneumeth.2015.07.013](https://doi.org/10.1016/j.jneumeth.2015.07.013)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](aichasubcortical-300x285.png)
+![AICHA subcortical regions in 3D](aichasubcortical-300x285.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -1063,7 +1054,7 @@ A widely used atlas of subcortical structures. Does not separate between subpart
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](HarvardOxford-261x300.png)  
+![Harvard-Oxford atlas: subcortical structures in 3D](HarvardOxford-261x300.png)  
 
 Exemplary use of the HO-Atlas – target structures for DBS in depression.
 
@@ -1085,12 +1076,12 @@ If you are interested in whole-head anatomy, this is probably your atlas of choi
 
 *Related citations:*
 
-- [Iacono, M. I., Neufeld, E., Bonmassar, G., Akinnagbe, E., Jakab, A., Cohen, E., et al. (n.d.). A computational model for bipolar deep brain stimulation of the subthalamic nucleus. *2014 36th Annual International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC)*, 6258–6261.](http://doi.org/10.1109/EMBC.2014.6945059)
-- [Iacono, M. I., Neufeld, E., Akinnagbe, E., Bower, K., Wolf, J., Oikonomidis, I. V., et al. (2015). MIDA: A Multimodal Imaging-Based Detailed Anatomical Model of the Human Head and Neck. *PLoS ONE*, *10*(4), e0124126.](http://doi.org/10.1371/journal.pone.0124126)
+- [Iacono, M. I., Neufeld, E., Bonmassar, G., Akinnagbe, E., Jakab, A., Cohen, E., et al. (n.d.). A computational model for bipolar deep brain stimulation of the subthalamic nucleus. *2014 36th Annual International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC)*, 6258–6261.](https://doi.org/10.1109/EMBC.2014.6945059)
+- [Iacono, M. I., Neufeld, E., Akinnagbe, E., Bower, K., Wolf, J., Oikonomidis, I. V., et al. (2015). MIDA: A Multimodal Imaging-Based Detailed Anatomical Model of the Human Head and Neck. *PLoS ONE*, *10*(4), e0124126.](https://doi.org/10.1371/journal.pone.0124126)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](MIDA-241x300.png)
+![MIDA model: semi-transparent surface of a head](MIDA-241x300.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -1103,15 +1094,15 @@ An atlas based on MRI data
 {{% col "2/3" %}}
 *How to obtain the atlas:*
 
-- You can get information about this atlas [here](http://www.bioeng.nus.edu.sg/cfa/brain_atlas.html)
+- Information about this atlas used to be available on a website of the National University of Singapore (www.bioeng.nus.edu.sg), which can no longer be reached.
 
 *Related citations:*
 
-- [Qiu, A., Brown, T., Fischl, B., Ma, J., & Miller, M. I. (2010). Atlas generation for subcortical and ventricular structures with its applications in shape analysis. *IEEE Transactions on Image Processing : a Publication of the IEEE Signal Processing Society*, *19*(6), 1539–1547.](http://doi.org/10.1109/TIP.2010.2042099)
+- [Qiu, A., Brown, T., Fischl, B., Ma, J., & Miller, M. I. (2010). Atlas generation for subcortical and ventricular structures with its applications in shape analysis. *IEEE Transactions on Image Processing : a Publication of the IEEE Signal Processing Society*, *19*(6), 1539–1547.](https://doi.org/10.1109/TIP.2010.2042099)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](cfa_corticalshapeatlas-212x300.png)
+![CFA subcortical shape atlas: structures in 3D](cfa_corticalshapeatlas-212x300.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -1131,7 +1122,7 @@ An atlas of the basal ganglia based on histological data
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Screen-Shot-2020-06-27-at-11.11.03-AM-287x300.png)
+![Yelnik atlas: structures in 3D next to a DBS electrode, over an MRI slice](Screen-Shot-2020-06-27-at-11.11.03-AM-287x300.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -1152,7 +1143,7 @@ This is a probabilistic atlas of 23 brainstem bundles using high-quality connect
 
 {{% /col %}}
 {{% col "1/3" %}}
-![brainstem connectome atals](Screen-Shot-2020-05-25-at-10.38.14-PM-187x300.png)
+![Brainstem connectome atlas: colour-coded brainstem tracts](Screen-Shot-2020-05-25-at-10.38.14-PM-187x300.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -1173,7 +1164,7 @@ This atlas merged younger-older adult template of the fornix and demonstrated it
 
 {{% /col %}}
 {{% col "1/3" %}}
-![Fornix FMRIB FA Template](Screen-Shot-2020-05-25-at-10.53.14-PM-300x237.png)
+![Fornix FMRIB FA template: the fornix in red over a sagittal MRI slice](Screen-Shot-2020-05-25-at-10.53.14-PM-300x237.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -1194,7 +1185,7 @@ A collection of manually curated dMRI-based tracts relevant to deep brain stimul
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](image002-1030x801.png)
+![DBS tractography atlas: colour-coded fibre tracts around subcortical nuclei](image002-1030x801.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -1207,7 +1198,7 @@ This atlas is from rs-fMRI data acquired in 1000 young healthy adults that were 
 {{% col "2/3" %}}
 *How to obtain the atlas:*
 
-- You can get information about this atlas [here](http://www.freesurfer.net/fswiki/CerebellumParcellation_Buckner2011)
+- You can get information about this atlas [here](https://www.freesurfer.net/fswiki/CerebellumParcellation_Buckner2011)
 
 *Related citations:*
 
@@ -1216,7 +1207,7 @@ This atlas is from rs-fMRI data acquired in 1000 young healthy adults that were 
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Picture1-300x262.png)
+![Cerebellar functional networks: cerebellum coloured by network on a sagittal MRI slice](Picture1-300x262.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -1237,7 +1228,7 @@ Taking advantage of the distinct structural connectivity of nucleus accumbens su
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Picture2-1-300x226.png)
+![Nucleus accumbens atlas: two subregions on a coronal MRI slice](Picture2-1-300x226.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -1259,7 +1250,7 @@ This altas is based on resting state-fMRI to investigate the functional anatomy 
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Picture3-300x226.png)
+![Thalamic functional atlas (Kumar 2017): numbered thalamic parcels in 3D](Picture3-300x226.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -1280,7 +1271,7 @@ This atlas shows direct visualization and characterization of the human zona inc
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Picture4-300x223.png)
+![Zona incerta atlas: subregions in 3D with neighbouring nuclei](Picture4-300x223.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -1301,7 +1292,7 @@ This atlas was derived from a group of 7T HCP resting-state fMRI data using the 
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](DMN-300x207.jpg)
+![Subcortical default mode network atlas: coloured map over a coronal histological section](DMN-300x207.jpg)
 
 {{% /col %}}
 {{% /row %}}
@@ -1322,7 +1313,7 @@ The HybraPD atlas is constructed by using fused quantitative susceptibility mapp
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](1-300x270.png)
+![HybraPD atlas: labelled subcortical structures in 3D](1-300x270.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -1342,7 +1333,7 @@ This atlas of the human brain stem is based on 3T T1 and T2 data from approximat
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Levinson-300x175.png)
+![Levinson-Bari limbic brainstem atlas: structures over a coronal histological section](Levinson-300x175.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -1362,7 +1353,7 @@ Sweetspot for optimal tremor response based on 66 patients with essential tremor
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](twh-300x148.png)
+![TWH thalamotomy sweetspot in 3D next to the thalamus](twh-300x148.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -1382,8 +1373,8 @@ Sweet streamlines and sweet spots calculated based on 197 STN-DBS patients inclu
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Hollunder_et_al_fig1-300x245.png)
+![Human Dysfunctome atlas: fibre tracts in a 3D brain, with an enlarged detail](Hollunder_et_al_fig1-300x245.png)
 
 {{% /col %}}
 {{% /row %}}
-{{< button href="/contact/" >}}Contact us to make your subcortical atlas available for distribution with LEAD-DBS{{< /button >}}
+{{< button href="/contact/" >}}Contact us to make your subcortical atlas available for distribution with Lead-DBS{{< /button >}}

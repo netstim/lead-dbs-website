@@ -38,7 +38,7 @@ Also see [this page for further info on different spaces](https://bids-specifica
 
 So what is “the MNI space” now, really? Generally speaking, the MNI “space” merely defines the boundaries around the brain, expressed in millimeters, from a set origin. Depending on which template you use, a certain coordinate may end up in a different anatomical structure. In many applications (e.g. fMRI on an average 3T scanner), this doesn’t matter too much.  Standard research pipelines use smoothing (sometimes with FWHM kernels of 8 × 8 × 8 mm (!)) and fMRI resolution sometimes is as poor as 3 × 3 × 3 mm. These subtle differences between templates may not be a big problem. However, in DBS imaging, millimeters do matter and Lead-DBS has been optimized to account for that as good as possible. This is the reason why output folders of datasets processed with Lead-DBS are sometimes quite huge in size.
 
-![MNI6thgenvs2009](MNI6thgenvs2009.gif)So rather of speaking about which “space” we report results in, we should refer to the specific template on which we report our results. As mentioned above, Lead-DBS generally uses the MNI 2009b NLIN asymmetric T2 template as it’s primary definition of default anatomy. However, not all resources and routines within the software have been or can be adapted to that exact space.
+![Axial slice of the MNI template, comparing the 6th generation and 2009 versions](MNI6thgenvs2009.gif)So rather of speaking about which “space” we report results in, we should refer to the specific template on which we report our results. As mentioned above, Lead-DBS generally uses the MNI 2009b NLIN asymmetric T2 template as it’s primary definition of default anatomy. However, not all resources and routines within the software have been or can be adapted to that exact space.
 
 In contrast, within the literature, many papers refer to “standard space” or “MNI space” only. Depending on the context, based on this information, one may assume that they used either the linear or nonlinear 6th-gen 152 space T1 templates (since this is the one supplied with SPM or FSL). However, even if results are reported within “MNI 152 space”, one wouldn’t know which of the three 152 spaces is meant and if the 2009 series is used, which of the 6 template series (2009a, 2009b or 2009c? symmetric or asymmetric?) was used.
 
@@ -72,7 +72,7 @@ From Lead-DBS v.1.4.9.4 on, **we applied this transform to the following resourc
 - SPM New Segment uses a segmentation of the ICBM2009b template performed based on the Lorio 2016 (3) enhanced TPM maps that have been graciously provided for use within Lead-DBS by Bogdan Draganski. Thus, this normalization routine perfectly conforms to the 2009b template.
 - Similar to the above, DARTEL & SHOOT implementations within Lead-DBS use this novel TPM automatically built by Lead-DBS.
 
-![bigbrain2mni2009b](bb2mni2009b.gif)
+![Axial BigBrain histology slice registered to the MNI 2009b template](bb2mni2009b.gif)
 
 The above image faded between subcortical structures of the BigBrain 2015 release in 100um resolution and the MNI/ICBM 153 2009b NLIN asymetric template.
 

@@ -28,11 +28,11 @@ Brief methods summary:
 - Electrodes were localized in each patient and localizations were warped into standard space.
 - This leads to a 3D point-cloud in subcortical anatomical space.
 
-![](fig_1.png)
+![Methods summary in four panels: images in standard space, electrode localization, recordings per contact, interpolated map](fig_1.png)
 
 **Fig. 1:** *Methods summary. Postoperative images are transformed to standard space (A); electrodes are localized for each patient (B); electrophysiological recording estimates (such as beta power) are projected onto the midpoint of each contact pair (C); This leads to a 3D point cloud, each point associated with a beta power value. These points are used to fit a scattered interpolant to define beta values within covered subcortical space (D).*
 
-![](electrodes-780x684.png)
+![Many DBS electrodes among the STN, thalamic nuclei and red nucleus in 3D](electrodes-780x684.png)
 
 **Fig. 2:** *Electrode reconstructions from 54 STN-DBS patients.*
 
@@ -48,7 +48,7 @@ Regarding the second point, this first subcortical mapping study may be seen as 
 
 > Are Lead-DBS electrode localizations and normalizations precise enough to map electrophysiological values from a large group of patients onto a small structure like the subthalamic nucleus?
 
-![](betavsalpha.png)
+![Maps of beta and alpha power in the STN, in axial, coronal and sagittal views](betavsalpha.png)
 
 **Fig. 3:** *Main results of the study – significantly higher beta (top) activity was recorded from the dorsolateral (motor) STN; significantly higher alpha (bottom) activity was recorded from a more ventromedial part of the STN.*
 
@@ -56,7 +56,7 @@ The above results show a clear relationship between alpha/beta power and spatial
 
 > The results from this study shows that i) it is feasible to pool electrophysiological data across patients in space and ii) electrode localizations and warps to standard space are precise enough to get an overview about their spatial distribution
 
-![](betaalpha3d.png)
+![Beta and alpha peaks within the STN in 3D, with electrode trajectories](betaalpha3d.png)
 
 **Fig. 4:** *3D representation of peaks in electrophysiological activity (same data as shown in Fig. 3).*
 
@@ -68,13 +68,13 @@ For this analysis – which could only be performed on group level – a standar
 
 However, the two regions exhibited a (slightly) different connectivity profile that was largely consistent with data presented in [[Acolla 2015](https://academic.oup.com/brain/article-abstract/139/9/2503/1744844/Brain-networks-modulated-by-subthalamic-nucleus?redirectedFrom=fulltext)], before (see below).
 
-![](fibertracts-1030x841.png)
+![Structural connectivity from alpha and beta seeds to the cortex](fibertracts-1030x841.png)
 
 **Fig. 5:** *Contrasting fiber tract maps seeding either from the “alpha-hotspot” or “beta-hotspot”. Please note that panel B shows a contrast map between the two seeds. Given their spatial proximity, the overall connectivity profiles from both seeds is similar.*
 
 Finally, given the importance of the beta rhythm in Parkinson’s Disease, the resulting beta-atlas could serve to guide DBS programming (and potentially targeting) once prospectively validated in follow up studies. The atlas is made publicly available within Lead-DBS software and on [Neurovault](http://neurovault.org/collections/2418/).
 
-![](fig_7.png)
+![DBS electrode in the STN with the beta peak and a volume of tissue activated](fig_7.png)
 
 **Fig. 6:** *The peak of beta-activity (yellow) shown in synopsis with a hypothetical lead. Based on the reconstruction, the second most dorsal contact could represent a first choice in clinical programming.*
 

@@ -12,8 +12,10 @@ Here are some key features:
 - Co-registration between pre-op MRIs and post-op CTs works much more robustly now using BRAINSFit.
 - fMRI/dMRI-based connectomic results can now be explored using both a seed-based and graph-theoretical approach in the 3D-viewer. In fMRI, you can even loop across time using a sliding-window approach.
 
-[![VAT_atlases2](VAT_atlases2-300x166.png)](VAT_atlases2.png)
+[![Volume of tissue activated around two electrode contacts, in 3D (opens larger)](VAT_atlases2-300x166.png)](VAT_atlases2.png)
 
 Even more importantly, I am very happy to mention that the development team has grown substantially: Welcome Ningfei Li, Philip Plettig & Siobhán Ewert to the team!
 
 We will continue to improve especially the new features in the upcoming months and there are a few nice new features already in the pipeline. As always, suggestions, comments and help ([fork us on github](https://github.com/andreashorn/lead_dbs)) are most welcome.
+
+*Note (2026): the code now lives at [github.com/netstim/leaddbs](https://github.com/netstim/leaddbs).*

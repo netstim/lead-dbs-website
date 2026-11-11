@@ -7,7 +7,7 @@ slug: "dbs-targets-in-mni-space"
 
 This blog post summarizes the work in
 
-![](622925-2.gif)
+![Cover of NeuroImage showing DBS targets in MNI space on a histological section](622925-2.gif)
 
 > [Horn, A., Kühn, A. A., Merkl, A., Shih, L., Alterman, R., & Fox, M. (2017). Probabilistic conversion of neurosurgical DBS electrode coordinates into MNI space. *NeuroImage*, *150*, 395–404.](http://doi.org/10.1016/j.neuroimage.2017.02.004)
 
@@ -19,7 +19,7 @@ Surgical coordinates defined relative to the anterior (AC), posterior commissure
 
 This coordinate system was popularized by two seminal surgical atlases, the Schaltenbrandt-Wahren ([1977](http://www.thieme.com/books-main/neurosurgery/product/168-atlas-for-stereotaxy-of-the-human-brain)) and Talairach-Tournoux ([1988](http://www.thieme.com/books-main/neurosurgery/product/414-co-planar-stereotaxic-atlas-of-the-human-brain)) atlases [as a side note, the idea of [stereotactic coordinates first appeared as early as 1906 by Clarke & Horsley](https://www.ncbi.nlm.nih.gov/pubmed/17912057)]. As pointed out by [Brett and colleagues (2002)](http://www.nature.com/nrn/journal/v3/n3/abs/nrn756.html), at their time, these atlases introduced three innovations: a coordinate system that helped to identify brain locations relative to anatomical landmarks, an atlas describing a standard brain, with anatomical labels and cytoarchitectonic details contributed by the work of Korbinian Brodmann (1925) and a 9-parameter transformation (adjusting for position, orientation and size) to match one brain to another. In general, the AC and PC are not the worst reference points given their relatively small anatomical variance across subjects. However, the two atlases were both defined based on single brains that were smaller than average. Moreover, as pointed out by [Weiss and colleagues (2002)](http://www.ajnr.org/content/24/5/922), the reference points are not always the same – sometimes the center of the AC and PC are used, sometimes their anterior/posterior borders, sometimes a mixture of the two.
 
-![](fig_1-1.png)
+![Comparison of brain size and AC-PC distance in MNI, average and Talairach brains, and electrode positions in three spaces](fig_1-1.png)
 
 ***Figure 1:** AC/PC-coordinates are ill-defined. A) Both the Schaltenbrandt-Wahren and Talairach-Tournoux atlases are based on single brain that are smaller than average. B) The reference points of the anterior and posterior commissures are not always defined exactly the same – depending on the atlas used and the surgeon’s preference.*
 
@@ -67,13 +67,13 @@ Once we showed that it was feasible to convert AC/PC coordinates into MNI space,
 
 The result was an atlas of DBS targets for various diseases defined in MNI space
 
-![](acpc-728x1030.png)
+![DBS target regions marked on a histological section](acpc-728x1030.png)
 
 ***Figure 2:** AC/PC coordinates transformed to MNI space based on age-matched surrogate cohorts. This picture was elected for coverart in [NeuroImage Volume 150/June 2017](http://www.sciencedirect.com/science/journal/10538119/150) and directly shows the combination of findings with «MNI resources». Namely, the backdrop of the image is defined by the [BigBrain dataset](http://www.sciencedirect.com/science/journal/10538119/150), a whole-brain histology stack that has been warped into MNI.*
 
 The nice thing about these results is that we could now compare the DBS target sites with other subcortical atlases – i.e. not only with the Schaltenbrandt/Wahren atlas commonly used in the neurosurgical literature. For instance, the [Morel](https://www.crcpress.com/Stereotactic-Atlas-of-the-Human-Thalamus-and-Basal-Ganglia/Morel/p/book/9780824728946) or [Chakravarty](https://www.ncbi.nlm.nih.gov/pubmed/16406816) atlases are based on histology and available in MNI space:
 
-![](fig_3.png)
+![DBS targets for several diseases mapped on MNI template slices](fig_3.png)
 
 ***Figure 3:** DBS targets defined in MNI space. Each target was mapped to MNI space using a healthy cohort that was age-matched to the cohort in which the AC/PC coordinate had been defined. [Various atlases available in MNI space](/helpsupport/knowledge-base/atlasesresources/atlases-2/) can help to interpret anatomical context.*
 
@@ -83,14 +83,14 @@ Thus, depending on the atlas, the same nucleus will be called differently and no
 
 Finally, thalamic atlases exist that are not based on histology but on functional zones in the thalamus defined by functional or diffusion-weighted imaging. For instance, the seminal work by Behrens and colleagues ([2003](https://www.ncbi.nlm.nih.gov/pubmed/12808459)) defined seven functional zones of the thalamus based on their structural connectivity. This was reported as a group result in MNI space and could thus now be combined with findings from the neurosurgical literature:
 
-![](fig_4-829x1030.png)
+![Synopsis of DBS targets with several MNI atlases and connectivity analysis](fig_4-829x1030.png)
 
 ***Figure 4:** One exemplary DBS target (to treat Essential Tremor) extensively characterized by various MNI resources. Atlases based on histology, functional or diffusion-weighted MRI may be used to characterize the spatial location of the target. Moreover, normative functional and structural connectome datasets may be used to characterize the connectivity profile of the effective target site.*
 
 Figure 4 summarizes the potential and the gain in knowledge entailed with warping neurosurgical targets into MNI space. The methodology described in this article is fully implemented within Lead-DBS and can be applied to any AC/PC target based on a surrogate cohort of choice using the AC/PC <=> MNI conversion tool:
 
-![](lead_acpc-1030x884.png)
+![Lead-DBS Tools menu with the entry for AC/PC to MNI coordinate conversion](lead_acpc-1030x884.png)
 
-![](acpc_mni_conversion_tool-1030x481.png)
+![The AC/PC vs. MNI conversion tool window](acpc_mni_conversion_tool-1030x481.png)
 
 > Read the full article here: [Horn, A., Kühn, A. A., Merkl, A., Shih, L., Alterman, R., & Fox, M. (2017). Probabilistic conversion of neurosurgical DBS electrode coordinates into MNI space. *NeuroImage*, *150*, 395–404.](http://doi.org/10.1016/j.neuroimage.2017.02.004)

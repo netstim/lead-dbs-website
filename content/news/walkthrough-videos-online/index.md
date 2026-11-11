@@ -7,3 +7,5 @@ slug: "walkthrough-videos-online"
 
 Today we added some [walkthrough-videos](http://andreas-horn.de/leaddbs/?page_id=192 "Walkthrough-Videos") to the website. These show the complete reconstruction procedure of the toolbox in seven easy steps.  
 We are also constantly working on updating the [manual](http://andreas-horn.de/leaddbs/?page_id=71 "Manual") and added some [screenshots](http://andreas-horn.de/leaddbs/?page_id=171 "Screenshots") to the site recently. For all other questions, please feel free to use the [forum](http://andreas-horn.de/leaddbs/?forum=lead-dbs-support-forum "Forum").
+
+*Note (2026): these links went to the old website and no longer work. The walkthrough videos are now [here](/helpsupport/knowledge-base/walkthrough-videos/) and the manual is at [netstim.gitbook.io/leaddbs](https://netstim.gitbook.io/leaddbs). The forum is closed: please ask on the [user Slack](https://inviter.co/lead-dbs) instead.*

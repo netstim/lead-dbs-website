@@ -7,8 +7,8 @@ weight: 7
 
 ## Download FOCUS
 
-By downloading the FOCUS atlas, you acknowledge that we **do not provide a licensefor commercial applications but only for academic research purposes**.
+By downloading the FOCUS atlas, you acknowledge that we **do not provide a license for commercial applications but only for academic research purposes**.
 
-By downloading FOCUS, you automatically**subscribe to our newsletter**, which is being sent out rarely. Of course, you can single-click opt-out from the subscription very easily and we won’t share your contact details with anyone else.
+By downloading FOCUS, you automatically **subscribe to our newsletter**, which is being sent out rarely. Of course, you can single-click opt-out from the subscription very easily and we won’t share your contact details with anyone else.
 
 {{< form "downloadfocus" >}}

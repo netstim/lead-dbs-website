@@ -5,13 +5,13 @@ lastmod: "2017-09-10T14:04:59"
 slug: "lead-dbs-v2-0-is-out-now"
 ---
 
-# New features in Lead-DBS 2.0
+## New features in Lead-DBS 2.0
 
 Today we released Lead-DBS 2.0 and it comes fully loaded with new major features to model deep brain stimulation electrodes in computer simulations.
 
 {{% row %}}
 {{% col "1/2" %}}
-![](3aa58e0e-b861-466b-aa29-ee0f4b523fdd.png)
+![Lead-DBS 2.0 logo](3aa58e0e-b861-466b-aa29-ee0f4b523fdd.png)
 
 {{% /col %}}
 {{% col "1/2" %}}
@@ -23,7 +23,7 @@ Lead-DBS 2.0 is not just a small incremental update. It comes with multiple majo
 
 {{% /col %}}
 {{% /row %}}
-![](Lead_DBS_2_0_in_a_nutshell-1030x624.png)
+![Lead-DBS 2.0 in a nutshell: overview of the new features around a 3D render](Lead_DBS_2_0_in_a_nutshell-1030x624.png)
 
 ## The DISTAL atlas
 
@@ -31,7 +31,7 @@ Lead-DBS 2.0 is not just a small incremental update. It comes with multiple majo
 
 The [DISTAL atlas](/helpsupport/knowledge-base/atlasesresources/distal-atlas/) is a modern and very detailed neuroimaging atlas that was precisely co-registered to the [default working space of Lead-DBS](/about-the-mni-spaces/).
 
-![](distal_atlas-1030x1030.png)
+![DISTAL atlas structures in 3D with three DBS electrodes](distal_atlas-1030x1030.png)
 
 **Combining MRI, histology and connectivity in the same atlas**
 
@@ -63,18 +63,18 @@ Such models have been around for quite some time but somehow never made their wa
 
 {{% row %}}
 {{% col "1/2" %}}
-![](abb_3-1030x1013.png)
+![Simulated electric field around a DBS electrode contact (FEM-based VTA model)](abb_3-1030x1013.png)
 
 {{% /col %}}
 {{% col "1/2" %}}
-![](abb_3-2-1006x1030.png)
+![Volume of tissue activated around a DBS electrode, FEM-based model](abb_3-2-1006x1030.png)
 
 {{% /col %}}
 {{% /row %}}
 
 {{% row %}}
 {{% col "1/2" %}}
-![](K1-copy-778x1030.png)
+![DBS electrode with a volume of tissue activated next to a fibre tract](K1-copy-778x1030.png)
 
 {{% /col %}}
 {{% col "1/2" %}}
@@ -88,6 +88,8 @@ The new VTA model works for both constant voltage and current stimulations, is a
 **The VTA model is in “beta” state but we hope to finish it soon**
 
 Unfortunately, the model may still not be seen as “stable” software and requires some troubleshooting here and there (see [this page](/helpsupport/knowledge-base/atlasesresources/ixi-database/), our [Slack channel](/helpsupport/slack-user-channel/) and [Forum](/helpsupport/slack-user-channel/) for support options). Also, it does not yet work with segmented leads. We are working on getting this done with some support from Till Dembek out of Cologne.
+
+*Note (2026): the forum is closed; please ask on the [user Slack](https://inviter.co/lead-dbs).*
 
 *Of note, this model represents the first open-source FEM based VTA model and numerous people invested countless hours to make this happen. **Great thanks go out to Johannes Vorwerk (Utah), Qianqian Fang (Boston), Ningfei Li (Berlin) & Robert Oostenfeld (Nijmegen), [also see here](/helpsupport/knowledge-base/atlasesresources/ixi-database/).***
 
@@ -117,7 +119,7 @@ PaCER is fast and precise, in most cases there is no manual refinement needed at
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](PaCER-388x1030.png)
+![Reconstructed electrode trajectory above a lead (PaCER)](PaCER-388x1030.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -128,7 +130,7 @@ PaCER is fast and precise, in most cases there is no manual refinement needed at
 
 In meticulous work, Ari Kappel (Richardson lab, U Pittsburg) and Chadwick Boulay (Sachs lab, U Ottawa) created a tool to map microelectrode recordings (MER) onto the subcortical anatomy of the brain.
 
-![](MER.gif)
+![Microelectrode recording trajectories through atlas structures in 3D](MER.gif)
 
 **A fusion of electrophysiology and MRI in space**
 
@@ -136,15 +138,17 @@ Using the novel MER tool, it is easy to investigate the overlap between electrop
 
 {{< button href="https://leaddbs.gitbooks.io/leaddbs-manual/content/mer-analysis.html" >}}See the manual on MER-Recordings here{{< /button >}}
 
+*Note (2026): this old manual is offline; the current manual is at [netstim.gitbook.io/leaddbs](https://netstim.gitbook.io/leaddbs).*
+
 ## Human Motor Thalamus Atlas – resolving controversies and disagreements related to the human motor thalamus
 
-![](Screen-Shot-2017-05-08-at-4.28.06-PM-1030x870.png)
+![Human Motor Thalamus atlas in 3D over MRI slices](Screen-Shot-2017-05-08-at-4.28.06-PM-1030x870.png)
 
 Igor and Kristy Ilinsky created a detailed histological atlas of the human motor thalamus as a seminal contribution to define termination areas of three (nigral, pallidal and cerebellar) afferent systems to the human thalamus.
 
 Their atlas was co-registered using MRI and the pseudoMRI mapping approach introduced by [Chakravarty and colleagues](http://www.sciencedirect.com/science/article/pii/S1361841508000443) that we refined in our work on the [DISTAL atlas](/helpsupport/knowledge-base/atlasesresources/distal-atlas/) including multispectral and multi-iterative nonlinear warps.
 
-![](hmt-1030x937.png)
+![Human Motor Thalamus atlas: thalamic nuclei in 3D](hmt-1030x937.png)
 
 **A detailed map of the human motor thalamus**
 
@@ -176,8 +180,8 @@ In this way, you can select 100 patients, run coregistration and normalization o
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Screen-Shot-2017-08-30-at-2.16.24-PM.png)  
-![](arrows.png)
+![Back, Disapprove & Next and Approve & Next buttons of the new workflow](Screen-Shot-2017-08-30-at-2.16.24-PM.png)  
+![Two arrows pointing in opposite directions](arrows.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -185,12 +189,12 @@ In this way, you can select 100 patients, run coregistration and normalization o
 
 {{% row %}}
 {{% col "1/3" %}}
-![](nigral-1030x880.png)  
+![Nigral organization atlas: substantia nigra subregions in 3D](nigral-1030x880.png)  
 
 *[Zhang et al. 2017](https://elifesciences.org/articles/26653) nigral organization atlas*
 
   
-![](ppn_alho-1030x784.png)  
+![PPN histological atlas: pedunculopontine nuclei in 3D over a histological section](ppn_alho-1030x784.png)  
 
 *[Alho et al. 2017](https://link.springer.com/article/10.1007%2Fs00429-016-1356-0) PPN atlas*
 

@@ -1,18 +1,13 @@
 ---
-title: "Slack User Channel"
+title: "User Slack"
 date: "2017-01-04T21:29:10"
-lastmod: "2026-07-21T06:52:04"
+lastmod: "2026-11-10"
 ---
 
-[The Slack channel](https://leadsuite.slack.com/) ([autoinvite yourself here](https://inviter.co/lead-dbs)) provides fast and uncomplicated help from users to users. Also, Ningfei, Philip, Siobhan and Andreas are online often and usually respond fast to questions. If you are not familiar with Slack, it is a great way to communicate on research topics and you can imagine it very similar to Whatsapp or other chat systems. There are [great apps for Slack](https://slack.com/downloads) which allow you to easily communicate with us from your Desktop or mobile device. We can recommend the multi-messenger software “[Franz](http://meetfranz.com/)” which is a combined messenger app for Slack, Whatsapp, Facebook Messenger, Skype and much more.
+The Lead-DBS user Slack provides fast and uncomplicated help from users to users. Members of the development team read along and help where they can. If you have not used Slack before: it works like a group chat, in the browser or with the [Slack apps](https://slack.com/downloads) for desktop and phone.
 
-{{% row %}}
-{{% col "1/2" %}}
-[![](autoinvite.png)](https://leadsuite.herokuapp.com/)
+{{< button href="https://inviter.co/lead-dbs" >}}Join the user Slack{{< /button >}}
 
-{{% /col %}}
-{{% col "1/2" %}}
-[![](slackchannel.png)](https://leadsuite.slack.com/)
+The button opens the self-invite page, where you enter your name and e-mail address to receive an invitation. Already a member? [Open the workspace](https://leadsuite.slack.com/) (leadsuite.slack.com).
 
-{{% /col %}}
-{{% /row %}}
+The old support forum is closed; the user Slack replaces it. Bugs are best reported as an issue on [GitHub](https://github.com/netstim/leaddbs/issues).

@@ -3,11 +3,12 @@ title: "Macaque Atlases (MNI-Space)"
 date: "2016-06-08T19:50:20"
 lastmod: "2022-03-16T14:38:42"
 weight: 3
+aliases: ["/sdm_downloads/lead-dbs-macaque-toolbox/"]
 ---
 
 ## Macaque atlases in MNI space
 
-Below you find information about how and where to obtain atlases suitable for 2D/3D-visualization using Lead-DBS and its macaque toolbox extension. If an atlas you know of is missing, please [contact us](http://andreas-horn.de/leaddbs/?page_id=74 "Contact").
+Below you find information about how and where to obtain atlases suitable for 2D/3D-visualization using Lead-DBS and its macaque toolbox extension. If an atlas you know of is missing, please [contact us](/contact/).
 
 **Looking for human atlases of the cortex / whole-brain parcellations?** Please see [this page](/helpsupport/knowledge-base/atlasesresources/cortical-atlas-parcellations-mni-space/).  
 **Looking for human subcortical atlases?** Please see [this page](/helpsupport/knowledge-base/atlasesresources/atlases-2/).
@@ -31,8 +32,8 @@ Please note that the atlas is not exactly coregistered to macaque MNI space. How
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Lead_dbs_macaques2-300x169.png)
+![Macaque atlas structures in 3D with a DBS electrode, over an MRI slice](Lead_dbs_macaques2-300x169.png)
 
 {{% /col %}}
 {{% /row %}}
-{{< button href="/contact/" >}}Contact us to make your atlas available for distribution with LEAD-DBS{{< /button >}}
+{{< button href="/contact/" >}}Contact us to make your atlas available for distribution with Lead-DBS{{< /button >}}

@@ -6,19 +6,11 @@ lastmod: "2024-02-12T14:56:52"
 
 ## Cortical Atlas Parcellations in MNI space
 
-Below you find information about how and where to obtain cortical atlas parcellations suitable for fMRI/dMRI based connectomic analyses using Lead-DBS.   If an atlas you know of is missing, please [contact us](http://andreas-horn.de/leaddbs/?page_id=74 "Contact"). Also, we are interested in distributing cortical parcellation atlases preinstalled within Lead-DBS, if possible.
+Below you find information about how and where to obtain cortical atlas parcellations suitable for fMRI/dMRI based connectomic analyses using Lead-DBS.   If an atlas you know of is missing, please [contact us](/contact/). Also, we are interested in distributing cortical parcellation atlases preinstalled within Lead-DBS, if possible.
 
 **Looking for subcortical atlases in MNI space?** Please see [this page](/helpsupport/knowledge-base/atlasesresources/atlases-2/).
 
-{{% row %}}
-{{% col "4/5" %}}
-> ##### **Please read our [philosophy on including code and datasets into Lead-DBS](/about/data-code-inclusion-philosophy/). In brief, inclusion of datasets does not mean endorsement or approval of the datasets you find within Lead-DBS.**
-
-{{% /col %}}
-{{% col "1/5" %}}
-
-{{% /col %}}
-{{% /row %}}
+{{< notice >}}Please read our [philosophy on including code and datasets into Lead-DBS](/about/data-code-inclusion-philosophy/). In brief, inclusion of datasets does not mean endorsement or approval of the datasets you find within Lead-DBS.{{< /notice >}}
 
 ### Mindboggle 101 (Klein 2012)
 
@@ -29,15 +21,15 @@ The Mindboggle 101 dataset consists of 101 labeled brain images that have been m
 *How to obtain the atlas:*
 
 - The atlas comes preinstalled within Lead-DBS
-- [You can get information about the atlas here](http://www.mindboggle.info/data.html)
+- [You can get information about the atlas here](https://mindboggle.info/data.html)
 
 *Related citations:*
 
-- [Klein, A., & Tourville, J. (2012). 101 labeled brain images and a consistent human cortical labeling protocol. *Frontiers in Neuroscience*. http://doi.org/10.3389/fnins.2012.00171/abstract](http://doi.org/10.3389/fnins.2012.00171/abstract)
+- [Klein, A., & Tourville, J. (2012). 101 labeled brain images and a consistent human cortical labeling protocol. *Frontiers in Neuroscience*. https://doi.org/10.3389/fnins.2012.00171](https://doi.org/10.3389/fnins.2012.00171)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Mindboggle101_FIBIM2012.1200x1200.jpeg)
+![Mindboggle 101: labelled cortical regions on inflated surfaces, lateral and medial views](Mindboggle101_FIBIM2012.1200x1200.jpeg)
 
 {{% /col %}}
 {{% /row %}}
@@ -51,7 +43,7 @@ The Cortical Area Parcellation from Resting-State Correlations dataset consists 
 *How to obtain the atlas:*
 
 - The atlas comes preinstalled within Lead-DBS
-- [You can get information about the atlas here](http://www.nil.wustl.edu/labs/petersen/Resources.html)
+- Information about the atlas used to be available at www.nil.wustl.edu/labs/petersen, which can no longer be reached.
 
 *Related citations:*
 
@@ -59,7 +51,7 @@ The Cortical Area Parcellation from Resting-State Correlations dataset consists 
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](gordon2014-845x684.png)
+![Gordon parcellation: colour-coded cortical areas on an inflated surface](gordon2014-845x684.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -76,11 +68,11 @@ The Consensual Atlas of Resting-state Networks (CAREN) consists of 5 networks. I
 
 *Related citations:*
 
-- [Doucet, G. E., Lee, W. H., & Frangou, S. (2019). Evaluation of the spatial variability in the major resting‐state networks across human brain functional atlases. *Human Brain Mapping*, *40*(15), 4577–4587.](http://doi.org/10.1002/hbm.24722)
+- [Doucet, G. E., Lee, W. H., & Frangou, S. (2019). Evaluation of the spatial variability in the major resting‐state networks across human brain functional atlases. *Human Brain Mapping*, *40*(15), 4577–4587.](https://doi.org/10.1002/hbm.24722)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](CAREN-1-1030x761.png)
+![CAREN atlas: resting-state networks in colour on an inflated surface](CAREN-1-1030x761.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -98,7 +90,7 @@ The MICCAI 2012 Multi-Atlas Labeling Workshop and Challenge dataset is a manuall
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](miccaichallenge-845x684.png)
+![MICCAI 2012 (Neuromorphometrics) labels in shades of blue on a brain surface](miccaichallenge-845x684.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -116,11 +108,11 @@ The Brainnetome atlas is an in vivo map based on fMRI and dMRI, with more fine-g
 
 *Related citations:*
 
-- [Fan, L., Li, H., Zhuo, J., Zhang, Y., Wang, J., Chen, L., et al. (2016). The Human Brainnetome Atlas: A New Brain Atlas Based on Connectional Architecture. *Cerebral Cortex (New York, N.Y. : 1991)*, *26*(8), 3508–3526. http://doi.org/10.1093/cercor/bhw157](http://doi.org/10.1093/cercor/bhw157)
+- [Fan, L., Li, H., Zhuo, J., Zhang, Y., Wang, J., Chen, L., et al. (2016). The Human Brainnetome Atlas: A New Brain Atlas Based on Connectional Architecture. *Cerebral Cortex (New York, N.Y. : 1991)*, *26*(8), 3508–3526. http://doi.org/10.1093/cercor/bhw157](https://doi.org/10.1093/cercor/bhw157)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](brainnetome.001.png)
+![Brainnetome atlas: colour-coded cortical and subcortical regions on a brain surface](brainnetome.001.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -144,7 +136,7 @@ On 7th August 2015, an updated version (AAL2) has been released.
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](aal-289x300.png)
+![AAL atlas: colour-coded regions on a brain surface](aal-289x300.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -162,11 +154,11 @@ Based on the influential brain networks published by Thomas Yeo (2011), these no
 
 *Related citations:*
 
-- [Schaefer, A., Kong, R., Gordon, E. M., Laumann, T. O., Zuo, X.-N., Holmes, A. J., et al. (2017). Local-Global Parcellation of the Human Cerebral Cortex from Intrinsic Functional Connectivity MRI. *Cerebral Cortex*, 1–20.](http://doi.org/10.1093/cercor/bhx179)
+- [Schaefer, A., Kong, R., Gordon, E. M., Laumann, T. O., Zuo, X.-N., Holmes, A. J., et al. (2017). Local-Global Parcellation of the Human Cerebral Cortex from Intrinsic Functional Connectivity MRI. *Cerebral Cortex*, 1–20.](https://doi.org/10.1093/cercor/bhx179)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](schaefer-997x1030.png)
+![Schaefer parcellation: colour-coded cortical areas on a brain surface](schaefer-997x1030.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -180,15 +172,15 @@ Not exactly a whole-brain parcellation but a parcellation of the human (pre-)mot
 *How to obtain the atlas:*
 
 - The atlas comes preinstalled with Lead-DBS
-- [You can get more information here](http://lrnlab.org/)
+- [You can get more information here](https://lrnlab.org/)
 
 *Related citations:*
 
-- [Mayka, M. A., Corcos, D. M., Leurgans, S. E., & Vaillancourt, D. E. (2006). Three-dimensional locations and boundaries of motor and premotor cortices as defined by functional brain imaging: A meta-analysis. *NeuroImage*, *31*(4), 1453–1474.](http://doi.org/10.1016/j.neuroimage.2006.02.004)
+- [Mayka, M. A., Corcos, D. M., Leurgans, S. E., & Vaillancourt, D. E. (2006). Three-dimensional locations and boundaries of motor and premotor cortices as defined by functional brain imaging: A meta-analysis. *NeuroImage*, *31*(4), 1453–1474.](https://doi.org/10.1016/j.neuroimage.2006.02.004)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](hmat-997x1030.png)
+![Human Motor Area Template: motor areas in colour on a grey brain surface](hmat-997x1030.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -202,15 +194,15 @@ Not exactly a whole-brain parcellation but a template of the corticospinal tract
 *How to obtain the atlas:*
 
 - The atlas comes preinstalled with Lead-DBS
-- [You can get more information here](http://lrnlab.org/)
+- [You can get more information here](https://lrnlab.org/)
 
 *Related citations:*
 
-- [Archer, D. B., Vaillancourt, D. E., & Coombes, S. A. (2017). A Template and Probabilistic Atlas of the Human Sensorimotor Tracts using Diffusion MRI. *Cerebral Cortex*, 1–15.](http://doi.org/10.1093/cercor/bhx066)
+- [Archer, D. B., Vaillancourt, D. E., & Coombes, S. A. (2017). A Template and Probabilistic Atlas of the Human Sensorimotor Tracts using Diffusion MRI. *Cerebral Cortex*, 1–15.](https://doi.org/10.1093/cercor/bhx066)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](s_matt-997x1030.png)
+![Sensorimotor Area Tract Template: two tracts in red and yellow](s_matt-997x1030.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -236,7 +228,7 @@ A frequently applied cortical atlas motivated by macroanatomical boundaries.
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](harvardoxford-289x300.png)
+![Harvard-Oxford cortical atlas: colour-coded regions on a brain surface](harvardoxford-289x300.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -258,7 +250,7 @@ The AICHA atlas – a detailed cortical atlas based on functional connectivity i
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](aicha-289x300.png)
+![AICHA atlas: colour-coded regions on a brain surface](aicha-289x300.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -277,12 +269,12 @@ Adult brain maximum probability map (“Hammersmith atlas”; exists with either
 
 - [Hammers, A., Allom, R., Koepp, M. J., Free, S. L., Myers, R., Lemieux, L., et al. (2003). Three-dimensional maximum probability atlas of the human brain, with particular reference to the temporal lobe. *Human Brain Mapping*, *19*(4), 224–247. http://doi.org/10.1002/hbm.10123](http://www.ncbi.nlm.nih.gov/pubmed/12874777)
 - [Gousias, I. S., Rueckert, D., Heckemann, R. A., Dyet, L. E., Boardman, J. P., Edwards, A. D., & Hammers, A. (2008). Automatic segmentation of brain MRIs of 2-year-olds into 83 regions of interest. *NeuroImage*, *40*(2), 672–684. http://doi.org/10.1016/j.neuroimage.2007.11.034](http://www.ncbi.nlm.nih.gov/pubmed/18234511)
-- [Faillenot, I., Heckemann, R. A., Frot, M., & Hammers, A. (2017). Macroanatomy and 3D probabilistic atlas of the human insula. *NeuroImage*, *150*, 88–98.](http://doi.org/10.1016/j.neuroimage.2017.01.073)
-- [Wild, H. M., Heckemann, R. A., Studholme, C., & Hammers, A. (2017). Gyri of the human parietal lobe: Volumes, spatial extents, automatic labelling, and probabilistic atlases. PLoS ONE, 12(8), e0180866.](http://doi.org/10.1371/journal.pone.0180866)
+- [Faillenot, I., Heckemann, R. A., Frot, M., & Hammers, A. (2017). Macroanatomy and 3D probabilistic atlas of the human insula. *NeuroImage*, *150*, 88–98.](https://doi.org/10.1016/j.neuroimage.2017.01.073)
+- [Wild, H. M., Heckemann, R. A., Studholme, C., & Hammers, A. (2017). Gyri of the human parietal lobe: Volumes, spatial extents, automatic labelling, and probabilistic atlases. PLoS ONE, 12(8), e0180866.](https://doi.org/10.1371/journal.pone.0180866)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](hammersmith-289x300.png)
+![Hammersmith atlas: colour-coded regions on a brain surface](hammersmith-289x300.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -304,7 +296,7 @@ fMRI atlas based on 1000 subjects exhibiting co-activations of the brain. Two ve
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](yeo-289x300.png)
+![Yeo 2011 parcellation: functional networks in colour on a brain surface](yeo-289x300.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -319,15 +311,15 @@ Probably the most detailed cortical in-vivo parcellation yet, the HCP MMP 1.0 ha
 
 - [You can get information about the atlas here](https://balsa.wustl.edu/WN56)
 - [A freesurfer version of this atlas can be found here](https://figshare.com/articles/HCP-MMP1_0_projected_on_fsaverage/3498446)
-- A volumetric version in MNI/ICBM 152 2009b NLIN Asymmetric space can be found [here](http://neurovault.org/collections/1549/) and [here](https://figshare.com/articles/HCP-MMP1_0_projected_on_MNI2009a_GM_volumetric_in_NIfTI_format/3501911) (read description, use with care)
+- A volumetric version in MNI/ICBM 152 2009b NLIN Asymmetric space can be found [here](https://neurovault.org/collections/1549/) and [here](https://figshare.com/articles/HCP-MMP1_0_projected_on_MNI2009a_GM_volumetric_in_NIfTI_format/3501911) (read description, use with care)
 
 *Related citations:*
 
-- [Glasser, M. F., Coalson, T. S., Robinson, E. C., Hacker, C. D., Harwell, J., Yacoub, E., et al. (2016). A multi-modal parcellation of human cerebral cortex. *Nature*. http://doi.org/10.1038/nature18933](http://doi.org/10.1038/nature18933)
+- [Glasser, M. F., Coalson, T. S., Robinson, E. C., Hacker, C. D., Harwell, J., Yacoub, E., et al. (2016). A multi-modal parcellation of human cerebral cortex. *Nature*. http://doi.org/10.1038/nature18933](https://doi.org/10.1038/nature18933)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](hcp_mmp1.png)
+![HCP MMP 1.0: cortical areas in colour, seen from above](hcp_mmp1.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -345,15 +337,15 @@ A probabilistic atlas created by averaging multi-subject post-mortem cyto- and m
 
 *Related citations:*
 
-- [Zilles, K., & Amunts, K. (2010). Centenary of Brodmann’s map–conception and fate. *Nature reviews. Neuroscience* (Vol. 11, pp. 139–145). http://doi.org/10.1038/nrn2776](http://doi.org/10.1038/nrn2776)
-- [Amunts, K., Schleicher, A., & Zilles, K. (2007). Cytoarchitecture of the cerebral cortex–more than localization. *NeuroImage*, *37*(4), 1061–5– discussion 1066–8. http://doi.org/10.1016/j.neuroimage.2007.02.037](http://doi.org/10.1016/j.neuroimage.2007.02.037)
-- [Eickhoff, S. B., Stephan, K. E., Mohlberg, H., Grefkes, C., Fink, G. R., Amunts, K., & Zilles, K. (2005). A new SPM toolbox for combining probabilistic cytoarchitectonic maps and functional imaging data., *25*(4), 1325–1335. http://doi.org/10.1016/j.neuroimage.2004.12.034](http://doi.org/10.1016/j.neuroimage.2004.12.034)
-- [Eickhoff, S. B., Jbabdi, S., Caspers, S., Laird, A. R., Fox, P. T., Zilles, K., & Behrens, T. E. J. (2010). Anatomical and functional connectivity of cytoarchitectonic areas within the human parietal operculum., *30*(18), 6409–6421. http://doi.org/10.1523/JNEUROSCI.5664-09.2010](http://doi.org/10.1523/JNEUROSCI.5664-09.2010)
-- [Eickhoff, S. B., Heim, S., Zilles, K., & Amunts, K. (2006). Testing anatomically specified hypotheses in functional imaging using cytoarchitectonic maps. *NeuroImage*, *32*(2), 570–582. http://doi.org/10.1016/j.neuroimage.2006.04.204](http://doi.org/10.1016/j.neuroimage.2006.04.204)
+- [Zilles, K., & Amunts, K. (2010). Centenary of Brodmann’s map–conception and fate. *Nature reviews. Neuroscience* (Vol. 11, pp. 139–145). http://doi.org/10.1038/nrn2776](https://doi.org/10.1038/nrn2776)
+- [Amunts, K., Schleicher, A., & Zilles, K. (2007). Cytoarchitecture of the cerebral cortex–more than localization. *NeuroImage*, *37*(4), 1061–5– discussion 1066–8. http://doi.org/10.1016/j.neuroimage.2007.02.037](https://doi.org/10.1016/j.neuroimage.2007.02.037)
+- [Eickhoff, S. B., Stephan, K. E., Mohlberg, H., Grefkes, C., Fink, G. R., Amunts, K., & Zilles, K. (2005). A new SPM toolbox for combining probabilistic cytoarchitectonic maps and functional imaging data., *25*(4), 1325–1335. http://doi.org/10.1016/j.neuroimage.2004.12.034](https://doi.org/10.1016/j.neuroimage.2004.12.034)
+- [Eickhoff, S. B., Jbabdi, S., Caspers, S., Laird, A. R., Fox, P. T., Zilles, K., & Behrens, T. E. J. (2010). Anatomical and functional connectivity of cytoarchitectonic areas within the human parietal operculum., *30*(18), 6409–6421. http://doi.org/10.1523/JNEUROSCI.5664-09.2010](https://doi.org/10.1523/JNEUROSCI.5664-09.2010)
+- [Eickhoff, S. B., Heim, S., Zilles, K., & Amunts, K. (2006). Testing anatomically specified hypotheses in functional imaging using cytoarchitectonic maps. *NeuroImage*, *32*(2), 570–582. http://doi.org/10.1016/j.neuroimage.2006.04.204](https://doi.org/10.1016/j.neuroimage.2006.04.204)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](juelich.png)
+![Juelich histological atlas: colour-coded areas on a brain surface](juelich.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -366,7 +358,7 @@ Advanced and modern functional atlas based on task fMRI.
 {{% col "2/3" %}}
 *How to obtain the atlas:*
 
-- [An interactive version of the PrAGMATiC atlas can be found here.](http://gallantlab.org/huth2016/)
+- [An interactive version of the PrAGMATiC atlas can be found here.](https://gallantlab.org/huth2016/)
 
 *Related citations:*
 
@@ -375,7 +367,7 @@ Advanced and modern functional atlas based on task fMRI.
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](pragmatic-300x231.png)
+![PrAGMATiC: colour-coded cortical areas on an inflated surface](pragmatic-300x231.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -393,11 +385,11 @@ A parcellation scheme widely used in the freesurfer world subdividing the human 
 
 *Related citations:*
 
-- [Desikan, R. S., Ségonne, F., Fischl, B., Quinn, B. T., Dickerson, B. C., Blacker, D., et al. (2006). An automated labeling system for subdividing the human cerebral cortex on MRI scans into gyral based regions of interest. *NeuroImage*, *31*(3), 968–980. http://doi.org/10.1016/j.neuroimage.2006.01.021](http://doi.org/10.1016/j.neuroimage.2006.01.021)
+- [Desikan, R. S., Ségonne, F., Fischl, B., Quinn, B. T., Dickerson, B. C., Blacker, D., et al. (2006). An automated labeling system for subdividing the human cerebral cortex on MRI scans into gyral based regions of interest. *NeuroImage*, *31*(3), 968–980. http://doi.org/10.1016/j.neuroimage.2006.01.021](https://doi.org/10.1016/j.neuroimage.2006.01.021)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](desikan.001.png)
+![Desikan-Killiany atlas: colour-coded regions on an inflated surface](desikan.001.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -414,12 +406,12 @@ A parcellation scheme widely used in the freesurfer world based on sulcal depth 
 
 *Related citations:*
 
-- [Destrieux, C., Fischl, B., Dale, A., & Halgren, E. (2010). Automatic parcellation of human cortical gyri and sulci using standard anatomical nomenclature. *NeuroImage*, *53*(1), 1–15. http://doi.org/10.1016/j.neuroimage.2010.06.010](http://doi.org/10.1016/j.neuroimage.2010.06.010)
-- [Fischl, B. (2004). Automatically Parcellating the Human Cerebral Cortex. *Cerebral Cortex (New York, N.Y. : 1991)*, *14*(1), 11–22. http://doi.org/10.1093/cercor/bhg087](http://doi.org/10.1093/cercor/bhg087)
+- [Destrieux, C., Fischl, B., Dale, A., & Halgren, E. (2010). Automatic parcellation of human cortical gyri and sulci using standard anatomical nomenclature. *NeuroImage*, *53*(1), 1–15. http://doi.org/10.1016/j.neuroimage.2010.06.010](https://doi.org/10.1016/j.neuroimage.2010.06.010)
+- [Fischl, B. (2004). Automatically Parcellating the Human Cerebral Cortex. *Cerebral Cortex (New York, N.Y. : 1991)*, *14*(1), 11–22. http://doi.org/10.1093/cercor/bhg087](https://doi.org/10.1093/cercor/bhg087)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](destrieux.001.png)
+![Destrieux atlas: colour-coded gyri and sulci on an inflated surface](destrieux.001.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -432,7 +424,7 @@ A cortical parcellation model based on macroanatomical information.
 {{% col "2/3" %}}
 *How to obtain the atlas:*
 
-- [More information about this atlas can be found here.](http://www.meca-brain.org/softwares/cortical-parcellation-marsatlas/)
+- More information about this atlas used to be available at www.meca-brain.org, but that page no longer exists.
 
 *Related citations:*
 
@@ -441,7 +433,7 @@ A cortical parcellation model based on macroanatomical information.
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](marsAtlas-template-e1458593354824-300x98.jpg)
+![MarsAtlas: labelled cortical regions, lateral and medial views](marsAtlas-template-e1458593354824-300x98.jpg)
 
 {{% /col %}}
 {{% /row %}}
@@ -463,7 +455,7 @@ Fine-grained random parcellations informed by rs-fMRI data.
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](randomcraddock-289x300.png)
+![Random fMRI-based parcellation (Craddock): many small parcels in colour on a brain surface](randomcraddock-289x300.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -484,7 +476,7 @@ Three voxel-wise parcellations are supplied with Lead-DBS and have been built to
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](voxelwiseleaddbs-289x300.png)
+![Voxelwise parcellation: colour gradient on a brain surface](voxelwiseleaddbs-289x300.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -502,12 +494,12 @@ Not a whole-brain parcellation but parcellating the cerebellum into anatomical r
 
 *Related citations:*
 
-- [Diedrichsen, J. (2006). A spatially unbiased atlas template of the human cerebellum. *NeuroImage*, *33*(1), 127–138.](http://doi.org/10.1016/j.neuroimage.2006.05.056)
-- [Diedrichsen, J., Maderwald, S., Küper, M., Thürling, M., Rabe, K., Gizewski, E. R., et al. (2011). Imaging the deep cerebellar nuclei: a probabilistic atlas and normalization procedure. *NeuroImage*, *54*(3), 1786–1794.](http://doi.org/10.1016/j.neuroimage.2010.10.035)
+- [Diedrichsen, J. (2006). A spatially unbiased atlas template of the human cerebellum. *NeuroImage*, *33*(1), 127–138.](https://doi.org/10.1016/j.neuroimage.2006.05.056)
+- [Diedrichsen, J., Maderwald, S., Küper, M., Thürling, M., Rabe, K., Gizewski, E. R., et al. (2011). Imaging the deep cerebellar nuclei: a probabilistic atlas and normalization procedure. *NeuroImage*, *54*(3), 1786–1794.](https://doi.org/10.1016/j.neuroimage.2010.10.035)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](suit-1-997x1030.png)
+![SUIT cerebellar parcellation: cerebellar lobules in colour, seen from below](suit-1-997x1030.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -520,17 +512,17 @@ Not a whole-brain parcellation but a parcellation of the cerebellum into seven (
 {{% col "2/3" %}}
 *How to obtain the atlas:*
 
-- [The parcellation was released within the freesurfer software.](http://www.freesurfer.net/fswiki/CerebellumParcellation_Buckner2011)
+- [The parcellation was released within the freesurfer software.](https://www.freesurfer.net/fswiki/CerebellumParcellation_Buckner2011)
 - These parcellation schemes come preinstalled within Lead-DBS.
 
 *Related citations:*
 
-- [Buckner, R. L., Krienen, F. M., Castellanos, A., Diaz, J. C., & Yeo, B. T. T. (2011). The organization of the human cerebellum estimated by intrinsic functional connectivity. *Journal of Neurophysiology*, *106*(5), 2322–2345.](http://doi.org/10.1152/jn.00339.2011)
-- [Yeo, B. T. T., Krienen, F. M., Sepulcre, J., Sabuncu, M. R., Lashkari, D., Hollinshead, M., et al. (2011). The organization of the human cerebral cortex estimated by intrinsic functional connectivity. *Journal of Neurophysiology*, *106*(3), 1125–1165.](http://doi.org/10.1152/jn.00338.2011)
+- [Buckner, R. L., Krienen, F. M., Castellanos, A., Diaz, J. C., & Yeo, B. T. T. (2011). The organization of the human cerebellum estimated by intrinsic functional connectivity. *Journal of Neurophysiology*, *106*(5), 2322–2345.](https://doi.org/10.1152/jn.00339.2011)
+- [Yeo, B. T. T., Krienen, F. M., Sepulcre, J., Sabuncu, M. R., Lashkari, D., Hollinshead, M., et al. (2011). The organization of the human cerebral cortex estimated by intrinsic functional connectivity. *Journal of Neurophysiology*, *106*(3), 1125–1165.](https://doi.org/10.1152/jn.00338.2011)
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](buckner-997x1030.png)
+![Buckner cerebellar parcellation: functional networks on the cerebellum, seen from below](buckner-997x1030.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -552,7 +544,7 @@ An atlas based on same functional and structural sequences from 1000 young, heal
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Picture5-300x214.png)
+![Cortical functional networks (Yeo 2011) in colour on an inflated surface](Picture5-300x214.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -576,7 +568,7 @@ An atlas based on same functional and structural sequences from 1000 young, heal
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Screen-Shot-2020-06-26-at-4.28.03-PM-300x212.png)
+![Seven functional connectivity networks in colour on an inflated surface](Screen-Shot-2020-06-26-at-4.28.03-PM-300x212.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -604,7 +596,7 @@ nodes that were derived based on Yeo’s 17 networks, and one brain stem node.
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Shen-300x248.png)
+![Shen atlas: parcels in shades of orange on a brain surface](Shen-300x248.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -626,7 +618,7 @@ Digital versions of six classical human brain atlases in common MRI space. The c
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Brodmann-300x227.png)
+![Brodmann areas in colour on a brain surface](Brodmann-300x227.png)
 
 {{% /col %}}
 {{% /row %}}
@@ -648,8 +640,8 @@ The Julich-Brain Cytoarchitectonic Atlas presents cytoarchitectonic maps in seve
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](JulichBrainAtlas-300x235.png)
+![Julich-Brain atlas: colour-coded cytoarchitectonic areas on a brain surface](JulichBrainAtlas-300x235.png)
 
 {{% /col %}}
 {{% /row %}}
-{{< button href="/contact/" >}}Contact us to make your atlas available for distribution within LEAD-DBS{{< /button >}}
+{{< button href="/contact/" >}}Contact us to make your atlas available for distribution within Lead-DBS{{< /button >}}

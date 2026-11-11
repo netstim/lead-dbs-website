@@ -16,7 +16,7 @@ The [full study can be found here](https://www.researchgate.net/publication/3386
 
 {{% /col %}}
 {{% col "1/3" %}}
-![](Coverart_NI_2020_Treu_et_al-769x1030.png)
+![Cover of NeuroImage, volume 219, 1 October 2020](Coverart_NI_2020_Treu_et_al-769x1030.png)
 
 {{% /col %}}
 {{% /row %}}

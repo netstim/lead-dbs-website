@@ -10,7 +10,7 @@ weight: 4
 Please find videos from the Lead-DBS workshop 2018 at Fudan University Shanghai below.  
 **Click on the list-arrow in the top-right corner to see further videos of the workshop.**
 
-### 1. Electrode localizations with Lead DBS
+### 1. Electrode localizations with Lead-DBS
 
 <p>
 
