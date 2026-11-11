@@ -1,5 +1,15 @@
 {{ define "main" }}
-<article class="entry">
-  {{ .Content }}
-</article>
+{{- /* An inner page: its head, the text, the sidebar. A long page (has-toc.html) shows its table of
+       contents at the top of the text below 1024px, and sticky in the sidebar on a desktop. */ -}}
+{{ $toc := partial "has-toc.html" . }}
+<main id="top" class="page">
+  {{ partial "page-head.html" . }}
+  <div class="wrap doc-layout{{ if $toc }} doc-layout--toc{{ end }}">
+    <article class="prose">
+      {{ if $toc }}{{ partial "toc.html" (dict "page" . "variant" "top") }}{{ end }}
+      {{ .Content }}
+    </article>
+    <aside class="sidebar" aria-label="{{ if $toc }}On this page, release and quick links{{ else }}Release and quick links{{ end }}">{{ partial "sidebar.html" (dict "page" . "toc" $toc) }}</aside>
+  </div>
+</main>
 {{ end }}

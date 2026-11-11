@@ -1,0 +1,15 @@
+{{- /* The head of every inner page: breadcrumbs and the title on the black ground of the renders
+       (the home page's look carried over), the date under a news post's title. */ -}}
+<header class="page-head page-head--render">
+  {{ partial "page-head-render.html" . }}
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ol>
+        {{ range .Ancestors.Reverse }}<li><a href="{{ .RelPermalink }}">{{ if .IsHome }}Home{{ else }}{{ .LinkTitle }}{{ end }}</a></li>{{ end }}
+        <li aria-current="page">{{ .LinkTitle }}</li>
+      </ol>
+    </nav>
+    <h1>{{ partial "nobreak.html" .Title }}</h1>
+    {{ if and (eq .Section "news") .IsPage }}<p class="page-head__meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time></p>{{ end }}
+  </div>
+</header>

@@ -1,10 +1,32 @@
-<footer class="site-footer">
-  <div class="container">
-    <nav class="footer-nav" aria-label="Legal">
-      {{ range $i, $m := site.Menus.footer }}{{ if $i }} | {{ end }}<a href="{{ $m.URL }}">{{ $m.Name }}</a>{{ end }}
-    </nav>
+{{- /* The footer of every page: the link columns (data/links.yaml and the main menu) and the legal line.
+     The column "Site" (#site-pages) is where the header's menu link leads when script is off. */ -}}
+{{ $r := hugo.Data.release }}
+<footer class="footer footer--dark ground-inverse" id="site-footer">
+  <div class="wrap">
+    <div class="closing__links">
+      <div class="grid">
+        <div class="span-4 stack-4">
+          <a class="nav__logo" href="{{ site.Home.RelPermalink }}">{{ partial "logo.html" (dict "h" 48 "lazy" true) }}Lead-DBS</a>
+          <p class="footer__lede">Open-source DBS imaging toolbox, version {{ $r.version }}. For research use only, not for clinical use.</p>
+        </div>
+        {{ range hugo.Data.links.footer }}
+        <div class="span-2 footer__col">
+          <h2 class="footer__h">{{ .title }}</h2>
+          <ul>{{ range .links }}<li><a href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .name }}</a></li>{{ end }}</ul>
+        </div>
+        {{ end }}
+        <div class="span-2 footer__col" id="site-pages">
+          <h2 class="footer__h">Site</h2>
+          <ul>
+            {{ range site.Menus.main }}{{ if ne .Name "Home" }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}{{ end }}
+            {{ with site.GetPage "/search" }}<li><a href="{{ .RelPermalink }}">Search</a></li>{{ end }}
+          </ul>
+        </div>
+      </div>
+      <div class="footer__legal">
+        <span>&copy; {{ now.Year }} Lead-DBS, Institute for Network Stimulation.{{ range site.Menus.footer }} &nbsp; <a href="{{ .URL }}">{{ .Name }}</a>{{ end }} &nbsp; <a href="https://github.com/netstim/lead-dbs-website">Edit this site on GitHub</a></span>
+        <span class="footer__credits">Renders made with BrainDeer from the Lead Tutor dataset (Hart et al.), with the DISTAL atlas (Ewert et al. 2018), the 100 µm 7T ex vivo MRI (Edlow et al. 2019) and the MNI ICBM 2009b template. Product names and logos are trademarks of their owners.</span>
+      </div>
+    </div>
   </div>
 </footer>
-<div class="socket">
-  <div class="container">© {{ now.Year }} Lead-DBS · Network Stimulation Laboratory · <a href="https://github.com/netstim/lead-dbs-website">Edit this site on GitHub</a></div>
-</div>

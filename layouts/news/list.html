@@ -1,16 +1,30 @@
 {{ define "main" }}
-{{ $paginator := .Paginate .Pages.ByDate.Reverse }}
-{{ range $paginator.Pages }}
-<article class="post-summary">
-  {{ partial "post-header.html" . }}
-  {{ $page := . }}
-  {{ with .Resources.GetMatch (.Params.image | default "__none__") }}
-    {{ $thumb := .Fill "710x270 Center" }}
-    <a href="{{ $page.RelPermalink }}"><img class="featured" src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt=""></a>
-  {{ end }}
-  <p>{{ .Summary | plainify | truncate 300 }}</p>
-  <a class="read-more" href="{{ .RelPermalink }}">Read more →</a>
-</article>
-{{ end }}
-{{ partial "pagination.html" $paginator }}
+<main id="top" class="page">
+  {{ partial "page-head.html" . }}
+  <div class="wrap doc-layout">
+    <div class="prose news-list">
+      {{ .Content }}
+      {{ $paginator := .Paginate .Pages.ByDate.Reverse }}
+      {{ range $paginator.Pages }}
+      {{ $page := . }}
+      <article class="post-summary">
+        <time class="post-summary__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+        <div class="post-summary__body">
+          <h2 class="post-summary__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+          <p>{{ .Summary | plainify | htmlUnescape | truncate 220 }}</p>
+        </div>
+        {{- /* image: the teaser (a file of the post). It is cut to a 480×300 strip unless the post
+             sets image_whole: true (a flyer or poster), which shows it whole. */}}
+        {{ with .Resources.GetMatch (.Params.image | default "__none__") }}
+          {{ $whole := $page.Params.image_whole }}
+          {{ $thumb := cond $whole (.Resize "400x webp q80") (.Fill "480x300 Center webp q78") }}
+          <a class="post-summary__thumb m-zoom{{ if $whole }} post-summary__thumb--whole{{ end }}" href="{{ $page.RelPermalink }}" tabindex="-1" aria-hidden="true"><img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="" loading="lazy" decoding="async"></a>
+        {{ end }}
+      </article>
+      {{ end }}
+      {{ partial "pagination.html" $paginator }}
+    </div>
+    <aside class="sidebar" aria-label="Release and quick links">{{ partial "sidebar.html" . }}</aside>
+  </div>
+</main>
 {{ end }}

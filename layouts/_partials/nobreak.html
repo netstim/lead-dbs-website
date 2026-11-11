@@ -1,0 +1,11 @@
+{{- /* A heading's text in which short words with a hyphen or an en dash ("Lead-DBS", "Open-source",
+       "11–12") never break across lines: they are wrapped in <span class="nowrap">, so the text keeps its
+       ordinary characters (find in page and copying still work). Longer ones may still break, so a
+       narrow phone never scrolls sideways. Returns HTML. */ -}}
+{{- $out := slice -}}
+{{- range split . " " -}}
+  {{- $w := . | htmlEscape -}}
+  {{- if and (findRE `[-–]` .) (le (strings.RuneCount .) 16) }}{{ $w = printf `<span class="nowrap">%s</span>` $w }}{{ end -}}
+  {{- $out = $out | append $w -}}
+{{- end -}}
+{{- return (delimit $out " " | safeHTML) -}}

@@ -1,10 +1,17 @@
 {{ define "main" }}
-<article class="entry post">
-  {{ partial "post-header.html" . }}
-  {{ with .Resources.GetMatch (.Params.image | default "__none__") }}
-    {{ $img := . }}{{ if gt .Width 1400 }}{{ $img = .Resize "1400x" }}{{ end }}
-    <img class="featured" src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="">
-  {{ end }}
-  {{ .Content }}
-</article>
+<main id="top" class="page">
+  {{ partial "page-head.html" . }}
+  <div class="wrap doc-layout">
+    <article class="prose post">
+      {{- /* the teaser on top of the post, unless image_in_post: false (the picture is in the text already) */}}
+      {{ with and (ne .Params.image_in_post false) (.Resources.GetMatch (.Params.image | default "__none__")) }}
+        {{ $img := . }}{{ if gt .Width 1400 }}{{ $img = .Resize "1400x" }}{{ end }}
+        <img class="featured" src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="">
+      {{ end }}
+      {{ .Content }}
+      <p class="post-back"><a class="link" href="{{ .Parent.RelPermalink }}">All news</a></p>
+    </article>
+    <aside class="sidebar" aria-label="Release and quick links">{{ partial "sidebar.html" . }}</aside>
+  </div>
+</main>
 {{ end }}

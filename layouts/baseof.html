@@ -1,26 +1,18 @@
 <!doctype html>
-<html lang="{{ site.Language.Locale }}">
+{{- /* Styles: assets/css/base.css and assets/css/site.css, bundled in head.html (see README, Design). Font: Open Sans,
+     self-hosted. Sections take the height of their content. The one scroll-linked motion is the electrode
+     insertion on the home page. The research-use statement is a short line (hero facts, footer, about, download). */}}
+<html lang="{{ site.Language.Locale }}"{{ if site.Params.preview }} class="is-preview"{{ end }}>
 <head>
   {{ partial "head.html" . }}
 </head>
-<body class="{{ .Kind }}">
-  {{ if site.Params.preview }}
-  <div class="preview-banner" role="note">
-    <strong>Under construction:</strong> this is a preview of the new Lead-DBS website.
-    The official site is <a href="{{ site.Params.liveSite }}">www.lead-dbs.org</a>.
-  </div>
-  {{ end }}
+<body class="kind-{{ .Kind }}{{ with .Section }} section-{{ . }}{{ end }}">
   {{ partial "header.html" . }}
-  {{ partial "titlebar.html" . }}
-  <div class="container main-wrap">
-    <main class="content">
-      {{ block "main" . }}{{ end }}
-    </main>
-    <aside class="sidebar">
-      {{ partial "sidebar.html" . }}
-    </aside>
-  </div>
+  {{ block "main" . }}{{ end }}
   {{ partial "footer.html" . }}
+  {{ partial "search-dialog.html" . }}
   {{ with resources.Get "js/main.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}
+  {{ with resources.Get "js/search.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}
+  {{ if .IsHome }}{{ with resources.Get "js/insertion.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}{{ end }}
 </body>
 </html>

@@ -1,0 +1,5 @@
+{{- /* The lab's logo at a given height (CSS px), from static/images/logo.png, at twice that size.
+     Arguments: h (height), lazy (bool). */ -}}
+{{- $src := resources.Get "logo/logo.png" -}}
+{{- $img := $src.Resize (printf "x%d png" (mul .h 2)) -}}
+<img src="{{ $img.RelPermalink }}" alt="" width="{{ div $img.Width 2 }}" height="{{ .h }}"{{ if .lazy }} loading="lazy" decoding="async"{{ end }}{{ with .class }} class="{{ . }}"{{ end }}>

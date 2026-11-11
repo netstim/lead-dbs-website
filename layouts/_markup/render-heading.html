@@ -1,0 +1,7 @@
+{{- /* Headings in page text. The page's title is its only h1, so a "#" heading in the Markdown is
+       drawn as h2. An empty heading (left over from the WordPress import) is dropped. Each heading
+       gets a small link to itself, for the table of contents and for sharing a section. */ -}}
+{{- $level := cond (eq .Level 1) 2 .Level -}}
+{{- if strings.TrimSpace .PlainText -}}
+<h{{ $level }} id="{{ .Anchor }}"{{ range $k, $v := .Attributes }}{{ if ne $k "id" }} {{ $k }}="{{ $v }}"{{ end }}{{ end }}>{{ .Text }}<a class="heading-anchor" href="#{{ .Anchor }}" aria-label="Link to this section">#</a></h{{ $level }}>
+{{- end -}}

@@ -1,18 +1,21 @@
-{{/* Forms carried over from Ninja Forms. Fields are defined in data/forms.yaml. No backend yet. */}}
+{{/* Forms carried over from Ninja Forms. Fields are defined in data/forms.yaml. No backend yet
+     (params.formsEnabled = false): the button is disabled and a note says so. */}}
 {{ $id := .Get 0 }}
+{{ $ord := .Ordinal }}
 {{ with index hugo.Data.forms $id }}
-<form class="site-form" action="{{ .action | default "#" }}" method="post"{{ if not site.Params.formsEnabled }} onsubmit="return false"{{ end }}>
+<form class="form site-form"{{ with .action }} action="{{ . }}"{{ end }} method="post"{{ if not site.Params.formsEnabled }} onsubmit="return false"{{ end }}>
   {{ range .fields }}
-  <label>
-    <span>{{ .label }}{{ if .required }} <abbr title="required">*</abbr>{{ end }}</span>
+  {{ $fid := printf "f-%s-%d-%s" $id $ord .name }}
+  <div class="field">
+    <label for="{{ $fid }}">{{ .label }}{{ if .required }} <span class="field__req">(required)</span>{{ end }}</label>
     {{ if eq .type "textarea" }}
-    <textarea name="{{ .name }}" rows="6"{{ if .required }} required{{ end }}></textarea>
+    <textarea id="{{ $fid }}" name="{{ .name }}" rows="6"{{ if .required }} required{{ end }}></textarea>
     {{ else }}
-    <input type="{{ .type | default "text" }}" name="{{ .name }}"{{ if .required }} required{{ end }}{{ with .autocomplete }} autocomplete="{{ . }}"{{ end }}>
+    <input id="{{ $fid }}" type="{{ .type | default "text" }}" name="{{ .name }}"{{ if .required }} required{{ end }}{{ with .autocomplete }} autocomplete="{{ . }}"{{ end }}>
     {{ end }}
-  </label>
+  </div>
   {{ end }}
-  <button type="submit" class="button"{{ if not site.Params.formsEnabled }} disabled{{ end }}>{{ .submit }}</button>
+  <div class="btn-row"><button type="submit" class="btn btn--primary"{{ if not site.Params.formsEnabled }} disabled{{ end }}>{{ .submit }}</button></div>
   {{ if not site.Params.formsEnabled }}<p class="form-note">Preview: this form is not connected yet.</p>{{ end }}
 </form>
 {{ else }}

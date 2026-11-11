@@ -1,0 +1,19 @@
+{{- /* One level of the table of contents (argument: dict "items" (fragments) "depth"). Headings of
+       level 1 and 2 are the first level, level 3 the second; deeper ones are left out. */ -}}
+{{- $out := slice -}}
+{{- range .items -}}
+  {{- if and (le .Level 3) (strings.TrimSpace .Title) -}}
+    {{- $out = $out | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- with $out }}
+<ol>
+  {{- range . }}
+  <li><a href="#{{ .ID }}">{{ .Title | plainify | htmlUnescape }}</a>
+    {{- if and (lt .Level 3) .Headings }}{{ partial "toc-list.html" (dict "items" .Headings "depth" (add $.depth 1)) }}{{ end -}}
+  </li>
+  {{- end }}
+</ol>
+{{- end -}}
+{{- /* headings that only hold others (a page without an h1 starts with an empty level) */ -}}
+{{- range .items -}}{{- if not (strings.TrimSpace .Title) }}{{ partial "toc-list.html" (dict "items" .Headings "depth" $.depth) }}{{ end -}}{{- end -}}

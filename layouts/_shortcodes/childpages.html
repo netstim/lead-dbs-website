@@ -1,5 +1,16 @@
-<div class="child-pages">
-  {{ range .Page.Pages.ByWeight }}
-  <a class="child-page" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+{{- /* The sub-pages of this page, as a list of cards.
+         {{< childpages >}}                         by weight (the order in the menu)
+         {{< childpages order="date" >}}            newest first, by each page's date
+         {{< childpages order="title" >}}           A to Z
+       include="/path/a, /path/b" adds pages that live elsewhere (sorted in with the rest). */ -}}
+{{- $pages := .Page.Pages -}}
+{{- with .Get "include" }}{{ range split . "," }}{{ with site.GetPage (strings.TrimSpace .) }}{{ $pages = $pages | append . }}{{ end }}{{ end }}{{ end -}}
+{{- $order := .Get "order" | default "weight" -}}
+{{- if eq $order "date" }}{{ $pages = sort $pages "Date" "desc" }}
+{{- else if eq $order "title" }}{{ $pages = sort $pages "LinkTitle" }}
+{{- else }}{{ $pages = sort $pages "Weight" }}{{ end -}}
+<ul class="child-pages">
+  {{ range $pages }}
+  <li><a class="card child-page" href="{{ .RelPermalink }}"><span>{{ .LinkTitle }}</span><svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a></li>
   {{ end }}
-</div>
+</ul>

@@ -1,0 +1,26 @@
+# The current Lead-DBS release: the one place for its version, date, requirements and summary.
+# The home page, the sidebar card, the footer and every page that uses {{< release … >}} read this
+# file. What else a release needs is listed in README.md, "Cut a release".
+version: "3.2.1"
+date: 2026-03-02
+# The post or page that says what changed in this release (a site path or a full URL).
+notes: "/critical-update-lead-dbs-3-2-1/"
+# One or two sentences on what this release brings (home page, "Current release").
+summary: "Fixes a critical bug that could, in very rare circumstances, lead to the accidental deletion of files. Update through GitHub or download Lead-DBS again."
+# Oldest MATLAB release that runs it.
+matlab: "R2024b"
+# MATLAB toolboxes it needs, and the optional ones.
+toolboxes: "Image Processing, Signal Processing, and Statistics and Machine Learning Toolboxes"
+toolboxes_optional: "Curve Fitting and Parallel Computing Toolboxes"
+# Other software it needs.
+needs: "SPM12"
+# Memory recommendation.
+memory: "32 GB of RAM or more recommended"
+# Version of the experimental standalone build (runs without MATLAB), and what to say about it.
+standalone: "3.1"
+standalone_note: "Experimental, for Linux, macOS and Windows, without regular updates or hotfixes"
+# Licence, as printed on the site, and the licence file.
+licence: "GNU GPL v3"
+licence_url: "https://github.com/netstim/leaddbs/blob/master/LICENSE.md"
+# The full list of changes since the release before this one.
+changes_url: "https://github.com/netstim/leaddbs/compare/v3.2...v3.2.1"

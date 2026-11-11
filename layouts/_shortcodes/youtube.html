@@ -1,0 +1,5 @@
+{{- /* {{< youtube VIDEO_ID >}}  or  {{< youtube id="VIDEO_ID" title="What the video shows" start="90" >}}
+       Same arguments as Hugo's own shortcode. Nothing is loaded from YouTube until the visitor starts
+       the video (assets/js/main.js puts the privacy-enhanced player in its place); without script the
+       button is a link to the video on YouTube. The title names the frame for screen readers: give one. */ -}}
+{{- partial "video-embed.html" (dict "ctx" . "service" "youtube") -}}

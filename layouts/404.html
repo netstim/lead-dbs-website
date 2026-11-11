@@ -1,0 +1,36 @@
+{{ define "main" }}
+{{- /* /404.html: what a visitor sees for an address the site does not have (GitHub Pages serves it for
+     every miss). Links are site-relative, so it works under the preview's sub-path as well. A few lines
+     of script name the cause for the old forum's addresses. */ -}}
+{{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Name "Download" }}{{ $dl = .URL }}{{ end }}{{ end }}
+<main id="top" class="page">
+  <header class="page-head page-head--render">
+    {{ partial "page-head-render.html" . }}
+    <div class="wrap">
+      <p class="page-head__kicker">Error 404</p>
+      <h1>This page is not here</h1>
+    </div>
+  </header>
+  <div class="wrap doc-layout doc-layout--single">
+    <div class="prose">
+      <p class="notfound__forum notice" hidden data-forum-note>The Lead-DBS forum has closed, and its threads were not moved to this site. Questions are answered on the <a href="https://inviter.co/lead-dbs">user Slack</a> (join through the self-invite link).</p>
+      <p class="t-lead">The address may be mistyped, or the page moved when the site was rebuilt in 2026. Search for it, or start from one of these:</p>
+      {{ partial "search-form.html" (dict "id" "nf") }}
+      <ul class="child-pages notfound__doors">
+        <li><a class="card child-page" href="{{ $dl }}"><span>Download Lead-DBS</span></a></li>
+        <li><a class="card child-page" href="https://netstim.gitbook.io/leaddbs"><span>The manual</span></a></li>
+        {{ with site.GetPage "/helpsupport" }}<li><a class="card child-page" href="{{ .RelPermalink }}"><span>Help and support</span></a></li>{{ end }}
+        {{ with site.GetPage "/helpsupport/knowledge-base/atlasesresources" }}<li><a class="card child-page" href="{{ .RelPermalink }}"><span>Atlases and resources</span></a></li>{{ end }}
+        {{ with site.GetPage "/news" }}<li><a class="card child-page" href="{{ .RelPermalink }}"><span>News</span></a></li>{{ end }}
+        <li><a class="card child-page" href="{{ site.Home.RelPermalink }}"><span>Home page</span></a></li>
+      </ul>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var p = location.pathname + location.search;
+      if (/\/(forums?|helpsupport\/forum)\/|[?&]forum=/.test(p)) document.querySelector('[data-forum-note]').hidden = false;
+    })();
+  </script>
+</main>
+{{ end }}

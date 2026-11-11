@@ -1,0 +1,4 @@
+{{- /* {{< vimeo VIDEO_ID >}}  or  {{< vimeo id="VIDEO_ID" title="What the video shows" >}}
+       Same arguments as Hugo's own shortcode; loads nothing from Vimeo until the visitor starts the video
+       (see youtube.html). */ -}}
+{{- partial "video-embed.html" (dict "ctx" . "service" "vimeo") -}}

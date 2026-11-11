@@ -1,16 +1,33 @@
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} – {{ site.Title }}{{ end }}</title>
-<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . | plainify | truncate 160 }}{{ else }}{{ site.Params.description }}{{ end }}{{ end }}">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+{{- $desc := "" -}}
+{{- with .Description }}{{ $desc = . }}{{ else }}{{ with .Summary }}{{ $desc = . | plainify | htmlUnescape | truncate 160 }}{{ else }}{{ $desc = site.Params.description }}{{ end }}{{ end }}
+{{- $title := cond .IsHome (printf "%s: %s" site.Title (.Params.hero.title | default "")) (printf "%s – %s" .Title site.Title) }}
+<title>{{ $title }}</title>
+<meta name="description" content="{{ $desc }}">
 {{ if site.Params.preview }}
 <meta name="robots" content="noindex, nofollow">
 <link rel="canonical" href="{{ strings.TrimSuffix "/" site.Params.liveSite }}{{ .RelPermalink | strings.TrimPrefix (urls.Parse site.BaseURL).Path | printf "/%s" }}">
 {{ else }}
 <link rel="canonical" href="{{ .Permalink }}">
 {{ end }}
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ $title }}">
+<meta property="og:description" content="{{ $desc }}">
+{{ with resources.Get "images/share.jpg" }}<meta property="og:image" content="{{ .Permalink }}">{{ end }}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f7f9fa">
 <link rel="icon" href="{{ "images/favicon-32x32.png" | relURL }}" sizes="32x32">
 <link rel="icon" href="{{ "images/favicon-192x192.png" | relURL }}" sizes="192x192">
 <link rel="apple-touch-icon" href="{{ "images/favicon-180x180.png" | relURL }}">
-{{ $css := resources.Get "css/main.css" | resources.ExecuteAsTemplate "css/main.css" . | minify | fingerprint }}
+<link rel="preload" href="{{ "fonts/open-sans-latin-400.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ "fonts/open-sans-latin-600.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+{{- /* one stylesheet: assets/css/base.css (tokens, grid, buttons, links, forms), then assets/css/site.css
+     (palette, fonts, header, pages, footer); see README, Design */}}
+{{ $site := resources.Get "css/site.css" | resources.ExecuteAsTemplate "css/site.css" . }}
+{{ $css := slice (resources.Get "css/base.css") $site | resources.Concat "css/style.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
-<script>document.documentElement.classList.add('js')</script>
+{{- /* the home hero's entrance waits for assets/js/main.js; after 700ms the style sheet shows the hero without it */}}
+<script>document.documentElement.classList.add('hero-wait');setTimeout(()=>document.documentElement.classList.add('hero-late'),700)</script>
+{{- /* without script a <video> shows its own controls: the hero clip is a still picture then */}}
+<noscript><style>.hero__bg{pointer-events:none}.hero__bg::-webkit-media-controls{display:none!important}</style></noscript>

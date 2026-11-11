@@ -1,17 +1,292 @@
-// Rotate slideshow images and testimonials, like the old Enfold sliders.
-function rotate(container, selector, interval) {
-  const items = Array.from(container.querySelectorAll(selector));
-  if (items.length < 2) return;
-  let i = 0;
-  items.forEach((el, n) => el.classList.toggle('active', n === 0));
-  let timer = setInterval(next, interval);
-  function next() {
-    items[i].classList.remove('active');
-    i = (i + 1) % items.length;
-    items[i].classList.add('active');
+// The site's own script.
+// Each block stands alone and does nothing on a page without its markup. Without script every page
+// still works: the header's menu button becomes a link to the footer's list of pages, videos are
+// links, events show what the build chose.
+
+// ------------------------------------------------------------------ header
+// Below 1200px the menu words live in a sheet the menu button opens; a panel's links open with the
+// chevron beside its word. Escape closes the sheet (or a desktop panel) and leaves the focus on the
+// button (or the word); a tap on any link in the sheet closes it; Tab stays inside the open sheet.
+(() => {
+  const nav = document.querySelector('.nav');
+  const toggle = nav?.querySelector('.nav__toggle');
+  if (!nav || !toggle) return;
+  const wide = window.matchMedia('(min-width: 1200px)');
+  const icon = {
+    open: '<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+    close: '<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+  };
+  const setOpen = (open) => {
+    nav.classList.toggle('is-open', open);
+    document.body.classList.toggle('nav-locked', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close the menu' : 'Open the menu');
+    toggle.innerHTML = open ? icon.close : icon.open;
+  };
+  toggle.addEventListener('click', () => setOpen(!nav.classList.contains('is-open')));
+  wide.addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+  nav.querySelectorAll('.nav__item').forEach((item) => {
+    const menu = item.querySelector('.nav__menu');
+    if (!menu) return;
+    const word = item.querySelector('.nav__link');
+    const btn = document.createElement('button');
+    btn.className = 'nav__expand';
+    btn.type = 'button';
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-label', `Show the ${word.textContent.trim()} pages`);
+    btn.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    word.after(btn);
+    btn.addEventListener('click', () => {
+      const open = !item.classList.contains('is-expanded');
+      item.classList.toggle('is-expanded', open);
+      btn.setAttribute('aria-expanded', String(open));
+    });
+    // a desktop panel: Escape closes it and leaves the focus on its word; it opens again once the
+    // focus or the pointer leaves and comes back
+    const reset = () => item.classList.remove('is-dismissed');
+    item.addEventListener('focusout', (e) => { if (!item.contains(e.relatedTarget)) reset(); });
+    item.addEventListener('pointerleave', reset);
+  });
+  // a desktop panel opens after the pointer has rested 150ms on its word (assets/css/site.css); once one
+  // is open, the panels of the other words open at once (.is-browsing) until the pointer leaves the header
+  let rest = 0;
+  nav.querySelectorAll('.nav__links > .nav__item').forEach((item) => {
+    const panel = !!item.querySelector('.nav__menu');
+    item.addEventListener('pointerenter', () => {
+      clearTimeout(rest);
+      if (panel) rest = setTimeout(() => nav.classList.add('is-browsing'), 150);
+      else nav.classList.remove('is-browsing');
+    });
+  });
+  nav.addEventListener('pointerleave', () => { clearTimeout(rest); nav.classList.remove('is-browsing'); });
+  nav.addEventListener('click', (e) => {
+    if (nav.classList.contains('is-open') && e.target.closest('a[href]')) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (nav.classList.contains('is-open')) { setOpen(false); toggle.focus(); return; }
+      const item = document.activeElement?.closest?.('.nav__item');
+      if (item?.querySelector('.nav__menu')) { item.classList.add('is-dismissed'); item.querySelector('.nav__link')?.focus(); }
+      return;
+    }
+    if (e.key !== 'Tab' || !nav.classList.contains('is-open')) return;
+    const f = [...nav.querySelectorAll('a[href], button:not([disabled])')]
+      .filter((el) => !el.classList.contains('skip-link') && el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden');
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (!nav.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  });
+})();
+
+// ------------------------------------------------------------------ the home page's hero: its entrance
+// The page head sets html.hero-wait, which keeps the hero's words hidden and its clip a little larger
+// (assets/css/site.css). Here the title's words rise line by line out of their own lines, then the lead,
+// the buttons and the facts fade up one after another while the clip settles. The hero simply shows under
+// reduced motion and when the page opens scrolled past it; if this runs late (html.hero-late, set 700ms
+// after the head), the style sheet has already faded it in.
+(() => {
+  const hero = document.querySelector('.home-hero');
+  const h1 = hero?.querySelector('h1');
+  const root = document.documentElement;
+  if (!hero) return;
+  const shown = (still = false) => {
+    hero.classList.toggle('is-still', still);
+    hero.classList.remove('is-entering');
+    hero.classList.add('is-entered');
+  };
+  if (!h1 || !root.classList.contains('hero-wait') || matchMedia('(prefers-reduced-motion: reduce)').matches
+    || hero.getBoundingClientRect().bottom < 0) { shown(true); return; }
+  if (root.classList.contains('hero-late')) { setTimeout(shown, 1150); return; }
+
+  const ease = 'cubic-bezier(.22, 1, .36, 1)';
+  const anims = [];
+  let words = null, over = false;
+  const finish = () => {
+    if (over) return;
+    over = true;
+    anims.forEach((a) => a.cancel());
+    if (words) { h1.replaceChildren(...words.original); h1.removeAttribute('aria-label'); }
+    shown();
+  };
+  // each word of the title in a box that clips it, so it can rise from below its own line
+  const splitWords = () => {
+    const original = [...h1.childNodes];
+    const copy = h1.cloneNode(true);
+    const boxes = [];
+    const walk = (node) => [...node.childNodes].forEach((n) => {
+      if (n.nodeType === Node.ELEMENT_NODE) { walk(n); return; }
+      if (n.nodeType !== Node.TEXT_NODE) return;
+      const parts = document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach((part) => {
+        if (!part) return;
+        if (!part.trim()) { parts.append(part); return; }
+        const box = document.createElement('span');
+        const word = document.createElement('span');
+        box.className = 'hero__word';
+        box.setAttribute('aria-hidden', 'true');
+        word.textContent = part;
+        box.append(word);
+        boxes.push(box);
+        parts.append(box);
+      });
+      n.replaceWith(parts);
+    });
+    walk(copy);
+    h1.setAttribute('aria-label', h1.textContent.replace(/\s+/g, ' ').trim());
+    h1.replaceChildren(...copy.childNodes);
+    const lines = [];
+    let top = null;
+    boxes.forEach((box) => {
+      const y = box.getBoundingClientRect().top;
+      if (top === null || Math.abs(y - top) > 3) { lines.push([]); top = y; }
+      lines[lines.length - 1].push(box.firstChild);
+    });
+    return { original, lines };
+  };
+  const fontsIn = Promise.race([document.fonts ? document.fonts.ready : Promise.resolve(), new Promise((r) => setTimeout(r, 250))]);
+  fontsIn.then(() => {
+    if (over) return;
+    if (root.classList.contains('hero-late')) { over = true; setTimeout(shown, 1150); return; }
+    words = splitWords();
+    hero.classList.add('is-entering');
+    const { lines } = words;
+    const step = Math.min(80, 240 / Math.max(1, lines.length - 1));
+    lines.forEach((line, i) => line.forEach((w) => anims.push(w.animate(
+      [{ transform: 'translateY(calc(100% + .2em))' }, { transform: 'none' }],
+      { duration: 700, delay: 80 + i * step, easing: ease, fill: 'both' }))));
+    const after = 80 + (lines.length - 1) * step + 220;
+    const rest = [hero.querySelector('.hero__lead'), ...hero.querySelectorAll('.btn-row > *'), hero.querySelector('.home-hero__facts')];
+    rest.filter(Boolean).forEach((el, k) => anims.push(el.animate(
+      [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }],
+      { duration: 520, delay: after + Math.min(k, 6) * 60, easing: ease, fill: 'both' })));
+    Promise.all([...anims.map((a) => a.finished), new Promise((r) => setTimeout(r, 1150))]).then(finish, finish);
+  }).catch(finish);
+  setTimeout(finish, 2400);
+})();
+
+// ------------------------------------------------------------------ the home page's render clip
+// Muted and looping; it starts only when the visitor has not asked for reduced motion or to save data
+// (and not on a slow connection). The round button pauses and plays it; the poster shows otherwise.
+(() => {
+  const video = document.querySelector('[data-hero-video]');
+  const btn = document.querySelector('[data-hero-pause]');
+  if (!video || !btn) return;
+  const icons = {
+    pause: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+    play: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6L12.6 8z" fill="currentColor"/></svg>',
+  };
+  const show = (playing) => {
+    btn.hidden = false;
+    btn.setAttribute('aria-label', playing ? 'Pause the video' : 'Play the video');
+    btn.innerHTML = playing ? icons.pause : icons.play;
+  };
+  const play = () => video.play().then(() => show(true)).catch(() => show(false));
+  btn.addEventListener('click', () => (video.paused ? play() : (video.pause(), show(false))));
+  const c = navigator.connection;
+  const slow = c && (c.saveData || /(^|-)(2g|3g)$/.test(c.effectiveType || ''));
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || slow) show(false);
+  else play();
+})();
+
+// ------------------------------------------------------------------ events (data/events.yaml)
+// The build already left out what was over when the site was built; this checks again by the
+// visitor's clock, so a page built days ago still shows the right next event.
+// [data-ev-next]: show the first [data-ev] that has not ended, hide the block when none is left.
+// [data-ev-next-list] (home page): hide every ended event, show the empty line when none is left.
+// /events/: move ended events from the upcoming list to the past list (latest first).
+// [data-ev-local]: add the start time in the visitor's own time zone when it differs.
+(() => {
+  const now = Date.now();
+  const over = (el) => Date.parse(el.dataset.evEnds) <= now;
+  document.querySelectorAll('[data-ev-next]').forEach((box) => {
+    const items = [...box.querySelectorAll('[data-ev]')];
+    const next = items.find((el) => !over(el));
+    items.forEach((el) => { el.hidden = el !== next; });
+    if (!next) box.hidden = true;
+  });
+  document.querySelectorAll('[data-ev-next-list]').forEach((list) => {
+    const items = [...list.querySelectorAll('[data-ev]')];
+    items.forEach((el) => { el.hidden = over(el); });
+    const empty = list.parentElement.querySelector('[data-ev-next-empty]');
+    if (empty) empty.hidden = items.some((el) => !el.hidden);
+  });
+  const up = document.querySelector('[data-ev-upcoming]');
+  const past = document.querySelector('[data-ev-past]');
+  if (up && past) {
+    const gone = [...up.querySelectorAll('[data-ev]')].filter(over);
+    if (gone.length) {
+      gone.forEach((el) => past.append(el));
+      [...past.children].sort((a, b) => b.dataset.evStart - a.dataset.evStart).forEach((el) => past.append(el));
+      const h = document.querySelector('[data-ev-past-h]');
+      if (h) h.hidden = false;
+      const empty = document.querySelector('[data-ev-empty]');
+      if (empty) empty.hidden = up.children.length > 0;
+    }
   }
-  container.addEventListener('mouseenter', () => clearInterval(timer));
-  container.addEventListener('mouseleave', () => { timer = setInterval(next, interval); });
-}
-document.querySelectorAll('.slideshow').forEach((el) => rotate(el, 'img', 5000));
-document.querySelectorAll('.testimonials').forEach((el) => rotate(el, 'blockquote', 8000));
+  document.querySelectorAll('[data-ev-local]').forEach((el) => {
+    try {
+      const t = new Date(el.dataset.evLocal);
+      const opts = { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' };
+      const mine = new Intl.DateTimeFormat(undefined, opts).format(t);
+      const theirs = new Intl.DateTimeFormat(undefined, { ...opts, timeZone: el.dataset.evTz }).format(t);
+      if (mine !== theirs) { el.textContent = `In your time zone: ${mine}`; el.hidden = false; }
+    } catch (e) { /* an old browser without time zones: the event's own time stays */ }
+  });
+})();
+
+// ------------------------------------------------------------------ videos (youtube / vimeo shortcodes)
+// Nothing loads from YouTube or Vimeo until the visitor starts a video: then the privacy-enhanced
+// player takes the place of the button. A click with a modifier key opens the video's own page.
+document.addEventListener('click', (e) => {
+  const a = e.target.closest?.('.video-embed__start');
+  if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+  const box = a.closest('.video-embed');
+  e.preventDefault();
+  const f = document.createElement('iframe');
+  f.src = box.dataset.embed;
+  f.title = box.dataset.embedTitle;
+  f.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
+  f.allowFullscreen = true;
+  f.referrerPolicy = 'strict-origin-when-cross-origin';
+  box.replaceChildren(f);
+  box.classList.add('is-playing');
+  f.focus();
+});
+
+// ------------------------------------------------------------------ table of contents
+// The sticky contents on a desktop mark the section being read (the last heading above the top third).
+(() => {
+  const toc = document.querySelector('[data-toc]');
+  if (!toc) return;
+  const links = new Map([...toc.querySelectorAll('a[href^="#"]')].filter((a) => a.hash.length > 1).map((a) => [decodeURIComponent(a.hash.slice(1)), a]));
+  const heads = [...links.keys()].map((id) => document.getElementById(id)).filter(Boolean);
+  if (!heads.length) return;
+  let current = null, queued = false;
+  const update = () => {
+    queued = false;
+    const line = window.innerHeight / 3;
+    let best = heads[0];
+    for (const h of heads) { if (h.getBoundingClientRect().top <= line) best = h; else break; }
+    if (best.id === current) return;
+    links.get(current)?.removeAttribute('aria-current');
+    current = best.id;
+    const a = links.get(current);
+    a.setAttribute('aria-current', 'location');
+    // keep the marked entry in view inside a long list
+    const t = a.offsetTop, box = toc;
+    if (t < box.scrollTop + 40 || t > box.scrollTop + box.clientHeight - 60) box.scrollTop = t - box.clientHeight / 2;
+  };
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+  addEventListener('scroll', queue, { passive: true });
+  addEventListener('resize', queue);
+  update();
+})();
+
+// ------------------------------------------------------------------ the old forum's addresses
+// /?forum=… reached the WordPress forum; a static site serves the home page for it, so say what happened.
+(() => {
+  const note = document.querySelector('main.home [data-forum-note]');
+  if (note && /[?&](forum|topic)=/.test(location.search)) note.hidden = false;
+})();

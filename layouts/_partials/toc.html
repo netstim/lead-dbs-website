@@ -1,0 +1,15 @@
+{{- /* The table of contents of a long page (see has-toc.html). variant "side": sticky in the sidebar on a
+       desktop; variant "top": a collapsible list at the top of the text, below 1024px. */ -}}
+{{- $p := .page -}}
+{{- if eq .variant "side" -}}
+<nav class="toc toc--side" aria-labelledby="toc-side-h" data-toc>
+  <p class="t-label muted" id="toc-side-h">On this page</p>
+  {{ partial "toc-list.html" (dict "items" $p.Fragments.Headings "depth" 0) }}
+  <a class="toc__top" href="#top">Back to the top</a>
+</nav>
+{{- else -}}
+<details class="toc toc--top">
+  <summary>On this page</summary>
+  <nav aria-label="On this page">{{ partial "toc-list.html" (dict "items" $p.Fragments.Headings "depth" 0) }}</nav>
+</details>
+{{- end -}}

@@ -1,0 +1,6 @@
+{{- /* The render behind every inner page's title: the same black ground and electrodes as the home
+       page's hero, faint, on the right. Decorative (alt=""); small WebP copies made by Hugo. */ -}}
+{{- with resources.Get "images/renders/cohort-black.jpg" -}}
+{{- $s := .Resize "640x webp q70" }}{{ $m := .Resize "1200x webp q70" -}}
+<img class="page-head__render" src="{{ $s.RelPermalink }}" srcset="{{ $s.RelPermalink }} 640w, {{ $m.RelPermalink }} 1200w" sizes="(min-width: 1024px) 60vw, 100vw" width="{{ $m.Width }}" height="{{ $m.Height }}" alt="" decoding="async" fetchpriority="low">
+{{- end -}}

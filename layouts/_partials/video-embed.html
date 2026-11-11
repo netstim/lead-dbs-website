@@ -1,0 +1,22 @@
+{{- /* A click-to-load video (the youtube and vimeo shortcodes). Argument: dict "ctx" (the shortcode) "service". */ -}}
+{{- $c := .ctx -}}
+{{- $id := cond $c.IsNamedParams ($c.Get "id") ($c.Get 0) -}}
+{{- if not $id }}{{ errorf "%s shortcode without a video id in %s" .service $c.Page.File.Path }}{{ end -}}
+{{- $n := add ($c.Page.Store.Get "videos" | default 0) 1 }}{{ $c.Page.Store.Set "videos" $n -}}
+{{- $title := cond $c.IsNamedParams ($c.Get "title") "" -}}
+{{- $label := $title | default (printf "Video %d on the page “%s”" $n $c.Page.Title) -}}
+{{- $start := cond $c.IsNamedParams ($c.Get "start") "" -}}
+{{- $embed := "" }}{{ $watch := "" }}{{ $name := "" -}}
+{{- if eq .service "youtube" -}}
+  {{- $embed = printf "https://www.youtube-nocookie.com/embed/%s?autoplay=1&rel=0%s" $id (cond (ne $start "") (printf "&start=%v" $start) "") -}}
+  {{- $watch = printf "https://www.youtube.com/watch?v=%s%s" $id (cond (ne $start "") (printf "&t=%vs" $start) "") }}{{ $name = "YouTube" -}}
+{{- else -}}
+  {{- $embed = printf "https://player.vimeo.com/video/%s?dnt=1&autoplay=1" $id -}}
+  {{- $watch = printf "https://vimeo.com/%s" $id }}{{ $name = "Vimeo" -}}
+{{- end -}}
+<div class="video-embed" data-embed="{{ $embed }}" data-embed-title="{{ $label }}">
+  <a class="video-embed__start" href="{{ $watch }}" aria-label="Play: {{ $label }} (loads the player from {{ $name }})">
+    <span class="video-embed__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+    <span class="video-embed__text" aria-hidden="true"><span class="video-embed__title">{{ $title | default "Play the video" }}</span><span class="video-embed__note">The player loads from {{ $name }} when you start it.</span></span>
+  </a>
+</div>

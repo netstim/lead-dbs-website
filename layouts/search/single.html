@@ -1,0 +1,12 @@
+{{ define "main" }}
+{{- /* /search/: the same search as the header's dialog (assets/js/search.js), with ?q= in the address. */ -}}
+<main id="top" class="page">
+  {{ partial "page-head.html" . }}
+  <div class="wrap doc-layout doc-layout--single">
+    <div class="prose search-page">
+      {{ partial "search-form.html" (dict "id" "page") }}
+      <noscript><p class="notice">The search needs JavaScript. Without it, every page is listed in the footer, and the <a href="{{ "sitemap.xml" | relURL }}">sitemap</a> lists them all.</p></noscript>
+    </div>
+  </div>
+</main>
+{{ end }}

@@ -1,0 +1,55 @@
+{{- /* Markdown images.
+       ![alt](file.png)                     a picture
+       ![alt](file.png "Caption text")      a picture with the title as its caption under it
+     The file is looked up among the page's own files first, then in assets/, else used as written.
+     A JPG, PNG or WebP file is shown as resized WebP copies (480 to 1600 px wide, the browser picks the
+     one it needs), with a same-format copy for browsers without WebP; a picture wider than the text
+     links to its original, so it can be opened large. Animated GIFs and SVGs are shown as they are.
+     Every picture loads lazily and carries its width and height, so nothing on the page shifts.
+     Write the alt text: what the picture shows, or where it links. An image without one is reported
+     as a warning by the build (id "image-alt"). */ -}}
+{{- $u := urls.Parse .Destination -}}
+{{- $res := false -}}
+{{- if not $u.IsAbs }}{{ $res = or (.Page.Resources.Get $u.Path) (resources.Get (strings.TrimPrefix "/" $u.Path)) }}{{ end -}}
+{{- $alt := .PlainText -}}
+{{- if not $alt }}{{ warnidf "image-alt" "%s: image %q has no alt text" .Page.File.Path .Destination }}{{ end -}}
+{{- $attrs := "" }}{{ $setW := "" -}}
+{{- range $k, $v := .Attributes }}{{ if $v }}{{ if eq $k "width" }}{{ $setW = $v }}{{ else if ne $k "height" }}{{ $attrs = printf "%s %s=%q" $attrs $k (string $v) }}{{ end }}{{ end }}{{ end -}}
+{{- $sizes := "auto, (min-width: 1280px) 900px, (min-width: 1024px) 66vw, 100vw" -}}
+{{- $html := "" }}{{ $full := "" -}}
+{{- $raster := and $res (eq $res.ResourceType "image") (in (slice "jpeg" "png" "webp" "tiff" "bmp") $res.MediaType.SubType) -}}
+{{- if $raster -}}
+  {{- $W := $res.Width }}{{ $H := $res.Height -}}
+  {{- $set := slice -}}
+  {{- range slice 480 800 1200 1600 -}}{{- if lt . $W }}{{ $r := $res.Resize (printf "%dx webp q82" .) }}{{ $set = $set | append (printf "%s %dw" $r.RelPermalink $r.Width) }}{{ end -}}{{- end -}}
+  {{- if le $W 1600 }}{{ $r := $res.Resize (printf "%dx webp q82" $W) }}{{ $set = $set | append (printf "%s %dw" $r.RelPermalink $r.Width) }}{{ end -}}
+  {{- $fb := $res }}{{ if gt $W 1200 }}{{ $fb = $res.Resize "1200x" }}{{ end -}}
+  {{- $w := $W }}{{ $h := $H -}}
+  {{- with $setW }}{{ $w = int . }}{{ $h = int (math.Round (div (mul (float $H) $w) $W)) }}{{ end -}}
+  {{- $img := printf `<img src="%s" alt="%s" width="%d" height="%d" sizes="%s" loading="lazy" decoding="async"%s>` $fb.RelPermalink ($alt | htmlEscape) $w $h $sizes $attrs -}}
+  {{- $html = printf `<picture><source type="image/webp" srcset="%s" sizes="%s">%s</picture>` (delimit $set ", ") $sizes $img -}}
+  {{- if and (gt $W 900) (not $setW) }}{{ $full = $res.RelPermalink }}{{ end -}}
+{{- else -}}
+  {{- $src := .Destination }}{{ $dims := "" -}}
+  {{- with $res -}}
+    {{- $src = .RelPermalink -}}
+    {{- if and (eq .ResourceType "image") (ne .MediaType.SubType "svg") -}}
+      {{- $w := .Width }}{{ $h := .Height }}{{ with $setW }}{{ $h = int (math.Round (div (mul (float $h) (int .)) $w)) }}{{ $w = int . }}{{ end -}}
+      {{- $dims = printf ` width="%d" height="%d"` $w $h -}}
+    {{- else if $setW }}{{ $dims = printf ` width="%v"` $setW }}{{ end -}}
+  {{- else -}}
+    {{- if and (not $u.IsAbs) (strings.HasPrefix $u.Path "/") }}{{ $src = relURL (strings.TrimPrefix "/" .Destination) }}{{ end -}}
+    {{- with $setW }}{{ $dims = printf ` width="%v"` . }}{{ end -}}
+  {{- end -}}
+  {{- $html = printf `<img src="%s" alt="%s"%s loading="lazy" decoding="async"%s>` $src ($alt | htmlEscape) $dims $attrs -}}
+{{- end -}}
+{{- if $full -}}
+  {{- /* render-link.html takes this wrapper off again when the picture is itself inside a link */ -}}
+  {{- $html = printf `<a class="img-zoom" href="%s">%s<span class="sr-only img-zoom__hint"> (open the full-size image)</span></a>` $full $html -}}
+{{- end -}}
+{{- with .Title -}}
+{{- $id := printf "cap-%s" (substr (md5 (printf "%s%s" $.Destination .)) 0 8) -}}
+<span class="img-figure" role="figure" aria-labelledby="{{ $id }}">{{ $html | safeHTML }}<span class="img-figure__caption" id="{{ $id }}">{{ . | $.Page.RenderString }}</span></span>
+{{- else -}}
+{{ $html | safeHTML }}
+{{- end -}}

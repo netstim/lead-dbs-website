@@ -1,21 +1,53 @@
-{{/* Sub-page navigation for the top-level section the page belongs to, as in the old Enfold sidebar. */}}
-{{ $top := .FirstSection }}
-{{ if and (not .IsHome) (ne $top.Section "news") $top.IsSection (gt (len $top.Pages) 0) }}
-<section class="widget subnav">
-  {{ partial "subnav.html" (dict "section" $top "page" . "depth" 0) }}
+{{- /* The sidebar of inner pages: the current release (data/release.yaml), the section's own pages
+     where it has some, the next event (data/events.yaml), quick links (data/links.yaml) and the newsletter.
+     Argument: the page, or dict "page" "toc" (bool). On a long page with a table of contents the sidebar
+     holds the release card and the contents, which stay in view while the text scrolls (desktop). */ -}}
+{{ $page := . }}{{ $toc := false }}
+{{ if reflect.IsMap . }}{{ $page = .page }}{{ $toc = .toc }}{{ end }}
+{{ $r := hugo.Data.release }}
+{{ $date := time.AsTime $r.date }}
+{{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Name "Download" }}{{ $dl = .URL }}{{ end }}{{ end }}
+{{ $downloadPages := slice $dl }}
+{{ range slice "/download-lead-dbs" "/downloadfocus" }}{{ with site.GetPage . }}{{ $downloadPages = $downloadPages | append .RelPermalink }}{{ end }}{{ end }}
+{{ $onDownload := in $downloadPages $page.RelPermalink }}
+{{ $onContact := eq $page.RelPermalink (site.GetPage "/contact").RelPermalink }}
+{{ if not (or $onDownload $onContact) }}
+<section class="side-card release-card" aria-labelledby="side-release">
+  <p class="t-label muted" id="side-release">Current release</p>
+  <p class="release-card__version">Lead-DBS {{ $r.version }}</p>
+  <p class="t-small muted">Released {{ $date | time.Format "2 January 2006" }} · MATLAB {{ $r.matlab }} or later</p>
+  <a class="btn btn--primary" href="{{ $dl }}">Download Lead-DBS</a>
+  {{ with $r.notes }}<a class="link t-small" href="{{ partial "resolve-url.html" (dict "url" . "page" $page) }}">The {{ $r.version }} announcement</a>{{ end }}
+  {{ with $r.changes_url }}<a class="link t-small" href="{{ . }}">Full list of changes on GitHub</a>{{ end }}
 </section>
 {{ end }}
 
-<section class="widget">
-  <h3 class="widget-title">Subscribe to our newsletter</h3>
-  {{ partial "newsletter-form.html" (dict "compact" true) }}
-</section>
+{{ if $toc }}
+{{ partial "toc.html" (dict "page" $page "variant" "side") }}
+{{ else }}
 
-<section class="widget recent-posts">
-  <h3 class="widget-title">Recent posts</h3>
+{{ if ne $page.Section "events" }}{{ partial "events/next.html" (dict "variant" "side" "page" $page) }}{{ end }}
+
+{{ $top := $page.FirstSection }}
+{{ if and (not $page.IsHome) (ne $top.Section "news") (ne $top.Section "search") $top.IsSection (gt (len $top.Pages) 0) }}
+<nav class="side-block subnav" aria-label="{{ $top.LinkTitle }} pages">
+  <p class="t-label muted"><a href="{{ $top.RelPermalink }}"{{ if eq $top $page }} aria-current="page"{{ end }}>{{ $top.LinkTitle }}</a></p>
+  {{ partial "subnav.html" (dict "section" $top "page" $page "depth" 0) }}
+</nav>
+{{ end }}
+
+<nav class="side-block quick-links" aria-labelledby="side-quick">
+  <p class="t-label muted" id="side-quick">Quick links</p>
   <ul>
-    {{ range first 5 (where site.RegularPages "Section" "news").ByDate.Reverse }}
-    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-    {{ end }}
+    {{ range hugo.Data.links.quick }}<li><a href="{{ partial "resolve-url.html" (dict "url" .url "page" $page) }}">{{ .name }}</a></li>{{ end }}
   </ul>
+</nav>
+
+{{ if not $onDownload }}
+<section class="side-block newsletter-box" aria-labelledby="side-news">
+  <p class="t-label muted" id="side-news">Newsletter</p>
+  <p class="t-small">Release and workshop news by email.</p>
+  {{ partial "newsletter-form.html" (dict "compact" true "id" "side") }}
 </section>
+{{ end }}
+{{ end }}

@@ -5,6 +5,8 @@
 {{ $out := $url }}
 {{ $frag := "" }}
 {{ with findRESubmatch `^([^#]*)(#.*)$` $url 1 }}{{ $url = index (index . 0) 1 }}{{ $frag = index (index . 0) 2 }}{{ end }}
+{{/* $out must not carry the fragment: it is appended once at the end. */}}
+{{ $out = $url }}
 {{ if eq $url "/" }}
   {{ $out = site.Home.RelPermalink }}
 {{ else if strings.HasPrefix $url "/" }}

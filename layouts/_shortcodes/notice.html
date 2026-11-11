@@ -1,0 +1,9 @@
+{{- /* A quiet callout for a line that must stand apart from the text: an archive note, the
+       research-use statement. Markdown inside works:
+         {{< notice >}}This workshop took place …{{< /notice >}}
+         {{< notice title="For research use only" id="research-use" >}}Lead-DBS is …{{< /notice >}}
+       title (optional) is a short heading; id (optional) lets other pages link to it (#research-use). */ -}}
+<div class="notice" role="note"{{ with .Get "id" }} id="{{ . }}"{{ end }}>
+  {{- with .Get "title" }}<p class="notice__title">{{ . }}</p>{{ end }}
+  {{- .Inner | strings.TrimSpace | .Page.RenderString (dict "display" "block") -}}
+</div>

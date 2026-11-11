@@ -1,0 +1,13 @@
+{{- /* The site search, opened by the header's search button or the "/" key (assets/js/search.js).
+     It reads /search-index.json, which Hugo writes from layouts/home.searchindex.json. Without script
+     the header's button is a link to /search/. */ -}}
+{{ with site.Home.OutputFormats.Get "searchindex" }}
+<dialog class="search-dialog" id="site-search" aria-labelledby="site-search-h" data-index="{{ .RelPermalink }}">
+  <div class="search-dialog__box">
+    {{ partial "search-form.html" (dict "id" "dlg") }}
+    <button class="search-dialog__close" type="button" data-search-close aria-label="Close the search">
+      <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</dialog>
+{{ end }}

@@ -1,10 +1,12 @@
-{{/* Newsletter sign-up. No backend yet: replace action/fields once a newsletter service is chosen. */}}
-<form class="newsletter-form{{ if .compact }} compact{{ end }}" action="#" method="post"{{ if not site.Params.formsEnabled }} onsubmit="return false"{{ end }}>
+{{- /* Newsletter sign-up. No backend yet (params.formsEnabled = false): the button is disabled and a
+     note says so. Once a newsletter service is chosen, set its address as the form's action. */ -}}
+{{ $id := .id | default "nl" }}
+<form class="form newsletter-form{{ if .compact }} newsletter-form--compact{{ end }}" method="post"{{ if not site.Params.formsEnabled }} onsubmit="return false"{{ end }}>
   {{ if not .compact }}
-  <label>First name<input type="text" name="first_name" autocomplete="given-name"></label>
-  <label>Last name<input type="text" name="last_name" autocomplete="family-name"></label>
+  <div class="field"><label for="{{ $id }}-first">First name</label><input id="{{ $id }}-first" type="text" name="first_name" autocomplete="given-name"></div>
+  <div class="field"><label for="{{ $id }}-last">Last name</label><input id="{{ $id }}-last" type="text" name="last_name" autocomplete="family-name"></div>
   {{ end }}
-  <label{{ if .compact }} class="visually-hidden-label"{{ end }}><span>Email</span><input type="email" name="email" placeholder="Email" required autocomplete="email"></label>
-  <button type="submit" class="button block"{{ if not site.Params.formsEnabled }} disabled{{ end }}>Subscribe</button>
+  <div class="field"><label for="{{ $id }}-email">Email</label><input id="{{ $id }}-email" type="email" name="email" required autocomplete="email" inputmode="email"></div>
+  <div class="btn-row"><button type="submit" class="btn btn--secondary"{{ if not site.Params.formsEnabled }} disabled{{ end }}>Subscribe</button></div>
   {{ if not site.Params.formsEnabled }}<p class="form-note">Preview: sign-up not connected yet.</p>{{ end }}
 </form>

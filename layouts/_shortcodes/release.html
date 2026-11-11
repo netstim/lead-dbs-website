@@ -1,0 +1,9 @@
+{{- /* Prints one field of data/release.yaml inside page text, so a release is one edit.
+       {{< release version >}}  {{< release date >}}  {{< release matlab >}}  {{< release standalone >}} */ -}}
+{{- $field := .Get 0 | default "version" -}}
+{{- $r := hugo.Data.release -}}
+{{- if eq $field "date" -}}
+{{- (time.AsTime (index $r "date")) | time.Format "2 January 2006" -}}
+{{- else -}}
+{{- with index $r $field }}{{ . }}{{ else }}{{ errorf "release shortcode: no field %q in data/release.yaml (%s)" $field $.Page.File.Path }}{{ end -}}
+{{- end -}}

@@ -1,0 +1,23 @@
+{{- /* The site search's index (assets/js/search.js): one entry per page, with its title, section,
+       headings and the start of its text. Pages with "search: false" in their front matter, and
+       form-only pages without text, are left out. */ -}}
+{{- $out := slice -}}
+{{- range where site.Pages "Kind" "in" (slice "page" "section" "home") -}}
+  {{- if and (ne .Params.search false) (not .Params.private) .Title -}}
+    {{- $text := .Plain | replaceRE ` ?\(open the full-size image\)` "" | replaceRE `(\S)#(\s|$)` "$1$2" | replaceRE `\s+` " " | strings.TrimSpace -}}
+    {{- $heads := slice -}}
+    {{- range .Fragments.HeadingsMap }}{{ $heads = $heads | append .Title }}{{ end -}}
+    {{- $section := "" -}}
+    {{- $top := .FirstSection -}}
+    {{- if eq .Section "news" }}{{ $section = printf "News, %s" (.Date.Format "2006") -}}
+    {{- else if and $top (not $top.IsHome) (ne $top .) }}{{ $section = $top.LinkTitle }}{{ end -}}
+    {{- $out = $out | append (dict
+        "t" .Title
+        "u" .RelPermalink
+        "s" $section
+        "h" (delimit $heads " · ")
+        "d" (.Description | default "")
+        "x" (substr $text 0 1600)) -}}
+  {{- end -}}
+{{- end -}}
+{{- $out | jsonify -}}
