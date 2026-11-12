@@ -73,7 +73,7 @@ transcranial magnetic stimulation (TMS).
 <details class="more">
 <summary>Show the studies</summary>
 
-> - Darby, R. R., Horn, A., Cushman, F., & Fox, M. D. (2017). Lesion network localization of criminal behavior. *Proceedings of the National Academy of Sciences of the United States of America*, *56*, 201706587–6. [doi:10.1073/pnas.1706587115](https://doi.org/10.1073/pnas.1706587115)
+> - Darby, R. R., Horn, A., Cushman, F., & Fox, M. D. (2018). Lesion network localization of criminal behavior. *Proceedings of the National Academy of Sciences of the United States of America*, *115*(3), 601–606. [doi:10.1073/pnas.1706587115](https://doi.org/10.1073/pnas.1706587115)
 > - Boes, A. D., Prasad, S., Liu, H., Liu, Q., Pascual-Leone, A., Caviness, V. S., Jr, & Fox, M. D. (2015). Network localization of neurological symptoms from focal brain lesions. *Brain : a Journal of Neurology*, *138*(10), 3061–3075. [doi:10.1093/brain/awv228](https://doi.org/10.1093/brain/awv228)
 > - Darby, R., Laganiere, S., Pascual-Leone, A., Prasad, S., & Fox, M. D. (2016). Finding the imposter: brain connectivity of lesions causing delusional misidentifications. *Brain : a Journal of Neurology*, 1–11. [doi:10.1093/brain/aww288](https://doi.org/10.1093/brain/aww288)
 > - Fischer, D. B., Boes, A. D., Demertzi, A., Evrard, H. C., Laureys, S., Edlow, B. L., et al. (2016). A human brain network derived from coma-causing brainstem lesions. *Neurology*, 10.1212/WNL.0000000000003404–9. [doi:10.1212/WNL.0000000000003404](https://doi.org/10.1212/WNL.0000000000003404)

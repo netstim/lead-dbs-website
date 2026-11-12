@@ -348,7 +348,7 @@ atlases:
 - id: shen-atlas-shen-2009
   group: data-driven
   name: Shen atlas
-  ref: Shen 2009
+  ref: Shen 2013
   covers: 268 regions, spectral clustering
   preinstalled: true
   about: "The Shen268 atlas was derived based on a group-wise spectral clustering algorithm using resting-state fMRI data from 45 subjects acquired at Yale MRRC. The atlas contains 268 functional coherent nodes, which are further grouped into eight resting state networks.\n\nThe Shen368 atlas has 327 cortical nodes that were constructed using the group-wise spectral clustering  \nalgorithm, 14 subcortical nodes that were defined using the anatomical definition, and 26 cerebellum  \nnodes that were derived based on Yeo’s 17 networks, and one brain stem node."
