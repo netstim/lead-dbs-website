@@ -176,7 +176,7 @@ help:
 # The funders, in one row under the last band. Logo files sit next to this file (content/). url only
 # where the funder's page still exists.
 funders:
-  title: "Lead-DBS has been supported by"
+  title: "Supported by"
   logos:
     # crop (optional): Hugo crop steps that cut a logo file's empty margin, applied in order
     # scale (optional): makes a logo that looks too heavy (below 1) or too light (above 1) match the others
@@ -188,11 +188,9 @@ funders:
 
 cite:
   title: "Cite Lead-DBS in your paper"
-  # the current paper: short on the home page (reference: in full, used when short is missing); every
-  # paper to cite, in full, is on the page the link leads to
-  short: "Neudorfer et al. (2023), Lead-DBS v3.0, NeuroImage 268, 119862"
-  reference: "Neudorfer C, Butenko K, Oxenford S, Rajamani N, Achtzehn J, Goede L, et al. (2023). Lead-DBS v3.0: Mapping deep brain stimulation effects to local anatomy and global networks. NeuroImage, 268, 119862."
-  doi: "10.1016/j.neuroimage.2023.119862"
+  # the paper to cite now: its id in data/papers.yaml (the home page shows it as a reference and as BibTeX);
+  # every paper to cite is on the page the link leads to
+  paper: "neudorfer2023"
   link: {label: "Every paper to cite", url: "/about/citing_leaddbs/"}
 
 ---
