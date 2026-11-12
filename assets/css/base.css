@@ -84,6 +84,9 @@ p { text-wrap: pretty; }
 /* text sizes and helpers used in the templates */
 .t-lead { font-size: var(--t-lead); line-height: 1.5; }.t-label { font-size: var(--t-label); font-weight: 500; line-height: 1.4; letter-spacing: .01em; }
 .muted { color: var(--muted); }
+/* an element for phones only (a shorter wording, a copy moved into a page head): hidden from 640px up */
+.phone-only { display: none; }
+@media (max-width: 639px) { .phone-only { display: revert; } }
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 /* keyboard focus: one ring in the accent everywhere */
@@ -142,6 +145,13 @@ p { text-wrap: pretty; }
 .btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); }
 @media (max-width: 639px) {
   .btn-row { flex-direction: column; align-items: stretch; width: 100%; }
+  /* a hero's or a closing block's actions on a phone: pills stacked full width, 48px high; the secondary
+     one an outline pill (a 4% ground and a 15% ring of the ink, white on the black bands) */
+  :is(.btn-row, .page-intro__actions, .dl-hero__main) { --btn-h: 48px; }
+  :is(.btn-row, .page-intro__actions, .dl-hero__main) > .btn { width: 100%; }
+  :is(.btn-row, .page-intro__actions) > .btn--secondary { padding-inline: var(--s-5); text-decoration: none;
+    border-color: color-mix(in oklab, var(--ink) 15%, transparent); background: color-mix(in oklab, var(--ink) 4%, transparent); }
+  :is(.btn-row, .page-intro__actions) > .btn--secondary:hover { border-color: color-mix(in oklab, var(--ink) 30%, transparent); }
 }
 /* the narrowest phones: a little less air either side, so a four-word label stays on one line */
 @media (max-width: 359px) { .btn:not(.btn--secondary) { padding-inline: var(--s-4); } }

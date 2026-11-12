@@ -41,8 +41,48 @@
   :is(.prose .jumps, .dl-hero__mirrors) li { flex: none; }
   .dl-hero__mirrors { display: grid; }
 
-  /* -------------------------------------------------------------- fewer things on a phone
-     the footer's columns and the breadcrumb are in the menu */
-  .footer__cols,
-  .breadcrumb { display: none; }
+  /* -------------------------------------------------------------- inner page head
+     (layouts/_partials/page-head.html) one black band: the page's render as a 300px picture at the top,
+     fading into the black; under it the breadcrumb, the title (44/46) and the page's one-line lead in the
+     band's muted colour (.page-head__lead, a phone-only copy of the text's first line, which is hidden
+     there). A page without a render gets the band of words only. */
+  .page-head { padding: calc(var(--s-9) + var(--s-8) + var(--s-2)) 0 calc(var(--s-6) + var(--s-2)); }
+  .page-head:not(:has(> .page-head__render)) { padding-block: var(--s-6) calc(var(--s-6) + var(--s-2)); }
+  .page-head__render { bottom: auto; width: 100%; height: 300px; opacity: 1; object-fit: cover;
+    -webkit-mask-image: linear-gradient(to bottom, color-mix(in srgb, var(--render) 50%, transparent), var(--render) 30%, transparent);
+    mask-image: linear-gradient(to bottom, color-mix(in srgb, var(--render) 50%, transparent), var(--render) 30%, transparent); }
+  .page-head h1 { max-width: none; font-size: var(--t-h1); line-height: var(--lh-h1); }
+  .page-head__lead { max-width: 310px; margin-top: var(--s-3); color: var(--muted); font-size: var(--t-doc); text-wrap: pretty; }
+  .page-head__lead strong { font-weight: inherit; color: var(--on-render); }
+  main:has(.page-head__lead) .doc-layout > .prose > p:first-child,
+  main:has(.page-head__lead) .doc-layout > .prose > .toc--top:first-child + p,
+  main:has(.page-head__lead) .fs-lead > p:first-child,
+  main:has(.page-head__lead) .doc-layout > .prose > .page-intro:first-child > .page-intro__text { display: none; }
+  .breadcrumb ol { font-size: var(--t-label); }
+  .breadcrumb li + li::before { content: "\203A"; }
+  .breadcrumb li:nth-last-child(2):not(:first-child, :nth-child(2))::before { content: "\203A  \2026  \203A"; white-space: pre; }
+
+  /* -------------------------------------------------------------- footer
+     black, the logo, the four link groups two across, a hairline, the legal lines */
+  .footer { padding: var(--s-8) 0 calc(var(--s-6) + var(--s-2)); }
+  .footer__main { gap: var(--s-7); }
+  .footer__cols { gap: var(--s-7) var(--s-5); }
+  .footer__h { margin-bottom: var(--s-2); font-size: var(--t-label); }
+  .footer ul { font-size: var(--t-note); }
+  .footer ul a { padding-block: var(--s-2); }
+  .footer__legal { margin-top: var(--s-7); padding-top: var(--s-5); font-size: var(--t-label); }
+
+  /* -------------------------------------------------------------- related rows
+     "Related" (layouts/_partials/next-steps.html) and "More in …" (section-nav.html, variant end): a small
+     muted label, then rows 58px high, the title 17px medium, a chevron in muted, hairlines between */
+  :is(.next-steps__h, .prose .next-steps__h, .section-nav--end .section-nav__h, .prose .section-nav--end .section-nav__h) {
+    margin-bottom: var(--s-1); color: var(--muted); font-family: var(--font-text); font-size: var(--t-label); font-weight: 500; }
+  .section-nav--end .section-nav__h a { color: inherit; }
+  :is(.next-step, .prose a.next-step) { min-height: 58px; padding-block: var(--s-3); }
+  .next-step__title { font-size: var(--t-doc); }
+  .next-step .next-step__arrow { width: 16px; height: 16px; }
+  .section-nav--end li a { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); min-height: 58px;
+    padding-block: var(--s-3); font-size: var(--t-doc); }
+  .section-nav--end li a::after { content: ""; flex: none; width: 16px; height: 16px; background: var(--muted);
+    -webkit-mask: var(--arrow) center / contain no-repeat; mask: var(--arrow) center / contain no-repeat; }
 }
