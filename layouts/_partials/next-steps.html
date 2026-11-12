@@ -20,6 +20,7 @@
     {{- $entry := . -}}
     {{- with .page -}}
       {{- $u := urls.Parse . -}}
+      {{- if or $u.Scheme $u.Host $u.RawQuery }}{{ errorf "%s: next page %q must be a path on this site (another site: url and name)" $page.File.Path . }}{{ end -}}
       {{- $t := or (site.GetPage (strings.TrimSuffix "/" $u.Path)) (site.GetPage (printf "/news%s" (strings.TrimSuffix "/" $u.Path))) -}}
       {{- if not $t }}{{ errorf "%s: next %q is not a page" $page.File.Path . }}{{ end -}}
       {{- if and (eq $t $page) (not $u.Fragment) }}{{ errorf "%s: next %q is the page itself" $page.File.Path . }}{{ end -}}
@@ -32,6 +33,7 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
+{{- if gt (len $items) 3 }}{{ errorf "%s: \"Related\" would show %d links; at most three (a news post links its newer and older post and All news by itself)" $page.File.Path (len $items) }}{{ end -}}
 {{- with $items }}
 <nav class="next-steps" aria-labelledby="next">
   <h2 class="next-steps__h" id="next">Related</h2>

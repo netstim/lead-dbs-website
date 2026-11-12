@@ -11,7 +11,8 @@
          base   the page whose entry or menuParent placed it */ -}}
 {{- $page := . -}}
 {{- $all := slice -}}
-{{- range site.Menus.main }}{{ $all = $all | append . }}{{ range .Children }}{{ $all = $all | append . }}{{ range .Children }}{{ $all = $all | append . }}{{ end }}{{ end }}{{ end -}}
+{{- /* the menu has three levels at most (group, page, subpage): a deeper entry would lose its place here */ -}}
+{{- range site.Menus.main }}{{ $all = $all | append . }}{{ range .Children }}{{ $all = $all | append . }}{{ range .Children }}{{ $all = $all | append . }}{{ if .HasChildren }}{{ errorf "hugo.toml: the main menu entry %q has entries under it; the menu has at most three levels (nav-place.html)" .Name }}{{ end }}{{ end }}{{ end }}{{ end -}}
 {{- $entry := false }}{{ $base := false }}{{ $byParent := false -}}
 {{- range slice $page | append $page.Ancestors -}}
   {{- if not $entry -}}

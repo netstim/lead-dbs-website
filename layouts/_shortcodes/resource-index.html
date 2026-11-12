@@ -1,5 +1,6 @@
 {{- /* Compact hub navigation. Use the menu's short card copy, not page descriptions. */ -}}
 {{- $want := .Get "menu" -}}
+{{- if not $want }}{{ errorf "%s: resource-index needs menu=\"…\", the identifier of a group in hugo.toml [menus.main]" .Page.File.Path }}{{ end -}}
 {{- $group := false -}}
 {{- range site.Menus.main }}{{ if eq .Identifier $want }}{{ $group = . }}{{ end }}{{ end -}}
 {{- if not $group }}{{ errorf "resource-index: unknown menu %q" $want }}{{ end -}}

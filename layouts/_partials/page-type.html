@@ -8,7 +8,7 @@
   "contributors" (dict "side" true "wide" false)
 -}}
 {{- $name := .Layout | default "doc" -}}
-{{- if not (index $types $name) }}{{ errorf "%s: unknown page type %q (doc, hub, showcase, event)" .File.Path $name }}{{ end -}}
+{{- if not (index $types $name) }}{{ errorf "%s: unknown page type %q (doc, hub, showcase, event, contributors)" .File.Path $name }}{{ end -}}
 {{- range slice "sidebar" "related" -}}
   {{- if isset $.Params . }}{{ errorf "%s: front matter %q is retired; the page type decides the layout (README, Page types)" $.File.Path . }}{{ end -}}
 {{- end -}}
