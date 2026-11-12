@@ -17,6 +17,8 @@
 :root {
   --p-bg: #ffffff; --p-surface: #f5f6f7; --p-ink: #2f3437; --p-muted: #6a6f74;
   --p-accent: #e0645a; --p-accent-ink: #ffffff; --p-action: #2b5c8a; --p-action-ink: #ffffff;
+  /* the coral as small text: darkened on the light ground to 4.5:1 or more (WCAG 1.4.3) */
+  --p-accent-text: color-mix(in oklab, var(--p-accent) 80%, var(--render));
   --p-tint-1: #c6cdf7; --p-tint-2: #f4c6cf; --p-tint-ink: #2f3437;
   --p-inv-bg: #000; --p-inv-surface: #171b1d; --p-inv-ink: #f7f9fa; --p-inv-muted: #a3abaf;
   --p-inv-accent: #f7f9fa; --p-inv-accent-ink: #1f3038; --p-inv-action: #f7f9fa; --p-inv-action-ink: #1f3038;
@@ -48,6 +50,7 @@
   color-scheme: dark;
   --p-bg: #161819; --p-surface: #212426; --p-ink: #e6e8e9; --p-muted: #9ca2a6;
   --p-accent: #ec7a70; --p-accent-ink: #161819; --p-action: #8fb5e3; --p-action-ink: #10202e;
+  --p-accent-text: var(--p-accent);
   --p-tint-1: #8e97d6; --p-tint-2: #d897a4; --p-tint-ink: #161819;
   --p-inv-surface: #1b1e20;
 }
@@ -207,11 +210,11 @@ html:not(.js) .nav__link .chev { display: none; }
   html:not(.js) .top-dark .nav .nav__menu { background: var(--render); }
   /* with script the chevron is a button of its own beside the word (it opens the panel from the keyboard) */
   html.js .nav__link .chev { display: none; }
-  /* the chevron sits close after its word (about 4px); its button is 22px wide, its target 36 × 44: it
+  /* the chevron sits close after its word (about 2px); its button is 24px wide (WCAG 2.5.8), its target 36 × 44: it
      reaches into the space after it (the next word's start padding), never over a letter */
-  html.js .nav__item:has(> .nav__expand) > .nav__link { padding-right: 3px; }
-  html.js .nav__item:has(> .nav__expand) > .nav__link::before, html.js .nav__item:has(> .nav__expand) > .nav__link[aria-current="page"]::after { right: 3px; }
-  .nav__expand { position: relative; display: inline-grid; place-items: center start; width: 22px; height: 36px; margin-right: var(--s-1); padding: 0; border: 0; border-radius: var(--r-sm);
+  html.js .nav__item:has(> .nav__expand) > .nav__link { padding-right: 1px; }
+  html.js .nav__item:has(> .nav__expand) > .nav__link::before, html.js .nav__item:has(> .nav__expand) > .nav__link[aria-current="page"]::after { right: 1px; }
+  .nav__expand { position: relative; display: inline-grid; place-items: center start; width: 24px; height: 36px; margin-right: var(--s-1); padding: 0; border: 0; border-radius: var(--r-sm);
     background: none; color: inherit; cursor: pointer; }
   .nav__expand { z-index: 1; }
   .nav__expand::before { content: ""; position: absolute; inset: -4px -10px -4px -4px; }
@@ -1361,7 +1364,7 @@ html:not(.js) .g-item__info { display: block; padding: var(--s-2) 0 var(--s-3); 
 .pulse-card__day { position: absolute; z-index: 1; top: var(--s-3); left: var(--s-3); display: grid; justify-items: center; gap: 3px; min-width: 46px; padding: 7px 8px 8px;
   border-radius: var(--r-md); background: var(--p-bg); color: var(--ink); font: 600 var(--t-card)/1 var(--font-text); letter-spacing: -.02em; font-variant-numeric: tabular-nums;
   box-shadow: 0 1px 2px rgb(0 0 0 / .06), 0 4px 14px -6px rgb(0 0 0 / .18); }
-.pulse-card__day > span { font-size: var(--t-xs); letter-spacing: 0; color: var(--p-accent); }
+.pulse-card__day > span { font-size: var(--t-xs); letter-spacing: 0; color: var(--p-accent-text); }
 .pulse-card__link:hover .pulse-card__media > img { transform: scale(1.02); }
 .pulse-card__link:hover .pulse-card__media--poster > img { transform: translateY(-3px); }
 .pulse-card__meta { font-size: var(--t-label); color: var(--muted); font-variant-numeric: tabular-nums; }
