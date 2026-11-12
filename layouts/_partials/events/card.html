@@ -7,11 +7,16 @@
 <li class="event panel"{{ if not $compact }} id="{{ $ev.id }}"{{ end }} data-ev data-ev-ends="{{ $ev.iso_ends }}" data-ev-start="{{ $ev.start_unix }}">
   <p class="event__date"><time datetime="{{ $ev.iso_start }}">{{ $ev.when }}</time></p>
   <h3 class="event__title">{{ if and $compact $events }}<a href="{{ $events.RelPermalink }}#{{ $ev.id }}">{{ $e.title }}</a>{{ else }}{{ $e.title }}{{ end }}</h3>
+  {{ if $compact }}
+  {{- /* the home page: when and where on one line, as under a news item */}}
+  <p class="event__meta">{{ with $ev.time }}<time datetime="{{ $ev.iso_start }}">{{ . }}</time><span class="event__local" data-ev-local="{{ $ev.iso_start }}" data-ev-tz="{{ $ev.tz }}" hidden></span> · {{ end }}{{ $e.where }}</p>
+  {{ else }}
   <dl class="spec-rows event__facts">
     {{ with $ev.time }}<div><dt>Time</dt><dd><time datetime="{{ $ev.iso_start }}">{{ . }}</time><span class="event__local" data-ev-local="{{ $ev.iso_start }}" data-ev-tz="{{ $ev.tz }}" hidden></span></dd></div>{{ end }}
     <div><dt>Where</dt><dd>{{ $e.where }}</dd></div>
-    {{ if not $compact }}{{ with $e.host }}<div><dt>Hosted by</dt><dd>{{ . }}</dd></div>{{ end }}{{ end }}
+    {{ with $e.host }}<div><dt>Hosted by</dt><dd>{{ . }}</dd></div>{{ end }}
   </dl>
+  {{ end }}
   {{ if not $compact }}{{ with $e.text }}<p class="event__text">{{ . }}</p>{{ end }}{{ end }}
   <div class="event__upcoming-only">{{ partial "events/register.html" (dict "ev" $ev "page" $page "compact" $compact) }}</div>
   {{ if not $compact }}{{ with $e.links }}

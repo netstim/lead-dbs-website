@@ -530,3 +530,17 @@ document.addEventListener('click', (e) => {
   open();
   addEventListener('hashchange', open);
 })();
+
+// ------------------------------------------------------------------ copy the citation
+// The home page's "Copy citation" (layouts/home.html): shown only where the clipboard can be written; it
+// puts the full reference and its DOI there and says so for two seconds.
+document.querySelectorAll('.cite__copy[data-copy]').forEach((btn) => {
+  if (!navigator.clipboard?.writeText) return;
+  btn.hidden = false;
+  const label = btn.textContent;
+  btn.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(btn.dataset.copy); btn.textContent = 'Copied'; }
+    catch { btn.textContent = 'Copy failed'; }
+    setTimeout(() => { btn.textContent = label; }, 2000);
+  });
+});

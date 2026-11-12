@@ -494,10 +494,20 @@ main > .home-hero { position: relative; isolation: isolate; background: var(--re
 .home .section-head--row { display: flex; max-width: none; }
 .section-head__more { flex: none; }
 .home h3 { font: var(--title-weight) var(--t-card)/1.3 var(--font-display); letter-spacing: -0.01em; }
-.home-split { align-items: center; row-gap: var(--s-7); }
+.home-split { align-items: start; row-gap: var(--s-7); }
 .split__text > * + * { margin-top: var(--s-5); }
 .split__text h2 { margin-bottom: 0; }
-.split__text > .spec-rows { margin-top: var(--s-6); }
+.split__text > .flow { margin-top: var(--s-6); }
+/* what goes in and what comes out (the localization on the home page): two steps side by side, an arrow
+   between them, each a small muted label over its words; on a phone one under the other */
+.flow { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: start; gap: var(--s-4); }
+.flow__step { margin: 0; display: grid; gap: var(--s-1); font-size: var(--t-body); line-height: 1.45; color: var(--ink); }
+.flow__label { font-size: var(--label-size); font-weight: var(--label-weight); color: var(--muted); }
+.flow__arrow { width: 20px; height: 20px; margin-top: calc(1.4em + var(--s-1)); fill: none; stroke: var(--muted); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 639px) {
+  .flow { grid-template-columns: minmax(0, 1fr); gap: var(--s-2); }
+  .flow__arrow { margin: 0; rotate: 90deg; }
+}
 .spec-rows { display: grid; margin: 0; border-top: 1px solid var(--line); }
 .spec-rows > div { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: var(--s-4); padding: var(--s-3) 0; border-bottom: 1px solid var(--line); }
 .spec-rows dt { padding-top: .2em; color: var(--muted); }
@@ -597,17 +607,20 @@ main > .home-hero { position: relative; isolation: isolate; background: var(--re
 @media (max-width: 639px) { .next-band__point { font-size: 21px; } }
 @media (max-width: 1023px) { .next-band__points { grid-template-columns: minmax(0, 1fr); gap: var(--s-4); } .next-band__points > li { gap: var(--s-2); } }
 
-/* what is coming up and what is new: the upcoming events (compact cards side by side, .event below is
-   the one design for /events/ too) in the first eight columns, the latest news as a ruled list in the
-   last four. Both headings are section headings on one line. A card here holds the same four things
-   for every event (date, title, time and place, one action; the host and the notes are on /events/), so
-   cards side by side come out one height with their buttons in line, and the button sits right under the
-   facts, never pushed down to the card's foot. */
+/* what is coming up and what is new: two equal halves, each a ruled list under its heading. An event
+   here is a row like a news item (its date over its title), then its time and place on one line and its
+   one action as a link (the host, the notes and the button are on /events/). */
 .updates-grid { row-gap: var(--s-7); }
 .home .updates__h { max-width: none; margin: 0 0 var(--s-5); font-size: var(--t-h3); line-height: 1.15; }
-@media (min-width: 1024px) { .updates__events { grid-column: 1 / span 8; } .updates__news { grid-column: 9 / span 4; } }
-.event-list--home { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); align-items: stretch; gap: var(--gutter); }
-.event-list--home .event__upcoming-only { margin-top: var(--s-5); }
+@media (min-width: 1024px) { .updates__events { grid-column: 1 / span 6; } .updates__news { grid-column: 7 / span 6; } }
+.event-list--home { grid-template-columns: minmax(0, 1fr); gap: 0; border-top: 1px solid var(--line); }
+.home .news-list { border-top: 1px solid var(--line); }
+.event-list--home .event.panel { background: none; border: 0; border-radius: 0; padding: var(--s-4) 0; border-bottom: 1px solid var(--line); }
+.event-list--home .event > * + * { margin-top: var(--s-1); }
+.event-list--home .event__date { font-weight: 400; color: var(--muted); }
+.event-list--home .event__meta { font-size: var(--t-small); color: var(--muted); }
+.event-list--home .event__upcoming-only { margin-top: var(--s-2); }
+.event-list--home .event__register { font-size: var(--t-small); }
 .event__upcoming-only > .event__note + .event__register { margin-top: var(--s-4); }
 .events__more { margin-top: var(--s-5); }
 .news-list { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--line); }
@@ -707,15 +720,18 @@ main > .home-hero { position: relative; isolation: isolate; background: var(--re
 .btn--ext::after { content: none; }
 .btn--ext .ext-mark { margin-left: var(--s-2); color: inherit; opacity: .8; font-size: .9em; }
 .closing__cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-7) var(--gutter); align-items: stretch; }
-.closing__col { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-5); padding-top: var(--s-5); border-top: 2px solid var(--ink); }
+.closing__col { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-4); }
 .home .closing__h { margin: 0; font-size: var(--t-h3); line-height: 1.15; max-width: none; }
 .closing__text { max-width: 44ch; font-size: var(--t-lead); line-height: 1.55; }
-.closing .btn--secondary:first-child { padding-inline: 0; }
+.closing__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-6); margin-top: var(--s-2); }
+.cite__copy { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+.cite__copy::after { content: none; }
+.cite__copy:hover { background: color-mix(in oklab, var(--surface) 70%, var(--ink) 8%); }
 .closing__list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-6); }
 .cite__ref { overflow-wrap: anywhere; color: var(--ink); }
 .cite__ref a { color: var(--action); }
 @media (min-width: 768px) { .closing__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1024px) { .closing__cols { grid-template-columns: 7fr 5fr; column-gap: calc(var(--gutter) * 3); } }
+@media (min-width: 1024px) { .closing__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: calc(var(--gutter) * 3); } }
 @media (max-width: 639px) { .closing__list { flex-direction: column; gap: 0; } .closing__list .link { min-height: 44px; } }
 .funders-row { margin-top: var(--s-7); padding-top: var(--s-5); border-top: 1px solid var(--line); }
 .home .funders__h { margin: 0 0 var(--s-4); color: var(--muted); }
@@ -740,9 +756,8 @@ main > .home-hero { position: relative; isolation: isolate; background: var(--re
    from 640 the news beside the events. The published figures scroll sideways at a readable height, as
    on a phone; the funders' five logos in one row. */
 @media (min-width: 640px) and (max-width: 1023px) {
-  .updates-grid > .updates__events { grid-column: 1 / span 7; }
-  .updates-grid > .updates__news { grid-column: 8 / span 5; }
-  .event-list--home { grid-template-columns: minmax(0, 1fr); }
+  .updates-grid > .updates__events { grid-column: 1 / span 6; }
+  .updates-grid > .updates__news { grid-column: 7 / span 6; }
   .fig-strip__img { width: auto; height: 320px; max-width: none; }
   .funders { grid-template-columns: repeat(5, minmax(0, 1fr)); }
   .funders img { max-width: 100%; }
