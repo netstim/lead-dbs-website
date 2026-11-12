@@ -1,35 +1,71 @@
 /* ================================================================ the home page on a phone (below 640px)
    layouts/home.html. Loaded after assets/css/phone.css (the shared phone chrome), so these rules win over
-   it at equal specificity. Nothing here applies from 640px up. */
+   it at equal specificity. Nothing here applies from 640px up.
+   One idea per screen, after vercel.com and x.ai on a phone: big calm headings (32/36), 96px above each
+   section's heading, pictures at full width, black bands from edge to edge with one soft light, rows that
+   scroll sideways with snap instead of grids, text links (a word and a small muted arrow) instead of
+   pills inside a section, full-width pills only where a block closes. */
 @media (max-width: 639px) {
 
-  /* -------------------------------------------------------------- hero
-     the black panel runs from edge to edge; the actions are stacked full-width pills, the manual a plain
-     word under them */
-  .home-hero__wrap { width: 100%; }
-  .home-hero__panel { border-radius: 0; }
-  .home-hero .btn-row { grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
-  .home-hero .btn-row > .btn { justify-content: center; width: 100%; }
-  .home-hero .btn--secondary.hero__manual { min-height: 44px; }
+  /* -------------------------------------------------------------- shared on the page
+     every section's heading at one size and weight; the space above it is the section's padding; no rules
+     between the sections (the black bands and the space part them) */
+  .home > .section { padding: var(--s-9) 0 0; }
+  .home > .section + .section:not([class*="ground-"]):not(.next-band) { border-top: 0; }
+  .home :is(.home-sec, .render-band) :is(#localize-h, #features-h, #voices-h, #research-h, #worldwide-h, #events-h, .closing__h) {
+    max-width: none; margin: 0; font: 500 var(--t-h2)/1.125 var(--font-display); letter-spacing: var(--display-tracking-xl); text-wrap: balance; }
+  .home .section-head p, .home .closing__text, .home .worldwide .t-lead {
+    margin: var(--s-3) 0 0; max-width: none; color: var(--muted); font: 400 var(--t-doc)/1.53 var(--font-text); text-wrap: pretty; }
+  /* a text link: the words in 15px medium, a small arrow in the muted colour, a 44px target, no line */
+  .home :is(.home-more, #features .section-head__more .link, .next-band .link, .pulse__links a) {
+    display: inline-flex; align-items: center; gap: calc(var(--s-1) * 1.5); min-height: 44px; margin: 0; padding: 0;
+    background: none; color: var(--ink); font: 500 var(--t-note)/1.5 var(--font-text); text-decoration: none; }
+  .home :is(.home-more, #features .section-head__more .link, .next-band .link, .pulse__links a) .m-arrow {
+    width: 14px; height: 14px; margin: 0; color: var(--muted); }
 
-  /* -------------------------------------------------------------- fewer things on a phone
-     the facts under the hero, the flow diagram, the atlas list and the reference to copy are pages of
-     their own or in the menu */
-  .home-hero__foot,
-  #localize .flow-diagram,
-  #features .data-band,
-  .next-band__point p,
-  .closing .cite-snip { display: none; }
-  .next-band__point h3 { margin: 0; }
-  .funders img { max-height: 32px; }
+  /* -------------------------------------------------------------- 1. hero
+     one black band from the window's top (the header turns black over it: .home-hero__ground), the words
+     centred: the release chip, the title, the lead, two stacked pills; under them the render, its electrode
+     and nucleus in the middle of a 380px box, one soft light behind it, fading into the black at its foot.
+     The facts line is not shown; the play button sits at the render's lower right. */
+  .home > .home-hero { position: relative; background: var(--render); }
+  .home-hero__ground { position: absolute; inset: 0; pointer-events: none; }
+  html:not(.nav-ready) body.kind-home .nav:not(.is-open) { background-color: var(--render); color: var(--on-render);
+    --ink: var(--on-render); --surface: color-mix(in srgb, var(--on-render) 12%, transparent); }
+  .home-hero__wrap { width: 100%; padding-top: var(--nav); }
+  .home-hero__panel { display: flex; flex-direction: column; border-radius: 0; }
+  .home-hero__text { order: -1; margin: 0; padding: calc(var(--s-6) + var(--s-2)) var(--gut) 0; text-align: center; }
+  .home-hero h1 { font: 600 var(--t-h1)/1 var(--font-display); letter-spacing: var(--display-tracking-xl); text-wrap: balance; }
+  .home-hero .hero__lead { max-width: 300px; margin: var(--s-5) auto 0; font: 400 var(--t-doc)/1.53 var(--font-text); letter-spacing: 0; text-wrap: balance; }
+  .home-hero .btn-row { grid-template-columns: minmax(0, 1fr); margin-top: var(--s-6); gap: calc(var(--s-1) * 2.5); }
+  .home-hero .btn-row > .btn { padding-inline: var(--s-5); }
+  .home-hero .btn-row > .btn--secondary { border-color: color-mix(in srgb, var(--on-render) 15%, transparent); background: color-mix(in srgb, var(--on-render) 4%, transparent); }
+  .home-hero .btn .m-arrow, .home-hero .hero__manual { display: none; }
 
-  /* the gallery is one row of figures at one height, the 4.0 points a short list of three lines, the
-     funders' logos one centred group */
-  .home > .research-band { padding-top: var(--band); }
-  .fig-strip__item { width: auto; }
-  .research-band .fig-strip__img { width: auto; height: 300px; max-width: none; }
-  .next-band__points { gap: 0; }
-  .next-band__point { padding-block: var(--s-3); }
-  .funders { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2) var(--s-6); }
-  .funders li { min-height: 44px; }
+  /* the release: a 32px chip (a 44px target), a coral dot, the version, "Release notes" muted, a round arrow */
+  .home-chip { margin: 0 0 var(--s-5); }
+  .home-hero .home-chip a { position: relative; display: inline-flex; align-items: center; gap: var(--s-2); height: 32px;
+    padding: 0 calc(var(--s-1) * 1.5) 0 var(--s-3); border: 1px solid color-mix(in srgb, var(--on-render) 10%, transparent); border-radius: var(--r-pill);
+    background: color-mix(in srgb, var(--on-render) 4%, transparent); color: var(--on-render); font: 500 var(--t-label)/1 var(--font-text); text-decoration: none; }
+  .home-hero .home-chip a::before { content: ""; position: absolute; inset: -7px 0; }
+  .home-chip__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--p-accent); }
+  .home-chip__more { color: var(--muted); font-weight: 400; }
+  .home-chip__go { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: color-mix(in srgb, var(--on-render) 10%, transparent); }
+  .home-chip__go .m-arrow { width: 10px; height: 10px; margin: 0; }
+
+  .home-hero__media { position: relative; height: 380px; aspect-ratio: auto; margin-top: var(--s-2); overflow: hidden;
+    background: radial-gradient(50% 44% at 50% 52%, color-mix(in srgb, var(--on-render) 9%, transparent), transparent); }
+  /* the poster (16:10) and the phone clip (square) framed alike: a square box, the poster's part from
+     canvas x 520 to 1520 (object-position), its electrode and nucleus moved into the box's middle */
+  .home-hero__media > video { inset: 0 auto auto 50%; width: 140%; height: auto; aspect-ratio: 1; translate: -64% 0;
+    object-position: 86.7% 0; mix-blend-mode: screen; }
+  .home-hero__media::after { height: var(--s-9); }
+  .home-hero__foot { position: absolute; inset: auto var(--gut) var(--s-5) auto; padding: 0; }
+  .hero__proof { display: none; }
+  .hero__pause { position: static; width: 40px; height: 40px; border-color: color-mix(in srgb, var(--on-render) 15%, transparent);
+    background: color-mix(in srgb, var(--render) 40%, transparent); }
+  @media (prefers-reduced-motion: no-preference) {
+    html.hero-wait:not(.hero-late) .home-hero:not(.is-entering, .is-entered) .home-chip { opacity: 0; }
+    html.hero-late .home-hero:not(.is-entering, .is-entered) .home-chip { transition: opacity 400ms var(--ease); }
+  }
 }

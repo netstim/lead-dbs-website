@@ -96,7 +96,7 @@ document.querySelectorAll('.fig-strip').forEach((strip) => {
       [{ transform: 'translateY(calc(100% + .2em))' }, { transform: 'none' }],
       { duration: 700, delay: 80 + i * step, easing: ease, fill: 'both' }))));
     const after = 80 + (lines.length - 1) * step + 220;
-    const rest = [hero.querySelector('.hero__chip'), hero.querySelector('.hero__lead'), ...hero.querySelectorAll('.btn-row > *'), hero.querySelector('.hero__proof'), hero.querySelector('.home-hero__facts')];
+    const rest = [hero.querySelector('.hero__chip'), hero.querySelector('.home-chip'), hero.querySelector('.hero__lead'), ...hero.querySelectorAll('.btn-row > *'), hero.querySelector('.hero__proof'), hero.querySelector('.home-hero__facts')];
     rest.filter(Boolean).forEach((el, k) => anims.push(el.animate(
       [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }],
       { duration: 520, delay: after + Math.min(k, 6) * 60, easing: ease, fill: 'both' })));

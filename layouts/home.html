@@ -20,6 +20,9 @@
          words over its black left half, and the facts line and the pause button along its lower edge
          (assets/css/site.css, "home: the hero") */}}
   <section class="hero home-hero" data-enter aria-labelledby="hero-h">
+    {{- /* a phone: the hero's black runs up under the header, so the header turns black over it (header.js
+           reads [data-nav-dark]; this ground is not drawn from 640px, so it counts there as nothing) */}}
+    <div class="home-hero__ground phone-only" data-nav-dark aria-hidden="true"></div>
     <div class="wrap home-hero__wrap">
       <div class="home-hero__panel">
         <div class="home-hero__media">
@@ -43,6 +46,8 @@
           </video>
         </div>
         <div class="home-hero__text">
+          {{- /* a phone: the release as a small chip above the title (the facts line under the hero is not shown there) */}}
+          <p class="home-chip phone-only"><a href="{{ partial "resolve-url.html" (dict "url" $r.notes "page" $) }}"><span class="home-chip__dot" aria-hidden="true"></span><span>Version <span class="num">{{ $r.version }}</span></span> <span class="home-chip__more">Release notes</span><span class="home-chip__go" aria-hidden="true">{{ $arrow }}</span></a></p>
           <h1 id="hero-h">{{ partial "nobreak.html" .title }}</h1>
           <p class="hero__lead">{{ .lead }}</p>
           <div class="btn-row">
