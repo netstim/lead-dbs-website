@@ -64,7 +64,7 @@
 }
 .nowrap { white-space: nowrap; }
 /* one style for every label of the site; the colour stays that of its place (muted on most grounds) */
-:is(.label, .home-hero__facts dt, .spec-rows dt, .next-band__label, .home .render-band__h,
+:is(.label, .home-hero__facts dt, .spec-rows dt, .next-band__label,
     .sidebar p.t-label, .prose th, .prose .capability__refs dt) {
   font-family: var(--font-label); font-size: var(--label-size); font-weight: var(--label-weight); font-style: normal;
   line-height: 1.4; letter-spacing: var(--label-tracking); text-transform: var(--label-case); font-synthesis: none; }
@@ -591,21 +591,20 @@ main > .home-hero { position: relative; isolation: isolate; background: var(--re
 .child-page:not(:has(.m-arrow))::after { content: ""; flex: none; width: 12px; height: 12px; margin-left: auto; background: var(--action);
   -webkit-mask: var(--arrow) center / contain no-repeat; mask: var(--arrow) center / contain no-repeat; }
 
-/* Lead-DBS 4.0: words only, on the grey surface (black is kept for the renders). The name set large
-   across the band, the three statements in three columns under it, each under a rule; the link to the
-   workshop closes the third statement, which is about the workshop */
-.next-band__label { margin: 0 0 var(--s-3); color: var(--muted); }
-/* the name is a section heading (48), so the hero's title stays the one large line of the page; it never
-   breaks */
-.home .next-band__title { font-size: var(--t-h2); line-height: 1.1; max-width: none; }
-.next-band__points { list-style: none; margin: var(--s-6) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5) var(--gutter); }
-.next-band__points > li { display: grid; gap: var(--s-3); align-content: start; padding-top: var(--s-4); border-top: 1px solid var(--line-strong); }
-.next-band__point { font: var(--title-weight) var(--t-h3)/1.2 var(--font-display); letter-spacing: var(--display-tracking); }
-.next-band__detail { max-width: 40ch; color: var(--muted); font-size: var(--t-body); line-height: 1.5; }
-.next-band__more { margin-top: var(--s-1); }
-/* a phone: the statements a clear step under the name (30), so the band keeps its hierarchy */
-@media (max-width: 639px) { .next-band__point { font-size: 21px; } }
-@media (max-width: 1023px) { .next-band__points { grid-template-columns: minmax(0, 1fr); gap: var(--s-4); } .next-band__points > li { gap: var(--s-2); } }
+/* The forthcoming release: one title beside three structured points. */
+.home .next-band { padding-block: var(--rhythm); background: var(--bg); }
+.next-band__inner { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: var(--s-8); align-items: start; }
+.next-band__label { margin: 0 0 var(--s-4); color: var(--muted); }
+.home .next-band__title { margin: 0; max-width: none; font-size: var(--t-h2); line-height: 1.08; letter-spacing: var(--display-tracking-xl); }
+.next-band__points { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-5); }
+.next-band__point { padding-top: var(--s-5); border-top: 1px solid var(--line); }
+.home .next-band__point h3 { margin: 0 0 var(--s-3); font-size: var(--t-h3); line-height: 1.2; }
+.next-band__point p { margin: 0; max-width: 55ch; font-size: var(--t-body); line-height: 1.6; color: var(--muted); }
+.next-band__point .link { margin-top: var(--s-4); }
+@media (max-width: 767px) {
+  .next-band__inner { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
+  .home .next-band__point h3 { font-size: var(--t-sub); }
+}
 
 /* what is coming up and what is new: two equal halves, each a ruled list under its heading. An event
    here is a row like a news item (its date over its title), then its time and place on one line and its
@@ -660,56 +659,41 @@ main > .home-hero { position: relative; isolation: isolate; background: var(--re
   .fig-strip.is-moved { --fade-l: 20px; }
   .fig-strip__item { width: 86%; }
 }
-/* the voices: a render across the whole width, on the black of the renders, its subject on the right;
-   the three quotes in white on its black left side, one under the other. Below 1024 the render is a box
-   on top and the quotes follow on the same black. */
-.home > .render-band { position: relative; isolation: isolate; overflow: hidden; background: var(--render); color: #fff;
-  --ink: #fff; --muted: rgb(255 255 255 / .72); --line: rgb(255 255 255 / .2); --action: #b4bff6; }
-.render-band__img { margin: 0; }
-.render-band__img > img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.render-band__wrap { position: relative; z-index: 1; }
-/* the band's heading is a small label over the quotes (the quotes are the band's large words) */
-.home .render-band__h { color: var(--muted); max-width: none; }
-@media (min-width: 1024px) {
-  .home > .render-band { padding: calc(var(--rhythm) * .75) 0; }
-  .render-band__img { position: absolute; inset: 0; z-index: -1; }
-  .render-band__img > img { object-position: 85% 62%; }
-  .render-band__img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #000 34%, rgb(0 0 0 / .6) 48%, rgb(0 0 0 / 0) 62%); }
-  .render-band__wrap > * { max-width: 600px; }
-  /* three short quotes, one under the other, close together: the band is about as tall as the render
-     needs, not three cards tall */
-  .render-band .quote-row { grid-template-columns: minmax(0, 1fr); gap: var(--s-4); }
-  .render-band .quote-card blockquote { font-size: 18px; }
-  .render-band .quote-row .quote-card { padding-top: var(--s-4); gap: var(--s-2); }
-}
-@media (min-width: 1440px) { .render-band__img > img { object-position: 100% 62%; } }
-/* a small laptop: the render comes closer, so the quotes take a narrower column on a deeper black */
-@media (min-width: 1024px) and (max-width: 1365px) {
-  .render-band__img > img { object-position: 100% 62%; }
-  .render-band__img::after { background: linear-gradient(90deg, #000 40%, rgb(0 0 0 / .65) 52%, rgb(0 0 0 / 0) 68%); }
-  .render-band__wrap > * { max-width: 440px; }
-}
-@media (max-width: 1023px) {
-  .render-band__img { position: relative; aspect-ratio: 16 / 9; }
-  .render-band__img > img { object-position: 72% 30%; }
-  .render-band__wrap { margin-top: calc(-1 * var(--s-6)); padding-bottom: var(--rhythm); }
-  .render-band__img::after { content: ""; position: absolute; inset: auto 0 0; height: 40%; background: linear-gradient(rgb(0 0 0 / 0), #000); }
-}
-
-/* three voices: side by side on a desktop; below 1200 one column (a long quote would wrap to a few words
-   a line). No sideways scroller, so a keyboard reaches everything without one */
-.quote-row { margin-top: var(--s-5); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); align-items: stretch; }
-.quote-card { margin: 0; display: flex; flex-direction: column; justify-content: space-between; gap: var(--s-5); }
-.quote-card blockquote { margin: 0; font: 400 var(--t-lead)/1.5 var(--font-text); color: var(--ink); text-wrap: pretty; }
-.quote-card figcaption { display: grid; gap: 2px; padding-top: var(--s-4); border-top: 1px solid var(--line); font-size: var(--t-note); line-height: 1.4; }
-.quote-card__name { font-weight: 500; color: var(--ink); }
+/* Researcher voices: one generous quote beside the render, with manual controls. */
+.home > .render-band { position: relative; isolation: isolate; overflow: hidden; padding-block: var(--rhythm); background: var(--render); color: #fff;
+  --ink: #fff; --muted: rgb(255 255 255 / .65); --line: rgb(255 255 255 / .22); }
+.render-band__img { position: absolute; inset: 0 0 0 auto; width: 65%; margin: 0; z-index: -1; }
+.render-band__img > img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 75% 50%; }
+.render-band__img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #000, rgb(0 0 0 / .4) 45%, transparent 80%); }
+.render-band__wrap { position: relative; }
+.home .render-band__h { max-width: 20ch; margin: 0 0 var(--s-7); color: #fff; font: var(--title-weight) var(--t-h2)/1.12 var(--font-display); letter-spacing: var(--display-tracking); text-wrap: balance; }
+.voices__carousel { max-width: 54%; }
+.voices__slides { display: grid; gap: var(--s-6); }
+.voices__slide .quote-card { margin: 0; padding: 0; border: 0; border-radius: 0; background: none; display: flex; flex-direction: column; gap: var(--s-4); }
+.voices__slide blockquote { margin: 0; font: 400 var(--t-h3)/1.35 var(--font-display); letter-spacing: -.015em; color: var(--ink); text-wrap: pretty; }
+.voices__slide figcaption { display: grid; gap: var(--s-1); max-width: 48ch; font-size: var(--t-small); line-height: 1.5; }
+.quote-card__name { font-weight: 600; color: var(--ink); font-size: var(--t-body); }
 .quote-card__role { color: var(--muted); }
-/* in the band the quotes are words on the render, not boxes: a rule above each, the name right under
-   the quote, so a short quote leaves no empty card */
-.quote-row .quote-card { background: none; border-radius: 0; padding: var(--s-5) 0 0; border-top: 2px solid var(--action); justify-content: flex-start; gap: var(--s-4); }
-.quote-row .quote-card figcaption { margin-top: 0; padding-top: 0; border-top: 0; }
-@media (max-width: 1199px) { .quote-row { grid-template-columns: minmax(0, 1fr); gap: var(--s-3); } .quote-card blockquote { max-width: 62ch; } }
-@media (max-width: 639px) { .quote-row { gap: var(--s-5); } .quote-row .quote-card { padding-top: var(--s-4); gap: var(--s-3); } }
+.is-carousel .voices__slides { gap: 0; }
+.is-carousel .voices__slide { grid-area: 1 / 1; visibility: hidden; opacity: 0; transform: translateY(6px); transition: opacity 500ms ease, transform 500ms ease, visibility 500ms; }
+.is-carousel .voices__slide.is-active { visibility: visible; opacity: 1; transform: translateY(0); transition: opacity 500ms ease, transform 500ms ease, visibility 0s; }
+@media (prefers-reduced-motion: reduce) { .is-carousel .voices__slide, .is-carousel .voices__slide.is-active { transition: none; transform: none; } }
+.voices__controls { display: flex; align-items: center; gap: var(--s-4); margin-top: var(--s-5); }
+.voices__controls[hidden] { display: none; }
+.voices__buttons { display: flex; gap: var(--s-2); }
+.voices__buttons button { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; color: #fff; background: rgb(0 0 0 / .4); cursor: pointer; }
+.voices__buttons button:hover { background: #fff; color: #000; }
+.voices__buttons svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.voices__count { font-size: var(--t-small); font-variant-numeric: tabular-nums; color: var(--muted); }
+@media (max-width: 1023px) { .voices__carousel { max-width: 72%; } .render-band__img { width: 80%; opacity: .6; } }
+@media (max-width: 639px) {
+  .home > .render-band { padding-block: var(--s-7); }
+  .render-band__img { width: 100%; opacity: .25; }
+  .render-band__img::after { background: linear-gradient(0deg, #000, rgb(0 0 0 / .4)); }
+  .voices__carousel { max-width: none; }
+  .home .render-band__h { margin-bottom: var(--s-6); }
+  .voices__slide blockquote { font-size: var(--t-sub); }
+}
 
 /* the close: two halves under the same strong rule, where to get help and how to cite Lead-DBS, each a
    heading at the size of a page's section, one line in the lead's size, then its buttons; the other
@@ -741,9 +725,9 @@ main > .home-hero { position: relative; isolation: isolate; background: var(--re
 @media (min-width: 768px) { .closing__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1024px) { .closing__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: calc(var(--gutter) * 3); } }
 @media (max-width: 639px) { .closing__list { flex-direction: column; gap: 0; } .closing__list .link { min-height: 44px; } }
-.funders-row { margin-top: var(--s-7); padding-top: var(--s-6); border-top: 1px solid var(--line); text-align: center; }
+.funders-row { margin-top: var(--s-7); padding-top: var(--s-6); border-top: 1px solid var(--line); text-align: left; }
 /* the heading over the logos: short, in the text's size and ink (a label's small grey would lose to five
-   heavy logos), centred over the row as the logos are centred in their cells */
+   heavy logos), aligned with the content edge */
 .home .funders__h { margin: 0 0 var(--s-6); font-size: var(--t-body); font-weight: 500; line-height: 1.4; letter-spacing: 0; color: var(--ink); }
 /* one equal cell per logo, each logo centred in it, so the gaps between them are the same */
 .funders { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); align-items: center; gap: var(--s-5) var(--gutter); }
@@ -777,8 +761,6 @@ main > .home-hero { position: relative; isolation: isolate; background: var(--re
   .feature-row { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6) var(--gutter); }
   .feature { grid-template-columns: minmax(0, 1fr); align-items: start; gap: var(--s-4); }
   .feature__img { aspect-ratio: 4 / 3; }
-  .next-band__points { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5) var(--gutter); }
-  .next-band__point { font-size: 22px; }
 }
 
 /* ---------------------------------------------------------------- inner pages: the head
@@ -1424,3 +1406,35 @@ html .prose .download-grid--secondary .download-btn { width: auto; min-height: 4
   .footer.is-foldable .footer__col > ul { grid-column: 1 / -1; display: none; padding-bottom: var(--s-3); }
   .footer.is-foldable .footer__col.is-expanded > ul { display: grid; }
 }
+/* Shared spacing for the localization, help/citation and funders sections. */
+@media (min-width: 1024px) {
+  .home-split { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: clamp(48px, 5vw, 80px); }
+  .home-split > .split__text { grid-column: 1; }
+  .home-split > .insertion, .home-split > .frame--split { grid-column: 2; }
+}
+.split__text > .t-lead { margin-top: var(--s-5); }
+.split__text > .flow { margin-top: var(--s-6); }
+.closing__col { gap: 0; }
+.closing__col > .closing__text, .closing__col > .cite-snip { margin-top: var(--s-5); }
+.closing__col > .closing__actions { margin-top: var(--s-5); }
+.closing__text { margin-bottom: 0; }
+.funders-row { margin-top: var(--s-7); padding-top: var(--s-5); }
+.home .funders__h { margin-bottom: var(--s-5); }
+@media (max-width: 639px) {
+  .funders { gap: var(--s-5) var(--s-6); }
+}
+
+/* Anchor targets remain below the fixed header. */
+.home > section[id] { scroll-margin-top: var(--nav); }
+#cite { scroll-margin-top: calc(var(--nav) + var(--s-5)); }
+
+/* the localization diagram (layouts/home.html): Pele's SVG, themed with its custom properties; the
+   Lead-DBS step in the periwinkle tint */
+.flow-diagram { margin: var(--s-6) 0; --pele-font: var(--font-text); --pele-fg: var(--ink); --pele-muted: var(--muted); --pele-line: #a3a8ad;
+  --pele-surface: #fff; --pele-border: var(--line-strong); --pele-radius: 10px; --pele-accent: var(--action); }
+.flow-diagram svg { display: block; width: min(100%, 528px); height: auto; } /* (Pele sets max-width inline, so the size goes by width) */
+.flow-diagram .pele-node[data-id="B"] :is(rect, path, polygon) { fill: color-mix(in oklab, var(--p-tint-1) 55%, #fff); stroke: color-mix(in oklab, var(--p-tint-1) 80%, var(--ink) 10%); }
+.flow-diagram .pele-node[data-id="B"] text { font-weight: 600; }
+.flow-diagram__tb { display: none; }
+@media (max-width: 479px) { .flow-diagram__lr { display: none; } .flow-diagram__tb { display: block; } .flow-diagram__tb svg { width: 176px; } }
+#localize .home-split { align-items: center; }

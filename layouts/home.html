@@ -43,7 +43,7 @@
     <div class="wrap home-hero__wrap">
       <div class="home-hero__text">
         <h1 id="hero-h">{{ partial "nobreak.html" .title }}</h1>
-        <p class="hero__lead">{{ .lead }}{{ with .lead_more }} <span class="hero__lead-more">{{ . }}</span>{{ end }}</p>
+        <p class="hero__lead">{{ .lead }}</p>
         <div class="btn-row">
           <a class="btn btn--primary" href="{{ $dl }}">{{ .primary.label }}{{ $arrow }}</a>
           <a class="btn btn--secondary" href="{{ partial "resolve-url.html" (dict "url" .secondary.url "page" $) }}">{{ .secondary.label }}{{ $arrow }}</a>
@@ -84,11 +84,14 @@
         <div class="span-5 split__text">
           <h2 id="localize-h">{{ partial "nobreak.html" .title }}</h2>
           <p class="t-lead">{{ .text }}</p>
-          {{- /* what goes in and what comes out, as two steps with an arrow between them (not a table) */}}
-          <div class="flow" role="group" aria-label="What goes in and what comes out">
-            {{ range $i, $r := .rows }}{{ if $i }}<svg class="flow__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>{{ end }}
-            <p class="flow__step"><span class="flow__label">{{ .name }}</span> {{ .value }}</p>{{ end }}
-          </div>
+          {{- /* what goes in and what comes out: a diagram drawn with Pele (assets/diagrams/localize.mmd,
+               rendered to SVG by scripts/diagrams.mjs), left to right, top to bottom on a phone; for
+               screen readers the same steps as a list */}}
+          <figure class="flow-diagram">
+            <div class="flow-diagram__lr">{{ (resources.Get "diagrams/localize.svg").Content | safeHTML }}</div>
+            <div class="flow-diagram__tb">{{ (resources.Get "diagrams/localize-tb.svg").Content | safeHTML }}</div>
+            <ol class="sr-only">{{ range .rows }}<li>{{ .name }}: {{ .value }}</li>{{ end }}</ol>
+          </figure>
           <p><a class="link" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a></p>
         </div>
         {{ if and $final (gt (len $frames) 1) }}
@@ -157,7 +160,7 @@
         </ul>
       </div>
       {{ end }}
-      <p class="home-note">{{ .note }} <a href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}</a></p>
+      <p class="home-note">{{ .note }} <a href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a></p>
     </div>
   </section>
   {{ end }}
@@ -169,8 +172,21 @@
     {{ partial "render.html" (dict "file" .image "alt" .alt "class" "render-band__img" "sizes" "100vw") }}
     <div class="wrap render-band__wrap">
       <h2 id="voices-h" class="render-band__h">{{ .title }}</h2>
-      <div class="quote-row">
-        {{ range $p.quotes }}{{ partial "quote.html" . }}{{ end }}
+      <div class="voices__carousel" role="region" aria-label="Researcher testimonials">
+        <div class="voices__slides">
+          {{ range $i, $quote := $p.quotes }}
+          <div class="voices__slide" role="group" aria-label="Quote {{ add $i 1 }} of {{ len $p.quotes }}">
+            {{ partial "quote.html" . }}
+          </div>
+          {{ end }}
+        </div>
+        <div class="voices__controls" hidden>
+          <div class="voices__buttons">
+            <button type="button" class="voices__prev" aria-label="Previous testimonial"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg></button>
+            <button type="button" class="voices__next" aria-label="Next testimonial"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+          </div>
+          <span class="voices__count" aria-live="off" aria-atomic="true"></span>
+        </div>
       </div>
     </div>
   </section>
@@ -216,20 +232,23 @@
   </section>
   {{ end }}
 
-  {{/* 6. Lead-DBS 4.0: words only, on the grey surface. The name large across the band, the three
-       statements in three columns under it; the last one ends in the link to the workshop. Date ranges
-       ("11–12 February 2027") are kept on one line. */}}
+  {{/* 6. Three points about the forthcoming release, with a shared heading. */}}
   {{ with $p.next }}
-  {{ $more := . }}{{ $n := len .points }}
-  <section class="section home-sec home-sec--tight next-band ground-surface" id="next" aria-labelledby="next-h">
-    <div class="wrap">
+  <section class="section home-sec next-band" id="next" aria-labelledby="next-h">
+    <div class="wrap next-band__inner">
       <div class="next-band__head">
         <p class="t-label next-band__label">{{ .label }}</p>
-        <h2 id="next-h" class="next-band__title"><span class="nowrap">{{ .title }}</span></h2>
+        <h2 id="next-h" class="next-band__title">{{ .title }}</h2>
       </div>
-      <ul class="next-band__points">
-        {{ range $k, $pt := .points }}<li><p class="next-band__point">{{ partial "nobreak.html" .title }}</p><p class="next-band__detail">{{ .text | htmlEscape | replaceRE `(\d{1,2}–\d{1,2} [A-Z][a-z]+ \d{4})` `<span class="nowrap">$1</span>` | safeHTML }}</p>{{ if eq (add $k 1) $n }}{{ with $more.link }}<p class="next-band__more"><a class="link" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}{{ $arrow }}</a></p>{{ end }}{{ end }}</li>{{ end }}
-      </ul>
+      <div class="next-band__points">
+        {{ range $i, $pt := .points }}
+        <div class="next-band__point">
+          <h3>{{ .title }}</h3>
+          <p>{{ .text }}</p>
+          {{ if eq (add $i 1) (len $p.next.points) }}{{ with $p.next.link }}<a class="link" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}</a>{{ end }}{{ end }}
+        </div>
+        {{ end }}
+      </div>
     </div>
   </section>
   {{ end }}

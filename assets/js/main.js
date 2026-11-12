@@ -553,3 +553,54 @@ document.querySelectorAll('.cite-snip').forEach((box) => {
     setTimeout(() => { label.textContent = 'Copy'; }, 2000);
   });
 });
+
+// Researcher testimonials: one quote at a time, advancing every 8 s with a crossfade; it holds while the
+// pointer or focus is on it, while it is out of view or the tab hidden, and with reduced motion.
+document.querySelectorAll('.voices__carousel').forEach((carousel) => {
+  const slides = [...carousel.querySelectorAll('.voices__slide')];
+  const controls = carousel.querySelector('.voices__controls');
+  if (slides.length < 2 || !controls) return;
+  const count = carousel.querySelector('.voices__count');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  let index = 0, timer, visible = false, hovered = false, focused = false, paused = reduce.matches;
+  carousel.classList.add('is-carousel');
+  carousel.setAttribute('aria-roledescription', 'carousel');
+  const show = (next) => {
+    index = (next + slides.length) % slides.length;
+    slides.forEach((slide, i) => {
+      const active = i === index;
+      slide.classList.toggle('is-active', active);
+      slide.setAttribute('aria-hidden', String(!active));
+      slide.inert = !active;
+    });
+    count.textContent = `${index + 1} / ${slides.length}`;
+  };
+  const schedule = () => {
+    clearTimeout(timer);
+    const stopped = paused || hovered || focused || !visible || document.hidden;
+    count.setAttribute('aria-live', stopped ? 'polite' : 'off');
+    if (!stopped) timer = setTimeout(() => { show(index + 1); schedule(); }, 8000);
+  };
+  const navigate = (step) => { show(index + step); schedule(); };
+  controls.hidden = false;
+  carousel.querySelector('.voices__prev').addEventListener('click', () => navigate(-1));
+  carousel.querySelector('.voices__next').addEventListener('click', () => navigate(1));
+  carousel.addEventListener('mouseenter', () => { hovered = true; schedule(); });
+  carousel.addEventListener('mouseleave', () => { hovered = false; schedule(); });
+  carousel.addEventListener('focusin', () => { focused = true; schedule(); });
+  carousel.addEventListener('focusout', (event) => {
+    if (!carousel.contains(event.relatedTarget)) { focused = false; schedule(); }
+  });
+  controls.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      event.preventDefault();
+      navigate(event.key === 'ArrowRight' ? 1 : -1);
+    }
+  });
+  document.addEventListener('visibilitychange', schedule);
+  reduce.addEventListener('change', () => { paused = reduce.matches; schedule(); });
+  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; schedule(); }, { threshold: .5 }).observe(carousel);
+  show(0);
+  schedule();
+});
+
