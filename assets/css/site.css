@@ -926,8 +926,6 @@ img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md
   .doc-layout--side > .sidebar { display: block; align-self: stretch; }
   .doc-layout--side .section-nav--end { display: none; }
   .doc-layout--side .sidebar .toc--side { scrollbar-width: thin; }
-  /* a sidebar with no "On this page" keeps its section list in view instead */
-  .doc-layout--side > .sidebar:not(:has(.toc--side)) > .section-nav--side { position: sticky; top: calc(var(--nav) + var(--s-5)); }
 }
 .section-nav { font-size: var(--t-small); }
 .section-nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-3); max-width: none; }
