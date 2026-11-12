@@ -194,12 +194,7 @@
 (() => {
   const nav = document.querySelector('.nav');
   if (!nav) return;
-  // A ground that a layout draws light (assets/css/phone.css sets --nav-ground: light on the home page's
-  // black bands on a phone) does not count; that can change with the window's width.
-  const all = [...document.querySelectorAll('[data-nav-dark], .page-head')];
-  let grounds = all;
-  const sort = () => { grounds = all.filter((g) => getComputedStyle(g).getPropertyValue('--nav-ground').trim() !== 'light'); };
-  sort();
+  const grounds = [...document.querySelectorAll('[data-nav-dark], .page-head')];
   let queued = false;
   const update = () => {
     queued = false;
@@ -223,7 +218,7 @@
   };
   const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
   addEventListener('scroll', queue, { passive: true });
-  addEventListener('resize', () => { sort(); queue(); });
+  addEventListener('resize', queue);
   update();
   requestAnimationFrame(() => document.documentElement.classList.add('nav-ready'));
 })();
