@@ -23,7 +23,7 @@ away. Open an entry for how to get it and which paper to cite.
 {{< atlas-index noun="parcellations" >}}
 
 Looking for atlases of the deep nuclei? See [Subcortical atlases](/helpsupport/knowledge-base/atlasesresources/atlases-2/).
-Tips on [choosing and using an atlas](/helpsupport/knowledge-base/atlasesresources/#choosing); to add your own, see [Add your atlas or dataset](/develop/#add-your-atlas-or-dataset).
+To add your own atlas, see [Add your atlas or dataset](/develop/#add-your-atlas-or-dataset).
 
 {{% atlas-group "anatomical" %}}
 

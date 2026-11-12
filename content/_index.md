@@ -29,14 +29,12 @@ hero:
   video_phone_av1: "media/hero-lead-stn-phone-av1.mp4"
   video_phone: "media/hero-lead-stn-phone.mp4"
   poster: "hero-lead-stn-poster.jpg"
-  # proof: one quiet line under the buttons, in the first screen, of things a visitor can check: who
-  # coordinates it, the three papers that describe it, and how to cite them (the one link of the line).
+  # proof: the end of the quiet line under the buttons (after the version, MATLAB and the licence, from
+  # data/release.yaml): things a visitor can check, here the three papers that describe it.
   # Each part is Markdown and stays whole; a narrow screen breaks the line between parts. A number added
   # here needs its source and date.
   proof:
-    - "Institute for Network Stimulation, Cologne"
     - "*NeuroImage* 2015, 2019, 2023"
-    - "[How to cite](/about/citing_leaddbs/)"
   alt: "Close-up of one directional DBS electrode with segmented contacts in the subthalamic nucleus (orange), the red nucleus behind it, over a 7 tesla MRI slice"
 
 # Electrode localization, with the scroll moment: the leads move into place as the section scrolls by.
@@ -44,9 +42,12 @@ hero:
 localize:
   title: "Electrode localization from MRI and CT"
   text: "Reconstructs every electrode from postoperative imaging, in 2D and 3D, for one patient or a whole cohort."
-  rows:
-    - {name: "Input", value: "Postoperative MRI, or postoperative CT with preoperative MRI"}
-    - {name: "Output", value: "Electrode trajectories and contacts in native and template space"}
+  # the steps of the diagram (assets/diagrams/localize.mmd holds the same four words), read out as a list
+  steps:
+    - {name: "Coregister", value: "postoperative to preoperative imaging"}
+    - {name: "Normalize", value: "to template space"}
+    - {name: "Localize", value: "trajectories and contacts"}
+    - {name: "Visualize", value: "in 2D and 3D"}
   link: {label: "Watch the walkthrough videos", url: "/helpsupport/knowledge-base/walkthrough-videos/"}
 
 # Three things it does besides localization: a compact row of three. Each card leads to its part of the
@@ -85,6 +86,14 @@ features:
   note: "Illustrative analyses using Lead Tutor data."
   link: {label: "View gallery", url: "/gallery/"}
 
+# Lead-DBS around the world (the globe; figures from data/usage.json, see README "Usage figures").
+# {countries}, {launches} and {year} are filled in from the data.
+worldwide:
+  title: "Used in {countries} countries"
+  text: "Researchers started Lead-DBS {launches} times in {year}."
+  link_label: "Usage statistics"
+  caption: "One day of launches, by country"
+
 # The forthcoming release: three points, with the workshop as the next step.
 next:
   label: "Coming next"
@@ -97,8 +106,8 @@ next:
 
 # Events: the upcoming entries of data/events.yaml, in one band with the latest news.
 events:
-  title: "Upcoming events"
-  link: {label: "All events and past workshops", url: "/events/"}
+  title: "What’s happening"
+  link: {label: "All events", url: "/events/"}
 
 # The three latest news posts, beside the events.
 news:
@@ -110,64 +119,25 @@ news:
 research:
   title: "Made with Lead-DBS"
   text: "Figures from peer-reviewed papers that used Lead-DBS."
-  link_label: "All published figures"
+  link_label: "Open the gallery"
   figures: ["edlow2019_fig7_panela.png", "hollunder2024_fig2_right.png", "rios2022_fig6_panela.png"]
 
 # The voices: a render across the whole width (a file in assets/images/renders/ that the page shows
 # nowhere else), the three quotes below over its dark lower part.
 voices:
-  title: "What researchers say about Lead-DBS"
+  title: "What researchers say"
   image: "cohort-hero.jpg"
   alt: "The electrodes of nine Lead Tutor patients converging on the subthalamic nucleus, seen from the right and above, with the internal pallidum and red nucleus over a 7 tesla MRI slice"
-# Wording and spelling exactly as on the old site (www.lead-dbs.org); the role line of a paper is its journal and year.
-# Three quotes are shown, in the voices band (three short ones, so the columns end together);
-# quotes_more keeps the others for a page of all quotes (not shown now).
-quotes:
-  - text: "For me, Lead-DBS is one of the most important developments in the field of DBS research in recent years"
-    name: "Andreas Nowacki"
-    role: "Associate Professor and Senior Attending of Neurosurgery, Inselspital Bern"
-  - text: "The spatial mapping approaches of Lead DBS have really accelerated the field."
-    name: "Simon Little, MBBS MRCP PhD"
-    role: "Assistant Professor of Neurology, UCSF"
-  - text: "Lead-DBS is arguably the most established toolbox providing a semi-automatic framework for electrode localization"
-    name: "Husch et al."
-    role: "NeuroImage: Clinical 2018"
-quotes_more:
-  - text: "We use Lead-DBS daily at Mayo Clinic. I also am using it for my PhD based at Monash University. The software capabilities are very broad. Group analysis with dependent variables has streamlined the process of addressing my research questions significantly."
-    name: "Fiona Permezel, MD, MBBS, BSc(Hons)(Psych), BSc(ScSchProg), FRACP"
-    role: "Neurologist, Mayo Clinic"
-  - text: "I really appreciate this brilliant toolbox and the support from Andreas Horn, Ningfei Li and colleagues that comes with it."
-    name: "Vladimir Litvak"
-    role: "Professor of Translational Neurophysiology, UCL London"
-  - text: "Lead-DBS is a clinical research platform that continuously opens new horizons for brain research. It is critical for my ERC project that integrates invasive neurophysiology, brain stimulation and connectomics with Lead-DBS for BCI and neuroprosthetics in Parkinson’s."
-    name: "Wolf-Julian Neumann, MD, PhD"
-    role: "Associate Professor of Neurology, Charité Berlin"
-  - text: "A commitment of the community to open science will also democratize and increase the speed of advances with high uptake of currently available initiatives such as Lead-DBS."
-    name: "Latorre et al."
-    role: "Frontiers in Neurology 2021"
-  - text: "Lead DBS is a game changer in DBS research, this tool is allowing major steps in moving the DBS field forward 🙌🏽🙌🏽 excellent job!"
-    name: "Josue Avecillas-Chasin, MD, PhD"
-    role: "Assistant Professor of Neurosurgery, University of Nebraska Medical Center"
-  - text: "Lead-DBS is an amazing tool and managed to popularize neuro-imaging studies and break the barriers of research community. I often use Lead-DBS for my research and I think that it has become a sine qua non for DBS studies. Looking for forward to future collaborations!"
-    name: "Luigi Gianmaria Remore, MD"
-    role: "Neurosurgeon, University of Milan"
-  - text: "Two elegant examples were published by Horn et al. 2017 in which a method was described to warp DBS electrode coordinates and histological data to MNI-space (Ewert et al. 2017)."
-    name: "Alkemade et al."
-    role: "Frontiers in Neuroanatomy 2018"
+# The quotes themselves are in data/quotes.yaml (shared with the wall on Publications).
 
 
-# The last band, two halves: where to get help (help) and how to cite Lead-DBS (cite), the funders'
-# logos in one row under both. help: a heading, one line, the actions as buttons (the first is the main
-# one; the Slack link goes straight to its self-invite page) and the other ways as links. A link to
-# another site is marked with ↗. Who develops Lead-DBS is told on /about/ (content/about/_index.md).
+# The closing band, two halves built alike: where to get help (a heading, one line, a button to the Get
+# help section of Docs and help) and how to cite Lead-DBS (cite); the funders in one row under both.
 help:
   title: "Need help?"
-  text: "Ask other users and the developers in the user Slack, or look it up in the manual."
-  actions:
-    - {label: "Join the user Slack", url: "https://inviter.co/lead-dbs"}
-    - {label: "Manual", url: "https://netstim.gitbook.io/leaddbs"}
-  # (bug reports and contact are in the footer, so this half ends in one row as the citation does)
-  links: []
+  text: "Ask in the user Slack, look it up in the manual or report a bug."
+  label: "Get help"
+  url: "/helpsupport/#get-help"
 
 # The funders, in one row under the last band. Logo files sit next to this file (content/). url only
 # where the funder's page still exists.

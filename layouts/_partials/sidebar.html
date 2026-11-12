@@ -72,11 +72,10 @@
 
 {{ if and $isHub (not $onDownload) }}
 <section class="side-card release-card" aria-labelledby="side-release">
-  <p class="release-card__version" id="side-release">Lead-DBS <span class="num">{{ $r.version }}</span></p>
-  <footer class="release-card__footer">
-    <a class="btn release-card__download" href="{{ $dl }}" aria-label="Download Lead-DBS">Download<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4"/></svg></a>
-    {{ with site.GetPage "/download" }}<a class="release-card__history" href="{{ .RelPermalink }}#releases">Release history</a>{{ end }}
-  </footer>
+  {{- /* the current release: "Version", its number, a Download pill; one left edge */}}
+  <p class="release-card__label" id="side-release">Version</p>
+  <p class="release-card__version"><span class="sr-only">Lead-DBS </span><span class="num">{{ $r.version }}</span></p>
+  <a class="btn release-card__download" href="{{ $dl }}">Download<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4"/></svg></a>
 </section>
 {{ end }}
 

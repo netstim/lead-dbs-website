@@ -1,0 +1,36 @@
+{{- /* The Atlases and data hub, as large picture tiles (after x.ai): the three catalogues of the data menu
+       (each with its share picture, name, one line and its count of entries from atlas/data.html), then
+       the atlases made for Lead-DBS (DISTAL, FOCUS) as two wide tiles. The count stands at the end of the name's line
+       as a small pill with what it counts (menu param unit: "63 atlases"). The background pages are rows of the page's own list (link-rows). */ -}}
+{{- $menu := false -}}
+{{- range site.Menus.main }}{{ if eq .Identifier "data" }}{{ $menu = . }}{{ end }}{{ end -}}
+{{- if not $menu }}{{ errorf "atlas-hub: no data menu" }}{{ end -}}
+{{- $catalogues := slice }}{{ $featured := slice }}{{ $background := slice -}}
+{{- range $menu.Children -}}
+  {{- $data := partial "atlas/data.html" .Page -}}
+  {{- if $data.atlases -}}{{- $catalogues = $catalogues | append (dict "menu" . "count" (len $data.atlases)) -}}
+  {{- else if eq (.Params.divider | default "") "Background" -}}{{- $background = $background | append . -}}
+  {{- else -}}{{- $featured = $featured | append (dict "menu" . "count" 0) -}}{{- end -}}
+{{- end -}}
+{{- define "_partials/atlas-tile.html" -}}
+{{- $entry := .menu }}{{ $pg := $entry.Page -}}
+{{- $image := or ($pg.Resources.GetMatch ($pg.Params.share | default "__none__")) (resources.Get ($pg.Params.share | default "__none__")) -}}
+{{- if not $image }}{{ errorf "atlas-hub: no preview image for %s" $pg.File.Path }}{{ end -}}
+{{- $t := $image.Fill (printf "%s webp q80 Center" (cond .wide "1280x720" "840x630")) -}}
+<li class="atlas-tile{{ if .wide }} atlas-tile--wide{{ end }}"><a href="{{ $pg.RelPermalink }}">
+  <span class="atlas-tile__media"><img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="" loading="lazy" decoding="async"></span>
+  <span class="atlas-tile__head"><span class="atlas-tile__title">{{ $entry.Name }}</span>{{ with .count }}<span class="atlas-tile__count">{{ . }} {{ $entry.Params.unit | default "entries" }}</span>{{ end }}</span>
+  <span class="atlas-tile__text">{{ $entry.Params.card }}</span>
+</a></li>
+{{- end -}}
+<div class="atlas-hub">
+  <ul class="atlas-tiles" aria-label="Atlas and connectome catalogues">
+    {{- range $catalogues }}{{ partial "atlas-tile.html" (dict "menu" .menu "count" .count "wide" false) }}{{ end }}
+  </ul>
+  {{ with $featured }}
+  <h2 id="built-for-lead-dbs">Made for Lead-DBS</h2>
+  <ul class="atlas-tiles atlas-tiles--two" aria-labelledby="built-for-lead-dbs">
+    {{- range . }}{{ partial "atlas-tile.html" (dict "menu" .menu "count" 0 "wide" true) }}{{ end }}
+  </ul>
+  {{ end }}
+</div>

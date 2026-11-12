@@ -26,7 +26,7 @@ paper named with the one you used.
 
 {{< atlas-index noun="connectomes" >}}
 
-What a connectome can and cannot show: [choosing and using a connectome](/helpsupport/knowledge-base/atlasesresources/#choosing).
+A normative connectome is an average, not a patient’s own wiring. Tractography [adds false connections](https://www.nature.com/articles/s41467-017-01285-x) and [misses small bundles](https://www.sciencedirect.com/science/article/abs/pii/S0896627319308323); resting-state fMRI [includes indirect ones](https://www.ncbi.nlm.nih.gov/pubmed/23583357) and misses fast signals.
 Parcellations to use with them: [Cortical parcellations](/helpsupport/knowledge-base/atlasesresources/cortical-atlas-parcellations-mni-space/).
 
 {{% atlas-group "structural" %}}

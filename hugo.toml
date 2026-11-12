@@ -42,9 +42,9 @@ enableGitInfo = true
   liveSite = "https://www.lead-dbs.org"
   # The source code, linked from the header of every page.
   github = "https://github.com/netstim/leaddbs"
-  # Long pages get a table of contents when they have at least this many h2/h3 headings
+  # Pages get a table of contents when they have at least this many h2/h3 headings
   # (front matter toc: true forces it, toc: false hides it).
-  tocMinHeadings = 5
+  tocMinHeadings = 2
 
 [permalinks.page]
   # News posts lived at the site root in WordPress (/lead-dbs-3-0-out-now/).
@@ -129,7 +129,7 @@ enableGitInfo = true
     url = "/helpsupport/knowledge-base/lead-dbs-methods/#single-patients"
     weight = 1
     [menus.main.params]
-      card = "Where the electrodes sit and what they stimulate."
+      card = "Electrode localization and stimulation modelling"
       panelOnly = true
   [[menus.main]]
     parent = "features"
@@ -137,7 +137,7 @@ enableGitInfo = true
     url = "/helpsupport/knowledge-base/lead-dbs-methods/#groups-of-patients"
     weight = 2
     [menus.main.params]
-      card = "A whole cohort in one space, against clinical outcome."
+      card = "Cohort analyses and clinical outcomes"
       panelOnly = true
   [[menus.main]]
     parent = "features"
@@ -145,14 +145,14 @@ enableGitInfo = true
     pageRef = "/about/lead-or"
     weight = 3
     [menus.main.params]
-      card = "Recordings and test stimulation on the images, in surgery."
+      card = "Recordings and stimulation during surgery"
   [[menus.main]]
     parent = "features"
     name = "Tools and modules"
     url = "/helpsupport/knowledge-base/lead-dbs-methods/#tools"
     weight = 4
     [menus.main.params]
-      card = "The named parts of Lead-DBS and its practice dataset."
+      card = "Lead Group, Lead Connectome and Lead Tutor"
       panelOnly = true
   [[menus.main]]
     parent = "features"
@@ -160,7 +160,7 @@ enableGitInfo = true
     pageRef = "/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping"
     weight = 5
     [menus.main.params]
-      card = "Relate the connectivity of stimulation sites to outcome."
+      card = "Connectivity and clinical outcomes"
       # a line above the entry, with this caption over the entries from here on
       divider = "In depth"
   [[menus.main]]
@@ -169,21 +169,21 @@ enableGitInfo = true
     pageRef = "/helpsupport/knowledge-base/lead-dbs-methods/subcortical-electrophysiology-mapping-sem"
     weight = 6
     [menus.main.params]
-      card = "Pool electrode recordings across patients in one space."
+      card = "Electrophysiology in template space"
   [[menus.main]]
     parent = "features"
     name = "AC/PC to MNI conversion"
     pageRef = "/helpsupport/knowledge-base/lead-dbs-methods/acpc-to-mni-conversion-2"
     weight = 7
     [menus.main.params]
-      card = "Surgical AC/PC coordinates into MNI space and back."
+      card = "Convert between AC/PC and MNI coordinates"
   [[menus.main]]
     parent = "features"
     name = "Made with Lead-DBS"
     pageRef = "/gallery"
     weight = 9
     [menus.main.params]
-      card = "Renders and published figures made with Lead-DBS."
+      card = "3D renders and published figures"
       # a line above the entry, without a caption
       divider = true
 
@@ -195,16 +195,16 @@ enableGitInfo = true
     pageRef = "/helpsupport/first-steps"
     weight = 1
     [menus.main.params]
-      card = "Install Lead-DBS and localize your first electrodes."
+      card = "Installation and electrode localization"
   [[menus.main]]
     parent = "docs"
     name = "Manual"
     url = "https://netstim.gitbook.io/leaddbs"
     weight = 2
     [menus.main.params]
-      card = "Every step of an analysis, on the manual's own site."
+      card = "Installation, workflows and reference"
       # printed on the hub's card for the manual (pages bring their own front matter description)
-      description = "The documentation of Lead-DBS: installation, every step of an analysis, and the tools, on the manual's own site."
+      description = "Installation guides, analysis workflows and software reference."
       # words the site search finds it by
       keywords = "documentation docs manual handbook guide installation install how to"
   [[menus.main]]
@@ -213,22 +213,23 @@ enableGitInfo = true
     pageRef = "/helpsupport/learn-lead-dbs-yourself"
     weight = 3
     [menus.main.params]
-      card = "Ten DBS patients with expert localizations, to practise on."
+      card = "10 patients with expert localizations"
+      indexTitle = "Lead Tutor"
   [[menus.main]]
     parent = "docs"
     name = "Walkthrough videos"
     pageRef = "/helpsupport/knowledge-base/walkthrough-videos"
     weight = 4
     [menus.main.params]
-      card = "Recorded walkthroughs: a refresher course, BIDS and the explorers."
+      card = "Tutorials and recorded workshops"
   [[menus.main]]
     parent = "docs"
     name = "Get help"
     url = "/helpsupport/#get-help"
     weight = 6
     [menus.main.params]
-      card = "Slack for questions, GitHub for bugs, or write to us."
-      description = "Where to ask: the user Slack for questions, GitHub for bugs, the contact form for anything else."
+      card = "User support and bug reports"
+      description = "User support, bug reports and contact details."
 
   # Atlases and data: the three catalogues, then (after a captioned line: params.divider) the two
   # atlases the Lead-DBS team made, then the background article on the MNI spaces
@@ -238,28 +239,31 @@ enableGitInfo = true
     pageRef = "/helpsupport/knowledge-base/atlasesresources/atlases-2"
     weight = 1
     [menus.main.params]
-      card = "Over 60 atlases in MNI space, filterable by structure or disease."
+      card = "Atlases by structure and disease"
+      unit = "atlases"   # what the catalogue counts, beside its number on the Atlases and data hub
   [[menus.main]]
     parent = "data"
     name = "Cortical parcellations"
     pageRef = "/helpsupport/knowledge-base/atlasesresources/cortical-atlas-parcellations-mni-space"
     weight = 2
     [menus.main.params]
-      card = "Cortical and whole-brain maps for connectivity analyses."
+      card = "Parcellations for connectivity analyses"
+      unit = "parcellations"   # what the catalogue counts, beside its number on the Atlases and data hub
   [[menus.main]]
     parent = "data"
     name = "Normative connectomes"
     pageRef = "/helpsupport/knowledge-base/atlasesresources/normative-connectomes"
     weight = 3
     [menus.main.params]
-      card = "Average structural and functional wiring of the human brain."
+      card = "Structural and functional connectivity datasets"
+      unit = "connectomes"   # what the catalogue counts, beside its number on the Atlases and data hub
   [[menus.main]]
     parent = "data"
     name = "DISTAL atlas"
     pageRef = "/helpsupport/knowledge-base/atlasesresources/distal-atlas"
     weight = 4
     [menus.main.params]
-      card = "A subcortical atlas from multimodal MRI, histology and connectivity."
+      card = "Subcortical anatomy and functional subdivisions"
       divider = "By the Lead-DBS team"
   [[menus.main]]
     parent = "data"
@@ -267,14 +271,14 @@ enableGitInfo = true
     pageRef = "/helpsupport/knowledge-base/atlasesresources/focus-atlas"
     weight = 5
     [menus.main.params]
-      card = "The subcortex at 100 microns from 7T ex vivo MRI, with fibre pathways."
+      card = "7T MRI anatomy and fibre pathways"
   [[menus.main]]
     parent = "data"
     name = "About the MNI spaces"
     pageRef = "/helpsupport/knowledge-base/atlasesresources/about-the-mni-spaces"
     weight = 6
     [menus.main.params]
-      card = "How the versions of MNI space differ, and why it matters."
+      card = "Template versions and coordinate spaces"
       divider = "Background"
 
   # Community (the past workshops sit under Events: front matter menuParent)
@@ -284,28 +288,28 @@ enableGitInfo = true
     pageRef = "/events"
     weight = 1
     [menus.main.params]
-      card = "Developer meetings and workshops, upcoming and past."
+      card = "Workshops and developer meetings"
   [[menus.main]]
     parent = "community"
     name = "User Slack"
     pageRef = "/helpsupport/slack-user-channel"
     weight = 2
     [menus.main.params]
-      card = "Ask questions and get help from users and developers."
+      card = "Support and development discussions"
   [[menus.main]]
     parent = "community"
     name = "Contribute"
     pageRef = "/develop"
     weight = 3
     [menus.main.params]
-      card = "Code, atlases, datasets and bug reports."
+      card = "Code, data and bug reports"
   [[menus.main]]
     parent = "community"
     name = "Newsletter"
     pageRef = "/subscribe-to-our-newsletter"
     weight = 4
     [menus.main.params]
-      card = "Releases, important updates and workshops, sent out rarely."
+      card = "Release and workshop announcements"
 
   # About: who makes Lead-DBS, how to cite it, its papers, the software it builds on
   [[menus.main]]
@@ -314,28 +318,28 @@ enableGitInfo = true
     pageRef = "/about/citing_leaddbs"
     weight = 1
     [menus.main.params]
-      card = "The papers to cite, with a methods paragraph to copy."
+      card = "Citations and methods text"
   [[menus.main]]
     parent = "about"
     name = "Publications"
     pageRef = "/about/publications"
     weight = 2
     [menus.main.params]
-      card = "Papers about Lead-DBS and the studies that used it."
+      card = "Methods papers and studies using Lead-DBS"
   [[menus.main]]
     parent = "about"
     name = "Contributors"
     pageRef = "/about/team"
     weight = 3
     [menus.main.params]
-      card = "Who builds Lead-DBS, and who coordinates it today."
+      card = "Core team and project contributors"
   [[menus.main]]
     parent = "about"
     name = "Dependencies"
     pageRef = "/about/lead-dbs-dependencies"
     weight = 4
     [menus.main.params]
-      card = "The open-source tools Lead-DBS builds on, and what to cite."
+      card = "Software libraries and citations"
 
   # The footer's legal line (Contact is in the footer's "Help" column and under "Get help")
   [[menus.footer]]

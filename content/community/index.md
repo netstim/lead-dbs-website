@@ -1,31 +1,30 @@
 ---
 title: "Community"
+layout: "community"
 description: "How to take part in Lead-DBS: events and the developer meeting, the user Slack, contributing code and data, and the newsletter."
-# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
-related:
-  - "/news/"
-  - {name: "Get help", url: "/helpsupport/#get-help"}
-  - "/about/team/"
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-community.jpg"
-# the cards at the end of the page (layouts/_partials/next-steps.html)
-next:
-  - {page: "/helpsupport/first-steps/", text: "New to Lead-DBS? Start here"}
-  - {page: "/helpsupport/slack-user-channel/", text: "Questions about using Lead-DBS"}
+# the rows under "Follow" (layouts/community.html): name, one line, address
+follow:
+  - {name: "Bluesky", text: "Lead-DBS releases and news", url: "https://bsky.app/profile/lead-dbs.org"}
+  - {name: "netstim.org", text: "The Institute for Network Stimulation, where Lead-DBS is coordinated", url: "https://www.netstim.org"}
+  - {name: "LinkedIn", text: "The institute’s updates", url: "https://www.linkedin.com/company/institute-for-network-stimulation/"}
+  - {name: "GitHub", text: "All of the institute’s tools", url: "https://github.com/netstim"}
+  - {name: "Stimulating Brains podcast", text: "The institute’s podcast and talks on brain stimulation", url: "https://stimulatingbrains.org"}
+# the showcase (layouts/community.html): the statement, its line, its two buttons, the photo beside it;
+# then the one sentence beside "Take part" and beside "Follow" (Markdown)
+partLead: "**Meet the developers, ask a question,** or add your own work."
+followLead: "**News and releases,** from the project and its institute."
+headline: ["Built in the open.", "Shaped by its users."]
+lead: "Researchers from many institutions write Lead-DBS; its users answer each other’s questions."
+actions:
+  - {label: "Join the user Slack", url: "/helpsupport/slack-user-channel/"}
+  - {label: "Contribute", url: "/develop/"}
+photo: {page: "/helpsupport/workshops", file: "foto_postcard-1030x728.png", alt: "Participants of the 2nd International Lead-DBS Workshop in front of the venue in Shanghai, 2018", caption: "Lead-DBS Workshop, Shanghai 2018"}
+# the ways to take part, as rows: page, title, one line
+tiles:
+  - {page: "/events", title: "Events", text: "Workshops and the monthly developer meeting"}
+  - {page: "/helpsupport/slack-user-channel", title: "User Slack", text: "Ask other users and the developers"}
+  - {page: "/develop", title: "Contribute", text: "Code, atlases and bug reports"}
+  - {page: "/subscribe-to-our-newsletter", title: "Newsletter", text: "Releases and workshops, now and then"}
 ---
-
-Lead-DBS is developed in the open by researchers from many institutions, and its users help each other.
-
-{{< childpages order="include" descriptions="true" include="/events, /helpsupport/slack-user-channel, /develop, /subscribe-to-our-newsletter" >}}
-
-Want to follow the development as it happens? [Join the developer meeting](/events/developer-meeting/), held online every month. Anything else: [write to us](/contact/).
-
-## Follow Lead-DBS
-
-- Lead-DBS on [Bluesky](https://bsky.app/profile/lead-dbs.org), and the [newsletter](/subscribe-to-our-newsletter/) for releases and workshops
-- The [Institute for Network Stimulation](https://www.netstim.org), where Lead-DBS is coordinated, on [LinkedIn](https://www.linkedin.com/company/institute-for-network-stimulation/) and [Bluesky](https://bsky.app/profile/netstim.org)
-- All of the institute's tools on [GitHub](https://github.com/netstim)
-
-## Stimulating Brains
-
-[Stimulating Brains](https://stimulatingbrains.org) is the institute's podcast and talk series on brain stimulation, with interviews and recorded talks by researchers in the field. It is not part of Lead-DBS, but a good place to go next if you work on deep brain stimulation.

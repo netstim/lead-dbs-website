@@ -11,7 +11,7 @@ for (const f of fs.readdirSync(dir).filter((f) => f.endsWith('.mmd'))) {
   const src = fs.readFileSync(path.join(dir, f), 'utf8');
   const name = f.replace(/\.mmd$/, '');
   for (const [suffix, text] of [['', src], ['-tb', src.replace(/^flowchart LR/m, 'flowchart TB')]]) {
-    const { svg } = render(text, { fontFamily: 'Inter', fontSize: 15 });
+    const { svg } = render(text, { fontFamily: 'Inter', fontSize: 15, padding: 1 });
     fs.writeFileSync(path.join(dir, `${name}${suffix}.svg`), svg.replace(/^<svg /, '<svg aria-hidden="true" focusable="false" ') + '\n');
     console.log(`${name}${suffix}.svg`);
   }

@@ -1,4 +1,4 @@
-{{- /* One thing Lead-DBS does, as a cell of a {{< capabilities >}} grid (the Features page): its name, one
+{{- /* One thing Lead-DBS does, as a panel of a {{< capabilities >}} showcase (the Features page): its name, one
        sentence, a picture and a row of links (its chapter in the manual, its papers, a page in depth).
          {{< capability title="Electrode localization" id="localization" link="/path/of/its/page/"
                img="images/renders/lead-closeup.jpg"
@@ -7,14 +7,18 @@
        The text between the tags is the sentence (Markdown); keep it to one.
        img: a lab render under assets/images/renders/ (alt text from the renders list of
             content/gallery/_index.md; the page credits the renders once), a published figure
-            "gallery/<file>" (credited in a small label on the picture, with a link to its entry in the
+            "gallery/<file>" (credited in a small line on the picture, with a link to its entry in the
             gallery; alt text its "shows" in data/gallery.yaml), or a picture of another page,
             "/path/of/the/page/file.png" (then also give alt=).
-       fit="contain" marks a figure: shown whole on the light mat, a click opens it at full size.
+       fit="contain" marks a figure: shown whole as a sheet on the black stage, a click opens it at full
+            size. Without it the picture is a render that fills the stage (cut to 3:2).
        manual: "label|url", several separated by ";" (only the first is linked, as "Manual").
        papers: ids from data/papers.yaml. link: a page of this site that explains it in depth.
-       The id is the anchor other pages link to (the home page's feature cards among them). */ -}}
+       The id is the anchor other pages link to (the home page's feature cards among them).
+       This shortcode prints nothing itself: it hands its parts to {{< capabilities >}}, which lays out
+       the chips and the panels (layouts/_shortcodes/capabilities.html). */ -}}
 {{- $title := .Get "title" -}}
+{{- if not .Parent }}{{ errorf "capability %q: must stand inside {{< capabilities >}} (%s)" $title .Page.File.Path }}{{ end -}}
 {{- $src := .Get "img" -}}
 {{- $alt := .Get "alt" -}}
 {{- $credit := "" -}}
@@ -38,25 +42,19 @@
 {{- if not $img }}{{ errorf "capability %q: no picture %q (%s)" $title $src .Page.File.Path }}{{ end -}}
 {{- if not $alt }}{{ errorf "capability %q: the picture needs alt text (%s)" $title .Page.File.Path }}{{ end -}}
 {{- $contain := eq (.Get "fit") "contain" -}}
-{{- $sizes := "(min-width: 1440px) 420px, (min-width: 1024px) 30vw, (min-width: 640px) 46vw, 100vw" -}}
 {{- $set := slice }}{{ $mid := false -}}
-{{- range slice 480 800 1200 }}{{ $r := cond $contain ($img.Fit (printf "%dx%d webp q82" . (div (mul . 3) 4))) ($img.Fill (printf "%dx%d webp q82 Center" . (div (mul . 3) 4))) }}{{ $set = $set | append (printf "%s %dw" $r.RelPermalink $r.Width) }}{{ if eq . 800 }}{{ $mid = $r }}{{ end }}{{ end -}}
-{{- $full := false }}{{ if $contain }}{{ $full = $img.Resize (printf "%dx webp q85" (int (math.Min $img.Width 1750))) }}{{ end -}}
-{{- $id := .Get "id" | default (anchorize $title) -}}
+{{- range slice 480 800 1200 1700 }}{{ $r := cond $contain ($img.Fit (printf "%dx%d webp q82" . (div (mul . 3) 4))) ($img.Fill (printf "%dx%d webp q82 Center" . (div (mul . 2) 3))) }}{{ $set = $set | append (printf "%s %dw" $r.RelPermalink $r.Width) }}{{ if eq . 800 }}{{ $mid = $r }}{{ end }}{{ end -}}
+{{- /* a figure opens at full size: a WebP copy at most 1750px wide, as on the gallery page */ -}}
+{{- $full := "" }}{{ if $contain }}{{ $full = ($img.Resize (printf "%dx webp q85" (int (math.Min $img.Width 1750)))).RelPermalink }}{{ end -}}
 {{- $more := false }}{{ with .Get "link" }}{{ $more = site.GetPage (strings.TrimSuffix "/" (urls.Parse .).Path) }}{{ if not $more }}{{ errorf "capability %q: link %q is not a page" $title . }}{{ end }}{{ end -}}
-{{- $pic := printf `<img src="%s" srcset="%s" sizes="%s" width="%d" height="%d" alt="%s" loading="lazy" decoding="async">` $mid.RelPermalink (delimit $set ", ") $sizes $mid.Width $mid.Height ($alt | htmlEscape) -}}
-<section class="capability{{ if $contain }} capability--figure{{ end }}" id="{{ $id }}" aria-labelledby="{{ $id }}-h">
-  <figure class="capability__fig">
-    {{- with $full }}<a href="{{ .RelPermalink }}" aria-label="Open the figure of “{{ $title }}” at full size">{{ $pic | safeHTML }}</a>{{ else }}{{ $pic | safeHTML }}{{ end -}}
-    {{- with $credit }}<figcaption class="capability__credit">{{ . | safeHTML }}</figcaption>{{ end -}}
-  </figure>
-  <div class="capability__body">
-    <h3 id="{{ $id }}-h">{{ partial "nobreak.html" $title }}</h3>
-    {{ .Inner | $.Page.RenderString (dict "display" "block") }}
-    <p class="capability__links">
-      {{- with .Get "manual" }}{{ $kv := split (strings.TrimSpace (index (split . ";") 0)) "|" }}<a href="{{ index $kv 1 }}" title="{{ index $kv 0 }}">Manual<span class="ext-mark" aria-hidden="true">↗</span></a>{{ end -}}
-      {{- with $more }}<a href="{{ .RelPermalink }}">In depth</a>{{ end -}}
-      {{- with .Get "papers" }}{{ range split . " " }}{{ $p := index hugo.Data.papers.papers . }}{{ if not $p }}{{ errorf "capability %q: no paper %q in data/papers.yaml" $title . }}{{ end }}<a class="capability__paper" href="https://doi.org/{{ $p.doi }}">{{ $p.short }}</a>{{ end }}{{ end -}}
-    </p>
-  </div>
-</section>
+{{- $manual := false }}{{ with .Get "manual" }}{{ $kv := split (strings.TrimSpace (index (split . ";") 0)) "|" }}{{ $manual = dict "label" (index $kv 0) "url" (index $kv 1) }}{{ end -}}
+{{- $papers := slice }}{{ with .Get "papers" }}{{ range split . " " }}{{ $p := index hugo.Data.papers.papers . }}{{ if not $p }}{{ errorf "capability %q: no paper %q in data/papers.yaml" $title . }}{{ end }}{{ $papers = $papers | append (dict "short" $p.short "doi" $p.doi) }}{{ end }}{{ end -}}
+{{- .Parent.Store.Add "caps" (slice (dict
+      "id" (.Get "id" | default (anchorize $title))
+      "title" $title
+      "text" (.Inner | $.Page.RenderString (dict "display" "block"))
+      "contain" $contain
+      "src" $mid.RelPermalink "srcset" (delimit $set ", ") "w" $mid.Width "h" $mid.Height "alt" $alt
+      "ratio" (div (float $mid.Width) $mid.Height)
+      "full" $full "credit" $credit
+      "manual" $manual "more" $more "papers" $papers)) -}}

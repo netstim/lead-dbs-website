@@ -13,6 +13,13 @@ keywords: ["workshop", "workshops", "archive", "Berlin", "Shanghai", "Hamburg", 
 toc: true
 # the picture shown when the page is shared (head.html)
 share: "foto_postcard-1030x728.png"
+# the picture of each workshop's card on /events/ (layouts/events/list.html), by its section's id
+pictures:
+  brisbane-2020: "flyer-2-1030x728.png"
+  berlin-2019: "Logo-1030x798.png"
+  hamburg-2019: "Bildschirmfoto-2019-01-24-um-11.05.47-1030x350.png"
+  shanghai-2018: "foto_postcard-1030x728.png"
+  berlin-2016: "two.png"
 # pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
 related:
   - "/events/hands-on-workshop-2027/"

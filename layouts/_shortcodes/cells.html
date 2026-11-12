@@ -1,0 +1,17 @@
+{{- /* A frame of cells divided by hairlines, in the manner of the download page: each a small label, a
+       value set large and one or two sentences (Markdown). From the page's front matter, under the key
+       given; as many across as there are cells (up to four), two on a tablet, one on a phone:
+         {{< cells key="why" label="Why these tools" >}}
+         why:
+           - {label: "Normalization", value: "DARTEL or ANTs", text: "Both outperformed …"} */ -}}
+{{- $rows := index .Page.Params (.Get "key") -}}
+{{- if not $rows }}{{ errorf "cells: %s has no front matter %q" .Page.File.Path (.Get "key") }}{{ end -}}
+<div class="dl-grid cells cells--{{ len $rows }}" role="list"{{ with .Get "label" }} aria-label="{{ . }}"{{ end }}>
+  {{- range $rows }}
+  <div class="dl-cell" role="listitem">
+    {{ with .label }}<p class="cells__l">{{ . }}</p>{{ end }}
+    <p class="cells__v">{{ .value }}</p>
+    {{ with .text }}<div class="cells__t">{{ . | $.Page.RenderString (dict "display" "block") }}</div>{{ end }}
+  </div>
+  {{- end }}
+</div>

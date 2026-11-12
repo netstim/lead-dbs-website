@@ -1,0 +1,72 @@
+{{ define "main" }}
+{{- /* The page of one event (front matter layout: event; the developer meeting), in the manner of the
+       download page (its .dl- styles): a black head with the title, the page's text as one line, three
+       words about the event and the registration (a white pill, then "Add to calendar" and the flyer as
+       glass chips); the facts of the event in one frame of cells (data/events.yaml, the entry named by
+       the front matter "event"); who it is for; the flyer. Front matter: event, label, tagline, host,
+       audience, flyer. The id #register is linked from other pages: keep it. */ -}}
+{{- $page := . -}}
+{{- $ev := false -}}
+{{- range partial "events/list.html" . }}{{ if eq .id $page.Params.event }}{{ $ev = . }}{{ end }}{{ end -}}
+{{- if not $ev }}{{ errorf "%s: unknown event %q (data/events.yaml)" .File.Path .Params.event }}{{ end -}}
+{{- $e := $ev.e -}}
+{{- $date := $ev.start.Format "2 January 2006" -}}
+{{- with $e.end }}{{ if and (eq (len (string .)) 10) (ne (string .) $ev.date_only) }}{{ $date = $ev.when }}{{ end }}{{ end -}}
+{{- $flyer := false }}{{ with .Params.flyer }}{{ $flyer = $page.Resources.Get .file }}{{ if not $flyer }}{{ errorf "%s: no flyer %q next to the page" $page.File.Path .file }}{{ end }}{{ end -}}
+<main id="top" class="page dl ev-page">
+  <header class="page-head page-head--render dl-hero" data-nav-dark>
+    {{ partial "page-head-render.html" . }}
+    <div class="wrap">
+      <h1>{{ partial "nobreak.html" .Title }}</h1>
+      <div class="ev-hero__lead">{{ .Content }}</div>
+      {{ with .Params.tagline }}<p class="dl-hero__meta">{{ delimit . " · " }}</p>{{ end }}
+      <p class="dl-hero__main" id="register">
+        {{- with $e.register_url }}
+        <a class="btn dl-hero__btn" href="{{ partial "resolve-url.html" (dict "url" . "page" $page) }}">Register{{ if strings.Contains (lower $e.where) "zoom" }} on Zoom{{ end }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></a>
+        <span class="dl-hero__file">{{ if $e.online }}Zoom emails you the meeting link.{{ else }}Registration details on the booking page.{{ end }}</span>
+        {{- else }}
+        <a class="btn dl-hero__btn" href="{{ with site.GetPage "/subscribe-to-our-newsletter" }}{{ .RelPermalink }}{{ end }}#subscribe">Get notified</a>
+        <span class="dl-hero__file">Registration is not open yet.</span>
+        {{- end }}
+      </p>
+      <p class="dl-hero__mirrors">
+        <a class="dl-chip" download="{{ urlize $e.title }}.ics" href="{{ partial "events/ics.html" (dict "ev" $ev "details" .RelPermalink) | safeURL }}">Add to calendar</a>
+        {{ with $flyer }}<a class="dl-chip" href="{{ .RelPermalink }}" download>Download the flyer</a>{{ end }}
+      </p>
+    </div>
+  </header>
+
+  <section class="wrap dl-sec" aria-label="Event details">
+    <dl class="dl-grid dl-grid--4">
+      <div class="dl-cell"><dt>{{ .Params.label | default "Date" }}</dt><dd class="dl-cell__v"><time datetime="{{ $ev.iso_start }}">{{ $date }}</time></dd><dd><span class="ev-countdown" data-ev-countdown="{{ $ev.start_unix }}" hidden></span></dd></div>
+      {{ with $ev.time_short }}<div class="dl-cell"><dt>Time</dt><dd class="dl-cell__v">{{ . }}</dd><dd>{{ with $e.also_in }}{{ (time.In . $ev.start).Format "15:04 MST" }}{{ end }}<span class="event__local" data-ev-local="{{ $ev.iso_start }}" data-ev-tz="{{ $ev.tz }}" hidden></span></dd></div>{{ end }}
+      <div class="dl-cell"><dt>Where</dt><dd class="dl-cell__v">{{ $e.where }}</dd><dd>{{ if $e.online }}The link comes by e-mail after you register.{{ end }}</dd></div>
+      {{ with .Params.host }}<div class="dl-cell"><dt>Host</dt><dd class="dl-cell__v">{{ .name }}</dd><dd>{{ with .url }}<a href="{{ . }}">{{ replaceRE `^https?://(www\.)?|/$` "" . }}</a>{{ end }}</dd></div>{{ end }}
+    </dl>
+  </section>
+
+  <section class="wrap dl-sec ev-split">
+    {{ with .Params.audience }}
+    <div>
+      <h2 id="who-it-is-for">Who it is for</h2>
+      <dl class="dl-grid ev-audience">
+        {{- range . }}
+        <div class="dl-cell"><dt class="sr-only">For</dt><dd class="dl-cell__v">{{ .value }}</dd><dd>{{ .text | $page.RenderString }}</dd></div>
+        {{- end }}
+      </dl>
+    </div>
+    {{ end }}
+    {{ with $flyer }}{{ $f := .Resize "960x webp q84" }}
+    <div>
+      <h2 id="the-flyer">The flyer</h2>
+      <figure class="ev-flyer">
+        <a href="{{ .RelPermalink }}"><img src="{{ $f.RelPermalink }}" width="{{ $f.Width }}" height="{{ $f.Height }}" alt="{{ $page.Params.flyer.alt }}" loading="lazy" decoding="async"></a>
+        <figcaption>{{ $page.Params.flyer.text }} <a href="{{ .RelPermalink }}" download>Download</a>{{ with $page.Params.flyer.format }} ({{ . }}){{ end }}.</figcaption>
+      </figure>
+    </div>
+    {{ end }}
+  </section>
+
+  <div class="wrap dl-related">{{ partial "next-steps.html" . }}</div>
+</main>
+{{ end }}

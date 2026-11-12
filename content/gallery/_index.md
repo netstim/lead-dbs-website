@@ -6,8 +6,13 @@ description: "Renders by the Lead-DBS team and figures from published papers tha
 # the lab's own renders (files in assets/images/renders/).
 renders_title: "Renders by the Lead-DBS team"
 renders_text: "Rendered with BrainDeer from the open Lead Tutor dataset, with the DISTAL atlas and the 100 µm 7 tesla MRI of an ex vivo brain. The analysis pictures use example stimulation settings and simulated outcome scores: they are illustrations, not findings."
-# the credits of the renders, printed under them; the footer's "Image credits" links here (#image-credits)
-renders_credits: "Image credits: renders made with BrainDeer from the Lead Tutor dataset (Hart et al.), with the DISTAL atlas (Ewert et al. 2018), the 100 µm 7T ex vivo MRI (Edlow et al. 2019) and the MNI ICBM 2009b template."
+# the sources of the renders, one line each at the end of the page; the footer's "Image credits" links here (#image-credits)
+renders_credits:
+  - {what: "Rendered with", source: "BrainDeer"}
+  - {what: "Patients", source: "Lead Tutor dataset (Hart et al.)"}
+  - {what: "Atlas", source: "DISTAL (Ewert et al. 2018)"}
+  - {what: "Brain", source: "100 µm 7T ex vivo MRI (Edlow et al. 2019)"}
+  - {what: "Template", source: "MNI ICBM 2009b"}
 renders:
   # caption: printed under the picture. Say how many patients the picture shows (the BrainDeer
   # renders of 2026-11-10 show nine of the ten Lead Tutor patients; the older analysis pictures show all ten).

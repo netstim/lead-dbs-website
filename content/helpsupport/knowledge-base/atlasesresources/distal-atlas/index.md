@@ -7,7 +7,20 @@ lastmod: "2026-11-11"
 weight: 4
 # the picture shown when the page is shared (head.html)
 share: "distal_fig_6-1030x728.png"
+# a showcase page: its pictures and sections use the full width, no sidebar
+sidebar: false
 toc: false
+# the atlas at a glance (layouts/_shortcodes/cells.html; text: Markdown)
+glance:
+  - {label: "Targets", value: "STN, GPi, GPe, RN and more", text: "DBS targets and the structures around them, with functional zones of the STN and GPi."}
+  - {label: "Thalamus", value: "Three nomenclatures", text: "The thalamic nuclei in three nomenclatures, with their abbreviations."}
+  - {label: "Space", value: "MNI ICBM 2009b", text: "NLIN Asym: [about the MNI spaces](/about-the-mni-spaces/)."}
+  - {label: "Version", value: "1.1", text: "Released 5 February 2018: [change log](#change-log)."}
+# the three stages it was built in
+stages:
+  - {label: "Stage 1", value: "Segment the core nuclei", text: "STN, red nucleus, internal and external pallidum, on the four MRI contrasts of the template."}
+  - {label: "Stage 2", value: "Warp histology to the template", text: "A histological atlas, with these nuclei as anchor points, fills in the other structures."}
+  - {label: "Stage 3", value: "Divide by connectivity", text: "The STN and GPi are divided into functional zones by their structural connectivity."}
 # pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
 related:
   - "/about/citing_leaddbs/"
@@ -20,39 +33,37 @@ next:
   - {page: "/helpsupport/first-steps/", text: "Your first electrode localization"}
 ---
 
-{{< summary >}}
-What
-: A subcortical atlas of DBS targets (STN, GPi, GPe, RN and more) and the structures around them, with functional zones of the STN and GPi and the thalamic nuclei in three nomenclatures
+<div class="page-intro"><div class="page-intro__text">
 
-Built from
-: Multimodal MRI, histology and structural connectivity, for Lead-DBS
+**A subcortical atlas made for Lead-DBS,** built from multimodal MRI, histology and structural connectivity.
 
-Space
-: MNI ICBM 2009b NLIN Asym ([about the MNI spaces](/about-the-mni-spaces/))
+</div>
+<p class="page-intro__actions"><a class="btn btn--primary" href="{{< relref `/download/` >}}">Download Lead-DBS</a><a class="btn btn--secondary btn--ext" href="https://doi.org/10.1016/j.neuroimage.2017.05.015">Read the paper<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></a>
+</div>
 
-Get it
-: Comes with Lead-DBS: nothing to download ([where to find it](#download))
+![The final DISTAL atlas in 3D with labelled structures and a DBS electrode](distal_fig_9-1030x501.png)
+{.atlas-hero}
 
-Version
-: <span class="num">1.1</span>, released <time datetime="2018-02-05">5 February 2018</time> ([change log](#change-log))
+{{< cells key="glance" label="DISTAL at a glance" >}}
 
-Cite
-: Ewert et al. 2018, *NeuroImage* 170: 271–282, [doi:10.1016/j.neuroimage.2017.05.015](https://doi.org/10.1016/j.neuroimage.2017.05.015) ([full citation](#what-to-cite))
-{{< /summary >}}
-
+{{% hub-section %}}
 ## What it is
+
+**Every structure relevant to DBS surgery,** precisely on the MNI template.
 
 An atlas precisely coregistered to the ICBM 2009b nonlinear asymmetric MNI template, and detailed enough to
 show every structure relevant to DBS surgery. Its thalamic nuclei come in three nomenclatures, with their
 abbreviations.
 
-![The final DISTAL atlas in 3D with labelled structures and a DBS electrode](distal_fig_9-1030x501.png)
-{.fig-medium}
+In the picture above, structures in red were defined on the multimodal template itself, those in black from
+histology; blue text names the functional zones of the STN and GPi, from structural connectivity.
+{.fine-print}
+{{% /hub-section %}}
 
-*Structures in red were defined on the multimodal template itself, those in black from histology; blue
-text names the functional zones of the STN and GPi, from structural connectivity.*
-
+{{% hub-section %}}
 ## How to get it {#download}
+
+**It comes with Lead-DBS:** nothing to download.
 
 DISTAL is installed with Lead-DBS. Inside the Lead-DBS folder it is under
 `templates/space/MNI152NLin2009bAsym/atlases/`, in the atlas sets *DISTAL Minimal (Ewert 2017)*, the
@@ -62,21 +73,15 @@ the STN and GPi.
 
 Lead-DBS ships version 1.1, which differs slightly from the paper (see the [change log](#change-log)). The version
 described in the paper is available on request: [write to us](/contact/).
-
-## What to cite
-
-{{% copybox label="Copy the citation" %}}
-{{< paper ewert2018 "full" >}}
-{{% /copybox %}}
+{{% /hub-section %}}
 
 ## How DISTAL was built
 
 None of the atlases collected since 2012 matched the STN of the MNI template precisely, and in DBS imaging
-millimetres matter. DISTAL was therefore built in three stages, directly on the ICBM 2009b template:
-the core nuclei (STN, red nucleus, internal and external pallidum) were segmented on its four MRI
-contrasts; a histological atlas was warped to the template with these nuclei as anchor points, to fill in
-the other structures; and the STN and GPi were divided into functional zones by their structural
-connectivity.
+millimetres matter. DISTAL was therefore built directly on the ICBM 2009b template, in three stages.
+{.atlas-lede}
+
+{{< cells key="stages" label="The three stages" >}}
 
 <details class="more more--wide">
 <summary>Why an atlas made for Lead-DBS</summary>
@@ -227,7 +232,20 @@ The video below shows these features (recorded in 2017):
 
 </details>
 
+{{% hub-section %}}
+## What to cite
+
+**Used DISTAL?** Cite its paper.
+
+{{% copybox label="Copy the citation" %}}
+{{< paper ewert2018 "full" >}}
+{{% /copybox %}}
+{{% /hub-section %}}
+
+{{% hub-section %}}
 ## Versions {#change-log}
+
+**Two releases** so far.
 
 - **1.1**, 5 February 2018: improved registration of left-hemispheric histology, symmetrized functional parcellations of the STN and GPi subregions.
 - **1.0**, 9 September 2017: first release.
@@ -244,3 +262,4 @@ The video below shows these features (recorded in 2017):
   warp that Lead-DBS provides.
 
 </details>
+{{% /hub-section %}}

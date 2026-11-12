@@ -1,0 +1,10 @@
+{{- $items := partial "covers.html" . -}}
+{{- $k := len $items -}}
+<figure class="deck" data-deck>
+  <div class="deck__fan">
+    {{- range $i, $c := $items }}{{ $t := $c.small.Resize "320x webp q82" }}
+    <a class="deck__card" href="{{ $c.large.RelPermalink }}" style="--k: {{ sub (sub (sub $k 1) $i) (div (float (sub $k 1)) 2) }}; z-index: {{ sub $k $i }}" data-journal="{{ $c.journal }}" data-date="{{ $c.date }}"><img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="{{ $c.alt }}" loading="lazy" decoding="async"></a>
+    {{- end }}
+  </div>
+  <figcaption class="deck__cap" aria-live="off"><b></b> <span></span></figcaption>
+</figure>

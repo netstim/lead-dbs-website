@@ -14,9 +14,9 @@ related:
 share: "images/renders/head-community.jpg"
 # the cards at the end of the page (layouts/_partials/next-steps.html)
 next:
-  - {page: "/news/", text: "Releases and announcements between issues"}
-  - {page: "/events/", text: "Developer meetings and workshops"}
-  - {page: "/helpsupport/slack-user-channel/", text: "Questions about using Lead-DBS"}
+  - {page: "/news/", text: "Release announcements"}
+  - {page: "/events/", text: "Meetings and workshops"}
+  - {page: "/helpsupport/slack-user-channel/", text: "User support"}
 ---
 
 {{< newsletter >}}

@@ -19,6 +19,39 @@ aliases:
   - "/sdm_downloads/download-standalone-mac-x86_64/"
   - "/sdm_downloads/download-standalone-mac-arm64/"
 keywords: ["download", "release history", "changelog", "release notes", "version history", "versions", "install", "installation", "setup", "requirements", "matlab", "standalone", "licence", "license", "windows", "linux", "macos", "mac os", "mac", "apple silicon", "intel", "no matlab", "without matlab", "github"]
+# this page has its own template (layouts/download.html): the hero with the download, then the sections
+layout: "download"
+# the sections that template draws, for the search entries below (the build checks them against this list)
+anchors: ["what-you-need", "install", "standalone-version", "lead-dbs-4", "releases"]
+# the servers that hold the current release, the recommended one first
+mirrors:
+  - {name: "pCloud", url: "https://www.lead-dbs.org/release/download.php?id=leaddbs_pcloud"}
+  - {name: "OneDrive", url: "https://www.lead-dbs.org/release/download.php?id=leaddbs_onedrive"}
+  - {name: "Sciebo", url: "https://www.lead-dbs.org/release/download.php?id=leaddbs_sciebo"}
+  - {name: "Lead-DBS.org", url: "https://www.lead-dbs.org/release/download.php?id=latest"}
+  - {name: "BaiduPan", url: "https://www.lead-dbs.org/release/download.php?id=leaddbs_baidu"}
+size: "11 GB"
+# the standalone builds (their version: data/release.yaml, standalone)
+standalone:
+  - {name: "Linux", url: "https://www.lead-dbs.org/release/download.php?id=leaddbs_standalone_linux"}
+  - {name: "macOS", note: "Intel", url: "https://www.lead-dbs.org/release/download.php?id=leaddbs_standalone_mac_x86_64"}
+  - {name: "macOS", note: "Apple silicon", url: "https://www.lead-dbs.org/release/download.php?id=leaddbs_standalone_mac_arm64"}
+  - {name: "Windows", note: "about 13 GB", url: "https://www.lead-dbs.org/release/download.php?id=leaddbs_standalone_windows"}
+# the next version, in the black panel
+upcoming:
+  title: "Lead-DBS 4.0 is coming."
+  text: "Rebuilt completely in Python. No MATLAB required."
+  link: {page: "/events/hands-on-workshop-2027/", note: "Try the pre-release first, 11–12 February 2027", text: "Hands-on Workshop"}
+# the terms of use, in the dialog the "Terms of use" button opens (text: Markdown; id: an anchor
+# other pages link to)
+terms:
+  - label: "Licence"
+    value: "GNU GPL v3"
+    text: "By downloading Lead-DBS you accept that it and its toolboxes are free but copyrighted software under the [GNU General Public License, version 3](https://github.com/netstim/leaddbs/blob/master/LICENSE.md), as published by the Free Software Foundation, and that it comes with absolutely no warranty."
+  - label: "Use"
+    value: "For research only"
+    id: "research-use"
+    text: "Lead-DBS is research software intended for retrospective scientific analysis of neuroimaging data, electrode locations and group-level associations in research studies. It is not intended for diagnosis, treatment planning, surgical targeting, DBS programming, patient management, or any other clinical decision concerning an individual patient. Outputs must not be used as a basis for clinical care."
 # pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
 related:
   - "/helpsupport/first-steps/"
@@ -36,67 +69,3 @@ next:
   - {page: "/helpsupport/first-steps/", text: "Installed? Your first electrode localization"}
   - {page: "/helpsupport/knowledge-base/lead-dbs-methods/", text: "What Lead-DBS does, with the manual chapter for each"}
 ---
-
-## Lead-DBS {{% release version %}} {#normal-version}
-
-{{< download-release >}}
-- [pCloud](https://www.lead-dbs.org/release/download.php?id=leaddbs_pcloud)
-- [OneDrive](https://www.lead-dbs.org/release/download.php?id=leaddbs_onedrive)
-- [Sciebo](https://www.lead-dbs.org/release/download.php?id=leaddbs_sciebo)
-- [Lead-DBS.org](https://www.lead-dbs.org/release/download.php?id=latest)
-- [BaiduPan](https://www.lead-dbs.org/release/download.php?id=leaddbs_baidu)
-{{< /download-release >}}
-
-## What you need
-
-{{< install "requirements" >}}
-
-## Install {#install}
-
-{{< install "steps" >}}
-
-The manual's [installation guide](https://netstim.gitbook.io/leaddbs/installation#normal-installation) explains each step; to change the code or get daily fixes, [install from GitHub](https://netstim.gitbook.io/leaddbs/installation#installation-via-github) instead.
-
-## Standalone version ({{% release standalone %}}), no MATLAB needed {#standalone-version}
-
-Experimental builds of Lead-DBS {{% release standalone %}} (released {{% release standalone_date %}}) that run without MATLAB, one per system. They won't receive regular updates or hotfixes, so we recommend the MATLAB version where possible. The Windows build is about 13 GB.
-
-{{< downloads prefix="Download for" variant="secondary" >}}
-- [Linux](https://www.lead-dbs.org/release/download.php?id=leaddbs_standalone_linux)
-- [macOS (Intel)](https://www.lead-dbs.org/release/download.php?id=leaddbs_standalone_mac_x86_64)
-- [macOS (Apple silicon)](https://www.lead-dbs.org/release/download.php?id=leaddbs_standalone_mac_arm64)
-- [Windows](https://www.lead-dbs.org/release/download.php?id=leaddbs_standalone_windows)
-{{< /downloads >}}
-
-## Lead-DBS 4.0 {#lead-dbs-4}
-
-Lead-DBS 4.0 is coming, rebuilt completely in Python: no MATLAB required. Participants of the
-[Hands-on Lead-DBS Workshop](/events/hands-on-workshop-2027/) on 11–12 February 2027 will be
-among the first to try the pre-release.
-
-## Licence and terms of use
-
-Free and open source under the [GNU General Public License, version 3](https://github.com/netstim/leaddbs/blob/master/LICENSE.md), with no warranty; for research use only.
-
-<details class="more">
-<summary>The full terms</summary>
-
-By downloading Lead-DBS you accept that it and its toolboxes are free but copyrighted software under the [GNU General Public License, version 3](https://github.com/netstim/leaddbs/blob/master/LICENSE.md), as published by the Free Software Foundation, and that it comes with absolutely no warranty.
-
-Lead-DBS is research software intended for retrospective scientific analysis of neuroimaging data, electrode locations and group-level associations in research studies. It is not intended for diagnosis, treatment planning, surgical targeting, DBS programming, patient management, or any other clinical decision concerning an individual patient. Outputs must not be used as a basis for clinical care.
-{#research-use .fine-print}
-
-</details>
-
-## Release history {#releases}
-
-<details class="more more--wide">
-<summary>All versions, with what changed</summary>
-
-{{< release-history >}}
-
-</details>
-
-## Help
-
-Stuck during installation or later? The manual's [installation guide](https://netstim.gitbook.io/leaddbs/installation) covers most problems; where to ask about the rest is under [Get help](/helpsupport/#get-help). News of releases and critical fixes: the [newsletter](/subscribe-to-our-newsletter/).

@@ -1,0 +1,29 @@
+{{ define "main" }}
+{{- /* A background article (front matter "layout: article"): a page one reads from top to bottom, laid out
+       like an article of openai.com. On the white ground: a quiet line (where the page belongs, when it
+       was written), the title, large and centred; under it the render of its menu group in one wide
+       rounded panel; then the text in one centred column, its pictures a little wider than the lines and
+       centred. From 1200px the table of contents stands in the left margin and follows the reader; below
+       that it folds at the top of the text. No sidebar: what is related comes at the end (next:). */ -}}
+{{ $toc := partial "has-toc.html" . }}
+{{ $crumbs := partial "crumbs.html" . }}
+{{ $up := false }}{{ if gt (len $crumbs) 1 }}{{ $up = index $crumbs (sub (len $crumbs) 2) }}{{ end }}
+<main id="top" class="page article-page">
+  <header class="wrap article-head">
+    <p class="article-head__meta">
+      {{- with $up }}<a href="{{ .url }}">{{ .name }}</a>{{ end -}}
+      {{- if .Params.showDate }}<span><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2006" }}</time></span>{{ if gt (.Lastmod.Sub .Date).Hours 720.0 }}<span>Updated <time datetime="{{ .Lastmod.Format "2006-01-02" }}">{{ .Lastmod.Format "January 2006" }}</time></span>{{ end }}{{ if .Params.archived }}<span>Kept for the record</span>{{ end }}{{ end -}}
+    </p>
+    <h1>{{ partial "nobreak.html" .Title }}</h1>
+  </header>
+  {{ with partial "page-head-render.html" . }}<div class="wrap"><div class="article-hero">{{ . }}</div></div>{{ end }}
+  <div class="wrap article-layout">
+    {{ if $toc }}<aside class="sidebar article-toc" aria-label="Page contents">{{ partial "toc.html" (dict "page" . "variant" "side") }}</aside>{{ end }}
+    <article class="prose">
+      {{ if $toc }}{{ partial "toc.html" (dict "page" . "variant" "top") }}{{ end }}
+      {{ partial "nobreak-html.html" .Content }}
+      {{ partial "next-steps.html" . }}
+    </article>
+  </div>
+</main>
+{{ end }}

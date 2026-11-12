@@ -1,0 +1,5 @@
+{{- /* The newest journal covers (data/covers.yaml) as a fanned deck: fanned around one point, the newest on
+       top at the right; one lifts after another every few seconds, its journal and date under the deck
+       (assets/js/main.js); hover or focus takes over; with reduced motion it stands still. Each card links
+       to its full size. Used on the home page through partial "deck.html" (count). */ -}}
+{{ partial "deck.html" (int (.Get "count" | default 7)) }}

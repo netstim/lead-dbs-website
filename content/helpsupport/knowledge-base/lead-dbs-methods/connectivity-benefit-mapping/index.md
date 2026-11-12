@@ -1,5 +1,7 @@
 ---
 title: "DBS network mapping"
+# laid out as an article: a centred title, one column of text (layouts/article.html)
+layout: article
 description: "DBS network mapping: relate the connectivity of stimulation sites, estimated with normative connectomes, to clinical outcome."
 date: "2018-02-09T11:48:05"
 lastmod: "2026-11-11"

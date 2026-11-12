@@ -11,8 +11,10 @@
     </div>
     <p>Releases, workshops and updates from the Lead-DBS project.</p>
   </header>
-  <div class="wrap newsroom__content doc-layout">
-    <div class="newsroom__stories news-timeline">
+  {{- /* The newest post opens the first page large, its picture beside it; the others are plain rows under
+         hairlines: the date, the title with the post's one line, an arrow; the whole row one link. */}}
+  <div class="wrap newsroom__content">
+    <div class="newsroom__stories">
       {{ partial "nobreak-html.html" .Content }}
       {{- /* the default order (newest first); the page title in head.html reads the same paginator */}}
       {{ $paginator := .Paginator }}
@@ -25,32 +27,36 @@
       {{ if and (not $archived) (lt .Date.Year $cut) }}{{ $archived = true }}
       <h2 class="newsroom__archive" id="archive">Archive ({{ $oldest }}–{{ sub $cut 1 }})</h2>
       {{ end }}
+      {{- /* the post's own one-line description; an older post without one shows the start of its text,
+           cut at a word */}}
+      {{- $text := .Description -}}
+      {{- if not $text }}{{ $text = .Summary | replaceRE ` ?\(open the full-size image\)` "" | plainify | htmlUnescape | truncate 200 }}{{ end }}
+      {{ if and (eq $i 0) (eq $paginator.PageNumber 1) }}
       {{ $image := .Resources.GetMatch (.Params.image | default "__none__") }}
-      <article class="news-story{{ if and (eq $i 0) (eq $paginator.PageNumber 1) }} news-story--lead{{ end }}{{ if $archived }} news-story--archived{{ end }}{{ if $image }} news-story--illustrated{{ end }}">
-        <div class="news-story__body">
-          {{ if and (eq $i 0) (eq $paginator.PageNumber 1) }}<p class="news-story__eyebrow">Latest news</p>{{ end }}
-          <time class="news-story__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
-          <h2 class="news-story__title"><a href="{{ .RelPermalink }}">{{ partial "nobreak-html.html" (.Title | htmlEscape) }}</a></h2>
-          {{- /* the post's own one-line description; an older post without one shows the start of its text,
-               cut at a word */}}
-          {{- $text := .Description -}}
-          {{- if not $text }}{{ $text = .Summary | replaceRE ` ?\(open the full-size image\)` "" | plainify | htmlUnescape | truncate 200 }}{{ end }}
+      <article class="news-lead{{ if $image }} news-lead--illustrated{{ end }}">
+        <div class="news-lead__body">
+          <time class="news-lead__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+          <h2 class="news-lead__title"><a href="{{ .RelPermalink }}">{{ partial "nobreak-html.html" (.Title | htmlEscape) }}</a></h2>
           <p>{{ partial "nobreak-html.html" ($text | htmlEscape) }}</p>
-          <a class="news-story__more link" href="{{ .RelPermalink }}" aria-label="Read more: {{ .Title }}">Read more</a>
+          <span class="news-lead__more" aria-hidden="true">Read more<svg class="m-arrow" viewBox="0 0 12 12"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></span>
         </div>
-        {{ $postURL := .RelPermalink }}
-        {{ with $image }}
-          {{ $thumb := .Resize "720x webp q82" }}
-          <a class="news-story__image" href="{{ $postURL }}" tabindex="-1" aria-hidden="true">
-            <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="" loading="lazy" decoding="async">
-          </a>
+        {{ with $image }}{{ $thumb := .Resize "1100x webp q82" }}
+        <div class="news-lead__image"><img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="" fetchpriority="high"></div>
         {{ end }}
       </article>
+      {{ else }}
+      <article class="news-row">
+        <time class="news-row__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time>
+        <div class="news-row__body">
+          <h2 class="news-row__title"><a href="{{ .RelPermalink }}">{{ partial "nobreak-html.html" (.Title | htmlEscape) }}</a></h2>
+          <p>{{ partial "nobreak-html.html" ($text | htmlEscape) }}</p>
+        </div>
+        <svg class="m-arrow news-row__arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg>
+      </article>
+      {{ end }}
       {{ end }}
       {{ partial "pagination.html" $paginator }}
-
     </div>
-    <aside class="sidebar" aria-label="News resources">{{ partial "sidebar.html" . }}</aside>
   </div>
 </main>
 {{ end }}

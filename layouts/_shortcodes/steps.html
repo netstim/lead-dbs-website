@@ -1,0 +1,10 @@
+{{- /* Numbered steps on a rail (First steps): the headings marked {.step} inside get a numbered circle,
+       joined by a line down the side, their text beside it. Written with %, so the headings stay part of
+       the page's Markdown (contents, search, anchors):
+         {{% steps %}}
+         ## Install Lead-DBS {#install .step}
+         …
+         {{% /steps %}} */ -}}
+<div class="steps">
+{{ .Inner }}
+</div>

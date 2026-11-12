@@ -6,17 +6,17 @@ linkTitle: "Practice dataset (Lead Tutor)"
 date: "2025-02-28T17:20:40"
 lastmod: "2026-11-12"
 keywords: ["Lead Tutor", "Lead-Tutor", "tutorial", "training", "training dataset", "practise", "practice", "dataset", "exercise", "OSF", "ground truth", "expert localizations"]
-facts:
-  - title: "10 patients"
-    text: "Bilateral implants; directional leads in nine patients."
-  - title: "MRI and CT"
-    text: "Preoperative MRI and postoperative CT."
-  - title: "Expert benchmark"
-    text: "Two experts and ten trained non-experts."
-  - title: "Anonymized data"
-    text: "NIfTI files organized in BIDS format."
+# the four numbers under the intro (layouts/_shortcodes/facts.html, style="stats"): title is the number
+stats:
+  - {title: "10", text: "patients, both sides implanted"}
+  - {title: "9", text: "with directional leads"}
+  - {title: "2", text: "expert localizations each"}
+  - {title: "10", text: "non-experts for the usual range"}
 # the picture shown when the page is shared (head.html)
 share: "Screenshot-2025-02-28-at-11.18.44-AM-1030x1005.png"
+# a showcase page: its sections use the full width, no sidebar and no table of contents
+sidebar: false
+toc: false
 # pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
 related:
   - {name: "Install Lead-DBS", url: "/download/#install"}
@@ -30,21 +30,44 @@ next:
 
 <span id="learn-lead-dbs-yourself"></span>
 
-Practise electrode localization on ten patients, then compare your results with expert localizations in Lead-DBS. Start with [First steps](/helpsupport/first-steps/#lead-tutor).
+**Practise on ten real patients.** Localize their electrodes in Lead-DBS, then see how close you came to the experts.
 {.dataset-intro}
 
-{{< facts label="Lead Tutor at a glance" >}}
+{{< facts key="stats" style="stats" label="Lead Tutor in numbers" >}}
 
 <div class="resource-actions">
 
-{{< button href="https://osf.io/jxecg/?view_only=f2765a6aa3604dea8afa14365b70381c" variant="primary" external="true" >}}Download dataset{{< /button >}}
+{{< button href="https://osf.io/jxecg/?view_only=f2765a6aa3604dea8afa14365b70381c" variant="primary" external="true" >}}Download the dataset{{< /button >}}
 
-<a class="link link--ext" href="https://doi.org/10.52294/001c.129658">Read the paper <span class="ext-mark" aria-hidden="true">↗</span></a>
+<a class="link link--ext" href="https://netstim.gitbook.io/leaddbs/lead-dbs/self-tutoring-with-lead-tutor">Guide in the manual <span class="ext-mark" aria-hidden="true">↗</span></a>
 
 </div>
 
-<details class="more dataset-details">
-<summary>Dataset details</summary>
+<ol class="how-tiles" aria-label="How it works">
+<li><b>Download</b><span>The dataset from OSF: defaced MRI and CT, in BIDS.</span></li>
+<li><b>Localize</b><span>Each patient’s electrodes in Lead-DBS, as you would your own.</span></li>
+<li><b>Submit</b><span>Press <em>Submit Results…</em> and get your report.</span></li>
+</ol>
+
+{{% hub-section %}}
+## Your report {#your-report}
+
+**How close you came:** distance and rotation from the experts, patient by patient, from easy to hard.
+
+<div class="report-shot">
+
+![Lead Tutor report comparing a user's localizations with those of experts, per patient](Screenshot-2025-02-28-at-11.18.44-AM-1030x1005.png)
+
+</div>
+
+The colours show the usual range of non-experts.
+{.fine-print}
+{{% /hub-section %}}
+
+{{% hub-section %}}
+## The dataset {#dataset}
+
+**Open data,** free to download from OSF.
 
 {{< summary >}}
 Patients
@@ -61,25 +84,26 @@ Benchmark
 
 Access
 : Free download from OSF; shared openly with the approval of the institutional review board of Brigham and Women's Hospital, Boston, where the images were acquired
-
 {{< /summary >}}
+{{% /hub-section %}}
 
-</details>
+{{% hub-section %}}
+## What to cite {#what-to-cite}
 
-## Your report
+**Used Lead Tutor?** Cite its paper.
 
-After *Submit Results…*, Lead Tutor shows for each patient how far your electrodes lie from the experts'
-in distance and rotation, colour-coded by how non-experts usually do. The patients are ordered from
-easiest to hardest; a few were included on purpose because their images are hard to read.
+<div class="cite-row">
+<div class="cite-row__paper">
 
-![Lead Tutor report comparing a user's localizations with those of experts, per patient](Screenshot-2025-02-28-at-11.18.44-AM-1030x1005.png "Lead Tutor's feedback: the Euclidean and rotational distances of your electrode placements from the expert benchmark, per patient. Colours mark standard deviations, calculated from the performance of non-experts relative to experts, so you see whether a localization falls within or outside the optimal range.")
+[![First page of the Lead-Tutor paper in Aperture Neuro](Screenshot-2025-02-28-at-11.14.43-AM.png)](https://doi.org/10.52294/001c.129658)
 
-The manual explains each step: [Self-tutoring with Lead Tutor](https://netstim.gitbook.io/leaddbs/lead-dbs/self-tutoring-with-lead-tutor).
-
-## What to cite
+</div>
+<div class="cite-row__text">
 
 {{% copybox label="Copy the citation" %}}
 {{< paper madan2025 "full" >}}
 {{% /copybox %}}
 
-![First page of the Lead-Tutor paper in Aperture Neuro](Screenshot-2025-02-28-at-11.14.43-AM.png)
+</div>
+</div>
+{{% /hub-section %}}

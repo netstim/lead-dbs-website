@@ -1,22 +1,33 @@
-{{- /* The named tools of Lead-DBS as plain columns (the Features page), from the page's front matter:
+{{- /* The named tools of Lead-DBS as picture cells, four across (the Features page), from the page's
+       front matter:
          tools:
-           - {id: "lead-group", name: "Lead Group", text: "One sentence.",
+           - {id: "lead-group", name: "Lead Group", text: "One sentence.", img: "images/renders/cohort-hero.jpg",
               manual: "label|url", papers: "treu2020", link: "/a/page/", code: "https://…"}
+       Each cell is a lab render in the rounded black box, under it the tool's name, one sentence and its
+       links. img is a render under assets/images/renders/ (alt text from the
+       renders list of content/gallery/_index.md; the page credits the renders once).
        id is the anchor (the site search links to it, searchEntries); manual, papers, link and code are
        optional, as in {{< capability >}}. */ -}}
 {{- $page := .Page -}}
-<div class="tool-cols">
+{{- $gallery := site.GetPage "/gallery" -}}
+<div class="tool-cells">
 {{- range $page.Params.tools }}{{ $t := . }}
   {{- $more := false }}{{ with .link }}{{ $more = site.GetPage (strings.TrimSuffix "/" .) }}{{ if not $more }}{{ errorf "tools: %q: link %q is not a page" $t.name . }}{{ end }}{{ end }}
+  {{- $img := resources.Get .img }}{{ if not $img }}{{ errorf "tools: %q: no picture %q" $t.name .img }}{{ end }}
+  {{- $alt := "" }}{{ range $gallery.Params.renders }}{{ if eq (printf "images/renders/%s" .file) $t.img }}{{ $alt = .alt }}{{ end }}{{ end }}
+  {{- if not $alt }}{{ errorf "tools: %q: %s is not in the renders list of the gallery" $t.name .img }}{{ end }}
+  {{- $set := slice }}{{ $mid := false }}
+  {{- range slice 480 800 1280 }}{{ $r := $img.Fill (printf "%dx%d webp q82 Center" . (div (mul . 5) 8)) }}{{ $set = $set | append (printf "%s %dw" $r.RelPermalink $r.Width) }}{{ if eq . 800 }}{{ $mid = $r }}{{ end }}{{ end }}
   <section class="tool" id="{{ .id }}" aria-labelledby="{{ .id }}-h">
+    <figure class="tool__fig"><img src="{{ $mid.RelPermalink }}" srcset="{{ delimit $set ", " }}" sizes="(min-width: 1440px) 302px, (min-width: 1024px) 22vw, (min-width: 480px) 46vw, 100vw" width="{{ $mid.Width }}" height="{{ $mid.Height }}" alt="{{ $alt }}" loading="lazy" decoding="async"></figure>
     <h3 id="{{ .id }}-h">{{ .name }}</h3>
-    {{ .text | $page.RenderString (dict "display" "block") }}
-    <p class="capability__links">
-      {{- with $more }}<a href="{{ .RelPermalink }}">In depth</a>{{ end -}}
+    <p class="tool__links">
       {{- with $t.manual }}{{ $kv := split . "|" }}<a href="{{ index $kv 1 }}" title="{{ index $kv 0 }}">Manual<span class="ext-mark" aria-hidden="true">↗</span></a>{{ end -}}
       {{- with $t.code }}<a href="{{ . }}">Code<span class="ext-mark" aria-hidden="true">↗</span></a>{{ end -}}
-      {{- with $t.papers }}{{ range split . " " }}{{ $p := index hugo.Data.papers.papers . }}{{ if not $p }}{{ errorf "tools: %q: no paper %q in data/papers.yaml" $t.name . }}{{ end }}<a class="capability__paper" href="https://doi.org/{{ $p.doi }}">{{ $p.short }}</a>{{ end }}{{ end -}}
+      {{- with $more }}<a href="{{ .RelPermalink }}">In depth<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 6h8M4.5 2.5 8 6l-3.5 3.5"/></svg></a>{{ end -}}
+      {{- with $t.papers }}{{ range split . " " }}{{ $p := index hugo.Data.papers.papers . }}{{ if not $p }}{{ errorf "tools: %q: no paper %q in data/papers.yaml" $t.name . }}{{ end }}<a class="tool__paper" href="https://doi.org/{{ $p.doi }}" title="The paper">{{ $p.short }}<span class="ext-mark" aria-hidden="true">↗</span></a>{{ end }}{{ end -}}
     </p>
+    {{ .text | $page.RenderString (dict "display" "block") }}
   </section>
 {{- end }}
 </div>

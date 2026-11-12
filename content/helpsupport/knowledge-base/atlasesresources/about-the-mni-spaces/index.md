@@ -1,5 +1,7 @@
 ---
 title: "About the MNI spaces"
+# laid out as an article: a centred title, one column of text (layouts/article.html)
+layout: article
 date: "2016-07-27T19:04:01"
 lastmod: "2022-02-04T19:48:23"
 # A background article, first published as a news post; it keeps its address.

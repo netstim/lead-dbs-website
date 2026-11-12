@@ -1,0 +1,43 @@
+{{- /* A list of links as rows, in the style of the hub index (resource-index): a title, one short line,
+       an arrow (↗ for another site). The rows come from the page's front matter, under the key given:
+         {{< link-rows key="follow" >}}
+         follow:
+           - {name: "Bluesky", text: "Lead-DBS news and releases", url: "https://bsky.app/…"}
+           - {name: "Newsletter", text: "…", url: "/subscribe-to-our-newsletter/"}
+       A site path is checked like every other link (resolve-url.html).
+       style="chips": one row of pills instead, the names only (text is left out), as in a site's
+       "follow us" line.
+       style="cells": one frame of cells, two across: the name, the line, the arrow in the corner, and
+       above the name a small mark when the row has one (icon: slack, github, book or mail). */ -}}
+{{- $icons := dict
+  "github" `<svg class="link-cells__icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.31-.63-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>`
+  "book" `<svg class="link-cells__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M12 6.5C10.4 5.2 8.2 4.5 5.5 4.5H3v14h2.5c2.700 0 4.900.700 6.500 2 1.600-1.300 3.800-2 6.500-2H21v-14h-2.500c-2.700 0-4.900.700-6.500 2Zm0 0v14"/></svg>`
+  "mail" `<svg class="link-cells__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M3.500 6.500h17v11h-17zm0 .500 8.500 6.500 8.500-6.500"/></svg>`
+-}}
+{{- $key := .Get "key" -}}
+{{- $chips := eq (.Get "style") "chips" -}}
+{{- $rows := index .Page.Params $key -}}
+{{- if not $rows }}{{ errorf "link-rows: %s has no front matter %q" .Page.File.Path $key }}{{ end -}}
+{{- if $chips }}
+<ul class="link-chips">
+  {{- range $rows }}{{ $ext := hasPrefix .url "http" }}
+  <li><a href="{{ if $ext }}{{ .url }}{{ else }}{{ partial "resolve-url.html" (dict "url" .url "page" $.Page) }}{{ end }}"{{ with .text }} title="{{ . }}"{{ end }}>{{ .name }}{{ if $ext }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ end }}</a></li>
+  {{- end }}
+</ul>
+{{- else if eq (.Get "style") "cells" }}
+<ul class="dl-grid link-cells">
+  {{- range $rows }}{{ $ext := hasPrefix .url "http" }}
+  <li><a class="dl-os" href="{{ if $ext }}{{ .url }}{{ else }}{{ partial "resolve-url.html" (dict "url" .url "page" $.Page) }}{{ end }}">{{ with .icon }}{{ if eq . "slack" }}<img class="link-cells__icon" src="{{ "images/slack.svg" | relURL }}" width="22" height="22" alt="" decoding="async">{{ else }}{{ with index $icons . }}{{ . | safeHTML }}{{ else }}{{ errorf "link-rows: %s: no icon %q (slack, github, book, mail)" $.Page.File.Path . }}{{ end }}{{ end }}{{ end }}<span class="dl-os__name">{{ .name }}{{ if $ext }}<span class="sr-only"> (another site)</span>{{ end }}</span>{{ with .text }}<span class="dl-os__note">{{ . }}</span>{{ end }}{{ if $ext }}<span class="link-cells__arrow" aria-hidden="true">↗</span>{{ else }}<svg class="link-cells__arrow" viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 2.5 8 6l-3.5 3.5"/></svg>{{ end }}</a></li>
+  {{- end }}
+</ul>
+{{- else }}
+<ul class="resource-index">
+  {{- range $rows }}{{ $ext := hasPrefix .url "http" }}
+  <li><a class="link resource-index__link" href="{{ if $ext }}{{ .url }}{{ else }}{{ partial "resolve-url.html" (dict "url" .url "page" $.Page) }}{{ end }}">
+    <span class="resource-index__title">{{ .name }}{{ if $ext }}<span class="sr-only"> (another site)</span>{{ end }}</span>
+    {{ with .text }}<span class="resource-index__text">{{ . }}</span>{{ end }}
+    {{ if $ext }}<span class="ext-mark resource-index__arrow" aria-hidden="true">↗</span>{{ else }}<svg class="m-arrow resource-index__arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg>{{ end }}
+  </a></li>
+  {{- end }}
+</ul>
+{{- end }}

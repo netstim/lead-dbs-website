@@ -1,6 +1,12 @@
-{{- /* A short resource overview, with title/text pairs in the page's facts front matter. */ -}}
-<dl class="resource-facts" aria-label="{{ .Get "label" | default "At a glance" }}">
-  {{ range .Page.Params.facts }}
-  <div><dt>{{ .title }}</dt><dd>{{ .text }}</dd></div>
+{{- /* Short title/text pairs in a two-column grid, each under a hairline: a resource at a glance (Lead
+       Tutor), or tips (Atlases and data). From the page's front matter, under "facts" or the key given;
+       text is Markdown (for a link).
+         {{< facts label="Lead Tutor at a glance" >}}       {{< facts key="tips" label="Before you rely on one" >}}
+       style="stats": the titles are numbers, set large, four across (Lead Tutor). */ -}}
+{{- $rows := index .Page.Params (.Get "key" | default "facts") -}}
+{{- if not $rows }}{{ errorf "facts: %s has no front matter %q" .Page.File.Path (.Get "key" | default "facts") }}{{ end -}}
+<dl class="resource-facts{{ with .Get "style" }} resource-facts--{{ . }}{{ end }}" aria-label="{{ .Get "label" | default "At a glance" }}">
+  {{ range $rows }}
+  <div><dt>{{ .title }}</dt><dd>{{ .text | $.Page.RenderString }}</dd></div>
   {{ end }}
 </dl>

@@ -1,0 +1,108 @@
+{{ define "main" }}
+{{- /* Contribute (content/develop/index.md, front matter layout: contribute), drawn in the manner of the
+       download page and First steps (their .dl- and .fs- styles): the page's text as one opening line
+       with its buttons, the three ways to contribute in one frame of cells (a small picture, a title, a
+       sentence, the actions), the set-up for development as rows with commands to copy, what an atlas
+       needs, the facts as link cells, and the next version in the black panel. All of it comes from the
+       page's front matter: actions, ways, setup, setup_note, atlas, facts, upcoming.
+       The ids #how-to-contribute and #add-your-atlas-or-dataset are linked from other pages: keep them. */ -}}
+{{- $page := . -}}
+<main id="top" class="page dl fs">
+  {{ partial "page-head.html" . }}
+
+  <section class="wrap dl-sec" aria-label="Ways to contribute">
+    <div class="fs-lead">
+      {{ .Content }}
+      {{ with .Params.actions }}<p class="dl-step__actions co-actions">{{ range $k, $a := . }}{{ partial "contribute-link.html" (dict "a" $a "page" $page "class" (cond (eq $k 0) "dl-btn" "dl-more-link")) }}{{ end }}</p>{{ end }}
+    </div>
+    <ol class="dl-grid dl-grid--3">
+      {{- range $n, $w := .Params.ways }}
+      <li class="dl-step" id="{{ $w.id }}">
+        <div class="vg vg--{{ $w.show }}" aria-hidden="true">
+          {{- if eq $w.show "terminal" }}
+          <div class="vg-term"><span></span>{{ range $w.lines }}<code><i>$</i> {{ . }}</code>{{ end }}</div>
+          {{- else if eq $w.show "chips" }}
+          <div class="vg-chips">{{ range $w.chips }}<span>{{ . }}</span>{{ end }}</div>
+          {{- else if eq $w.show "issue" }}
+          <div class="vg-issue"><b>New issue</b>{{ range $w.fields }}<span>{{ . }}</span>{{ end }}</div>
+          {{- else }}{{ errorf "%s: way %q: show must be terminal, chips or issue" $page.File.Path $w.title }}
+          {{- end }}
+        </div>
+        <h2><span>{{ partial "nobreak.html" $w.title }}</span></h2>
+        <p>{{ $w.text | $page.RenderString }}</p>
+        {{- with $w.actions }}
+        <p class="dl-step__actions">{{ range $k, $a := . }}{{ partial "contribute-link.html" (dict "a" $a "page" $page "class" (cond (eq $k 0) "dl-btn" "dl-more-link")) }}{{ end }}</p>
+        {{- end }}
+      </li>
+      {{- end }}
+    </ol>
+  </section>
+
+  {{- with .Params.setup }}
+  <section class="wrap dl-sec" id="setup" aria-labelledby="setup-h">
+    <div class="dl-sec__head">
+      <h2 id="setup-h">Set up for development</h2>
+      <p>To work on the code, install Lead-DBS from GitHub instead of the download.</p>
+    </div>
+    <ol class="fs-fixes co-setup">
+      {{- range $n, $s := . }}
+      <li><span><i>{{ add $n 1 }}</i>{{ $s.text | $page.RenderString }}</span>
+        {{- with $s.command }}<code>{{ . }}</code><button type="button" class="fs-copy" data-copy-text="{{ . }}" hidden>Copy<span class="sr-only"> {{ . }}</span></button>{{ end -}}
+        {{- with $s.link }}<span class="co-setup__link">{{ partial "contribute-link.html" (dict "a" . "page" $page "class" "dl-more-link") }}</span>{{ end -}}
+      </li>
+      {{- end }}
+    </ol>
+    {{ with $page.Params.setup_note }}<p class="co-note">{{ . | $page.RenderString }}</p>{{ end }}
+  </section>
+  {{- end }}
+
+  {{- with .Params.atlas }}
+  <section class="wrap dl-sec" aria-labelledby="atlas-h">
+    <h2 id="atlas-h">What an atlas or dataset needs</h2>
+    <dl class="dl-grid dl-grid--3">
+      {{- range . }}
+      <div class="dl-cell"><dt>{{ .label }}</dt><dd class="dl-cell__v">{{ .value }}</dd><dd>{{ .text | $page.RenderString }}</dd></div>
+      {{- end }}
+    </dl>
+  </section>
+  {{- end }}
+
+  {{- with .Params.facts }}
+  <section class="wrap dl-sec" id="source-code-and-licence" aria-labelledby="facts-h">
+    <h2 id="facts-h">Source code and licence</h2>
+    <ul class="dl-grid dl-grid--os">
+      {{- range . }}{{ $ext := hasPrefix .url "http" }}
+      <li><a class="dl-os co-fact" href="{{ if $ext }}{{ .url }}{{ else }}{{ partial "resolve-url.html" (dict "url" .url "page" $page) }}{{ end }}"><span class="dl-os__name">{{ .name }}{{ if $ext }}<span class="sr-only"> (another site)</span>{{ end }}</span><span class="dl-os__note">{{ .text }}</span><span class="link-cells__arrow" aria-hidden="true">{{ if $ext }}↗{{ else }}›{{ end }}</span></a></li>
+      {{- end }}
+    </ul>
+  </section>
+  {{- end }}
+
+  {{- with .Params.upcoming }}
+  <section class="wrap dl-sec" id="what-comes-next" aria-labelledby="next-h">
+    <div class="dl-next ground-inverse">
+      <h2 id="next-h">{{ .title }} <span>{{ .text }}</span></h2>
+      {{- with .link }}{{ $t := site.GetPage .page }}{{ if not $t }}{{ errorf "%s: upcoming link %q is not a page" $page.File.Path .page }}{{ end }}
+      <p>{{ .note }}<a class="dl-chip" href="{{ $t.RelPermalink }}">{{ .text }}</a></p>
+      {{- end }}
+    </div>
+  </section>
+  {{- end }}
+
+  <div class="wrap dl-related">{{ partial "next-steps.html" . }}</div>
+</main>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (!navigator.clipboard) return;
+  document.querySelectorAll('[data-copy-text]').forEach((b) => {
+    b.hidden = false;
+    b.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(b.dataset.copyText); } catch { return; }
+      const was = b.firstChild.textContent;
+      b.firstChild.textContent = 'Copied';
+      setTimeout(() => { b.firstChild.textContent = was; }, 1600);
+    });
+  });
+});
+</script>
+{{ end }}

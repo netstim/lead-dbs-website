@@ -117,7 +117,7 @@ posts get their newer and older post and "All news" as their cards by themselves
 | A news post | `content/news/<slug>/index.md`; appears at `/<slug>/` (see [Add a news post](#add-a-news-post)) |
 | **A new release** | `data/release.yaml` and `data/releases.yaml`, plus a news post (see [Cut a release](#cut-a-release)) |
 | A paper about Lead-DBS, a method or a tool | `data/papers.yaml` (see [Building blocks](#building-blocks): `paper`, `papers`) |
-| Requirements and install steps (download page; First steps links there) | `data/release.yaml` (MATLAB, toolboxes, SPM12, memory) and `data/install.yaml` (the steps) |
+| Requirements and install steps (download page; First steps links there) | `data/release.yaml` (MATLAB, toolboxes, SPM12, memory) and `data/install.yaml` (disk space, data, the steps and their small pictures) |
 | An atlas or parcellation | `atlases.yaml` next to the atlas page's `index.md` (see [Atlas catalogues](#atlas-catalogues)) |
 | Home page texts, quotes, help links, history, funders, citation; the hero's `proof` (a list of short parts) and `manual` (`{label, link, url}`, shown as a fact) | `content/_index.md` (front matter only; the layout is `layouts/home.html`) |
 | **Events** (developer meetings, workshops) | `data/events.yaml` (see [Events](#events)) |
@@ -182,8 +182,12 @@ line length), as on Features.
   long list that only some readers need (old fees, early papers) in a fold:
   `<details class="more"><summary>What is inside</summary>` … `</details>` (blank lines around the
   Markdown inside). Every fold is as wide as the text column, and folds that follow each other share one line.
-- **Steps of a how-to** (First steps): mark each step's heading `{.step}` (`## Install Lead-DBS {#install .step}`);
-  the site numbers them 01, 02 … in the style of the chapter numbers on Features.
+- **Contribute** (`/develop/`) has its own template, `layouts/contribute.html` (front matter `layout: contribute`):
+  the ways to contribute, the set-up steps, the atlas notes and the facts are lists in the page's front matter.
+- **An event's page** (the developer meeting) uses `layouts/event.html` (front matter `layout: event`, `event:` the
+  entry's id in `data/events.yaml`): the registration, the facts, who it is for and the flyer.
+- **First steps** has its own template, `layouts/first-steps.html` (front matter `layout: first-steps`): its steps
+  (title, text, picture, actions) and its fixes are lists in the page's front matter.
 - **What to cite**: the paper in a `copybox` with "Copy the citation", written with `{{< paper id "full" >}}`
   where the paper is in `data/papers.yaml` (atlas pages, method articles, Lead-OR, Lead Tutor, Cite Lead-DBS).
 - **"Lead-DBS" never breaks at its hyphen**: the templates wrap it in a no-wrap span
@@ -236,10 +240,11 @@ loop has no jump. It is muted and loops. Its file is fetched only after the page
 for visitors who ask for reduced motion or to save data, and on slow connections the poster shows with a
 play button and the clip loads only when it is pressed (`assets/js/main.js`). It plays only while the hero
 is on screen, and a button pauses it; the poster (`assets/images/renders/hero-lead-stn-poster.jpg`, the clip's first
-frame) shows instead. The render sits on the right of a black 16:10 canvas so the words can stand on the black
-left half on a desktop; the canvas is true black (#000) on its left side and along every edge, so no grey
-border shows where the clip meets the page. On phones the hero stays black: the square clip fills a box and
-the title starts over its dark lower third (`.home-hero__media` in `site.css`).
+frame) shows instead. The home page's hero is one rounded black panel on the white page, under the light header
+(`.home-hero__panel` in `site.css`): the clip fills it and the words stand over its black left half. The
+render sits on the right of a black 16:10 canvas for that reason; the canvas is true black (#000) on its left side and along every edge, so no grey
+border shows where the clip meets the page. Below 1024 px the clip is a box at the panel's top (square on
+phones, with the square encode) and the words follow under it on the same black (`.home-hero__media` in `site.css`).
 
 It was rendered with BrainDeer as 385 frames of half a sway (1600×1000, 2×2 supersampled), each composed on
 the canvas, and is played forward then backward. The loop is frames 192…384, 383…1, 0…191: 768 frames,
@@ -288,8 +293,8 @@ render instead. Keep it the only scroll-linked motion on the site.
 
 ### The gallery of published figures
 
-`/gallery/` shows figures from open-access papers made with Lead-DBS first, in the order of
-`data/gallery.yaml`, then the lab's renders. Each figure is one block in that file, starting with `- file:`:
+`/gallery/` has three sections: the lab's renders (the first one of the front matter is shown large), the figures
+from open-access papers made with Lead-DBS, in the order of `data/gallery.yaml`, and the journal covers. Each figure is one block in that file, starting with `- file:`:
 
 - **To remove a figure**, delete its whole block and its file in `static/gallery/`. Nothing else
   refers to it.
@@ -305,6 +310,31 @@ render instead. Keep it the only scroll-linked motion on the site.
 Figures are shown whole (scaled to fit, never cropped) from resized WebP copies; the link under each
 opens the original file. Keep it to at most 10 figures, each understandable without context and
 really made with Lead-DBS.
+
+### Usage figures (the globe on the home page and /usage/)
+
+The home page's "Used in N countries" section and the page `/usage/` show how often Lead-DBS is started,
+by country. The figures are a snapshot in `data/usage.json`; nothing is fetched from the server when the
+site is built or viewed. To refresh them:
+
+1. Copy `access.log` (and `access.log.bak`) from the lead-dbs.org server into a folder, and download a free
+   IP-to-country database in MaxMind format (for example DB-IP "IP to Country Lite").
+2. `pip install maxminddb pycountry`, then `python3 tools/usage.py <log folder> <database.mmdb>`.
+   This writes `data/usage.json`.
+3. `npm install --no-save pele@1.13.0 && node scripts/usage.mjs`. This redraws the charts of `/usage/`
+   (`assets/diagrams/usage-*.svg`) with Pele, the tool that also draws the flow diagram on the home page.
+
+What is counted and published: a launch is one start of Lead-DBS, and the same address counts once an
+hour. `data/usage.json` holds totals by country, year, month, hour and tool, and for the last full day of
+the log the minute and country of each launch (the globe replays that day). It holds no IP address, city
+or network name; do not add any.
+
+- **The globe** is drawn by `assets/js/globe.js` with d3-array, d3-geo and topojson-client
+  (`assets/js/vendor/`, ISC licence) and the Natural Earth country map `assets/data/world-110m.json`
+  (from the world-atlas package). The map is fetched when the section comes near the screen. Without
+  JavaScript the section shows its words only. Its texts are `worldwide:` in `content/_index.md`.
+- **The page `/usage/`** is `content/usage/index.md` (chart headings) and `layouts/usage.html`. It runs no
+  script: the charts are inline SVG, coloured in `assets/css/site.css` ("usage").
 
 ### Events
 
@@ -458,29 +488,32 @@ Text on the left …
   links one by its short name ("Ewert 2019", as in the tools table on Features), `{{< paper ewert2019 "full" >}}`
   prints the full reference (Cite, Lead-OR, Lead Tutor, dependencies), and `{{% papers %}}` lists them all by group
   (Publications). A paper added there appears on Publications by itself.
-- `install "requirements"` and `install "steps"` print what Lead-DBS needs and how to install it, from
-  `data/release.yaml` and `data/install.yaml`, on the download page (First steps links to `/download/#install`).
-- `capability` is one thing Lead-DBS does, on the Features page: its name, a picture (a lab render, a gallery
-  figure credited from `data/gallery.yaml`, or a picture of another page with `alt` and `caption`), what it does,
-  its manual chapters, papers and the page that explains it in depth, then the figure's credit; the shortcode's
-  comment lists the parameters. Inside `capabilities` it is a card whose name, picture, text, references and
-  credit line up across the row: renders three to a row on a desktop, figures from papers (`fit="contain"`) two,
-  two of either below 1200px. On its own it is a wide row, the picture left. Every picture has the same 4:3
-  frame: renders fill it, figures from papers sit whole on the light mat and open at full size. Renders carry
-  no credit of their own; the page credits them once. Its `id` is the anchor other pages link to
-  (`#stimulation`, `#connectivity` …); the page scrolls it below the header and outlines it.
+- The download page has its own template, `layouts/download.html` (front matter `layout: download`): what Lead-DBS
+  needs and how to install it come from `data/release.yaml` and `data/install.yaml`, the servers and the standalone
+  builds from the page's front matter (First steps links to `/download/#install`).
+- `capability` is one thing Lead-DBS does, on the Features page: its name, one sentence, a picture (a lab
+  render, a gallery figure credited from `data/gallery.yaml`, or a picture of another page with `alt`), its
+  manual chapter, papers and the page that explains it in depth; the shortcode's comment lists the parameters.
+  It stands inside `capabilities`, which lays a chapter's capabilities out as a showcase: on the left the
+  names, one under the other; the chosen one stands in ink with its sentence and its links (small pills)
+  under it, the others are grey; from 1024px one large black stage on the right shows the chosen one's
+  picture (a render fills it; a figure from a paper, `fit="contain"`, sits whole on it and opens at full
+  size). A click on a name chooses it (`assets/js/main.js`); below 1024px the chosen one holds its own
+  picture; without script every one is open. Renders carry no credit of their own; the page credits them
+  once. Its `id` is the anchor other pages link to (`#stimulation`, `#connectivity` …): such a link chooses
+  that one. `tools` shows the named tools of the page's front matter as picture cells, four
+  across: a render (`img`), the name, one sentence, its links.
 - `chapter` opens a numbered chapter of a long showcase page (Features): `{{% chapter n="1" img="images/renders/…" %}}`
   around the chapter's `##` heading and a one-line lede; from 1024px the render is a low band beside them,
   below that it follows them, and a phone leaves it out. Its number has the style of the numbers of `jumps`
   and of the steps of First steps: a label.
 - `copybox` holds a text to copy as a whole (the methods paragraph on `/about/citing_leaddbs/` and every "What to cite"); the button
   copies it as plain text and is hidden where the browser cannot copy.
+- `video-grid` and `video-card` lay videos out as a grid of cards (Walkthrough videos): the video, a small tag, a
+  heading and a sentence; `lead="true"` makes a card span the grid.
 - `clip` is a short silent animation (see [Pictures in pages](#pictures-in-pages)).
 - `downloads` turns a list of links into a grid of download buttons (one column on a phone);
   `variant="secondary"` draws them as underlined words, for downloads that are not the recommended one.
-- `download-release` is the block under the download page's title: the current release in one line, one
-  large button for the first server listed, and the other servers as underlined words.
-- `release-history` is the table of released versions (`data/releases.yaml`); versions before 3.0 are folded under it.
 - `childpages section="/path"` lists the pages of another section.
 - `jumps` is the numbered contents of a long page (Features):
   `{{< jumps "Single patients|#single-patients; Tools|#tools" >}}`; the build stops on an anchor the page lacks.

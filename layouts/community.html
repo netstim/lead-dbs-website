@@ -1,0 +1,67 @@
+{{ define "main" }}
+{{- /* /community/ (front matter layout: "community"), a showcase page in the manner of x.ai and vercel.com:
+     the page head; then on the left a huge two-line statement, one line and two pill buttons, on the right
+     a large workshop photo (cut from its top, so a banner printed at its foot falls away); then a row of
+     large numbers (contributors from data/contributors.json, past workshops from the archive page, the
+     monthly meeting); then two sections in the layout of the hub pages (heading and one sentence left,
+     plain rows of links right): the ways to take part (front matter tiles:, each a page, a title and one
+     line; the Events row names the next event of data/events.yaml when there is one) and where to follow
+     Lead-DBS (front matter follow:). */ -}}
+{{ $p := .Params }}
+{{ $people := 0 }}{{ range hugo.Data.contributors }}{{ $people = add $people (len .) }}{{ end }}
+{{ $workshops := 0 }}{{ with site.GetPage "/helpsupport/workshops" }}{{ range .Fragments.Headings }}{{ range .Headings }}{{ if and (eq .Level 2) (findRE `\b(19|20)\d\d\b` .Title) }}{{ $workshops = add $workshops 1 }}{{ end }}{{ end }}{{ end }}{{ end }}
+<main id="top" class="page">
+  {{ partial "page-head.html" . }}
+  <div class="wrap cm">
+    <section class="cm-hero">
+      <div class="cm-hero__text">
+        <h2 class="cm-hero__h">{{ range $i, $l := $p.headline }}{{ if $i }}<br>{{ end }}{{ $l }}{{ end }}</h2>
+        <p class="cm-hero__lead">{{ $p.lead }}</p>
+        <p class="cm-hero__actions">{{ range $i, $a := $p.actions }}<a class="cm-pill{{ if $i }} cm-pill--soft{{ end }}" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}</a>{{ end }}</p>
+      </div>
+      {{ with $p.photo }}{{ $pg := site.GetPage .page }}{{ $img := $pg.Resources.Get .file }}{{ if not $img }}{{ errorf "community: no photo %q on %s" .file .page }}{{ end }}{{ $t := $img.Fill "1000x620 webp q82 Top" }}
+      <figure class="cm-hero__photo"><img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="{{ .alt }}" fetchpriority="high"><figcaption>{{ .caption }}</figcaption></figure>
+      {{ end }}
+    </section>
+
+    {{ $next := index (where (partial "events/list.html" .) "over" false) 0 }}
+    <div class="prose cm-sections">
+      <dl class="resource-facts resource-facts--stats cm-facts" aria-label="The community in numbers">
+        <div><dt>{{ mul (div $people 10) 10 }}+</dt><dd>contributors</dd></div>
+        <div><dt>{{ $workshops }}</dt><dd>workshops so far</dd></div>
+        <div><dt>Monthly</dt><dd>developer meeting</dd></div>
+      </dl>
+
+      <section class="hub-section" aria-labelledby="take-part">
+        <h2 id="take-part">Take part</h2>
+        <p>{{ $p.partLead | markdownify }}</p>
+        <ul class="resource-index">
+          {{ range $p.tiles }}{{ $pg := site.GetPage .page }}{{ if not $pg }}{{ errorf "community: no page %q" .page }}{{ end }}
+          <li><a class="link resource-index__link" href="{{ $pg.RelPermalink }}">
+            <span class="resource-index__title">{{ .title }}</span>
+            <span class="resource-index__text">{{ if and (eq .page "/events") $next }}Next: {{ $next.e.title | replaceRE "^Lead-DBS " "" }}, {{ $next.when_short }}{{ else }}{{ .text }}{{ end }}</span>
+            <svg class="m-arrow resource-index__arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg>
+          </a></li>
+          {{ end }}
+        </ul>
+      </section>
+
+      {{ with $p.follow }}
+      <section class="hub-section" id="follow-lead-dbs" aria-labelledby="follow-h">
+        <h2 id="follow-h">Follow</h2>
+        <p>{{ $p.followLead | markdownify }}</p>
+        <ul class="resource-index">
+          {{ range . }}
+          <li><a class="link resource-index__link" href="{{ .url }}">
+            <span class="resource-index__title">{{ .name }}<span class="sr-only"> (another site)</span></span>
+            <span class="resource-index__text">{{ .text }}</span>
+            <span class="ext-mark resource-index__arrow" aria-hidden="true">↗</span>
+          </a></li>
+          {{ end }}
+        </ul>
+      </section>
+      {{ end }}
+    </div>
+  </div>
+</main>
+{{ end }}

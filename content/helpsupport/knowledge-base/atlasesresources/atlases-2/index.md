@@ -16,7 +16,6 @@ related:
   - {name: "Add your atlas", url: "/develop/#add-your-atlas-or-dataset"}
 # the cards at the end of the page (layouts/_partials/next-steps.html)
 next:
-  - {page: "/helpsupport/knowledge-base/atlasesresources/#choosing", name: "Choosing an atlas", text: "Which atlas suits your question"}
   - {page: "/helpsupport/knowledge-base/atlasesresources/distal-atlas/", text: "DISTAL in detail"}
   - {page: "/helpsupport/knowledge-base/atlasesresources/normative-connectomes/", text: "For connectivity analyses"}
 ---
@@ -26,7 +25,7 @@ to get it and which paper to cite, or type in the box to find one by name, struc
 {{< atlas-index >}}
 
 Looking for the cortex or whole-brain parcellations? See [Cortical parcellations](/helpsupport/knowledge-base/atlasesresources/cortical-atlas-parcellations-mni-space/).
-Tips on [choosing and using an atlas](/helpsupport/knowledge-base/atlasesresources/#choosing); to add your own, see [Add your atlas or dataset](/develop/#add-your-atlas-or-dataset).
+To add your own atlas, see [Add your atlas or dataset](/develop/#add-your-atlas-or-dataset).
 
 {{% atlas-group "basal-ganglia" %}}
 

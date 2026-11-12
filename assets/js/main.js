@@ -324,7 +324,7 @@ document.querySelectorAll('.fig-strip').forEach((strip) => {
       [{ transform: 'translateY(calc(100% + .2em))' }, { transform: 'none' }],
       { duration: 700, delay: 80 + i * step, easing: ease, fill: 'both' }))));
     const after = 80 + (lines.length - 1) * step + 220;
-    const rest = [hero.querySelector('.hero__lead'), ...hero.querySelectorAll('.btn-row > *'), hero.querySelector('.hero__proof'), hero.querySelector('.home-hero__facts')];
+    const rest = [hero.querySelector('.hero__chip'), hero.querySelector('.hero__lead'), ...hero.querySelectorAll('.btn-row > *'), hero.querySelector('.hero__proof'), hero.querySelector('.home-hero__facts')];
     rest.filter(Boolean).forEach((el, k) => anims.push(el.animate(
       [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }],
       { duration: 520, delay: after + Math.min(k, 6) * 60, easing: ease, fill: 'both' })));
@@ -447,14 +447,111 @@ document.querySelectorAll('.fig-strip').forEach((strip) => {
   });
 })();
 
+// ------------------------------------------------------------------ an event's details (/events/)
+// "Details" and the flyer of a row open the row's popup (dialog.ev-pop, layouts/_partials/events/card.html)
+// instead of leaving the page; a click with a modifier key follows the link to the event's page. A click
+// on the dimmed page around the popup closes it, as Escape and its button do.
+document.addEventListener('click', (e) => {
+  const a = e.target.closest?.('[data-ev-pop-open]');
+  if (a) {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
+    const d = document.getElementById(a.dataset.evPopOpen);
+    if (!d || !d.showModal) return;
+    e.preventDefault();
+    d.showModal();
+  } else if (e.target.matches?.('dialog.ev-pop')) e.target.close();
+});
+
 // ------------------------------------------------------------------ videos (youtube / vimeo shortcodes)
 // Nothing loads from YouTube or Vimeo until the visitor starts a video: then the privacy-enhanced
 // player takes the place of the button. A click with a modifier key opens the video's own page.
+// On a video-grid (the videos page) a card's video opens in a popup instead (.v-box): the player
+// large on black, the card's tag, title and sentence under it, its chapters beside it as buttons that
+// start the video at that time. In the card the chapters fold to one "n chapters" button. Closing the
+// popup removes the player, which stops the video.
+const vbox = (() => {
+  const cards = document.querySelectorAll('.video-card');
+  if (!cards.length || !window.HTMLDialogElement) return null;
+  const d = document.createElement('dialog');
+  d.className = 'v-box';
+  d.setAttribute('aria-label', 'Video');
+  d.innerHTML = '<div class="v-box__main"><div class="v-box__player"></div><div class="v-box__info"><div class="v-box__words"></div>'
+    + '<form method="dialog"><button class="v-box__close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></form></div></div><div class="v-box__chapters" hidden></div>';
+  document.body.append(d);
+  const player = d.querySelector('.v-box__player'), info = d.querySelector('.v-box__words'), side = d.querySelector('.v-box__chapters');
+  let src = '', label = '';
+  const chapters = new WeakMap();  // a card's chapters, taken out of the card
+  const secs = (t) => t.split(':').reduce((n, x) => n * 60 + Number(x), 0);
+  const play = (start) => {
+    let u = src;
+    if (start) u = /vimeo/.test(u) ? `${u}#t=${start}s` : `${u}&start=${start}`;
+    const f = document.createElement('iframe');
+    f.src = u; f.title = label;
+    f.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
+    f.allowFullscreen = true;
+    f.referrerPolicy = 'strict-origin-when-cross-origin';
+    player.replaceChildren(f);
+  };
+  d.addEventListener('close', () => { player.replaceChildren(); document.documentElement.classList.remove('v-box-open'); });
+  d.addEventListener('click', (e) => {
+    if (e.target === d) { d.close(); return; }
+    const c = e.target.closest('.v-box__chapter');
+    if (!c) return;
+    side.querySelectorAll('.v-box__chapter').forEach((b) => b.setAttribute('aria-current', String(b === c)));
+    play(Number(c.dataset.t));
+  });
+  const open = (card, start = 0) => {
+    const box = card.querySelector('.video-embed');
+    src = box.dataset.embed; label = box.dataset.embedTitle;
+    info.replaceChildren();
+    const tag = card.querySelector('.video-card__tag'), h = card.querySelector('h2, h3');
+    if (tag) { const t = document.createElement('p'); t.className = 'v-box__tag'; t.textContent = tag.textContent; info.append(t); }
+    if (h) { const t = document.createElement('h2'); t.className = 'v-box__title'; t.textContent = [...h.childNodes].filter((n) => !n.classList?.contains('heading-anchor')).map((n) => n.textContent).join('').trim(); info.append(t); }
+    card.querySelectorAll(':scope > p:not(.video-card__tag)').forEach((p) => { const t = p.cloneNode(true); t.className = 'v-box__text'; info.append(t); });
+    const rows = [...(chapters.get(card)?.querySelectorAll('li') || [])];
+    side.hidden = !rows.length;
+    side.replaceChildren();
+    if (rows.length) {
+      const hd = document.createElement('p'); hd.className = 'v-box__chapters-h'; hd.textContent = `${rows.length} chapters`;
+      const ol = document.createElement('ol');
+      rows.forEach((li) => {
+        const t = li.querySelector('time').textContent, n = secs(t);
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'v-box__chapter'; b.dataset.t = n;
+        b.setAttribute('aria-current', String(n === start));
+        b.innerHTML = '<time></time><span></span>';
+        b.firstChild.textContent = t; b.lastChild.textContent = li.querySelector('span').textContent;
+        const item = document.createElement('li'); item.append(b); ol.append(item);
+      });
+      side.append(hd, ol);
+    }
+    d.classList.toggle('v-box--chapters', rows.length > 0);
+    play(start);
+    document.documentElement.classList.add('v-box-open');
+    d.showModal();
+    d.querySelector('.v-box__close').focus();
+  };
+  cards.forEach((card) => {
+    const ch = card.querySelector('.chapters');
+    if (!ch) return;
+    const n = ch.querySelectorAll('li').length;
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'video-card__chapters';
+    b.innerHTML = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 4h10M3 8h10M3 12h6"/></svg>${n} chapters`;
+    b.addEventListener('click', () => open(card));
+    chapters.set(card, ch);
+    ch.replaceWith(b);
+  });
+  return open;
+})();
+
 document.addEventListener('click', (e) => {
   const a = e.target.closest?.('.video-embed__start');
   if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
   const box = a.closest('.video-embed');
   e.preventDefault();
+  const card = box.closest('.video-card');
+  if (vbox && card) { vbox(card); return; }
   const f = document.createElement('iframe');
   f.src = box.dataset.embed;
   f.title = box.dataset.embedTitle;
@@ -547,56 +644,6 @@ document.querySelectorAll('.cite-snip').forEach((box) => {
   });
 });
 
-// Researcher testimonials: one quote at a time, advancing every 8 s with a crossfade; it holds while the
-// pointer or focus is on it, while it is out of view or the tab hidden, and with reduced motion.
-document.querySelectorAll('.voices__carousel').forEach((carousel) => {
-  const slides = [...carousel.querySelectorAll('.voices__slide')];
-  const controls = carousel.querySelector('.voices__controls');
-  if (slides.length < 2 || !controls) return;
-  const count = carousel.querySelector('.voices__count');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-  let index = 0, timer, visible = false, hovered = false, focused = false, paused = reduce.matches;
-  carousel.classList.add('is-carousel');
-  carousel.setAttribute('aria-roledescription', 'carousel');
-  const show = (next) => {
-    index = (next + slides.length) % slides.length;
-    slides.forEach((slide, i) => {
-      const active = i === index;
-      slide.classList.toggle('is-active', active);
-      slide.setAttribute('aria-hidden', String(!active));
-      slide.inert = !active;
-    });
-    count.textContent = `${index + 1} / ${slides.length}`;
-  };
-  const schedule = () => {
-    clearTimeout(timer);
-    const stopped = paused || hovered || focused || !visible || document.hidden;
-    count.setAttribute('aria-live', stopped ? 'polite' : 'off');
-    if (!stopped) timer = setTimeout(() => { show(index + 1); schedule(); }, 8000);
-  };
-  const navigate = (step) => { show(index + step); schedule(); };
-  controls.hidden = false;
-  carousel.querySelector('.voices__prev').addEventListener('click', () => navigate(-1));
-  carousel.querySelector('.voices__next').addEventListener('click', () => navigate(1));
-  carousel.addEventListener('mouseenter', () => { hovered = true; schedule(); });
-  carousel.addEventListener('mouseleave', () => { hovered = false; schedule(); });
-  carousel.addEventListener('focusin', () => { focused = true; schedule(); });
-  carousel.addEventListener('focusout', (event) => {
-    if (!carousel.contains(event.relatedTarget)) { focused = false; schedule(); }
-  });
-  controls.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-      event.preventDefault();
-      navigate(event.key === 'ArrowRight' ? 1 : -1);
-    }
-  });
-  document.addEventListener('visibilitychange', schedule);
-  reduce.addEventListener('change', () => { paused = reduce.matches; schedule(); });
-  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; schedule(); }, { threshold: .5 }).observe(carousel);
-  show(0);
-  schedule();
-});
-
 // The news rail follows the reading position; stories remain visible and stationary.
 document.querySelectorAll('.news-timeline').forEach((timeline) => {
   const stories = [...timeline.querySelectorAll('.news-story')];
@@ -627,3 +674,138 @@ document.querySelectorAll('.news-timeline').forEach((timeline) => {
   new ResizeObserver(queue).observe(timeline);
   update();
 });
+
+// The countdown at the end of an event's meta line (events/card.html, home.html): "today", "tomorrow",
+// "in 6 days", "in 3 months", by the visitor's clock; it stays hidden once the event has started.
+document.querySelectorAll('[data-ev-countdown]').forEach((chip) => {
+  const start = Number(chip.dataset.evCountdown) * 1000;
+  const day = (t) => { const d = new Date(t); d.setHours(0, 0, 0, 0); return d.getTime(); };
+  const days = Math.round((day(start) - day(Date.now())) / 864e5);
+  if (start <= Date.now() && days < 0) return;
+  chip.textContent = days <= 0 ? 'today' : days === 1 ? 'tomorrow' : days < 45 ? `in ${days} days` : `in ${Math.round(days / 30.4)} months`;
+  chip.hidden = false;
+});
+
+// {{< deck >}}: one card after another lifts (every 4.2 s, from the top card down) and the caption shows
+// its journal and date; hover or focus on a card lifts that one and holds the deck; reduced motion keeps
+// the top card up.
+document.querySelectorAll('[data-deck]').forEach((deck) => {
+  const cards = [...deck.querySelectorAll('.deck__card')];
+  const cap = deck.querySelector('.deck__cap');
+  if (!cards.length || !cap) return;
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let cur = 0, held = false, timer = 0;
+  const up = (k) => {
+    cur = k;
+    cards.forEach((c, j) => c.classList.toggle('is-up', j === k));
+    cap.style.opacity = 0;
+    clearTimeout(timer);
+    timer = setTimeout(() => { cap.querySelector('b').textContent = cards[k].dataset.journal; cap.querySelector('span').textContent = cards[k].dataset.date; cap.style.opacity = 1; }, still ? 0 : 200);
+  };
+  cards.forEach((c, k) => { c.addEventListener('pointerenter', () => { held = true; up(k); }); c.addEventListener('focus', () => { held = true; up(k); }); });
+  deck.addEventListener('pointerleave', () => { held = false; });
+  deck.addEventListener('focusout', (e) => { if (!deck.contains(e.relatedTarget)) held = false; });
+  up(0);
+  if (!still) setInterval(() => { if (!held && !document.hidden) up((cur + 1) % cards.length); }, 4200);
+});
+
+// Paper rows (Publications): a year is written once, on its first row.
+document.querySelectorAll('.paper-rows').forEach((list) => {
+  let last = '';
+  list.querySelectorAll('.paper-row__year').forEach((y) => { if (y.textContent === last) y.classList.add('is-repeat'); else last = y.textContent; });
+});
+
+// {{< capabilities >}} (Features): a click on a capability's name chooses it: its sentence and links
+// open under the name and its picture shows on the stage. The address takes its id, so the chosen one can
+// be linked; a link to a capability (from the home page, the search) chooses it too.
+document.querySelectorAll('[data-cap-show]').forEach((show) => {
+  const items = [...show.querySelectorAll('.capability')];
+  const figs = [...show.querySelectorAll('[data-cap-fig]')];
+  if (items.length < 2) return;
+  const open = (item) => {
+    items.forEach((it) => {
+      it.classList.toggle('is-active', it === item);
+      it.querySelector('h3 > button').setAttribute('aria-expanded', String(it === item));
+    });
+    figs.forEach((f) => f.classList.toggle('is-active', f.dataset.capFig === item.id));
+  };
+  items.forEach((it) => it.querySelector('h3 > button').addEventListener('click', () => {
+    open(it);
+    history.replaceState(null, '', '#' + it.id);
+  }));
+  const fromHash = () => {
+    const it = items.find((x) => '#' + x.id === location.hash);
+    if (!it) return;
+    open(it);
+    if (matchMedia('(min-width: 1024px)').matches) show.scrollIntoView();
+  };
+  addEventListener('hashchange', fromHash);
+  fromHash();
+});
+
+// The gallery (layouts/gallery/list.html): the pills show one section (a kind of picture) or all; a click on a
+// picture opens the lightbox with the picture larger and its words (its .g-item__info), arrows and the
+// arrow keys step through the pictures shown; #fig-… or #covers in the address opens or filters at once.
+(() => {
+  const walls = document.querySelectorAll('[data-gallery]');
+  const box = document.querySelector('.g-box');
+  if (!walls.length) return;
+  const items = [...document.querySelectorAll('[data-gallery] .g-item')];
+  const secs = document.querySelectorAll('.g-sec');
+  const pills = document.querySelector('.g-pills');
+  const show = (kind) => {
+    pills?.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.show === kind)));
+    items.forEach((it) => { it.hidden = kind !== 'all' && it.dataset.kind !== kind; });
+    secs.forEach((sec) => { sec.hidden = kind !== 'all' && sec.dataset.kind !== kind; });
+  };
+  if (pills) { pills.hidden = false; pills.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) show(b.dataset.show); }); }
+  if (!box || !box.showModal) return;
+  const img = box.querySelector('.g-box__img'), info = box.querySelector('.g-box__info');
+  let cur = -1;
+  const visible = () => items.filter((it) => !it.hidden);
+  const open = (it) => {
+    const a = it.querySelector('.g-item__img');
+    img.src = a.href; img.alt = a.querySelector('img').alt;
+    info.innerHTML = it.querySelector('.g-item__info').innerHTML;
+    cur = visible().indexOf(it);
+    if (!box.open) box.showModal();
+  };
+  const step = (d) => { const v = visible(); if (v.length) open(v[(cur + d + v.length) % v.length]); };
+  items.forEach((it) => it.querySelector('.g-item__img').addEventListener('click', (e) => { e.preventDefault(); open(it); }));
+  box.querySelector('.g-box__nav--prev').addEventListener('click', () => step(-1));
+  box.querySelector('.g-box__nav--next').addEventListener('click', () => step(1));
+  box.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') step(-1); if (e.key === 'ArrowRight') step(1); });
+  box.addEventListener('click', (e) => { if (e.target === box) box.close(); });
+  const hash = () => {
+    if (location.hash === '#covers') show('cover');
+    else if (location.hash === '#renders') show('render');
+    const it = location.hash.startsWith('#fig-') && document.getElementById(location.hash.slice(1));
+    if (it) open(it);
+  };
+  hash(); addEventListener('hashchange', hash);
+})();
+
+// ------------------------------------------------------------------ light and dark
+// head.html sets html[data-theme] before the first paint: the reader's choice (localStorage "theme"),
+// else the system's. The header's button flips it and keeps the choice; without a choice the page
+// follows the system when that changes.
+(() => {
+  const root = document.documentElement;
+  const buttons = document.querySelectorAll('[data-theme-toggle]');
+  const label = () => {
+    const words = root.dataset.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+    buttons.forEach((b) => { b.setAttribute('aria-label', words); b.title = words; });
+  };
+  const set = (t) => { root.dataset.theme = t; label(); };
+  buttons.forEach((b) => b.addEventListener('click', () => {
+    const t = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem('theme', t); } catch (e) { /* private mode: the choice lasts this page */ }
+    set(t);
+  }));
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    let saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (e) { /* none */ }
+    if (!saved) set(e.matches ? 'dark' : 'light');
+  });
+  label();
+})();

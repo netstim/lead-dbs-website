@@ -1,5 +1,7 @@
 ---
 title: "AC/PC to MNI conversion"
+# laid out as an article: a centred title, one column of text (layouts/article.html)
+layout: article
 description: "Convert surgical AC/PC coordinates of DBS targets into MNI space and back, with age-matched reference brains such as the IXI dataset."
 weight: 2
 date: "2017-04-19T17:07:12"

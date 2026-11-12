@@ -1,5 +1,7 @@
 ---
 title: "Commercial vs. academic software"
+# laid out as an article: a centred title, one column of text (layouts/article.html)
+layout: article
 date: "2017-07-03T00:39:18"
 lastmod: "2017-07-08T21:47:41"
 # An essay of 2017, first published as a news post; it keeps its address and shows its date.

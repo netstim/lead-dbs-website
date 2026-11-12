@@ -6,6 +6,23 @@ lastmod: "2026-11-11"
 weight: 7
 # the old "portfolio" of software Lead-DBS works with
 aliases: ["/portfolio-item/spm/", "/portfolio-item/dtifibertools/", "/portfolio-item/132/", "/portfolio_entries/interfaces/"]
+# a showcase page: full width, no sidebar and no table of contents
+sidebar: false
+toc: false
+# why these tools, a cell each (layouts/_shortcodes/cells.html; text: Markdown)
+why:
+  - label: "Written for Lead-DBS"
+    value: "3D viewer and TRAC/CORE"
+    text: "The 3D visualization and the electrode reconstruction algorithms ([TRAC/CORE](http://www.sciencedirect.com/science/article/pii/S1053811914009938))."
+  - label: "Normalization into MNI space"
+    value: "DARTEL or ANTs"
+    text: "[DARTEL](https://www.fil.ion.ucl.ac.uk/spm/software/spm12/) and [ANTs](http://stnava.github.io/ANTs/) both outperformed all 12 other algorithms in [Klein 2009](http://www.ncbi.nlm.nih.gov/pubmed/19195496)."
+  - label: "Fibre tracking"
+    value: "Gibbs' tracking"
+    text: "The [Gibbs' tracking algorithm](https://www.uniklinik-freiburg.de/mr-en/research-groups/diffperf/fibertools.html) outperformed all 9 other algorithms in [Fillard 2011](http://www.ncbi.nlm.nih.gov/pubmed/21256221)."
+  - label: "Stimulation modelling"
+    value: "OSS-DBS"
+    text: "[OSS-DBS](#stimulation-modelling-oss-dbs), integrated in its version 2 since Lead-DBS 3.1."
 # pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
 related:
   - "/develop/"
@@ -19,29 +36,31 @@ next:
   - {page: "/develop/#add-your-atlas-or-dataset", name: "Add your atlas, dataset or code", text: "Get your own code or data into Lead-DBS"}
 ---
 
-Lead-DBS brings together some of the best open-source neuroimaging tools and adds code of its own
-where none existed. **If you use Lead-DBS in a study, please cite the tools you used**, along with
-[Lead-DBS itself](/about/citing_leaddbs/).
+**Lead-DBS brings together the best open-source neuroimaging tools,** and adds code of its own where none existed.
+{.dataset-intro}
+
+<div class="resource-actions">
+
+{{< button href="/about/citing_leaddbs/" variant="primary" >}}Cite Lead-DBS{{< /button >}}
+
+<span class="resource-actions__note">If you use Lead-DBS in a study, please cite the tools you used as well.</span>
+
+</div>
 
 ## Why these tools
 
-- **Written for Lead-DBS**: the 3D visualization and the electrode reconstruction algorithms
-  ([TRAC/CORE](http://www.sciencedirect.com/science/article/pii/S1053811914009938)).
-- **Normalization into MNI space**: [DARTEL](https://www.fil.ion.ucl.ac.uk/spm/software/spm12/) or
-  [ANTs](http://stnava.github.io/ANTs/), both of which outperformed all 12 other algorithms in
-  [Klein 2009](http://www.ncbi.nlm.nih.gov/pubmed/19195496).
-- **Fibre tracking**, among other routines: the
-  [Gibbs' tracking algorithm](https://www.uniklinik-freiburg.de/mr-en/research-groups/diffperf/fibertools.html),
-  which outperformed all 9 other algorithms in [Fillard 2011](http://www.ncbi.nlm.nih.gov/pubmed/21256221).
-- **Stimulation modelling**: [OSS-DBS](#stimulation-modelling-oss-dbs), integrated in its version 2 since Lead-DBS 3.1.
+{{< cells key="why" label="Why these tools" >}}
 
-## Stimulation modelling: OSS-DBS {#stimulation-modelling-oss-dbs}
+{{% hub-section %}}
+## OSS-DBS {#stimulation-modelling-oss-dbs}
+
+**Stimulation modelling:** electric fields and pathway activation, installed automatically with Lead-DBS 3.1 and later.
 
 OSS-DBS computes the electric field around the electrode with heterogeneous, anisotropic and
 dispersive volume conductor models, and from the field the activation of pathways with biophysical
 axon models. It is developed around the team of Ursula van Rienen at the University of Rostock.
-Version 2 installs automatically with Lead-DBS 3.1 and later. Please cite both papers, on version 2
-and on the original method (in the table below).
+Please cite both papers, on version 2 and on the original method (in the table below).
+{{% /hub-section %}}
 
 ## All tools and their papers
 
@@ -73,4 +92,4 @@ and on the original method (in the table below).
 |  | OSS-DBS (v1) | [github.com/SFB-ELAINE/OSS-DBS](https://github.com/SFB-ELAINE/OSS-DBS) | {{< paper butenko2020 "full" >}} |
 | Estimating the Volume of Activated Tissue (VAT) | SimBio (FEM-based field modeling) and FieldTrip (Mesh generation) toolboxes | [fieldtriptoolbox.org](http://fieldtriptoolbox.org/)  [mrt.uni-jena.de](https://www.mrt.uni-jena.de/simbio/index.php/Main_Page) | Oostenveld, R., Fries, P., Maris, E., & Schoffelen, J.-M. (2010). FieldTrip: Open Source Software for Advanced Analysis of MEG, EEG, and Invasive Electrophysiological Data. Computational Intelligence and Neuroscience, 2011(1), 1–9. [doi:10.1155/2011/156869](https://doi.org/10.1155/2011/156869)  Wolters, C. H., Anwander, A., & Tricoche, X. (2005). Influence of local and remote white matter conductivity anisotropy for a thalamic source on EEG/MEG field and return current computation. |
 | Network stats | Network based statistics (NBS) | [sites.google.com](https://sites.google.com/site/bctnet/comparison/nbs)  [nitrc.org](https://www.nitrc.org/projects/nbs/) | Zalesky, A., Fornito, A., & Bullmore, E. T. (2010). Network-based statistic: identifying differences in brain networks., 53(4), 1197–1207. [doi:10.1016/j.neuroimage.2010.06.041](https://doi.org/10.1016/j.neuroimage.2010.06.041) |
-{.table--stack caption="Software that Lead-DBS uses, with its papers"}
+{.table--stack .tools-table caption="Software that Lead-DBS uses, with its papers"}

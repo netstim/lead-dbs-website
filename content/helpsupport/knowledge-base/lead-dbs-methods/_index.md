@@ -21,12 +21,13 @@ searchEntries:
 next:
   - {page: "/helpsupport/first-steps/", text: "New to Lead-DBS? Start here"}
   - {page: "/helpsupport/knowledge-base/atlasesresources/", text: "The atlases and connectomes these methods use"}
-# the named tools, as cells at the end of the page (layouts/_shortcodes/tools.html)
+  - {page: "/about/citing_leaddbs/", text: "What to cite when you use Lead-DBS"}
+# the named tools, as picture cells at the end of the page (layouts/_shortcodes/tools.html)
 tools:
-  - {id: "lead-group", name: "Lead Group", text: "Group analyses against clinical outcome.", manual: "Group analyses|https://netstim.gitbook.io/leaddbs/lead-group/group-analyses-with-lead-dbs", papers: "treu2020"}
-  - {id: "lead-connectome", name: "Lead Connectome", text: "Connectomes from diffusion MRI and resting-state fMRI, and the connectivity of any seed.", manual: "Lead Connectome Mapper|https://netstim.gitbook.io/leaddbs/connectomics/lead-mapper", papers: "horn2014"}
-  - {id: "oss-dbs", name: "OSS-DBS", text: "Stimulation modelling, made with the University of Rostock; installs with Lead-DBS.", manual: "Calculate VTA and stats|https://netstim.gitbook.io/leaddbs/lead-group/calculate-vta-and-stats", code: "https://github.com/SFB-ELAINE/OSS-DBSv2", papers: "butenko2020 zimmermann2026"}
-  - {id: "lead-tutor", name: "Lead Tutor", text: "Practice data, scored against experts.", link: "/helpsupport/learn-lead-dbs-yourself/", manual: "Self-tutoring|https://netstim.gitbook.io/leaddbs/lead-dbs/self-tutoring-with-lead-tutor", papers: "madan2025"}
+  - {id: "lead-group", img: "images/renders/cohort-hero.jpg", name: "Lead Group", text: "Group analyses against clinical outcome.", manual: "Group analyses|https://netstim.gitbook.io/leaddbs/lead-group/group-analyses-with-lead-dbs", papers: "treu2020"}
+  - {id: "lead-connectome", img: "images/renders/fiber-filtering-wide.jpg", name: "Lead Connectome", text: "Connectomes from diffusion MRI and resting-state fMRI, and the connectivity of any seed.", manual: "Lead Connectome Mapper|https://netstim.gitbook.io/leaddbs/connectomics/lead-mapper", papers: "horn2014"}
+  - {id: "oss-dbs", img: "images/renders/pathway-activation-2.jpg", name: "OSS-DBS", text: "Stimulation modelling, made with the University of Rostock; installs with Lead-DBS.", manual: "Calculate VTA and stats|https://netstim.gitbook.io/leaddbs/lead-group/calculate-vta-and-stats", code: "https://github.com/SFB-ELAINE/OSS-DBSv2", papers: "butenko2020 zimmermann2026"}
+  - {id: "lead-tutor", img: "images/renders/cohort-black.jpg", name: "Lead Tutor", text: "Practice data, scored against experts.", link: "/helpsupport/learn-lead-dbs-yourself/", manual: "Self-tutoring|https://netstim.gitbook.io/leaddbs/lead-dbs/self-tutoring-with-lead-tutor", papers: "madan2025"}
 ---
 
 {{< jumps "Single patients|#single-patients; Groups of patients|#groups-of-patients; In the operating theatre|#operating-theatre; Tools|#tools" >}}
@@ -34,7 +35,7 @@ tools:
 networks they reach, for one patient or a whole cohort.
 {{< /jumps >}}
 
-{{% chapter n="1" img="images/renders/cohort-hero.jpg" focus="58% 46%" %}}
+{{% chapter n="1" %}}
 ## Single patients {#single-patients}
 
 **Where the electrodes sit,** and what they stimulate.
@@ -80,7 +81,7 @@ Surgical AC/PC coordinates to MNI space and back.
 {{< /capability >}}
 {{< /capabilities >}}
 
-{{% chapter n="2" img="images/renders/fiber-filtering-wide.jpg" focus="50% 38%" %}}
+{{% chapter n="2" %}}
 ## Groups of patients {#groups-of-patients}
 
 **A whole cohort in one space,** against clinical outcome.
@@ -131,5 +132,5 @@ A sister tool for research during surgery, in [3D Slicer](https://www.slicer.org
 
 {{< tools >}}
 
-The method in full: the [Lead-DBS v3 paper](https://doi.org/10.1016/j.neuroimage.2023.119862) · All papers: [Publications](/about/publications/#methodological-publications) · What to cite: [Cite Lead-DBS](/about/citing_leaddbs/) · More pictures: [Made with Lead-DBS](/gallery/) · Renders by the Lead-DBS team, from the Lead Tutor data
+Renders by the Lead-DBS team, from the Lead Tutor data. More pictures in the [gallery](/gallery/).
 {.features-foot}

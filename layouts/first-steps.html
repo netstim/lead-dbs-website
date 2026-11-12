@@ -1,0 +1,78 @@
+{{ define "main" }}
+{{- /* First steps (content/helpsupport/first-steps/index.md, front matter layout: first-steps), drawn in
+       the manner of the download page (layouts/download.html, whose .dl- styles it shares): the page's
+       text as one opening line, the steps in one frame of cells divided by hairlines, each with a small
+       picture, its number and title, a sentence and its actions, then the fixes with a button that
+       copies the command. Front matter: steps (id, title, text, show, actions) and fixes (problem,
+       command); "{matlab}" in a step's text is the oldest MATLAB release of data/release.yaml.
+       The ids #install, #lead-tutor and #troubleshooting are linked from other pages: keep them. */ -}}
+{{- $r := hugo.Data.release -}}
+{{- $page := . -}}
+<main id="top" class="page dl fs">
+  {{ partial "page-head.html" . }}
+
+  <section class="wrap dl-sec" aria-label="The steps">
+    <div class="fs-lead">{{ .Content }}</div>
+    <ol class="dl-grid dl-grid--3">
+      {{- range $n, $s := .Params.steps }}
+      <li class="dl-step" id="{{ $s.id }}">
+        <div class="vg vg--{{ $s.show }}" aria-hidden="true">
+          {{- if eq $s.show "release" }}
+          <div class="vg-file"><svg viewBox="0 0 16 16"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Lead-DBS {{ $r.version }}</b>ZIP{{ with site.GetPage "/download" }}{{ with .Params.size }} · {{ . }}{{ end }}{{ end }}</span></div>
+          {{- else if eq $s.show "dataset" }}
+          <div class="vg-file"><svg viewBox="0 0 16 16"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>{{ $s.name }}</b>{{ $s.facts }}</span></div>
+          {{- else if eq $s.show "report" }}
+          <div class="vg-report">
+            <span>Distance from experts</span>
+            <svg viewBox="0 0 212 84"><rect class="r3" width="212" height="28"/><rect class="r2" y="28" width="212" height="24"/><rect class="r1" y="52" width="212" height="32"/><circle class="a" cx="14" cy="62" r="3"/><circle class="b" cx="21" cy="70" r="3"/><circle class="a" cx="34" cy="50" r="3"/><circle class="b" cx="41" cy="60" r="3"/><circle class="a" cx="54" cy="40" r="3"/><circle class="b" cx="61" cy="52" r="3"/><circle class="a" cx="74" cy="38" r="3"/><circle class="b" cx="81" cy="46" r="3"/><circle class="a" cx="94" cy="66" r="3"/><circle class="b" cx="101" cy="52" r="3"/><circle class="a" cx="114" cy="56" r="3"/><circle class="b" cx="121" cy="48" r="3"/><circle class="a" cx="134" cy="46" r="3"/><circle class="b" cx="141" cy="36" r="3"/><circle class="a" cx="154" cy="52" r="3"/><circle class="b" cx="161" cy="56" r="3"/><circle class="a" cx="174" cy="24" r="3"/><circle class="b" cx="181" cy="50" r="3"/><circle class="a" cx="194" cy="58" r="3"/><circle class="b" cx="201" cy="56" r="3"/></svg>
+            <p><i class="a"></i>Left<i class="b"></i>Right</p>
+          </div>
+          {{- else }}{{ errorf "%s: step %q: show must be release, dataset or report" $page.File.Path $s.title }}
+          {{- end }}
+        </div>
+        <h2><span class="dl-step__n">{{ add $n 1 }}</span><span>{{ partial "nobreak.html" $s.title }}</span></h2>
+        <p>{{ replace $s.text "{matlab}" $r.matlab | $page.RenderString }}</p>
+        {{- with $s.actions }}
+        <p class="dl-step__actions">
+          {{- range $k, $a := . }}
+          {{- $href := $a.url }}{{ with $a.page }}{{ $href = partial "resolve-url.html" (dict "url" . "page" $page) }}{{ end }}
+          <a class="{{ if eq $k 0 }}dl-btn{{ else }}dl-more-link{{ end }}" href="{{ $href }}">{{ $a.text }}{{ if $a.url }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ end }}</a>
+          {{- end }}
+        </p>
+        {{- end }}
+      </li>
+      {{- end }}
+    </ol>
+  </section>
+
+  {{- with .Params.fixes }}
+  <section class="wrap dl-sec" id="troubleshooting" aria-labelledby="fix-h">
+    <div class="dl-sec__head">
+      <h2 id="fix-h">If something goes wrong</h2>
+      <p>Type the command in MATLAB. Still stuck? Ask in the <a href="{{ (site.GetPage "/helpsupport/slack-user-channel").RelPermalink }}">user Slack</a> or report a bug on <a href="{{ site.Params.github }}/issues">GitHub</a>.</p>
+    </div>
+    <ul class="fs-fixes">
+      {{- range . }}
+      <li><span>{{ .problem }}</span><code>{{ .command }}</code><button type="button" class="fs-copy" data-copy-text="{{ .command }}" hidden>Copy<span class="sr-only"> {{ .command }}</span></button></li>
+      {{- end }}
+    </ul>
+  </section>
+  {{- end }}
+
+  <div class="wrap dl-related">{{ partial "next-steps.html" . }}</div>
+</main>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (!navigator.clipboard) return;
+  document.querySelectorAll('[data-copy-text]').forEach((b) => {
+    b.hidden = false;
+    b.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(b.dataset.copyText); } catch { return; }
+      const was = b.firstChild.textContent;
+      b.firstChild.textContent = 'Copied';
+      setTimeout(() => { b.firstChild.textContent = was; }, 1600);
+    });
+  });
+});
+</script>
+{{ end }}

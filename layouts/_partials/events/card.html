@@ -1,4 +1,5 @@
-{{- /* Home cards retain their compact format; the events index uses date-led rows. */ -}}
+{{- /* One event: on the home page (compact) a row of date, title, time and place and its action; on
+       the events page a row of a schedule. */ -}}
 {{- $ev := .ev }}{{ $e := $ev.e }}{{ $page := .page }}{{ $compact := .compact -}}
 {{- $events := site.GetPage "/events" -}}
 <li class="event{{ if $compact }} panel{{ else }} event--listing{{ end }}"{{ if not $compact }} id="{{ $ev.id }}"{{ end }} data-ev data-ev-ends="{{ $ev.iso_ends }}" data-ev-start="{{ $ev.start_unix }}">
@@ -8,15 +9,63 @@
   <p class="event__meta">{{ with $ev.time }}<time datetime="{{ $ev.iso_start }}">{{ . }}</time><span class="event__local" data-ev-local="{{ $ev.iso_start }}" data-ev-tz="{{ $ev.tz }}" hidden></span> · {{ end }}{{ $e.where }}</p>
   <div class="event__upcoming-only">{{ partial "events/register.html" (dict "ev" $ev "page" $page "compact" true) }}</div>
   {{ else }}
-  {{ $details := "" }}{{ with $e.links }}{{ $details = partial "resolve-url.html" (dict "url" (index . 0).url "page" $page) }}{{ end }}
-  <p class="event__date"><time datetime="{{ $ev.iso_start }}" aria-label="{{ $ev.when }}">
-    <span class="event__day">{{ $ev.when_short }}</span>
-    <span class="event__year">{{ $ev.start.Format "2006" }}</span>
-  </time></p>
+  {{- /* the events page: one row per event, as a schedule: the day set large with its month and year,
+         then the title, one sentence, the time and place with a countdown (assets/js/main.js) and the
+         actions (the one button, "Add to calendar", the details), and the event's flyer small on the
+         right (an image named *flyer* in its page's folder). "Add to calendar" is an .ics file
+         (events/ics.html). "Details" and the flyer open a popup (the dialog at the end of the row,
+         assets/js/main.js): the facts of the event, its actions and the flyer large; without script, or
+         with a modifier key, they lead to the event's page. */ -}}
+  {{ $details := "" }}{{ $flyer := false }}{{ $dp := false }}{{ $pop := printf "%s-details" $ev.id }}
+  {{ with $e.links }}{{ $u := (index . 0).url }}{{ $details = partial "resolve-url.html" (dict "url" $u "page" $page) }}
+    {{ with site.GetPage (strings.TrimSuffix "/" (urls.Parse $u).Path) }}{{ $dp = . }}{{ $flyer = .Resources.GetMatch "*flyer*" }}{{ end }}{{ end }}
+  {{ $month := index (last 1 (split $ev.when_short " ")) 0 }}
+  {{ $days := strings.TrimSuffix (printf " %s" $month) $ev.when_short }}
+  <div class="event__day"><time datetime="{{ $ev.iso_start }}"><b>{{ $days }}</b><span>{{ $month }} {{ $ev.start.Format "2006" }}</span></time><span class="ev-countdown" data-ev-countdown="{{ $ev.start_unix }}" hidden></span></div>
   <div class="event__body">
-    <h3 class="event__title">{{ if $details }}<a class="link event__title-link" href="{{ $details }}">{{ partial "nobreak.html" $e.title }}</a>{{ else }}{{ $e.title }}{{ end }}</h3>
-    <p class="event__meta"><span>{{ $e.where }}</span>{{ with $ev.time_short }}<span aria-hidden="true">·</span><time datetime="{{ $ev.iso_start }}">{{ if strings.Contains $ev.when_short "–" }}Starts {{ end }}{{ . }}</time><span class="event__local" data-ev-local="{{ $ev.iso_start }}" data-ev-tz="{{ $ev.tz }}" hidden></span>{{ end }}</p>
+    <h3 class="event__title">{{ if $details }}<a class="event__title-link" href="{{ $details }}">{{ partial "nobreak.html" $e.title }}</a>{{ else }}{{ $e.title }}{{ end }}</h3>
+    {{ with $e.text }}<p class="event__text">{{ . }}</p>{{ end }}
+    <ul class="event__facts-list">
+      <li><svg class="event__ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>{{ $ev.when }}</span></li>
+      {{ with $ev.time }}<li><svg class="event__ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg><span>{{ if strings.Contains $ev.when_short "–" }}From {{ end }}{{ . }}</span></li>{{ end }}
+      <li><svg class="event__ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg><span>{{ $e.where }}</span></li>
+    </ul>
+    <div class="event__actions">
+      <div class="event__upcoming-only">{{ partial "events/register.html" (dict "ev" $ev "page" $page "terse" true) }}</div>
+      <a class="event__more event__upcoming-only" download="{{ urlize $e.title }}.ics" href="{{ partial "events/ics.html" (dict "ev" $ev "details" $details) | safeURL }}">Add to calendar</a>
+      {{ with $details }}<a class="event__more" href="{{ . }}" data-ev-pop-open="{{ $pop }}" aria-haspopup="dialog">Details</a>{{ end }}
+    </div>
   </div>
-  <div class="event__upcoming-only">{{ partial "events/register.html" (dict "ev" $ev "page" $page "terse" true) }}</div>
+  {{ with $flyer }}{{ $f := .Fit "480x480 webp q82" }}
+  <a class="event__poster" href="{{ $details }}" data-ev-pop-open="{{ $pop }}" tabindex="-1" aria-hidden="true"><img src="{{ $f.RelPermalink }}" width="{{ $f.Width }}" height="{{ $f.Height }}" alt="" loading="lazy" decoding="async"></a>
+  {{ end }}
+  {{ if $details }}
+  {{ $host := $e.host }}{{ $audience := slice }}
+  {{ with $dp }}{{ with .Params.host }}{{ $host = .name }}{{ end }}{{ range .Params.audience }}{{ $audience = $audience | append (cond (gt (len $audience) 0) (lower .value) .value) }}{{ end }}{{ end }}
+  <dialog class="ev-pop" id="{{ $pop }}" aria-labelledby="{{ $pop }}-h">
+    <div class="ev-pop__in{{ if $flyer }} ev-pop__in--flyer{{ end }}">
+      <form method="dialog"><button class="ev-pop__close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></form>
+      <div class="ev-pop__text">
+        <p class="ev-pop__title" id="{{ $pop }}-h">{{ partial "nobreak.html" $e.title }}</p>
+        {{ with $e.text }}<p class="ev-pop__lead">{{ . }}</p>{{ end }}
+        <dl class="ev-pop__facts">
+          <div><dt>Date</dt><dd><time datetime="{{ $ev.iso_start }}">{{ $ev.when }}</time></dd></div>
+          {{ with $ev.time }}<div><dt>Time</dt><dd>{{ if strings.Contains $ev.when_short "–" }}From {{ end }}{{ . }}</dd></div>{{ end }}
+          <div><dt>Where</dt><dd>{{ $e.where }}</dd></div>
+          {{ with $host }}<div><dt>Host</dt><dd>{{ . }}</dd></div>{{ end }}
+          {{ with $audience }}<div><dt>For</dt><dd>{{ delimit . ", " " and " }}</dd></div>{{ end }}
+        </dl>
+        <div class="event__actions">
+          <div class="event__upcoming-only">{{ partial "events/register.html" (dict "ev" $ev "page" $page "terse" true) }}</div>
+          <a class="event__more event__upcoming-only" download="{{ urlize $e.title }}.ics" href="{{ partial "events/ics.html" (dict "ev" $ev "details" $details) | safeURL }}">Add to calendar</a>
+          <a class="event__more" href="{{ $details }}">Event page</a>
+        </div>
+      </div>
+      {{ with $flyer }}{{ $f := .Resize "840x webp q84" }}
+      <img class="ev-pop__flyer" src="{{ $f.RelPermalink }}" width="{{ $f.Width }}" height="{{ $f.Height }}" alt="{{ with $dp.Params.flyer }}{{ .alt }}{{ else }}Flyer: {{ $e.title }}{{ end }}" loading="lazy" decoding="async">
+      {{ end }}
+    </div>
+  </dialog>
+  {{ end }}
   {{ end }}
 </li>

@@ -1,0 +1,6 @@
+{{- /* One paper of data/papers.yaml as a row (Publications): its year in a column, its title as the link to
+       its DOI, under it the first author and the journal; the full reference in the link's title. */ -}}
+{{- $p := . -}}
+{{- $first := index (split $p.authors ",") 0 -}}
+{{- $more := gt (len (split $p.authors ".,")) 1 -}}
+<li class="paper-row"><span class="paper-row__year">{{ $p.year }}</span><a class="paper-row__link" href="https://doi.org/{{ $p.doi }}" title="{{ partial "paper/full.html" $p | plainify | htmlUnescape }}"><span class="paper-row__title">{{ $p.title }}</span><span class="paper-row__meta">{{ $first }}{{ if $more }} et al.{{ end }} · <em>{{ $p.journal }}</em></span></a></li>

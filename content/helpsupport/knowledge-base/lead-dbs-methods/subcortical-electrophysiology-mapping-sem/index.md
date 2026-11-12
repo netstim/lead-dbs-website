@@ -1,5 +1,7 @@
 ---
 title: "Subcortical electrophysiology mapping"
+# laid out as an article: a centred title, one column of text (layouts/article.html)
+layout: article
 linkTitle: "Subcortical electrophysiology mapping"
 description: "Pool recordings from DBS electrodes across patients and map them onto anatomical space."
 date: "2017-04-08T21:01:20"
