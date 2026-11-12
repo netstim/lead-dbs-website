@@ -103,7 +103,7 @@ Give it a `title`, a `description` (at most 155 characters) and, if it belongs i
 | Gallery ("Made with Lead-DBS", `/gallery/`) | Figures from papers: `data/gallery.yaml` + image files in `static/gallery/`. Lab renders: `content/gallery/_index.md` (see [Gallery](docs/home-and-media.md#the-gallery-of-published-figures)) |
 | The footer's "Institute" column | `data/links.yaml` |
 | A page's closing cards | its front matter `next:` (see [Page types](#page-types)) |
-| Main menu, legal links, the GitHub link | `hugo.toml` → `[menus]` (the entry named "Download" is drawn as the header's button) and `[params] github`; see [Site structure](docs/structure.md) |
+| Main menu, legal links, the GitHub link | `hugo.toml` → `[menus]` (the entry with `params.role = "action"`, identifier `download`, is drawn as the header's button) and `[params] github`; see [Site structure](docs/structure.md) |
 | Download / contact / developer-meeting form fields | `data/forms.yaml` |
 | Colours, fonts, page styles | `assets/css/site.css` (tokens, buttons, grid: `assets/css/base.css`) |
 | Templates | `layouts/` |

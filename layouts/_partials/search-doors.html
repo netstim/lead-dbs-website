@@ -1,7 +1,7 @@
 {{- /* Pages to start from, in the site's one link-row style (the rows of "Related"): on the 404 page under
        its search box, and on /search/ until a query is typed (assets/js/search.js hides them then).
        Argument: dict "attrs" (extra attributes for the list, as a safe HTML string; may be empty). */ -}}
-{{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Name "Download" }}{{ $dl = .URL }}{{ end }}{{ end -}}
+{{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Identifier "download" }}{{ $dl = .URL }}{{ end }}{{ end -}}
 <ul class="next-steps__list search-doors"{{ with .attrs }} {{ . }}{{ end }}>
   {{ partial "link-row.html" (dict "kind" "next" "href" $dl "title" "Download Lead-DBS") }}
   {{ range slice "/helpsupport/knowledge-base/lead-dbs-methods" "/about/citing_leaddbs" "/helpsupport" "/helpsupport/knowledge-base/atlasesresources" "/community" "/news" "/about" "/contact" }}{{ with site.GetPage . }}{{ partial "link-row.html" (dict "kind" "next" "href" .RelPermalink "title" .LinkTitle) }}{{ end }}{{ end }}

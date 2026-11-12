@@ -1,16 +1,17 @@
 {{- /* The one header of every page: logo left, the main menu (hugo.toml [menus.main]) beside it, then
-     search and the main action at the right end. The menu entry "Download" is drawn as the button. Entries with
-     children open a small panel on hover and keyboard focus. Below 1200px the words move into a
+     search and the main action at the right end. The menu entry with params.role "action" (hugo.toml,
+     identifier "download") is drawn as the button. Entries with children open a small panel on hover and
+     keyboard focus. Below 1200px the words move into a
      full-screen sheet that the menu button opens (assets/js/main/header.js); below 640px GitHub and the
      Download button live in that sheet too, so nothing in the bar is pushed off a phone's screen.
      Without script (no "js" class on <html>, head.html) the menu button is a link to #site-menu, which
      opens the same sheet with every group's pages listed (assets/css/content.css). */ -}}
 {{ $page := . }}
-{{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Name "Download" }}{{ $dl = .URL }}{{ end }}{{ end }}
+{{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Identifier "download" }}{{ $dl = .URL }}{{ end }}{{ end }}
 {{ $search := "" }}{{ with site.GetPage "/search" }}{{ $search = .RelPermalink }}{{ end }}
 {{- /* The menu word to mark as current: the group the page belongs to (partial nav-place.html, which the
        breadcrumb and the sidebar use too). */}}
-{{ $best := "" }}{{ with (partial "nav-place.html" $page).group }}{{ if ne .Name "Download" }}{{ $best = .Identifier | default .Name }}{{ end }}{{ end }}
+{{ $best := "" }}{{ with (partial "nav-place.html" $page).group }}{{ if ne .Params.role "action" }}{{ $best = .Identifier | default .Name }}{{ end }}{{ end }}
 <header class="nav nav--centre">
   {{ if site.Params.preview }}
   <div class="preview-banner" role="note">
@@ -23,7 +24,7 @@
     <nav class="nav__links" id="site-menu" aria-label="Main">
       <a class="nav__nojs-close" href="#top">Close the menu</a>
       {{ range site.Menus.main }}
-      {{ if ne .Name "Download" }}{{ $m := . }}
+      {{ if ne .Params.role "action" }}{{ $m := . }}
       {{ $current := eq (.Identifier | default .Name) $best }}
       <div class="nav__item">
         {{- /* a word with a panel: main/header.js adds a chevron button beside it that opens the panel and carries
@@ -52,10 +53,10 @@
             {{ range $sections }}
             <div class="menu-col{{ if gt (len .items) 3 }} menu-col--two{{ end }}">
               <span class="menu-caption t-label{{ if .lead }} menu-caption--lead{{ end }}"{{ if not .cap }} aria-hidden="true"{{ end }}>{{ with .cap }}{{ partial "nobreak-html.html" (. | htmlEscape) }}{{ end }}</span>
-              {{- /* the manual is a first-level word of the phone sheet, so its copy here is hidden there; a
-                     menu entry's params.card is its line in the desktop band */}}
+              {{- /* the manual (params.role "sheet-word") is a first-level word of the phone sheet, so its copy
+                     here is hidden there; a menu entry's params.card is its line in the desktop band */}}
               {{ range .items -}}
-              <a class="menu-entry{{ if eq .Name "Manual" }} menu-sheet-dup{{ end }}" href="{{ .URL }}"><span class="menu-entry__title">{{ partial "menu-label.html" . }}<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></span>{{ with .Params.card }}<span class="menu-entry__text">{{ partial "nobreak-html.html" (. | htmlEscape) }}</span>{{ end }}</a>
+              <a class="menu-entry{{ if eq .Params.role "sheet-word" }} menu-sheet-dup{{ end }}" href="{{ .URL }}"><span class="menu-entry__title">{{ partial "menu-label.html" . }}<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></span>{{ with .Params.card }}<span class="menu-entry__text">{{ partial "nobreak-html.html" (. | htmlEscape) }}</span>{{ end }}</a>
               {{- end }}
             </div>
             {{ end }}
@@ -71,7 +72,7 @@
       </div>
       {{- /* on a phone the manual is a first-level word of the sheet, right under the documentation group
              (a link to another site, so it is not a group of its own on a desktop) */}}
-      {{ range .Children }}{{ if and (eq .Name "Manual") (strings.HasPrefix .URL "http") }}
+      {{ range .Children }}{{ if and (eq .Params.role "sheet-word") (strings.HasPrefix .URL "http") }}
       <div class="nav__item nav__item--sheet nav__item--manual"><a class="nav__link" href="{{ .URL }}">{{ partial "menu-label.html" . }}</a></div>
       {{ end }}{{ end }}
       {{ end }}

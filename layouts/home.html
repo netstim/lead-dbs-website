@@ -6,7 +6,7 @@
 {{ $p := .Params }}
 {{ $r := hugo.Data.release }}
 {{ $date := time.AsTime $r.date }}
-{{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Name "Download" }}{{ $dl = .URL }}{{ end }}{{ end }}
+{{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Identifier "download" }}{{ $dl = .URL }}{{ end }}{{ end }}
 {{ $arrow := `<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg>` | safeHTML }}
 <main id="top" class="home">
 

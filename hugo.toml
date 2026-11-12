@@ -72,8 +72,11 @@ enableGitInfo = true
 
 [menus]
   # The main menu, grouped by what visitors come for. Each word's label is also the page's linkTitle
-  # (breadcrumb, footer, search), so a page has one name everywhere. "Download" is drawn as the
-  # header's button ("Download Lead-DBS"), not as a menu word. The footer lists the same groups.
+  # (breadcrumb, footer, search), so a page has one name everywhere. The entry with params.role
+  # "action" (identifier "download") is drawn as the header's button ("Download Lead-DBS"), not as a
+  # menu word; the one with params.role "sheet-word" (identifier "manual") is also a first-level word of
+  # the phone sheet. Templates find these two by identifier and role, never by their label, so either
+  # label can be renamed. The footer lists the same groups.
   # The menu is also the site's one hierarchy: breadcrumbs and the sidebar's section list follow it,
   # not the folders (layouts/_partials/nav-place.html). A page that is not in the menu belongs to the
   # entry of its nearest folder that is, or to the page named by its front matter "menuParent".
@@ -115,7 +118,11 @@ enableGitInfo = true
   [[menus.main]]
     name = "Download"
     pageRef = "/download"
+    identifier = "download"
     weight = 7
+    [menus.main.params]
+      # drawn as the header's button, not as a menu word (layouts/_partials/header.html)
+      role = "action"
 
   # Features: what the software does. The group's own page (the word "Features") is the overview: every
   # capability with its name, a picture, its manual chapter and papers, in four numbered chapters. The
@@ -200,8 +207,11 @@ enableGitInfo = true
     parent = "docs"
     name = "Manual"
     url = "https://netstim.gitbook.io/leaddbs"
+    identifier = "manual"
     weight = 2
     [menus.main.params]
+      # also a first-level word of the phone sheet, right under its group (layouts/_partials/header.html)
+      role = "sheet-word"
       card = "Installation, workflows and reference"
       # printed on the hub's card for the manual (pages bring their own front matter description)
       description = "Installation guides, analysis workflows and software reference."
