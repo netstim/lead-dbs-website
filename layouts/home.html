@@ -329,7 +329,7 @@
   {{ range $up }}{{ $ev := . }}{{ $url := "" }}{{ $img := false }}
     {{ with $ev.e.links }}{{ $u := (index . 0).url }}{{ $url = partial "resolve-url.html" (dict "url" $u "page" $) }}{{ with site.GetPage (strings.TrimSuffix "/" (urls.Parse $u).Path) }}{{ $img = .Resources.GetMatch "*flyer*" }}{{ end }}{{ end }}
     {{ with $img }}{{ $flyers = $flyers | append .Name }}{{ end }}
-    {{ $cards = $cards | append (dict "kind" "Event" "ev" $ev "title" $ev.e.title "url" $url "img" $img "date" (printf "%s · %s" $ev.when_short $ev.e.where)) }}
+    {{ $cards = $cards | append (dict "kind" "Event" "ev" $ev "title" $ev.e.title "url" $url "img" $img "date" $ev.when_short "place" $ev.e.where) }}
   {{ end }}
   {{ $posts := slice }}{{ range (where site.RegularPages "Section" "news").ByDate.Reverse }}{{ if not (in $flyers (.Params.image | default "")) }}{{ $posts = $posts | append . }}{{ end }}{{ end }}
   {{ range first (sub 4 (len $cards)) $posts }}
@@ -352,7 +352,7 @@
               {{- with .ev }}<span class="pulse-card__day" aria-hidden="true"><span>{{ .start.Format "Jan" }}</span>{{ .start.Format "2" }}</span>{{ end -}}
               {{- with $img }}{{ $t := cond (eq $c.kind "Event") (.Fit "560x560 webp q82") (.Fill "640x480 webp q82 Center") }}<img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="" loading="lazy" decoding="async">{{ else }}<span class="pulse-card__version">{{ $c.version | default "News" }}</span>{{ end -}}
             </span>
-            <span class="pulse-card__meta"><span class="pulse-card__kind">{{ .kind }}</span> · {{ .date }}{{ with .ev }}<span class="ev-countdown" data-ev-countdown="{{ .start_unix }}" hidden></span>{{ end }}</span>
+            <span class="pulse-card__meta"><span class="pulse-card__kind">{{ .kind }}</span>{{ if .place }}<span class="pulse-card__long"> · {{ .date }} · {{ .place }}</span><span class="phone-only"> · {{ .date }}</span>{{ else }} · {{ .date }}{{ end }}{{ with .ev }}<span class="ev-countdown" data-ev-countdown="{{ .start_unix }}" hidden></span>{{ end }}</span>
             <span class="pulse-card__title">{{ partial "nobreak-html.html" (.title | htmlEscape) }}</span>
           </a>
         </li>

@@ -10,6 +10,22 @@
        optional, as in {{< capability >}}. */ -}}
 {{- $page := .Page -}}
 <div class="tool-cells">
+{{- /* for a phone only (hidden from 640px up): the same module as the capabilities' showcase, one row of
+       square pictures that scrolls sideways (the cells' own pictures are not shown there, so each is read
+       once), a row of thin segments (decoration), and a ground that turns the header black while this
+       black band is under it (data-nav-dark, assets/js/main/header.js; features.js sizes it so it also
+       covers the chapter's heading above) */}}
+  <div class="tool-stage phone-only">
+  {{- range $page.Params.tools }}{{ $t := . }}
+    {{- $img := resources.Get .img }}{{ if not $img }}{{ errorf "tools: %q: no picture %q" $t.name .img }}{{ end }}
+    {{- $alt := "" }}{{ with index hugo.Data.renders.renders (strings.TrimPrefix "images/renders/" $t.img) }}{{ $alt = .alt }}{{ end }}
+    {{- $set := slice }}{{ $mid := false }}
+    {{- range slice 480 720 1080 }}{{ $r := $img.Fill (printf "%dx%d webp q82 Center" . .) }}{{ $set = $set | append (printf "%s %dw" $r.RelPermalink $r.Width) }}{{ if eq . 720 }}{{ $mid = $r }}{{ end }}{{ end }}
+    <figure class="cap-fig cap-fig--render" data-cap-fig="{{ .id }}"><img src="{{ $mid.RelPermalink }}" srcset="{{ delimit $set ", " }}" sizes="90vw" width="{{ $mid.Width }}" height="{{ $mid.Height }}" alt="{{ $alt }}" loading="lazy" decoding="async"></figure>
+  {{- end }}
+  </div>
+  <div class="cap-show__segs phone-only" aria-hidden="true">{{ range $i, $t := $page.Params.tools }}<span{{ if not $i }} class="is-on"{{ end }}></span>{{ end }}</div>
+  <div class="tool-band phone-only" data-nav-dark></div>
 {{- range $page.Params.tools }}{{ $t := . }}
   {{- $more := false }}{{ with .link }}{{ $more = site.GetPage (strings.TrimSuffix "/" .) }}{{ if not $more }}{{ errorf "tools: %q: link %q is not a page" $t.name . }}{{ end }}{{ end }}
   {{- $img := resources.Get .img }}{{ if not $img }}{{ errorf "tools: %q: no picture %q" $t.name .img }}{{ end }}

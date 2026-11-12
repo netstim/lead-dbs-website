@@ -6,15 +6,17 @@
 
          Where the electrodes sit and what they stimulate.
          {{% /chapter %}}
-       n: the chapter's number (not shown; it names the chapter in build errors)
-       img (optional): a lab render under assets/images/renders/ (alt text from data/renders.yaml; the
-            page credits its renders once): on a desktop a low band in the
+       n: the chapter's number: it names the chapter in build errors, and on a phone it stands before the
+          heading ("01"), which is set small there as the chapter's label while the lede below it is set
+          large (assets/css/phone-features.css); from 640px up it is not shown
+       img (optional): a lab render under assets/images/renders/ (alt text from data/renders.yaml; the page credits its renders once): on a desktop a low band in the
             right seven of twelve columns, beside the heading, cut to focus (an object-position, default
             "50% 50%"); left out on a phone. A chapter without img is its heading alone. */ -}}
 {{- $n := int (.Get "n") -}}
 {{- $src := .Get "img" -}}
 <div class="chapter{{ with $src }} chapter--fig{{ end }}">
 <div class="chapter__head">
+<span class="chapter__n phone-only" aria-hidden="true">{{ printf "%02d" $n }}</span>
 
 {{ .Inner }}
 

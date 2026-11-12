@@ -31,5 +31,11 @@
   {{ with $flyer }}{{ $f := .Fit "480x480 webp q82" }}
   <a class="event__poster" href="{{ $details }}" tabindex="-1" aria-hidden="true"><img src="{{ $f.RelPermalink }}" width="{{ $f.Width }}" height="{{ $f.Height }}" alt="" loading="lazy" decoding="async"></a>
   {{ end }}
+  {{- /* a phone: the same event on a rail (assets/css/phone-events.css): its day as a small heading, the
+         countdown at the right while it is less than 45 days away, the card under it (events/m-card.html);
+         the row above is hidden there */}}
+  {{ $range := strings.Contains $ev.when_short "–" }}
+  <p class="ev-day phone-only"><time datetime="{{ $ev.iso_start }}"><b>{{ $ev.when_short }}</b> <span>{{ $ev.start.Format (cond $range "2006" "Monday") }}</span></time><span class="ev-day__soon" data-ev-countdown="{{ $ev.start_unix }}" data-ev-near hidden></span></p>
+  <div class="phone-only">{{ partial "events/m-card.html" (dict "ev" $ev "page" $page "dated" false) }}</div>
   {{ end }}
 </li>

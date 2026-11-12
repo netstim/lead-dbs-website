@@ -1,9 +1,102 @@
 /* ================================================================ the Features page on a phone (below 640px)
    content/helpsupport/knowledge-base/lead-dbs-methods/, the capabilities, capability, tools, chapter,
    chapters and jumps shortcodes, assets/js/main/features.js. Loaded after assets/css/phone.css (the
-   shared phone chrome). Nothing here applies from 640px up. */
+   shared phone chrome). Nothing here applies from 640px up.
+   After vercel.com's feature module on a phone: each chapter is one module, repeated. A small numbered
+   label (the chapter's heading, set small), the chapter's two-tone sentence as the large statement, one
+   square black stage that scrolls sideways (one picture per name), a row of thin segments that counts,
+   then the names in type only: the chosen one in ink with its sentence and its links, the others grey.
+   Swiping the stage chooses a name, a tap on a name turns the stage (features.js). Tools is the same
+   module on a black band. Without script every name stands open under the stage. */
 @media (max-width: 639px) {
   /* the page's intro: its statement is the lead in the page head (assets/css/phone.css), and the jump
      chips are left out (the numbered group labels orient on a phone) */
   .prose:has(> .cap-show) > .page-intro { display: none; }
+  /* so the first chapter's label stands 96px (its own padding) under the page head */
+  .doc-layout:has(> .prose > .cap-show) { padding-top: 0; }
+
+  /* -------------------------------------------------------------- a chapter's head
+     the number and the heading as a small label (14/20, medium), the lede under it as the statement
+     (32/36, medium, tight): its bold clause in ink, the rest muted */
+  .prose .chapter { margin: 0; padding-top: var(--s-9); }
+  .prose .chapter__head { grid-template-columns: auto minmax(0, 1fr); column-gap: calc(var(--s-1) * 2.5); row-gap: var(--s-4); }
+  .prose .chapter__n { color: var(--muted); font-size: var(--t-small); font-weight: 500; line-height: calc(var(--s-4) + var(--s-1)); font-variant-numeric: tabular-nums; }
+  .prose .chapter__head h2 { font-family: var(--font-text); font-size: var(--t-small); font-weight: 500; line-height: calc(var(--s-4) + var(--s-1)); letter-spacing: normal; text-wrap: wrap; }
+  .prose .chapter__head > p { grid-column: 1 / -1; max-width: none; font-family: var(--font-display); font-size: var(--t-h2); font-weight: 500;
+    line-height: calc(var(--t-h2) + var(--s-1)); letter-spacing: var(--display-tracking-xl); }
+  .prose .chapter + :is(.cap-show, .tool-cells) { margin-top: calc(var(--s-6) + var(--s-2)); }
+
+  /* -------------------------------------------------------------- the module: stage, segments, names */
+  .prose .cap-show { display: flex; flex-direction: column; padding-bottom: var(--s-4); overflow-anchor: none; }
+  .prose .cap-show__list { order: 1; margin-top: var(--s-5); }
+  .prose .cap-show--one .cap-show__list { margin-top: calc(var(--s-5) + var(--s-1)); }
+  .prose .cap-fig--inline { display: none; }
+
+  /* the stage: square black pictures in one row that scrolls sideways and stops at each; 20px of the
+     next one shows at the right edge (the row's right padding is 10px wider than its left, so the last
+     picture also comes to rest at the left margin). A render covers its square, a figure from a paper lies on it as a
+     sheet with its credit under it. */
+  .prose :is(.cap-show__stage, .tool-stage) { display: flex; gap: calc(var(--s-1) * 2.5); margin-inline: calc(-1 * var(--gut));
+    padding: 0 calc(var(--gut) + var(--s-1) * 2.5) 0 var(--gut); scroll-padding-inline: var(--gut);
+    overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .prose :is(.cap-show__stage, .tool-stage)::-webkit-scrollbar { display: none; }
+  .prose :is(.cap-show__stage, .tool-stage):focus-visible { outline: 2px solid var(--ink); outline-offset: var(--s-1); }
+  .prose .cap-show--one .cap-show__stage { padding-right: var(--gut); }
+  .prose :is(.cap-show__stage, .tool-stage) > .cap-fig { flex: 0 0 100%; aspect-ratio: 1; scroll-snap-align: start; scroll-snap-stop: always;
+    border-radius: var(--r-lg); background: var(--render); }
+  .prose :is(.cap-show__stage, .tool-stage) > .cap-fig:has(.cap-fig__sheet) { flex-direction: column; display: flex; align-items: center; justify-content: center;
+    gap: calc(var(--s-1) * 2.5); background: var(--render); }
+  .prose :is(.cap-show__stage, .tool-stage) .cap-fig__sheet { --pad: var(--s-4); --foot: calc(var(--s-5) + var(--s-1)); flex: none; margin: 0; border-radius: var(--r-sm); }
+  .prose :is(.cap-show__stage, .tool-stage) .cap-fig__credit,
+  .prose :is(.cap-show__stage, .tool-stage) .cap-fig:has(.cap-fig__sheet) .cap-fig__credit { position: static; text-align: center; color: color-mix(in srgb, var(--on-render) 50%, transparent); }
+  .prose :is(.cap-show__stage, .tool-stage) .cap-fig__credit a:hover { color: var(--on-render); }
+
+  /* the segments: one per name, the chosen one in ink (decoration; the names say which is chosen) */
+  .prose .cap-show__segs { display: flex; gap: calc(var(--s-1) * 1.5); margin-top: var(--s-4); }
+  .prose .cap-show__segs > span { flex: 1; height: 3px; border-radius: var(--r-pill); background: color-mix(in oklab, var(--ink) 12%, transparent); }
+  .prose .cap-show__segs > .is-on { background: var(--ink); }
+  @media (scripting: none) { .prose .cap-show__segs { display: none; } }
+
+  /* the names: 22/28 medium; the others grey, each a 44px button; the chosen one in ink with its sentence
+     (16/24, muted, its links in ink) and its links in one wrapping row, without frames */
+  .prose :is(.capability, .tool) h3 { display: flex; align-items: center; min-height: 44px; font-family: var(--font-display); font-size: var(--t-sub); font-weight: 500;
+    line-height: calc(var(--s-6) - var(--s-1)); letter-spacing: var(--display-tracking); }
+  .prose :is(.capability, .tool) h3 > button { padding: var(--s-2) 0; font-weight: inherit; }
+  .prose .capability__mark { display: none; }
+  .prose .cap-show--one .capability h3 { padding: 0; }
+  .prose .cap-show:not(.cap-show--one) .capability__panel { transition: none; }
+  .prose .cap-show:not(.cap-show--one) .capability__clip { transition: none; }
+  .prose .capability__body { padding: 0 0 var(--s-4); }
+  .prose :is(.capability__body, .tool) > p:not(.capability__links, .tool__links) { max-width: none; margin: 0; font-size: var(--t-body); line-height: var(--s-5); color: var(--muted); }
+  .prose :is(.capability__body, .tool) > p:not(.capability__links, .tool__links) a { --rest: color-mix(in oklab, var(--ink) 25%, transparent); color: var(--ink); }
+  .prose :is(.capability__links, .tool__links) { gap: 0 calc(var(--s-4) + var(--s-1)); margin: var(--s-2) 0 0; }
+  .prose :is(.capability__links, .tool__links) a,
+  .prose :is(.capability__links, .tool__links) a:hover { gap: var(--s-1); min-height: 36px; padding: 0; border: 0; border-radius: 0; background: none;
+    font-size: var(--t-small); color: var(--ink); }
+  .prose :is(.capability__links, .tool__links) :is(.ext-mark, .m-arrow) { color: var(--muted); opacity: 1; }
+  @media (scripting: none) { .prose .capability h3 > button { color: var(--ink); } }
+
+  /* -------------------------------------------------------------- Tools: the same module on a black band
+     from edge to edge (the inverse ground, so the colours flip); the cells' own pictures give way to the
+     stage, the names become buttons once features.js runs (.is-phone) */
+  .prose .chapter:has(+ .tool-cells), .prose .tool-cells {
+    --bg: var(--p-inv-bg); --surface: var(--p-inv-surface); --ink: var(--p-inv-ink); --muted: var(--p-inv-muted);
+    --accent: var(--p-inv-accent); --action: var(--p-inv-action); --action-ink: var(--p-inv-action-ink); --card: var(--p-inv-surface);
+    --line: color-mix(in oklab, var(--ink) 11%, transparent); --line-strong: color-mix(in oklab, var(--ink) 20%, transparent);
+    margin-inline: calc(-1 * var(--gut)); padding-inline: var(--gut); background: var(--bg); color: var(--ink); }
+  .prose .chapter:has(+ .tool-cells) { margin-top: calc(var(--s-8) + var(--s-4)); }
+  .prose .chapter + .tool-cells { position: relative; display: flex; flex-direction: column; gap: 0; margin-top: 0; padding-top: calc(var(--s-6) + var(--s-2)); padding-bottom: var(--s-8); }
+  .prose .tool-cells > .tool-stage > .cap-fig { outline: 1px solid color-mix(in srgb, var(--on-render) 10%, transparent); outline-offset: -1px; }
+  .prose .tool-cells > .tool:first-of-type { margin-top: var(--s-5); }
+  .prose .tool__fig { display: none; }
+  .prose .tool > p:not(.tool__links) { order: 2; }
+  .prose .tool__links { order: 3; margin-bottom: var(--s-4); }
+  .prose .tool-cells.is-phone .tool:not(.is-active) > p { display: none; }
+  .prose .tool-cells.is-phone .tool h3 > button { display: block; width: 100%; margin: 0; border: 0; border-radius: 0; background: none; font: inherit; letter-spacing: inherit;
+    text-align: left; color: var(--muted); cursor: pointer; }
+  .prose .tool-cells.is-phone .tool.is-active h3 > button { color: var(--ink); }
+  .prose :is(.capability, .tool) h3 > button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .prose .tool:target h3 { color: inherit; }
+  /* the header's black ground over the band (sized by features.js to reach up over the chapter's head) */
+  .prose .tool-band { position: absolute; inset: calc(-1 * var(--band-head, 0px)) 0 0; pointer-events: none; }
 }

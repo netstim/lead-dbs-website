@@ -1,0 +1,37 @@
+{{- /* One event as a card, for phones (lu.ma's event card): the body is one link to the event's page (its
+       time, title and place on the left, the flyer as a small poster on the right), under it a strip with
+       the state of registration and one small pill, "Register ↗" while registration is open, "Details"
+       otherwise. On /events/ (events/card.html) the day stands on the rail above the card; elsewhere
+       (an event page's "More events") "dated" puts the date into the card's first line.
+       Argument: dict "ev" (an entry of events/list.html) "page" "dated" (true or false).
+       Its own markup, shown below 640px only (the caller wraps it in .phone-only). */ -}}
+{{- $ev := .ev }}{{ $e := $ev.e }}{{ $page := .page -}}
+{{- $details := "" }}{{ $flyer := false -}}
+{{- with $e.links }}{{ $u := (index . 0).url }}{{ $details = partial "resolve-url.html" (dict "url" $u "page" $page) -}}
+  {{- with site.GetPage (strings.TrimSuffix "/" (urls.Parse $u).Path) }}{{ $flyer = .Resources.GetMatch "*flyer*" }}{{ end }}{{ end -}}
+{{- $range := strings.Contains $ev.when_short "–" -}}
+<div class="ev-card">
+  {{ if $details }}<a class="ev-card__body" href="{{ $details }}">{{ else }}<div class="ev-card__body">{{ end }}
+    <div class="ev-card__text">
+      {{- if .dated }}
+      <p class="ev-card__line"><time class="ev-card__date" datetime="{{ $ev.iso_start }}">{{ if $range }}{{ $ev.when_short }} {{ $ev.start.Format "2006" }}{{ else }}{{ $ev.start.Format "Mon, 2 Jan 2006" }}{{ end }}</time>{{ with $ev.time_short }} · {{ if $range }}from {{ end }}<time datetime="{{ $ev.iso_start }}">{{ . }}</time>{{ end }}</p>
+      {{- else if $ev.time }}
+      <p class="ev-card__line"><time datetime="{{ $ev.iso_start }}">{{ if $range }}From {{ end }}{{ $ev.time }}</time></p>
+      {{- end }}
+      <h3 class="ev-card__title">{{ partial "nobreak.html" $e.title }}</h3>
+      <p class="ev-card__line ev-card__place">{{ if $e.online }}<svg class="ev-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6.5" width="12.5" height="11" rx="2"/><path d="m15.5 10.5 5-3v9l-5-3"/></svg>{{ else }}<svg class="ev-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>{{ end }}{{ $e.where }}</p>
+    </div>
+    {{- with $flyer }}{{ $f := .Fit "240x320 webp q82" }}
+    <img class="ev-card__poster" src="{{ $f.RelPermalink }}" width="{{ $f.Width }}" height="{{ $f.Height }}" alt="" loading="lazy" decoding="async">
+    {{- end }}
+  {{ if $details }}</a>{{ else }}</div>{{ end }}
+  {{- $ext := strings.HasPrefix ($e.register_url | default "") "http" }}
+  <div class="ev-card__foot">
+    <p class="ev-card__status">{{ if $e.register_url }}Registration open{{ else }}Registration not open yet{{ end }}</p>
+    {{- if $e.register_url }}
+    <a class="btn btn--primary btn--sm" href="{{ partial "resolve-url.html" (dict "url" $e.register_url "page" $page) }}">Register{{ if $ext }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ end }}</a>
+    {{- else if $details }}
+    <a class="btn btn--outline btn--sm" href="{{ $details }}">Details<span class="sr-only">: {{ $e.title }}</span></a>
+    {{- end }}
+  </div>
+</div>
