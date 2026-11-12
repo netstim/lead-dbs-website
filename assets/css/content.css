@@ -609,7 +609,8 @@ html:not(.dl-terms-ready) .dl-terms__close { display: none; }
 @media (min-width: 640px) { .qwall__cols { columns: 2; } }
 /* a page with the cover row or the quote wall (Publications) keeps its "On this page" list on the left;
    its article takes all the width beside it, so those two blocks run wide while the text keeps its measure */
-.prose .qcard { break-inside: avoid; margin: 0 0 var(--s-5); padding: var(--s-4) 0 0; border-top: 1px solid var(--line); max-width: none; }
+/* each quote is a card: the surface tone, the large radius */
+.prose .qcard { break-inside: avoid; margin: 0 0 var(--s-4); padding: var(--s-5); border-radius: var(--r-lg); background: var(--surface); max-width: none; }
 .prose .qcard[hidden] { display: none; }
 .prose .qcard blockquote { margin: 0 0 var(--s-5); padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; font-size: var(--t-card); line-height: 1.5; letter-spacing: -.01em; color: var(--muted); font-style: normal; text-wrap: pretty; }
 .prose .qcard blockquote strong { font-weight: 500; color: var(--ink); }
