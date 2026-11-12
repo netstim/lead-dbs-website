@@ -1,7 +1,7 @@
 /* Lead-DBS site styles: the palette and fonts, the header, the home page, the documentation pages and
    the footer. They build on assets/css/base.css (tokens, grid, buttons, links, forms); head.html bundles
    the two. Change colours and fonts here only. Sections take the height of their content, and the header
-   switches to its menu sheet below 1200px (see README, Design). */
+   switches to its menu sheet below 1200px (see docs/design.md). */
 
 /* ---------------------------------------------------------------- fonts (self-hosted, static/fonts)
    Inter (@fontsource-variable/inter 5.2.5, OFL, licence in OFL-inter.txt), one variable file per script

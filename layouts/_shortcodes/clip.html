@@ -3,7 +3,7 @@
          {{< clip src="melbourne.mp4" poster="melbourne-poster.jpg" alt="What it shows" caption="Optional caption" >}}
        Nothing is loaded until the clip comes near the screen; it plays while it is in view and stops
        outside it. For visitors who ask for reduced motion, and without script, it shows the poster
-       with the player's controls instead. Make the MP4 from a GIF with ffmpeg (see README). */ -}}
+       with the player's controls instead. Make the MP4 from a GIF with ffmpeg (see docs/editing.md, Pictures in pages). */ -}}
 {{- $src := .Page.Resources.Get (.Get "src") -}}
 {{- if not $src }}{{ errorf "clip: no file %q next to %s" (.Get "src") .Page.File.Path }}{{ end -}}
 {{- $poster := .Page.Resources.Get (.Get "poster") -}}

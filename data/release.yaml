@@ -1,7 +1,7 @@
 # The current Lead-DBS release: the one place for its version, date, requirements and summary. The
 # requirements are printed by {{< install "requirements" >}} (download page and First steps).
 # The home page, the sidebar card, the footer and every page that uses {{< release … >}} read this
-# file. What else a release needs is listed in README.md, "Cut a release".
+# file. What else a release needs is listed in docs/editing.md, "Cut a release".
 version: "3.2.1"
 date: 2026-03-02
 # The post or page that says what changed in this release (a site path or a full URL).
