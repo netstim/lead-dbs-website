@@ -641,7 +641,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .funders img { display: block; width: auto; max-width: 190px; object-fit: contain; filter: grayscale(1) brightness(.6) contrast(6); opacity: .45; mix-blend-mode: multiply;
   transition: opacity var(--t-out) var(--ease), filter var(--t-out) var(--ease); }
 .funders li:hover img { filter: none; opacity: 1; }
-@media (max-width: 639px) { .funders { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4) var(--gutter); } .funders img { max-width: 140px; }
+@media (max-width: 639px) { .funders { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4) var(--gutter); } .funders a { max-width: 100%; } .funders img { max-width: min(140px, 100%); }
   .funders > li:last-child:nth-child(odd) { grid-column: 1 / -1; } }
 .forum-note { position: relative; z-index: 5; margin: calc(var(--nav) + var(--s-4)) auto 0; width: min(100% - 2 * var(--gut), var(--container)); }
 
