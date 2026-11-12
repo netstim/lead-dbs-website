@@ -1,4 +1,4 @@
-# The Python packages tools/usage.py needs, at exact versions with their hashes (it runs on the computer
+# The Python packages tools/usage.py and tools/downloads.py need, at exact versions with their hashes (it runs on the computer
 # that holds the raw launch logs). Install with:
 #     python3 -m pip install --require-hashes -r tools/requirements.txt
 # To update: change a version, and replace its hashes with the sha256 of every file of that release on PyPI
