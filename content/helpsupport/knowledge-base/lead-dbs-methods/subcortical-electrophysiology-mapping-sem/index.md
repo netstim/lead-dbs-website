@@ -1,6 +1,6 @@
 ---
-title: "Subcortical electrophysiology mapping (SEM)"
-linkTitle: "Electrophysiology mapping"
+title: "Subcortical electrophysiology mapping"
+linkTitle: "Subcortical electrophysiology mapping"
 description: "Pool recordings from DBS electrodes across patients and map them onto anatomical space."
 date: "2017-04-08T21:01:20"
 lastmod: "2026-11-11"
@@ -13,6 +13,10 @@ related:
   - "/helpsupport/knowledge-base/atlasesresources/distal-atlas/"
   - "/helpsupport/knowledge-base/atlasesresources/normative-connectomes/"
   - "/about/publications/"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/helpsupport/knowledge-base/atlasesresources/atlases-2/#dbs-maps", name: "Sweet spots and response tracts", text: "The STN and GPi atlases made with this method"}
+  - {page: "/helpsupport/knowledge-base/lead-dbs-methods/", text: "The other methods developed within Lead-DBS"}
 ---
 
 Subcortical electrophysiology mapping (SEM) pools signals recorded from DBS electrodes across many patients and maps them onto anatomical space, so that a recording, such as beta power in the subthalamic nucleus, becomes a 3D map.
@@ -30,9 +34,11 @@ SEM runs in Lead Group, the group-analysis module of Lead-DBS: see the manual's 
 
 The method was first applied to beta power recorded in the subthalamic nucleus:
 
-> Horn, A., Neumann, W.-J., Degen, K., Schneider, G.-H., & Kühn, A. A. (2017). Toward an electrophysiological “sweet spot” for deep brain stimulation in the subthalamic nucleus. *Human Brain Mapping*, *38*(7), 3377–3390. [doi:10.1002/hbm.23594](https://doi.org/10.1002/hbm.23594)
->
-> Accolla, E. A., Horn, A., Herrojo Ruiz, M., Neumann, W.-J., & Kühn, A. A. (2017). Reply: Oscillatory coupling of the subthalamic nucleus in obsessive compulsive disorder. *Brain : a Journal of Neurology*, *140*(9), e57–e57. [doi:10.1093/brain/awx165](https://doi.org/10.1093/brain/awx165)
+{{% copybox label="Copy the citations" %}}
+{{< paper horn2017hbm "full" >}}
+
+Accolla, E. A., Horn, A., Herrojo Ruiz, M., Neumann, W.-J., & Kühn, A. A. (2017). Reply: Oscillatory coupling of the subthalamic nucleus in obsessive compulsive disorder. *Brain*, *140*(9), e57. [doi:10.1093/brain/awx165](https://doi.org/10.1093/brain/awx165)
+{{% /copybox %}}
 
 ## Studies that used it
 
@@ -111,9 +117,7 @@ Already, we have done so using multiple signals that were acquired at rest or du
 
 Fig. 1 is the methods summary at the top of this page.
 
-![Many DBS electrodes among the STN, thalamic nuclei and red nucleus in 3D](electrodes-780x684.png)
-
-**Fig. 2:** *Electrode reconstructions from 54 STN-DBS patients.*
+![Many DBS electrodes among the STN, thalamic nuclei and red nucleus in 3D](electrodes-780x684.png "Fig. 2: Electrode reconstructions from 54 STN-DBS patients.")
 
 ### Two limitations
 
@@ -131,17 +135,13 @@ Regarding the second point, this first subcortical mapping study may be seen as 
 
 ### Results
 
-![Maps of beta and alpha power in the STN, in axial, coronal and sagittal views](betavsalpha.png)
-
-**Fig. 3:** *Main results of the study – significantly higher beta (top) activity was recorded from the dorsolateral (motor) STN; significantly higher alpha (bottom) activity was recorded from a more ventromedial part of the STN.*
+![Maps of beta and alpha power in the STN, in axial, coronal and sagittal views](betavsalpha.png "Fig. 3: Main results of the study – significantly higher beta (top) activity was recorded from the dorsolateral (motor) STN; significantly higher alpha (bottom) activity was recorded from a more ventromedial part of the STN.")
 
 The above results show a clear relationship between alpha/beta power and spatial coordinates of recording site.
 
 > The results from this study shows that i) it is feasible to pool electrophysiological data across patients in space and ii) electrode localizations and warps to standard space are precise enough to get an overview about their spatial distribution
 
-![Beta and alpha peaks within the STN in 3D, with electrode trajectories](betaalpha3d.png)
-
-**Fig. 4:** *3D representation of peaks in electrophysiological activity (same data as shown in Fig. 3).*
+![Beta and alpha peaks within the STN in 3D, with electrode trajectories](betaalpha3d.png "Fig. 4: 3D representation of peaks in electrophysiological activity (same data as shown in Fig. 3).")
 
 We went ahead and created three-dimensional peak ROI associated with high beta and alpha activity, respectively (above).
 
@@ -153,20 +153,12 @@ For this analysis – which could only be performed on group level – a standar
 
 However, the two regions exhibited a (slightly) different connectivity profile that was largely consistent with data presented in [[Acolla 2015](https://academic.oup.com/brain/article-abstract/139/9/2503/1744844/Brain-networks-modulated-by-subthalamic-nucleus?redirectedFrom=fulltext)], before (see below).
 
-![Structural connectivity from alpha and beta seeds to the cortex](fibertracts-1030x841.png)
-
-**Fig. 5:** *Contrasting fiber tract maps seeding either from the “alpha-hotspot” or “beta-hotspot”. Please note that panel B shows a contrast map between the two seeds. Given their spatial proximity, the overall connectivity profiles from both seeds is similar.*
+![Structural connectivity from alpha and beta seeds to the cortex](fibertracts-1030x841.png "Fig. 5: Contrasting fiber tract maps seeding either from the “alpha-hotspot” or “beta-hotspot”. Please note that panel B shows a contrast map between the two seeds. Given their spatial proximity, the overall connectivity profiles from both seeds is similar.")
 
 ### A beta atlas for programming
 
 Finally, given the importance of the beta rhythm in Parkinson’s Disease, the resulting beta-atlas could serve to guide DBS programming (and potentially targeting) once prospectively validated in follow up studies. The atlas is made publicly available within Lead-DBS software and on [Neurovault](https://neurovault.org/collections/2418/).
 
-![DBS electrode in the STN with the beta peak and a volume of tissue activated](fig_7.png)
-
-**Fig. 6:** *The peak of beta-activity (yellow) shown in synopsis with a hypothetical lead. Based on the reconstruction, the second most dorsal contact could represent a first choice in clinical programming.*
+![DBS electrode in the STN with the beta peak and a volume of tissue activated](fig_7.png "Fig. 6: The peak of beta-activity (yellow) shown in synopsis with a hypothetical lead. Based on the reconstruction, the second most dorsal contact could represent a first choice in clinical programming.")
 
 </details>
-
-## Next
-
-The two atlases made with this method, of STN and GPi activity, come with Lead-DBS: see them among the [sweet spots and response tracts](/helpsupport/knowledge-base/atlasesresources/atlases-2/#dbs-maps). The other methods developed within Lead-DBS are listed under [Features](/helpsupport/knowledge-base/lead-dbs-methods/).

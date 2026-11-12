@@ -1,7 +1,5 @@
 ---
 title: "Lead-DBS 3.1 released"
-# the browser title (head.html adds " – Lead-DBS")
-htmlTitle: "Version 3.1 released"
 description: "Lead-DBS 3.1 integrates OSS-DBS v2.0 for stimulation modelling, updates WarpDrive and brings a built-in Python environment."
 date: 2024-02-13
 slug: "lead-dbs-3-1-out-now"

@@ -12,6 +12,9 @@ related:
   - "/helpsupport/knowledge-base/lead-dbs-methods/"
   - {name: "Add your atlas or dataset", url: "/develop/#add-your-atlas-or-dataset"}
   - "/about/citing_leaddbs/"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/develop/#add-your-atlas-or-dataset", name: "Add your atlas or dataset", text: "Missing an atlas, or want yours in Lead-DBS?"}
 ---
 All are in standard (MNI) space, and many come with Lead-DBS. Each page says what an atlas holds, how to get it and which paper to cite.
 
@@ -35,12 +38,6 @@ All are in standard (MNI) space, and many come with Lead-DBS. Each page says wha
 - **Check your results** with control analyses, or with a different atlas, connectome or pathway.
 - **Not sure what a step does?** [Ask](/helpsupport/#get-help).
 
-## Background
+## Other data
 
-{{< childpages order="include" descriptions="true" include="/helpsupport/knowledge-base/atlasesresources/about-the-mni-spaces" >}}
-
-Other data: the **IXI dataset**, an age-matched reference for converting AC/PC coordinates into MNI space, comes with the [AC/PC to MNI conversion](/helpsupport/knowledge-base/lead-dbs-methods/acpc-to-mni-conversion-2/#ixi); the **Lead Tutor** dataset, for practising electrode localization, has a [page of its own](/helpsupport/learn-lead-dbs-yourself/).
-
-## Next
-
-Missing an atlas, or want yours to come with Lead-DBS? See [Add your atlas or dataset](/develop/#add-your-atlas-or-dataset).
+The **IXI dataset**, an age-matched reference for converting AC/PC coordinates into MNI space, comes with the [AC/PC to MNI conversion](/helpsupport/knowledge-base/lead-dbs-methods/acpc-to-mni-conversion-2/#ixi); the **Lead Tutor** dataset, for practising electrode localization, has a [page of its own](/helpsupport/learn-lead-dbs-yourself/).

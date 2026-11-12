@@ -41,7 +41,6 @@ papers_text: "Figures from open-access papers whose authors used Lead-DBS, or it
 papers_empty: "The first figures are being collected. To suggest one from your paper, write to us through the [contact page](/contact/)."
 aliases: ["/helpsupport/knowledge-base/screenshots/"]
 keywords: ["gallery", "figures", "renders", "pictures", "images"]
-next: "Made a figure with Lead-DBS? [Tell us about it](/contact/). To make your own, [download Lead-DBS](/download/) and take the [first steps](/helpsupport/first-steps/); the papers behind the software are under [Publications](/about/publications/)."
 # the picture shown when the page is shared (head.html)
 share: "images/renders/lead-closeup.jpg"
 # pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
@@ -49,4 +48,9 @@ related:
   - "/about/publications/"
   - "/helpsupport/knowledge-base/atlasesresources/distal-atlas/"
   - "/download/"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/helpsupport/knowledge-base/lead-dbs-methods/", text: "What Lead-DBS does, with manual chapters and papers"}
+  - {page: "/about/publications/", text: "The papers behind it"}
+  - {page: "/contact/", name: "Show us your figure", text: "Made a figure with Lead-DBS? Tell us"}
 ---

@@ -7,13 +7,15 @@ weight: 3
 aliases: ["/sdm_downloads/groupconnectome-horn-2013/"]
 # the picture shown when the page is shared (head.html)
 share: "images/renders/fiber-filtering.jpg"
-# the picture of its card on its group's page (childpages)
-card: "images/renders/fiber-filtering.jpg"
 # pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
 related:
   - "/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping/"
   - {name: "Lead Connectome", url: "/helpsupport/knowledge-base/lead-dbs-methods/#lead-connectome"}
   - {name: "Network mapping explorer (video)", url: "/helpsupport/knowledge-base/walkthrough-videos/#sweetspot-fiber-filtering--network-mapping-explorer-walkthroughs"}
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping/", text: "A method that uses them"}
+  - {url: "https://netstim.gitbook.io/leaddbs/connectomics/connectomic-analyses", name: "Connectivity in the manual", text: "How to run a connectivity analysis"}
 ---
 Average structural (tractography) and functional (resting-state fMRI) wiring diagrams of the human brain
 in MNI space, for estimating the connectivity of a stimulation site when a patient's own diffusion or
@@ -54,6 +56,4 @@ and in **large retrospective databases** ([Horn 2017a](https://onlinelibrary.wil
 ## Is a connectome missing?
 
 Know a connectome that should be listed here, or want yours to come with Lead-DBS?
-[Write to us](/contact/). Next: methods that use them, such as
-[DBS network mapping](/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping/), and
-how to run a connectivity analysis in the [manual](https://netstim.gitbook.io/leaddbs/connectomics/connectomic-analyses).
+[Write to us](/contact/).

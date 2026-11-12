@@ -12,16 +12,16 @@ related:
   - "/contact/"
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-community.jpg"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {url: "https://netstim.gitbook.io/leaddbs", name: "Manual", text: "The answer may already be there"}
+  - {page: "/helpsupport/", text: "First steps, practice data, videos"}
 ---
 
-The Lead-DBS user Slack provides fast and uncomplicated help from users to users. Members of the development team read along and help where they can. If you have not used Slack before: it works like a group chat, in the browser or with the [Slack apps](https://slack.com/downloads) for desktop and phone.
+{{< button href="https://inviter.co/lead-dbs" variant="primary" >}}Join the user Slack{{< /button >}}
 
-{{< button href="https://inviter.co/lead-dbs" >}}Join the user Slack{{< /button >}}
+The button opens the self-invite page: enter your name and e-mail address to receive an invitation. Already a member? [Open the workspace](https://leadsuite.slack.com/) (leadsuite.slack.com).
 
-The button opens the self-invite page, where you enter your name and e-mail address to receive an invitation. Already a member? [Open the workspace](https://leadsuite.slack.com/) (leadsuite.slack.com).
+On the user Slack, users help each other quickly and without fuss; members of the development team read along and help where they can. New to Slack? It works like a group chat, in the browser or with the [Slack apps](https://slack.com/downloads) for desktop and phone.
 
 The old support forum is closed; the user Slack replaces it. Bugs and the other ways to reach the team are under [Get help](/helpsupport/#get-help).
-
-## Next
-
-Before you ask, the [manual](https://netstim.gitbook.io/leaddbs) and the pages under [Docs and help](/helpsupport/) may already have the answer.

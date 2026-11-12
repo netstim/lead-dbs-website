@@ -48,5 +48,5 @@ events:
     text: "Two days of hands-on work with Lead-DBS. Participants will be among the first to try the pre-release of Lead-DBS 4.0, rebuilt completely in Python."
     register_url: ""
     links:
-      - {label: "Read the announcement", url: "/hands-on-lead-dbs-workshop-cologne-2027/"}
+      - {label: "Workshop details", url: "/events/hands-on-workshop-2027/"}
       - {label: "Past workshops", url: "/helpsupport/workshops/"}

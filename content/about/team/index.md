@@ -1,7 +1,5 @@
 ---
-title: "Contributors to Lead-DBS"
-# the browser title (head.html adds " – Lead-DBS")
-htmlTitle: "Contributors"
+title: "Contributors"
 linkTitle: "Contributors"
 description: "The people who build Lead-DBS: core and feature development, code, atlases and data, and testing; and who coordinates it today."
 date: "2014-06-17T15:06:49"
@@ -15,6 +13,10 @@ related:
   - "/about/publications/"
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-about.jpg"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/about/#history", name: "History of Lead-DBS", text: "How the project started and grew"}
+  - {page: "/about/publications/", text: "The papers these people wrote with Lead-DBS"}
 ---
 
 Lead-DBS is coordinated today by the [Institute for Network Stimulation](https://www.netstim.org) at the
@@ -96,9 +98,4 @@ University Hospital Cologne, led by Andreas Horn; its people are listed on
 - Kristen Kanoff, Massachusetts General Hospital, USA
 - Konrad Schumacher, University Hospital Freiburg
 
-**Join the team:** see [Develop Lead-DBS](/develop/) for how to contribute.
-
-## Next
-
-- How the project started and grew: [About Lead-DBS](/about/#history).
-- The papers these people wrote with Lead-DBS: [Publications](/about/publications/).
+**Join the team:** see [Contribute](/develop/).

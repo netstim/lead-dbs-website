@@ -895,6 +895,10 @@ related:
   - "/contact/"
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-docs.jpg"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {url: "https://inviter.co/lead-dbs", name: "Join the user Slack", text: "Ask your question there"}
+  - {page: "/helpsupport/#get-help", name: "Get help", text: "Where to ask what"}
 ---
 
 The Lead-DBS support forum is closed, and its posts were not moved to this website. Questions are

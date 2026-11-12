@@ -1,7 +1,5 @@
 ---
-title: "Develop Lead-DBS"
-# the browser title (head.html adds " – Lead-DBS")
-htmlTitle: "Develop"
+title: "Contribute"
 date: "2026-11-10"
 lastmod: "2026-11-11"
 description: "Contribute to Lead-DBS: code and fixes, atlases and datasets, bug reports; the source code, its licence and the developer meeting."
@@ -13,6 +11,11 @@ related:
   - "/helpsupport/knowledge-base/atlasesresources/"
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-community.jpg"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/events/developer-meeting/", text: "Monthly, online, open to anyone"}
+  - {page: "/helpsupport/slack-user-channel/", text: "Ask other users and the developers"}
+  - {page: "/about/lead-dbs-dependencies/", text: "The software Lead-DBS builds on"}
 ---
 
 Lead-DBS is open source and grows with its community: code, fixes, atlases and datasets are welcome,
@@ -53,7 +56,7 @@ instance, refers to [Horn et al. 2017, NeuroImage](https://www.ncbi.nlm.nih.gov/
   [MNI 6th-generation template](http://nist.mni.mcgill.ca/?p=858)), fits best with data normalized
   the same way, which Lead-DBS can do, though not by
   [default](https://www.sciencedirect.com/science/article/pii/S1053811918318664).
-- **Get in touch**: [write to us](/contact/) or ask on the [user Slack](/helpsupport/slack-user-channel/).
+- **Get in touch**: [write to us](/contact/) or [join the user Slack](https://inviter.co/lead-dbs) and ask there.
   Who has contributed atlases and data so far is listed under
   [Contributors](/about/team/#atlases-and-data-contributed-by).
 
@@ -69,5 +72,5 @@ Lead-DBS are best asked on the [user Slack](/helpsupport/slack-user-channel/).
 ## What comes next
 
 [Lead-DBS 4.0](/download/#lead-dbs-4) is coming, rebuilt completely in Python. Participants of the
-[Hands-on Lead-DBS Workshop](/hands-on-lead-dbs-workshop-cologne-2027/) on 11–12 February 2027 will be
+[Hands-on Lead-DBS Workshop](/events/hands-on-workshop-2027/) on 11–12 February 2027 will be
 among the first to try the pre-release.

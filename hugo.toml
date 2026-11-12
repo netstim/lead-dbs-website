@@ -111,51 +111,64 @@ enableGitInfo = true
     pageRef = "/download"
     weight = 7
 
-  # Features: what the software does. The group's own page is the overview: every capability as a row
-  # with a picture, its manual chapter and paper, grouped by single patients, groups of patients and the
-  # operating theatre, then the tools (Lead Group, Lead Connectome, OSS-DBS, Lead Tutor; the "Tools"
-  # entry). Under it Lead-OR and the figures made with Lead-DBS; after a captioned line
-  # (params.divider), the three method articles.
+  # Features: what the software does. The group's own page (the word "Features") is the overview: every
+  # capability with its name, a picture, its manual chapter and papers, in four numbered chapters. The
+  # panel lists those chapters first: the anchors of the page (entries with url, not pages; params.panelOnly
+  # keeps them out of the sidebar of the group's articles, where they would read as pages), and for the
+  # operating theatre, whose chapter is the one tool Lead-OR, its page. Then under a caption
+  # (params.divider) the articles that explain a method in depth, then the figures made with Lead-DBS.
   [[menus.main]]
     parent = "features"
-    name = "Overview"
-    pageRef = "/helpsupport/knowledge-base/lead-dbs-methods"
+    name = "Single patients"
+    url = "/helpsupport/knowledge-base/lead-dbs-methods/#single-patients"
     weight = 1
+    [menus.main.params]
+      panelOnly = true
   [[menus.main]]
     parent = "features"
-    name = "Tools"
-    url = "/helpsupport/knowledge-base/lead-dbs-methods/#tools"
+    name = "Groups of patients"
+    url = "/helpsupport/knowledge-base/lead-dbs-methods/#groups-of-patients"
     weight = 2
     [menus.main.params]
-      description = "Lead Group, Lead Connectome, OSS-DBS and Lead Tutor: what each is for, its manual chapter and its paper."
+      panelOnly = true
   [[menus.main]]
     parent = "features"
     name = "Lead-OR"
     pageRef = "/about/lead-or"
-    weight = 4
+    weight = 3
   [[menus.main]]
     parent = "features"
-    name = "Made with Lead-DBS"
-    pageRef = "/gallery"
-    weight = 5
+    name = "Tools and modules"
+    url = "/helpsupport/knowledge-base/lead-dbs-methods/#tools"
+    weight = 4
+    [menus.main.params]
+      panelOnly = true
   [[menus.main]]
     parent = "features"
     name = "DBS network mapping"
     pageRef = "/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping"
-    weight = 6
+    weight = 5
     [menus.main.params]
       # a line above the entry, with this caption over the entries from here on
-      divider = "Method articles"
+      divider = "In depth"
   [[menus.main]]
     parent = "features"
-    name = "Electrophysiology mapping"
+    name = "Subcortical electrophysiology mapping"
     pageRef = "/helpsupport/knowledge-base/lead-dbs-methods/subcortical-electrophysiology-mapping-sem"
-    weight = 7
+    weight = 6
   [[menus.main]]
     parent = "features"
     name = "AC/PC to MNI conversion"
     pageRef = "/helpsupport/knowledge-base/lead-dbs-methods/acpc-to-mni-conversion-2"
-    weight = 8
+    weight = 7
+  [[menus.main]]
+    parent = "features"
+    name = "Made with Lead-DBS"
+    pageRef = "/gallery"
+    weight = 9
+    [menus.main.params]
+      # a line above the entry, without a caption
+      divider = true
 
   # Docs and help: the documentation (the manual is on another site) and the one list of where to ask
   # (/helpsupport/#get-help; the contact page sits under it through its front matter menuParent)
@@ -174,11 +187,9 @@ enableGitInfo = true
       description = "The documentation of Lead-DBS: installation, every step of an analysis, and the tools, on the manual's own site."
       # words the site search finds it by
       keywords = "documentation docs manual handbook guide installation install how to"
-      # the picture of its card on the Docs and help page (a render under assets/)
-      image = "images/renders/cohort-top.jpg"
   [[menus.main]]
     parent = "docs"
-    name = "Lead Tutor"
+    name = "Practice dataset (Lead Tutor)"
     pageRef = "/helpsupport/learn-lead-dbs-yourself"
     weight = 3
   [[menus.main]]
@@ -195,7 +206,7 @@ enableGitInfo = true
       description = "Where to ask: the user Slack for questions, GitHub for bugs, the contact form for anything else."
 
   # Atlases and data: the three catalogues, then (after a captioned line: params.divider) the two
-  # atlases the Lead-DBS team made
+  # atlases the Lead-DBS team made, then the background article on the MNI spaces
   [[menus.main]]
     parent = "data"
     name = "Subcortical atlases"
@@ -223,6 +234,13 @@ enableGitInfo = true
     name = "FOCUS atlas"
     pageRef = "/helpsupport/knowledge-base/atlasesresources/focus-atlas"
     weight = 5
+  [[menus.main]]
+    parent = "data"
+    name = "About the MNI spaces"
+    pageRef = "/helpsupport/knowledge-base/atlasesresources/about-the-mni-spaces"
+    weight = 6
+    [menus.main.params]
+      divider = "Background"
 
   # Community (the past workshops sit under Events: front matter menuParent)
   [[menus.main]]
@@ -237,7 +255,7 @@ enableGitInfo = true
     weight = 2
   [[menus.main]]
     parent = "community"
-    name = "Develop Lead-DBS"
+    name = "Contribute"
     pageRef = "/develop"
     weight = 3
   [[menus.main]]
@@ -246,7 +264,7 @@ enableGitInfo = true
     pageRef = "/subscribe-to-our-newsletter"
     weight = 4
 
-  # About: who makes Lead-DBS, how to cite it, its papers
+  # About: who makes Lead-DBS, how to cite it, its papers, the software it builds on
   [[menus.main]]
     parent = "about"
     name = "Cite Lead-DBS"
@@ -262,6 +280,11 @@ enableGitInfo = true
     name = "Contributors"
     pageRef = "/about/team"
     weight = 3
+  [[menus.main]]
+    parent = "about"
+    name = "Dependencies"
+    pageRef = "/about/lead-dbs-dependencies"
+    weight = 4
 
   # The footer's legal line; Contact is also listed under "Get help"
   [[menus.footer]]

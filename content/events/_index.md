@@ -10,6 +10,10 @@ related:
   - "/helpsupport/learn-lead-dbs-yourself/"
   - "/helpsupport/knowledge-base/walkthrough-videos/"
   - "/subscribe-to-our-newsletter/"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/develop/", text: "Code, atlases and bug reports"}
+  - {page: "/helpsupport/first-steps/", text: "New to Lead-DBS? Start here"}
 ---
 
 How to take part:

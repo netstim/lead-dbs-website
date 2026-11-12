@@ -1,7 +1,5 @@
 ---
 title: "Lead-DBS 2.5 released"
-# the browser title (head.html adds " – Lead-DBS")
-htmlTitle: "Version 2.5 released"
 description: "Lead-DBS 2.5: three tools to map DBS effects on a group level, support for unilateral leads, new atlases and a fix for segmented Abbott leads."
 date: "2021-03-04T09:27:29"
 lastmod: "2026-11-11"
@@ -46,7 +44,7 @@ they are described under [Features](/helpsupport/knowledge-base/lead-dbs-methods
 
 Enrico Opri (Emory), Johannes Achtzehn and Nanditha Rajamani (Charité) sent their first pull requests.
 Enrico made the whole pipeline support unilateral leads. Pull requests from anyone are welcome: see
-[Develop Lead-DBS](/develop/).
+[Contribute](/develop/).
 
 ## New atlases
 

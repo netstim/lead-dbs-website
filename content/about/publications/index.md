@@ -12,6 +12,10 @@ related:
   - "/helpsupport/knowledge-base/atlasesresources/"
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-about.jpg"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/about/citing_leaddbs/", text: "Which of these papers to cite"}
+  - {page: "/gallery/", text: "Figures from studies that used Lead-DBS"}
 ---
 
 Which of these papers to cite is on [Cite Lead-DBS](/about/citing_leaddbs/).
@@ -34,10 +38,11 @@ Studies by many groups that used Lead-DBS are collected in a public Zotero libra
 <details class="more" id="lead-connectome-applications">
 <summary>Early studies that used Lead Connectome (2014 to 2017)</summary>
 
-- Fox MD, Buckner RL, Liu H, Chakravarty MM, Lozano AM, Pascual-Leone A (2014) Resting-state networks link invasive and noninvasive brain stimulation across diverse psychiatric and neurological diseases. *PNAS*. [Link](http://www.pnas.org/content/111/41/E4367.abstract)
-- Weigand A\*, Horn A\*, Caballero R, Cooke D, Stern AP, Taylor SF, Press D, Pascual-Leone A, Fox MD (2017) Prospective validation that subgenual connectivity predicts antidepressant efficacy of transcranial magnetic stimulation sites. Biological Psychiatry. [ScienceDirect](http://www.sciencedirect.com/science/article/pii/S0006322317321583)
-- Darby R, Horn A, Cushman F, Fox MD (2017) Lesion network localization of criminal behavior. PNAS. [Link](http://www.pnas.org/content/early/2017/12/12/1706587115.full)
-- Seo S, Mohr J, Li N, Horn A, Obermayer K (2015) Incremental Pairwise Clustering for Large Proximity Matrices. *IJCNN 2015.* [Link](https://ieeexplore.ieee.org/document/7280637/?reload=true&arnumber=7280637)
+- Fox MD, Buckner RL, Liu H, Chakravarty MM, Lozano AM, Pascual-Leone A (2014) Resting-state networks link invasive and noninvasive brain stimulation across diverse psychiatric and neurological diseases. *PNAS*. [Abstract at PNAS](http://www.pnas.org/content/111/41/E4367.abstract)
+- Weigand A\*, Horn A\*, Caballero R, Cooke D, Stern AP, Taylor SF, Press D, Pascual-Leone A, Fox MD (2017) Prospective validation that subgenual connectivity predicts antidepressant efficacy of transcranial magnetic stimulation sites. Biological Psychiatry. [Article at ScienceDirect](http://www.sciencedirect.com/science/article/pii/S0006322317321583)
+- Darby R, Horn A, Cushman F, Fox MD (2017) Lesion network localization of criminal behavior. PNAS. [Article at PNAS](http://www.pnas.org/content/early/2017/12/12/1706587115.full)
+- Seo S, Mohr J, Li N, Horn A, Obermayer K (2015) Incremental Pairwise Clustering for Large Proximity Matrices. *IJCNN 2015.* [Paper at IEEE Xplore](https://ieeexplore.ieee.org/document/7280637/?reload=true&arnumber=7280637)
+{.paper-refs}
 
 </details>
 

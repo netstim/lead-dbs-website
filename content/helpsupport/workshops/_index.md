@@ -15,9 +15,14 @@ toc: true
 share: "foto_postcard-1030x728.png"
 # pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
 related:
-  - "/news/hands-on-lead-dbs-workshop-cologne-2027/"
+  - "/events/hands-on-workshop-2027/"
   - "/helpsupport/learn-lead-dbs-yourself/"
   - "/helpsupport/knowledge-base/walkthrough-videos/"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/events/hands-on-workshop-2027/", text: "11–12 February 2027 in Cologne"}
+  - {page: "/subscribe-to-our-newsletter/", text: "Hear when registration opens"}
+  - {page: "/helpsupport/slack-user-channel/", text: "Ask other users and the developers"}
 ---
 
 The next workshop and the developer meetings are on the [events page](/events/).
@@ -89,7 +94,3 @@ The first Lead-DBS workshop was a hands-on workshop and a satellite event to the
 
 {{% /col %}}
 {{% /row %}}
-
-## Next
-
-The next workshop, with its dates, is on the [events page](/events/); details and registration follow in the [newsletter](/subscribe-to-our-newsletter/) and on the [user Slack](/helpsupport/slack-user-channel/).

@@ -1,7 +1,5 @@
 ---
 title: "Lead-DBS 2.6 released"
-# the browser title (head.html adds " – Lead-DBS")
-htmlTitle: "Version 2.6 released"
 description: "Lead-DBS 2.6, the last release before the move to BIDS: fixes under the hood, many more electrode models and six new atlases."
 date: 2022-02-24
 slug: "lead-dbs-v2-6-out-now"
