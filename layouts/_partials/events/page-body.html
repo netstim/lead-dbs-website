@@ -3,11 +3,12 @@
 {{- $page := .page }}{{ $ev := .ev }}{{ $e := $ev.e }}{{ $date := .date }}{{ $flyer := .flyer -}}
 {{- with $page -}}
       {{ .Content }}
-      <div class="dl-grid cells cells--{{ cond (ne $ev.time_short "") 3 2 }}" role="list" aria-label="When and where">
-        <div class="dl-cell" role="listitem"><p class="cells__l">Date</p><p class="cells__v"><time datetime="{{ $ev.iso_start }}">{{ $date }}</time></p></div>
-        {{ with $ev.time_short }}<div class="dl-cell" role="listitem"><p class="cells__l">Time</p><p class="cells__v">{{ . }}{{ with $e.also_in }} <span class="cells__t">({{ (time.In . $ev.start).Format "15:04 MST" }})</span>{{ end }}</p></div>{{ end }}
-        <div class="dl-cell" role="listitem"><p class="cells__l">Where</p><p class="cells__v">{{ $e.where }}</p>{{ with .Params.host }}<div class="cells__t"><p>Hosted by {{ with .url }}<a href="{{ . }}">{{ $page.Params.host.name }}</a>{{ else }}{{ $page.Params.host.name }}{{ end }}</p></div>{{ end }}</div>
-      </div>
+      {{- $host := "" }}{{ with .Params.host }}{{ $host = printf "Hosted by %s" (cond (isset . "url") (printf `<a href="%s">%s</a>` (.url | htmlEscape) (.name | htmlEscape)) (.name | htmlEscape)) }}{{ end }}
+      <dl class="dl-grid cells cells--{{ cond (ne $ev.time_short "") 3 2 }}" aria-label="When and where">
+        {{ partial "fact.html" (dict "label" "Date" "value" (printf `<time datetime="%s">%s</time>` $ev.iso_start $date | safeHTML)) }}
+        {{ with $ev.time_short }}{{ $t := . }}{{ with $e.also_in }}{{ $t = printf `%s <span class="dl-cell__aside">(%s)</span>` $t ((time.In . $ev.start).Format "15:04 MST") }}{{ end }}{{ partial "fact.html" (dict "label" "Time" "value" ($t | safeHTML)) }}{{ end }}
+        {{ partial "fact.html" (dict "label" "Where" "value" $e.where "text" ($host | safeHTML)) }}
+      </dl>
       <p class="btn-row" id="register">
         {{- with $e.register_url }}
         <a class="btn btn--primary" href="{{ partial "resolve-url.html" (dict "url" . "page" $page) }}">Register<span class="sr-only"> (another site)</span></a>

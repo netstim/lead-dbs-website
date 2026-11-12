@@ -1,0 +1,4 @@
+{{- /* One fact in a frame of cells (a <dl class="dl-grid …">): a small label, the value set large, and an optional
+       line or two under it. Used by the download page, Contribute, Usage, event pages and the cells shortcode.
+       Argument: dict "label", "value" (HTML or text), and optionally "text" (HTML), "wide" (spans two columns), "num" (the value is a number: figures of equal width). */ -}}
+<div class="dl-cell{{ if .wide }} dl-cell--wide{{ end }}"><dt>{{ .label }}</dt><dd class="dl-cell__v{{ if .num }} num{{ end }}">{{ .value }}</dd>{{ with .text }}<dd>{{ . }}</dd>{{ end }}</div>

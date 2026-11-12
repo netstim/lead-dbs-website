@@ -6,12 +6,8 @@
            - {label: "Normalization", value: "DARTEL or ANTs", text: "Both outperformed …"} */ -}}
 {{- $rows := index .Page.Params (.Get "key") -}}
 {{- if not $rows }}{{ errorf "cells: %s has no front matter %q" .Page.File.Path (.Get "key") }}{{ end -}}
-<div class="dl-grid cells cells--{{ len $rows }}" role="list"{{ with .Get "label" }} aria-label="{{ . }}"{{ end }}>
+<dl class="dl-grid cells cells--{{ len $rows }}"{{ with .Get "label" }} aria-label="{{ . }}"{{ end }}>
   {{- range $rows }}
-  <div class="dl-cell" role="listitem">
-    {{ with .label }}<p class="cells__l">{{ . }}</p>{{ end }}
-    <p class="cells__v">{{ .value }}</p>
-    {{ with .text }}<div class="cells__t">{{ . | $.Page.RenderString (dict "display" "block") }}</div>{{ end }}
-  </div>
+  {{ partial "fact.html" (dict "label" .label "value" .value "text" (cond (isset . "text") ($.Page.RenderString (dict "display" "block") (.text | default "")) "")) }}
   {{- end }}
-</div>
+</dl>
