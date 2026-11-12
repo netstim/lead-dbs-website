@@ -2,12 +2,25 @@
      for the form itself). No backend yet (params.formsEnabled = false): the button is disabled and a
      note says so. Once a newsletter service is chosen, set its address as the form's action. */ -}}
 {{ $id := .id | default "nl" }}
-<form{{ with .anchor }} id="{{ . }}"{{ end }} class="form newsletter-form{{ if .compact }} newsletter-form--compact{{ end }}" method="post"{{ if not site.Params.formsEnabled }} onsubmit="return false"{{ end }}>
+{{ if not .compact }}
+<section class="newsletter-signup" aria-labelledby="{{ $id }}-title">
+  <header class="newsletter-signup__intro">
+    <h2 id="{{ $id }}-title">Keep up with Lead-DBS</h2>
+    <p>Occasional emails about new releases, important fixes and upcoming workshops.</p>
+  </header>
+{{ end }}
+<form{{ with .anchor }} id="{{ . }}"{{ end }} class="form newsletter-form{{ if .compact }} newsletter-form--compact{{ else }} newsletter-form--full{{ end }}"{{ if not site.Params.formsEnabled }} aria-describedby="{{ $id }}-status"{{ end }} method="post"{{ if not site.Params.formsEnabled }} onsubmit="return false"{{ end }}>
   {{ if not .compact }}
-  <div class="field"><label for="{{ $id }}-first">First name</label><input id="{{ $id }}-first" type="text" name="first_name" autocomplete="given-name"></div>
-  <div class="field"><label for="{{ $id }}-last">Last name</label><input id="{{ $id }}-last" type="text" name="last_name" autocomplete="family-name"></div>
+  <div class="newsletter-form__names">
+  <div class="field"><label for="{{ $id }}-first">First name</label><input id="{{ $id }}-first" type="text" name="first_name" autocomplete="given-name" placeholder="First name"></div>
+  <div class="field"><label for="{{ $id }}-last">Last name</label><input id="{{ $id }}-last" type="text" name="last_name" autocomplete="family-name" placeholder="Last name"></div>
+  </div>
   {{ end }}
-  <div class="field"><label for="{{ $id }}-email">Email</label><input id="{{ $id }}-email" type="email" name="email" required autocomplete="email" inputmode="email"></div>
-  <div class="btn-row"><button type="submit" class="btn btn--secondary"{{ if not site.Params.formsEnabled }} disabled{{ end }}>Subscribe</button></div>
-  {{ if not site.Params.formsEnabled }}<p class="form-note">Preview: sign-up not connected yet.</p>{{ end }}
+  <div class="field"><label for="{{ $id }}-email">Email address</label><input id="{{ $id }}-email" type="email" name="email" required autocomplete="email" inputmode="email" placeholder="you@example.com"></div>
+  <div class="btn-row"><button type="submit" class="btn {{ if .compact }}btn--secondary{{ else }}btn--primary{{ end }}"{{ if not site.Params.formsEnabled }} disabled{{ end }}>Subscribe</button></div>
+  {{ if not site.Params.formsEnabled }}<p class="form-note" id="{{ $id }}-status">Preview only — newsletter signup is not connected yet.</p>{{ end }}
 </form>
+{{ if not .compact }}
+  <p class="newsletter-signup__optional">Just looking for the software? <a href="{{ "download/" | relURL }}">Download Lead-DBS</a> without subscribing.</p>
+</section>
+{{ end }}

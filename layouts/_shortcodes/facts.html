@@ -1,0 +1,6 @@
+{{- /* A short resource overview, with title/text pairs in the page's facts front matter. */ -}}
+<dl class="resource-facts" aria-label="{{ .Get "label" | default "At a glance" }}">
+  {{ range .Page.Params.facts }}
+  <div><dt>{{ .title }}</dt><dd>{{ .text }}</dd></div>
+  {{ end }}
+</dl>

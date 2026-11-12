@@ -2,7 +2,7 @@
 title: "Download Lead-DBS"
 description: "Download Lead-DBS: requirements, the download servers, installation in four steps, the standalone builds and the release history."
 date: "2014-06-17T15:07:00"
-lastmod: "2026-11-11"
+lastmod: "2026-11-12"
 weight: 7
 # /download-lead-dbs/ was the page with the files; the WordPress download items
 # (/sdm_downloads/…) were single download buttons. All of them end here now.
@@ -46,9 +46,6 @@ next:
 - [Lead-DBS.org](https://www.lead-dbs.org/release/download.php?id=latest)
 - [BaiduPan](https://www.lead-dbs.org/release/download.php?id=leaddbs_baidu)
 {{< /download-release >}}
-
-It includes several [subcortical atlases](/helpsupport/knowledge-base/atlasesresources/atlases-2/). What
-changed: the [announcement of this release]({{% release notes %}}) and the [release history](#releases).
 
 ## What you need
 

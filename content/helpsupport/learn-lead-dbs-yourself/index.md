@@ -4,8 +4,17 @@ description: "The open training dataset of ten DBS patients with expert electrod
 weight: 1
 linkTitle: "Practice dataset (Lead Tutor)"
 date: "2025-02-28T17:20:40"
-lastmod: "2026-11-11"
+lastmod: "2026-11-12"
 keywords: ["Lead Tutor", "Lead-Tutor", "tutorial", "training", "training dataset", "practise", "practice", "dataset", "exercise", "OSF", "ground truth", "expert localizations"]
+facts:
+  - title: "10 patients"
+    text: "Bilateral implants; directional leads in nine patients."
+  - title: "MRI and CT"
+    text: "Preoperative MRI and postoperative CT."
+  - title: "Expert benchmark"
+    text: "Two experts and ten trained non-experts."
+  - title: "Anonymized data"
+    text: "NIfTI files organized in BIDS format."
 # the picture shown when the page is shared (head.html)
 share: "Screenshot-2025-02-28-at-11.18.44-AM-1030x1005.png"
 # pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
@@ -21,9 +30,21 @@ next:
 
 <span id="learn-lead-dbs-yourself"></span>
 
-Lead Tutor is the first open training dataset for DBS electrode localization, with a tool built into
-Lead-DBS that scores your localizations against those of experts. The exercise is step 2 of
-[First steps](/helpsupport/first-steps/#lead-tutor).
+Practise electrode localization on ten patients, then compare your results with expert localizations in Lead-DBS. Start with [First steps](/helpsupport/first-steps/#lead-tutor).
+{.dataset-intro}
+
+{{< facts label="Lead Tutor at a glance" >}}
+
+<div class="resource-actions">
+
+{{< button href="https://osf.io/jxecg/?view_only=f2765a6aa3604dea8afa14365b70381c" variant="primary" external="true" >}}Download dataset{{< /button >}}
+
+<a class="link link--ext" href="https://doi.org/10.52294/001c.129658">Read the paper <span class="ext-mark" aria-hidden="true">↗</span></a>
+
+</div>
+
+<details class="more dataset-details">
+<summary>Dataset details</summary>
 
 {{< summary >}}
 Patients
@@ -38,14 +59,12 @@ Electrodes
 Benchmark
 : Localizations by two experts, and those of ten trained non-experts for the range of usual results
 
-Get it
+Access
 : Free download from OSF; shared openly with the approval of the institutional review board of Brigham and Women's Hospital, Boston, where the images were acquired
 
-Cite
-: Madan et al. 2025, *Aperture Neuro* 5, [doi:10.52294/001c.129658](https://doi.org/10.52294/001c.129658) ([full citation](#what-to-cite))
 {{< /summary >}}
 
-{{< button href="https://osf.io/jxecg/?view_only=f2765a6aa3604dea8afa14365b70381c" >}}Download the Lead Tutor dataset{{< /button >}}
+</details>
 
 ## Your report
 
