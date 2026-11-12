@@ -8,6 +8,7 @@
        " – Lead-DBS" (the home page: its headline – Lead-DBS); a title that names Lead-DBS ("Cite Lead-DBS",
        "Lead-DBS 3.2 released") stands alone. */ -}}
 {{- $title := .Title -}}
+{{- if eq .Layout "download" }}{{ $title = printf "%s %s" $title hugo.Data.release.version }}{{ end -}}
 {{- if eq .Kind "404" }}{{ $title = "Page not found" }}{{ end -}}
 {{- if .IsHome }}{{ $title = .Params.hero.title | default site.Params.description -}}
 {{- end -}}
