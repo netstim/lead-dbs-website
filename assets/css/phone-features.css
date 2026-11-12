@@ -26,4 +26,29 @@
     line-height: calc(var(--t-h2) + var(--s-1)); letter-spacing: var(--display-tracking-xl); }
   .prose .chapter + :is(.cap-show, .tool-cells) { margin-top: calc(var(--s-6) + var(--s-2)); }
 
+  /* -------------------------------------------------------------- the module: stage, segments, names */
+  .prose .cap-show { display: flex; flex-direction: column; padding-bottom: var(--s-4); overflow-anchor: none; }
+  .prose .cap-show__list { order: 1; margin-top: var(--s-5); }
+  .prose .cap-show--one .cap-show__list { margin-top: calc(var(--s-5) + var(--s-1)); }
+  .prose .cap-fig--inline { display: none; }
+
+  /* the stage: square black pictures in one row that scrolls sideways and stops at each; 20px of the
+     next one shows at the right edge (the row's right padding is 10px wider than its left, so the last
+     picture also comes to rest at the left margin). A render covers its square, a figure from a paper lies on it as a
+     sheet with its credit under it. */
+  .prose .cap-show__stage { display: flex; gap: calc(var(--s-1) * 2.5); margin-inline: calc(-1 * var(--gut));
+    padding: 0 calc(var(--gut) + var(--s-1) * 2.5) 0 var(--gut); scroll-padding-inline: var(--gut);
+    overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .prose .cap-show__stage::-webkit-scrollbar { display: none; }
+  .prose .cap-show__stage:focus-visible { outline: 2px solid var(--ink); outline-offset: var(--s-1); }
+  .prose .cap-show--one .cap-show__stage { padding-right: var(--gut); }
+  .prose .cap-show__stage > .cap-fig { flex: 0 0 100%; aspect-ratio: 1; scroll-snap-align: start; scroll-snap-stop: always;
+    border-radius: var(--r-lg); background: var(--render); }
+  .prose .cap-show__stage > .cap-fig:has(.cap-fig__sheet) { flex-direction: column; display: flex; align-items: center; justify-content: center;
+    gap: calc(var(--s-1) * 2.5); background: var(--render); }
+  .prose .cap-show__stage .cap-fig__sheet { --pad: var(--s-4); --foot: calc(var(--s-5) + var(--s-1)); flex: none; margin: 0; border-radius: var(--r-sm); }
+  .prose .cap-show__stage .cap-fig__credit,
+  .prose .cap-show__stage .cap-fig:has(.cap-fig__sheet) .cap-fig__credit { position: static; text-align: center; color: color-mix(in srgb, var(--on-render) 50%, transparent); }
+  .prose .cap-show__stage .cap-fig__credit a:hover { color: var(--on-render); }
+
 }
