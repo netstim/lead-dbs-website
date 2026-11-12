@@ -32,16 +32,20 @@ fingerprinted stylesheet:
 - `assets/css/content.css`: the content building blocks that come after those: hub cards with a line of
   text, the copy box, clips, the newer/older links under news posts, and the Features chapters and cards.
 
-The script is `assets/js/main.js` (with `search.js` for the search and `insertion.js` for the electrode
-insertion on the home page). It opens the header's menu sheet and panels, plays the hero's entrance and clip,
-and checks events against the visitor's clock.
+The site's own script is one file per concern in `assets/js/main/`, which `layouts/baseof.html` bundles into
+one `main.js`: `header.js` (the menu sheet, the panels, the header over black), `theme.js` (light and dark),
+`page.js` (the table of contents, links into folds, paper rows, citation tabs, the old forum's addresses),
+`home.js` (the hero's entrance and clip, the figure strip), `events.js` (events by the visitor's clock, the
+countdown), `videos.js`, `news.js`, `features.js` (the capabilities) and `gallery.js`. Each block does
+nothing on a page without its markup. Beside them: `search.js`, `clipboard.js`, `insertion.js` (the
+electrode insertion), `atlas-filter.js` and `globe.js`, each loaded only where it is needed.
 
 - **Sections take the height of their content.** The hero is the window's height less about 90 px (so the
   row of figures under it shows on the first screen; at least 540, at most 860 px) and grows with its
   content; the other sections share one vertical rhythm (`--rhythm`).
 - **The header over black**: while the home page's hero or an inner page's black head lies under it, the
   header is black (clear over the hero on a desktop) with white words; past it, the light bar returns
-  (`main.js` sets `.is-dark` on `.nav` for any element marked `data-nav-dark`).
+  (`main/header.js` sets `.is-dark` on `.nav` for any element marked `data-nav-dark`).
 - **Lists of pages are rows, not cards**: a hairline row per page with its title, one short line and an
   arrow (`link-rows`, `resource-index`, "Related", the section list in the sidebar, the atlas catalogues).
   Boxes are kept for pictures (`atlas-hub`, `video-card`, the gallery) and for facts (`cells`, the summary
@@ -53,7 +57,7 @@ and checks events against the visitor's clock.
   menu sheet and the footer, not from the bar. A word's panel opens after the pointer rests on
   it for a moment (about 180 ms; switching between words is quicker), at once on keyboard focus.
 - **The hero's entrance**: the title's words rise line by line, then the lead, the buttons and the facts fade
-  up while the clip settles. The page head hides the words until `main.js` starts it, and shows them anyway
+  up while the clip settles. The page head hides the words until `main/home.js` starts it, and shows them anyway
   after 700 ms; under reduced motion nothing moves.
 
 - Palette ("Blend", tokens at the top of `site.css`): white ground `#ffffff`, a grey surface `#f5f6f7`,

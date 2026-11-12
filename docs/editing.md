@@ -117,7 +117,7 @@ it under `links`, and other pages link the page rather than a news post about th
    `.github/workflows/pages.yml` rebuilds the site every night (`schedule`, 02:17 UTC) as well as on every push.
    GitHub pauses scheduled workflows in a repository with no activity for 60 days, which would freeze the
    "next event": a push, or "Run workflow" on the Actions tab, starts them again.
-2. A few lines in `assets/js/main.js` check again by the visitor's clock: they hide an event that has ended since
+2. A few lines in `assets/js/main/events.js` check again by the visitor's clock: they hide an event that has ended since
    the build and show the next one, and on `/events/` move it to "Past events". Without script, the build's
    choice shows.
 
@@ -212,7 +212,7 @@ Text on the left …
   names, one under the other; the chosen one stands in ink with its sentence and its links (small pills)
   under it, the others are grey; from 1024px one large black stage on the right shows the chosen one's
   picture (a render fills it; a figure from a paper, `fit="contain"`, sits whole on it and opens at full
-  size). A click on a name chooses it (`assets/js/main.js`); below 1024px the chosen one holds its own
+  size). A click on a name chooses it (`assets/js/main/features.js`); below 1024px the chosen one holds its own
   picture; without script every one is open. Renders carry no credit of their own; the page credits them
   once. Its `id` is the anchor other pages link to (`#stimulation`, `#connectivity` …): such a link chooses
   that one. `tools` shows the named tools of the page's front matter as picture cells, four

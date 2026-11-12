@@ -436,7 +436,7 @@ html:not(.dl-terms-ready) .dl-terms__close { display: none; }
 
 /* {{< capabilities >}}: a chapter's capabilities as a showcase, after the feature lists of vercel.com and
    x.ai. On the left the names, one under the other, large: the chosen one (.is-active, set by
-   assets/js/main.js) in ink with its sentence and its links right under it, the others grey. From
+   assets/js/main/features.js) in ink with its sentence and its links right under it, the others grey. From
    1024px one black stage on the right shows the chosen one's picture: a render filling it, a figure from
    a paper whole as a sheet (a click opens it at full size, its credit a small line in the corner). Below
    1024px the chosen one holds its own picture. Without script every one is open with its picture. */
@@ -789,7 +789,7 @@ html .event--listing .event__poster img { position: static; max-width: none; max
   .co-setup__link { grid-column: 1 / -1; }
 }
 
-/* the video popup (assets/js/main.js): the player large on black, the card's words under it, and its
+/* the video popup (assets/js/main/videos.js): the player large on black, the card's words under it, and its
    chapters beside it (under it on a phone) as buttons that start the video at that time */
 .v-box { width: min(1240px, calc(100vw - 32px)); max-height: calc(100vh - 32px); padding: 0; border: 0; border-radius: var(--r-lg); background: #0b0b0c; color: var(--on-render); overflow: auto; }
 .v-box::backdrop { background: rgb(0 0 0 / .82); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }

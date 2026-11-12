@@ -1,6 +1,6 @@
 {{ define "main" }}
 {{- /* /events/: every entry of data/events.yaml, upcoming first (soonest first), then past (latest
-     first). Split at build time; assets/js/main.js moves an event that is over by the visitor's clock
+     first). Split at build time; assets/js/main/events.js moves an event that is over by the visitor's clock
      to "Past events", so a page built some days ago still reads right. Under "Past events" also the
      workshops of the archive page /helpsupport/workshops/, one link to each of its sections. */ -}}
 {{ $all := partial "events/list.html" . }}
@@ -23,7 +23,7 @@
       {{ partial "nobreak-html.html" .Content }}
       <h2 id="upcoming">Upcoming</h2>
       {{- /* the line for no dates is in the page only when nothing was upcoming at build time;
-             assets/js/main.js adds it when the listed events are over by the visitor's clock */}}
+             assets/js/main/events.js adds it when the listed events are over by the visitor's clock */}}
       {{ $nl := relref $ "/subscribe-to-our-newsletter" }}
       <ol class="event-list" data-ev-upcoming data-ev-newsletter="{{ $nl }}">
         {{ range $up }}{{ partial "events/card.html" (dict "ev" . "page" $) }}{{ end }}

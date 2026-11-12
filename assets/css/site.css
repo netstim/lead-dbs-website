@@ -99,13 +99,13 @@ html.is-preview .nav__bar { flex: 1; height: auto; min-height: 0; width: min(100
    the words are a size smaller. Below 1200: logo, search, "Download" and the menu button; the words open
    in a sheet. Below 640: logo, search, menu button. GitHub is not an icon of the bar: the sheet and the
    footer link it.
-   The script for the sheet and the panels is in assets/js/main.js. */
+   The script for the sheet and the panels is in assets/js/main/header.js. */
 .nav { position: fixed; inset: 0 0 auto; z-index: 50; height: var(--nav); background: var(--bg); color: var(--ink); border-bottom: 1px solid var(--line); }
 .nav__bar { height: 100%; display: flex; align-items: center; gap: var(--s-3); }
 html.nav-ready .nav { transition: background-color 360ms ease, color 360ms ease, border-color 360ms ease, backdrop-filter 360ms ease, -webkit-backdrop-filter 360ms ease; }
 /* A translucent, blurred surface lets the header change with the page without a hard flash. */
 .nav.is-scrolled:not(.is-open) { background-color: color-mix(in srgb, var(--p-bg) 90%, transparent); -webkit-backdrop-filter: blur(18px) saturate(1.2); backdrop-filter: blur(18px) saturate(1.2); }
-/* over the black hero and the black page heads (.is-dark, set by assets/js/main.js while such a ground
+/* over the black hero and the black page heads (.is-dark, set by assets/js/main/header.js while such a ground
    lies under the header) the bar takes the black. A page that starts on such a ground (body.top-dark,
    layouts/baseof.html) has it from the first paint, before the script runs (html.nav-ready). On the home
    page's hero the bar is clear at the very top, a soft shade behind its words, so the render runs up to
@@ -131,7 +131,7 @@ html.nav-ready body.kind-home .nav.is-scrolled:not(.is-open) {
 .nav__icon { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: var(--r-sm); color: inherit; flex: none; }
 .nav__icon:hover { background: var(--surface); color: var(--action); }
 .nav__icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-/* the theme toggle (assets/js/main.js): a moon on the light theme, a sun on the dark one */
+/* the theme toggle (assets/js/main/theme.js): a moon on the light theme, a sun on the dark one */
 .nav__theme .i-sun, [data-theme="dark"] .nav__theme .i-moon { display: none; }
 [data-theme="dark"] .nav__theme .i-sun { display: block; }
 .nav__theme { border: 0; padding: 0; background: none; cursor: pointer; }
@@ -168,7 +168,7 @@ html:not(.js) .nav__link .chev { display: none; }
 .menu-col > .t-label { color: var(--muted); }
 
 /* 1200 and up: the words in the bar; a word with pages opens a band under the whole header. With script
-   (assets/js/main.js) hover is the header's as a whole: a panel opens once the pointer has rested on its
+   (assets/js/main/header.js) hover is the header's as a whole: a panel opens once the pointer has rested on its
    word (.is-hovered), at once from its chevron button (.is-expanded), and the spaces between the words
    keep it open. All panels share one ground, .nav__band: it stays while the pointer moves from word to
    word at a steady height, while each panel fades out before the next fades in (the
@@ -391,7 +391,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
   .home-hero__text { padding-inline: var(--s-4); }
   .home-hero__foot { padding: var(--s-4); }
 }
-/* the entrance (assets/js/main.js): until the script starts it, the words are hidden and the clip sits a
+/* the entrance (assets/js/main/home.js): until the script starts it, the words are hidden and the clip sits a
    little larger; if the script is late (html.hero-late), they fade in here. .is-still: no entrance. */
 @media (prefers-reduced-motion: no-preference) {
   html.hero-wait:not(.hero-late) .home-hero:not(.is-entering, .is-entered) :is(.hero__chip, h1, .hero__lead, .btn-row, .hero__proof) { opacity: 0; }
@@ -523,7 +523,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
   transition: outline-color var(--t-out) var(--ease); }
 .fig-strip__link:hover .fig-strip__img { outline-color: color-mix(in oklab, var(--action) 70%, transparent); transition-duration: var(--t-in); }
 .fig-strip__link:hover .fig-strip__cite { color: var(--action); }
-/* a strip that scrolls sideways shows it: its right edge fades while more figures follow (assets/js/main.js
+/* a strip that scrolls sideways shows it: its right edge fades while more figures follow (assets/js/main/home.js
    sets .is-end at the last one, .is-moved once it has scrolled); it is then a tab stop of its own, so the
    arrow keys scroll it */
 @media (max-width: 1023px) {

@@ -1,7 +1,7 @@
 {{- /* The one header of every page: logo left, the main menu (hugo.toml [menus.main]) beside it, then
      search and the main action at the right end. The menu entry "Download" is drawn as the button. Entries with
      children open a small panel on hover and keyboard focus. Below 1200px the words move into a
-     full-screen sheet that the menu button opens (assets/js/main.js); below 640px GitHub and the
+     full-screen sheet that the menu button opens (assets/js/main/header.js); below 640px GitHub and the
      Download button live in that sheet too, so nothing in the bar is pushed off a phone's screen.
      Without script (no "js" class on <html>, head.html) the menu button is a link to #site-menu, which
      opens the same sheet with every group's pages listed (assets/css/content.css). */ -}}
@@ -26,7 +26,7 @@
       {{ if ne .Name "Download" }}{{ $m := . }}
       {{ $current := eq (.Identifier | default .Name) $best }}
       <div class="nav__item">
-        {{- /* a word with a panel: main.js adds a chevron button beside it that opens the panel and carries
+        {{- /* a word with a panel: main/header.js adds a chevron button beside it that opens the panel and carries
                aria-expanded and aria-controls (the panel's id below). No aria-haspopup: the panel is a list
                of links (a disclosure), not an ARIA menu. The chevron here is for the view without script. */}}
         {{- $panel := printf "menu-%s" (.Identifier | default (.Name | urlize)) }}

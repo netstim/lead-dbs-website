@@ -46,7 +46,7 @@ segmented contacts in the subthalamic nucleus, the red nucleus behind it, over t
 slowly around the lead, sinusoidally, ±18° about the best view (32 s per sway, 24 fps, at most 3.5°/s), so the
 loop has no jump. It is muted and loops. Its file is fetched only after the page has loaded; on phones,
 for visitors who ask for reduced motion or to save data, and on slow connections the poster shows with a
-play button and the clip loads only when it is pressed (`assets/js/main.js`). It plays only while the hero
+play button and the clip loads only when it is pressed (`assets/js/main/home.js`). It plays only while the hero
 is on screen, and a button pauses it; the poster (`assets/images/renders/hero-lead-stn-poster.jpg`, the clip's first
 frame) shows instead. The home page's hero is one rounded black panel on the white page, under the light header
 (`.home-hero__panel` in `site.css`): the clip fills it and the words stand over its black left half. The
