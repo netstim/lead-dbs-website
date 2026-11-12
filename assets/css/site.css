@@ -1546,7 +1546,7 @@ html:not(.js) .g-item__info { display: block; padding: var(--s-2) 0 var(--s-3); 
 .usage__legend li::before, .usage__list li span:first-child::before { content: ""; flex: none; width: 10px; height: 10px; border-radius: var(--r-xs); background: var(--sw, var(--line-strong)); }
 /* the clock in coral on rose; the tools in the palette's four */
 .usage__chart--hours .pele-curve { fill: var(--p-tint-2); fill-opacity: .7; stroke: var(--p-accent); stroke-width: 2; }
-.usage__chart--tools { --pele-series-1: var(--p-ink); --pele-series-2: var(--p-muted); --pele-series-3: var(--line-strong); --pele-series-4: var(--line); }
+.usage__chart--tools { --pele-series-1: var(--p-ink); --pele-series-2: var(--p-muted); --pele-series-3: var(--line-strong); --pele-series-4: var(--line); --pele-series-5: var(--p-accent); }
 .usage__chart--tools .pele-slice-labels text { fill: var(--bg) !important; font-weight: 500; }
 /* the three figures as tiles in the palette */
 .usage__chart--hours { max-width: 440px; margin-inline: auto; }

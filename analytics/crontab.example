@@ -1,0 +1,7 @@
+# Lab-installed only; not active. Set absolute paths for the chosen private host.
+# Suppress cron email; monitoring reads the local status and exit code.
+MAILTO=""
+# Independent of Python/export success. Monitor this job too; enable before collection.
+5 * * * * LEAD_ANALYTICS_CONFIG=/private/lead-analytics/collector-config.json /usr/bin/php /srv/lead-analytics/collector/maintenance.php retain >>/private/lead-analytics/retention.log 2>&1
+15 3 * * * /usr/bin/python3 /srv/lead-analytics/tools/analytics_ops.py run /private/lead-analytics/operations.json >>/private/lead-analytics/maintenance.log 2>&1
+45 3 * * * /usr/bin/python3 /srv/lead-analytics/tools/analytics_ops.py check /private/lead-analytics/operations.json >>/private/lead-analytics/maintenance.log 2>&1

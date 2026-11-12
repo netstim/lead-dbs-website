@@ -260,8 +260,8 @@
   {{ end }}
 
   {{/* 6. Lead-DBS around the world: the words left (heading, one line, a pill to /usage/), right a wireframe
-       globe drawn by assets/js/globe.js that replays the downloads of Lead-DBS since 2015, from
-       data/downloads.json (tools/downloads.py writes it from the download log): countries only. Without the
+       globe drawn by assets/js/globe.js that replays monthly Lead-DBS download-request aggregates since 2015, from
+       data/downloads.json (tools/downloads.py writes it from the download log): no individual events. Without the
        script, or until the map has loaded, the figure is not shown. */}}
   {{ with $p.worldwide }}{{ with hugo.Data.downloads }}
   {{ $d := . }}{{ $w := $p.worldwide }}

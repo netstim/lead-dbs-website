@@ -121,15 +121,22 @@ really made with Lead-DBS.
 
 ## Download figures (the globe on the home page)
 
-The home page's "Downloaded in N countries" section replays the downloads of Lead-DBS since November 2015
-on a globe, a month every 0.3 seconds. The figures are a snapshot in `data/downloads.json`. To refresh them,
-copy `download.log` (and `download.log.bak`) from the lead-dbs.org server into a folder and run
-`python3 tools/downloads.py <log folder> <database.mmdb>` (same packages and database as below).
+The home globe replays recorded Lead-DBS download requests since November 2015,
+one month every 0.3 seconds. Refresh `data/downloads.json` from private local
+logs with the same offline database as the access importer:
 
-What is counted: one IP address fetching one item on one day is one download; only Lead-DBS itself
-(latest, hotfix, the standalone builds ...), not data packs or atlases; bots are left out (known crawler
-and cloud address blocks, and addresses with more than 50 downloads). `tools/downloads.py` says more.
-`data/downloads.json` holds downloads by country and month only: no IP address, city or network name.
+```sh
+python3 tools/downloads.py /private/logs /private/country.mmdb --cutoff YYYY-MM-DD --manifest /private/download-run-manifest.json
+```
+
+A request is one address fetching one item on one day, deduplicating retries.
+The globe preserves #24's selected program/hotfix aliases and standalone names.
+Its hosting-range and lifetime-frequency exclusions are imperfect heuristics;
+they do not prove that the remaining requests are human or completed transfers.
+The separate all-request breakdown covers all artifact categories before those
+exclusions. Public output contains aggregate counts and quality information,
+with no addresses, event timestamps, cities or network names. See
+[download-analytics.md](download-analytics.md) for definitions and limitations.
 
 - **The globe** is drawn by `assets/js/globe.js` with d3-array, d3-geo and topojson-client
   (`assets/js/vendor/`, ISC licence) and the Natural Earth country map `assets/data/world-110m.json`
@@ -138,24 +145,21 @@ and cloud address blocks, and addresses with more than 50 downloads). `tools/dow
   800 px of the screen (`assets/js/main/home.js` adds the script). Without
   JavaScript the section shows its words only. Its texts are `worldwide:` in `content/_index.md`.
 
-## Usage figures (/usage/)
+## Usage and download figures
 
-The page `/usage/` shows how often Lead-DBS is started, by country. The figures are a snapshot in `data/usage.json`; nothing is fetched from the server when the
-site is built or viewed. To refresh them:
+The homepage retains the approved month-by-month globe of **program download
+requests** using `data/downloads.json`. All countries are included, without a
+minimum threshold. Keep its `countries`, `months`, `total`, `from` and `to` fields
+compatible with `assets/js/globe.js`. The animation represents monthly country
+aggregates, not individual people or precise locations.
 
-1. Copy `access.log` (and `access.log.bak`) from the lead-dbs.org server into a folder, and download a free
-   IP-to-country database in MaxMind format (for example DB-IP "IP to Country Lite").
-2. `python3 -m pip install --require-hashes -r tools/requirements.txt` (exact versions), then `python3 tools/usage.py <log folder> <database.mmdb>`.
-   This writes `data/usage.json`.
-3. `npm ci && node scripts/usage.mjs` (`npm ci` installs the versions locked in `package-lock.json`). This redraws the charts of `/usage/`
-   (`assets/diagrams/usage-*.svg`) with Pele, the tool that also draws the flow diagram on the home page.
+`/usage/` shows schema-2 **access request aggregates**, counting each address
+once per recorded clock hour, plus the combined Every country table with
+program download requests. These metrics are separate. Access data never
+contains individual event timestamps or a replay.
 
-What is counted and published: a launch is one start of Lead-DBS, and the same address counts once an
-hour. `data/usage.json` holds totals by country, year, month, hour and tool only. It holds no single
-launch, IP address, city or network name; do not add any (single launches to the minute could point
-to one researcher).
-
-- **The page `/usage/`** is `content/usage/index.md` (chart headings) and `layouts/usage.html`. It runs no
-  script: the charts are inline SVG, coloured in `assets/css/site.css` ("usage"). Below them, folded, a
-  table of every country with its downloads and launches (`#all-countries`), which the globe's section links to as
-  `table_label` ("All countries"): the globe itself can only be read with a mouse.
+See [analytics.md](analytics.md) for refresh instructions and definitions, and
+[analytics-completion.md](analytics-completion.md) for the whole-system status.
+The static charts come from `scripts/usage.mjs`; the usage template rejects an
+incompatible access schema at build time. The globe uses the approved lazy
+loading, month progression, pause/play and dragging controls.

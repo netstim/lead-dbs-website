@@ -24,6 +24,8 @@ jobs:
           curl -fsSL -O "$base/$deb" -O "$base/hugo_${HUGO_VERSION}_checksums.txt"
           grep " $deb\$" "hugo_${HUGO_VERSION}_checksums.txt" | sha256sum -c -
           sudo dpkg -i "$deb"
+      - name: Analytics tests and public data contract
+        run: python3 -m unittest discover -s tests -v
       - name: Design tokens (.github/scripts/check-design.py)
         run: python3 .github/scripts/check-design.py
       - name: Build
@@ -69,6 +71,10 @@ jobs:
         run: npm ci && npx playwright install --with-deps chromium
       - name: Build
         run: hugo --gc --minify
+      - name: Analytics charts match public data
+        run: node scripts/usage.mjs && git diff --exit-code -- assets/diagrams/usage-*.svg
+      - name: Analytics chart edge cases
+        run: node tests/test_usage_charts.mjs
       - name: Pages in the browser (.github/scripts/check-browser.mjs)
         run: node .github/scripts/check-browser.mjs public https://www.lead-dbs.org/ "$RUNNER_TEMP/screenshots"
       # the menu sheet, the search, the atlas filter and a dialog, used with the mouse and the keyboard
@@ -82,3 +88,21 @@ jobs:
           name: screenshots
           path: ${{ runner.temp }}/screenshots
           retention-days: 14
+
+  collector:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Install PHP CLI and SQLite for local-only collector tests
+        run: sudo apt-get update && sudo apt-get install -y php-cli php-sqlite3 composer
+      - name: Install locked collector dependencies
+        working-directory: server/analytics
+        run: composer install --no-dev --no-plugins --no-scripts --prefer-dist --no-interaction
+      - name: Collector unit and loopback integration tests
+        run: |
+          php tests/php/collector.php
+          python3 -m unittest discover -s tests -p 'test_*ops.py' -v
+          python3 -m unittest discover -s tests -p 'test_collector_http.py' -v
+          python3 -m unittest discover -s tests -p 'test_download_hook.py' -v

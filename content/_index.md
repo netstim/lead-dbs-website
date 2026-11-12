@@ -86,8 +86,8 @@ features:
 # Lead-DBS around the world (the globe; figures from data/downloads.json, see docs/home-and-media.md, "Download figures").
 # {countries}, {downloads} and {year} (the year of the first download) are filled in from the data.
 worldwide:
-  title: "Downloaded in {countries} countries"
-  text: "Lead-DBS has been downloaded {downloads} times since {year}."
+  title: "Download requests from {countries} countries"
+  text: "{downloads} Lead-DBS download requests recorded since {year}."
   link_label: "Usage statistics"
   # the link to the table of every country on /usage/ (the globe itself can only be read with a mouse)
   table_label: "All countries"

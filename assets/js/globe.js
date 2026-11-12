@@ -42,6 +42,7 @@
   load.observe(sec);
 
   function start(T, D) {
+    if (!Array.isArray(D.months) || !D.months.length || !Array.isArray(D.countries) || !D.countries.length) return;
     // the downloads: per country, the running total at the start of each month (and at the end)
     const M = D.months.length;
     const names = new Map(D.countries.map((c) => [c[0], c[1]])), lmax = Math.log1p(D.countries[0][2]);
@@ -133,7 +134,7 @@
           else clock = Math.min(M, clock + dt / MONTH);
         }
         light(playing || !reduced ? t : -1e9); draw(t); dirty = false;
-        const s = `${month(clock)} · ${fmt.format(Math.round(at(all, clock)))} downloads`;
+        const s = `${month(clock)} · ${fmt.format(Math.round(at(all, clock)))} requests`;
         if (s !== shown) now.textContent = shown = s;
         if (hover && !born.has(hover.p.id)) unhover(); else if (hover) note();
       }
@@ -153,7 +154,7 @@
     let tipAt = [0, 0], tipText = '';
     function note() {
       const n = Math.round(at(hover.p.a, clock));
-      const s = `${fmt.format(n)} download${n === 1 ? '' : 's'} by ${month(clock)}`;
+      const s = `${fmt.format(n)} request${n === 1 ? '' : 's'} by ${month(clock)}`;
       if (s === tipText) return;
       tipText = s; tip.textContent = names.get(hover.p.id) + ' '; const sp = document.createElement('span'); sp.textContent = s; tip.append(sp);
       tip.hidden = false; tip.style.transform = `translate(${Math.max(0, Math.min(W - tip.offsetWidth, tipAt[0] + 14))}px, ${Math.max(0, tipAt[1] - 36)}px)`;
