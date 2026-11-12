@@ -7,3 +7,9 @@ node_modules/
 *.log
 .idea/
 .vscode/
+
+# Analytics inputs and private provenance never belong in source control.
+*.log.bak
+*.mmdb
+*run-manifest.json
+__pycache__/

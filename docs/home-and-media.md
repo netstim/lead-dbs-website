@@ -138,24 +138,21 @@ and cloud address blocks, and addresses with more than 50 downloads). `tools/dow
   800 px of the screen (`assets/js/main/home.js` adds the script). Without
   JavaScript the section shows its words only. Its texts are `worldwide:` in `content/_index.md`.
 
-## Usage figures (/usage/)
+## Usage and download figures
 
-The page `/usage/` shows how often Lead-DBS is started, by country. The figures are a snapshot in `data/usage.json`; nothing is fetched from the server when the
-site is built or viewed. To refresh them:
+The homepage retains the approved month-by-month globe of **program download
+requests** using `data/downloads.json`. All countries are included, without a
+minimum threshold. Keep its `countries`, `months`, `total`, `from` and `to` fields
+compatible with `assets/js/globe.js`. The animation represents monthly country
+aggregates, not individual people or precise locations.
 
-1. Copy `access.log` (and `access.log.bak`) from the lead-dbs.org server into a folder, and download a free
-   IP-to-country database in MaxMind format (for example DB-IP "IP to Country Lite").
-2. `python3 -m pip install --require-hashes -r tools/requirements.txt` (exact versions), then `python3 tools/usage.py <log folder> <database.mmdb>`.
-   This writes `data/usage.json`.
-3. `npm ci && node scripts/usage.mjs` (`npm ci` installs the versions locked in `package-lock.json`). This redraws the charts of `/usage/`
-   (`assets/diagrams/usage-*.svg`) with Pele, the tool that also draws the flow diagram on the home page.
+`/usage/` shows schema-2 **access request aggregates**, counting each address
+once per recorded clock hour, plus the combined Every country table with
+program download requests. These metrics are separate. Access data never
+contains individual event timestamps or a replay.
 
-What is counted and published: a launch is one start of Lead-DBS, and the same address counts once an
-hour. `data/usage.json` holds totals by country, year, month, hour and tool only. It holds no single
-launch, IP address, city or network name; do not add any (single launches to the minute could point
-to one researcher).
-
-- **The page `/usage/`** is `content/usage/index.md` (chart headings) and `layouts/usage.html`. It runs no
-  script: the charts are inline SVG, coloured in `assets/css/site.css` ("usage"). Below them, folded, a
-  table of every country with its downloads and launches (`#all-countries`), which the globe's section links to as
-  `table_label` ("All countries"): the globe itself can only be read with a mouse.
+See [analytics.md](analytics.md) for refresh instructions and definitions, and
+[analytics-completion.md](analytics-completion.md) for the whole-system status.
+The static charts come from `scripts/usage.mjs`; the usage template rejects an
+incompatible access schema at build time. The globe uses the approved lazy
+loading, month progression, pause/play and dragging controls.

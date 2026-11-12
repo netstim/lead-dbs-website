@@ -1,17 +1,14 @@
 ---
 title: "Usage statistics"
 layout: "usage"
-description: "Where and how often Lead-DBS is downloaded and used: launches by country, month, hour of the day and tool."
-# The charts (layouts/usage.html): a heading and one line each. The figures come from data/usage.json
-# and the drawings from scripts/usage.mjs (docs/home-and-media.md, "Usage figures").
+description: "Recorded Lead-DBS access requests by country, month, server-clock hour and tool. These are not counts of people or installations."
 charts:
-  months: {title: "Eleven years of launches", text: "Launches per month."}
-  countries: {title: "Where it runs", text: "A tile for each country, sized by its launches."}
-  hours: {title: "Around the clock", text: "Launches by hour of the day, Central European Time."}
-  tools: {title: "Which tool is started", text: "Lead-DBS is four tools; most sessions start in the main one."}
-  # the table of every country ({since}: the first year of the figures)
-  all: {title: "Every country", text: "Downloads and launches since {since}, most downloads first."}
-method: "A download is one download of Lead-DBS from one address on one day, without bots. A launch is one start of Lead-DBS; the same address counts once an hour. Countries are worked out from IP addresses, which are not published."
+  months: {title: "Recorded activity over time", text: "Access requests per month, counting each address once per recorded clock hour. Hollow dots mark partial months; gaps mean no recorded observations, not verified zero activity."}
+  countries: {title: "Where requests were recorded", text: "Country totals estimated from network addresses across the reporting period. A network location does not establish where a researcher works."}
+  hours: {title: "Requests by recorded hour", text: "Server clock (timezone unverified), in the reporting year to date."}
+  tools: {title: "Requests by tool", text: "Reporting year to date. Each address counts once per hour per tool, so this denominator differs from the overall request count. Unknown tools remain included."}
+  all: {title: "Every country", text: "Program download requests and access requests since {since}, most program requests first. These are different metrics, not counts of users."}
+method: "These are recorded access requests, not people, installations or sessions. Overall totals count each address once per recorded clock hour; shared networks can merge people and changing addresses can count one person more than once. Automated requests have not been excluded. Countries are estimated using an offline database; historical locations may differ. Only aggregate statistics are published. Observed date boundaries do not prove uninterrupted collection."
 next:
   - {page: "/about/"}
   - {page: "/download/"}
