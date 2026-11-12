@@ -1,27 +1,22 @@
-{{- /* One event, drawn the same way on /events/ and on the home page.
-       Argument: dict "ev" (entry of events/list.html) "page", and "compact" (bool, the home page: the
-       title links to the event on /events/, no id, no host, no text, no extra links, and only the action
-       of the registration, without its note). */ -}}
+{{- /* Home cards retain their compact format; the events index uses date-led rows. */ -}}
 {{- $ev := .ev }}{{ $e := $ev.e }}{{ $page := .page }}{{ $compact := .compact -}}
 {{- $events := site.GetPage "/events" -}}
-<li class="event panel"{{ if not $compact }} id="{{ $ev.id }}"{{ end }} data-ev data-ev-ends="{{ $ev.iso_ends }}" data-ev-start="{{ $ev.start_unix }}">
-  <p class="event__date"><time datetime="{{ $ev.iso_start }}">{{ $ev.when }}</time></p>
-  <h3 class="event__title">{{ if and $compact $events }}<a href="{{ $events.RelPermalink }}#{{ $ev.id }}">{{ $e.title }}</a>{{ else }}{{ $e.title }}{{ end }}</h3>
+<li class="event{{ if $compact }} panel{{ else }} event--listing{{ end }}"{{ if not $compact }} id="{{ $ev.id }}"{{ end }} data-ev data-ev-ends="{{ $ev.iso_ends }}" data-ev-start="{{ $ev.start_unix }}">
   {{ if $compact }}
-  {{- /* the home page: when and where on one line, as under a news item */}}
+  <p class="event__date"><time datetime="{{ $ev.iso_start }}">{{ $ev.when }}</time></p>
+  <h3 class="event__title">{{ if $events }}<a href="{{ $events.RelPermalink }}#{{ $ev.id }}">{{ $e.title }}</a>{{ else }}{{ $e.title }}{{ end }}</h3>
   <p class="event__meta">{{ with $ev.time }}<time datetime="{{ $ev.iso_start }}">{{ . }}</time><span class="event__local" data-ev-local="{{ $ev.iso_start }}" data-ev-tz="{{ $ev.tz }}" hidden></span> · {{ end }}{{ $e.where }}</p>
+  <div class="event__upcoming-only">{{ partial "events/register.html" (dict "ev" $ev "page" $page "compact" true) }}</div>
   {{ else }}
-  <dl class="spec-rows event__facts">
-    {{ with $ev.time }}<div><dt>Time</dt><dd><time datetime="{{ $ev.iso_start }}">{{ . }}</time><span class="event__local" data-ev-local="{{ $ev.iso_start }}" data-ev-tz="{{ $ev.tz }}" hidden></span></dd></div>{{ end }}
-    <div><dt>Where</dt><dd>{{ $e.where }}</dd></div>
-    {{ with $e.host }}<div><dt>Hosted by</dt><dd>{{ . }}</dd></div>{{ end }}
-  </dl>
+  {{ $details := "" }}{{ with $e.links }}{{ $details = partial "resolve-url.html" (dict "url" (index . 0).url "page" $page) }}{{ end }}
+  <p class="event__date"><time datetime="{{ $ev.iso_start }}" aria-label="{{ $ev.when }}">
+    <span class="event__day">{{ $ev.when_short }}</span>
+    <span class="event__year">{{ $ev.start.Format "2006" }}</span>
+  </time></p>
+  <div class="event__body">
+    <h3 class="event__title">{{ if $details }}<a class="link event__title-link" href="{{ $details }}">{{ partial "nobreak.html" $e.title }}</a>{{ else }}{{ $e.title }}{{ end }}</h3>
+    <p class="event__meta"><span>{{ $e.where }}</span>{{ with $ev.time_short }}<span aria-hidden="true">·</span><time datetime="{{ $ev.iso_start }}">{{ if strings.Contains $ev.when_short "–" }}Starts {{ end }}{{ . }}</time><span class="event__local" data-ev-local="{{ $ev.iso_start }}" data-ev-tz="{{ $ev.tz }}" hidden></span>{{ end }}</p>
+  </div>
+  <div class="event__upcoming-only">{{ partial "events/register.html" (dict "ev" $ev "page" $page "terse" true) }}</div>
   {{ end }}
-  {{ if not $compact }}{{ with $e.text }}<p class="event__text">{{ . }}</p>{{ end }}{{ end }}
-  <div class="event__upcoming-only">{{ partial "events/register.html" (dict "ev" $ev "page" $page "compact" $compact) }}</div>
-  {{ if not $compact }}{{ with $e.links }}
-  <ul class="event__links">
-    {{ range . }}<li><a class="link" href="{{ partial "resolve-url.html" (dict "url" .url "page" $page) }}">{{ .label }}</a></li>{{ end }}
-  </ul>
-  {{ end }}{{ end }}
 </li>
