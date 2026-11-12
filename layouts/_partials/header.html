@@ -36,14 +36,29 @@
           <div class="nav__menu-cols">
             {{ $plain := slice }}{{ $groups := slice }}
             {{ range .Children }}{{ if .HasChildren }}{{ $groups = $groups | append . }}{{ else }}{{ $plain = $plain | append . }}{{ end }}{{ end }}
-            <div class="menu-col">
-              {{- /* params.divider: a line above the entry that starts a small group of its own; when it is a
-                     text, that text is the group's caption ("In depth"). The manual is a first-level
-                     word of the phone sheet, so its copy here is hidden there. */}}
-              {{ range $plain }}{{ $d := .Params.divider | default false }}{{ $cap := cond (eq (printf "%T" $d) "string") $d "" -}}
-              {{ with $cap }}<span class="menu-caption t-label">{{ partial "nobreak-html.html" (. | htmlEscape) }}</span>{{ end -}}
-              <a href="{{ .URL }}"{{ with (cond (eq .Name "Manual") "menu-sheet-dup" (cond (and $d (not $cap)) "menu-divider" "")) }} class="{{ . }}"{{ end }}>{{ partial "menu-label.html" . }}</a>{{ end }}
+            {{- /* params.divider starts a section of its own: a column of the desktop band, its text (if it
+                   is one) the column's caption ("In depth"). The first section's caption is the word's own
+                   name, as every column of the band has one; the sheet shows the word right above it, so
+                   there it is hidden (.menu-caption--lead). */}}
+            {{ $sections := slice }}{{ $cur := slice }}{{ $curCap := .Name }}{{ $curLead := true }}
+            {{ range $plain }}{{ $d := .Params.divider | default false }}
+              {{ if and $d (gt (len $cur) 0) }}
+                {{ $sections = $sections | append (dict "cap" $curCap "lead" $curLead "items" $cur) }}
+                {{ $cur = slice }}{{ $curCap = cond (eq (printf "%T" $d) "string") $d "" }}{{ $curLead = false }}
+              {{ end }}
+              {{ $cur = $cur | append . }}
+            {{ end }}
+            {{ if $cur }}{{ $sections = $sections | append (dict "cap" $curCap "lead" $curLead "items" $cur) }}{{ end }}
+            {{ range $sections }}
+            <div class="menu-col{{ if gt (len .items) 3 }} menu-col--two{{ end }}">
+              <span class="menu-caption t-label{{ if .lead }} menu-caption--lead{{ end }}"{{ if not .cap }} aria-hidden="true"{{ end }}>{{ with .cap }}{{ partial "nobreak-html.html" (. | htmlEscape) }}{{ end }}</span>
+              {{- /* the manual is a first-level word of the phone sheet, so its copy here is hidden there; a
+                     menu entry's params.card is its line in the desktop band */}}
+              {{ range .items -}}
+              <a class="menu-entry{{ if eq .Name "Manual" }} menu-sheet-dup{{ end }}" href="{{ .URL }}"><span class="menu-entry__title">{{ partial "menu-label.html" . }}<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></span>{{ with .Params.card }}<span class="menu-entry__text">{{ partial "nobreak-html.html" (. | htmlEscape) }}</span>{{ end }}</a>
+              {{- end }}
             </div>
+            {{ end }}
             {{ range $groups }}
             <div class="menu-col">
               <p class="t-label"><a href="{{ .URL }}">{{ partial "nobreak-html.html" (.Name | htmlEscape) }}</a></p>

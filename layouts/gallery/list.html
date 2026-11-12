@@ -21,23 +21,26 @@
       {{ $figs := hugo.Data.gallery.figures | default slice }}
       {{ if $figs }}
       <p class="lead">{{ $p.papers_text }}</p>
-      {{- /* each figure's width-to-height ratio, and for every figure after the first the sum of the ratios
-             of its row of three (desktop) and of two (tablet); a row of tall figures counts as at least
-             3 (or 2.2), so it never grows taller than a row of wide ones */}}
-      {{ $ars := slice }}
-      {{ range $figs }}{{ with resources.Get (printf "gallery/%s" .file) }}{{ $ars = $ars | append (div (float .Width) .Height) }}{{ else }}{{ errorf "gallery: no file static/gallery/%s (data/gallery.yaml)" .file }}{{ end }}{{ end }}
-      {{ $rest := after 1 $ars | default slice }}
+      {{- /* each figure's width-to-height ratio (--ar) and the ratio of its slot in a row (--ae): at least
+             1, so a tall figure gets a square slot, the figure at its own shape at the slot's left and
+             its caption the slot's whole width (in a slot as narrow as the figure, a long caption was a
+             column of two or three words a line). For every figure after the first, the sum of the slot
+             ratios of its row of three (desktop) and of two (tablet); an incomplete last row counts as a
+             full one (2.7 or 1.8 at least), so its figures are not drawn larger than the others. */}}
+      {{ $ars := slice }}{{ $aes := slice }}
+      {{ range $figs }}{{ with resources.Get (printf "gallery/%s" .file) }}{{ $a := div (float .Width) .Height }}{{ $ars = $ars | append $a }}{{ $aes = $aes | append (math.Max $a 1.0) }}{{ else }}{{ errorf "gallery: no file static/gallery/%s (data/gallery.yaml)" .file }}{{ end }}{{ end }}
+      {{ $rest := after 1 $aes | default slice }}
       <ol class="paper-list">
         {{ range $i, $f := $figs }}
         {{ range slice "authors" "title" "journal" "year" "figure" "doi" "license" "license_url" "modification" "shows" }}{{ if not (index $f .) }}{{ errorf "gallery: %s has no %q (data/gallery.yaml)" $f.file . }}{{ end }}{{ end }}
         {{ with resources.Get (printf "gallery/%s" $f.file) }}
         {{ $src := . }}
-        {{ $ar := index $ars $i }}
+        {{ $ar := index $ars $i }}{{ $ae := index $aes $i }}
         {{ $r3 := 0.0 }}{{ $r2 := 0.0 }}
         {{ if gt $i 0 }}
           {{ $k := sub $i 1 }}
-          {{ $s3 := mul (div $k 3) 3 }}{{ range first 3 (after $s3 $rest) }}{{ $r3 = add $r3 . }}{{ end }}{{ $r3 = math.Max $r3 3.0 }}
-          {{ $s2 := mul (div $k 2) 2 }}{{ range first 2 (after $s2 $rest) }}{{ $r2 = add $r2 . }}{{ end }}{{ $r2 = math.Max $r2 2.2 }}
+          {{ $s3 := mul (div $k 3) 3 }}{{ range first 3 (after $s3 $rest) }}{{ $r3 = add $r3 . }}{{ end }}{{ $r3 = math.Max $r3 2.7 }}
+          {{ $s2 := mul (div $k 2) 2 }}{{ range first 2 (after $s2 $rest) }}{{ $r2 = add $r2 . }}{{ end }}{{ $r2 = math.Max $r2 1.8 }}
         {{ end }}
         {{ $set := slice }}{{ $mid := $src }}
         {{- /* 480 and 720 for a phone at 1× and 2×, 1080 for a phone at 3× and the rows (quality 76: a phone
@@ -54,7 +57,7 @@
         {{ else }}{{ $f3 := div $ar $r3 }}{{ $f2 := div $ar $r2 }}
           {{ $sizes = printf "(min-width: 1280px) %dpx, (min-width: 1024px) calc((100vw - 208px) * %.3f), (min-width: 640px) calc((100vw - 120px) * %.3f), calc(100vw - 48px)" (int (math.Ceil (mul 1232 $f3))) $f3 $f2 }}
         {{ end }}
-        <li class="paper-fig{{ if eq $i 0 }} paper-fig--lead{{ end }}" id="fig-{{ path.BaseName $f.file }}" style="--ar: {{ $ar | lang.FormatNumber 4 }}{{ if gt $i 0 }}; --r3: {{ $r3 | lang.FormatNumber 4 }}; --r2: {{ $r2 | lang.FormatNumber 4 }}{{ end }}">
+        <li class="paper-fig{{ if eq $i 0 }} paper-fig--lead{{ end }}" id="fig-{{ path.BaseName $f.file }}" style="--ar: {{ $ar | lang.FormatNumber 4 }}; --ae: {{ $ae | lang.FormatNumber 4 }}{{ if gt $i 0 }}; --r3: {{ $r3 | lang.FormatNumber 4 }}; --r2: {{ $r2 | lang.FormatNumber 4 }}{{ end }}">
           {{- /* the picture's alt text is what it shows; the link's name says where it leads, without
                  repeating that sentence */}}
           <a class="paper-fig__img" href="{{ $full.RelPermalink }}" aria-label="Open {{ $f.figure }} of {{ $first }} et al. {{ $f.year }} larger">

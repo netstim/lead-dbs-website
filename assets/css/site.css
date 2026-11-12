@@ -3,52 +3,42 @@
    the two. Change colours and fonts here only. Sections take the height of their content, and the header
    switches to its menu sheet below 1200px (see README, Design). */
 
-/* ---------------------------------------------------------------- fonts (self-hosted, static/fonts) */
-@font-face { font-family: "Open Sans"; font-weight: 400; font-style: normal; font-display: swap; src: url("{{ "fonts/open-sans-latin-400.woff2" | relURL }}") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: "Open Sans"; font-weight: 400; font-style: normal; font-display: swap; src: url("{{ "fonts/open-sans-latin-ext-400.woff2" | relURL }}") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-@font-face { font-family: "Open Sans"; font-weight: 400; font-style: italic; font-display: swap; src: url("{{ "fonts/open-sans-latin-400-italic.woff2" | relURL }}") format("woff2"); }
-/* three more weights of the same files (@fontsource/open-sans 5.1.1, OFL): 500 for labels, the menu and
-   small headings, 600 for buttons and card titles, 700 for the large headings (H1, H2). Each file is
-   fetched only when a page uses its weight. */
-@font-face { font-family: "Open Sans"; font-weight: 500; font-style: normal; font-display: swap; src: url("{{ "fonts/open-sans-latin-500.woff2" | relURL }}") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122, U+FEFF; }
-@font-face { font-family: "Open Sans"; font-weight: 500; font-style: normal; font-display: swap; src: url("{{ "fonts/open-sans-latin-ext-500.woff2" | relURL }}") format("woff2"); unicode-range: U+0100-02BA, U+1E00-1EFF, U+2C60-2C7F, U+A720-A7FF; }
-@font-face { font-family: "Open Sans"; font-weight: 600; font-style: normal; font-display: swap; src: url("{{ "fonts/open-sans-latin-600.woff2" | relURL }}") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122, U+FEFF; }
-@font-face { font-family: "Open Sans"; font-weight: 600; font-style: normal; font-display: swap; src: url("{{ "fonts/open-sans-latin-ext-600.woff2" | relURL }}") format("woff2"); unicode-range: U+0100-02BA, U+1E00-1EFF, U+2C60-2C7F, U+A720-A7FF; }
-@font-face { font-family: "Open Sans"; font-weight: 700; font-style: normal; font-display: swap; src: url("{{ "fonts/open-sans-latin-700.woff2" | relURL }}") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122, U+FEFF; }
-@font-face { font-family: "Open Sans"; font-weight: 700; font-style: normal; font-display: swap; src: url("{{ "fonts/open-sans-latin-ext-700.woff2" | relURL }}") format("woff2"); unicode-range: U+0100-02BA, U+1E00-1EFF, U+2C60-2C7F, U+A720-A7FF; }
-/* Geist Mono (@fontsource/geist-mono 5.3.0, OFL, licence in OFL-geist-mono.txt), one weight (500), Latin
-   only: the capital labels, and the dates, times and version numbers that stand as data (below). About
-   10 KB, fetched with the first label; until then a system monospace with the same advance and line
-   metrics holds its place. */
-@font-face { font-family: "Geist Mono"; font-weight: 500; font-style: normal; font-display: swap; src: url("{{ "fonts/geist-mono-latin-500-normal.woff2" | relURL }}") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: "Geist Mono Fallback"; src: local("Liberation Mono"), local("Courier New"), local("CourierNewPSMT"), local("Cousine");
-  size-adjust: 100%; ascent-override: 100.5%; descent-override: 29.5%; line-gap-override: 0%; }
-/* until Open Sans has loaded, the text is set in a system sans scaled to Open Sans's width and line
-   height, so nothing moves when the font arrives */
-@font-face { font-family: "Open Sans Fallback"; src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Helvetica");
-  size-adjust: 105.2%; ascent-override: 101.6%; descent-override: 27.9%; line-gap-override: 0%; }
+/* ---------------------------------------------------------------- fonts (self-hosted, static/fonts)
+   Inter (@fontsource-variable/inter 5.2.5, OFL, licence in OFL-inter.txt), one variable file per script
+   with the weight and the optical-size axes: headings tighten by themselves at large sizes. One face for
+   everything: text, headings, labels, and dates and times (with figures of equal width). */
+@font-face { font-family: "Inter"; font-style: normal; font-display: swap; font-weight: 100 900; src: url("{{ "fonts/inter-latin-var.woff2" | relURL }}") format("woff2-variations"), url("{{ "fonts/inter-latin-var.woff2" | relURL }}") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Inter"; font-style: normal; font-display: swap; font-weight: 100 900; src: url("{{ "fonts/inter-latin-ext-var.woff2" | relURL }}") format("woff2-variations"), url("{{ "fonts/inter-latin-ext-var.woff2" | relURL }}") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+/* until Inter has loaded, a system sans scaled to Inter's width and line height, so nothing moves */
+@font-face { font-family: "Inter Fallback"; src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Helvetica");
+  size-adjust: 107.4%; ascent-override: 90.2%; descent-override: 22.48%; line-gap-override: 0%; }
 
-/* ---------------------------------------------------------------- palette: cool-white-slate */
+/* ---------------------------------------------------------------- palette: Blend
+   A white ground and a warm dark grey ink (as Notion's), the deep blue of The Darjeeling Limited for
+   actions, the coral of The Grand Budapest Hotel as the one signal (the current page, a marker), and two
+   pale tints of the same films (periwinkle, blush) for soft fills; the logo's wedges are of this family. */
 :root {
-  --p-bg: #f7f9fa; --p-surface: #ecf0f2; --p-ink: #1f3038; --p-muted: #5d6b72;
-  --p-accent: #0d7480; --p-accent-ink: #ffffff; --p-action: #0d7480; --p-action-ink: #ffffff;
+  --p-bg: #ffffff; --p-surface: #f5f6f7; --p-ink: #2f3437; --p-muted: #6f7479;
+  --p-accent: #e0645a; --p-accent-ink: #ffffff; --p-action: #2b5c8a; --p-action-ink: #ffffff;
+  --p-tint-1: #c6cdf7; --p-tint-2: #f4c6cf;
   /* the one dark of the site is the black of the renders: hero, page heads, the 4.0 band, videos, footer */
   --p-inv-bg: #000; --p-inv-surface: #171b1d; --p-inv-ink: #f7f9fa; --p-inv-muted: #a3abaf;
   --p-inv-accent: #f7f9fa; --p-inv-accent-ink: #1f3038; --p-inv-action: #f7f9fa; --p-inv-action-ink: #1f3038;
-  --font-display: "Open Sans", "Open Sans Fallback", system-ui, sans-serif;
-  --font-text: "Open Sans", "Open Sans Fallback", system-ui, sans-serif;
+  --font-display: "Inter", "Inter Fallback", system-ui, sans-serif;
+  --font-text: "Inter", "Inter Fallback", system-ui, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  /* the voice of the labels, dates and facts; code keeps the system monospace (--font-mono) */
-  --font-meta: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
+  /* dates, times and versions that stand as values: the same face, figures of equal width (below); code
+     keeps the system monospace (--font-mono) */
+  --font-meta: var(--font-text);
   /* four weights carry the levels: 700 the large headings (80 and 48), 600 the titles at 32, 23 and
      20 px, the buttons, the labels and the logo's name, 500 the menu and the values beside labels; the
      text is 400 */
-  --display-weight: 700;
+  --display-weight: 600;
   --title-weight: 600;
-  --display-tracking: -0.02em;
-  --display-tracking-xl: -0.025em;
+  --display-tracking: -0.025em;
+  --display-tracking-xl: -0.032em;
   --render: #000;           /* the black of the BrainDeer renders */
-  --measure: 59ch;          /* documentation line length: about 72 characters of Open Sans at 18px */
+  --measure: 62ch;          /* documentation line length: about 72 characters of Inter at 18px */
   --rhythm: clamp(48px, 4.4vw + 8px, 88px);   /* the space above and below a home section: 71px at 1440 */
   /* the type scale, sized by importance (at 1440): --t-display 80 (the hero's title), --t-h2 48 (a
      home section, an inner page's title), --t-h3 32 (a page's sections, the Features chapters, the
@@ -59,18 +49,17 @@
      base.css sets all but the first; the header's logo and words have their own sizes */
   --t-display: clamp(44px, 3.429vw + 30.63px, 80px);
   /* the labels: the short words that name a value or a group ("Release", "Input", "Manual", a table's
-     head, a chapter's number), in capitals of Geist Mono, so they read as names, not as text. Its capitals
-     are as tall as Open Sans's at the same size, and it needs less tracking */
-  --font-label: var(--font-meta);
+     head, a chapter's number): small, medium weight and muted, in sentence case */
+  --font-label: var(--font-text);
   --label-size: 13px;
   --label-weight: 500;
-  --label-tracking: .04em;
-  --label-case: uppercase;
+  --label-tracking: 0;
+  --label-case: none;
 }
 @media (max-width: 639px) { :root { --label-size: 14px; } }
 /* browsers without color-mix() (Safari before 16.2): the hairlines would vanish */
 @supports not (color: color-mix(in oklab, red 50%, blue)) {
-  :root { --line: rgb(31 48 56 / .12); --line-strong: rgb(31 48 56 / .24); }
+  :root { --line: rgb(47 52 55 / .12); --line-strong: rgb(47 52 55 / .24); }
   .ground-inverse, .footer--dark { --line: rgb(247 249 250 / .16); --line-strong: rgb(247 249 250 / .3); }
 }
 .nowrap { white-space: nowrap; }
@@ -79,18 +68,15 @@
     .sidebar p.t-label, .prose th, .prose .capability__refs dt) {
   font-family: var(--font-label); font-size: var(--label-size); font-weight: var(--label-weight); font-style: normal;
   line-height: 1.4; letter-spacing: var(--label-tracking); text-transform: var(--label-case); font-synthesis: none; }
-/* the other use of Geist Mono: a date, a time or a version that stands alone as a value. Every date and
-   time of the site is a <time> element, and a version or a count beside words is a .num. Inside a
-   sentence ("Released 2 March 2026 · MATLAB R2024b or later", "MATLAB R2024b or later") they stay in the
-   Open Sans of the sentence, with figures of equal width, so one run of text never mixes two faces.
-   Geist Mono only where the value is the whole line or cell: the hero's release, the date line of a
-   news item, an event's date, time and short date line, a table cell, a video chapter's time. There it
-   is a little smaller than the Open Sans around it, as its letters are wider. To add a place, add its
-   selector to the list. */
+/* a date, a time or a version that stands alone as a value: every date and time of the site is a
+   <time> element, and a version or a count beside words is a .num. All take figures of equal width, so
+   columns of dates line up; where the value is the whole line or cell (the hero's release, the date line
+   of a news item, an event's date and time, a table cell) it is also set in medium weight. To add a
+   place, add its selector to the list. */
 :where(time, .num) { font-variant-numeric: tabular-nums; }
 :is(.hero__release, .news-item__date, .post-summary__date, .event__date, .event__facts dd, .event-when, .prose td, .chapters__t) :where(time, .num),
 :where(time, .num):is(.post-summary__date, .chapters__t, .event-when) {
-  font-family: var(--font-meta); font-weight: 500; font-size: .94em; letter-spacing: 0; font-synthesis: none; }
+  font-family: var(--font-meta); font-weight: 500; letter-spacing: 0; }
 /* in a button or a link with an arrow (flex boxes) the kept-together name joins the words around it,
    so it does not become an item of its own with a gap on either side ("Lead-DBS .org") */
 :is(.btn, .link, .footer ul a) .nowrap { display: contents; }
@@ -119,7 +105,7 @@ html.nav-ready .nav { transition: background-color 240ms var(--ease), color 240m
    lies under the header) the bar takes the black. A page that starts on such a ground (body.top-dark,
    layouts/baseof.html) has it from the first paint, before the script runs (html.nav-ready). On the home
    page's hero the bar is clear at the very top, a soft shade behind its words, so the render runs up to
-   the window's edge; it turns solid (blurred black) as soon as the page scrolls. Its panels and the open
+   the window's edge; it turns solid (blurred black) as soon as the page scrolls. Its bands (at 1200 and up) take the same ground; the open
    sheet stay light. The home rules name html and body, so they outrank the black bar's two rules. */
 .nav.is-dark:not(.is-open), html:not(.nav-ready) .top-dark .nav:not(.is-open) { background: var(--render); color: #fff; border-bottom-color: transparent;
   --ink: #fff; --surface: rgb(255 255 255 / .12); --line: rgb(255 255 255 / .16); --line-strong: rgb(255 255 255 / .4); }
@@ -140,8 +126,6 @@ html body.kind-home .nav.is-dark:not(.is-scrolled, .is-open) { background: linea
 /* the menu button may stand over the render: a dark ground of its own keeps its lines readable */
 html body.kind-home .nav:not(.is-scrolled, .is-open) .nav__toggle { background: rgb(0 0 0 / .5); }
 .nav.is-dark .nav__icon:hover, html:not(.nav-ready) .top-dark .nav .nav__icon:hover { color: #fff; }
-:is(.nav.is-dark, html:not(.nav-ready) .top-dark .nav) .nav__menu { --ink: var(--p-ink); --bg: var(--p-bg); --surface: var(--p-surface); --muted: var(--p-muted);
-  --line: color-mix(in oklab, var(--p-ink) 11%, transparent); color: var(--p-ink); }
 .nav__logo { display: inline-flex; align-items: center; gap: var(--s-2); flex: none; font: var(--title-weight) 22px/1 var(--font-display); letter-spacing: -0.02em; }
 .nav__logo img { height: 34px; width: auto; }
 .footer .nav__logo { font-size: 28px; gap: var(--s-3); }
@@ -177,26 +161,45 @@ html:not(.js) .nav__link .chev { display: none; }
 .menu-col a:hover { color: var(--action); transition-duration: var(--t-in); }
 .menu-col > .t-label { color: var(--muted); }
 
-/* 1200 and up: the words in the bar; a word with pages opens a small panel under it on hover (after
-   150ms, so a pointer passing over does not open it), and at once from its chevron button (.is-expanded,
-   set by assets/js/main.js; without script, on keyboard focus). Once a panel is open, the next one opens
-   without the wait (.nav.is-browsing). */
+/* 1200 and up: the words in the bar; a word with pages opens a band under the whole header. With script
+   (assets/js/main.js) hover is the header's as a whole: a panel opens once the pointer has rested on its
+   word (.is-hovered), at once from its chevron button (.is-expanded), and the spaces between the words
+   keep it open. All panels share one ground, .nav__band: it stays while the pointer moves from word to
+   word and eases to the height of the panel now shown, while the panels, clear, cross-fade on it (the
+   old one out, then the new one in, so two never show at once). Without script each panel is a band of
+   its own, on hover and keyboard focus. The band is the header grown downwards: the header's own ground
+   (black over the renders, light elsewhere), its content on the page's container, one column per section
+   (hugo.toml params.divider), a caption over each, every entry its title over a line (params.card). */
 @media (min-width: 1200px) {
   .nav__bar { gap: var(--s-6); }
   .nav__links { display: flex; align-self: stretch; justify-content: center; flex: none; min-width: 0; }
-  .nav__item { position: relative; }
-  .nav__menu { position: absolute; top: calc(100% - 8px); left: 50%; translate: -50% 0; width: max-content; min-width: 220px; max-width: min(560px, 90vw);
-    padding: var(--s-4) var(--s-5); background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: var(--r-md);
-    box-shadow: 0 12px 32px -12px rgb(31 48 56 / .25);
-    opacity: 0; visibility: hidden; transform: translateY(-6px);
-    transition: opacity var(--t-out) var(--ease), transform var(--t-out) var(--ease), visibility 0s linear var(--t-out); }
-  :is(.nav__item:hover, .nav__item.is-expanded, html:not(.js) .nav__item:focus-within) > .nav__menu { opacity: 1; visibility: visible; transform: none;
-    transition-duration: 200ms, 200ms, 0s; transition-delay: 150ms; }
-  :is(.nav__item.is-expanded, html:not(.js) .nav__item:focus-within) > .nav__menu, .nav.is-browsing .nav__menu { transition-delay: 0s; }
-  .nav.is-browsing .nav__menu { transition-duration: 0s; }
-  :is(.nav__item:hover, .nav__item.is-expanded, html:not(.js) .nav__item:focus-within) > :is(.nav__link .chev, .nav__expand svg) { transform: rotate(180deg); }
-  .nav__item.is-dismissed:not(.is-expanded) > .nav__menu { opacity: 0; visibility: hidden; transform: translateY(-6px); transition: none; }
+  .nav__menu { position: absolute; top: 100%; left: 0; right: 0; z-index: 1;
+    padding: var(--s-6) 0 var(--s-7); color: var(--ink);
+    opacity: 0; visibility: hidden;
+    transition: opacity 120ms var(--ease), visibility 0s linear 120ms; }
+  .nav__menu-cols { width: min(100% - 2 * var(--gut), var(--container)); margin-inline: auto;
+    display: flex; gap: clamp(var(--s-7), 4.5vw, var(--s-8)); }
+  :is(.nav__item.is-hovered, .nav__item.is-expanded, html:not(.js) .nav__item:hover, html:not(.js) .nav__item:focus-within) > .nav__menu {
+    opacity: 1; visibility: visible; transition: opacity 180ms var(--ease) 60ms, visibility 0s; }
+  :is(.nav__item.is-hovered, .nav__item.is-expanded, html:not(.js) .nav__item:hover, html:not(.js) .nav__item:focus-within) > :is(.nav__link .chev, .nav__expand svg) { transform: rotate(180deg); }
+  .nav__item.is-dismissed:not(.is-expanded) > .nav__menu { opacity: 0; visibility: hidden; transition: none; }
   .nav__item.is-dismissed:not(.is-expanded) > :is(.nav__link .chev, .nav__expand svg) { transform: none; }
+  /* the shared ground */
+  .nav__band { position: absolute; top: 100%; left: 0; right: 0; z-index: 0; height: 0; pointer-events: none;
+    background: var(--bg); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    box-shadow: 0 24px 40px -24px rgb(0 0 0 / .22);
+    opacity: 0; visibility: hidden;
+    transition: height 260ms var(--ease-out), opacity 140ms var(--ease), visibility 0s linear 140ms; }
+  .nav.band-open .nav__band { opacity: 1; visibility: visible; transition: height 260ms var(--ease-out), opacity 160ms var(--ease), visibility 0s; }
+  .nav.band-instant .nav__band { transition: opacity 160ms var(--ease), visibility 0s; }
+  html:not(.js) .nav__menu { background: var(--bg); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); box-shadow: 0 24px 40px -24px rgb(0 0 0 / .22); }
+  /* while a band is open the header is solid, so the clear bar over the home page's hero and the band
+     read as one surface */
+  html body.kind-home .nav.is-dark:has(.nav__expand[aria-expanded="true"]):not(.is-open),
+  html:not(.js) body.kind-home .nav:has(.nav__item:focus-within .nav__menu) { background: var(--render); }
+  :is(.nav.is-dark, html:not(.nav-ready) .top-dark .nav) .nav__band { background: var(--render); }
+  :is(.nav.is-dark, html:not(.nav-ready) .top-dark .nav) .nav__menu { --muted: var(--p-inv-muted); }
+  html:not(.js) .top-dark .nav .nav__menu { background: var(--render); }
   /* with script the chevron is a button of its own beside the word (it opens the panel from the keyboard) */
   html.js .nav__link .chev { display: none; }
   /* the chevron is drawn 28px wide, its target 44 × 44: it reaches 8px into the space on either side
@@ -210,14 +213,26 @@ html:not(.js) .nav__link .chev { display: none; }
   .nav__expand svg { width: 12px; height: 12px; opacity: .6; transition: transform var(--dur) var(--ease); }
   .nav__expand:hover svg { opacity: 1; }
   .nav__expand:focus-visible { outline-offset: -2px; }
-  .nav__menu-cols { display: flex; gap: var(--s-7); }
-  .nav__menu .menu-col { min-width: 180px; }
-  .nav__menu .menu-col a { padding: 7px 0; white-space: nowrap; }
-  .nav__menu .t-label { margin: 0 0 var(--s-1); }
+  /* a section: its caption, then its entries (more than three: in two columns) */
+  .nav__menu { --menu-col: clamp(12rem, 16vw, 17rem); }
+  .nav__menu .menu-col { display: grid; grid-template-columns: var(--menu-col); align-content: start; column-gap: var(--s-6); row-gap: var(--s-4); }
+  .nav__menu .menu-col--two { grid-template-columns: repeat(2, var(--menu-col)); }
+  .nav__menu .menu-caption { grid-column: 1 / -1; min-height: 1.4em; margin-bottom: var(--s-1); color: var(--muted); }
+  .nav__menu .menu-entry { display: grid; gap: 2px; font-weight: 400; }
+  .nav__menu .menu-entry__title { display: inline-flex; align-items: center; gap: var(--s-2); font-size: var(--t-body); font-weight: 500; line-height: 1.4; }
+  .nav__menu .menu-entry__text { font-size: var(--t-small); line-height: 1.45; color: var(--muted); text-wrap: pretty; }
+  .nav__menu .menu-entry:hover { color: inherit; }
+  .nav__menu .menu-entry:hover .menu-entry__title { color: var(--action); }
+  .nav.is-dark .nav__menu .menu-entry:hover .menu-entry__title { color: #fff; }
+  .nav__menu .menu-entry .m-arrow { color: var(--action); opacity: 0; transition: opacity var(--t-out) var(--ease); }
+  .nav.is-dark .nav__menu .menu-entry .m-arrow { color: #fff; }
+  .nav__menu .menu-entry:is(:hover, :focus-visible) .m-arrow { opacity: 1; transition-duration: var(--t-in); }
+  .nav__menu .menu-entry:is(:hover, :focus-visible) .m-arrow__stem { opacity: 1; transform: none; transition-duration: var(--t-in); }
+  .nav__menu .menu-entry:is(:hover, :focus-visible) .m-arrow__head { transform: translateX(3px); transition-duration: var(--t-in); }
   .nav__menu .t-label a { color: var(--muted); font-weight: 500; padding-bottom: 2px; }
   .nav__menu .t-label a:hover { color: var(--action); }
 }
-@media (min-width: 1200px) and (prefers-reduced-motion: reduce) { .nav__menu, .nav__item.is-dismissed > .nav__menu { transform: none; } }
+@media (min-width: 1200px) and (prefers-reduced-motion: reduce) { .nav__band, .nav.band-open .nav__band { transition-property: opacity, visibility; } }
 @media (min-width: 1200px) and (max-width: 1439px) {
   .nav__link { padding: 0 var(--s-2); }
   .nav__expand { margin-right: 0; }
@@ -335,7 +350,7 @@ main > .home-hero { position: relative; isolation: isolate; background: var(--re
 .home-hero__facts a .m-arrow { display: inline-block; width: 10px; height: 10px; margin: 0 0 0 .35em; vertical-align: 0; }
 .home-hero__facts .ext-mark { color: inherit; opacity: .7; }
 .hero__event[hidden], .hero__event dd[hidden] { display: none; }
-/* the next event: its name, under it its short date and time as a line of their own (in Geist Mono, as
+/* the next event: its name, under it its short date and time as a line of their own (medium weight, as
    a value that stands alone), kept whole with its chevron */
 .hero__event .event-when { display: block; width: fit-content; white-space: nowrap; }
 /* the pause button, 44px, clear of the words, on the content's right edge: on a desktop above the right
@@ -362,15 +377,16 @@ main > .home-hero { position: relative; isolation: isolate; background: var(--re
 @media (min-width: 1024px) and (max-width: 1365px) {
   .home-hero__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #000 0%, rgb(0 0 0 / .85) 36%, rgb(0 0 0 / 0) 62%); }
 }
-/* 1200 and up: the clip is drawn 12 % larger, anchored bottom left, so the lead leaves the frame in the
-   top-right corner, past the header's button, and the nuclei stay clear of the words */
-@media (min-width: 1200px) {
-  .home-hero__media > video { inset: auto auto 0 0; width: 112%; height: 112%; object-position: 0% 100%; }
-}
-/* up to 1439 the window is too narrow for that: the lead would leave the frame right behind the header's
-   button, so the clip moves right until it leaves past the button's end */
-@media (min-width: 1200px) and (max-width: 1439px) {
-  .home-hero__media > video { left: 7%; }
+/* 1024 and up (the words on the left, the render on the right): the clip is anchored to the window's
+   right edge and sized by the hero's height, never by its width, so its subject (the nuclei and the lead,
+   in the right half of the 16:10 frame, whose left half is black) keeps one place whatever the window's
+   shape: a wider window adds black on the left, under the words, and crops nothing. On a tall, narrow
+   window the height is capped (58vw), so the nuclei do not grow under the words; the clip then sits on
+   the hero's floor with black above it. It is drawn 6 % larger and 3 % past the right edge, so the lead
+   leaves the frame at the top right, into the fade under the header. */
+@media (min-width: 1024px) {
+  .home-hero__media > video { inset: auto -3% 0 auto; width: auto; height: min(106%, 58vw); aspect-ratio: 16 / 10; max-width: none;
+    object-fit: cover; object-position: 50% 50%; }
 }
 @media (min-width: 1024px) {
   .home-hero__wrap { gap: var(--s-6); padding-bottom: var(--s-6); }
@@ -388,9 +404,8 @@ main > .home-hero { position: relative; isolation: isolate; background: var(--re
 @media (min-width: 1024px) and (max-width: 1199px) {
   .home-hero h1 { font-size: 60px; }
   .home-hero .hero__lead { margin-top: var(--s-6); }
-  .home-hero__media > video { object-position: 0% 40%; }
   /* the words take a wider column (the title on two lines, the buttons and the manual on one row), so the
-     facts row still ends inside a 768px-high screen; the render moves right and the black under the
+     facts row still ends inside a 768px-high screen; the black under the
      words reaches further */
   .home-hero__text { max-width: 580px; }
   .home-hero__media::after { background: linear-gradient(90deg, #000 0%, rgb(0 0 0 / .88) 46%, rgb(0 0 0 / 0) 70%); }
@@ -636,7 +651,7 @@ main > .home-hero { position: relative; isolation: isolate; background: var(--re
    the three quotes in white on its black left side, one under the other. Below 1024 the render is a box
    on top and the quotes follow on the same black. */
 .home > .render-band { position: relative; isolation: isolate; overflow: hidden; background: var(--render); color: #fff;
-  --ink: #fff; --muted: rgb(255 255 255 / .72); --line: rgb(255 255 255 / .2); --action: #7fd3dc; }
+  --ink: #fff; --muted: rgb(255 255 255 / .72); --line: rgb(255 255 255 / .2); --action: #b4bff6; }
 .render-band__img { margin: 0; }
 .render-band__img > img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .render-band__wrap { position: relative; z-index: 1; }
@@ -995,7 +1010,7 @@ main.page { padding-top: var(--nav); }
 .video-embed__play { flex: none; display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: var(--p-action); color: #fff; transition: transform var(--dur) var(--ease); }
 .video-embed__play svg { width: 26px; height: 26px; margin-left: 3px; }
 .video-embed__start:hover .video-embed__play { transform: scale(1.06); }
-.video-embed__start:focus-visible { outline: 3px solid #7fd3dc; outline-offset: -3px; }
+.video-embed__start:focus-visible { outline: 3px solid #b4bff6; outline-offset: -3px; }
 .video-embed__text { display: grid; gap: var(--s-1); }
 .video-embed__title { font: var(--title-weight) var(--t-card)/1.3 var(--font-display); }
 .video-embed__note { font-size: var(--t-note); color: rgb(255 255 255 / .72); }
@@ -1004,6 +1019,14 @@ main.page { padding-top: var(--nav); }
 html .video-embed--poster .video-embed__start { background: linear-gradient(to top, rgb(0 0 0 / .86) 0, rgb(0 0 0 / .72) 30%, rgb(0 0 0 / .2) 58%, rgb(0 0 0 / 0) 75%); }
 .video-embed--poster .video-embed__note { color: rgb(255 255 255 / .8); }
 @media (max-width: 639px) { .video-embed__start { padding: var(--s-4); } .video-embed__play { width: 48px; height: 48px; } .video-embed__title { font-size: var(--t-body); } }
+/* before it plays, the box is 16:9 at least and grows with its title and note (a long title on a narrow
+   phone would otherwise be cut off at the top): the button is in the flow, the box no longer clips, and
+   the poster and the button round their own corners. The player (.is-playing) is 16:9 again. */
+.video-embed:not(.is-playing) { overflow: visible; }
+.video-embed:not(.is-playing) > .video-embed__start { position: relative; min-height: 100%; border-radius: inherit; }
+.video-embed:not(.is-playing) > .video-embed__poster { border-radius: inherit; }
+/* a phone: the title and note fill most of the frame, so the shade covers all of it */
+@media (max-width: 639px) { html .video-embed--poster .video-embed__start { background: linear-gradient(to top, rgb(0 0 0 / .88) 0, rgb(0 0 0 / .74) 55%, rgb(0 0 0 / .5) 100%); } }
 
 /* forms (labels above, 48px fields) */
 .form { display: grid; gap: var(--s-4); max-width: var(--measure); margin: 0 0 1.5em; }
@@ -1138,10 +1161,11 @@ img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md
 .paper-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-7) var(--gutter); align-items: start; }
 .paper-fig { flex: 1 1 100%; min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); align-content: start; scroll-margin-top: calc(var(--nav) + var(--s-4)); }
 @media (min-width: 640px) {
-  .paper-fig:not(.paper-fig--lead) { flex: none; width: calc((100% - var(--gutter)) * var(--ar) / var(--r2) - .5px); }
+  .paper-fig:not(.paper-fig--lead) { flex: none; width: calc((100% - var(--gutter)) * var(--ae) / var(--r2) - .5px); }
+  .paper-fig:not(.paper-fig--lead) .paper-fig__img { width: calc(100% * var(--ar) / var(--ae)); }
 }
 @media (min-width: 1024px) {
-  .paper-fig:not(.paper-fig--lead) { width: calc((100% - 2 * var(--gutter)) * var(--ar) / var(--r3) - .5px); }
+  .paper-fig:not(.paper-fig--lead) { width: calc((100% - 2 * var(--gutter)) * var(--ae) / var(--r3) - .5px); }
   .paper-fig--lead { grid-template-columns: 2fr 1fr; column-gap: var(--s-6); align-items: start; }
   .paper-fig--lead > .paper-fig__text { padding-top: var(--s-1); }
 }
