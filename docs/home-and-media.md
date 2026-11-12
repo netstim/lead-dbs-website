@@ -119,10 +119,28 @@ Figures are shown whole (scaled to fit, never cropped) from resized WebP copies;
 opens the original file. Keep it to about a dozen figures, each understandable without context and
 really made with Lead-DBS.
 
-## Usage figures (the globe on the home page and /usage/)
+## Download figures (the globe on the home page)
 
-The home page's "Used in N countries" section and the page `/usage/` show how often Lead-DBS is started,
-by country. The figures are a snapshot in `data/usage.json`; nothing is fetched from the server when the
+The home page's "Downloaded in N countries" section replays the downloads of Lead-DBS since November 2015
+on a globe, a month every 0.3 seconds. The figures are a snapshot in `data/downloads.json`. To refresh them,
+copy `download.log` (and `download.log.bak`) from the lead-dbs.org server into a folder and run
+`python3 tools/downloads.py <log folder> <database.mmdb>` (same packages and database as below).
+
+What is counted: one IP address fetching one item on one day is one download; only Lead-DBS itself
+(latest, hotfix, the standalone builds ...), not data packs or atlases; bots are left out (known crawler
+and cloud address blocks, and addresses with more than 50 downloads). `tools/downloads.py` says more.
+`data/downloads.json` holds downloads by country and month only: no IP address, city or network name.
+
+- **The globe** is drawn by `assets/js/globe.js` with d3-array, d3-geo and topojson-client
+  (`assets/js/vendor/`, ISC licence) and the Natural Earth country map `assets/data/world-110m.json`
+  (from the world-atlas package), with the download figures (`data/downloads.json`, published by
+  `layouts/home.html` as a separate JSON file). The script, then the map and the figures, are fetched when the section comes within
+  800 px of the screen (`assets/js/main/home.js` adds the script). Without
+  JavaScript the section shows its words only. Its texts are `worldwide:` in `content/_index.md`.
+
+## Usage figures (/usage/)
+
+The page `/usage/` shows how often Lead-DBS is started, by country. The figures are a snapshot in `data/usage.json`; nothing is fetched from the server when the
 site is built or viewed. To refresh them:
 
 1. Copy `access.log` (and `access.log.bak`) from the lead-dbs.org server into a folder, and download a free
@@ -134,14 +152,9 @@ site is built or viewed. To refresh them:
 
 What is counted and published: a launch is one start of Lead-DBS, and the same address counts once an
 hour. `data/usage.json` holds totals by country, year, month, hour and tool, and for the last full day of
-the log the minute and country of each launch (the globe replays that day). It holds no IP address, city
+the log the minute and country of each launch (no longer shown). It holds no IP address, city
 or network name; do not add any.
 
-- **The globe** is drawn by `assets/js/globe.js` with d3-array, d3-geo and topojson-client
-  (`assets/js/vendor/`, ISC licence) and the Natural Earth country map `assets/data/world-110m.json`
-  (from the world-atlas package). The script and then the map are fetched when the section comes within
-  800 px of the screen (`assets/js/main/home.js` adds the script). Without
-  JavaScript the section shows its words only. Its texts are `worldwide:` in `content/_index.md`.
 - **The page `/usage/`** is `content/usage/index.md` (chart headings) and `layouts/usage.html`. It runs no
   script: the charts are inline SVG, coloured in `assets/css/site.css` ("usage"). Below them, folded, a
   table of every country and its launches (`#all-countries`), which the globe's section links to as
