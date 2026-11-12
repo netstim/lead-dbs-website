@@ -47,7 +47,7 @@
     <h2 id="need-h">What you need</h2>
     <dl class="dl-grid dl-grid--needs">
       {{ partial "fact.html" (dict "label" "MATLAB" "value" (printf "%s or later" $r.matlab) "text" (printf "With the %s. The %s are optional." $r.toolboxes $r.toolboxes_optional) "wide" true) }}
-      {{ partial "fact.html" (dict "label" "Software" "value" $r.needs "text" (printf `<a href="%s">Get %s</a>` $r.needs_url $r.needs | safeHTML)) }}
+      {{ partial "fact.html" (dict "label" "Software" "value" $r.needs "text" (partial "inline/needs-link.html" $r)) }}
       {{ partial "fact.html" (dict "label" "Memory" "value" (printf "%s or more" $r.memory)) }}
       {{- range $i.requirements_more }}
       {{ partial "fact.html" (dict "label" .label "value" .value "text" (.text | $.RenderString)) }}
@@ -178,3 +178,10 @@
   <div class="wrap page-related">{{ partial "next-steps.html" . }}</div>
 </main>
 {{ end }}
+
+{{- /* where to get the software Lead-DBS needs (data/release.yaml needs, needs_url): the link is written
+       here rather than with printf and safeHTML, so html/template checks the address; without needs_url
+       the cell has no line under its value */ -}}
+{{- define "_partials/inline/needs-link.html" -}}
+{{ with .needs_url }}<a href="{{ . }}">Get {{ $.needs }}</a>{{ end }}
+{{- end -}}
