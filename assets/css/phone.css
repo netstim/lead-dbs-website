@@ -75,4 +75,22 @@
   .next-band__point { padding-block: var(--s-3); }
   .funders { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2) var(--s-6); }
   .funders li { min-height: 44px; }
+
+  /* the home page as one white page: the gallery's black band and the 4.0 panel take the page's ground,
+     every section heading has one size and weight, and the sections are spaced alike */
+  .home > .section { padding-block: var(--s-8); }
+  .home h2, .home .closing__h, .home .pulse__h, .home > .research-band .section-head h2 { max-width: none; color: var(--ink);
+    font-size: var(--t-h2); font-weight: 500; letter-spacing: var(--display-tracking-xl); }
+  #localize .split__text h2, .worldwide .split__text h2 { font-weight: 500; letter-spacing: var(--display-tracking-xl); }
+  .home .t-lead, .home .section-head p { color: var(--muted); }
+  .home > .research-band { --nav-ground: light; background: var(--bg); color: var(--ink);
+    --ink: var(--p-ink); --muted: var(--p-muted); --line: color-mix(in oklab, var(--p-ink) 11%, transparent); }
+  .home > .research-band .section-head p { color: var(--muted); }
+  .research-band .fig-strip__img { border-radius: var(--r-md); }
+  .next-band__inner { gap: var(--s-6); padding: 0; border-radius: 0; background: none; }
+  .next-band__label { background: var(--surface); }
+
+  /* the footer: on the page's ground under a hairline, as the rest */
+  .footer--dark.ground-inverse { --bg: var(--p-bg); --surface: var(--p-surface); --ink: var(--p-ink); --muted: var(--p-muted);
+    --line: color-mix(in oklab, var(--p-ink) 11%, transparent); border-top: 1px solid var(--line); }
 }
