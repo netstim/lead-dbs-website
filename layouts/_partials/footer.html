@@ -1,44 +1,90 @@
-{{- /* The footer of every page: the main menu's groups in full (hugo.toml [menus.main]; each heading links
-     to the group's page), a "Site" column (#site-pages, where the header's menu link leads when script is
-     off), the lab's links (data/links.yaml: the institute, its podcast and talks), and the legal line,
-     which also carries the research-use statement. Everything sits on the header's container: the logo
-     and its line on top, then the columns side by side, as many to a row as fit (one row on a desktop). On a
-     phone the columns fold to rows that open with a chevron (assets/js/main.js); without script they stay open. */ -}}
+{{- /* The footer of every page, on the dark ground: the logo and its line, then the link columns, named
+     and grouped as the header's menu (hugo.toml [menus.main]): getting Lead-DBS first, then Features,
+     Docs and help, Atlases and data, Community (with the news) and About, each with its main pages, and the
+     institute's own sites (data/links.yaml); under them the legal line, which also carries the
+     research-use statement and the credits of the renders. It also keeps what the menu does not have:
+     the source code, the bug reports, the news feed, search, and the legal pages in [menus.footer].
+     Release information has one name and one place, the download page's "Release history". A site path
+     (optionally with #section) that names no page stops the build. On a phone the columns fold to rows
+     that open with a chevron (assets/js/main.js); without script they stay open. */ -}}
 {{ $r := hugo.Data.release }}
+{{ $gh := site.Params.github }}
+{{ $cols := slice
+  (dict "h" "Get Lead-DBS" "links" (slice
+    (dict "l" "Download Lead-DBS" "u" "/download")
+    (dict "l" "Release history" "u" "/download/#releases")
+    (dict "l" "Source code on GitHub" "u" $gh)
+    (dict "l" "Bug reports" "u" (cond (ne $gh nil) (printf "%s/issues" $gh) ""))))
+  (dict "h" "Features" "links" (slice
+    (dict "l" "Features" "u" "/helpsupport/knowledge-base/lead-dbs-methods")
+    (dict "l" "Lead-OR" "u" "/about/lead-or")
+    (dict "l" "Made with Lead-DBS" "u" "/gallery")))
+  (dict "h" "Docs and help" "links" (slice
+    (dict "l" "Docs and help" "u" "/helpsupport")
+    (dict "l" "First steps" "u" "/helpsupport/first-steps")
+    (dict "l" "Manual" "u" "https://netstim.gitbook.io/leaddbs")
+    (dict "l" "Walkthrough videos" "u" "/helpsupport/knowledge-base/walkthrough-videos")
+    (dict "l" "Search" "u" "/search")))
+  (dict "h" "Atlases and data" "links" (slice
+    (dict "l" "Atlases and data" "u" "/helpsupport/knowledge-base/atlasesresources")
+    (dict "l" "Subcortical atlases" "u" "/helpsupport/knowledge-base/atlasesresources/atlases-2")
+    (dict "l" "Cortical parcellations" "u" "/helpsupport/knowledge-base/atlasesresources/cortical-atlas-parcellations-mni-space")
+    (dict "l" "Normative connectomes" "u" "/helpsupport/knowledge-base/atlasesresources/normative-connectomes")))
+  (dict "h" "Community" "links" (slice
+    (dict "l" "Events" "u" "/events")
+    (dict "l" "User Slack" "u" "/helpsupport/slack-user-channel")
+    (dict "l" "Contribute" "u" "/develop")
+    (dict "l" "Newsletter" "u" "/subscribe-to-our-newsletter")
+    (dict "l" "News" "u" "/news")
+    (dict "l" "News feed (RSS)" "u" "rss")))
+  (dict "h" "About" "links" (slice
+    (dict "l" "About Lead-DBS" "u" "/about")
+    (dict "l" "Cite Lead-DBS" "u" "/about/citing_leaddbs")
+    (dict "l" "Publications" "u" "/about/publications")
+    (dict "l" "Contributors" "u" "/about/team")
+    (dict "l" "Dependencies" "u" "/about/lead-dbs-dependencies")))
+-}}
+{{ $lab := index (hugo.Data.links.footer | default slice) 0 }}
 <footer class="footer footer--dark ground-inverse" id="site-footer">
   <div class="wrap">
-    <div class="closing__links">
+    <div class="footer__main">
       <div class="footer__brand">
         <a class="nav__logo" href="{{ site.Home.RelPermalink }}">{{ partial "logo.html" (dict "h" 48 "lazy" true) }}Lead-DBS</a>
         <p class="footer__lede">Open-source DBS imaging toolbox, version {{ $r.version }}.</p>
       </div>
       <div class="footer__cols">
-        {{ range site.Menus.main }}{{ if .HasChildren }}
-        <nav class="footer__col" aria-label="{{ .Name }}">
-          <h2 class="footer__h"><a href="{{ .URL }}">{{ .Name }}</a></h2>
-          <ul>{{ range .Children }}<li><a href="{{ .URL }}">{{ partial "menu-label.html" . }}</a></li>{{ range .Children }}<li class="footer__sub"><a href="{{ .URL }}">{{ partial "menu-label.html" . }}</a></li>{{ end }}{{ end }}</ul>
-        </nav>
-        {{ end }}{{ end }}
-        <nav class="footer__col" id="site-pages" aria-label="Site">
-          <h2 class="footer__h">Site</h2>
+        {{ range $cols }}
+        <nav class="footer__col" aria-label="{{ .h }}">
+          <h2 class="footer__h">{{ .h }}</h2>
           <ul>
-            {{ range site.Menus.main }}{{ if not .HasChildren }}<li><a href="{{ .URL }}">{{ if eq .Name "Download" }}Download Lead-DBS{{ else }}{{ .Name }}{{ end }}</a></li>{{ end }}{{ end }}
-            {{ with site.Params.github }}<li><a href="{{ . }}">Source code on GitHub</a></li><li><a href="{{ . }}/issues">Bug reports</a></li>{{ end }}
-            {{ with site.GetPage "/news" }}{{ with .OutputFormats.Get "rss" }}<li><a href="{{ .RelPermalink }}">News feed (RSS)</a></li>{{ end }}{{ end }}
-            {{ with site.GetPage "/search" }}<li><a href="{{ .RelPermalink }}">Search</a></li>{{ end }}
+            {{ range .links }}{{ $u := .u }}{{ $label := .l }}{{ $href := "" }}{{ $ext := false }}
+            {{ if eq $u "rss" }}{{ with site.GetPage "/news" }}{{ with .OutputFormats.Get "rss" }}{{ $href = .RelPermalink }}{{ end }}{{ end }}
+            {{ else if strings.HasPrefix $u "http" }}{{ $href = $u }}{{ $ext = true }}
+            {{ else if $u }}{{ $pu := urls.Parse $u }}{{ $path := strings.TrimSuffix "/" $pu.Path }}{{ with or (site.GetPage $path) (site.GetPage (printf "/news%s" $path)) }}{{ $href = printf "%s%s" .RelPermalink (cond (ne $pu.Fragment "") (printf "#%s" $pu.Fragment) "") }}{{ else }}{{ errorf "footer: no page at %q" $u }}{{ end }}{{ end }}
+            {{ with $href }}<li><a href="{{ . }}">{{ if $ext }}{{ partial "footer-ext-label.html" $label }}{{ else }}{{ partial "nobreak-html.html" ($label | htmlEscape) }}{{ end }}</a></li>{{ end }}
+            {{ end }}
           </ul>
         </nav>
-        {{ range hugo.Data.links.footer }}
-        <nav class="footer__col" aria-label="{{ .title }}">
-          <h2 class="footer__h">{{ .title }}</h2>
-          <ul>{{ range .links }}<li><a href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .name }}</a></li>{{ end }}</ul>
+        {{ end }}
+        {{ with $lab }}
+        <nav class="footer__col" aria-label="Institute">
+          <h2 class="footer__h">Institute</h2>
+          <ul>{{ range .links }}{{ $ext := strings.HasPrefix .url "http" }}<li><a href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ if $ext }}{{ partial "footer-ext-label.html" .name }}{{ else }}{{ .name }}{{ end }}</a></li>{{ end }}</ul>
         </nav>
         {{ end }}
       </div>
-      <div class="footer__legal">
-        <span>&copy; {{ now.Year }} Lead-DBS, Institute for Network Stimulation. For research use only, not for clinical use.{{ range site.Menus.footer }} &nbsp; <a href="{{ .URL }}">{{ .Name }}</a>{{ end }} &nbsp; <a href="https://github.com/netstim/lead-dbs-website">Edit this site on GitHub</a></span>
-        <span class="footer__credits">Renders made with BrainDeer from the Lead Tutor dataset (Hart et al.), with the DISTAL atlas (Ewert et al. 2018), the 100 µm 7T ex vivo MRI (Edlow et al. 2019) and the MNI ICBM 2009b template. Product names and logos are trademarks of their owners.</span>
-      </div>
+    </div>
+    <div class="footer__legal">
+      <p>&copy; {{ now.Year }} Lead-DBS, Institute for Network Stimulation. For research use only, not for clinical use.</p>
+      <ul class="footer__legal-links">{{ range site.Menus.footer }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}<li><a href="https://github.com/netstim/lead-dbs-website">Edit this site on GitHub</a></li></ul>
+      <p class="footer__credits">Renders made with BrainDeer from the Lead Tutor dataset (Hart et al.), with the DISTAL atlas (Ewert et al. 2018), the 100 µm 7T ex vivo MRI (Edlow et al. 2019) and the MNI ICBM 2009b template. Product names and logos are trademarks of their owners.</p>
     </div>
   </div>
 </footer>
+
+{{- /* A link to another site: its label with the ↗ kept on the line of its last word. */ -}}
+{{- define "_partials/footer-ext-label.html" -}}
+{{- $w := split . " " -}}{{- $n := len $w -}}
+{{- with first (sub $n 1) $w }}{{ delimit . " " }} {{ end -}}
+<span class="nowrap">{{ index $w (sub $n 1) }}<span class="ext-mark" aria-hidden="true">↗</span></span><span class="sr-only"> (another site)</span>
+{{- end -}}

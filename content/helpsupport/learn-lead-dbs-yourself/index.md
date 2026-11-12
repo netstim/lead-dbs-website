@@ -1,8 +1,8 @@
 ---
-title: "Lead Tutor"
+title: "Practice dataset (Lead Tutor)"
 description: "The open training dataset of ten DBS patients with expert electrode localizations: what it holds, how to get it and what to cite."
 weight: 1
-linkTitle: "Lead Tutor"
+linkTitle: "Practice dataset (Lead Tutor)"
 date: "2025-02-28T17:20:40"
 lastmod: "2026-11-11"
 keywords: ["Lead Tutor", "Lead-Tutor", "tutorial", "training", "training dataset", "practise", "practice", "dataset", "exercise", "OSF", "ground truth", "expert localizations"]
@@ -13,8 +13,10 @@ related:
   - {name: "Install Lead-DBS", url: "/download/#install"}
   - "/helpsupport/knowledge-base/walkthrough-videos/"
   - "/events/"
-# the picture of its card on the Docs and help page (childpages): a render of the Lead Tutor patients
-card: "images/renders/cohort-hero.jpg"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/helpsupport/knowledge-base/walkthrough-videos/", text: "Whole analyses on screen"}
+  - {page: "/helpsupport/knowledge-base/lead-dbs-methods/", text: "Every method and tool, with its manual chapter"}
 ---
 
 <span id="learn-lead-dbs-yourself"></span>
@@ -57,12 +59,8 @@ The manual explains each step: [Self-tutoring with Lead Tutor](https://netstim.g
 
 ## What to cite
 
-{{% paper madan2025 "full" %}}
+{{% copybox label="Copy the citation" %}}
+{{< paper madan2025 "full" >}}
+{{% /copybox %}}
 
 ![First page of the Lead-Tutor paper in Aperture Neuro](Screenshot-2025-02-28-at-11.14.43-AM.png)
-
-## Next
-
-The [walkthrough videos](/helpsupport/knowledge-base/walkthrough-videos/) show whole analyses on screen,
-and [Features](/helpsupport/knowledge-base/lead-dbs-methods/) lists every method and tool, with its
-manual chapter.

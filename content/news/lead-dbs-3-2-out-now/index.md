@@ -1,7 +1,6 @@
 ---
 title: "Lead-DBS 3.2 released"
 description: "Lead-DBS 3.2 brings Lead Tutor, an open dataset to practise electrode localization, new atlases and many smaller fixes."
-htmlTitle: "Version 3.2 released"
 date: 2025-02-28
 slug: "lead-dbs-3-2-out-now"
 image: "lead-tutor.png"

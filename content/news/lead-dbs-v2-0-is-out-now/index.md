@@ -1,7 +1,5 @@
 ---
 title: "Lead-DBS 2.0 released"
-# the browser title (head.html adds " – Lead-DBS")
-htmlTitle: "Version 2.0 released"
 description: "Lead-DBS 2.0: new major features to model deep brain stimulation electrodes in computer simulations."
 date: "2017-09-09T20:19:44"
 lastmod: "2017-09-10T14:04:59"

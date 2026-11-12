@@ -12,6 +12,11 @@ related:
   - "/helpsupport/knowledge-base/atlasesresources/about-the-mni-spaces/"
   - "/helpsupport/knowledge-base/atlasesresources/atlases-2/"
   - "/about/publications/"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/helpsupport/knowledge-base/atlasesresources/about-the-mni-spaces/", text: "Why there is more than one MNI space"}
+  - {page: "/helpsupport/knowledge-base/atlasesresources/atlases-2/", text: "The atlases to compare targets with"}
+  - {page: "/helpsupport/knowledge-base/lead-dbs-methods/", text: "Everything else Lead-DBS does"}
 ---
 
 Neurosurgeons report DBS targets in AC/PC coordinates, relative to the anterior and posterior
@@ -38,7 +43,9 @@ an age-matched sample from it, as described in [Horn et al. 2017](https://doi.or
 
 ## What to cite
 
-> Horn, A., Kühn, A. A., Merkl, A., Shih, L., Alterman, R., & Fox, M. (2017). Probabilistic conversion of neurosurgical DBS electrode coordinates into MNI space. *NeuroImage*, *150*, 395–404. [doi:10.1016/j.neuroimage.2017.02.004](https://doi.org/10.1016/j.neuroimage.2017.02.004)
+{{% copybox label="Copy the citation" %}}
+{{< paper horn2017acpc "full" >}}
+{{% /copybox %}}
 
 A short talk on the method, held at AAN 2017: [slides (PDF)](https://www.lead-dbs.org/docs/talks/AAN_presentation_Horn_2017.pdf).
 
@@ -181,9 +188,3 @@ the neurosurgical findings:
 
 Every step described here is built into Lead-DBS: the [conversion tool](#use-it-in-lead-dbs) applies it
 to any AC/PC coordinate with a surrogate cohort of your choice.
-
-## Next
-
-Why there is more than one MNI space: [About the MNI space(s)](/about-the-mni-spaces/). The atlases to
-compare targets with: [Subcortical atlases](/helpsupport/knowledge-base/atlasesresources/atlases-2/).
-Everything else Lead-DBS does: [Features](/helpsupport/knowledge-base/lead-dbs-methods/).

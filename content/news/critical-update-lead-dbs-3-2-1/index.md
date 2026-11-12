@@ -1,7 +1,5 @@
 ---
 title: "Lead-DBS 3.2.1 released: please update"
-# the browser title (head.html adds " – Lead-DBS")
-htmlTitle: "Version 3.2.1 released: please update"
 description: "Lead-DBS 3.2.1 fixes a critical bug that could, in very rare cases, delete files. Please update before further use."
 date: 2026-03-02
 slug: "critical-update-lead-dbs-3-2-1"

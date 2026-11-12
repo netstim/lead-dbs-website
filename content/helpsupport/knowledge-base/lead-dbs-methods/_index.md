@@ -8,7 +8,7 @@ lastmod: "2026-11-11"
 keywords: ["what Lead-DBS does", "methods", "tools", "methods and tools", "capabilities", "overview", "Lead tools", "features", "what it does", "electrode localization", "reconstruction", "normalization", "registration", "WarpDrive", "VTA", "volume of tissue activated", "electric field", "OSS-DBS", "sweet spot", "fibre filtering", "fiber filtering", "network mapping", "Lead Group", "group analysis", "Lead Connectome", "Lead Connectome Mapper", "Lead-OR", "Lead Tutor", "SlicerNetstim", "connectome"]
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-features.jpg"
-# a showcase page: the text and the rows of pictures use the full width, no sidebar
+# a showcase page: the chapters, their pictures and cards use the full width, no sidebar
 sidebar: false
 toc: false
 # the named tools of the Tools table, found by the site search as results of their own
@@ -17,30 +17,46 @@ searchEntries:
   - {title: "Lead Group", id: "lead-group", keywords: "Lead Group LeadGroup group analysis cohort tool", description: "The tool for group analyses: electrode placement, stimulation volumes, sweet spots and networks against clinical outcome."}
   - {title: "Lead Connectome", id: "lead-connectome", keywords: "Lead Connectome Mapper connectome tractography diffusion resting-state fMRI tool", description: "Connectomes from diffusion MRI and resting-state fMRI; its Mapper gives the connectivity of any seed."}
   - {title: "OSS-DBS", id: "oss-dbs", keywords: "OSS-DBS OSSDBS stimulation modelling electric field VTA pathway activation tool", description: "The stimulation modelling of Lead-DBS since 3.1, developed with the University of Rostock; installs with Lead-DBS."}
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/helpsupport/first-steps/", text: "New to Lead-DBS? Start here"}
+  - {page: "/helpsupport/knowledge-base/atlasesresources/", text: "The atlases and connectomes these methods use"}
 ---
 
-What Lead-DBS does: it takes a patient's MRI or CT from before and after surgery and shows where the
-DBS electrodes are, what they stimulate and which brain networks they reach, for one patient or a whole
-cohort. Each row names its chapter in the manual and its paper; the
+{{< jumps "Single patients|#single-patients; Groups of patients|#groups-of-patients; In the operating theatre|#operating-theatre; Tools and modules|#tools" >}}
+Lead-DBS takes a patient's MRI or CT from before and after surgery and shows where the DBS electrodes
+are, what they stimulate and which brain networks they reach, for one patient or a whole cohort. The
 [Lead-DBS v3 paper](https://doi.org/10.1016/j.neuroimage.2023.119862) (Neudorfer et al. 2023) describes
-them together.
+it all.
+{{< /jumps >}}
 
-{{< jumps "Single patients|#single-patients; Groups of patients|#groups-of-patients; Operating theatre|#operating-theatre; Tools|#tools" >}}
-
+{{% chapter n="1" img="images/renders/cohort-hero.jpg" focus="58% 46%" %}}
 ## Single patients {#single-patients}
 
-{{< capability title="Registration and normalization" id="normalization" img="images/renders/cohort-front.jpg"
+Where the electrodes sit and what they stimulate.
+{{% /chapter %}}
+
+{{< capabilities >}}
+{{< capability title="Registration and normalization" id="normalization" img="images/renders/cohort-top.jpg"
     manual="Volume registrations|https://netstim.gitbook.io/leaddbs/lead-dbs/step3-volume-registrations"
     papers="ewert2019 oxenford2024" >}}
-Aligns the images from before and after surgery and warps them into MNI space (ICBM 2009b), so that
-electrodes of many patients can be compared in one space. WarpDrive refines the warp by hand.
+Aligns the images from before and after surgery and warps them into a shared template space,
+[MNI space](/about-the-mni-spaces/) (the ICBM 2009b template), so that electrodes of many patients can be
+compared. Where the warp is off, the WarpDrive tool corrects it by hand.
 {{< /capability >}}
 
 {{< capability title="Electrode localization" id="localization" img="images/renders/lead-closeup.jpg"
     manual="Reconstruction of electrode trajectories|https://netstim.gitbook.io/leaddbs/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories"
     papers="horn2015 husch2018" >}}
 Reconstructs the electrodes from postoperative MRI or CT, including the orientation of directional
-leads, with algorithms such as TRAC/CORE and PaCER.
+leads, with automatic methods you can refine by hand: TRAC/CORE, from the first Lead-DBS paper, and PaCER.
+{{< /capability >}}
+
+{{< capability title="Stimulation modelling" id="stimulation" img="images/renders/pathway-activation.jpg"
+    manual="Calculate VTA and stats|https://netstim.gitbook.io/leaddbs/lead-group/calculate-vta-and-stats"
+    papers="butenko2020 zimmermann2026" >}}
+Models the volume of tissue activated, the electric field and the fibre pathways a setting activates,
+with [OSS-DBS](#oss-dbs), the stimulation model built into Lead-DBS.
 {{< /capability >}}
 
 {{< capability title="Visualization" id="visualization" img="gallery/edlow2019_fig7_panela.png" fit="contain"
@@ -50,34 +66,33 @@ Shows electrodes in 2D and 3D among the structures of an atlas, with fibre tract
 volumes, on templates such as the 100 µm 7 tesla brain.
 {{< /capability >}}
 
-{{< capability title="Stimulation modelling" id="stimulation" img="images/renders/pathway-activation.jpg"
-    manual="Calculate VTA and stats|https://netstim.gitbook.io/leaddbs/lead-group/calculate-vta-and-stats"
-    papers="butenko2020 zimmermann2026" >}}
-Models the volume of tissue activated, the electric field and the fibre pathways a setting activates,
-with the integrated [OSS-DBS](#oss-dbs).
-{{< /capability >}}
-
 {{< capability title="Connectivity" id="connectivity" img="/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping/cbm1-1030x676.png" fit="contain"
     alt="Functional connectivity profiles of the DBS sites of 12 patients on cortical surfaces"
     caption="Connectivity of the stimulation sites of 12 patients, from DBS network mapping"
     manual="Connectomics|https://netstim.gitbook.io/leaddbs/connectomics/connectomic-analyses"
     papers="horn2016" >}}
-Estimates the structural and functional connectivity of a stimulation site from
-[normative](/helpsupport/knowledge-base/atlasesresources/normative-connectomes/) or patient-specific
-connectomes, with [Lead Connectome](#lead-connectome).
+Estimates the structural and functional connectivity of a stimulation site, from the patient's own
+connectome or a [normative connectome](/helpsupport/knowledge-base/atlasesresources/normative-connectomes/),
+an average wiring diagram of many human brains, with [Lead Connectome](#lead-connectome).
 {{< /capability >}}
+{{< /capabilities >}}
 
 {{< capability title="AC/PC to MNI conversion" id="acpc" link="/helpsupport/knowledge-base/lead-dbs-methods/acpc-to-mni-conversion-2/"
-    img="/helpsupport/knowledge-base/lead-dbs-methods/acpc-to-mni-conversion-2/acpc-targets.png" fit="contain"
-    alt="Nine DBS targets for seven diseases from the surgical literature, marked in MNI space on a histological section, with their coordinates"
-    caption="DBS targets from the surgical literature, converted into MNI space (Horn 2017)"
+    img="/helpsupport/knowledge-base/lead-dbs-methods/acpc-to-mni-conversion-2/fig_3.png" fit="contain"
+    alt="DBS targets of nine indications, from Parkinson’s disease to addiction, as heat maps on slices of the MNI template with the surrounding structures labelled"
+    caption="DBS targets from the surgical literature, defined in MNI space (Horn 2017)"
     papers="horn2017acpc" >}}
 Converts surgical AC/PC coordinates into MNI space and back, with age-matched reference brains. In the
 Tools menu of Lead-DBS.
 {{< /capability >}}
 
+{{% chapter n="2" img="images/renders/fiber-filtering-wide.jpg" focus="50% 38%" %}}
 ## Groups of patients {#groups-of-patients}
 
+A whole cohort in one space, against clinical outcome.
+{{% /chapter %}}
+
+{{< capabilities >}}
 {{< capability title="Group analysis and sweet spots" id="group" img="gallery/li2020_fig1.png" fit="contain"
     manual="Group analyses|https://netstim.gitbook.io/leaddbs/lead-group/group-analyses-with-lead-dbs; Sweetspot Explorer|https://netstim.gitbook.io/leaddbs/lead-group/sweetspot-explorer"
     papers="treu2020 neudorfer2023" >}}
@@ -92,6 +107,7 @@ sweet-spot mapping finds where in the target region stimulation went along with 
 Relates the connections of stimulation sites, as whole-brain maps or single fibre tracts, to clinical
 outcome, and predicts the outcome of new patients.
 {{< /capability >}}
+{{< /capabilities >}}
 
 {{< capability title="Subcortical electrophysiology mapping" id="sem" link="/helpsupport/knowledge-base/lead-dbs-methods/subcortical-electrophysiology-mapping-sem/"
     img="/helpsupport/knowledge-base/lead-dbs-methods/subcortical-electrophysiology-mapping-sem/betaalpha3d.png" fit="contain"
@@ -102,7 +118,11 @@ outcome, and predicts the outcome of new patients.
 Pools recordings from DBS electrodes across patients into a 3D map of where an activity is strongest.
 {{< /capability >}}
 
+{{% chapter n="3" %}}
 ## In the operating theatre {#operating-theatre}
+
+Recordings and test stimulation, shown on the images in real time.
+{{% /chapter %}}
 
 {{< capability title="Lead-OR" id="lead-or" link="/about/lead-or/" img="gallery/oxenford2022_fig1.jpg" fit="contain"
     manual="Lead-OR: imaging setup|https://netstim.gitbook.io/leaddbs/lead-or/imaging-setup"
@@ -112,10 +132,11 @@ coregistrations of Lead-DBS. It runs in [3D Slicer](https://www.slicer.org/), in
 [SlicerNetstim](https://github.com/netstim/SlicerNetstim) extension.
 {{< /capability >}}
 
-## Tools {#tools}
+{{% chapter n="4" %}}
+## Tools and modules {#tools}
 
-The parts of Lead-DBS that have a name of their own, and Lead Tutor, its practice dataset. All tools of
-the institute are on [GitHub](https://github.com/netstim).
+The named parts of Lead-DBS and its practice dataset.
+{{% /chapter %}}
 
 | Tool | What it is for | Manual | Paper |
 | --- | --- | --- | --- |
@@ -125,11 +146,7 @@ the institute are on [GitHub](https://github.com/netstim).
 | <span id="lead-tutor"></span>[Lead Tutor](/helpsupport/learn-lead-dbs-yourself/) | Practise electrode localization on open data, scored against experts | [Self-tutoring](https://netstim.gitbook.io/leaddbs/lead-dbs/self-tutoring-with-lead-tutor) | {{< paper madan2025 >}} |
 {.table--stack caption="Tools of Lead-DBS"}
 
-All these papers are listed in full under [Publications](/about/publications/#methodological-publications);
-which ones to cite is on [Cite Lead-DBS](/about/citing_leaddbs/). More pictures:
-[Made with Lead-DBS](/gallery/).
-
-## Next
-
-New to Lead-DBS? Start with [First steps](/helpsupport/first-steps/). The atlases and connectomes these
-methods use are listed under [Atlases and data](/helpsupport/knowledge-base/atlasesresources/).
+All tools of the institute are on [GitHub](https://github.com/netstim). All these papers are listed in full
+under [Publications](/about/publications/#methodological-publications); which ones to cite is on [Cite Lead-DBS](/about/citing_leaddbs/).
+The renders on this page are by the Lead-DBS team, from the open Lead Tutor data; more of them, and
+figures from published papers, are in [Made with Lead-DBS](/gallery/).

@@ -1,0 +1,10 @@
+{{- /* Capability cards side by side (Features): the capability shortcodes between the tags become cards,
+       one to a row on a phone, two from 640px; from 1200px renders three to a row and figures from papers
+       (fit="contain") two, at a size their labels can be read. Each card has the same parts in the same
+       order: name, picture (4:3), text, references, credit.
+         {{< capabilities >}}
+         {{< capability title="…" … >}}…{{< /capability >}}
+         {{< /capabilities >}}
+       A chapter's last figure that would stand alone in a row goes after the closing tag: on its own it
+       is a wide row, picture left, words right. */ -}}
+<div class="cap-grid">{{ .Inner }}</div>

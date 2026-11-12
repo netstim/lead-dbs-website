@@ -10,7 +10,7 @@
 {{- if not $items }}{{ errorf "download-release in %s: no servers listed" .Page.File.Path }}{{ end -}}
 {{- $first := index $items 0 -}}
 <div class="dl-release">
-  <p class="dl-release__meta">Released {{ time.Format "2 January 2006" $r.date }} · one zip file of about 11 GB · MATLAB {{ $r.matlab }} or later · free and open source ({{ $r.licence }})</p>
+  <p class="dl-release__meta">Released <time datetime="{{ time.Format "2006-01-02" $r.date }}">{{ time.Format "2 January 2006" $r.date }}</time> · one zip file of about 11 GB · MATLAB <span class="num">{{ $r.matlab }}</span> or later with {{ $r.needs }} · {{ $r.memory }} <abbr title="memory">RAM</abbr> recommended · free and open source ({{ $r.licence }})</p>
   <p class="dl-release__main"><a class="btn btn--primary dl-release__btn" href="{{ partial "resolve-url.html" (dict "url" (index $first 2) "page" .Page) }}"><svg class="download-btn__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download Lead‑DBS {{ $r.version }}</span></a> <span class="dl-release__via">from {{ index $first 1 }}; no form, no sign-up</span></p>
   {{- if gt (len $items) 1 }}
   <p class="dl-release__alt-label">The same file from another server:</p>

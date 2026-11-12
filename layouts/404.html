@@ -2,13 +2,12 @@
 {{- /* /404.html: what a visitor sees for an address the site does not have (GitHub Pages serves it for
      every miss). Links are site-relative, so it works under the preview's sub-path as well. A few lines
      of script name the cause for the old forum's addresses. */ -}}
-{{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Name "Download" }}{{ $dl = .URL }}{{ end }}{{ end }}
 <main id="top" class="page">
   <header class="page-head page-head--render">
     {{ partial "page-head-render.html" . }}
     <div class="wrap">
       <p class="page-head__kicker">Error 404</p>
-      <h1>This page is not here</h1>
+      <h1>Page not found</h1>
     </div>
   </header>
   <div class="wrap doc-layout doc-layout--single">
@@ -16,14 +15,7 @@
       <p class="notfound__forum notice" hidden data-forum-note>The Lead-DBS forum has closed, and its threads were not moved to this site. Questions are answered on the <a href="{{ with site.GetPage "/helpsupport/slack-user-channel" }}{{ .RelPermalink }}{{ end }}">user Slack</a>.</p>
       <p class="t-lead">The address may be mistyped, or the page moved when the site was rebuilt in 2026. Search for it, or start from one of these:</p>
       {{ partial "search-form.html" (dict "id" "nf") }}
-      <ul class="child-pages notfound__doors">
-        <li><a class="card child-page" href="{{ $dl }}"><span>Download <span class="nowrap">Lead-DBS</span></span></a></li>
-        {{- /* the pages' own titles, so the names match the menu and the page heads; first what a reader
-               arriving from a paper looks for (what Lead-DBS does, how to cite it) */}}
-        {{ range slice "/helpsupport/knowledge-base/lead-dbs-methods" "/about/citing_leaddbs" }}{{ with site.GetPage . }}<li><a class="card child-page" href="{{ .RelPermalink }}"><span>{{ partial "nobreak-html.html" (.LinkTitle | htmlEscape) }}</span></a></li>{{ end }}{{ end }}
-        <li><a class="card child-page" href="https://netstim.gitbook.io/leaddbs"><span>The manual</span></a></li>
-        {{ range slice "/helpsupport" "/helpsupport/knowledge-base/atlasesresources" "/community" "/news" "/about" "/contact" }}{{ with site.GetPage . }}<li><a class="card child-page" href="{{ .RelPermalink }}"><span>{{ partial "nobreak-html.html" (.LinkTitle | htmlEscape) }}</span></a></li>{{ end }}{{ end }}
-      </ul>
+      {{ partial "search-doors.html" (dict "attrs" "") }}
     </div>
   </div>
   <script>

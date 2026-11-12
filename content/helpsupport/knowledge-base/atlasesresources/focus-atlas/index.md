@@ -1,5 +1,5 @@
 ---
-title: "The FOCUS atlas"
+title: "FOCUS atlas"
 description: "FOCUS: a 100-micron atlas of the human subcortex with 95 structures and 82 fibre pathways, from 7T ex vivo MRI. For academic research only."
 weight: 5
 linkTitle: "FOCUS atlas"
@@ -8,8 +8,6 @@ lastmod: "2026-11-11"
 aliases: ["/downloadfocus/"]
 # the picture shown when the page is shared (head.html)
 share: "STN_Forel_ZI_tracts_mediolateral-1030x1019.png"
-# the picture of its card on its group's page (childpages)
-card: "STN_Forel_ZI_tracts_mediolateral-1030x1019.png"
 toc: false
 keywords: ["FOCUS", "atlas", "subcortex", "100 micron", "7T", "ex vivo", "tracts", "download FOCUS"]
 # pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
@@ -17,13 +15,18 @@ related:
   - "/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping/"
   - {name: "Stimulation modelling", url: "/helpsupport/knowledge-base/lead-dbs-methods/#stimulation"}
   - "/about/citing_leaddbs/"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/helpsupport/knowledge-base/atlasesresources/distal-atlas/", text: "Also built for Lead-DBS"}
+  - {page: "/helpsupport/knowledge-base/atlasesresources/atlases-2/", text: "The other atlases of the subcortex"}
 ---
-
-FOCUS is a 100-micron atlas of the human subcortex by the Lead-DBS team, built from 7T ex vivo MRI.
 
 {{< summary >}}
 What
-: 95 grey and white matter structures, manually segmented, and 82 curated fibre pathways, across the basal ganglia, thalamus, subthalamus, midbrain and cerebellum
+: A 100-micron atlas of the human subcortex by the Lead-DBS team: 95 grey and white matter structures, manually segmented, and 82 curated fibre pathways, across the basal ganglia, thalamus, subthalamus, midbrain and cerebellum
+
+Built from
+: 7T ex vivo MRI
 
 Space
 : Registered to MNI space, at 100-micron isotropic resolution
@@ -32,7 +35,7 @@ Get it
 : Through the [download form](#download), for academic research only
 
 Cite
-: Friedrich et al. 2026, preprint on *bioRxiv* (February 2026), [doi:10.64898/2026.02.13.705755](https://doi.org/10.64898/2026.02.13.705755) ([full citation](#what-to-cite))
+: Friedrich et al. 2026, preprint on *bioRxiv* (<time datetime="2026-02">February 2026</time>), [doi:10.64898/2026.02.13.705755](https://doi.org/10.64898/2026.02.13.705755) ([full citation](#what-to-cite))
 {{< /summary >}}
 
 ## What it is
@@ -78,8 +81,3 @@ version.
 {{% /row %}}
 
 {{< button href="https://doi.org/10.64898/2026.02.13.705755" >}}Read the preprint on bioRxiv{{< /button >}}
-
-## Next
-
-More atlases of the subcortex: the [DISTAL atlas](/helpsupport/knowledge-base/atlasesresources/distal-atlas/),
-also built for Lead-DBS, and the other [subcortical atlases](/helpsupport/knowledge-base/atlasesresources/atlases-2/).

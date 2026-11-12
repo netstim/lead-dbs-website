@@ -1,7 +1,5 @@
 ---
 title: "Lead-DBS 3.0 released"
-# the browser title (head.html adds " – Lead-DBS")
-htmlTitle: "Version 3.0 released"
 description: "Lead-DBS 3.0: projects stored in the BIDS format, three explorers to map DBS effects, WarpDrive, OSS-DBS pathway activation and six new atlases."
 date: "2023-10-27T13:59:14"
 lastmod: "2026-11-11"

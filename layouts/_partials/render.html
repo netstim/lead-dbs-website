@@ -3,7 +3,8 @@
      focus (optional: the part kept in a phone's tall crop, as an object-position like "30% 50%"). */ -}}
 {{ with resources.Get (printf "images/renders/%s" .file) }}
 {{ $src := . }}
-{{ $widths := slice 640 960 1400 1920 }}
+{{- /* 480 and 720 for a phone at 1× and 2×, 1080 for a phone at 3×, 1400 and 1920 for wider windows */ -}}
+{{ $widths := slice 480 720 1080 1400 1920 }}
 {{ $set := slice }}{{ $last := "" }}
 {{ range $widths }}{{ if le . $src.Width }}{{ $i := $src.Resize (printf "%dx webp q80" .) }}{{ $set = $set | append (printf "%s %dw" $i.RelPermalink $i.Width) }}{{ $last = $i }}{{ end }}{{ end }}
 {{ if not $last }}{{ $last = $src.Resize (printf "%dx webp q80" $src.Width) }}{{ $set = $set | append (printf "%s %dw" $last.RelPermalink $last.Width) }}{{ end }}

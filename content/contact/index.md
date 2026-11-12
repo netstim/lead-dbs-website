@@ -14,11 +14,13 @@ related:
   - "/helpsupport/first-steps/"
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-docs.jpg"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/about/", text: "The team and the institute behind Lead-DBS"}
+  - {page: "/subscribe-to-our-newsletter/", text: "Release and workshop news by e-mail"}
 ---
 
 A question about using Lead-DBS, or a bug? Those are answered fastest where users and developers already
 are: see [Get help](/helpsupport/#get-help). For anything else, please use the form below.
 
 {{< form "contact" >}}
-
-Looking for the team or the institute behind Lead-DBS? See [About Lead-DBS](/about/). News about releases and workshops comes with the [newsletter](/subscribe-to-our-newsletter/).

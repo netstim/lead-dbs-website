@@ -1,5 +1,5 @@
 ---
-title: "The DISTAL atlas"
+title: "DISTAL atlas"
 description: "The DISTAL atlas (Ewert et al. 2018): a subcortical atlas in MNI space built from multimodal MRI, histology and structural connectivity."
 linkTitle: "DISTAL atlas"
 date: "2017-08-09T18:24:26"
@@ -7,22 +7,25 @@ lastmod: "2026-11-11"
 weight: 4
 # the picture shown when the page is shared (head.html)
 share: "distal_fig_6-1030x728.png"
-# the picture of its card on its group's page (childpages)
-card: "distal_fig_6-1030x728.png"
 toc: false
 # pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
 related:
   - "/about/citing_leaddbs/"
   - "/helpsupport/knowledge-base/atlasesresources/about-the-mni-spaces/"
   - {name: "Visualization in Lead-DBS", url: "/helpsupport/knowledge-base/lead-dbs-methods/#visualization"}
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/helpsupport/knowledge-base/atlasesresources/atlases-2/", text: "More than 60 atlases you can use"}
+  - {page: "/download/", text: "See DISTAL with your own patients"}
+  - {page: "/helpsupport/first-steps/", text: "Your first electrode localization"}
 ---
-
-DISTAL is a subcortical atlas of DBS targets and the structures around them, built for Lead-DBS from
-multimodal MRI, histology and structural connectivity.
 
 {{< summary >}}
 What
-: DBS targets (STN, GPi, GPe, RN and more) and the structures around them, with functional zones of the STN and GPi and the thalamic nuclei in three nomenclatures
+: A subcortical atlas of DBS targets (STN, GPi, GPe, RN and more) and the structures around them, with functional zones of the STN and GPi and the thalamic nuclei in three nomenclatures
+
+Built from
+: Multimodal MRI, histology and structural connectivity, for Lead-DBS
 
 Space
 : MNI ICBM 2009b NLIN Asym ([about the MNI spaces](/about-the-mni-spaces/))
@@ -31,7 +34,7 @@ Get it
 : Comes with Lead-DBS: nothing to download ([where to find it](#download))
 
 Version
-: 1.1, released 5 February 2018 ([change-log](#change-log))
+: <span class="num">1.1</span>, released <time datetime="2018-02-05">5 February 2018</time> ([change log](#change-log))
 
 Cite
 : Ewert et al. 2018, *NeuroImage* 170: 271–282, [doi:10.1016/j.neuroimage.2017.05.015](https://doi.org/10.1016/j.neuroimage.2017.05.015) ([full citation](#what-to-cite))
@@ -44,6 +47,7 @@ show every structure relevant to DBS surgery. Its thalamic nuclei come in three 
 abbreviations.
 
 ![The final DISTAL atlas in 3D with labelled structures and a DBS electrode](distal_fig_9-1030x501.png)
+{.fig-medium}
 
 *Structures in red were defined on the multimodal template itself, those in black from histology; blue
 text names the functional zones of the STN and GPi, from structural connectivity.*
@@ -56,19 +60,16 @@ default atlas set of Lead-DBS, and *DISTAL Nano (Ewert 2017)*. Choose it from th
 viewer, where presets show, for instance, only the structures relevant to DBS, or the functional zones of
 the STN and GPi.
 
-Lead-DBS ships version 1.1, which differs slightly from the paper ([how](#change-log)). The version
+Lead-DBS ships version 1.1, which differs slightly from the paper (see the [change log](#change-log)). The version
 described in the paper is available on request: [write to us](/contact/).
 
 ## What to cite
 
 {{% copybox label="Copy the citation" %}}
-Ewert, S., Plettig, P., Li, N., Chakravarty, M. M., Collins, D. L., Herrington, T. M., et al. (2018). Toward defining deep brain stimulation targets in MNI space: A subcortical atlas based on multimodal MRI, histology and structural connectivity. *NeuroImage*, 170, 271–282. https://doi.org/10.1016/j.neuroimage.2017.05.015
+{{< paper ewert2018 "full" >}}
 {{% /copybox %}}
 
 ## How DISTAL was built
-
-<details class="more more--wide">
-<summary>Three stages on the MNI template: segmentation, histology, connectivity (from the 2017 paper)</summary>
 
 None of the atlases collected since 2012 matched the STN of the MNI template precisely, and in DBS imaging
 millimetres matter. DISTAL was therefore built in three stages, directly on the ICBM 2009b template:
@@ -77,7 +78,8 @@ contrasts; a histological atlas was warped to the template with these nuclei as 
 the other structures; and the STN and GPi were divided into functional zones by their structural
 connectivity.
 
-### Why an atlas made for Lead-DBS
+<details class="more more--wide">
+<summary>Why an atlas made for Lead-DBS</summary>
 
 When work on Lead-DBS was started in 2012, we began [collecting subcortical atlases](/helpsupport/knowledge-base/atlasesresources/atlases-2/) of the brain to best define anatomy. For instance, the ATAG atlas [was made freely available](https://www.nitrc.org/projects/atag) by the Forstmann group in Amsterdam.
 
@@ -108,11 +110,14 @@ Your patient data will (if quality allows) show a similar hypointense region tha
 
 > Above conclusions forced us to create an atlas that is “made for Lead-DBS”
 
-### Methods: three stages
+</details>
+
+<details class="more more--wide">
+<summary>The three stages, with the figures of the paper</summary>
 
 We wanted to create an atlas that is i) very precisely aligned to the ICBM 2009b MNI template and ii) accurate enough to visualize all structures relevant for DBS surgery. This resulted in three separate stages.
 
-#### Stage 1: A multimodal region-growing algorithm applied to MNI templates
+### Stage 1: A multimodal region-growing algorithm applied to MNI templates
 In this stage, the T1-, T2-, PD- and T2rlx weighted templates were segmented simultaneously, incorporating all information in parallel. First, a multimodel region-growing-like algorithm was applied that produced probability maps. These maps were then used to manually segment subthalamic nucleus, red nucleus, internal and external pallidum directly within the space of the template series.
 
 {{% row %}}
@@ -125,7 +130,7 @@ In this stage, the T1-, T2-, PD- and T2rlx weighted templates were segmented sim
 
 {{% /col %}}
 {{% /row %}}
-#### Stage 2: Precise co-registration of histology, using Stage 1 as additional anchor points
+### Stage 2: Precise co-registration of histology, using Stage 1 as additional anchor points
 To “fill the gaps” between the regions defined on the template itself, a precise histological atlas was graciously provided by Mallar Chakravarty (Douglas Institute) and Louis Collins (MNI). To align this data as precisely as possible to the MNI space, manual structures were used as additional anchorpoints in a nonlinear pseudo-MRI to template warp.
 
 {{% row %}}
@@ -149,7 +154,7 @@ To “fill the gaps” between the regions defined on the template itself, a pre
 
 {{% /col %}}
 {{% /row %}}
-#### Stage 3: Further parcellation of core DBS targets by means of structural connectivity
+### Stage 3: Further parcellation of core DBS targets by means of structural connectivity
 The final stage was to further subdivide the primary DBS targets, namely the STN and the GPi by means of structural connectivity. This has been done in multiple studies for the STN, subdividing it into sensorimotor, associative and limbic subregions. It has not been done for the GPi, potentially given its closeness to efferent and afferent structures. We used the efferent connectivity of the GPi that projects to thalamic functional zones as they were defined in the famous [Behrens 2003](https://www.ncbi.nlm.nih.gov/pubmed/12808459) study.
 
 {{% row %}}
@@ -173,7 +178,7 @@ The final stage was to further subdivide the primary DBS targets, namely the STN
 
 {{% /col %}}
 {{% /row %}}
-#### Summary
+### Summary
 
 {{% row %}}
 {{% col "2/3" %}}
@@ -186,7 +191,10 @@ The final stage was to further subdivide the primary DBS targets, namely the STN
 {{% /col %}}
 {{% /row %}}
 
-### Results
+</details>
+
+<details class="more more--wide">
+<summary>Results, and DISTAL in the 3D viewer of Lead-DBS (video, 2017)</summary>
 
 {{% row %}}
 {{% col "1/3" %}}
@@ -236,9 +244,3 @@ The video below shows these features (recorded in 2017):
   warp that Lead-DBS provides.
 
 </details>
-
-## Next
-
-DISTAL is one of more than 60 [subcortical atlases](/helpsupport/knowledge-base/atlasesresources/atlases-2/)
-you can use in Lead-DBS. To see it with your own patients' electrodes, [download Lead-DBS](/download/)
-and take the [first steps](/helpsupport/first-steps/).

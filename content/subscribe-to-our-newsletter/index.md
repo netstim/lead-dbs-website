@@ -12,6 +12,11 @@ related:
   - "/helpsupport/slack-user-channel/"
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-community.jpg"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/news/", text: "Releases and announcements between issues"}
+  - {page: "/events/", text: "Developer meetings and workshops"}
+  - {page: "/helpsupport/slack-user-channel/", text: "Questions about using Lead-DBS"}
 ---
 
 Our newsletter is sent out rarely and informs you about new Lead-DBS releases, crucial updates and bugs/issues, and upcoming workshops. Subscribing is optional: you can [download Lead-DBS](/download/) without it.

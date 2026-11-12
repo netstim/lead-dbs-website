@@ -1,0 +1,13 @@
+{{- /* Ten cards to start from: the download, what Lead-DBS does, how to cite it, the manual, the groups'
+       hubs and Contact. On the 404 page under its search box, and on /search/ until a query is typed
+       (assets/js/search.js hides them then; without script they stay). Argument: dict "attrs" (extra
+       attributes for the list, as a safe HTML string; may be empty). */ -}}
+{{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Name "Download" }}{{ $dl = .URL }}{{ end }}{{ end -}}
+<ul class="child-pages notfound__doors"{{ with .attrs }} {{ . }}{{ end }}>
+  <li><a class="card child-page" href="{{ $dl }}"><span>Download <span class="nowrap">Lead-DBS</span></span></a></li>
+  {{- /* the pages' own titles, so the names match the menu and the page heads; first what a reader
+         arriving from a paper looks for (what Lead-DBS does, how to cite it) */}}
+  {{ range slice "/helpsupport/knowledge-base/lead-dbs-methods" "/about/citing_leaddbs" }}{{ with site.GetPage . }}<li><a class="card child-page" href="{{ .RelPermalink }}"><span>{{ partial "nobreak-html.html" (.LinkTitle | htmlEscape) }}</span></a></li>{{ end }}{{ end }}
+  <li><a class="card child-page" href="https://netstim.gitbook.io/leaddbs"><span>The manual</span></a></li>
+  {{ range slice "/helpsupport" "/helpsupport/knowledge-base/atlasesresources" "/community" "/news" "/about" "/contact" }}{{ with site.GetPage . }}<li><a class="card child-page" href="{{ .RelPermalink }}"><span>{{ partial "nobreak-html.html" (.LinkTitle | htmlEscape) }}</span></a></li>{{ end }}{{ end }}
+</ul>

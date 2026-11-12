@@ -1,6 +1,6 @@
 {{- /* All events of data/events.yaml, sorted by start, each with what the templates print:
        .e (the entry), .id, .start / .ends (time.Time; ends is exclusive), .iso_start / .iso_ends,
-       .when (date text), .time (time with its zone, or ""), .time_short (the same, zone abbreviation only), .over (true when it ended before this build).
+       .when (date text), .when_short ("18 Nov", "11–12 Feb"), .time (time with its zone, or ""), .time_short (the same, zone abbreviation only), .over (true when it ended before this build).
        Returns a slice of dicts. */ -}}
 {{- $out := slice -}}
 {{- range hugo.Data.events.events -}}
@@ -26,6 +26,15 @@
   {{- else -}}
     {{- $when = printf "%s – %s" ($day.Format "2 January 2006") ($lastDay.Format "2 January 2006") -}}
   {{- end -}}
+  {{- /* the short date, for a line that has no room for the weekday and the year: "18 Nov", "11–12 Feb" */ -}}
+  {{- $whenShort := "" -}}
+  {{- if eq ($day.Format "2006-01-02") ($lastDay.Format "2006-01-02") -}}
+    {{- $whenShort = $day.Format "2 Jan" -}}
+  {{- else if eq ($day.Format "2006-01") ($lastDay.Format "2006-01") -}}
+    {{- $whenShort = printf "%s–%s" ($day.Format "2") ($lastDay.Format "2 Jan") -}}
+  {{- else -}}
+    {{- $whenShort = printf "%s – %s" ($day.Format "2 Jan") ($lastDay.Format "2 Jan") -}}
+  {{- end -}}
   {{- /* the zone is printed from the date and the IANA zone, so a summer date reads CEST by itself:
          "15:00 CET (09:00 EST)" in full when also_in is set, "15:00 CET" where space is short.
          tz_label overrides the zone. */ -}}
@@ -42,7 +51,7 @@
       "start" $start "ends" $ends "start_unix" $start.Unix
       "iso_start" ($start.Format $iso) "iso_ends" ($ends.Format $iso)
       "date_only" ($day.Format "2006-01-02") "timed" $timed "tz" $tz
-      "when" $when "time" $time "time_short" $timeShort
+      "when" $when "when_short" $whenShort "time" $time "time_short" $timeShort
       "over" (not (now.Before $ends))) -}}
 {{- end -}}
 {{- return (sort $out "start_unix") -}}

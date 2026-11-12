@@ -1,9 +1,16 @@
 ---
 title: "News"
 description: "Lead-DBS news: releases, papers, workshops and the history of the project since 2017."
-aliases: ["/category/dbs/", "/category/literature/", "/poster-presentation-at-ohbm-2014-in-hamburg/", "/lead-dbs-ohbm-hackathon-2014-in-berlin/", "/new-interesting-dbs-papers/", "/new-interesting-dbs-papers-2/", "/lead-dbs-is-on-twitter-and-facebook/", "/first-lead-meetup-held-in-2015/", "/we-are-applying-for-funding-and-would-love-to-receive-your-letter-of-support/", "/feed/", "/news/feed/", "/news/page/4/"]
+# old category pages, feeds and list pages; old posts whose content moved forward from their own
+# folders (layout: redirect) to the section that holds it now
+aliases: ["/category/dbs/", "/category/literature/", "/feed/", "/news/feed/", "/news/page/4/"]
 # The list is also a feed (/news/index.xml); /feed/ and /news/feed/ were the WordPress feeds.
 outputs: ["html", "rss"]
+keywords: ["news", "announcements", "releases", "rss", "feed", "news feed"]
 # the picture shown when the page is shared (head.html)
 share: "images/renders/lead-closeup.jpg"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/subscribe-to-our-newsletter/", text: "Release and workshop news by e-mail"}
+  - {page: "/events/", text: "Developer meetings and workshops"}
 ---

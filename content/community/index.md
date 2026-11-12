@@ -8,6 +8,10 @@ related:
   - "/about/team/"
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-community.jpg"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/helpsupport/first-steps/", text: "New to Lead-DBS? Start here"}
+  - {page: "/helpsupport/slack-user-channel/", text: "Questions about using Lead-DBS"}
 ---
 
 Lead-DBS is developed in the open by researchers from many institutions, and its users help each other.
@@ -25,7 +29,3 @@ Want to follow the development as it happens? [Join the developer meeting](/even
 ## Stimulating Brains
 
 [Stimulating Brains](https://stimulatingbrains.org) is the institute's podcast and talk series on brain stimulation, with interviews and recorded talks by researchers in the field. It is not part of Lead-DBS, but a good place to go next if you work on deep brain stimulation.
-
-## Next
-
-New to Lead-DBS? Start with [First steps](/helpsupport/first-steps/). Questions about using it go to the [user Slack](/helpsupport/slack-user-channel/).

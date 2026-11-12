@@ -14,6 +14,10 @@ related:
   - "/download/"
   - "/helpsupport/slack-user-channel/"
   - "/about/citing_leaddbs/"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/events/", text: "The monthly developer meeting and the next workshop"}
+  - {page: "/develop/", text: "Code, atlases and bug reports"}
 ---
 
 New to Lead-DBS? Start with
@@ -23,16 +27,24 @@ Writing a paper? See [Cite Lead-DBS](/about/citing_leaddbs/).
 
 {{< childpages menu="true" >}}
 
+## Manual {#manual}
+
+The [manual](https://netstim.gitbook.io/leaddbs) has its own site. Its main chapters:
+
+- [Installation](https://netstim.gitbook.io/leaddbs/installation)
+- [One patient, step by step](https://netstim.gitbook.io/leaddbs/lead-dbs/step0-overview)
+- [Registration and normalization](https://netstim.gitbook.io/leaddbs/lead-dbs/step3-volume-registrations)
+- [Electrode reconstruction](https://netstim.gitbook.io/leaddbs/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories)
+- [Group analyses](https://netstim.gitbook.io/leaddbs/lead-group/group-analyses-with-lead-dbs)
+- [Connectomics](https://netstim.gitbook.io/leaddbs/connectomics/connectomic-analyses)
+- [Troubleshooting](https://netstim.gitbook.io/leaddbs/appendix/troubleshooting-specific-help)
+{.manual-links}
+
 ## Get help {#get-help}
 
-- **Questions about using Lead-DBS:** ask on the [user Slack](/helpsupport/slack-user-channel/), where users help each other and members of the development team read along. You invite yourself, no approval needed.
+- **Questions about using Lead-DBS:** [join the user Slack](https://inviter.co/lead-dbs) and ask there; users help each other and members of the development team read along. You invite yourself, no approval needed ([more about it](/helpsupport/slack-user-channel/)).
 - **How do I …?** Look it up in the [manual](https://netstim.gitbook.io/leaddbs) first; its [installation guide](https://netstim.gitbook.io/leaddbs/installation) covers most setup problems.
 - **Bugs:** open an issue on [GitHub](https://github.com/netstim/leaddbs/issues), with your Lead-DBS version, operating system and the full error message.
 - **Anything else:** write to us through the [contact page](/contact/).
 
-{{< notice >}}**The old support forum is closed.** Its posts were not moved to this website. Please ask on the [user Slack](/helpsupport/slack-user-channel/) and report bugs on [GitHub](https://github.com/netstim/leaddbs/issues).{{< /notice >}}
-
-## Next
-
-Meet the people behind Lead-DBS at the [events](/events/): a monthly developer meeting online, and the
-next hands-on workshop. Want to contribute? See [Develop Lead-DBS](/develop/).
+{{< notice >}}**The old support forum is closed.** Its posts were not moved to this website. Please [join the user Slack](https://inviter.co/lead-dbs) to ask, and report bugs on [GitHub](https://github.com/netstim/leaddbs/issues).{{< /notice >}}

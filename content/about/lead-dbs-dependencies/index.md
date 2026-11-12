@@ -1,12 +1,9 @@
 ---
-title: "Lead-DBS dependencies"
-# the browser title (head.html adds " – Lead-DBS")
-htmlTitle: "Dependencies"
+title: "Dependencies"
 description: "The open-source tools Lead-DBS builds on, from SPM and ANTs to OSS-DBS v1 and v2, and the papers to cite for them."
 date: "2016-06-13T16:26:54"
 lastmod: "2026-11-11"
 weight: 7
-menuParent: "/about/citing_leaddbs"
 # the old "portfolio" of software Lead-DBS works with
 aliases: ["/portfolio-item/spm/", "/portfolio-item/dtifibertools/", "/portfolio-item/132/", "/portfolio_entries/interfaces/"]
 # pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
@@ -16,6 +13,10 @@ related:
   - "/about/publications/"
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-about.jpg"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/about/citing_leaddbs/", text: "How to cite Lead-DBS itself"}
+  - {page: "/develop/#add-your-atlas-or-dataset", name: "Add your atlas, dataset or code", text: "Get your own code or data into Lead-DBS"}
 ---
 
 Lead-DBS brings together some of the best open-source neuroimaging tools and adds code of its own
@@ -73,7 +74,3 @@ and on the original method (in the table below).
 | Estimating the Volume of Activated Tissue (VAT) | SimBio (FEM-based field modeling) and FieldTrip (Mesh generation) toolboxes | [fieldtriptoolbox.org](http://fieldtriptoolbox.org/)  [mrt.uni-jena.de](https://www.mrt.uni-jena.de/simbio/index.php/Main_Page) | Oostenveld, R., Fries, P., Maris, E., & Schoffelen, J.-M. (2010). FieldTrip: Open Source Software for Advanced Analysis of MEG, EEG, and Invasive Electrophysiological Data. Computational Intelligence and Neuroscience, 2011(1), 1–9. [doi:10.1155/2011/156869](https://doi.org/10.1155/2011/156869)  Wolters, C. H., Anwander, A., & Tricoche, X. (2005). Influence of local and remote white matter conductivity anisotropy for a thalamic source on EEG/MEG field and return current computation. |
 | Network stats | Network based statistics (NBS) | [sites.google.com](https://sites.google.com/site/bctnet/comparison/nbs)  [nitrc.org](https://www.nitrc.org/projects/nbs/) | Zalesky, A., Fornito, A., & Bullmore, E. T. (2010). Network-based statistic: identifying differences in brain networks., 53(4), 1197–1207. [doi:10.1016/j.neuroimage.2010.06.041](https://doi.org/10.1016/j.neuroimage.2010.06.041) |
 {.table--stack caption="Software that Lead-DBS uses, with its papers"}
-
-## Next
-
-How to cite Lead-DBS itself is on [Cite Lead-DBS](/about/citing_leaddbs/); how to get your own code or data into Lead-DBS is on [Develop Lead-DBS](/develop/#add-your-atlas-or-dataset).

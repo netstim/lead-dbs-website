@@ -1,26 +1,40 @@
-{{- /* The render behind an inner page's title: black ground like the home page's hero, faint, on the
-       right, cut to its subject (focus: the object-position kept in the crop). Each group of the main
-       menu has its own scene, chosen by the group the page belongs to (partial nav-place.html, the same
-       place the breadcrumb shows), not by its folder, and no scene is used by two groups. Pages in no
-       group (imprint, privacy, search, 404) share the last one. The key is the group's menu identifier,
-       or its name where it has none. Decorative (alt=""); WebP copies made by Hugo (1800 px wide too
-       where the source is, for wide retina screens). */ -}}
+{{- /* The render behind an inner page's title: black ground like the home page's hero, on the right. Each
+       group of the main menu has its own scene, chosen by the group the page belongs to (partial
+       nav-place.html, the same place the breadcrumb shows), not by its folder, and no scene is used by two
+       groups. Every scene fills the band the way the Download page's cohort does: a render whose subject
+       spans its frame, or a render cut to its subject (crop: the rectangle x0, y0, x1, y1 in the file's
+       pixels); focus is the object-position kept in the band, chosen so the band never cuts the subject
+       where it matters (an electrode keeps its tip and contacts; it may leave through the top edge, as it
+       enters the brain from above). fit "contain" shows the whole render at the band's height on the
+       right, for a subject that a wide band would cut (the fibre bundles of About). The key is the group's menu identifier, or
+       its name where it has none. Pages of no group and the pages one visits for a task rather than to
+       read (News, Contact, Search, the legal pages, 404) get no render: their head is a lower, text-only
+       band (assets/css/site.css, "inner pages: the head"). Decorative (alt=""); WebP copies made by Hugo,
+       640, 1200 and 1800 px wide: the band is up to 1100 px wide, so a crop is at least 1800 px wide to
+       stay sharp on a retina screen. */ -}}
 {{- $scenes := dict
-    "features"  (dict "file" "head-features.jpg" "focus" "70% 55%")
-    "docs"      (dict "file" "head-docs.jpg" "focus" "74% 50%")
-    "data"      (dict "file" "head-data.jpg" "focus" "68% 55%")
-    "community" (dict "file" "head-community.jpg" "focus" "68% 62%")
-    "News"      (dict "file" "lead-closeup.jpg" "focus" "50% 55%")
-    "about"     (dict "file" "head-about.jpg" "focus" "70% 55%")
+    "features"  (dict "file" "head-features.jpg" "crop" (slice 1300 240 3100 1440) "focus" "50% 38%")
+    "docs"      (dict "file" "lead-closeup.jpg" "crop" (slice 0 640 2200 1330) "focus" "50% 100%")
+    "data"      (dict "file" "head-data.jpg" "crop" (slice 1300 100 3100 1300) "focus" "50% 45%")
+    "community" (dict "file" "head-community.jpg" "crop" (slice 1250 250 3150 1400) "focus" "50% 55%")
+    "about"     (dict "file" "fiber-filtering-wide.jpg" "focus" "100% 50%" "fit" "contain")
     "Download"  (dict "file" "cohort-front.jpg" "focus" "50% 60%")
 -}}
-{{- $other := dict "file" "cohort-top.jpg" "focus" "50% 50%" -}}
 {{- $group := (partial "nav-place.html" .).group -}}
-{{- $scene := $other -}}
-{{- with $group }}{{ $scene = index $scenes (.Identifier | default .Name) | default $other }}{{ end -}}
+{{- $scene := "" -}}
+{{- with $group }}{{ $scene = index $scenes (.Identifier | default .Name) }}{{ end -}}
+{{- if or (eq .Kind "404") (in (slice "/contact" "/search") .Path) }}{{ $scene = "" }}{{ end -}}
+{{- with $scene -}}
 {{- with resources.Get (printf "images/renders/%s" $scene.file) -}}
-{{- $s := .Resize "640x webp q70" }}{{ $m := .Resize "1200x webp q70" -}}
-{{- $set := printf "%s 640w, %s 1200w" $s.RelPermalink $m.RelPermalink -}}
-{{- if ge .Width 1800 }}{{ $l := .Resize "1800x webp q66" }}{{ $set = printf "%s, %s 1800w" $set $l.RelPermalink }}{{ end -}}
-<img class="page-head__render" src="{{ $s.RelPermalink }}" srcset="{{ $set }}" sizes="(min-width: 1024px) 62vw, 100vw" width="{{ $m.Width }}" height="{{ $m.Height }}" style="--focus: {{ $scene.focus }}" alt="" decoding="async" fetchpriority="low">
+{{- $img := . -}}
+{{- with $scene.crop }}{{ $x0 := index . 0 }}{{ $y0 := index . 1 }}{{ $x1 := index . 2 }}{{ $y1 := index . 3 -}}
+{{- $img = ($img.Crop (printf "%dx%d TopLeft" $x1 $y1)).Crop (printf "%dx%d BottomRight" (sub $x1 $x0) (sub $y1 $y0)) -}}
+{{- end -}}
+{{- $s := $img.Resize "640x webp q70" }}{{ $m := $img.Resize (printf "%dx webp q70" (math.Min $img.Width 1200 | int)) -}}
+{{- $set := printf "%s 640w, %s %dw" $s.RelPermalink $m.RelPermalink $m.Width -}}
+{{- if ge $img.Width 1800 }}{{ $l := $img.Resize "1800x webp q66" }}{{ $set = printf "%s, %s 1800w" $set $l.RelPermalink }}{{ end -}}
+<img class="page-head__render" src="{{ $s.RelPermalink }}" srcset="{{ $set }}" sizes="(min-width: 1024px) 62vw, 100vw" width="{{ $m.Width }}" height="{{ $m.Height }}" style="--focus: {{ $scene.focus }}{{ with $scene.fit }}; --fit: {{ . }}{{ end }}" alt="" decoding="async" fetchpriority="low">
+{{- else -}}
+{{- errorf "page-head-render: no file images/renders/%s" $scene.file -}}
+{{- end -}}
 {{- end -}}

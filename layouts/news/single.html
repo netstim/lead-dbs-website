@@ -20,15 +20,13 @@
       <p class="notice post-archive" role="note">From the archive: this post is from {{ $.Date.Format "2006" }}, and Lead-DBS has changed since. The current version is <a href="{{ with site.GetPage "/download" }}{{ .RelPermalink }}{{ end }}">Lead-DBS&nbsp;{{ .version }}</a>.</p>
       {{ end }}{{ end }}
       {{ partial "nobreak-html.html" .Content }}
-      {{- /* onward: the next newer and older post (by date), then all news */}}
-      {{ $newer := .NextInSection }}{{ $older := .PrevInSection }}
-      {{ if or $newer $older }}
-      <nav class="post-nav" aria-label="More news">
-        {{ with $newer }}<a class="card post-nav__link post-nav__link--newer" href="{{ .RelPermalink }}" rel="next"><span class="post-nav__label">Newer</span><span class="post-nav__title">{{ partial "nobreak-html.html" (.Title | htmlEscape) }}</span></a>{{ end }}
-        {{ with $older }}<a class="card post-nav__link post-nav__link--older" href="{{ .RelPermalink }}" rel="prev"><span class="post-nav__label">Older</span><span class="post-nav__title">{{ partial "nobreak-html.html" (.Title | htmlEscape) }}</span></a>{{ end }}
-      </nav>
-      {{ end }}
-      <p class="post-back"><a class="link" href="{{ .Parent.RelPermalink }}">All news</a></p>
+      {{- /* onward, as on every page (partial next-steps.html): the next newer and older post (by date),
+             then all news */}}
+      {{ $items := slice }}
+      {{ with .NextInSection }}{{ $items = $items | append (dict "href" .RelPermalink "name" .LinkTitle "text" (printf "Newer post, %s" (.Date.Format "2 January 2006")) "rel" "next") }}{{ end }}
+      {{ with .PrevInSection }}{{ $items = $items | append (dict "href" .RelPermalink "name" .LinkTitle "text" (printf "Older post, %s" (.Date.Format "2 January 2006")) "rel" "prev") }}{{ end }}
+      {{ with .Parent }}{{ $items = $items | append (dict "href" .RelPermalink "name" "All news" "text" "Releases, workshops and announcements") }}{{ end }}
+      {{ partial "next-steps.html" (dict "page" . "items" $items) }}
     </article>
     <aside class="sidebar" aria-label="In this section">{{ partial "sidebar.html" . }}</aside>
   </div>

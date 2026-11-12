@@ -2,21 +2,32 @@
 title: "Commercial vs. academic software"
 date: "2017-07-03T00:39:18"
 lastmod: "2017-07-08T21:47:41"
-# An essay of 2017, kept in the news archive under its date.
-slug: "commercial-vs-academic-software"
+# An essay of 2017, first published as a news post; it keeps its address and shows its date.
+url: "/commercial-vs-academic-software/"
+showDate: true
+# not kept up to date: the line under the title says "Written July 2017, kept for the record"
+archived: true
 description: "An essay of 2017: pros and cons of commercial and academic software for modelling DBS electrodes, and why Lead-DBS is academic research software."
 keywords: ["commercial", "academic", "open source", "GUIDE", "SureTune", "Brainlab"]
 # the picture shown when the page is shared (head.html)
 share: "images/renders/lead-closeup.jpg"
+# kept for the record, but not offered by the site search (layouts/home.searchindex.json) nor to search
+# engines (noindex, so not in the sitemap either)
+search: false
+sitemap:
+  disable: true
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/develop/", text: "How Lead-DBS is developed today"}
 ---
 
 > Recently, I had the pleasure to meet with an R&D representative of a major DBS electrode manufacturer and we talked about software built to model deep brain stimulation electrodes in computer simulations, such as Lead-DBS.
 >
 > This meeting – and the development of Lead-DBS since 2012 – made me think about pros and cons of academic vs. commercial software with similar goals. A few aspects were new to me and could be of interest, so I decided to write them up.
 
-Since a few years, software that aims at modeling DBS electrodes in computer simulations has been emerging across the globe, both authored by research institutions and industry. On the academic side, Cicerone DBS *(1)* was a pioneering platform developed by the McIntyre lab later bought by Boston Scientific and turned into the commercial application GUIDE. Around the same time, the Yelnik/Bardinet group in Paris developed the [deformable YeB atlas](https://www.ncbi.nlm.nih.gov/pubmed/17110133) that went into the commercial [Optivize](http://www.trademarkia.com/optivise-85498999.html) *(2)* software by Medtronic and is now used in it’s successor, [SureTune 3](http://newsroom.medtronic.com/phoenix.zhtml?c=251324&p=irol-newsArticle&ID=2279215). The company [Brainlab](https://www.brainlab.com/en/) also develops similar software with some more focus on the pre-surgical / planning part. [CranialCloud](https://www.cranialdrive.com/), developed by the spinoff Neurotargeting LLC out of Vanderbilt University also develops a product aimed at modeling DBS electrodes.
+Since a few years, software that aims at modeling DBS electrodes in computer simulations has been emerging across the globe, both authored by research institutions and industry. On the academic side, Cicerone DBS *(1)* was a pioneering platform developed by the McIntyre lab later bought by Boston Scientific and turned into the commercial application GUIDE. Around the same time, the Yelnik/Bardinet group in Paris developed the [deformable YeB atlas](https://www.ncbi.nlm.nih.gov/pubmed/17110133) that went into the commercial [Optivize](http://www.trademarkia.com/optivise-85498999.html) *(2)* software by Medtronic and is now used in it’s successor, [SureTune 3](http://newsroom.medtronic.com/phoenix.zhtml?c=251324&p=irol-newsArticle&ID=2279215). The company [Brainlab](https://www.brainlab.com/en/) also develops similar software with some more focus on the pre-surgical / planning part. CranialCloud, developed by the spinoff Neurotargeting LLC out of Vanderbilt University also develops a product aimed at modeling DBS electrodes.
 
-We started development of [Lead-DBS](http://www.sciencedirect.com/science/article/pii/S1053811914009938) in 2012 to fill a clinical need at our center, since at the time, no commercial or academic software was available for download purchase. Later on, the first similar software that was made publicly available was the AFNI based [DBSproc](https://afni.nimh.nih.gov/pub/dist/doc/program_help/@Install_DBSproc.html). There are multiple other academic projects in development, such as [PyDBS](http://acoustic.univ-rennes1.fr/doku.php/software) in Rennes, [PaCER](https://adhusch.github.io/PaCER/) in Luxembourg, “[VirtualPatient](https://scholar.google.com/citations?view_op=view_citation&hl=en&user=rBpTjYYAAAAJ&cstart=20&pagesize=80&citation_for_view=rBpTjYYAAAAJ:GnPB-g6toBAC)” at MGH in Boston, [DBSmapping](http://ieeexplore.ieee.org/document/7146617/?tp=&arnumber=7146617&openedRefinements%3D*%26filter%3DAND(NOT(4283010803))%26pageNumber%3D11%26rowsPerPage%3D100%26queryText%3D(3d%20user%20interfaces)metadata) in Porto, [StimVision](http://onlinelibrary.wiley.com/doi/10.1111/ner.12625/abstract) at Case Western – this list may not be exhaustive. At the point of writing, the only two academic toolboxes that are openly available for download are [DBSproc](https://afni.nimh.nih.gov/pub/dist/doc/program_help/@Install_DBSproc.html) and [Lead-DBS](/) *(3)*.
+We started development of [Lead-DBS](http://www.sciencedirect.com/science/article/pii/S1053811914009938) in 2012 to fill a clinical need at our center, since at the time, no commercial or academic software was available for download purchase. Later on, the first similar software that was made publicly available was the AFNI based [DBSproc](https://afni.nimh.nih.gov/pub/dist/doc/program_help/@Install_DBSproc.html). There are multiple other academic projects in development, such as PyDBS in Rennes, [PaCER](https://adhusch.github.io/PaCER/) in Luxembourg, “[VirtualPatient](https://scholar.google.com/citations?view_op=view_citation&hl=en&user=rBpTjYYAAAAJ&cstart=20&pagesize=80&citation_for_view=rBpTjYYAAAAJ:GnPB-g6toBAC)” at MGH in Boston, [DBSmapping](http://ieeexplore.ieee.org/document/7146617/?tp=&arnumber=7146617&openedRefinements%3D*%26filter%3DAND(NOT(4283010803))%26pageNumber%3D11%26rowsPerPage%3D100%26queryText%3D(3d%20user%20interfaces)metadata) in Porto, [StimVision](http://onlinelibrary.wiley.com/doi/10.1111/ner.12625/abstract) at Case Western – this list may not be exhaustive. At the point of writing, the only two academic toolboxes that are openly available for download are [DBSproc](https://afni.nimh.nih.gov/pub/dist/doc/program_help/@Install_DBSproc.html) and [Lead-DBS](/) *(3)*.
 
 ## The obvious
 A few obvious pros and cons for commercial vs. academic software exist: Of course, academic software is **most often free** and **open source**. It may be customized, you are free to **plug in your own research scripts** and modify everything tailor-cut to your needs. For some researchers, this is a massive advantage. I would even argue that some research projects may just not be feasible with commercial software since it’s often hard to **automate**, **batch-process** or **interface** **with** these tools.
@@ -26,7 +37,7 @@ On the other hand, commercial software is **shiny, easy to use, comparably bug f
 ## Keeping pace with research
 A slightly less obvious advantage of research software is that it is much more flexible. Commercial applications undergo tedious certification processes to achieve CE-marks or FDA-approvals and may safely be applied in clinical context. This is a great advantage for clinicians but drastically slows down development of software. New research developments may not be easily integrated into commercial tools since they need to be certified, too. On the wild-west side of academic software, however, new tools can be integrated from idea & concept to end-user deployment within days. For instance, in [2009, the global fibertracking approach (‘Gibbstracking, Reisert 2009’)](http://www.sciencedirect.com/science/article/pii/S1053811910011973) [won the Neurospin fibercup and was thus evaluated as the best fibertracking software compared to 9 competitors](http://www.sciencedirect.com/science/article/pii/S105381191100067X). We integrated this software into Lead-DBS when we started it. Recently, [a new comparative study found the generalized Q-sampling algorithm implemented in DSI studio most promising](http://www.biorxiv.org/content/early/2016/11/07/084137). With some help from Fang-Cheng Yeh, the author of DSI studio, we were able to integrate this approach into Lead-DBS within a few weeks. Fibertracking is an extremely good example to highlight differences between academic and commercial pipelines – the latter often still apply a combination of tensor-based DTI & Mori Streamline tracking.
 
-Another good example is a brainshift correction feature in Lead-DBS that [developed from concept to published code on a 3-day hackathon at MIT](https://leaddbs.gitbooks.io/leaddbs-manual/content/subcortical-refine-post-to-pre-transforms.html). Such a pace is not imaginable for commercial applications – but naturally, it may also bear some risks.
+Another good example is a brainshift correction feature in Lead-DBS that developed from concept to published code on a 3-day hackathon at MIT. Such a pace is not imaginable for commercial applications – but naturally, it may also bear some risks.
 
 ## Reproducibility and open science
 Clinicians may not care too much about this and likely **trade open source for a CE-mark / FDA approval** in a snap. Still, using a commercial software without published methods does not fulfill criteria of **reproducible science** and is a no-go in the eyes of most researchers. Moreover, in the short history of DBS imaging suites, already three of them were announced to reach market shortly but soon after withdrawn, their development discontinued *(4)*.
@@ -46,25 +57,3 @@ I hope this post could elaborate some pros and cons about commercial and academi
 2. *to the best of our knowledge development discontinued*
 3. *to the best of our knowledge*
 4. *referring to Boston Scientific GUIDE system, Medtronic OptiVize and the initial version of Medtronic SureTune*
-
-## Other tools, as listed some years ago {#alternatives}
-
-DBS imaging spans co-registration, multimodal image fusion, 3D image processing and localization, spatial statistics, surface and volumetric meshing and finite element modeling; connectivity adds fMRI and diffusion tractography, and electrophysiology (local field potentials, EEG, MEG) can add more. Lead-DBS includes the best open tools for each step it can, and other tools, with a different focus, may suit a specific step better. The list was last reviewed some years ago, so some of these tools may have changed or been discontinued. Also see the discussion of our [Lead-DBS v2 paper](https://www.researchgate.net/publication/327380509_Lead-DBS_v2_Towards_a_comprehensive_pipeline_for_deep_brain_stimulation_imaging).
-
-- **Academic endeavors / Open source tools**
-  - DBSproc ([Lauro 2016](http://onlinelibrary.wiley.com/doi/10.1002/hbm.23039/abstract)), openly available, part of the [AFNI imaging suite](https://afni.nimh.nih.gov/afni/)
-  - ELMA ([Johansson 2019](https://pubmed.ncbi.nlm.nih.gov/31947033/)), openly available from [Linköping University](https://liu.se/en/research/dbs)
-  - PyDBS ([D’Albis ‎2015](https://www.ncbi.nlm.nih.gov/pubmed/24799270)), available to the ACouStiC community
-  - [PaCER](https://adhusch.github.io/PaCER/), developed in Luxembourg (also a part of Lead-DBS)
-  - StimVision ([Noecker 2021](https://onlinelibrary.wiley.com/doi/abs/10.1111/ner.13350)), developed at Case Western University
-  - DBSmapping ([Moreira da Silva 2015](https://ieeexplore.ieee.org/document/7146617/?tp=&arnumber=7146617&openedRefinements%3D*%26filter%3DAND(NOT(4283010803))%26pageNumber%3D11%26rowsPerPage%3D100%26queryText%3D(3d%20user%20interfaces)metadata)), developed by a group in Porto
-  - There is a similar software at MGH, described in [Bonmassar 2014](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4334388/)
-  - The CiceroneDBS ([Miocinovic 2007](https://www.ncbi.nlm.nih.gov/pubmed/17691348), discont.) software which had similar aims made its way into the Boston Scientific GUIDE software (see below)
-- **Commercial products**
-  - [Boston Scientific GUIDE XT](https://news.bostonscientific.com/2013-05-27-Boston-Scientific-Receives-CE-Mark-Approval-For-GUIDE-DBS-System) software, now a commercial alternative
-  - Commercial tools under the name [Optivise](http://www.trademarkia.com/optivise-85498999.html) (discont.) and [SureTune](https://neuronewsinternational.com/ce-mark-granted-to-medtronic-for-suretune2-deep-brain-stimulation-therapy/) are/were available at Medtronic
-  - CranialCloud, developed by the spinoff Neurotargeting LLC out of Vanderbilt University
-
-## Next
-
-How to contribute to Lead-DBS today: [Develop Lead-DBS](/develop/).

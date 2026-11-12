@@ -9,13 +9,16 @@ keywords: ["atlas", "atlases", "subcortical", "thalamus", "STN", "GPi", "sweet s
 aliases: ["/helpsupport/knowledge-base/atlasesresources/atlases/"]
 # the picture shown when the page is shared (head.html)
 share: "distal_atlas-1030x1030.png"
-# the picture of its card on its group's page (childpages)
-card: "distal_atlas-1030x1030.png"
 # pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
 related:
   - "/helpsupport/knowledge-base/atlasesresources/about-the-mni-spaces/"
   - {name: "Visualization in Lead-DBS", url: "/helpsupport/knowledge-base/lead-dbs-methods/#visualization"}
   - {name: "Add your atlas", url: "/develop/#add-your-atlas-or-dataset"}
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/helpsupport/knowledge-base/atlasesresources/#choosing", name: "Choosing an atlas", text: "Which atlas suits your question"}
+  - {page: "/helpsupport/knowledge-base/atlasesresources/distal-atlas/", text: "DISTAL in detail"}
+  - {page: "/helpsupport/knowledge-base/atlasesresources/normative-connectomes/", text: "For connectivity analyses"}
 ---
 Most come with Lead-DBS (nothing to download); the others are a download away. Open an entry for how
 to get it and which paper to cite, or type in the box to find one by name, structure, disease or author.
@@ -42,5 +45,4 @@ Tips on [choosing and using an atlas](/helpsupport/knowledge-base/atlasesresourc
 ## Is an atlas missing?
 
 Know an atlas that should be listed here, or want yours to come with Lead-DBS?
-[Write to us](/contact/). Next: the [normative connectomes](/helpsupport/knowledge-base/atlasesresources/normative-connectomes/)
-for connectivity analyses, or the [DISTAL atlas](/helpsupport/knowledge-base/atlasesresources/distal-atlas/) in detail.
+[Write to us](/contact/).

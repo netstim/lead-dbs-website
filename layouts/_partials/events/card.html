@@ -1,18 +1,19 @@
 {{- /* One event, drawn the same way on /events/ and on the home page.
        Argument: dict "ev" (entry of events/list.html) "page", and "compact" (bool, the home page: the
-       title links to the event on /events/, no id, no text, no extra links). */ -}}
+       title links to the event on /events/, no id, no host, no text, no extra links, and only the action
+       of the registration, without its note). */ -}}
 {{- $ev := .ev }}{{ $e := $ev.e }}{{ $page := .page }}{{ $compact := .compact -}}
 {{- $events := site.GetPage "/events" -}}
 <li class="event panel"{{ if not $compact }} id="{{ $ev.id }}"{{ end }} data-ev data-ev-ends="{{ $ev.iso_ends }}" data-ev-start="{{ $ev.start_unix }}">
   <p class="event__date"><time datetime="{{ $ev.iso_start }}">{{ $ev.when }}</time></p>
   <h3 class="event__title">{{ if and $compact $events }}<a href="{{ $events.RelPermalink }}#{{ $ev.id }}">{{ $e.title }}</a>{{ else }}{{ $e.title }}{{ end }}</h3>
   <dl class="spec-rows event__facts">
-    {{ with $ev.time }}<div><dt>Time</dt><dd>{{ . }}<span class="event__local" data-ev-local="{{ $ev.iso_start }}" data-ev-tz="{{ $ev.tz }}" hidden></span></dd></div>{{ end }}
+    {{ with $ev.time }}<div><dt>Time</dt><dd><time datetime="{{ $ev.iso_start }}">{{ . }}</time><span class="event__local" data-ev-local="{{ $ev.iso_start }}" data-ev-tz="{{ $ev.tz }}" hidden></span></dd></div>{{ end }}
     <div><dt>Where</dt><dd>{{ $e.where }}</dd></div>
-    {{ with $e.host }}<div><dt>Hosted by</dt><dd>{{ . }}</dd></div>{{ end }}
+    {{ if not $compact }}{{ with $e.host }}<div><dt>Hosted by</dt><dd>{{ . }}</dd></div>{{ end }}{{ end }}
   </dl>
   {{ if not $compact }}{{ with $e.text }}<p class="event__text">{{ . }}</p>{{ end }}{{ end }}
-  <div class="event__upcoming-only">{{ partial "events/register.html" (dict "ev" $ev "page" $page) }}</div>
+  <div class="event__upcoming-only">{{ partial "events/register.html" (dict "ev" $ev "page" $page "compact" $compact) }}</div>
   {{ if not $compact }}{{ with $e.links }}
   <ul class="event__links">
     {{ range . }}<li><a class="link" href="{{ partial "resolve-url.html" (dict "url" .url "page" $page) }}">{{ .label }}</a></li>{{ end }}

@@ -4,17 +4,17 @@
 {{- with strings.TrimSpace .Description }}{{ $desc = . }}{{ else }}{{ with .Summary | replaceRE ` ?\(open the full-size image\)` "" | plainify | htmlUnescape | strings.TrimSpace }}{{ $desc = . | replaceRE `\s+` " " | truncate 154 }}{{ end }}{{ end -}}
 {{- if eq .Kind "404" }}{{ $desc = "This address is not on lead-dbs.org: search the site, or start from its main sections." }}{{ end -}}
 {{- if not $desc }}{{ $desc = site.Params.description }}{{ end -}}
-{{- /* The browser title, on every page: "Page – Lead-DBS" (the home page: its headline – Lead-DBS); a name
-       that ends in "Lead-DBS" ("Cite Lead-DBS", "Made with Lead-DBS") stands alone. A page whose title is
-       too long for a search result (over about 45 characters), or names Lead-DBS in the middle, sets a
-       shorter htmlTitle in its front matter ("Version 3.1 released" for "Lead-DBS 3.1 released"). */ -}}
-{{- $title := .Params.htmlTitle | default .Title -}}
+{{- /* The browser title, on every page: the page's title, the same words as its h1 and its menu entry, then
+       " – Lead-DBS" (the home page: its headline – Lead-DBS); a title that names Lead-DBS ("Cite Lead-DBS",
+       "Lead-DBS 3.2 released") stands alone. */ -}}
+{{- $title := .Title -}}
+{{- if eq .Kind "404" }}{{ $title = "Page not found" }}{{ end -}}
 {{- if .IsHome }}{{ $title = .Params.hero.title | default site.Params.description -}}
 {{- end -}}
 {{- /* the pages of the news list after the first: "News, page 2" (layouts/news/list.html uses the same paginator) */ -}}
 {{- $rel := .RelPermalink -}}
 {{- if and (eq .Kind "section") (eq .Section "news") }}{{ with .Paginator }}{{ if gt .PageNumber 1 }}{{ $title = printf "%s, page %d" $title .PageNumber }}{{ $desc = printf "%s Page %d of %d." $desc .PageNumber .TotalPages }}{{ $rel = .URL }}{{ end }}{{ end }}{{ end -}}
-{{- if not (strings.HasSuffix $title site.Title) }}{{ $title = printf "%s – %s" $title site.Title }}{{ end }}
+{{- if not (strings.Contains $title site.Title) }}{{ $title = printf "%s – %s" $title site.Title }}{{ end }}
 <title>{{ $title }}</title>
 <meta name="description" content="{{ $desc }}">
 {{- /* the canonical address: the page's own (a later page of the news list is its own page, not page 1);

@@ -13,8 +13,11 @@ related:
   - "/helpsupport/learn-lead-dbs-yourself/"
   - "/helpsupport/knowledge-base/lead-dbs-methods/"
   - "/helpsupport/slack-user-channel/"
-# the picture of its card on the Docs and help page (childpages)
-card: "video-xobhQDgtVfs.jpg"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/helpsupport/learn-lead-dbs-yourself/", text: "Practise on real patients"}
+  - {url: "https://netstim.gitbook.io/leaddbs", name: "Manual", text: "Look up a step"}
+  - {page: "/helpsupport/slack-user-channel/", text: "Questions are answered there"}
 ---
 
 New to Lead-DBS? Start with [First steps](/helpsupport/first-steps/) and practise with [Lead Tutor](/helpsupport/learn-lead-dbs-yourself/); the [manual](https://netstim.gitbook.io/leaddbs) has the current version of every step.
@@ -89,7 +92,3 @@ Further Resources and Support on Lead-DBS.org: 01:32:37
 *Recorded in September 2018*, at the [2nd International Lead-DBS Workshop](/helpsupport/workshops/#shanghai-2018) at Fudan University, Shanghai. We would like to thank Prof. Shouyan Wang and Dr. Xinyi Geng for organizing the workshop and recording and providing the videos.
 
 {{< youtube id="q0lsu4VMH0E" title="Electrode localizations with Lead-DBS (workshop talk, Shanghai 2018)" >}}
-
-## Next
-
-Practise on real data with [Lead Tutor](/helpsupport/learn-lead-dbs-yourself/), or look up a step in the [manual](https://netstim.gitbook.io/leaddbs). Questions are answered on the [user Slack](/helpsupport/slack-user-channel/).

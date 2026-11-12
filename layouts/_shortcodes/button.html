@@ -1,2 +1,4 @@
+{{- /* A link drawn as a button: {{< button href="/download/" >}}Download{{< /button >}}; variant="primary"
+       for the one main action of a page (default: secondary). */ -}}
 {{- $href := partial "resolve-url.html" (dict "url" (.Get "href") "page" .Page) -}}
-<p class="button-wrap"><a class="btn btn--secondary" href="{{ $href }}">{{ .Inner | .Page.RenderString }}</a></p>
+<p class="button-wrap"><a class="btn btn--{{ .Get "variant" | default "secondary" }}" href="{{ $href }}">{{ .Inner | .Page.RenderString }}</a></p>

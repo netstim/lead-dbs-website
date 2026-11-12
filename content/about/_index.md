@@ -1,7 +1,5 @@
 ---
-title: "About Lead-DBS"
-# the browser title (head.html adds " – Lead-DBS")
-htmlTitle: "About"
+title: "About"
 description: "Who develops Lead-DBS, its history, recognition and funding, and where to find its papers and how to cite it."
 linkTitle: "About"
 date: "2014-06-17T15:06:49"
@@ -16,6 +14,11 @@ related:
   - "/community/"
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-about.jpg"
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/about/citing_leaddbs/", text: "The papers to cite in yours"}
+  - {page: "/download/", text: "The current release and the install steps"}
+  - {page: "/helpsupport/first-steps/", text: "Your first electrode localization"}
 ---
 Lead-DBS is an open-source MATLAB toolbox for deep brain stimulation (DBS) imaging, free under the GNU
 General Public Licence with its code on [GitHub](https://github.com/netstim/leaddbs). Researchers from
@@ -46,7 +49,7 @@ effect: this is what Lead-DBS helps researchers study.
 - **2012** Work on the toolbox begins at the Movement Disorders Unit of Andrea Kühn, Department of Neurology, Charité – Universitätsmedizin Berlin.
 - **2015** The first paper ([Horn & Kühn, NeuroImage 2015](https://doi.org/10.1016/j.neuroimage.2014.12.002)); the Max Rubner Prize for Innovation and Technology of [Stiftung Charité](https://www.stiftung-charite.de/) funds further development.
 - **2016** Researchers from several institutions join the development; a Harvard Radcliffe Exploratory Ventures Grant of the [Radcliffe Institute for Advanced Study](https://www.radcliffe.harvard.edu/).
-- **2017** Robert Koch Prize of Charité, Berlin.
+- **2017** Robert Koch Prize of Charité, Berlin. An essay of that year, [Commercial vs. academic software](/commercial-vs-academic-software/), sets out why Lead-DBS is academic research software.
 - **2019** The Network Stimulation Laboratory led by Andreas Horn coordinates it; Lead-DBS v2 is published ([Horn, Li et al., NeuroImage 2019](https://doi.org/10.1016/j.neuroimage.2018.08.068)).
 - **2023** Lead-DBS v3.0 ([Neudorfer et al., NeuroImage 2023](https://doi.org/10.1016/j.neuroimage.2023.119862)).
 - **2025** The lab becomes the Institute for Network Stimulation at the University Hospital Cologne.
@@ -55,11 +58,6 @@ effect: this is what Lead-DBS helps researchers study.
 Lead-DBS has been funded by a [six-year grant of the German Research Foundation (DFG)](https://gepris.dfg.de/gepris/projekt/410169619?context=projekt&task=showDetail&id=410169619&)
 and supported by the Berlin Institute of Health, KFO 247, Stiftung Charité and the Prof. Dr. Klaus
 Thiemann Foundation.
-
-## Next
-
-[Cite Lead-DBS](/about/citing_leaddbs/) in your paper, or [download it](/download/) and take the
-[first steps](/helpsupport/first-steps/).
 
 Lead-DBS is research software, not meant for clinical decisions about an individual patient ([full statement](/download/#research-use)).
 {#research-use .fine-print}

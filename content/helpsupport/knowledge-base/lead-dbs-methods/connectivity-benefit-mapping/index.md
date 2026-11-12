@@ -12,6 +12,10 @@ related:
   - "/helpsupport/knowledge-base/atlasesresources/normative-connectomes/"
   - {name: "Network mapping explorer (video)", url: "/helpsupport/knowledge-base/walkthrough-videos/#sweetspot-fiber-filtering--network-mapping-explorer-walkthroughs"}
   - {name: "Connectomics in the manual", url: "https://netstim.gitbook.io/leaddbs/connectomics/connectomic-analyses"}
+# the cards at the end of the page (layouts/_partials/next-steps.html)
+next:
+  - {page: "/helpsupport/knowledge-base/atlasesresources/normative-connectomes/", text: "The connectomes used here"}
+  - {page: "/helpsupport/knowledge-base/lead-dbs-methods/", text: "Every method and tool, with manual chapter and paper"}
 ---
 
 DBS network mapping (first called connectivity benefit mapping) relates the connections of each
@@ -28,19 +32,18 @@ and [Lead Group](https://netstim.gitbook.io/leaddbs/lead-group/group-analyses-wi
 
 ## What to cite
 
-The method was introduced in
+The paper that introduced the method:
 
-> Horn, A., Reich, M., Vorwerk, J., Li, N., Wenzel, G., Fang, Q., et al. (2017). Connectivity Predicts deep brain stimulation outcome in Parkinson disease. *Annals of Neurology*, *82*(1), 67–78. [doi:10.1002/ana.24974](https://doi.org/10.1002/ana.24974)
+{{% copybox label="Copy the citation" %}}
+{{< paper horn2017ana "full" >}}
+{{% /copybox %}}
 
-with an editorial review in
-
-> Ridler, C. (2017). Parkinson disease: Deep brain stimulation — making the right connections. *Nature Reviews Neurology*, *13*(8), 450–451. [Nature](https://www.nature.com/articles/nrneurol.2017.91)
+It was discussed in an editorial in *Nature Reviews Neurology*:
+[Ridler 2017, “Parkinson disease: deep brain stimulation — making the right connections”](https://www.nature.com/articles/nrneurol.2017.91).
 
 ## How it works {#the-concept}
 
-![Steps of DBS network mapping, from postoperative imaging to connectivity maps](methods-1030x357.png)
-
-*Fig. 1:* First, based on postoperative imaging (A) derived DBS electrode localizations (B), the stimulation volume is estimated (C). Then, normative connectomes are queried to calculate which other brain structures are – in the average human brain – connected to the stimulation volume. This may be done both for functional (D) and structural (E) connectivity.
+![Steps of DBS network mapping, from postoperative imaging to connectivity maps](methods-1030x357.png "Fig. 1: First, based on postoperative imaging (A) derived DBS electrode localizations (B), the stimulation volume is estimated (C). Then, normative connectomes are queried to calculate which other brain structures are – in the average human brain – connected to the stimulation volume. This may be done both for functional (D) and structural (E) connectivity.")
 
 The connectivity profiles of all patients are then related to their clinical improvement: the result is
 a map of the regions a well-placed electrode is connected to, and it predicts the outcome of new patients.
@@ -48,17 +51,11 @@ a map of the regions a well-placed electrode is connected to, and it predicts th
 <details class="more more--wide">
 <summary>The method step by step, from the 2017 paper</summary>
 
-![Functional connectivity profiles of the DBS sites of 12 patients on cortical surfaces](cbm1-1030x676.png)
+![Functional connectivity profiles of the DBS sites of 12 patients on cortical surfaces](cbm1-1030x676.png "Fig. 2: The result is a connectivity profile from each (pair of) stimulation volumes. Above, functional connectivity profiles of DBS electrodes implanted in 12 Parkinson’s disease patients are shown. At first glance, they look pretty similar (which is not surprising since all electrodes are implanted inside the STN). However, small changes can be seen.")
 
-*Fig. 2:* The result is a connectivity profile from each (pair of) stimulation volumes. Above, functional connectivity profiles of DBS electrodes implanted in 12 Parkinson’s disease patients are shown. At first glance, they look pretty similar (which is not surprising since all electrodes are implanted inside the STN). However, small changes can be seen.
+![The same connectivity profiles with a voxel in M1 marked](cbm2-1030x679.png "Fig. 3: …take, for instance a voxel inside M1 (orange boxes). Across subjects, it is mostly anticorrelated (cold colors) to the DBS sites but in some patients, it is positive (hot colors).")
 
-![The same connectivity profiles with a voxel in M1 marked](cbm2-1030x679.png)
-
-*Fig. 3:* …take, for instance a voxel inside M1 (orange boxes). Across subjects, it is mostly anticorrelated (cold colors) to the DBS sites but in some patients, it is positive (hot colors).
-
-![Connectivity maps combined with clinical improvement, and the predictions they make](maps-1030x440.png)
-
-*Fig. 4:* The connectivity profiles of patients may be concatenated to predictive maps by integrating them with clinical improvement (in our case % UPDRS-III improvement). In our article, we estimated three types of maps (for details, see [Horn et al. 2017](https://doi.org/10.1002/ana.24974)). Here, we’ll cover the R-map in detail only: It shows hot colors (positive R-values) for voxels a connectivity to which is positively associated with clinical improvement. Cold colors for the inverse: Weaker or more negative connectivity is associated with clinical improvement.
+![Connectivity maps combined with clinical improvement, and the predictions they make](maps-1030x440.png "Fig. 4: The connectivity profiles of patients may be concatenated to predictive maps by integrating them with clinical improvement (in our case % UPDRS-III improvement). In our article, we estimated three types of maps (for details, see [Horn et al. 2017](https://doi.org/10.1002/ana.24974)). Here, we’ll cover the R-map in detail only: It shows hot colors (positive R-values) for voxels a connectivity to which is positively associated with clinical improvement. Cold colors for the inverse: Weaker or more negative connectivity is associated with clinical improvement.")
 
 An intuitive explanation of this type of map is that it shows areas that a DBS electrode “should be” connected to and areas to which it “should not be” connected for best efficacy.
 
@@ -66,13 +63,9 @@ Finally, these maps may be used to actually predict outcome (right hand scatter 
 
 > The three types of maps may be created using ea_Rmap, ea_Amap and ea_Cmap code included in Lead-DBS.
 
-![Maps from the Berlin cohort predicting improvement in the Würzburg cohort, for functional and structural connectivity](crosspredict-970x1030.png)
+![Maps from the Berlin cohort predicting improvement in the Würzburg cohort, for functional and structural connectivity](crosspredict-970x1030.png "Fig. 5: In our study, we could show that a map learned from data in one DBS center may be used to predict outcome in data from a second DBS center. This may demonstrate the utility of these maps to define optimal connectivity profiles for effective DBS.")
 
-*Fig. 5:* In our study, we could show that a map learned from data in one DBS center may be used to predict outcome in data from a second DBS center. This may demonstrate the utility of these maps to define optimal connectivity profiles for effective DBS.
-
-![Active contacts in the STN, a connectivity map on the cortex, and fibre tracts](figure_1-1030x350.png)
-
-*Fig. 6:* Summary of network mapping results for STN-DBS in PD. A) active contacts from two cohorts mapped to the STN in MNI space. B) rs-fMRI connectivity based network map (R-map type) for % UPDRS-III improvement. C) connected fibertracts colored by association with good (red), midline (yellow) or poor (blue) symptom improvement.
+![Active contacts in the STN, a connectivity map on the cortex, and fibre tracts](figure_1-1030x350.png "Fig. 6: Summary of network mapping results for STN-DBS in PD. A) active contacts from two cohorts mapped to the STN in MNI space. B) rs-fMRI connectivity based network map (R-map type) for % UPDRS-III improvement. C) connected fibertracts colored by association with good (red), midline (yellow) or poor (blue) symptom improvement.")
 
 ### Normative or individualized connectivity
 
@@ -100,7 +93,3 @@ Applied to TMS:
 > - Weigand, A., Horn, A., Caballero, R., Cooke, D., Stern, A. P., Taylor, S. F., et al. (2017). Prospective validation that subgenual connectivity predicts antidepressant efficacy of transcranial magnetic stimulation sites. *Biological Psychiatry*. [doi:10.1016/j.biopsych.2017.10.028](https://doi.org/10.1016/j.biopsych.2017.10.028)
 
 </details>
-
-## Next
-
-The connectomes used here are described under [normative connectomes](/helpsupport/knowledge-base/atlasesresources/normative-connectomes/). Every method and tool, with its manual chapter and paper: [Features](/helpsupport/knowledge-base/lead-dbs-methods/).
