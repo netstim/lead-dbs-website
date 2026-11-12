@@ -1,23 +1,2 @@
-{{/* Forms carried over from Ninja Forms. Fields are defined in data/forms.yaml. No backend yet
-     (params.formsEnabled = false): the button is disabled and a note says so. */}}
-{{ $id := .Get 0 }}
-{{ $ord := .Ordinal }}
-{{ with index hugo.Data.forms $id }}
-<form class="form site-form"{{ with .action }} action="{{ . }}"{{ end }} method="post"{{ if not site.Params.formsEnabled }} onsubmit="return false"{{ end }}>
-  {{ range .fields }}
-  {{ $fid := printf "f-%s-%d-%s" $id $ord .name }}
-  <div class="field">
-    <label for="{{ $fid }}">{{ .label }}{{ if .required }} <span class="field__req">(required)</span>{{ end }}</label>
-    {{ if eq .type "textarea" }}
-    <textarea id="{{ $fid }}" name="{{ .name }}" rows="6"{{ if .required }} required{{ end }}></textarea>
-    {{ else }}
-    <input id="{{ $fid }}" type="{{ .type | default "text" }}" name="{{ .name }}"{{ if .required }} required{{ end }}{{ with .autocomplete }} autocomplete="{{ . }}"{{ end }}>
-    {{ end }}
-  </div>
-  {{ end }}
-  <div class="btn-row"><button type="submit" class="btn btn--primary"{{ if not site.Params.formsEnabled }} disabled{{ end }}>{{ .submit }}</button></div>
-  {{ if not site.Params.formsEnabled }}<p class="form-note">Preview: this form is not connected yet.</p>{{ end }}
-</form>
-{{ else }}
-{{ errorf "form shortcode: unknown form %q in %s" $id .Page.File.Path }}
-{{ end }}
+{{- /* A form of data/forms.yaml: {{< form "contact" >}} (partial form.html) */ -}}
+{{ partial "form.html" (dict "id" (.Get 0) "n" .Ordinal) }}

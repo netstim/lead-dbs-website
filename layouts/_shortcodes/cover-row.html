@@ -1,0 +1,16 @@
+{{- /* Every journal cover (data/covers.yaml) in one slowly drifting row (Publications), each with its
+       journal and date under it and a link to its full size; The row holds on hover; with reduced motion it stands and scrolls by
+       hand. The covers come twice, the copy hidden from screen readers, so the row loops without a seam. */ -}}
+{{- $items := partial "covers.html" 0 -}}
+<div class="cover-row" role="region" aria-label="Journal covers">
+  <div class="cover-row__track" style="--dur: {{ mul (len $items) 6 }}s">
+    {{- range $copy := slice 0 1 }}
+    <ul class="cover-row__set"{{ if $copy }} aria-hidden="true"{{ end }}>
+      {{- range $items }}{{ $t := .small.Resize "x260 webp q80" }}
+      <li><a href="{{ .large.RelPermalink }}"{{ if $copy }} tabindex="-1"{{ end }}><img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="{{ if not $copy }}{{ .alt }}{{ end }}" loading="lazy" decoding="async"></a>
+        <span><b>{{ .journal }}</b>{{ .date }}</span></li>
+      {{- end }}
+    </ul>
+    {{- end }}
+  </div>
+</div>

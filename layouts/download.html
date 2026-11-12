@@ -1,0 +1,180 @@
+{{ define "main" }}
+{{- /* The download page (content/download/index.md, front matter layout: download): a black hero with the
+       one download, then full-width sections drawn as hairline grids: what you need, the install steps
+       (each with a small picture of the step), the standalone builds, the next version, the release
+       history, and the licence. Where the content comes from:
+         data/release.yaml    the current version, its date and notes, MATLAB, toolboxes, SPM12, memory
+         data/install.yaml    the other requirements and the install steps
+         data/releases.yaml   the release history (the build stops if its first row is not the current release)
+         front matter         mirrors (the servers, the recommended one first), size, standalone (the
+                              builds), upcoming (the next version), terms (the terms of use, in the dialog)
+                The section ids (#what-you-need, #install, #standalone-version, #lead-dbs-4, #releases) are linked
+       from other pages and from the search index: keep them. */ -}}
+{{- $r := hugo.Data.release -}}
+{{- $i := hugo.Data.install -}}
+{{- $rows := hugo.Data.releases -}}
+{{- $repo := site.Params.github -}}
+{{- $mirrors := .Params.mirrors -}}
+{{- if not $mirrors }}{{ errorf "%s: no mirrors in the front matter" .File.Path }}{{ end -}}
+{{- if ne (index $rows 0).version $r.version }}{{ errorf "data/releases.yaml starts with %s, but data/release.yaml says %s is current" (index $rows 0).version $r.version }}{{ end -}}
+{{- $first := index $mirrors 0 -}}
+{{- $dl := `<svg class="dl-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>` | safeHTML -}}
+{{- $folder := `<svg class="vg-folder" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.75 4.25c0-.83.67-1.5 1.5-1.5h2.6l1.5 1.75h5.4c.83 0 1.5.67 1.5 1.5v5.75c0 .83-.67 1.5-1.5 1.5h-9.5c-.83 0-1.5-.67-1.5-1.5z" fill="currentColor"/></svg>` | safeHTML -}}
+<main id="top" class="page dl">
+  <header class="page-head page-head--render dl-hero" data-nav-dark>
+    {{ partial "page-head-render.html" . }}
+    <div class="wrap">
+      <h1 id="normal-version"><span class="sr-only">Download </span>Lead-DBS <span class="dl-hero__v">{{ $r.version }}</span></h1>
+      <p class="dl-hero__meta">Released <time datetime="{{ time.Format "2006-01-02" $r.date }}">{{ time.Format "2 January 2006" $r.date }}</time> · Free and open source · <a href="{{ partial "resolve-url.html" (dict "url" $r.notes "page" .) }}">Release notes</a></p>
+      <p class="dl-hero__main">
+        <a class="btn btn--primary btn--on-dark" href="{{ $first.url }}" aria-label="Download Lead-DBS {{ $r.version }} from {{ $first.name }}">{{ $dl }}Download</a>
+        <span class="dl-hero__file">ZIP · {{ .Params.size }} · {{ $first.name }}</span>
+      </p>
+      {{- if gt (len $mirrors) 1 }}
+      <nav class="dl-hero__mirrors" aria-label="Other download servers">
+        <span>Or from</span>
+        <ul>
+          {{- range after 1 $mirrors }}
+          <li><a class="dl-chip" href="{{ .url }}"><span class="sr-only">Download from </span>{{ .name }}</a></li>
+          {{- end }}
+        </ul>
+      </nav>
+      {{- end }}
+    </div>
+  </header>
+
+  <section class="wrap dl-sec" id="what-you-need" aria-labelledby="need-h">
+    <h2 id="need-h">What you need</h2>
+    <dl class="dl-grid dl-grid--needs">
+      <div class="dl-cell dl-cell--wide"><dt>MATLAB</dt><dd class="dl-cell__v">{{ $r.matlab }} or later</dd><dd>With the {{ $r.toolboxes }}. The {{ $r.toolboxes_optional }} are optional.</dd></div>
+      <div class="dl-cell"><dt>Software</dt><dd class="dl-cell__v">{{ $r.needs }}</dd><dd><a href="{{ $r.needs_url }}">Get {{ $r.needs }}</a></dd></div>
+      <div class="dl-cell"><dt>Memory</dt><dd class="dl-cell__v">{{ $r.memory }} or more</dd></div>
+      {{- range $i.requirements_more }}
+      <div class="dl-cell"><dt>{{ .label }}</dt><dd class="dl-cell__v">{{ .value }}</dd><dd>{{ .text | $.RenderString }}</dd></div>
+      {{- end }}
+    </dl>
+  </section>
+
+  <section class="wrap dl-sec" id="install" aria-labelledby="install-h">
+    <div class="dl-sec__head">
+      <h2 id="install-h">Install</h2>
+      <p><a href="https://netstim.gitbook.io/leaddbs/installation#normal-installation">Installation guide</a> · <a href="https://netstim.gitbook.io/leaddbs/installation#installation-via-github">Install from GitHub</a></p>
+    </div>
+    <ol class="dl-grid dl-grid--steps">
+      {{- range $n, $s := $i.steps }}
+      <li class="dl-step">
+        <div class="vg vg--{{ $s.show }}" aria-hidden="true">
+          {{- if eq $s.show "path" }}
+          <div class="vg-tree">
+            {{- range $s.path }}<span>{{ $folder }}{{ . }}</span>{{ end -}}
+            <span class="is-on">{{ $folder }}{{ $s.folder }}</span>
+          </div>
+          {{- else if eq $s.show "menu" }}
+          <span class="vg-pick">{{ $folder }}{{ $s.folder }}</span>
+          <div class="vg-menu"><span>Add to Path<i>›</i></span></div>
+          <div class="vg-menu vg-menu--sub"><span{{ if eq $s.pick 1 }} class="is-on"{{ end }}>Selected Folders</span><span{{ if eq $s.pick 2 }} class="is-on"{{ end }}>Selected Folders and Subfolders</span></div>
+          {{- else if eq $s.show "command" }}
+          <div class="vg-cmd"><span>Command Window</span><code>&gt;&gt; {{ $s.command }}<i></i></code></div>
+          {{- else }}{{ errorf "data/install.yaml: step %q: show must be path, menu or command" $s.title }}
+          {{- end }}
+        </div>
+        <h3><span class="dl-step__n">{{ add $n 1 }}</span><span>{{ partial "nobreak.html" $s.title }}</span></h3>
+        <p>{{ $s.text | $.RenderString }}</p>
+      </li>
+      {{- end }}
+    </ol>
+  </section>
+
+  {{- with .Params.standalone }}
+  <section class="wrap dl-sec" id="standalone-version" aria-labelledby="standalone-h">
+    <div class="dl-sec__head">
+      <h2 id="standalone-h">Standalone {{ $r.standalone }}</h2>
+      <p>Runs without MATLAB. Experimental and without regular updates or hotfixes: use the MATLAB version where you can.</p>
+    </div>
+    <ul class="dl-grid dl-grid--os">
+      {{- range . }}
+      <li><a class="dl-os" href="{{ .url }}" aria-label="Download the standalone build for {{ .name }}{{ with .note }} ({{ . }}){{ end }}"><span class="dl-os__name">{{ .name }}</span>{{ with .note }}<span class="dl-os__note">{{ . }}</span>{{ end }}{{ $dl }}</a></li>
+      {{- end }}
+    </ul>
+  </section>
+  {{- end }}
+
+  {{- with .Params.upcoming }}
+  <section class="wrap dl-sec" id="lead-dbs-4" aria-labelledby="next-h">
+    <div class="dl-next ground-inverse">
+      <h2 id="next-h">{{ .title }} <span>{{ .text }}</span></h2>
+      {{- with .link }}{{ $t := site.GetPage .page }}{{ if not $t }}{{ errorf "%s: upcoming link %q is not a page" $.File.Path .page }}{{ end }}
+      <p><a class="dl-chip" href="{{ $t.RelPermalink }}">{{ .text }}</a></p>
+      {{- end }}
+    </div>
+  </section>
+  {{- end }}
+
+  <section class="wrap dl-sec" id="releases" aria-labelledby="releases-h">
+    <h2 id="releases-h">Release history</h2>
+    {{- range slice false true }}{{ $old := . }}
+    {{- if $old }}
+    <details class="dl-more">
+      <summary>Before 3.0</summary>
+    {{- end }}
+    <ol class="dl-rel">
+      {{- range $n, $v := $rows }}
+      {{- if eq $old (lt (int (index (split $v.version ".") 0)) 3) }}
+      {{- $tag := $v.tag | default (printf "v%s" $v.version) }}
+      {{- $prev := "" }}{{ if lt (add $n 1) (len $rows) }}{{ $p := index $rows (add $n 1) }}{{ $prev = $p.tag | default (printf "v%s" $p.version) }}{{ end }}
+      <li>
+        <span class="dl-rel__v">{{ $v.version }}{{ if eq $n 0 }} <span class="dl-rel__now">Current</span>{{ end }}</span>
+        <time datetime="{{ time.Format "2006-01-02" $v.date }}">{{ time.Format "2 January 2006" $v.date }}</time>
+        <span class="dl-rel__s">{{ with $v.summary }}{{ . }}{{ end }}</span>
+        <span class="dl-rel__links">
+          {{- with $v.notes }}<a href="{{ partial "resolve-url.html" (dict "url" . "page" $) }}">Announcement<span class="sr-only"> of {{ $v.version }}</span></a>{{ end -}}
+          {{- if $prev }}<a href="{{ $repo }}/compare/{{ $prev }}...{{ $tag }}">Changes<span class="sr-only"> from {{ strings.TrimPrefix "v" $prev }} to {{ $v.version }} on GitHub</span></a>{{ else }}<a href="{{ $repo }}/tree/{{ $tag }}">Code<span class="sr-only"> of {{ $v.version }} on GitHub</span></a>{{ end -}}
+        </span>
+      </li>
+      {{- end }}
+      {{- end }}
+    </ol>
+    {{- if $old }}
+      <p class="dl-more__note">Every other version is among the <a href="{{ $repo }}/tags">tags on GitHub</a>.</p>
+    </details>
+    {{- end }}
+    {{- end }}
+  </section>
+
+  <section class="wrap dl-sec" aria-labelledby="licence-and-terms-of-use">
+    <div class="dl-sec__head">
+      <h2 id="licence-and-terms-of-use">Licence</h2>
+    </div>
+    <div class="dl-licence">
+      <p>Free and open source under the <a href="{{ $r.licence_url }}">{{ $r.licence }}</a>, with no warranty. <strong>For research use only.</strong></p>
+      <button type="button" class="btn btn--primary" data-terms-open hidden>Terms of use</button>
+    </div>
+    {{- /* the full terms: a dialog the button opens (and a link to #research-use, from About and the
+           footer); without script they are printed here in the page */}}
+    <dialog class="dl-terms" id="terms" aria-labelledby="terms-h">
+      <form method="dialog"><button class="dl-terms__close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></form>
+      <h2 id="terms-h">Terms of use</h2>
+      {{- range .Params.terms }}
+      <section{{ with .id }} id="{{ . }}"{{ end }}>
+        <h3>{{ .value }}</h3>
+        <p>{{ .text | $.RenderString }}</p>
+      </section>
+      {{- end }}
+    </dialog>
+  </section>
+  <script>
+  (() => {
+    const d = document.getElementById('terms'), b = document.querySelector('[data-terms-open]');
+    if (!d || !d.showModal) return;
+    document.documentElement.classList.add('dl-terms-ready');
+    b.hidden = false;
+    b.addEventListener('click', () => d.showModal());
+    d.addEventListener('click', (e) => { if (e.target === d) d.close(); });
+    const hash = () => { if (['#terms', '#research-use'].includes(location.hash) && !d.open) d.showModal(); };
+    hash(); addEventListener('hashchange', hash);
+  })();
+  </script>
+
+  <div class="wrap page-related">{{ partial "next-steps.html" . }}</div>
+</main>
+{{ end }}

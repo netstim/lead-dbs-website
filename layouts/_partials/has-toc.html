@@ -1,7 +1,4 @@
-{{- /* Whether a page shows a table of contents: front matter toc: true / false decides; otherwise a page
-       with at least site.Params.tocMinHeadings headings of level 1 to 3 gets one. Returns a bool. */ -}}
+{{- /* Whether a page shows "On this page": three or more ## sections (site.Params.tocMinHeadings). */ -}}
 {{- $n := 0 -}}
-{{- range .Fragments.HeadingsMap }}{{ if and (le .Level 3) (strings.TrimSpace .Title) }}{{ $n = add $n 1 }}{{ end }}{{ end -}}
-{{- $on := ge $n (site.Params.tocMinHeadings | default 5) -}}
-{{- if isset .Params "toc" }}{{ $on = .Params.toc }}{{ end -}}
-{{- return (and $on (gt $n 1)) -}}
+{{- range .Fragments.HeadingsMap }}{{ if and (eq .Level 2) (strings.TrimSpace .Title) }}{{ $n = add $n 1 }}{{ end }}{{ end -}}
+{{- return (ge $n (site.Params.tocMinHeadings | default 3)) -}}

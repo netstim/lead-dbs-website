@@ -1,0 +1,52 @@
+{{ define "main" }}
+{{- /* /community/ (front matter layout: "community"), a showcase page in the manner of x.ai and vercel.com:
+     the page head; then one line on the left and a large workshop photo on the right (cut from its top,
+     so a banner printed at its foot falls away); then two sections in the layout of the hub pages: the
+     ways to take part (front matter tiles:, each a page and its title) and where to follow Lead-DBS
+     (front matter follow:, each a name and an address). */ -}}
+{{ $p := .Params }}
+<main id="top" class="page">
+  {{ partial "page-head.html" . }}
+  <div class="wrap cm">
+    <section class="cm-hero">
+      <div class="cm-hero__text">
+        <p class="cm-hero__lead">{{ $p.lead }}</p>
+      </div>
+      {{ with $p.photo }}{{ $pg := site.GetPage .page }}{{ $img := $pg.Resources.Get .file }}{{ if not $img }}{{ errorf "community: no photo %q on %s" .file .page }}{{ end }}{{ $t := $img.Fill "1000x620 webp q82 Top" }}
+      <figure class="cm-hero__photo"><img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="{{ .alt }}" fetchpriority="high"><figcaption>{{ .caption }}</figcaption></figure>
+      {{ end }}
+    </section>
+
+    <div class="prose cm-sections">
+      <section class="hub-section" aria-labelledby="take-part">
+        <h2 id="take-part">Take part</h2>
+        {{ with $p.partLead }}<p>{{ . | markdownify }}</p>{{ end }}
+        <ul class="resource-index">
+          {{ range $p.tiles }}{{ $pg := site.GetPage .page }}{{ if not $pg }}{{ errorf "community: no page %q" .page }}{{ end }}
+          <li><a class="link resource-index__link" href="{{ $pg.RelPermalink }}">
+            <span class="resource-index__title">{{ .title }}</span>
+            <svg class="m-arrow resource-index__arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg>
+          </a></li>
+          {{ end }}
+        </ul>
+      </section>
+
+      {{ with $p.follow }}
+      <section class="hub-section" id="follow-lead-dbs" aria-labelledby="follow-h">
+        <h2 id="follow-h">Follow</h2>
+        {{ with $p.followLead }}<p>{{ . | markdownify }}</p>{{ end }}
+        <ul class="resource-index">
+          {{ range . }}
+          <li><a class="link resource-index__link" href="{{ .url }}">
+            <span class="resource-index__title">{{ .name }}<span class="sr-only"> (another site)</span></span>
+            <span class="ext-mark resource-index__arrow" aria-hidden="true">↗</span>
+          </a></li>
+          {{ end }}
+        </ul>
+      </section>
+      {{ end }}
+    </div>
+  </div>
+  <div class="wrap page-related">{{ partial "next-steps.html" . }}</div>
+</main>
+{{ end }}

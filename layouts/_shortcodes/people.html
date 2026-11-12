@@ -1,0 +1,8 @@
+{{- $key := .Get "group" -}}
+{{- $people := index hugo.Data.contributors $key -}}
+{{- if not $people }}{{ errorf "people shortcode: unknown group %q" $key }}{{ end -}}
+<ul class="people-list">
+  {{ range $people }}
+  <li><span class="people-list__name">{{ with .url }}<a class="link people-link" href="{{ . }}">{{ end }}{{ .name }}{{ if .url }}</a>{{ end }}</span> {{ with .affiliation }}<span class="people-list__affiliation">{{ . }}</span>{{ end }}</li>
+  {{ end }}
+</ul>

@@ -1,4 +1,4 @@
 {{- /* A link drawn as a button: {{< button href="/download/" >}}Download{{< /button >}}; variant="primary"
-       for the one main action of a page (default: secondary). */ -}}
+       for the one main action of a page (default: secondary); external="true" uses an external-link mark. */ -}}
 {{- $href := partial "resolve-url.html" (dict "url" (.Get "href") "page" .Page) -}}
-<p class="button-wrap"><a class="btn btn--{{ .Get "variant" | default "secondary" }}" href="{{ $href }}">{{ .Inner | .Page.RenderString }}</a></p>
+<p class="button-wrap"><a class="btn btn--{{ .Get "variant" | default "secondary" }}{{ if .Get "external" }} btn--ext{{ end }}" href="{{ $href }}">{{ .Inner | .Page.RenderString }}{{ if .Get "external" }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ end }}</a></p>

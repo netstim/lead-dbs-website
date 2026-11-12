@@ -1,3 +1,2 @@
-{{- /* The newsletter sign-up form (the newsletter page). The first form of a page is the address
-       links point to for "subscribe" (/subscribe-to-our-newsletter/#subscribe). */ -}}
-{{ partial "newsletter-form.html" (dict "compact" false "id" (printf "nl-%d" .Ordinal) "anchor" (cond (eq .Ordinal 0) "subscribe" "")) }}
+{{- /* The newsletter form (partial form.html); the first on a page is the address "subscribe" links go to. */ -}}
+{{ partial "form.html" (dict "id" "newsletter" "n" .Ordinal "anchor" (cond (eq .Ordinal 0) "subscribe" "")) }}

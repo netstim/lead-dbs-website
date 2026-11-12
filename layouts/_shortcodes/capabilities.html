@@ -1,10 +1,47 @@
-{{- /* Capability cards side by side (Features): the capability shortcodes between the tags become cards,
-       one to a row on a phone, two from 640px; from 1200px renders three to a row and figures from papers
-       (fit="contain") two, at a size their labels can be read. Each card has the same parts in the same
-       order: name, picture (4:3), text, references, credit.
+{{- /* A chapter's capabilities as a showcase (the Features page), after the feature lists of vercel.com
+       and x.ai: on the left the names, one under the other; the chosen one stands in ink with its
+       sentence and its links (pills) right under it, the others are grey. On the right one large black
+       stage shows the chosen one's picture. A click on a name chooses it (assets/js/main.js); a link to a
+       capability's id does too. Below 1024px there is no stage: the chosen one holds its own picture. A
+       chapter with one capability shows it open, its name a plain heading. Without script every one is
+       open with its picture.
          {{< capabilities >}}
          {{< capability title="…" … >}}…{{< /capability >}}
          {{< /capabilities >}}
-       A chapter's last figure that would stand alone in a row goes after the closing tag: on its own it
-       is a wide row, picture left, words right. */ -}}
-<div class="cap-grid">{{ .Inner }}</div>
+       The capability shortcodes hand their parts over (.Store "caps"); this lays them out. */ -}}
+{{- define "_partials/cap-figure.html" -}}
+{{- $c := .c -}}
+<figure class="cap-fig cap-fig--{{ if $c.contain }}paper{{ else }}render{{ end }}{{ with .class }} {{ . }}{{ end }}"{{ with .stage }} data-cap-fig="{{ $c.id }}"{{ end }} style="--ar: {{ printf "%.4f" $c.ratio }}">
+  {{- with $c.full }}<a class="cap-fig__sheet" href="{{ . }}" aria-label="Open the figure of “{{ $c.title }}” at full size">{{ end -}}
+  <img src="{{ $c.src }}" srcset="{{ $c.srcset }}" sizes="{{ .sizes }}" width="{{ $c.w }}" height="{{ $c.h }}" alt="{{ $c.alt }}" loading="lazy" decoding="async">
+  {{- with $c.full }}</a>{{ end -}}
+  {{- with $c.credit }}<figcaption class="cap-fig__credit">{{ . | safeHTML }}</figcaption>{{ end -}}
+</figure>
+{{- end -}}
+{{- $_ := .Inner -}}
+{{- $caps := .Store.Get "caps" -}}
+{{- if not $caps }}{{ errorf "capabilities: no {{< capability >}} inside (%s)" .Page.File.Path }}{{ end -}}
+{{- $one := eq (len $caps) 1 -}}
+<div class="cap-show{{ if $one }} cap-show--one{{ end }}" data-cap-show>
+  <div class="cap-show__list">
+  {{- range $i, $c := $caps }}
+    <section class="capability{{ if not $i }} is-active{{ end }}" id="{{ .id }}" aria-labelledby="{{ .id }}-h">
+      <h3 id="{{ .id }}-h">{{ if $one }}{{ partial "nobreak.html" .title }}{{ else }}<button type="button" aria-expanded="{{ if $i }}false{{ else }}true{{ end }}" aria-controls="{{ .id }}-p">{{ $w := split .title " " }}{{ with first (sub (len $w) 1) $w }}{{ partial "nobreak.html" (delimit . " ") }} {{ end }}<span class="capability__last">{{ partial "nobreak.html" (index $w (sub (len $w) 1)) }}<i class="capability__mark" aria-hidden="true"></i></span></button>{{ end }}</h3>
+      <div class="capability__panel" id="{{ .id }}-p"><div class="capability__clip"><div class="capability__body">
+        {{ partial "cap-figure.html" (dict "c" $c "class" "cap-fig--inline" "sizes" "100vw") }}
+        {{ .text }}
+        <p class="capability__links">
+          {{- with .manual }}<a href="{{ .url }}" title="{{ .label }}">Manual<span class="ext-mark" aria-hidden="true">↗</span></a>{{ end -}}
+          {{- with .more }}<a href="{{ .RelPermalink }}">In depth<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 6h8M4.5 2.5 8 6l-3.5 3.5"/></svg></a>{{ end -}}
+          {{- range .papers }}<a class="capability__paper" href="https://doi.org/{{ .doi }}" title="The paper">{{ .short }}<span class="ext-mark" aria-hidden="true">↗</span></a>{{ end -}}
+        </p>
+      </div></div></div>
+    </section>
+  {{- end }}
+  </div>
+  <div class="cap-show__stage">
+  {{- range $i, $c := $caps }}
+    {{ partial "cap-figure.html" (dict "c" $c "stage" true "class" (cond (eq $i 0) "is-active" "") "sizes" "(min-width: 1440px) 850px, 62vw") }}
+  {{- end }}
+  </div>
+</div>

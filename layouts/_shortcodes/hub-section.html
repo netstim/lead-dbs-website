@@ -1,0 +1,17 @@
+{{- /* A section of a hub page (Docs and help): on a desktop its heading and one sentence on the left, its
+       rows of links on the right; below 1024px one under the other. Written with % so the heading is
+       part of the page's Markdown (the search and the anchors see it):
+         {{% hub-section %}}
+         ## Get help {#get-help}
+
+         **Stuck?** One sentence.
+
+         {{< link-rows key="help" >}}
+         {{% /hub-section %}}
+       The heading and the one paragraph directly after it stand left; everything else right. A shortcode
+       whose HTML Markdown would mangle (a form) follows the section in <div class="hub-section__more">. */ -}}
+<div class="hub-section">
+
+{{ .Inner }}
+
+</div>

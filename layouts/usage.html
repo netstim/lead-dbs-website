@@ -1,0 +1,60 @@
+{{ define "main" }}
+{{- /* /usage/ (front matter layout: "usage"): the page head, three figures as labelled cells (the markup of layouts/_shortcodes/cells.html), then the charts in a
+     hairline grid. The figures are data/usage.json (tools/usage.py writes it from the launch log); the
+     charts are SVG drawn ahead of time with Pele (scripts/usage.mjs -> assets/diagrams/usage-*.svg),
+     inlined here and themed in assets/css/site.css ("usage"). No script runs on the page. Each chart
+     is hidden from screen readers and followed by the same figures as a list. */ -}}
+{{ $u := hugo.Data.usage }}{{ $c := .Params.charts }}
+{{ $since := "" }}{{ range $y, $n := $u.years }}{{ if not $since }}{{ $since = $y }}{{ end }}{{ end }}
+{{ $to := time.AsTime $u.to }}
+{{ $svg := dict }}{{ range slice "months" "countries" "hours" "tools" }}{{ $r := resources.Get (printf "diagrams/usage-%s.svg" .) }}{{ if not $r }}{{ errorf "usage: no assets/diagrams/usage-%s.svg (run node scripts/usage.mjs)" . }}{{ end }}{{ $svg = merge $svg (dict . ($r.Content | safeHTML)) }}{{ end }}
+{{ $peak := 0 }}{{ $peakN := 0 }}{{ range $h, $n := $u.hours }}{{ if gt $n $peakN }}{{ $peak = $h }}{{ $peakN = $n }}{{ end }}{{ end }}
+{{ $tools := 0 }}{{ range $u.tools }}{{ $tools = add $tools . }}{{ end }}
+{{ $shown := 36 }}
+<main id="top" class="page">
+  {{ partial "page-head.html" . }}
+  <div class="wrap usage">
+    <div class="dl-grid dl-grid--3 cells cells--3" role="list" aria-label="Lead-DBS in numbers">
+      <div class="dl-cell" role="listitem"><p class="cells__l">Countries</p><p class="cells__v num">{{ len $u.countries }}</p></div>
+      <div class="dl-cell" role="listitem"><p class="cells__l">Launches in {{ $u.year }}</p><p class="cells__v num">{{ lang.FormatNumber 0 $u.launches_year }}</p></div>
+      <div class="dl-cell" role="listitem"><p class="cells__l">Launches since {{ $since }}</p><p class="cells__v num">{{ lang.FormatNumber 0 $u.total }}</p></div>
+    </div>
+
+    <div class="usage__grid">
+      <section class="usage__cell usage__cell--full" aria-labelledby="u-months">
+        <h2 id="u-months">{{ $c.months.title }}</h2>
+        <p>{{ $c.months.text }}</p>
+        <figure class="usage__chart usage__chart--months">{{ index $svg "months" }}</figure>
+        <ul class="sr-only">{{ range $y, $n := $u.years }}<li>{{ $y }}: {{ lang.FormatNumber 0 $n }} launches</li>{{ end }}</ul>
+      </section>
+
+      <section class="usage__cell usage__cell--wide" aria-labelledby="u-countries">
+        <h2 id="u-countries">{{ $c.countries.title }}</h2>
+        <p>{{ $c.countries.text }}{{ if gt (len $u.countries) $shown }} The {{ sub (len $u.countries) $shown }} smallest are not drawn.{{ end }}</p>
+        <figure class="usage__chart usage__chart--countries">{{ index $svg "countries" }}</figure>
+        <ul class="usage__legend" aria-hidden="true"><li style="--sw: var(--p-action)">Americas</li><li style="--sw: var(--p-tint-1)">Europe</li><li style="--sw: var(--p-accent)">Asia</li><li style="--sw: var(--p-tint-2)">Oceania</li></ul>
+        <ol class="sr-only">{{ range first 12 $u.countries }}<li>{{ index . 1 }}: {{ lang.FormatNumber 0 (index . 2) }} launches</li>{{ end }}</ol>
+      </section>
+
+      <section class="usage__cell usage__cell--side" aria-labelledby="u-hours">
+        <h2 id="u-hours">{{ $c.hours.title }}</h2>
+        <p>{{ $c.hours.text }}</p>
+        <figure class="usage__chart usage__chart--hours">{{ index $svg "hours" }}</figure>
+        <p class="usage__note">Busiest hour in {{ $u.hours_year }}: {{ $peak }}:00 to {{ add $peak 1 }}:00.</p>
+      </section>
+
+      <section class="usage__cell usage__cell--full usage__cell--row" aria-labelledby="u-tools">
+        <div>
+          <h2 id="u-tools">{{ $c.tools.title }}</h2>
+          <p>{{ $c.tools.text }}</p>
+          <ul class="usage__list">{{ $sw := slice "--p-ink" "--p-muted" "--line-strong" "--line" }}{{ range $i, $k := slice "Lead-DBS" "Lead Group" "Lead Connectome" "Lead Anatomy" }}{{ with index $u.tools $k }}{{ $pct := div (mul 100.0 .) $tools }}<li><span style="{{ printf "--sw: var(%s)" (index $sw $i) | safeCSS }}">{{ $k }}</span><span class="num">{{ if lt $pct 1.5 }}{{ lang.FormatNumber 1 $pct }}{{ else }}{{ lang.FormatNumber 0 $pct }}{{ end }}%</span></li>{{ end }}{{ end }}</ul>
+        </div>
+        <figure class="usage__chart usage__chart--tools">{{ index $svg "tools" }}</figure>
+      </section>
+    </div>
+
+    <p class="usage__method">{{ .Params.method }} Figures to <time datetime="{{ $u.to }}">{{ $to.Format "2 January 2006" }}</time>.</p>
+  </div>
+  <div class="wrap page-related">{{ partial "next-steps.html" . }}</div>
+</main>
+{{ end }}

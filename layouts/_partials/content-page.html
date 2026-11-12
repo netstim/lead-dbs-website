@@ -1,0 +1,22 @@
+{{- /* Every inner page built from Markdown, by its page type (partial page-type.html):
+         doc        the default: the text column, and the sidebar on the right (partial sidebar.html)
+         showcase   one tool or atlas: the full width; its section's pages at the end
+         hub        a menu group's own page: the full width; its body is the section's list
+       Below 1024px the sidebar gives way: "On this page" folds under the title, the section's pages
+       follow the text. Every page ends with its "Related" links (partial next-steps.html). */ -}}
+{{ $t := partial "page-type.html" . }}
+{{ $toc := and $t.side (partial "has-toc.html" .) }}
+{{ $post := and (eq .Section "news") .IsPage }}
+{{ $side := and $t.side (or $toc (and (not $post) (partial "nav-place.html" .).group)) }}
+<main id="top" class="page page--{{ $t.name }}{{ if $side }} page--side{{ end }}">
+  {{ partial "page-head.html" . }}
+  <div class="wrap doc-layout{{ if $t.wide }} doc-layout--wide{{ else if $side }} doc-layout--side{{ end }}">
+    <article class="prose">
+      {{ if $toc }}{{ partial "toc.html" (dict "page" . "variant" "top") }}{{ end }}
+      {{ partial "nobreak-html.html" .Content }}
+      {{ if ne $t.name "hub" }}{{ partial "section-nav.html" (dict "page" . "variant" "end") }}{{ end }}
+      {{ partial "next-steps.html" . }}
+    </article>
+    {{ if $side }}<aside class="sidebar" aria-label="Section">{{ partial "sidebar.html" (dict "page" . "toc" $toc) }}</aside>{{ end }}
+  </div>
+</main>

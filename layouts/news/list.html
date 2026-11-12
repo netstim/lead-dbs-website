@@ -1,8 +1,14 @@
 {{ define "main" }}
-<main id="top" class="page">
-  {{ partial "page-head.html" . }}
-  <div class="wrap doc-layout">
-    <div class="prose news-list">
+<main id="top" class="page newsroom">
+  <header class="newsroom__head wrap">
+    <div class="newsroom__heading">
+      <h1>{{ .Title }}</h1>
+    </div>
+  </header>
+  {{- /* The newest post opens the first page large, its picture beside it; the others are plain rows under
+         hairlines: the date, the title with the post's one line, an arrow; the whole row one link. */}}
+  <div class="wrap newsroom__content">
+    <div class="newsroom__stories">
       {{ partial "nobreak-html.html" .Content }}
       {{- /* the default order (newest first); the page title in head.html reads the same paginator */}}
       {{ $paginator := .Paginator }}
@@ -11,26 +17,40 @@
       {{ $newest := (index .Pages.ByDate.Reverse 0).Date.Year }}{{ $cut := sub $newest 3 }}
       {{ $oldest := (index .Pages.ByDate 0).Date.Year }}
       {{ $archived := false }}
-      {{ range $paginator.Pages }}
+      {{ range $i, $post := $paginator.Pages }}
       {{ if and (not $archived) (lt .Date.Year $cut) }}{{ $archived = true }}
-      <h2 class="news-archive" id="archive">Archive ({{ $oldest }}–{{ sub $cut 1 }})</h2>
+      <h2 class="newsroom__archive" id="archive">Archive ({{ $oldest }}–{{ sub $cut 1 }})</h2>
       {{ end }}
-      <article class="post-summary">
-        <time class="post-summary__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
-        <div class="post-summary__body">
-          <h2 class="post-summary__title"><a href="{{ .RelPermalink }}">{{ partial "nobreak-html.html" (.Title | htmlEscape) }}</a></h2>
-          {{- /* the post's own one-line description; an older post without one shows the start of its text,
-               cut at a word */}}
-          {{- $text := .Description -}}
-          {{- if not $text }}{{ $text = .Summary | replaceRE ` ?\(open the full-size image\)` "" | plainify | htmlUnescape | truncate 200 }}{{ end }}
+      {{- /* the post's own one-line description; an older post without one shows the start of its text,
+           cut at a word */}}
+      {{- $text := .Description -}}
+      {{- if not $text }}{{ $text = .Summary | replaceRE ` ?\(open the full-size image\)` "" | plainify | htmlUnescape | truncate 200 }}{{ end }}
+      {{ if and (eq $i 0) (eq $paginator.PageNumber 1) }}
+      {{ $image := .Resources.GetMatch (.Params.image | default "__none__") }}
+      <article class="news-lead{{ if $image }} news-lead--illustrated{{ end }}">
+        <div class="news-lead__body">
+          <time class="news-lead__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+          <h2 class="news-lead__title"><a href="{{ .RelPermalink }}">{{ partial "nobreak-html.html" (.Title | htmlEscape) }}</a></h2>
+          <p>{{ partial "nobreak-html.html" ($text | htmlEscape) }}</p>
+          <span class="news-lead__more" aria-hidden="true">Read more<svg class="m-arrow" viewBox="0 0 12 12"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></span>
+        </div>
+        {{ with $image }}{{ $thumb := .Resize "1100x webp q82" }}
+        <div class="news-lead__image"><img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="" fetchpriority="high"></div>
+        {{ end }}
+      </article>
+      {{ else }}
+      <article class="news-row">
+        <time class="news-row__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time>
+        <div class="news-row__body">
+          <h2 class="news-row__title"><a href="{{ .RelPermalink }}">{{ partial "nobreak-html.html" (.Title | htmlEscape) }}</a></h2>
           <p>{{ partial "nobreak-html.html" ($text | htmlEscape) }}</p>
         </div>
+        <svg class="m-arrow news-row__arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg>
       </article>
       {{ end }}
+      {{ end }}
       {{ partial "pagination.html" $paginator }}
-      {{ partial "next-steps.html" . }}
     </div>
-    <aside class="sidebar" aria-label="In this section">{{ partial "sidebar.html" . }}</aside>
   </div>
 </main>
 {{ end }}

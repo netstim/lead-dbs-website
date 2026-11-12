@@ -30,6 +30,6 @@
   {{ $poster | safeHTML }}
   <a class="video-embed__start" href="{{ $watch }}" aria-label="Play: {{ $label }} (loads the player from {{ $name }})">
     <span class="video-embed__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
-    <span class="video-embed__text" aria-hidden="true"><span class="video-embed__title">{{ $title | default "Play the video" }}</span><span class="video-embed__note">The player loads from {{ $name }} when you start it.</span></span>
+    <span class="video-embed__text" aria-hidden="true"><span class="video-embed__title">{{ $title | default "Play the video" }}</span></span>
   </a>
 </div>

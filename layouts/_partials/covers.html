@@ -1,0 +1,11 @@
+{{- /* The journal covers of data/covers.yaml (files in the bundle of /about/publications/), as a list of
+       dicts: alt, journal, issue, date, small and large (resources). Argument: the number wanted (0 = all). */ -}}
+{{- $pub := site.GetPage "/about/publications" -}}
+{{- $out := slice -}}
+{{- range hugo.Data.covers.covers -}}
+  {{- $s := $pub.Resources.Get .small }}{{ $l := $pub.Resources.Get .large -}}
+  {{- if not (and $s $l) }}{{ errorf "covers: no picture %q or %q in %s" .small .large $pub.File.Path }}{{ end -}}
+  {{- $out = $out | append (dict "alt" .alt "journal" .journal "issue" .issue "date" .date "small" $s "large" $l) -}}
+{{- end -}}
+{{- if gt . 0 }}{{ $out = first . $out }}{{ end -}}
+{{- return $out -}}

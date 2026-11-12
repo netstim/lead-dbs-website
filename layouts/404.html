@@ -13,7 +13,6 @@
   <div class="wrap doc-layout doc-layout--single">
     <div class="prose">
       <p class="notfound__forum notice" hidden data-forum-note>The Lead-DBS forum has closed, and its threads were not moved to this site. Questions are answered on the <a href="{{ with site.GetPage "/helpsupport/slack-user-channel" }}{{ .RelPermalink }}{{ end }}">user Slack</a>.</p>
-      <p class="t-lead">The address may be mistyped, or the page moved when the site was rebuilt in 2026. Search for it, or start from one of these:</p>
       {{ partial "search-form.html" (dict "id" "nf") }}
       {{ partial "search-doors.html" (dict "attrs" "") }}
     </div>

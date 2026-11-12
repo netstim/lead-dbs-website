@@ -1,0 +1,17 @@
+{{- /* A history as a vertical rail (About): a dot per entry, its year small, a short headline and at most
+       one quieter line (Markdown, for a link). From the page's front matter, under the key given:
+         {{< milestones key="history" >}}
+         history:
+           - {year: 2015, title: "The first paper", text: "[Horn & Kühn, NeuroImage 2015](https://doi.org/…)"}
+       The newest entry's dot is filled. */ -}}
+{{- $rows := index .Page.Params (.Get "key") -}}
+{{- if not $rows }}{{ errorf "milestones: %s has no front matter %q" .Page.File.Path (.Get "key") }}{{ end -}}
+<ol class="milestones">
+  {{- range $rows }}
+  <li class="milestone">
+    <span class="milestone__year num">{{ .year }}</span>
+    <p class="milestone__title">{{ .title | $.Page.RenderString }}</p>
+    {{ with .text }}<p class="milestone__text">{{ . | $.Page.RenderString }}</p>{{ end }}
+  </li>
+  {{- end }}
+</ol>

@@ -1,0 +1,16 @@
+{{- /* The page's type (front matter `layout`, default "doc") and its layout policy; stops the build on an
+       unknown type and on the retired per-page switches sidebar:, related:, toc:. README, Page types. */ -}}
+{{- $types := dict
+  "doc"      (dict "side" true  "wide" false)
+  "hub"      (dict "side" false "wide" true)
+  "showcase" (dict "side" false "wide" true)
+  "event"    (dict "side" true  "wide" false)
+  "contributors" (dict "side" true "wide" false)
+-}}
+{{- $name := .Layout | default "doc" -}}
+{{- if not (index $types $name) }}{{ errorf "%s: unknown page type %q (doc, hub, showcase, event)" .File.Path $name }}{{ end -}}
+{{- range slice "sidebar" "related" -}}
+  {{- if isset $.Params . }}{{ errorf "%s: front matter %q is retired; the page type decides the layout (README, Page types)" $.File.Path . }}{{ end -}}
+{{- end -}}
+{{- if isset .Params "toc" }}{{ errorf "%s: toc: is retired; a doc page shows its contents from three ## sections" .File.Path }}{{ end -}}
+{{- return merge (index $types $name) (dict "name" $name) -}}

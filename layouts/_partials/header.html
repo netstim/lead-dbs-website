@@ -1,5 +1,5 @@
-{{- /* The one header of every page: logo left, the main menu (hugo.toml [menus.main]), then search,
-     GitHub and the main action. The menu entry "Download" is drawn as the button. Entries with
+{{- /* The one header of every page: logo left, the main menu (hugo.toml [menus.main]) beside it, then
+     search and the main action at the right end. The menu entry "Download" is drawn as the button. Entries with
      children open a small panel on hover and keyboard focus. Below 1200px the words move into a
      full-screen sheet that the menu button opens (assets/js/main.js); below 640px GitHub and the
      Download button live in that sheet too, so nothing in the bar is pushed off a phone's screen.
@@ -30,20 +30,35 @@
                aria-expanded and aria-controls (the panel's id below). No aria-haspopup: the panel is a list
                of links (a disclosure), not an ARIA menu. The chevron here is for the view without script. */}}
         {{- $panel := printf "menu-%s" (.Identifier | default (.Name | urlize)) }}
-        <a class="nav__link" href="{{ .URL }}"{{ if $current }} aria-current="page"{{ end }}{{ if .HasChildren }} aria-controls="{{ $panel }}"{{ end }}>{{ partial "nobreak-html.html" (.Name | htmlEscape) }}{{ if .HasChildren }} <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ end }}</a>
+        <a class="nav__link" href="{{ .URL }}"{{ if $current }} aria-current="page"{{ end }}{{ if .HasChildren }} aria-controls="{{ $panel }}"{{ end }}>{{ partial "nobreak-html.html" (.Params.short | default .Name | htmlEscape) }}{{ if .HasChildren }} <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ end }}</a>
         {{ if .HasChildren }}
         <div class="nav__menu" id="{{ $panel }}">
           <div class="nav__menu-cols">
             {{ $plain := slice }}{{ $groups := slice }}
             {{ range .Children }}{{ if .HasChildren }}{{ $groups = $groups | append . }}{{ else }}{{ $plain = $plain | append . }}{{ end }}{{ end }}
-            <div class="menu-col">
-              {{- /* params.divider: a line above the entry that starts a small group of its own; when it is a
-                     text, that text is the group's caption ("In depth"). The manual is a first-level
-                     word of the phone sheet, so its copy here is hidden there. */}}
-              {{ range $plain }}{{ $d := .Params.divider | default false }}{{ $cap := cond (eq (printf "%T" $d) "string") $d "" -}}
-              {{ with $cap }}<span class="menu-caption t-label">{{ partial "nobreak-html.html" (. | htmlEscape) }}</span>{{ end -}}
-              <a href="{{ .URL }}"{{ with (cond (eq .Name "Manual") "menu-sheet-dup" (cond (and $d (not $cap)) "menu-divider" "")) }} class="{{ . }}"{{ end }}>{{ partial "menu-label.html" . }}</a>{{ end }}
+            {{- /* params.divider starts a section of its own: a column of the desktop band, its text (if it
+                   is one) the column's caption ("In depth"). The first section's caption is the word's own
+                   name, as every column of the band has one; the sheet shows the word right above it, so
+                   there it is hidden (.menu-caption--lead). */}}
+            {{ $sections := slice }}{{ $cur := slice }}{{ $curCap := .Name }}{{ $curLead := true }}
+            {{ range $plain }}{{ $d := .Params.divider | default false }}
+              {{ if and $d (gt (len $cur) 0) }}
+                {{ $sections = $sections | append (dict "cap" $curCap "lead" $curLead "items" $cur) }}
+                {{ $cur = slice }}{{ $curCap = cond (eq (printf "%T" $d) "string") $d "" }}{{ $curLead = false }}
+              {{ end }}
+              {{ $cur = $cur | append . }}
+            {{ end }}
+            {{ if $cur }}{{ $sections = $sections | append (dict "cap" $curCap "lead" $curLead "items" $cur) }}{{ end }}
+            {{ range $sections }}
+            <div class="menu-col{{ if gt (len .items) 3 }} menu-col--two{{ end }}">
+              <span class="menu-caption t-label{{ if .lead }} menu-caption--lead{{ end }}"{{ if not .cap }} aria-hidden="true"{{ end }}>{{ with .cap }}{{ partial "nobreak-html.html" (. | htmlEscape) }}{{ end }}</span>
+              {{- /* the manual is a first-level word of the phone sheet, so its copy here is hidden there; a
+                     menu entry's params.card is its line in the desktop band */}}
+              {{ range .items -}}
+              <a class="menu-entry{{ if eq .Name "Manual" }} menu-sheet-dup{{ end }}" href="{{ .URL }}"><span class="menu-entry__title">{{ partial "menu-label.html" . }}<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></span>{{ with .Params.card }}<span class="menu-entry__text">{{ partial "nobreak-html.html" (. | htmlEscape) }}</span>{{ end }}</a>
+              {{- end }}
             </div>
+            {{ end }}
             {{ range $groups }}
             <div class="menu-col">
               <p class="t-label"><a href="{{ .URL }}">{{ partial "nobreak-html.html" (.Name | htmlEscape) }}</a></p>
@@ -71,11 +86,11 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4.2-4.2"/></svg>
       </a>
       {{ end }}
-      {{ with site.Params.github }}
-      <a class="nav__icon nav__github" href="{{ . }}" aria-label="Lead-DBS on GitHub" title="Lead-DBS on GitHub">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
-      </a>
-      {{ end }}
+      <button class="nav__icon nav__theme" type="button" data-theme-toggle aria-label="Switch to dark mode" title="Switch to dark mode">
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      {{- /* GitHub is not an icon of the bar: the menu sheet ("Lead-DBS on GitHub") and the footer link it */}}
       <a class="btn btn--primary nav__download" href="{{ $dl }}"><span>Download<span class="nav__dl-more"> Lead-DBS</span></span></a>
     </div>
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open the menu">
