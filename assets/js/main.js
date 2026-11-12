@@ -32,7 +32,10 @@
     if (open && focus) inSheet().find((el) => menu?.contains(el))?.focus();
   };
   toggle.addEventListener('click', () => setOpen(!nav.classList.contains('is-open'), true));
-  wide.addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+  wide.addEventListener('change', (e) => {
+    hovered = null; clearTimeout(timer);
+    if (e.matches) setOpen(false);
+  });
   // A word with pages gets a chevron button beside it (the disclosure pattern with top-level links): the
   // word stays a link to its group's page, the button opens and closes the word's panel and says
   // whether it is open (aria-expanded). In the sheet it opens the pages under the word. On a desktop the
@@ -41,27 +44,23 @@
   // chevron opens it and moves to its first link, Arrow Up and Down, Home and End move inside it, and
   // Escape (or the focus leaving the word) closes it, the focus back on the chevron.
   const items = [];
-  const close = (item) => { item.classList.remove('is-expanded'); item.sync(); };
-  // On a desktop the panels share one ground: a band under the header (.nav__band) that stays while the
-  // pointer moves from word to word and only eases to the height of the panel now shown; the panels
-  // themselves are clear and cross-fade on it (assets/css/site.css). It opens without easing its height.
+  const close = (item, updateBand = true) => { item.classList.remove('is-expanded'); item.sync(updateBand); };
+  // A stable frame holds every desktop panel. Commit all disclosure states before measuring
+  // it, so switching groups never briefly closes the band or animates its height.
   const band = document.createElement('div');
   band.className = 'nav__band';
   band.setAttribute('aria-hidden', 'true');
   nav.append(band);
   band.sync = () => {
-    const shown = wide.matches && items.find((i) => i.querySelector('.nav__expand')?.getAttribute('aria-expanded') === 'true');
-    const panel = shown && shown.querySelector('.nav__menu');
-    if (panel) {
-      if (!nav.classList.contains('band-open')) {
-        nav.classList.add('band-instant');
-        requestAnimationFrame(() => requestAnimationFrame(() => nav.classList.remove('band-instant')));
-      }
-      band.style.height = `${panel.offsetHeight}px`;
+    const shown = wide.matches && items.some((i) => i.querySelector('.nav__expand')?.getAttribute('aria-expanded') === 'true');
+    if (wide.matches) {
+      const panels = [...nav.querySelectorAll('.nav__menu')];
+      band.style.height = `${Math.ceil(Math.max(0, ...panels.map(p => p.offsetHeight)))}px`;
     }
-    nav.classList.toggle('band-open', !!panel);
+    nav.classList.toggle('band-open', !!shown);
   };
   addEventListener('resize', () => band.sync());
+  document.fonts?.ready.then(() => band.sync());
   nav.querySelectorAll('.nav__item').forEach((item) => {
     const panel = item.querySelector('.nav__menu');
     if (!panel) return;
@@ -79,19 +78,30 @@
     items.push(item);
     // open: in the sheet, the chevron's state; on a desktop, also while the pointer is on the word or its
     // band (.is-hovered, set below; unless Escape or the chevron closed it there)
-    item.sync = () => {
+    item.sync = (updateBand = true) => {
       const open = item.classList.contains('is-expanded')
         || (wide.matches && !item.classList.contains('is-dismissed') && item.classList.contains('is-hovered'));
       btn.setAttribute('aria-expanded', String(open));
-      band.sync();
+      panel.inert = !open;
+      panel.setAttribute('aria-hidden', String(!open));
+      if (updateBand) band.sync();
     };
     const links = () => [...panel.querySelectorAll('a[href]')].filter((a) => a.getClientRects().length);
     const openTo = (i) => {
-      if (wide.matches) items.forEach((other) => { if (other !== item) close(other); });
+      if (wide.matches) {
+        hovered = null;
+        items.forEach((other) => {
+          if (other !== item) { other.classList.remove('is-hovered'); close(other, false); }
+        });
+      }
       item.classList.remove('is-dismissed');
       item.classList.add('is-expanded');
       item.sync();
-      if (i !== undefined) requestAnimationFrame(() => { const l = links(); l[i < 0 ? l.length - 1 : i]?.focus(); });
+      if (i !== undefined) setTimeout(() => {
+        if (btn.getAttribute('aria-expanded') !== 'true') return;
+        const l = links();
+        l[i < 0 ? l.length - 1 : i]?.focus();
+      }, wide.matches ? 120 : 0);
     };
     btn.addEventListener('click', () => {
       const open = btn.getAttribute('aria-expanded') === 'true';
@@ -123,15 +133,15 @@
       if (wide.matches) close(item);
     });
     item.addEventListener('pointerleave', () => item.classList.remove('is-dismissed'));
-    wide.addEventListener('change', () => { close(item); item.classList.remove('is-dismissed'); });
+    wide.addEventListener('change', () => { item.classList.remove('is-hovered', 'is-dismissed'); close(item); });
     item.sync();
   });
   // a click elsewhere closes an open desktop panel
   document.addEventListener('click', (e) => {
     if (wide.matches) items.forEach((item) => { if (!item.contains(e.target)) close(item); });
   });
-  // Hover on a desktop, for the header as a whole: a panel opens once the pointer has rested 150ms on its
-  // word (one passing over opens nothing); while a panel is open, the next word's opens at once. The
+  // Hover on a desktop, for the header as a whole: a panel opens once the pointer has rested 180ms on its
+  // word; moving to another word also waits briefly, so a passing pointer opens nothing. The
   // spaces between the words, the band and the bar around them keep the open panel, so moving along the
   // words never closes and reopens it; the logo, the actions on the right and a word without pages (News)
   // close it after 120ms, leaving the header after 200ms, so a pointer that slips out and back keeps it.
@@ -143,8 +153,9 @@
     items.forEach((i) => {
       i.classList.toggle('is-hovered', i === item);
       if (item && i !== item) i.classList.remove('is-expanded');
-      i.sync();
+      i.sync(false);
     });
+    band.sync();
   };
   const later = (item, ms) => { clearTimeout(timer); timer = setTimeout(() => hover(item), ms); };
   nav.addEventListener('pointerover', (e) => {
@@ -152,7 +163,7 @@
     const t = e.target;
     if (t.closest('.nav__menu')) { clearTimeout(timer); return; }
     const item = t.closest('.nav__links > .nav__item');
-    if (item && items.includes(item)) { if (item !== hovered) later(item, hovered ? 0 : 150); else clearTimeout(timer); return; }
+    if (item && items.includes(item)) { if (item !== hovered) later(item, hovered ? 130 : 180); else clearTimeout(timer); return; }
     if (item || t.closest('.nav__logo, .nav__actions')) { later(null, hovered ? 120 : 0); return; }
     clearTimeout(timer); // a space between the words or around them: the open panel stays
   });
@@ -240,11 +251,22 @@ document.querySelectorAll('.fig-strip').forEach((strip) => {
   let queued = false;
   const update = () => {
     queued = false;
-    const line = nav.getBoundingClientRect().bottom;
-    nav.classList.toggle('is-dark', grounds.some((g) => {
+    const box = nav.getBoundingClientRect();
+    // How much of the strip just under the bar (as tall as the bar) is a dark ground: the bar blends over
+    // that much scroll instead of flipping at one line. A page head that starts right under the bar
+    // counts in full, so such a page opens with the black bar (as body.top-dark paints it first).
+    // Smoothstep gives the surface a gentle arrival at either end of the crossing.
+    const top = box.bottom, bottom = box.bottom + box.height;
+    const overlap = grounds.reduce((sum, g) => {
       const r = g.getBoundingClientRect();
-      return r.height > 0 && r.top < line + 1 && r.bottom > line;
-    }));
+      return sum + Math.max(0, Math.min(r.bottom, bottom) - Math.max(r.top, top));
+    }, 0);
+    const coverage = Math.min(1, overlap / Math.max(1, box.height));
+    const darkness = coverage * coverage * (3 - 2 * coverage);
+    nav.style.setProperty('--nav-darkness', darkness.toFixed(3));
+    // A small dead zone prevents theme chatter when the scroll rests at the midpoint.
+    if (darkness > .53) nav.classList.add('is-dark');
+    else if (darkness < .47) nav.classList.remove('is-dark');
     nav.classList.toggle('is-scrolled', window.scrollY > 0);
   };
   const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };

@@ -101,21 +101,32 @@ html.is-preview .nav__bar { flex: 1; height: auto; min-height: 0; width: min(100
    The script for the sheet and the panels is in assets/js/main.js. */
 .nav { position: fixed; inset: 0 0 auto; z-index: 50; height: var(--nav); background: var(--bg); color: var(--ink); border-bottom: 1px solid var(--line); }
 .nav__bar { height: 100%; display: flex; align-items: center; gap: var(--s-3); }
-html.nav-ready .nav { transition: background-color 240ms var(--ease), color 240ms var(--ease), border-color 240ms var(--ease); }
+html.nav-ready .nav { transition: background-color 360ms ease, color 360ms ease, border-color 360ms ease, backdrop-filter 360ms ease, -webkit-backdrop-filter 360ms ease; }
+/* A translucent, blurred surface lets the header change with the page without a hard flash. */
+.nav.is-scrolled:not(.is-open) { background-color: rgb(255 255 255 / .9); -webkit-backdrop-filter: blur(18px) saturate(1.2); backdrop-filter: blur(18px) saturate(1.2); }
 /* over the black hero and the black page heads (.is-dark, set by assets/js/main.js while such a ground
    lies under the header) the bar takes the black. A page that starts on such a ground (body.top-dark,
    layouts/baseof.html) has it from the first paint, before the script runs (html.nav-ready). On the home
    page's hero the bar is clear at the very top, a soft shade behind its words, so the render runs up to
    the window's edge; it turns solid (blurred black) as soon as the page scrolls. Its bands (at 1200 and up) take the same ground; the open
    sheet stay light. The home rules name html and body, so they outrank the black bar's two rules. */
-.nav.is-dark:not(.is-open), html:not(.nav-ready) .top-dark .nav:not(.is-open) { background: var(--render); color: #fff; border-bottom-color: transparent;
+.nav.is-dark:not(.is-open), html:not(.nav-ready) .top-dark .nav:not(.is-open) { background-color: var(--render); color: #fff; border-bottom-color: transparent;
   --ink: #fff; --surface: rgb(255 255 255 / .12); --line: rgb(255 255 255 / .16); --line-strong: rgb(255 255 255 / .4); }
-html body.kind-home .nav.is-dark.is-scrolled:not(.is-open) { background: rgb(0 0 0 / .8); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
-html body.kind-home .nav.is-dark:not(.is-scrolled, .is-open) { background: linear-gradient(rgb(0 0 0 / .6), rgb(0 0 0 / 0)) border-box; }
+html body.kind-home .nav.is-dark.is-scrolled:not(.is-open) { background-color: rgb(0 0 0 / .82); }
+html body.kind-home .nav.is-dark:not(.is-scrolled, .is-open) { background-color: rgb(0 0 0 / .48); }
 /* without script the bar stays black: nothing would turn it solid over the light sections */
 @media (scripting: enabled) {
-  html:not(.nav-ready) body.kind-home .nav:not(.is-open) { background: linear-gradient(rgb(0 0 0 / .6), rgb(0 0 0 / 0)) border-box; }
+  html:not(.nav-ready) body.kind-home .nav:not(.is-open) { background-color: rgb(0 0 0 / .48); }
 }
+/* Script supplies the portion of dark page beneath the glass. Keep the same blur in both
+   themes, so crossing the section boundary changes the tint rather than replacing the surface. */
+html.nav-ready body .nav.is-scrolled:not(.is-open),
+html.nav-ready body.kind-home .nav.is-scrolled:not(.is-open) {
+  background-color: color-mix(in srgb, rgb(0 0 0 / .82) calc(var(--nav-darkness, 0) * 100%), rgb(255 255 255 / .9));
+  -webkit-backdrop-filter: blur(18px) saturate(1.2); backdrop-filter: blur(18px) saturate(1.2);
+  transition: background-color 100ms linear, color 140ms ease, border-color 140ms ease;
+}
+@media (prefers-reduced-motion: reduce) { html.nav-ready .nav, html.nav-ready body .nav.is-scrolled:not(.is-open), html.nav-ready body.kind-home .nav.is-scrolled:not(.is-open) { transition: none; } }
 /* a tablet: the lead leaves the picture where the header's Download button sits, so over the hero that
    button gives way (the hero's own Download button is right below), and search, GitHub and the menu
    button stay together at the right end; it comes back, fading in, once the page scrolls */
@@ -173,7 +184,7 @@ html:not(.js) .nav__link .chev { display: none; }
    (assets/js/main.js) hover is the header's as a whole: a panel opens once the pointer has rested on its
    word (.is-hovered), at once from its chevron button (.is-expanded), and the spaces between the words
    keep it open. All panels share one ground, .nav__band: it stays while the pointer moves from word to
-   word and eases to the height of the panel now shown, while the panels, clear, cross-fade on it (the
+   word at a steady height, while each panel fades out before the next fades in (the
    old one out, then the new one in, so two never show at once). Without script each panel is a band of
    its own, on hover and keyboard focus. The band is the header grown downwards: the header's own ground
    (black over the renders, light elsewhere), its content on the page's container, one column per section
@@ -182,13 +193,13 @@ html:not(.js) .nav__link .chev { display: none; }
   .nav__bar { gap: var(--s-6); }
   .nav__links { display: flex; align-self: stretch; justify-content: flex-start; flex: none; min-width: 0; }
   .nav__menu { position: absolute; top: 100%; left: 0; right: 0; z-index: 1;
-    padding: var(--s-6) 0 var(--s-7); color: var(--ink);
-    opacity: 0; visibility: hidden;
-    transition: opacity 120ms var(--ease), visibility 0s linear 120ms; }
+    padding: var(--s-6) 0 var(--s-6); color: var(--ink);
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity 80ms linear, visibility 0s linear 80ms; }
   .nav__menu-cols { width: min(100% - 2 * var(--gut), var(--container)); margin-inline: auto;
-    display: flex; gap: clamp(var(--s-7), 4.5vw, var(--s-8)); }
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-6); align-items: start; }
   :is(.nav__item.is-hovered, .nav__item.is-expanded, html:not(.js) .nav__item:hover, html:not(.js) .nav__item:focus-within) > .nav__menu {
-    opacity: 1; visibility: visible; transition: opacity 180ms var(--ease) 60ms, visibility 0s; }
+    opacity: 1; visibility: visible; pointer-events: auto; transition: opacity 160ms ease 100ms, visibility 0s linear 100ms; }
   :is(.nav__item.is-hovered, .nav__item.is-expanded, html:not(.js) .nav__item:hover, html:not(.js) .nav__item:focus-within) > :is(.nav__link .chev, .nav__expand svg) { transform: rotate(180deg); }
   .nav__item.is-dismissed:not(.is-expanded) > .nav__menu { opacity: 0; visibility: hidden; transition: none; }
   .nav__item.is-dismissed:not(.is-expanded) > :is(.nav__link .chev, .nav__expand svg) { transform: none; }
@@ -197,9 +208,8 @@ html:not(.js) .nav__link .chev { display: none; }
     background: var(--bg); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
     box-shadow: 0 24px 40px -24px rgb(0 0 0 / .22);
     opacity: 0; visibility: hidden;
-    transition: height 260ms var(--ease-out), opacity 140ms var(--ease), visibility 0s linear 140ms; }
-  .nav.band-open .nav__band { opacity: 1; visibility: visible; transition: height 260ms var(--ease-out), opacity 160ms var(--ease), visibility 0s; }
-  .nav.band-instant .nav__band { transition: opacity 160ms var(--ease), visibility 0s; }
+    transition: opacity 140ms ease, visibility 0s linear 140ms; }
+  .nav.band-open .nav__band { opacity: 1; visibility: visible; transition: opacity 160ms ease, visibility 0s; }
   html:not(.js) .nav__menu { background: var(--bg); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); box-shadow: 0 24px 40px -24px rgb(0 0 0 / .22); }
   /* while a band is open the header is solid, so the clear bar over the home page's hero and the band
      read as one surface */
@@ -222,11 +232,10 @@ html:not(.js) .nav__link .chev { display: none; }
   .nav__expand:hover svg { opacity: 1; }
   .nav__expand:focus-visible { outline-offset: -2px; }
   /* a section: its caption, then its entries (more than three: in two columns) */
-  .nav__menu { --menu-col: clamp(12rem, 16vw, 17rem); }
-  .nav__menu .menu-col { display: grid; grid-template-columns: var(--menu-col); align-content: start; column-gap: var(--s-6); row-gap: var(--s-4); }
-  .nav__menu .menu-col--two { grid-template-columns: repeat(2, var(--menu-col)); }
+  .nav__menu .menu-col { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; column-gap: var(--s-6); row-gap: var(--s-5); min-width: 0; }
+  .nav__menu .menu-col--two { grid-column: span 2; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .nav__menu .menu-caption { grid-column: 1 / -1; min-height: 1.4em; margin-bottom: var(--s-1); color: var(--muted); }
-  .nav__menu .menu-entry { display: grid; gap: 2px; font-weight: 400; }
+  .nav__menu .menu-entry { display: grid; align-content: start; gap: var(--s-1); min-height: 72px; font-weight: 400; }
   .nav__menu .menu-entry__title { display: inline-flex; align-items: center; gap: var(--s-2); font-size: var(--t-body); font-weight: 500; line-height: 1.4; }
   .nav__menu .menu-entry__text { font-size: var(--t-small); line-height: 1.45; color: var(--muted); text-wrap: pretty; }
   .nav__menu .menu-entry:hover { color: inherit; }
@@ -240,7 +249,7 @@ html:not(.js) .nav__link .chev { display: none; }
   .nav__menu .t-label a { color: var(--muted); font-weight: 500; padding-bottom: 2px; }
   .nav__menu .t-label a:hover { color: var(--action); }
 }
-@media (min-width: 1200px) and (prefers-reduced-motion: reduce) { .nav__band, .nav.band-open .nav__band { transition-property: opacity, visibility; } }
+@media (min-width: 1200px) and (prefers-reduced-motion: reduce) { .nav .nav__menu, .nav .nav__band { transition: none; } }
 @media (min-width: 1200px) and (max-width: 1439px) {
   .nav__link { padding: 0 var(--s-2); }
   .nav__expand { margin-right: 0; }
