@@ -2,13 +2,13 @@
 {{- /* Styles: assets/css/base.css and assets/css/site.css, bundled in head.html (see docs/design.md). Font: Inter,
      self-hosted. Sections take the height of their content. The one scroll-linked motion is the electrode
      insertion on the home page. The research-use statement is a short line (hero facts, footer, about, download).
-     body.top-dark: an inner page starts on a black ground (its head; the home page starts on white), so
+     body.top-dark: a page that starts on a black ground (Download and 404; the other pages start on white), so
      the header is dark from the first paint (see "header" in site.css). */}}
 <html lang="{{ site.Language.Locale }}"{{ if site.Params.preview }} class="is-preview"{{ end }}>
 <head>
   {{ partial "head.html" . }}
 </head>
-<body class="kind-{{ .Kind }}{{ with .Section }} section-{{ . }}{{ end }}{{ if not (or .IsHome (and (eq .Section "news") (eq .Kind "section"))) }} top-dark{{ end }}">
+<body class="kind-{{ .Kind }}{{ with .Section }} section-{{ . }}{{ end }}{{ if or (eq .Kind "404") (eq .Layout "download") }} top-dark{{ end }}">
   {{ partial "header.html" . }}
   {{- if .File }}{{ partial "page-check.html" . }}{{ end }}
   {{ block "main" . }}{{ end }}

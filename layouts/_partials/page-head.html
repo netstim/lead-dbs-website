@@ -1,5 +1,5 @@
-{{- /* The head of every inner page: breadcrumbs and the title on the black ground of the renders
-       (the home page's look carried over), the date under a news post's title. The breadcrumb follows
+{{- /* The head of every inner page, after openai.com: on the white page the breadcrumb, a large title in
+       medium weight and, under them, the menu group's render in a wide rounded black panel the date under a news post's title. The breadcrumb follows
        the main menu (partial crumbs.html, which nav-place.html feeds), not the folders: Home / menu group /
        menu entry / page; it ends with the page's own name, except on a news post, where the title follows
        right under "News" (the BreadcrumbList for search engines still ends with the post). A background
@@ -7,8 +7,7 @@
        changed; with archived: true it adds that it is kept for the record and no longer kept up to date. */ -}}
 {{ $crumbs := partial "crumbs.html" . }}
 {{ $post := and (eq .Section "news") .IsPage }}
-<header class="page-head page-head--render" data-nav-dark>
-  {{ partial "page-head-render.html" . }}
+<header class="page-head page-head--open">
   <div class="wrap">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <ol>
@@ -33,5 +32,7 @@
     {{- end }}{{ end }}{{ end }}
     {{- /* a phone: an event page's flyer, countdown and host (events/head.html) */}}
     {{ if eq .Layout "event" }}{{ partial "events/head.html" . }}{{ end }}
+    {{- /* the group's render in a wide rounded black panel under the words (none on a task page) */}}
+    {{ with partial "page-head-render.html" . }}<div class="page-head__panel">{{ . }}</div>{{ end }}
   </div>
 </header>
