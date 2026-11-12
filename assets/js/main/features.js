@@ -3,7 +3,7 @@
 // be linked; a link to a capability (from the home page, the search) chooses it too.
 // On a phone (below 640px, assets/css/phone-features.css) the stage is a row of square pictures that
 // scrolls sideways, one per name, above the names: swiping it chooses the name, a tap on a name turns it
-// to that name's picture, and a row of segments follows.
+// to that name's picture, and a row of segments follows. {{< tools >}} becomes the same module there.
 // From 640px up nothing of that runs; a phone that turns into a wider window hands its state back.
 const phone = matchMedia('(max-width: 639px)');
 const still = matchMedia('(prefers-reduced-motion: reduce)');
@@ -93,6 +93,61 @@ document.querySelectorAll('[data-cap-show]').forEach((show) => {
     open(it);
     if (matchMedia('(min-width: 1024px)').matches) show.scrollIntoView();
     else if (phone.matches) ph.land(items.indexOf(it));
+  };
+  addEventListener('hashchange', fromHash);
+  fromHash();
+});
+
+// {{< tools >}} on a phone: the same module, its names made buttons while the window is narrow
+document.querySelectorAll('.tool-cells').forEach((cells) => {
+  const items = [...cells.querySelectorAll(':scope > .tool')];
+  const track = cells.querySelector(':scope > .tool-stage');
+  if (items.length < 2 || !track) return;
+  let current = 0;
+  let ph = null;
+  const choose = (i) => {
+    current = i;
+    items.forEach((it, k) => {
+      it.classList.toggle('is-active', k === i);
+      it.querySelector('h3 > button')?.setAttribute('aria-expanded', String(k === i));
+    });
+    ph?.mark(i);
+  };
+  // the band's black reaches up over the chapter's head above, so the header turns black over all of it
+  const head = cells.previousElementSibling;
+  const band = cells.querySelector(':scope > .tool-band');
+  const size = () => { if (band && head && phone.matches) cells.style.setProperty('--band-head', head.offsetHeight + 'px'); };
+  if (head && 'ResizeObserver' in window) new ResizeObserver(size).observe(head);
+  const setup = () => {
+    items.forEach((it, i) => {
+      const h = it.querySelector('h3');
+      const b = h.querySelector('button');
+      if (phone.matches && !b) {
+        const nb = document.createElement('button');
+        nb.type = 'button';
+        nb.textContent = h.textContent;
+        nb.addEventListener('click', () => {
+          choose(i);
+          history.replaceState(null, '', '#' + it.id);
+          ph.turn(i, true);
+        });
+        h.replaceChildren(nb);
+      } else if (!phone.matches && b) {
+        h.textContent = b.textContent;
+      }
+    });
+    cells.classList.toggle('is-phone', phone.matches);
+    if (phone.matches) { choose(current); size(); }
+  };
+  phone.addEventListener('change', setup);
+  setup();
+  ph = carousel(cells, track, items, choose, `${chapterName(cells)}: pictures`);
+  ph.mark(current);
+  const fromHash = () => {
+    const i = items.findIndex((x) => '#' + x.id === location.hash);
+    if (i < 0 || !phone.matches) return;
+    choose(i);
+    ph.land(i);
   };
   addEventListener('hashchange', fromHash);
   fromHash();
