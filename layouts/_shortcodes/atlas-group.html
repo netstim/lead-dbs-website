@@ -37,7 +37,11 @@
   {{- with $a.clip -}}
     {{- $v := $p.Resources.Get . }}{{ $po := $p.Resources.Get $a.poster -}}
     {{- if not (and $v $po) }}{{ errorf "atlas-group: %s: clip %q or its poster is missing" $p.File.Path . }}{{ end -}}
-    {{- $fig = printf `<figure class="atlas__fig clip"><div class="atlas__mat"><video src="%s" poster="%s" width="%d" height="%d" muted loop playsinline preload="none" controls aria-label="%s" data-clip></video></div></figure>` $v.RelPermalink $po.RelPermalink $po.Width $po.Height ($a.alt | htmlEscape) -}}
+    {{- /* the browser fetches the poster even while the entry is folded, so it is a WebP copy at most 640 px
+           wide (the box is at most 240 px on a desktop and the screen's width on a phone), not the original;
+           width and height stay the original's, which give the box its proportions */ -}}
+    {{- $pw := $po.Resize (printf "%dx webp q78" (math.Min $po.Width 640 | int)) -}}
+    {{- $fig = printf `<figure class="atlas__fig clip"><div class="atlas__mat"><video src="%s" poster="%s" width="%d" height="%d" muted loop playsinline preload="none" controls aria-label="%s" data-clip></video></div></figure>` $v.RelPermalink $pw.RelPermalink $po.Width $po.Height ($a.alt | htmlEscape) -}}
     {{- $p.Store.Set "atlas-clip" true -}}
   {{- end -}}
   {{- $also := "" }}{{ range $a.also }}{{ $also = printf `%s<span id="%s"></span>` $also . }}{{ end -}}
