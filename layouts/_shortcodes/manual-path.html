@@ -1,0 +1,2 @@
+{{- /* Optional breaks preserve directory names and add no characters to copied paths. */ -}}
+<code class="manual-path">{{ .Get 0 | htmlEscape | replaceRE `/` `/<wbr>` | safeHTML }}</code>

@@ -8,7 +8,7 @@
   const dialog = document.getElementById('site-search');
   const indexUrl = dialog?.dataset.index;
   if (!indexUrl) return;
-  const MANUAL = 'https://netstim.gitbook.io/leaddbs';
+  const MANUAL = new URL('manual/', new URL(indexUrl, location.href)).pathname;
   const SHOWN = 12; // results listed; the status line counts them all
   let index = null;
   const load = () => (index ||= fetch(indexUrl).then((r) => {
@@ -47,16 +47,26 @@
   };
   const snippet = (r, q) => {
     const w = fold(q).split(/\s+/).find((x) => x.length > 1 && r.lx.includes(x));
-    const src = r.d || r.x;
-    if (!w || r.d) return esc(src.slice(0, 160)) + (src.length > 160 ? '…' : '');
-    const at = r.lx.indexOf(w), from = Math.max(0, at - 60);
-    return (from ? '…' : '') + esc(r.x.slice(from, from + 170)) + '…';
+    const generic = r.d.startsWith('Lead-DBS user guide:');
+    const src = generic ? r.x : (r.d || r.x);
+    if (!w || (r.d && !generic)) return esc(src.slice(0, 160)) + (src.length > 160 ? '…' : '');
+    const at = r.lx.indexOf(w);
+    let from = Math.max(0, at - 60);
+    if (from) from = r.x.indexOf(' ', from) + 1;
+    let end = Math.min(r.x.length, from + 170);
+    if (end < r.x.length) end = r.x.lastIndexOf(' ', end);
+    return (from ? '…' : '') + esc(r.x.slice(from, end)) + (end < r.x.length ? '…' : '');
   };
 
   const wire = (box) => {
     const input = box.querySelector('.search__input');
     const list = box.querySelector('.search__results');
     const status = box.querySelector('.search__status');
+    const fallback = document.createElement('div');
+    fallback.className = 'search__fallback';
+    fallback.hidden = true;
+    fallback.innerHTML = `<a class="search__hit search__hit--manual" href="${MANUAL}">Browse the Lead-DBS manual →</a>`;
+    list.after(fallback);
     let timer = 0, generation = 0;
     const start = box.querySelector('.search__start');
     // on /search/ the cards to start from show only while there is no query
@@ -65,6 +75,7 @@
       const request = ++generation;
       const q = input.value.trim();
       list.replaceChildren();
+      fallback.hidden = true;
       if (start) start.hidden = !!q;
       doors.forEach((d) => { d.hidden = !!q; });
       if (!q) { list.replaceChildren(); status.textContent = ''; return; }
@@ -74,16 +85,19 @@
       if (request !== generation || input.value.trim() !== q) return;
       const all = rank(rows, q);
       const hits = all.slice(0, SHOWN);
-      status.textContent = !all.length ? 'Nothing found on this website. Try fewer or other words.'
+      status.textContent = !all.length ? 'Nothing found. Try fewer or other words.'
         : all.length > SHOWN ? `The best ${SHOWN} of ${all.length} results` : `${all.length} result${all.length === 1 ? '' : 's'}`;
-      // how to do something in Lead-DBS is in the manual (another site): offered after the results, and in their place when there are none
-      const manual = `<li><a class="search__hit search__hit--manual" href="${MANUAL}"><span class="search__title">${hits.length ? 'Not here? ' : ''}Look it up in the Lead-DBS manual<span class="ext-mark" aria-hidden="true">↗</span></span><span class="search__section">netstim.gitbook.io, another site</span><span class="search__snippet">How to install Lead-DBS and do each step of an analysis.</span></a></li>`;
-      list.innerHTML = hits.map((r) => `<li><a class="search__hit" href="${esc(r.u)}"><span class="search__title">${esc(r.t)}</span>${r.s ? `<span class="search__section">${esc(r.s)}</span>` : ''}<span class="search__snippet">${snippet(r, q)}</span></a></li>`).join('') + manual;
+      list.innerHTML = hits.map((r) => {
+        const section = r.s ? `<span class="search__section">${esc(r.s)}</span>` : '';
+        return `<li><a class="search__hit" href="${esc(r.u)}"><span class="search__title">${esc(r.t)}</span>${section}<span class="search__snippet">${snippet(r, q)}</span></a></li>`;
+      }).join('');
+      fallback.hidden = false;
       return true;
     };
     input.addEventListener('input', () => {
       ++generation;
       list.replaceChildren();
+      fallback.hidden = true;
       clearTimeout(timer);
       timer = setTimeout(run, 120);
     });
@@ -95,7 +109,7 @@
     // arrow keys: from the box to the results and between them
     box.addEventListener('keydown', (e) => {
       if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
-      const links = [...box.querySelectorAll('.search__results a, .search__start:not([hidden]) a')];
+      const links = [...box.querySelectorAll('.search__results a, .search__fallback:not([hidden]) a, .search__start:not([hidden]) a')];
       if (!links.length) return;
       const at = links.indexOf(document.activeElement);
       e.preventDefault();
@@ -118,7 +132,8 @@
   dialog.querySelector('[data-search-close]')?.addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
   document.addEventListener('keydown', (e) => {
-    if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey) return;
+    const command = (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k';
+    if (!command && (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey)) return;
     if (e.target.closest?.('input, textarea, select, [contenteditable="true"]')) return;
     e.preventDefault(); open();
   });

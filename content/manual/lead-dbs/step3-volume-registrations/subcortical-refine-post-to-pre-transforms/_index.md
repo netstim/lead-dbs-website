@@ -1,0 +1,69 @@
+---
+{
+  "title": "Brainshift Correction",
+  "linkTitle": "Brainshift correction",
+  "layout": "manual",
+  "weight": 14,
+  "manual_group": "lead-dbs",
+  "description": "Refine post-operative to pre-operative alignment to account for brain shift.",
+  "source_url": "https://netstim.gitbook.io/leaddbs/lead-dbs/step3-volume-registrations/subcortical-refine-post-to-pre-transforms",
+  "manual_title": "Brainshift Correction",
+  "manual_lead": "Refine post-operative to pre-operative alignment to account for brain shift."
+}
+---
+
+## Why brainshift correction is needed {#context}
+- This part of the processing pipeline is a tool to reduce bias introduced by brain shift. Brain shift happens when the skull is opened during surgery, it means that the brain (often nonlinearly) moves with respect to the skull, e.g. due to pneumocephalus (Image 1).
+
+- If you want to coregister the whole postop CT image to a preop MRI of the same patient, linear coregistration may result in a good match of the skull but a wrong coregistration of the brain, especially in frontal regions. Most often in DBS, we are interested in subcortical regions that could be seen as "remote enough" from the pneumocephalus. However, sometimes, there is no substantial brain shift or pneumocephalus to be found and it could be okay to not correct for this issue.
+
+- One common strategy in neuroimaging would be to use nonlinear deformations instead of linear transforms. However, in DBS, this is not possible since the electrodes in the postop image would be considered part of the tissue and could be nonlinearly moved within the brain. If this is not clear to you, think about why this is exactly what we do not want: Since we are interested in the relative location of the DBS electrodes with respect to other brain structures, we should never apply a nonlinear transform between postop and preop images.
+
+- A solution that may drastically reduce the bias introduced by brainshift is to use linear transforms but apply them to subcortical regions of interest only (Image 2).
+
+![Image 1. Pneumocephalus shown in a tone-mapped CT. Air has entered the skull after opening boreholes during surgery. The dark area in the frontal portion of the skull (yellow arrow) is the air that pushes the soft tissue of the brain in the occipital direction.](manual/376677bc92f8422b.png)
+
+![Image 2. The solution to reduce bias by brainshift as implemented in Lead-DBS. Top row: Standard approach which may lead to significant error if pneumocephalus is present. To account for this, you can refine the linear transform of the top row by using a bounding box (mid row) or by further applying masks of interest published by Schönecker 2008 (and graciously shared for use in Lead-DBS by Thomas).](manual/9484df5c0e74a16b.png)
+
+<details>
+
+<summary>Technical background information</summary>
+
+In theory, subcortical refines can be applied together with coarse refines "in one go". We used this strategy in earlier versions of Lead-DBS. However, the process was not robust enough and could not be implemented using all software available in Lead-DBS, in the same way. Furthermore and especially when dealing with postoperative CTs or significant electrode artifacts on MRI, many users sometimes manually apply a whole-brain coregistration in different software (such as [3D Slicer](https://slicer.org\)) if the options in Lead-DBS do not generate satisfactory results). That's why we chose to include this refine step at the very end of our pipeline. First ensure an as good as possible whole-brain coregistration and normalization then apply this subcortical refine step to the data.
+
+We estimate the refine transform on interpolated and resliced data which is usually not the best approach. The process is *much* more robust and universal this way. This practice allows us to support all the linear transform methods implemented in Lead-DBS (SPM, FSL, ANTs, BRAINSFit or hybrid solutions) in the same way. To account for the disadvantages of using coregistered and resliced data to estimate transforms, we apply the transform to non-discretized points in float format and use high resolution data throughout the whole pipeline.
+
+The subcortical refine step uses ANTs and you don't have the option to choose from a multitude of software. This is due to the fact that any software would probably get these transforms right since images should already be pretty much aligned at this point. We use a layered transform composed of rigid, affine \[and mask1, mask2 if masks are used] stages in this final ANTs registration step.
+
+As a side note:\
+*This processing step was completely implemented into Lead-DBS during the* [*2017 brainhack global event at MIT in Boston*](https://brainhack-boston.github.io)*.*\
+*Many thanks go out to the organizers of the event – as always @ brainhack, it was phenomenal.*
+
+[![Brainshift Correction — screenshot](manual/518f8cabd07856c8.png)](https://www.brainhack.org)
+
+####
+
+</details>
+
+### How to
+
+![Image 3. UI settings for brainshift correction.](manual/bb865381ed08f1d0.png "Image 3. UI settings for brainshift correction.")
+
+1. To run brainshift correction, you first go through rough coregistration and normalization to template space. Select the patient (arrow 1), tick `Brainshift correction` with a mask, `Check Results` and press `Run`.
+2. To estimate a transform, choose either `No Mask`, `Coarse Mask` or `Coarse + Fine Mask`. `No Mask` will just use the cropped images to estimate the transformation and is not recommended. By choosing the `Coarse Mask`, a larger mask will be applied. If you choose to use both, `Coarse + Fine Mask.` The coarse mask (blue mask in the Schönecker publication within the [#context](#context "mention") panel) will be applied first, followed by the finer (yellow within the [#context](#context "mention") panel) mask.
+
+In our example, let's see the use of the `Coarse Mask`. This will produce the following result:
+
+![Image 4. Examle of brainshift correction using Coarse + Fine Mask.](manual/4fcebd5fa843fba5.png)
+
+3. As highlighted by the yellow arrows, some regions better overlap in this refined transform. The estimated transformation matrix is printed in the top right corner of the figure.
+4. You can use a slice viewer (such as e.g. [3D Slicer](https://slicer.org\)) to further examine results in detail. The relevant files will be in derivatives/leaddbs/`patient folder/brainshift/anat.`
+5. If you think the approach improved results, click `Approve & Close` to apply the transform to your DBS electrode reconstructions. If not, click `Disapprove & Close`. Alternatively, you can change the settings to `No Mask` or `Coarse + Fine Mask` and press `(Re-)compute coregistration using...` .
+
+| **Output**                                                                                                                                                                                                                                                                                                                                                                                            |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <ul><li>A pop-up window with information about methods and references. If this information is not needed, the window can be closed.</li><li>New normalization data will appear in the selected file, under <code>derivatives/leaddbs/patient\_name/brainshift/</code>. <code>Anat</code> folder contains results, c<code>heckreg</code> folder stores the images as <code>.png</code> files</li></ul> |
+
+{{% manual-note "info" %}}
+Brainshift correction may not be appropriate to use for SEEG electrode reconstructions. The default options use masks centered around the basal ganglia, meaning that the resulting correction may not accurately account for brainshift in cortical or other regions targeted by SEEG electrodes. You may choose to skip this step or, if using it, carefully review the results. Brainshift correction was not part of the legacy LeGUI pipeline.
+{{% /manual-note %}}

@@ -1,0 +1,4 @@
+{{- $image := resources.Get (.Get "src") -}}
+{{- $width := int (.Get "width") -}}
+{{- $height := int (math.Round (div (mul (float $image.Height) $width) $image.Width)) -}}
+<img class="manual-toolbar-icon" src="{{ $image.RelPermalink }}" width="{{ $width }}" height="{{ $height }}" alt="{{ .Get "alt" }}" loading="lazy" decoding="async">

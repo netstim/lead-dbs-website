@@ -1,0 +1,13 @@
+{{- if eq .Page.Section "manual" -}}
+{{- $language := .Type | default "text" -}}
+{{- $labels := dict "matlab" "MATLAB" "python" "Python" "bash" "Terminal" "sh" "Terminal" "batch" "Windows terminal" "text" "Text" -}}
+{{- $id := printf "code-%d" .Ordinal -}}
+{{- $lines := len (split (strings.TrimRight "\n" .Inner) "\n") -}}
+<div class="manual-code"{{ if gt $lines 20 }} data-code-lines="{{ $lines }}"{{ end }}>
+  <div class="manual-code__head"><span>{{ index $labels $language | default $language }} <span class="manual-code__overflow" aria-label="Code scrolls horizontally" title="Scroll horizontally or turn on Wrap" hidden>↔</span></span><div class="manual-code__tools"><button class="manual-code__wrap" aria-pressed="false" aria-label="Wrap code lines" hidden>Wrap</button>{{ if gt $lines 20 }}<button class="manual-code__expand manual-code__expand--top" aria-expanded="false" aria-controls="{{ $id }}" hidden>Expand</button>{{ end }}{{ partial "manual-copy.html" (dict "target" $id) }}</div></div>
+  <div class="manual-code__source" data-copy-verbatim id="{{ $id }}">{{ transform.Highlight .Inner $language "noClasses=false" }}</div>
+  <div class="manual-code__foot" hidden>{{ if gt $lines 20 }}<button class="manual-code__expand" aria-expanded="false" aria-controls="{{ $id }}" hidden>Show all {{ $lines }} lines</button>{{ partial "manual-copy.html" (dict "target" $id "label" "Copy full code") }}{{ end }}</div>
+</div>
+{{- else -}}
+{{ transform.Highlight .Inner (.Type | default "text") .Options }}
+{{- end -}}

@@ -22,7 +22,7 @@
     <figure class="tool__fig"><img src="{{ $mid.RelPermalink }}" srcset="{{ delimit $set ", " }}" sizes="(min-width: 1440px) 302px, (min-width: 1024px) 22vw, (min-width: 480px) 46vw, 100vw" width="{{ $mid.Width }}" height="{{ $mid.Height }}" alt="{{ $alt }}" loading="lazy" decoding="async"></figure>
     <h3 id="{{ .id }}-h">{{ .name }}</h3>
     <p class="tool__links">
-      {{- with $t.manual }}{{ $kv := split . "|" }}<a href="{{ index $kv 1 }}" title="{{ index $kv 0 }}">Manual<span class="ext-mark" aria-hidden="true">↗</span></a>{{ end -}}
+      {{- with $t.manual }}{{ $kv := split . "|" }}<a href="{{ partial "resolve-url.html" (dict "url" (index $kv 1) "page" $page) }}" title="{{ index $kv 0 }}">Manual</a>{{ end -}}
       {{- with $t.code }}<a href="{{ . }}">Code<span class="ext-mark" aria-hidden="true">↗</span></a>{{ end -}}
       {{- with $more }}<a href="{{ .RelPermalink }}">In depth<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 6h8M4.5 2.5 8 6l-3.5 3.5"/></svg></a>{{ end -}}
       {{- with $t.papers }}{{ range split . " " }}{{ $p := index hugo.Data.papers.papers . }}{{ if not $p }}{{ errorf "tools: %q: no paper %q in data/papers.yaml" $t.name . }}{{ end }}<a class="tool__paper" href="https://doi.org/{{ $p.doi }}" title="The paper">{{ $p.short }}<span class="ext-mark" aria-hidden="true">↗</span></a>{{ end }}{{ end -}}

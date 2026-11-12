@@ -10,7 +10,7 @@ keywords: ["contact", "email", "email"]
 faster:
   - {name: "Questions: the user Slack", url: "/helpsupport/slack-user-channel/"}
   - {name: "Bug reports: GitHub issues", url: "https://github.com/netstim/leaddbs/issues"}
-  - {name: "Known problems: troubleshooting in the manual", url: "https://netstim.gitbook.io/leaddbs/appendix/troubleshooting-specific-help"}
+  - {name: "Known problems: troubleshooting in the manual", url: "/manual/appendix/troubleshooting-specific-help/"}
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-docs.jpg"
 # "Related" at the end of the page (layouts/_partials/next-steps.html)

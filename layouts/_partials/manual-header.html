@@ -1,0 +1,9 @@
+<header class="docs-header">
+  {{ if site.Params.preview }}<div class="preview-banner" role="note"><span><strong>Preview</strong> · The official site is <a href="{{ site.Params.liveSite }}">www.lead-dbs.org</a>.</span></div>{{ end }}
+  <div class="docs-header__bar">
+    <a class="skip-link" href="#top">Skip to content</a>
+    <div class="docs-brand"><a href="{{ site.Home.RelPermalink }}" aria-label="Lead-DBS home">{{ partial "logo.html" (dict "h" 28) }}<span>Lead-DBS</span></a><span class="docs-brand__slash" aria-hidden="true">/</span><a class="docs-brand__label" href="{{ (site.GetPage "/manual").RelPermalink }}">Docs</a></div>
+    <nav class="docs-links" aria-label="Documentation resources"><a href="{{ (site.GetPage "/manual").RelPermalink }}" aria-current="page">User guide</a><a href="{{ (site.GetPage "/helpsupport/learn-lead-dbs-yourself").RelPermalink }}">Tutorials</a><a href="{{ (site.GetPage "/community").RelPermalink }}">Community</a></nav>
+    <div class="docs-header__actions"><button class="docs-icon-button" data-theme-toggle aria-label="Switch theme"><span class="docs-theme-moon">{{ partial "manual-icon.html" "moon" }}</span><span class="docs-theme-sun">{{ partial "manual-icon.html" "sun" }}</span></button><a class="docs-search" href="{{ (site.GetPage "/search").RelPermalink }}" data-search-open aria-label="Search documentation">{{ partial "manual-icon.html" "search" }}<span>Search</span><kbd>⌘ K</kbd></a><a class="docs-download" href="{{ (site.GetPage "/download").RelPermalink }}">Download <span aria-hidden="true">→</span></a></div>
+  </div>
+</header>

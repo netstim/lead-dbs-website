@@ -1,0 +1,19 @@
+<div class="manual-start">
+  <aside class="manual-research-note" id="research-use" aria-label="Research use"><strong>For research use only</strong><p>Retrospective research only. Do not use outputs for diagnosis, treatment planning, surgical targeting, DBS programming, patient management or any other individual clinical decision.</p><details><summary>Read the full research-use notice</summary><p>Lead-DBS is research software intended for retrospective scientific analysis of neuroimaging data, electrode locations and group-level associations in research studies. It is not intended for diagnosis, treatment planning, surgical targeting, DBS programming, patient management, or any other clinical decision concerning an individual patient. Outputs must not be used as a basis for clinical care.</p></details></aside>
+  <div class="manual-start__actions"><a href="{{ (site.GetPage "/manual/installation").RelPermalink }}">Install Lead-DBS {{ partial "manual-icon.html" "arrow" }}</a><a href="{{ (site.GetPage "/manual/lead-dbs/self-tutoring-with-lead-tutor").RelPermalink }}">Start a tutorial {{ partial "manual-icon.html" "arrow" }}</a></div>
+  <div class="manual-launch-tabs" role="tablist" aria-label="Choose a MATLAB application" hidden><button role="tab" id="launch-dbs" aria-controls="launch-command" aria-selected="true" data-command="lead dbs" data-comment="% Open Lead-DBS">Lead-DBS</button><button role="tab" id="launch-group" aria-controls="launch-command" aria-selected="false" tabindex="-1" data-command="lead group" data-comment="% Open Lead Group">Lead Group</button></div>
+  <div class="manual-terminal" id="launch-command"><div class="manual-terminal__head">{{ partial "manual-icon.html" "terminal" }}MATLAB{{ partial "manual-copy.html" (dict "text" "lead dbs" "label" "Copy MATLAB command") }}</div><pre><code><span class="manual-terminal__comment">% Open Lead-DBS</span>
+<span class="manual-terminal__prompt">&gt;&gt;</span> <span class="manual-launch__command">lead dbs</span></code></pre></div>
+  <h2 id="workflows">Explore the workflows</h2>
+  <p>Follow an analysis from imaging to interpretation.</p>
+  <div class="manual-workflows">
+  {{ range slice
+    (dict "icon" "layers" "title" "Single-patient analysis" "text" "Import images, reconstruct electrodes and visualize results." "page" "/manual/lead-dbs/step0-overview")
+    (dict "icon" "network" "title" "Group analysis" "text" "Explore stimulation effects across a cohort." "page" "/manual/lead-group/group-analyses-with-lead-dbs")
+    (dict "icon" "network" "title" "Connectomics" "text" "Map connections and investigate brain networks." "page" "/manual/connectomics/connectomic-analyses")
+    (dict "icon" "terminal" "title" "Scripting & reference" "text" "Work with atlases, command-line tools and MATLAB." "page" "/manual/appendix/command-line-interface")
+  }}
+  <a href="{{ (site.GetPage .page).RelPermalink }}">{{ partial "manual-icon.html" .icon }}<span><strong>{{ .title }}</strong><span>{{ .text }}</span></span>{{ partial "manual-icon.html" "arrow" }}</a>
+  {{ end }}
+  </div>
+</div>

@@ -48,7 +48,7 @@
           <div class="btn-row">
             <a class="btn btn--primary" href="{{ $dl }}">{{ .primary.label }}{{ $arrow }}</a>
             <a class="btn btn--secondary" href="{{ partial "resolve-url.html" (dict "url" .secondary.url "page" $) }}">{{ .secondary.label }}{{ $arrow }}</a>
-            {{ with .manual }}<a class="btn btn--secondary hero__manual" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></a>{{ end }}
+            {{ with .manual }}<a class="btn btn--secondary hero__manual" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}</a>{{ end }}
           </div>
         </div>
         {{- /* one quiet line: the release, what it runs on, its licence, then the proof (content/_index.md) */}}
