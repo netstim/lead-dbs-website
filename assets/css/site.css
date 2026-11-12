@@ -1123,6 +1123,7 @@ img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md
 .gallery-section + .gallery-section { margin-top: var(--s-9); }
 .gallery-section > h2 { font-size: var(--t-h3); font-weight: var(--title-weight); line-height: 1.2; margin: 0 0 var(--s-3); max-width: none; }
 .gallery-section > .lead { max-width: 62ch; color: var(--ink); margin: 0 0 var(--s-7); font-size: var(--t-lead); line-height: 1.55; }
+.gallery-credits { margin: var(--s-6) 0 0; max-width: 72ch; font-size: var(--t-note); line-height: 1.55; color: var(--muted); scroll-margin-top: calc(var(--nav) + var(--s-5)); }
 .render-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-7) var(--gutter); }
 @media (min-width: 1200px) { .render-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .render-item { display: grid; gap: var(--s-3); align-content: start; }
@@ -1323,55 +1324,35 @@ html .prose .download-grid--secondary .download-btn { width: auto; min-height: 4
 .prose .search { margin: var(--s-6) 0; max-width: var(--measure); }
 
 /* ---------------------------------------------------------------- footer
-   On the dark ground: the logo and its line on a row of their own, the seven link columns under them
-   across the whole container (seven on a row from 1280px, four below), the legal line under
-   them (the research-use statement, the legal pages, the credits of the renders); a phone: the columns
-   fold to rows (below). */
-.footer { padding: var(--s-7) 0 var(--s-5); }
-.footer__main { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-6) var(--gutter); }
-.footer__brand { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-6); }
-.footer__lede { font-size: var(--t-note); line-height: 1.55; color: var(--muted); max-width: 34ch; margin: 0; }
-/* each column as wide as its longest link where there is room (so the institute's long names stay on one
-   line), sharing the width where there is not; the first starts on the grid, the last ends at its edge */
+   On the dark ground: the logo on the left, four short columns of links beside them
+   (under them below 1024px), and one legal line under all. A phone: the columns in a 2 × 2 grid. */
+.footer { padding: var(--s-8) 0 var(--s-6); }
+.footer__main { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-7) var(--gutter); }
+@media (min-width: 1024px) { .footer__main { grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); } }
+.footer__brand { display: grid; align-content: start; justify-items: start; gap: var(--s-2); }
+.footer .nav__logo { font-size: 22px; gap: var(--s-3); }
+.footer .nav__logo img { height: 40px; }
 .footer__cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-6) var(--gutter); }
-@media (min-width: 1280px) {
-  .footer__cols { grid-template-columns: repeat(7, minmax(0, max-content)); justify-content: space-between; column-gap: var(--s-5); }
-}
 .footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; font-size: var(--t-small); }
-.footer__h { font: 500 var(--t-small)/1.4 var(--font-text); letter-spacing: 0; color: var(--muted); margin: 0 0 var(--s-2); }
-/* every footer link a target at least 26px tall (44px below 1024px); a link of two lines keeps its ↗
+.footer__h { font: 500 var(--t-small)/1.4 var(--font-text); letter-spacing: 0; color: var(--muted); margin: 0 0 var(--s-3); }
+/* every footer link a target at least 30px tall (44px below 1024px); a link of two lines keeps its ↗
    after its last word */
-:is(.footer ul, .footer__legal) a { display: inline-block; padding-block: 3px; }
-.footer ul a:hover { color: var(--ink); }
+:is(.footer ul, .footer__legal) a { display: inline-block; padding-block: 5px; }
+.footer ul a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
 .footer .ext-mark { margin-left: .25em; font-size: .85em; color: var(--muted); }
-.footer__legal { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--s-5); margin-top: var(--s-6); padding-top: var(--s-4);
-  border-top: 1px solid var(--line); font-size: var(--t-note); line-height: 1.5; color: var(--muted); }
+.footer__legal { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-2) var(--s-5); margin-top: var(--s-8); padding-top: var(--s-4);
+  border-top: 1px solid var(--line); font-size: var(--t-small); line-height: 1.5; color: var(--muted); }
 .footer__legal p { margin: 0; }
-.footer .footer__legal-links { display: flex; flex-wrap: wrap; gap: 0 var(--s-4); font-size: inherit; }
+.footer .footer__legal-links { display: flex; flex-wrap: wrap; gap: 0 var(--s-5); font-size: inherit; }
 .footer__legal a { color: inherit; }
 .footer__legal a:hover { color: var(--ink); }
-.footer__credits { flex-basis: 100%; margin-top: var(--s-1) !important; }
 .footer .wrap { min-width: 0; }
 @media (max-width: 1023px) {
   :is(.footer ul, .footer__legal) a { padding-block: 12px; min-width: 44px; }
-  .footer__legal .footer__credits { margin-top: 0 !important; }
+  .footer__legal { margin-top: var(--s-7); }
 }
 @media (max-width: 639px) {
   .footer { padding-top: var(--s-7); }
-  .footer__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--s-5); }
+  .footer__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--s-6); }
   .footer__legal { flex-direction: column; align-items: flex-start; }
-}
-.footer__expand { display: none; }
-/* a phone (with script, .is-foldable from assets/js/main.js): one column of rows, each a heading and a
-   chevron that opens its links, as in the menu sheet; the whole row opens them */
-@media (max-width: 639px) {
-  .footer.is-foldable .footer__cols { grid-template-columns: minmax(0, 1fr); gap: 0; border-top: 1px solid var(--line); }
-  .footer.is-foldable .footer__col { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; border-bottom: 1px solid var(--line); }
-  .footer.is-foldable .footer__h { display: flex; align-items: center; min-height: 48px; margin: 0; font-size: var(--t-body); color: var(--ink); }
-  .footer.is-foldable .footer__expand { display: inline-grid; place-items: center; position: absolute; inset: 0 -12px auto 0; width: auto; height: 48px;
-    justify-items: end; padding: 0 16px 0 0; margin: 0; border: 0; background: none; color: var(--muted); cursor: pointer; }
-  .footer__expand svg { width: 16px; height: 16px; transition: transform var(--dur) var(--ease); }
-  .footer__col.is-expanded .footer__expand svg { transform: rotate(180deg); }
-  .footer.is-foldable .footer__col > ul { grid-column: 1 / -1; display: none; padding-bottom: var(--s-3); }
-  .footer.is-foldable .footer__col.is-expanded > ul { display: grid; }
 }

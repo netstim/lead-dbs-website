@@ -33,7 +33,7 @@ pictures a screen-reader user cannot see. Write the alt text and the warning goe
 
 ## Site structure
 
-The main menu is grouped by what visitors come for and lists every page of its groups; the footer does not repeat it. The footer follows the menu's groups and names: seven columns (Get Lead-DBS, Features, Docs and help, Atlases and data, Community, About, Institute; four per row below 1280 px) with what a visitor looks for at the end of a page and what the menu lacks (source code, bug reports, "Release history" → `/download/#releases`, the news feed, search, the lab's sites), then the legal line with the research-use statement and the render credits (`layouts/_partials/footer.html`).
+The main menu is grouped by what visitors come for and lists every page of its groups; the footer does not repeat it. The footer carries only what the menu lacks, so it stays short: the logo, four columns (Lead-DBS: download, "Release history" → `/download/#releases`, Cite Lead-DBS, source code, bug reports; Help: first steps, the manual, the user Slack, contact; Stay in touch: events, the newsletter, the news, its feed, Bluesky; Institute: the lab's sites), then one legal line with the research-use statement, the legal pages and "Image credits", which links to the render credits on `/gallery/#image-credits` (`layouts/_partials/footer.html`). The site's source ("Edit this site") is this repository, linked from the README, not the footer.
 
 | Menu | Page | Holds |
 |---|---|---|
@@ -45,7 +45,7 @@ The main menu is grouped by what visitors come for and lists every page of its g
 | About | `/about/` (a paragraph, cards for its pages, then deep brain stimulation, and history with recognition and funding; the history links the 2017 essay "Commercial vs. academic software", which keeps its address `/commercial-vs-academic-software/`, is kept for the record and is left out of the site search) | Cite Lead-DBS, publications (every paper of `data/papers.yaml`, the library of studies that used Lead-DBS, cover art, what other researchers write), contributors (who coordinates Lead-DBS today and who built it), dependencies (the software Lead-DBS builds on, OSS-DBS among them, with what to cite) |
 | Download | `/download/` (the header's button; its sidebar is its contents list) | The current release, requirements and the install steps (`#install`, the only place they are written), standalone builds, licence (one line; the full terms with the research-use statement `#research-use` folded), release history (folded; versions before 3.0 folded again inside) |
 
-The footer's legal line lists Contact, Imprint and Privacy Policy (`[menus.footer]`); the two legal pages end with
+The footer's legal line lists Imprint and Privacy Policy (`[menus.footer]`) and Image credits; Contact is in its Help column. The two legal pages end with
 "Next" cards to each other, Contact and About like every other page.
 
 **The menu is the site's one hierarchy.** Addresses stay those of the old site, so the folders in

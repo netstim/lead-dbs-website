@@ -286,11 +286,7 @@ enableGitInfo = true
     pageRef = "/about/lead-dbs-dependencies"
     weight = 4
 
-  # The footer's legal line; Contact is also listed under "Get help"
-  [[menus.footer]]
-    name = "Contact"
-    pageRef = "/contact"
-    weight = 0
+  # The footer's legal line (Contact is in the footer's "Help" column and under "Get help")
   [[menus.footer]]
     name = "Imprint"
     pageRef = "/impressum-datenschutzerklarung"
