@@ -301,145 +301,95 @@
 }
 @media (max-width: 1199px) { .nav__menu a.menu-sheet-dup { display: none !important; } }
 
-/* {{< capability >}}: one thing Lead-DBS does (Features): its name, a picture, what it does, its
-   chapter in the manual and its papers, then the figure's credit. Inside {{< capabilities >}} it is a card
-   (below); on its own (the last row of a chapter) it is a container that lays itself out by the width it
-   gets: on a phone the picture above the text; in a narrow column the picture left (5 : 7); in a wide one
-   the picture in 6 of 12 columns and the words in the last 5, from the picture's top. One picture
-   treatment everywhere: a 4:3 frame; a render fills it on black, a figure from a paper sits whole on the
-   light mat of the home page's figures and opens at full size. */
-.prose .capability { container-type: inline-size; margin: 0 0 var(--s-7); max-width: none; scroll-margin-top: calc(var(--nav) + var(--s-5)); }
-.prose .capability__row { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); }
-.prose .capability__fig { margin: 0; }
+/* The Features page, after vercel.com and x.ai: big words, big pictures, little text.
+   {{< jumps >}}: the page opens with one large two-tone statement (its bold part in ink, the rest muted)
+   and its chapters as a row of pills. */
+.prose .page-intro { max-width: none; margin: var(--s-6) 0 var(--s-8); }
+.prose .page-intro__text > p { max-width: 24ch; margin: 0; font-size: clamp(30px, 2.4vw + 14px, 48px); font-weight: 500; line-height: 1.12; letter-spacing: -.03em; color: var(--muted); }
+.prose .page-intro__text > p strong { font-weight: inherit; color: var(--ink); }
+@media (min-width: 1024px) { .prose .page-intro__text > p { max-width: 30ch; } }
+.prose .jumps { margin: var(--s-6) 0 0; max-width: none; }
+.prose .jumps ul { display: flex; flex-wrap: wrap; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+.prose .jumps li { margin: 0; }
+.prose .jumps a { display: inline-flex; align-items: center; min-height: 36px; padding: 0 var(--s-4); border-radius: 999px; background: var(--surface);
+  color: var(--ink) !important; font-size: var(--t-small); font-weight: 500; text-decoration: none !important; transition: background-color var(--t-out) var(--ease); }
+.prose .jumps a:hover { background: color-mix(in oklab, var(--p-tint-1) 45%, #fff); transition-duration: var(--t-in); }
+
+/* {{< chapter >}}: the heading large on the left, the lede (two-tone) on the right, level with its
+   foot; under them, with a render, the render across the page. A phone leaves the render out. */
+.prose .chapter { margin: clamp(80px, 8vw, 128px) 0 var(--s-6); max-width: none; scroll-margin-top: calc(var(--nav) + var(--s-4)); }
+.prose .chapter__head { display: grid; gap: var(--s-3); }
+.prose .chapter__head h2 { margin: 0; font-size: clamp(34px, 2.2vw + 20px, 56px); font-weight: 600; line-height: 1.02; letter-spacing: -.035em; }
+.prose .chapter__head > p { margin: 0; max-width: 32ch; font-size: var(--t-lead); line-height: 1.45; color: var(--muted); }
+.prose .chapter__head > p strong { font-weight: 500; color: var(--ink); }
+@media (min-width: 1024px) {
+  .prose .chapter__head { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: end; }
+  .prose .chapter__head h2 { grid-column: 1 / span 7; }
+  .prose .chapter__head > p { grid-column: 9 / span 4; padding-bottom: .3em; }
+}
+.prose .chapter__fig { margin: var(--s-6) 0 0; max-width: none; }
+.prose .chapter__fig img { display: block; width: 100%; height: auto; aspect-ratio: 21 / 8; object-fit: cover; object-position: var(--focus, 50% 50%); border-radius: var(--r-lg); background: var(--render); }
+.prose .chapter + :is(.cap-grid, .tool-cols) { margin-top: var(--s-5); }
+@media (max-width: 639px) { .prose .chapter__fig { display: none; } }
+
+/* {{< capabilities >}}: tiles, as on x.ai: on the light surface, the picture inset at the top (a render
+   fills its 4:3 frame; a figure from a paper sits whole on white, opens at full size, its credit a small
+   label in the corner), under it the name, one sentence and a quiet line of links. Three across from
+   1024px, two from 640px; a chapter with one tile lays it out wide, picture right. */
+.prose .cap-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); margin: 0; max-width: none; }
+@media (min-width: 640px) { .prose .cap-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .prose .cap-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.prose .capability { display: flex; flex-direction: column; margin: 0; max-width: none; padding: var(--s-2); border-radius: var(--r-lg); background: var(--surface);
+  scroll-margin-top: calc(var(--nav) + var(--s-5)); transition: background-color var(--t-out) var(--ease); }
+.prose .capability__fig { position: relative; margin: 0; }
 .prose .capability__fig img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r-md); background: var(--render); }
-/* a figure from a paper keeps its own shape: the frame hugs it (a hairline on the figure's own white
-   ground), no mat around it; a figure that is much taller than wide stops at 40rem */
-.prose .capability__fig--contain img { aspect-ratio: auto; max-height: 40rem; width: auto; max-width: 100%; object-fit: contain; background: #fff; border: 1px solid var(--line); }
+.prose .capability--figure .capability__fig img { object-fit: contain; padding: var(--s-3); background: #fff; }
 .prose .capability__fig a { display: block; border-radius: var(--r-md); cursor: zoom-in; }
-.prose .capability__fig a:hover img { border-color: var(--line-strong); }
-.prose .capability__credit { margin: var(--s-3) 0 0; max-width: none; font-size: var(--t-note); line-height: 1.45; color: var(--muted); }
-.prose .capability__credit a { color: inherit; }
-.prose .capability__text h3 { margin: 0 0 var(--s-2); font-size: var(--t-sub); line-height: 1.25; }
-.prose .capability__text > p:not(.capability__credit) { margin: 0 0 var(--s-4); font-size: var(--t-body); line-height: 1.6; }
-/* the references under a hairline: the labels in a column, their links beside them */
-.prose .capability__refs { display: grid; gap: var(--s-1); margin: 0; padding-top: var(--s-3); border-top: 1px solid var(--line); font-size: var(--t-small); line-height: 1.5; }
-.prose .capability__refs > div { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: var(--s-3); align-items: baseline; }
-.prose .capability__refs dt { color: var(--muted); }
-.prose .capability__refs dd { margin: 0; }
-/* a link to one capability (from the home page, the atlas pages) marks its card */
-.prose .capability:target { outline: 2px solid color-mix(in oklab, var(--action) 70%, transparent); outline-offset: var(--s-3); border-radius: var(--r-md); }
-@container (min-width: 600px) {
-  .prose .capability__row { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-6); align-items: start; }
-}
-@container (min-width: 1040px) {
-  .prose .capability__row { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
-  .prose .capability__fig { grid-column: 1 / span 6; }
-  /* the words start on column 7, the line where the chapter ledes and the right card of a row start */
-  .prose .capability__text { grid-column: 7 / span 6; max-width: 34rem; padding-top: var(--s-2); }
-}
-
-/* a row of a table that a link points to (the tools on Features, by an empty span with the id in its
-   first cell): it lands below the header, its cells tinted */
-.prose td > span[id]:empty { scroll-margin-top: calc(var(--nav) + var(--s-8)); }
-.prose tr:has(> td > span[id]:target) > td { background: color-mix(in oklab, var(--action) 8%, transparent); }
-
-/* {{< capabilities >}}: the cards, two to a row from 640px, one on a phone; from 1200px renders three to
-   a row and figures from papers (capability--figure) two, so their labels stay legible. Every card has
-   the same parts in one order: title, picture, text, references, credit (the title comes first, so the
-   page names what it shows before it shows it). Below 1200px each card flows on its own, so cards of
-   different heights never leave holes; from 1200px the render cards of a row share lines (subgrid): the
-   titles, the pictures, the texts, the references and the credits each start at one height. A card's
-   references and credit sit at its foot, so the cards of a row end on one line. */
-.prose .cap-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-7) var(--s-6); margin: 0 0 var(--s-7); max-width: none; }
-@media (min-width: 640px) { .prose .cap-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); } }
-.prose .capability--card { container-type: normal; margin: 0; display: grid; grid-template-rows: auto auto 1fr auto auto; row-gap: 0; }
-.prose .capability--card :is(.capability__row, .capability__text) { display: contents; }
-.prose .capability--card .capability__text > h3 { grid-row: 1; align-self: end; margin-bottom: var(--s-3); }
-.prose .capability--card .capability__fig { grid-row: 2; margin-bottom: var(--s-4); }
-/* a figure from a paper in a card stays within the 4:3 frame of the renders (as wide as the card, three
-   quarters as tall), so a squarer figure is no taller than the render beside it */
-.prose .capability--card .capability__fig--contain { container-type: inline-size; }
-.prose .capability--card .capability__fig--contain img { max-height: 75cqw; }
-.prose .capability--card .capability__text > p:not(.capability__credit) { grid-row: 3; max-width: none; font-size: var(--t-body); line-height: 1.6; }
-.prose .capability--card .capability__refs { grid-row: 4; align-self: start; }
-.prose .capability--card .capability__credit { grid-row: 5; }
-@media (min-width: 1200px) {
-  .prose .cap-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-  .prose .cap-grid > .capability--card { grid-column: span 2; }
-  .prose .cap-grid > .capability--figure { grid-column: span 3; }
-  /* render cards share the row's lines; figures from papers keep their own shape, so two side by side
-     differ in height and each flows on its own (its words straight under its figure) */
-  .prose .cap-grid > .capability--card:not(.capability--figure) { grid-template-rows: subgrid; grid-row: span 5; }
-}
-/* two to a row, a last card that would stand alone is a wide row like the ones after the grid: its
-   picture left, its words right */
-@media (min-width: 640px) and (max-width: 1199px) {
-  .prose .cap-grid > .capability--card:last-child:nth-child(odd) { grid-column: 1 / -1; grid-template-rows: auto auto auto 1fr; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--s-6); }
-  .prose .cap-grid > .capability--card:last-child:nth-child(odd) .capability__fig { grid-column: 1; grid-row: 1 / -1; margin: 0; }
-  .prose .cap-grid > .capability--card:last-child:nth-child(odd) :is(.capability__text > *) { grid-column: 2; grid-row: auto; }
+.prose .capability__credit { position: absolute; right: var(--s-2); bottom: var(--s-2); margin: 0; padding: 1px 8px; border-radius: 999px;
+  background: rgb(255 255 255 / .9); font-size: 11.5px; line-height: 1.6; color: var(--muted); }
+.prose .capability__credit a { color: inherit !important; text-decoration: none !important; }
+.prose .capability__body { display: flex; flex-direction: column; flex: 1; padding: var(--s-4) var(--s-3) var(--s-3); }
+.prose .capability__body h3 { margin: 0 0 var(--s-1); font-size: 16px; font-weight: 600; line-height: 1.35; letter-spacing: -.01em; }
+.prose .capability__body > p:not(.capability__links) { margin: 0; max-width: 40ch; font-size: var(--t-small); line-height: 1.5; color: var(--muted); }
+.prose .capability__body > p:not(.capability__links) a { color: inherit !important; text-decoration-color: var(--line-strong) !important; }
+.prose :is(.capability, .tool) .capability__links { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px var(--s-3); margin: auto 0 0; padding-top: var(--s-4); max-width: none; font-size: 13px; line-height: 1.5; }
+.prose :is(.capability, .tool) .capability__links a { color: var(--ink) !important; font-weight: 500; text-decoration: none !important; }
+.prose :is(.capability, .tool) .capability__links a.capability__paper { color: var(--muted) !important; font-weight: 400; }
+.prose :is(.capability, .tool) .capability__links a:hover { color: var(--action) !important; }
+.prose :is(.capability, .tool) .capability__links .ext-mark { margin-left: 2px; color: var(--muted); font-size: .9em; }
+/* a link to one capability (from the home page, the atlas pages) tints its tile */
+.prose .capability:target { background: color-mix(in oklab, var(--p-tint-1) 40%, #fff); }
+@media (min-width: 640px) and (max-width: 1023px) { .prose .cap-grid > .capability:last-child:nth-child(odd) { grid-column: 1 / -1; } }
+@media (min-width: 640px) {
+  .prose .cap-grid > .capability:only-child { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); grid-column: 1 / -1; }
+  .prose .cap-grid > .capability:only-child .capability__fig { grid-column: 2; grid-row: 1; }
+  .prose .cap-grid > .capability:only-child .capability__fig img { aspect-ratio: 16 / 9; }
+  .prose .cap-grid > .capability:only-child .capability__body { grid-column: 1; grid-row: 1; padding: var(--s-5); }
+  .prose .cap-grid > .capability:only-child .capability__body h3 { font-size: var(--t-sub); }
+  .prose .cap-grid > .capability:only-child .capability__body > p:not(.capability__links) { font-size: var(--t-body); }
 }
 
-/* {{< chapter >}}: a numbered chapter of Features. Under a hairline its number and heading on the left,
-   a one-line lede on the right; a chapter with a render (chapter--fig) stacks them in the left five of
-   twelve columns and sets the render as a low band in the other seven, so the first cards follow
-   within the first screen. Below 1024px the render follows the heading across the page; a phone leaves
-   it out, so the chapter opens with its first card. */
-.prose .chapter { margin: var(--s-8) 0 var(--s-6); max-width: none; scroll-margin-top: calc(var(--nav) + var(--s-4)); border-top: 1px solid var(--line-strong); padding-top: var(--s-5); }
-.prose .chapter__head { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-2) var(--gutter); }
-/* the numbers of chapters and steps: the chapter's number, the numbers of the contents (jumps) and the
-   steps of a how-to page (a heading marked {.step}, First steps): one style, a label (as the
-   label rule of site.css says) in the link colour */
-.prose .chapter .chapter__n, .prose .jumps a::before, .prose h2.step::before { margin: 0; font-family: var(--font-label); font-size: var(--label-size); font-weight: var(--label-weight); font-style: normal; line-height: 1.4;
-  letter-spacing: var(--label-tracking); word-spacing: normal; text-transform: none; font-synthesis: none; color: var(--action); font-variant-numeric: tabular-nums; }
-/* a numbered step: its number over its heading, counted through the page */
+/* {{< tools >}}: plain columns, as in a Vercel footer: each a hairline, its name, one sentence, links */
+.prose .tool-cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-6) var(--gutter); margin: 0; max-width: none; }
+@media (min-width: 640px) { .prose .tool-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1200px) { .prose .tool-cols { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.prose .tool { display: flex; flex-direction: column; margin: 0; max-width: none; padding-top: var(--s-4); border-top: 1px solid var(--line-strong); scroll-margin-top: calc(var(--nav) + var(--s-5)); }
+.prose .tool h3 { margin: 0 0 var(--s-1); font-size: 16px; font-weight: 600; line-height: 1.35; }
+.prose .tool > p:not(.capability__links) { margin: 0; font-size: var(--t-small); line-height: 1.5; color: var(--muted); }
+.prose .tool:target h3 { color: var(--action); }
+.prose .features-foot { margin-top: clamp(64px, 6vw, 96px); max-width: none; font-size: var(--t-small); color: var(--muted); }
+
+/* a numbered step of a how-to page (a heading marked {.step}, First steps): its number over its
+   heading, counted through the page, a label in the link colour */
 .prose { counter-reset: step; }
 .prose h2.step { counter-increment: step; }
-.prose h2.step::before { content: counter(step, decimal-leading-zero); display: block; margin-bottom: var(--s-2); }
-.prose .chapter__head h2 { margin: 0; font-size: var(--t-h3); line-height: 1.15; }
-.prose .chapter__head > p:not(.chapter__n) { margin: 0; max-width: 44ch; font-size: var(--t-lead); line-height: 1.45; color: var(--muted); }
-.prose .chapter__fig { margin: var(--s-5) 0 0; max-width: none; }
-.prose .chapter__fig img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 5; object-fit: cover; object-position: var(--focus, 50% 50%); border-radius: var(--r-lg); background: var(--render); }
-.prose .chapter + :is(.cap-grid, .capability, .table-scroll, p) { margin-top: var(--s-6); }
-@media (min-width: 1024px) {
-  .prose .chapter { margin-top: var(--s-8); }
-  .prose .chapter__head { grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-areas: "n n n n n n . . . . . ." "h h h h h h l l l l l l"; align-items: end; }
-  .prose .chapter__n { grid-area: n; }
-  .prose .chapter__head h2 { grid-area: h; }
-  .prose .chapter__head > p:not(.chapter__n) { grid-area: l; max-width: none; padding-bottom: .15em; }
-  /* with a render: the words in 5 columns, the render beside them in 7 */
-  .prose .chapter--fig { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: start; }
-  .prose .chapter--fig .chapter__head { grid-column: 1 / span 5; grid-template-columns: minmax(0, 1fr); grid-template-areas: none; gap: var(--s-2); }
-  .prose .chapter--fig .chapter__head > * { grid-area: auto; }
-  .prose .chapter--fig .chapter__head > p:not(.chapter__n) { grid-area: auto; max-width: 30ch; padding: 0; }
-  .prose .chapter--fig .chapter__fig { grid-column: 6 / span 7; margin: 0; }
-  .prose .chapter--fig .chapter__fig img { aspect-ratio: 7 / 2; }
-}
-@media (max-width: 639px) { .prose .chapter { margin-top: var(--s-7); } .prose .chapter__fig { display: none; } .prose .chapter + :is(.cap-grid, .capability, .table-scroll, p) { margin-top: var(--s-5); } }
+.prose h2.step::before { content: counter(step, decimal-leading-zero); display: block; margin: 0 0 var(--s-2); font-family: var(--font-label); font-size: var(--label-size); font-weight: var(--label-weight); font-style: normal; line-height: 1.4;
+  letter-spacing: var(--label-tracking); word-spacing: normal; text-transform: none; font-synthesis: none; color: var(--action); font-variant-numeric: tabular-nums; }
 
-/* {{< jumps >}}: the contents of a long page (Features), numbered as its chapters are: a list of rows,
-   each under a hairline. With text between its tags it is the page's intro: on a desktop the text on
-   the left (the lead's size), the contents on the right; below 1024px the contents follow the text, two
-   by two. */
-.prose .jumps { margin: var(--s-5) 0 var(--s-6); max-width: none; }
-.prose .jumps ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--gutter); margin: 0; padding: 0; list-style: none; counter-reset: jump; }
-.prose .jumps li { margin: 0; max-width: none; counter-increment: jump; }
-/* (!important: the prose link colour and underline rule in site.css is more specific) */
-.prose .jumps a { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); align-items: baseline; min-height: 44px; padding: var(--s-3) 0; border-top: 1px solid var(--line-strong);
-  color: var(--ink) !important; font-weight: 600; line-height: 1.3; text-decoration: none !important;
-  transition: border-color var(--t-out) var(--ease), color var(--t-out) var(--ease); }
-.prose .jumps a::before { content: counter(jump, decimal-leading-zero); }
-.prose .jumps a:hover { border-top-color: var(--action); color: var(--action) !important; transition-duration: var(--t-in); }
-.prose .page-intro { max-width: none; margin: 0 0 var(--s-6); }
-.prose .page-intro__text > p { max-width: var(--measure); font-size: var(--t-lead); line-height: 1.55; }
-.prose .page-intro__text > p:last-child { margin-bottom: 0; }
-@media (min-width: 1024px) {
-  .prose .page-intro { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: start; }
-  .prose .page-intro__text { grid-column: 1 / span 7; }
-  .prose .page-intro > .jumps { grid-column: 9 / span 4; margin: 0; }
-  .prose .page-intro > .jumps ul { grid-template-columns: minmax(0, 1fr); }
-  .prose .page-intro > .jumps li:last-child a { border-bottom: 1px solid var(--line-strong); }
-}
-@media (max-width: 639px) { .prose .jumps a { grid-template-columns: 2rem minmax(0, 1fr); font-size: 15px; } }
+/* a row of a table that a link points to (by an empty span with the id in its first cell): it lands
+   below the header, its cells tinted */
+.prose td > span[id]:empty { scroll-margin-top: calc(var(--nav) + var(--s-8)); }
+.prose tr:has(> td > span[id]:target) > td { background: color-mix(in oklab, var(--action) 8%, transparent); }
 
 /* the news list: the heading over posts more than three years older than the newest (layouts/news/list.html) */
 .prose .news-archive { margin: var(--s-8) 0 var(--s-2); }
