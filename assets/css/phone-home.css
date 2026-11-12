@@ -184,7 +184,10 @@
   .next-band__point { padding-block: var(--s-3); border-top-color: color-mix(in srgb, var(--ink) 10%, transparent); }
   .home .next-band__point h3 { margin: 0; font: 500 var(--t-doc)/1.42 var(--font-text); letter-spacing: 0; }
   .next-band__point p { max-width: none; color: color-mix(in srgb, var(--ink) 60%, transparent); font: 400 var(--t-small)/1.43 var(--font-text); }
-  .next-band__point .link { display: flex; width: 100%; margin: var(--s-3) 0 0; margin-bottom: calc(-1 * var(--s-3)); border-top: 1px solid color-mix(in srgb, var(--ink) 10%, transparent); padding-top: var(--s-1); }
+  .next-band__point:has(> .link) { padding-bottom: 0; }
+  .next-band__point:has(> .link) p { padding-bottom: var(--s-3); }
+  .home .next-band__point .link { display: flex; width: 100%; border-top: 1px solid color-mix(in srgb, var(--ink) 10%, transparent); }
+  .pulse-card__place { display: none; }
 
   /* -------------------------------------------------------------- 7. what's happening
      one row of cards that scrolls sideways (248px): the picture a 4:3 tile with a hairline ring (an
