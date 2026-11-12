@@ -33,7 +33,7 @@
 {{- $s := $img.Resize "640x webp q70" }}{{ $m := $img.Resize (printf "%dx webp q70" (math.Min $img.Width 1200 | int)) -}}
 {{- $set := printf "%s 640w, %s %dw" $s.RelPermalink $m.RelPermalink $m.Width -}}
 {{- if ge $img.Width 1800 }}{{ $l := $img.Resize "1800x webp q66" }}{{ $set = printf "%s, %s 1800w" $set $l.RelPermalink }}{{ end -}}
-<img class="page-head__render" src="{{ $s.RelPermalink }}" srcset="{{ $set }}" sizes="(min-width: 1024px) 62vw, 100vw" width="{{ $m.Width }}" height="{{ $m.Height }}" style="--focus: {{ $scene.focus }}{{ with $scene.fit }}; --fit: {{ . }}{{ end }}" alt="" decoding="async" fetchpriority="low">
+<img class="page-head__render" src="{{ $s.RelPermalink }}" srcset="{{ $set }}" sizes="(min-width: 1024px) 62vw, 100vw" width="{{ $m.Width }}" height="{{ $m.Height }}" style="--focus: {{ $scene.focus }}{{ with $scene.fit }}; --fit: {{ . }}{{ end }}" alt="" decoding="async">
 {{- else -}}
 {{- errorf "page-head-render: no file images/renders/%s" $scene.file -}}
 {{- end -}}

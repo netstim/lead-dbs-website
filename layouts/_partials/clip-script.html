@@ -4,7 +4,9 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const clips = document.querySelectorAll('video[data-clip]');
-  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  // under reduced motion, or when the visitor asks to save data, the clips keep their native controls and play
+  // only when started (the hero's clip does the same)
+  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches || navigator.connection?.saveData) return;
   // a clip plays while in view; its round button pauses it for good (WCAG 2.2.2) and plays it again
   const icons = {
     pause: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
