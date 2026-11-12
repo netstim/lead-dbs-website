@@ -1,0 +1,8 @@
+{{- /* The entries the section list shows for a page: the children of its menu group (partial nav-place.html)
+       that are not panelOnly. section-nav.html draws them; content-page.html gives a page its sidebar only
+       when there are some, so no sidebar is ever empty. Argument: the page. Returns a slice of menu entries. */ -}}
+{{- $out := slice -}}
+{{- with (partial "nav-place.html" .).group -}}
+  {{- range .Children }}{{ if not .Params.panelOnly }}{{ $out = $out | append . }}{{ end }}{{ end -}}
+{{- end -}}
+{{- return $out -}}

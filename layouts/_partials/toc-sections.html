@@ -1,0 +1,12 @@
+{{- /* The page's ## sections in document order, wherever they sit: at the top, or under a # heading (which
+       the Markdown renders one level up). has-toc.html counts them and toc-list.html lists them, so the
+       two never disagree. Argument: a slice of fragments (.Fragments.Headings). Returns a slice. */ -}}
+{{- $out := slice -}}
+{{- range . -}}
+  {{- if eq .Level 2 -}}
+    {{- if strings.TrimSpace .Title }}{{ $out = $out | append . }}{{ end -}}
+  {{- else if lt .Level 2 -}}
+    {{- range partial "toc-sections.html" .Headings }}{{ $out = $out | append . }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $out -}}
