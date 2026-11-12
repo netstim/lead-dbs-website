@@ -34,12 +34,15 @@
   .dl-step { padding-bottom: var(--s-3); }
 
   /* -------------------------------------------------------------- chip rows
-     one line that scrolls sideways, running out to the screen's edge so it reads as more to swipe */
-  :is(.prose .jumps, .dl-hero__mirrors) ul { flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none;
+     one line that scrolls sideways, running out to the screen's edge so it reads as more to swipe
+     (the jump chips; the download page's server chips wrap instead) */
+  .prose .jumps ul { flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none;
     margin-inline: calc(-1 * var(--gut)); padding-inline: var(--gut); }
-  :is(.prose .jumps, .dl-hero__mirrors) ul::-webkit-scrollbar { display: none; }
-  :is(.prose .jumps, .dl-hero__mirrors) li { flex: none; }
+  .prose .jumps ul::-webkit-scrollbar { display: none; }
+  .prose .jumps li { flex: none; }
+  /* the download page's other servers wrap inside the margins */
   .dl-hero__mirrors { display: grid; }
+  .dl-hero__mirrors ul { flex-wrap: wrap; }
 
   /* -------------------------------------------------------------- inner page head
      (layouts/_partials/page-head.html) one black band: the page's render as a 300px picture at the top,
@@ -87,4 +90,11 @@
   .section-nav--end li a::after { content: ""; flex: none; width: 16px; height: 16px; background: var(--muted);
     -webkit-mask: var(--arrow) center / contain no-repeat; mask: var(--arrow) center / contain no-repeat; }
 
+  /* -------------------------------------------------------------- download: the head and the 4.0 box
+     the picture is black behind the title (its lower 45%); the "coming" pill fills the box's width */
+  .dl-hero .page-head__render {
+    -webkit-mask-image: linear-gradient(to bottom, color-mix(in srgb, var(--render) 50%, transparent), var(--render) 25%, transparent 55%);
+    mask-image: linear-gradient(to bottom, color-mix(in srgb, var(--render) 50%, transparent), var(--render) 25%, transparent 55%); }
+  .dl-next .dl-chip { display: flex; justify-content: center; width: 100%; height: auto; min-height: 48px; padding: var(--s-3) var(--s-5);
+    border-radius: var(--r-lg); text-align: center; line-height: 1.3; }
 }
