@@ -47,7 +47,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       HUGO_VERSION: 0.169.0
-      PLAYWRIGHT_VERSION: 1.48.2
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Install Hugo (checked against the release's checksums)
@@ -61,13 +60,13 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
-      # Chromium is kept between runs for the pinned Playwright (the system libraries are installed each time)
+      # Chromium is kept between runs for the locked Playwright (package-lock.json; the system libraries are installed each time)
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ env.PLAYWRIGHT_VERSION }}
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - name: Install Playwright and Chromium
-        run: npm install --no-save "playwright@$PLAYWRIGHT_VERSION" && npx playwright install --with-deps chromium
+        run: npm ci && npx playwright install --with-deps chromium
       - name: Build
         run: hugo --gc --minify
       - name: Pages in the browser (.github/scripts/check-browser.mjs)

@@ -24,7 +24,8 @@ hugo server -F         # the same, with pages whose date is still in the future
 hugo --gc --minify     # production build into public/
 ```
 
-No npm, bundler or CDN: Hugo is the only tool. The first build of a fresh clone makes the resized
+No npm, bundler or CDN in the build: Hugo is the only tool (`package.json` only locks the checks' and
+diagrams' Node tools, Playwright and Pele). The first build of a fresh clone makes the resized
 images (a few hundred files in `resources/_gen/`, which is not committed); that takes about half a
 minute, later builds take a second.
 
@@ -131,7 +132,7 @@ requests to other servers; its screenshots are kept with the run (Summary → Ar
 runs it on the production build before it deploys. It needs Node:
 
 ```bash
-npm install --no-save playwright@1.48.2 && npx playwright install chromium
+npm ci && npx playwright install chromium   # the versions locked in package-lock.json
 node .github/scripts/check-browser.mjs /tmp/site https://www.lead-dbs.org/ /tmp/screenshots   # about a minute
 ```
 

@@ -5,7 +5,8 @@
 The log directory holds access.log (and access.log.bak): one line per start of Lead-DBS, with the time,
 the IP address, the tool started and the MATLAB release. The country database is a free IP-to-country
 file in MaxMind format (for example DB-IP "IP to Country Lite"); the lookup runs on this computer.
-Needs: pip install maxminddb pycountry.
+Needs maxminddb and pycountry, at the versions in tools/requirements.txt:
+    python3 -m pip install --require-hashes -r tools/requirements.txt
 
 What is counted: a launch is one start of Lead-DBS; the same address counts once an hour, so a script
 that restarts Lead-DBS in a loop does not weigh more than a person. What leaves this script: totals by

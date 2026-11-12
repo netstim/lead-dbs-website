@@ -9,7 +9,7 @@
 //   - a request to another server (nothing loads from elsewhere until a visitor starts a video).
 // With a third argument it saves a full-page screenshot of every page and view there, for review.
 //
-//     npm install --no-save playwright@1.48.2 && npx playwright install chromium
+//     npm ci && npx playwright install chromium        (the versions locked in package-lock.json)
 //     node .github/scripts/check-browser.mjs public https://www.lead-dbs.org/ [screenshots/]
 //
 // The pages are every index.html of the build that is not a redirect (old addresses), and the 404 page.

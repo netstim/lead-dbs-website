@@ -127,9 +127,9 @@ site is built or viewed. To refresh them:
 
 1. Copy `access.log` (and `access.log.bak`) from the lead-dbs.org server into a folder, and download a free
    IP-to-country database in MaxMind format (for example DB-IP "IP to Country Lite").
-2. `pip install maxminddb pycountry`, then `python3 tools/usage.py <log folder> <database.mmdb>`.
+2. `python3 -m pip install --require-hashes -r tools/requirements.txt` (exact versions), then `python3 tools/usage.py <log folder> <database.mmdb>`.
    This writes `data/usage.json`.
-3. `npm install --no-save pele@1.13.0 && node scripts/usage.mjs`. This redraws the charts of `/usage/`
+3. `npm ci && node scripts/usage.mjs` (`npm ci` installs the versions locked in `package-lock.json`). This redraws the charts of `/usage/`
    (`assets/diagrams/usage-*.svg`) with Pele, the tool that also draws the flow diagram on the home page.
 
 What is counted and published: a launch is one start of Lead-DBS, and the same address counts once an

@@ -1,7 +1,7 @@
 // Draws the charts of /usage/ from data/usage.json with Pele (https://pele.run, MIT), once, so the page
 // ships plain SVG and no chart script: assets/diagrams/usage-<name>.svg, inlined by layouts/usage.html
 // and themed with the --pele-* custom properties (assets/css/site.css, "usage"). Run after tools/usage.py:
-//   npm install --no-save pele@1.13.0 && node scripts/usage.mjs
+//   npm ci && node scripts/usage.mjs        (Pele at the version locked in package-lock.json)
 import { render } from 'pele';
 import fs from 'node:fs';
 const root = new URL('../', import.meta.url).pathname;
