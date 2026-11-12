@@ -128,12 +128,15 @@ A build is the production build when its baseURL is `https://www.lead-dbs.org/`,
 A second job opens every page of the build (every `index.html` that is not a redirect, and the 404 page) in
 Chromium on a desktop and a phone, light and dark, and fails on script errors, missing files or pictures,
 pictures that do not finish loading, anything drawn past the screen's edge, text cut off in its box and
-requests to other servers; its screenshots are kept with the run (Summary → Artifacts). The Pages workflow
-runs it on the production build before it deploys. It needs Node:
+requests to other servers; its screenshots are kept with the run (Summary → Artifacts). Then
+`check-interactions.mjs` uses the phone menu, the search (with "/" and the button), the atlas filter and the
+download page's terms dialog with the mouse and the keyboard, and fails when one stops opening, closing or
+giving the focus back. The Pages workflow runs both on the production build before it deploys. They need Node:
 
 ```bash
 npm ci && npx playwright install chromium   # the versions locked in package-lock.json
 node .github/scripts/check-browser.mjs /tmp/site https://www.lead-dbs.org/ /tmp/screenshots   # about a minute
+node .github/scripts/check-interactions.mjs /tmp/site https://www.lead-dbs.org/                 # a few seconds
 ```
 
 `check-design.py` keeps budgets for literal colours (named colours too), `!important`, px spacing, literal
@@ -149,7 +152,7 @@ workflow also builds the site for `https://www.lead-dbs.org/`, and runs `.github
 builds; the run fails on a broken internal link, image or #anchor, a redirect that leads nowhere or to another
 redirect, a canonical or og:url that is not the page's address on www.lead-dbs.org, an og:image or sitemap
 address that is not absolute, or front matter shown as page text. It then opens every page of the production
-build in a browser (`check-browser.mjs`) and deploys only if all of that passes.
+build in a browser (`check-browser.mjs`, `check-interactions.mjs`) and deploys only if all of that passes.
 Run it locally the same way:
 
 ```bash

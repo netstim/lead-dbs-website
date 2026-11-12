@@ -71,6 +71,10 @@ jobs:
         run: hugo --gc --minify
       - name: Pages in the browser (.github/scripts/check-browser.mjs)
         run: node .github/scripts/check-browser.mjs public https://www.lead-dbs.org/ "$RUNNER_TEMP/screenshots"
+      # the menu sheet, the search, the atlas filter and a dialog, used with the mouse and the keyboard
+      - name: Interactions (.github/scripts/check-interactions.mjs)
+        if: always()
+        run: node .github/scripts/check-interactions.mjs public https://www.lead-dbs.org/
       - name: Keep the screenshots
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
