@@ -28,7 +28,7 @@
   <header class="page-head page-head--render dl-hero" data-nav-dark>
     {{ partial "page-head-render.html" . }}
     <div class="wrap">
-      <h1 id="normal-version"><span class="sr-only">Download </span>Lead-DBS <span class="dl-hero__v">{{ $r.version }}</span></h1>
+      <h1 id="normal-version"><span class="sr-only">Download </span><span class="nowrap">Lead-DBS</span> <span class="dl-hero__v">{{ $r.version }}</span></h1>
       <p class="dl-hero__meta">Released <time datetime="{{ time.Format "2006-01-02" $r.date }}">{{ time.Format "2 January 2006" $r.date }}</time> · Free and open source · <a href="{{ partial "resolve-url.html" (dict "url" $r.notes "page" .) }}">Release notes</a></p>
       <p class="dl-hero__main">
         <a class="btn btn--primary btn--on-dark" href="{{ $first.url }}" aria-label="Download Lead-DBS {{ $r.version }} from {{ $first.name }}">{{ $dl }}Download</a>

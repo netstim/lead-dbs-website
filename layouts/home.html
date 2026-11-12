@@ -20,6 +20,9 @@
          words over its black left half, and the facts line and the pause button along its lower edge
          (assets/css/site.css, "home: the hero") */}}
   <section class="hero home-hero" data-enter aria-labelledby="hero-h">
+    {{- /* a phone: the hero's black runs up under the header, so the header turns black over it (header.js
+           reads [data-nav-dark]; this ground is not drawn from 640px, so it counts there as nothing) */}}
+    <div class="home-hero__ground phone-only" data-nav-dark aria-hidden="true"></div>
     <div class="wrap home-hero__wrap">
       <div class="home-hero__panel">
         <div class="home-hero__media">
@@ -43,6 +46,8 @@
           </video>
         </div>
         <div class="home-hero__text">
+          {{- /* a phone: the release as a small chip above the title (the facts line under the hero is not shown there) */}}
+          <p class="home-chip phone-only"><a href="{{ partial "resolve-url.html" (dict "url" $r.notes "page" $) }}"><span class="home-chip__dot" aria-hidden="true"></span><span>Version <span class="num">{{ $r.version }}</span></span> <span class="home-chip__more">Release notes</span><span class="home-chip__go" aria-hidden="true">{{ $arrow }}</span></a></p>
           <h1 id="hero-h">{{ partial "nobreak.html" .title }}</h1>
           <p class="hero__lead">{{ .lead }}</p>
           <div class="btn-row">
@@ -81,6 +86,9 @@
         <div class="span-5 split__text">
           <h2 id="localize-h">{{ partial "nobreak.html" .title }}</h2>
           <p class="t-lead">{{ .text }}</p>
+          {{- /* a phone: the same text as a statement, its first three words in the ink of the heading (a copy,
+                 so the line above keeps one run of text from 640px up) */}}
+          <p class="phone-only localize__statement">{{ replaceRE `^(\S+ \S+ \S+)` `<span class="split__first">$1</span>` (.text | htmlEscape) | safeHTML }}</p>
           {{- /* the four steps from scans to a 3D scene: a diagram drawn with Pele (assets/diagrams/localize.mmd,
                rendered to SVG by scripts/diagrams.mjs), left to right, top to bottom on a phone; for
                screen readers the same steps as a list */}}
@@ -89,7 +97,13 @@
             <div class="flow-diagram__tb">{{ (resources.Get "diagrams/localize-tb.svg").Content | safeHTML }}</div>
             <ol class="sr-only">{{ range .steps }}<li>{{ .name }}: {{ .value }}</li>{{ end }}</ol>
           </figure>
-          <p><a class="btn btn--primary" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}</a></p>
+          <p class="localize__btn"><a class="btn btn--primary" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}</a></p>
+          {{- /* a phone: the steps' names as a plain list under a label (the diagram is not shown there), the link as a text link */}}
+          <div class="localize__steps phone-only">
+            <p>Steps</p>
+            <ol>{{ range .steps }}<li>{{ .name }}</li>{{ end }}</ol>
+          </div>
+          <p class="phone-only localize__more"><a class="link home-more" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a></p>
         </div>
         {{ if and $final (gt (len $frames) 1) }}
         {{ $s := $final.Resize "720x webp q82" }}{{ $m := $final.Resize "1200x webp q82" }}
@@ -125,10 +139,11 @@
       <ul class="feature-row">
         {{ range .cards }}
         <li class="feature">
-          {{ partial "render.html" (dict "file" .image "alt" .alt "class" "feature__img" "sizes" "(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 30vw") }}
+          {{ partial "render.html" (dict "file" .image "alt" .alt "class" "feature__img" "sizes" "(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 100vw") }}
           <div class="feature__text">
             <h3><a class="feature__link" href="{{ $more }}{{ with .anchor }}#{{ . }}{{ end }}">{{ partial "nobreak.html" .title }}</a></h3>
             <p>{{ .text }}</p>
+            <span class="feature__go phone-only" aria-hidden="true">{{ $arrow }}</span>
           </div>
         </li>
         {{ end }}
@@ -190,7 +205,7 @@
             {{ range $row }}{{ $paper := eq .kind "paper" }}{{ $roles := split .role ", " }}
             <div class="drift__item"{{ if not $copy }} role="listitem"{{ end }}><figure title="“{{ .text }}”">
               <blockquote><span aria-hidden="true"><span class="drift__q">“</span>{{ .phrase }}<span class="drift__q">”</span></span><span class="sr-only">{{ .text }}</span></blockquote>
-              <figcaption><span><b>{{ index (split .name ", ") 0 }}</b>{{ if $paper }} <em>{{ .role }}</em>{{ else }}, {{ index $roles (sub (len $roles) 1) }}{{ end }}</span></figcaption>
+              <figcaption><span><b>{{ index (split .name ", ") 0 }}</b>{{ if $paper }} <em>{{ .role }}</em>{{ else }}, {{ index $roles (sub (len $roles) 1) }}{{ end }}</span>{{ if not $paper }}<span class="drift__who phone-only"><b>{{ index (split .name ", ") 0 }}</b> {{ index $roles (sub (len $roles) 1) }}</span>{{ end }}</figcaption>
             </figure></div>
             {{ end }}
           </div>
@@ -199,6 +214,7 @@
       </div>
       {{ end }}
     </div>
+    {{ with site.GetPage "/about/publications" }}<p class="wrap phone-only render-band__more"><a class="link home-more" href="{{ .RelPermalink }}#what-others-write">All quotes{{ $arrow }}</a></p>{{ end }}
   </section>
   {{ end }}
 
@@ -238,6 +254,7 @@
         {{ end }}
         {{ end }}
       </ul>
+      {{ with $gallery }}<div class="phone-only research-band__actions"><div class="btn-row"><a class="btn btn--secondary" href="{{ .RelPermalink }}">{{ $p.research.link_label }}</a></div></div>{{ end }}
     </div>
   </section>
   {{ end }}
@@ -273,6 +290,7 @@
             <button class="worldwide__pause" type="button" aria-label="Pause the globe" hidden data-globe-pause></button>
           </figcaption>
         </figure>
+        {{ with site.GetPage "/usage" }}<p class="phone-only worldwide__more"><a class="link home-more" href="{{ .RelPermalink }}">{{ $w.link_label }}{{ $arrow }}</a></p>{{ end }}
       </div>
     </div>
   </section>
@@ -284,7 +302,7 @@
     <div class="wrap next-band__inner">
       <div class="next-band__head">
         <p class="t-label next-band__label">{{ .label }}</p>
-        <h2 id="next-h" class="next-band__title">{{ .title }}</h2>
+        <h2 id="next-h" class="next-band__title">{{ partial "nobreak.html" .title }}</h2>
       </div>
       <div class="next-band__points">
         {{ range $i, $pt := .points }}
@@ -389,6 +407,7 @@
               <li><a class="link" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a></li>
             </ul>
           </div>
+          <div class="phone-only cite__actions"><div class="btn-row"><a class="btn btn--secondary" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}</a></div></div>
         </div>
         {{ end }}
       </div>

@@ -1,0 +1,240 @@
+/* ================================================================ the home page on a phone (below 640px)
+   layouts/home.html. Loaded after assets/css/phone.css (the shared phone chrome), so these rules win over
+   it at equal specificity. Nothing here applies from 640px up.
+   One idea per screen, after vercel.com and x.ai on a phone: big calm headings (32/36), 96px above each
+   section's heading, pictures at full width, black bands from edge to edge with one soft light, rows that
+   scroll sideways with snap instead of grids, text links (a word and a small muted arrow) instead of
+   pills inside a section, full-width pills only where a block closes. */
+@media (max-width: 639px) {
+
+  /* -------------------------------------------------------------- shared on the page
+     every section's heading at one size and weight; the space above it is the section's padding; no rules
+     between the sections (the black bands and the space part them) */
+  .home > .section { padding: var(--s-9) 0 0; }
+  .home > .section + .section:not([class*="ground-"]):not(.next-band) { border-top: 0; }
+  .home :is(.home-sec, .render-band) :is(#localize-h, #features-h, #voices-h, #research-h, #worldwide-h, #events-h, .closing__h) {
+    max-width: none; margin: 0; font: 500 var(--t-h2)/1.125 var(--font-display); letter-spacing: var(--display-tracking-xl); text-wrap: balance; }
+  .home .section-head p, .home .closing__text, .home .worldwide .t-lead {
+    margin: var(--s-3) 0 0; max-width: none; color: var(--muted); font: 400 var(--t-doc)/1.53 var(--font-text); text-wrap: pretty; }
+  /* a text link: the words in 15px medium, a small arrow in the muted colour, a 44px target, no line */
+  .home :is(.home-more, #features .section-head__more .link, .next-band .link, .pulse__links a) {
+    display: inline-flex; align-items: center; gap: calc(var(--s-1) * 1.5); min-height: 44px; margin: 0; padding: 0;
+    background: none; color: var(--ink); font: 500 var(--t-note)/1.5 var(--font-text); text-decoration: none; }
+  .home :is(.home-more, #features .section-head__more .link, .next-band .link, .pulse__links a) .m-arrow {
+    width: 14px; height: 14px; margin: 0; color: var(--muted); }
+
+  /* -------------------------------------------------------------- 1. hero
+     one black band from the window's top (the header turns black over it: .home-hero__ground), the words
+     centred: the release chip, the title, the lead, two stacked pills; under them the render, its electrode
+     and nucleus in the middle of a 380px box, one soft light behind it, fading into the black at its foot.
+     The facts line is not shown; the play button sits at the render's lower right. */
+  .home > .home-hero { position: relative; background: var(--render); }
+  .home-hero__ground { position: absolute; inset: 0; pointer-events: none; }
+  html:not(.nav-ready) body.kind-home .nav:not(.is-open) { background-color: var(--render); color: var(--on-render);
+    --ink: var(--on-render); --surface: color-mix(in srgb, var(--on-render) 12%, transparent); }
+  .home-hero__wrap { width: 100%; padding-top: var(--nav); }
+  .home-hero__panel { display: flex; flex-direction: column; border-radius: 0; }
+  .home-hero__text { order: -1; margin: 0; padding: calc(var(--s-6) + var(--s-2)) var(--gut) 0; text-align: center; }
+  .home-hero h1 { font: 600 var(--t-h1)/1 var(--font-display); letter-spacing: var(--display-tracking-xl); text-wrap: balance; }
+  .home-hero .hero__lead { max-width: 300px; margin: var(--s-5) auto 0; font: 400 var(--t-doc)/1.53 var(--font-text); letter-spacing: 0; text-wrap: balance; }
+  .home-hero .btn-row { grid-template-columns: minmax(0, 1fr); margin-top: var(--s-6); gap: calc(var(--s-1) * 2.5); }
+  .home-hero .btn-row > .btn { padding-inline: var(--s-5); }
+  .home-hero .btn-row > .btn--secondary { border-color: color-mix(in srgb, var(--on-render) 15%, transparent); background: color-mix(in srgb, var(--on-render) 4%, transparent); }
+  .home-hero .btn .m-arrow, .home-hero .hero__manual { display: none; }
+
+  /* the release: a 32px chip (a 44px target), a coral dot, the version, "Release notes" muted, a round arrow */
+  .home-chip { margin: 0 0 var(--s-5); }
+  .home-hero .home-chip a { position: relative; display: inline-flex; align-items: center; gap: var(--s-2); height: 32px;
+    padding: 0 calc(var(--s-1) * 1.5) 0 var(--s-3); border: 1px solid color-mix(in srgb, var(--on-render) 10%, transparent); border-radius: var(--r-pill);
+    background: color-mix(in srgb, var(--on-render) 4%, transparent); color: var(--on-render); font: 500 var(--t-label)/1 var(--font-text); text-decoration: none; }
+  .home-hero .home-chip a::before { content: ""; position: absolute; inset: -7px 0; }
+  .home-chip__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--p-accent); }
+  .home-chip__more { color: var(--muted); font-weight: 400; }
+  .home-chip__go { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: color-mix(in srgb, var(--on-render) 10%, transparent); }
+  .home-chip__go .m-arrow { width: 10px; height: 10px; margin: 0; }
+
+  .home-hero__media { position: relative; height: 380px; aspect-ratio: auto; margin-top: var(--s-2); overflow: hidden;
+    background: radial-gradient(50% 44% at 50% 52%, color-mix(in srgb, var(--on-render) 9%, transparent), transparent); }
+  /* the poster (16:10) and the phone clip (square) framed alike: a square box, the poster's part from
+     canvas x 520 to 1520 (object-position), its electrode and nucleus moved into the box's middle */
+  .home-hero__media > video { inset: 0 auto auto 50%; width: 140%; height: auto; aspect-ratio: 1; translate: -64% 0;
+    object-position: 86.7% 0; mix-blend-mode: screen; }
+  .home-hero__media::after { height: var(--s-9); }
+  .home-hero__foot { position: absolute; inset: auto var(--gut) var(--s-5) auto; padding: 0; }
+  .hero__proof { display: none; }
+  .hero__pause { position: static; width: 40px; height: 40px; border-color: color-mix(in srgb, var(--on-render) 15%, transparent);
+    background: color-mix(in srgb, var(--render) 40%, transparent); }
+  @media (prefers-reduced-motion: no-preference) {
+    html.hero-wait:not(.hero-late) .home-hero:not(.is-entering, .is-entered) .home-chip { opacity: 0; }
+    html.hero-late .home-hero:not(.is-entering, .is-entered) .home-chip { transition: opacity 400ms var(--ease); }
+  }
+
+  /* -------------------------------------------------------------- 2. localization
+     the heading, the picture (5:4), the text as a statement (its first words in ink), the steps as a plain
+     list, the link; the diagram is not shown */
+  #localize .home-split { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+  #localize .split__text { display: contents; }
+  #localize .split__text h2 { order: 1; }
+  #localize .home-split > figure { order: 2; aspect-ratio: 5 / 4; margin-top: var(--s-6); border-radius: var(--r-lg); overflow: hidden; background: var(--render); }
+  #localize .insertion__stage { width: 100%; height: 100%; border-radius: 0; }
+  #localize .insertion__still, #localize .insertion__canvas { object-fit: cover; }
+  #localize .t-lead { display: none; }
+  .localize__statement { order: 3; margin: var(--s-6) 0 0; color: var(--muted); font: 500 1.5em/1.334 var(--font-display); letter-spacing: var(--display-tracking-xl); text-wrap: pretty; }
+  .split__first { color: var(--ink); }
+  #localize .flow-diagram, .localize__btn { display: none; }
+  .localize__steps { order: 4; margin-top: var(--s-6); }
+  .localize__steps p { margin: 0; color: var(--muted); font-size: var(--t-small); }
+  .localize__steps ol { list-style: none; margin: calc(var(--s-1) * 1.5) 0 0; padding: 0; font: 500 var(--t-small)/1.858 var(--font-text); }
+  .localize__steps li { margin: 0; }
+  .localize__more { order: 5; margin: var(--s-3) 0 0; }
+
+  /* -------------------------------------------------------------- 3. what else it does
+     three picture cards (the render fills each, the words on its black foot, a round arrow), the atlases
+     as one row between hairlines, then the link to the overview */
+  .home > #features { padding-bottom: var(--s-9); }
+  #features .wrap { display: flex; flex-direction: column; }
+  #features .section-head { display: contents; }
+  #features .section-head__more { order: 4; margin: var(--s-3) 0 0; }
+  .feature-row { order: 2; margin-top: var(--s-6); gap: var(--s-3); }
+  .feature { position: relative; isolation: isolate; display: flex; align-items: flex-end; height: 232px; padding: var(--s-4) var(--s-5);
+    border-radius: var(--r-lg); overflow: hidden; background: var(--render); }
+  .feature__img { position: absolute; inset: 0; z-index: -1; aspect-ratio: auto; border-radius: 0; }
+  .feature__img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 38%, color-mix(in srgb, var(--render) 86%, transparent) 82%); }
+  .feature__text { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: var(--s-1) var(--s-4); width: 100%; }
+  .home .feature h3 { margin: 0; font: 600 var(--t-card)/1.264 var(--font-display); letter-spacing: var(--display-tracking); }
+  .feature .feature__link, .feature:hover .feature__link { color: var(--on-render); }
+  .feature__link::after { border-radius: var(--r-lg); }
+  .feature__text p { grid-column: 1; margin: 0; max-width: none; color: color-mix(in srgb, var(--on-render) 70%, transparent); font: 400 var(--t-small)/1.43 var(--font-text); }
+  .feature__go { grid-column: 2; grid-row: 1 / span 2; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%;
+    background: color-mix(in srgb, var(--on-render) 12%, transparent); color: var(--on-render); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+  .feature__go .m-arrow { width: 14px; height: 14px; margin: 0; }
+
+  #features .data-band { order: 3; position: relative; display: flex; align-items: center; margin-top: var(--s-5); padding: var(--s-4) var(--s-6) var(--s-4) 0;
+    border: 0; border-block: 1px solid var(--line); border-radius: 0; background: none; }
+  .home .data-band__title { margin: 0; font: 500 var(--t-doc)/1.42 var(--font-text); letter-spacing: 0; }
+  .data-band__title a { display: inline; min-height: 0; color: var(--ink); }
+  .data-band__title a::after { content: ""; position: absolute; inset: 0; }
+  .data-band__title a .m-arrow { position: absolute; top: 50%; right: 0; width: 16px; height: 16px; margin: -8px 0 0; color: var(--muted); }
+  .data-band__title .m-arrow__stem { display: none; }
+  .data-band__text p { display: block; margin: 0; color: var(--muted); font: 400 var(--t-small)/1.43 var(--font-text); }
+  .data-band__counts { display: none; }
+
+  /* -------------------------------------------------------------- 4. one black stretch
+     the voices: cards in one row that scrolls sideways with snap, each quote once, standing still; the
+     wide render is not shown, one soft light at the band's top. A hairline, then the figures from papers in
+     one row at one height, their journal and year under each, and an outline pill to the gallery. */
+  .home > .render-band { padding-block: var(--s-9) 0;
+    background: radial-gradient(70% 252px at 50% 0, color-mix(in srgb, var(--on-render) 7%, transparent), transparent), var(--render); }
+  .render-band__img, .render-band__actions { display: none; }
+  .drift { display: flex; gap: var(--s-3); margin-top: var(--s-6); padding: 0 var(--gut); overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; scroll-padding-inline: var(--gut); scrollbar-width: none; -webkit-mask-image: none; mask-image: none; }
+  .drift::-webkit-scrollbar { display: none; }
+  .drift:focus-visible { outline-offset: -2px; }
+  .drift__row, .drift__track, .drift__set { display: contents; }
+  .drift__set[aria-hidden] { display: none; }
+  .drift__item { flex: none; width: 284px; scroll-snap-align: start; }
+  .drift:has(.drift__item:hover) .drift__item:not(:hover) { opacity: 1; }
+  .drift__item > figure { display: flex; flex-direction: column; justify-content: space-between; gap: var(--s-5); height: 100%; min-height: 212px; padding: var(--s-5);
+    border-radius: var(--r-lg); background: color-mix(in srgb, var(--on-render) 4%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--on-render) 10%, transparent); }
+  .drift__item blockquote { white-space: normal; font: 500 var(--t-sub)/1.273 var(--font-display); letter-spacing: var(--display-tracking-xl); text-wrap: pretty; }
+  .drift__q { color: inherit; }
+  .drift__item figcaption { white-space: normal; color: color-mix(in srgb, var(--on-render) 60%, transparent); font: 400 var(--t-small)/1.43 var(--font-text); }
+  .drift__item figcaption b { display: block; color: var(--on-render); }
+  .drift__item figcaption em { display: block; }
+  .drift__item figcaption > span:not(.drift__who):has(+ .drift__who) { display: none; }
+  .render-band__more { margin-top: var(--s-3); }
+
+  .home > .research-band { padding: var(--s-8) 0 var(--s-9); }
+  .research-band > .wrap { padding-top: var(--s-8); border-top: 1px solid color-mix(in srgb, var(--on-render) 10%, transparent); }
+  .research-band .section-head { display: block; margin-bottom: var(--s-6); }
+  .research-band .section-head__more { display: none; }
+  .home > .research-band .section-head p { color: color-mix(in srgb, var(--on-render) 63%, transparent); }
+  .fig-strip { gap: var(--s-3); padding-bottom: 0; -webkit-mask-image: none; mask-image: none; }
+  .research-band .fig-strip__item { width: auto; }
+  .research-band .fig-strip__link { display: grid; gap: var(--s-3); overflow: visible; border-radius: 0; }
+  .research-band .fig-strip__link::before { content: ""; grid-area: 1 / 1; z-index: 1; border-radius: var(--r-md); pointer-events: none;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--on-render) 10%, transparent); }
+  .research-band .fig-strip__img { grid-area: 1 / 1; width: auto; height: 264px; max-width: none; border-radius: var(--r-md); }
+  .research-band .fig-strip__link:hover .fig-strip__img { transform: none; }
+  .research-band .fig-strip__cite { position: static; max-width: none; padding: 0; border-radius: 0; background: none;
+    -webkit-backdrop-filter: none; backdrop-filter: none; color: color-mix(in srgb, var(--on-render) 63%, transparent); font: 400 var(--t-label)/1.54 var(--font-text); }
+  .research-band__actions { margin-top: var(--s-6); }
+
+  /* -------------------------------------------------------------- 5. the globe
+     centred: the heading, the line, the globe at 310px, its clock line, the link */
+  .worldwide .home-split { display: flex; flex-direction: column; align-items: center; gap: 0; text-align: center; }
+  .worldwide__text h2 { margin-inline: auto; }
+  .home .worldwide .t-lead { max-width: 300px; margin-inline: auto; margin-top: var(--s-4); }
+  .worldwide__links { display: none; }
+  .worldwide__fig { width: min(310px, 100%); margin-top: var(--s-6); }
+  .worldwide__foot { margin-top: var(--s-3); min-height: 0; }
+  .worldwide__foot .caption { font-size: var(--t-label); }
+  .worldwide__pause { width: 32px; height: 32px; border-color: var(--line); }
+  .worldwide__more { margin: var(--s-2) 0 0; }
+
+  /* -------------------------------------------------------------- 6. Lead-DBS 4.0
+     the page's one tinted panel, inside the margins: the badge, the name 44/44, the points as rows with a
+     hairline above each, the link as the last row */
+  .home > .next-band { padding: var(--s-9) 0 0; }
+  .next-band__inner { gap: var(--s-6); padding: var(--s-5) var(--s-5) var(--s-2); border-radius: var(--r-lg); }
+  .next-band__label { margin: 0 0 var(--s-7); padding: var(--s-1) var(--s-2); border: 1px solid color-mix(in srgb, var(--p-ink) 10%, transparent);
+    background: color-mix(in srgb, var(--p-bg) 60%, transparent); font-size: var(--t-xs); }
+  .home .next-band__title { font: 600 var(--t-h1)/1 var(--font-display); letter-spacing: var(--display-tracking-xl); }
+  .next-band__points { gap: 0; }
+  .next-band__point { padding-block: var(--s-3); border-top-color: color-mix(in srgb, var(--ink) 10%, transparent); }
+  .home .next-band__point h3 { margin: 0; font: 500 var(--t-doc)/1.42 var(--font-text); letter-spacing: 0; }
+  .next-band__point p { max-width: none; color: color-mix(in srgb, var(--ink) 60%, transparent); font: 400 var(--t-small)/1.43 var(--font-text); }
+  .next-band__point .link { display: flex; width: 100%; margin: var(--s-3) 0 0; margin-bottom: calc(-1 * var(--s-3)); border-top: 1px solid color-mix(in srgb, var(--ink) 10%, transparent); padding-top: var(--s-1); }
+
+  /* -------------------------------------------------------------- 7. what's happening
+     one row of cards that scrolls sideways (248px): the picture a 4:3 tile with a hairline ring (an
+     event's flyer upright in it, a release its number), the meta line, the title; the links under it */
+  .pulse .wrap { display: flex; flex-direction: column; }
+  .pulse__head { display: contents; }
+  .pulse__links { order: 3; gap: var(--s-5); margin-top: var(--s-3); }
+  .pulse__row { order: 2; grid-auto-columns: 248px; gap: var(--s-3); margin-top: var(--s-6); }
+  .pulse-card__link { gap: 0; }
+  .pulse-card__media { margin-bottom: var(--s-3); border-radius: var(--r-md); box-shadow: inset 0 0 0 1px var(--line); }
+  .pulse-card__media--poster > img { max-width: none; max-height: none; height: 84%; border-radius: var(--r-xs); }
+  .pulse-card__day { display: none; }
+  .pulse-card__version { font: 500 3.5em/1 var(--font-display); letter-spacing: var(--display-tracking-xl); }
+  .pulse-card__meta { font: 400 var(--t-label)/1.54 var(--font-text); }
+  .pulse-card__meta .ev-countdown { color: var(--p-accent-text); white-space: nowrap; }
+  .pulse-card__title { font: 500 var(--t-doc)/1.42 var(--font-text); letter-spacing: 0; }
+
+  /* -------------------------------------------------------------- 8. the close
+     a hairline, "Need help?" with one full-width pill; a hairline, the citation with one outline pill (the
+     reference to copy is not shown) */
+  .home > .closing { padding-top: var(--s-9); }
+  .closing .wrap { padding-top: var(--s-7); border-top: 1px solid var(--line); }
+  .closing__cols { gap: 0; }
+  .closing__col + .closing__col { margin-top: var(--s-7); padding-top: var(--s-7); border-top: 1px solid var(--line); }
+  .closing__col > .closing__text { margin-top: var(--s-3); }
+  .closing .closing__actions { --btn-h: 48px; width: 100%; margin-top: var(--s-5); }
+  .closing .closing__actions > .btn { width: 100%; }
+  .closing .closing__actions .m-arrow { display: none; }
+  .closing .cite-snip, .cite .closing__actions { display: none; }
+  .cite__actions { width: 100%; margin-top: var(--s-5); }
+  :is(.cite__actions, .research-band__actions) .btn::after { content: none; }
+
+  /* -------------------------------------------------------------- 9. supported by
+     a logo wall: the label centred, then two columns of equal cells in one rounded frame, hairlines between
+     the cells only, each logo in one ink at about one optical size, the fifth across both columns */
+  .funders-row { margin-top: var(--s-8); padding: 0 0 var(--s-9); border-top: 0; }
+  .home .funders__h { margin: 0 0 var(--s-5); color: var(--muted); font: 500 var(--t-label)/1.54 var(--font-text); text-align: center; }
+  .funders { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--line); overflow: hidden; }
+  .funders li { min-height: 0; height: 92px; padding: 0 var(--s-4); border-bottom: 1px solid var(--line); }
+  .funders li:nth-child(odd):not(:last-child) { border-right: 1px solid var(--line); }
+  .funders > li:last-child { border-bottom: 0; }
+  .funders a { justify-content: center; max-width: 60%; }
+  .funders img { max-width: 60%; max-height: 30px; opacity: .6; }
+  .funders a img { max-width: 100%; }
+  /* the dark theme inverts the logos (assets/css/site.css); a logo drawn on a white ground then has a black
+     one, which the screen blend drops on the dark page */
+  [data-theme="dark"] .funders li img { mix-blend-mode: screen; }
+  .funders li:nth-child(1) img { max-height: 34px; }
+  .funders li:nth-child(2) img { max-height: 22px; }
+  .funders li:nth-child(3) img { max-height: 26px; }
+  .funders li:nth-child(4) img { max-height: 20px; }
+  .funders li:nth-child(5) img { max-height: 32px; }
+}
