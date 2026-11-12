@@ -16,9 +16,9 @@ share: "images/renders/lead-closeup.jpg"
 search: false
 sitemap:
   disable: true
-# the cards at the end of the page (layouts/_partials/next-steps.html)
+# "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
-  - {page: "/develop/", text: "How Lead-DBS is developed today"}
+  - {page: "/develop/"}
 ---
 
 > Recently, I had the pleasure to meet with an R&D representative of a major DBS electrode manufacturer and we talked about software built to model deep brain stimulation electrodes in computer simulations, such as Lead-DBS.

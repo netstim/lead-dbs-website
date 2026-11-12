@@ -7,76 +7,68 @@ lastmod: "2026-11-11"
 weight: 4
 # the picture shown when the page is shared (head.html)
 share: "distal_fig_6-1030x728.png"
-toc: false
-# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
-related:
-  - "/about/citing_leaddbs/"
-  - "/helpsupport/knowledge-base/atlasesresources/about-the-mni-spaces/"
-  - {name: "Visualization in Lead-DBS", url: "/helpsupport/knowledge-base/lead-dbs-methods/#visualization"}
-# the cards at the end of the page (layouts/_partials/next-steps.html)
+# the atlas at a glance (layouts/_shortcodes/cells.html; text: Markdown)
+glance:
+  - {label: "Targets", value: "STN, GPi, GPe, RN and more"}
+  - {label: "Thalamus", value: "Three nomenclatures"}
+  - {label: "Space", value: "MNI ICBM 2009b"}
+  - {label: "Version", value: "1.1"}
+# the three stages it was built in
+stages:
+  - {label: "Stage 1", value: "Segment the core nuclei", text: "STN, red nucleus, internal and external pallidum, on the four MRI contrasts of the template."}
+  - {label: "Stage 2", value: "Warp histology to the template", text: "A histological atlas, with these nuclei as anchor points, fills in the other structures."}
+  - {label: "Stage 3", value: "Divide by connectivity", text: "The STN and GPi are divided into functional zones by their structural connectivity."}
+# "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
-  - {page: "/helpsupport/knowledge-base/atlasesresources/atlases-2/", text: "More than 60 atlases you can use"}
-  - {page: "/download/", text: "See DISTAL with your own patients"}
-  - {page: "/helpsupport/first-steps/", text: "Your first electrode localization"}
+  - {page: "/helpsupport/knowledge-base/atlasesresources/atlases-2/"}
+  - {page: "/helpsupport/first-steps/"}
+layout: "showcase"
 ---
 
-{{< summary >}}
-What
-: A subcortical atlas of DBS targets (STN, GPi, GPe, RN and more) and the structures around them, with functional zones of the STN and GPi and the thalamic nuclei in three nomenclatures
+<div class="page-intro"><div class="page-intro__text">
 
-Built from
-: Multimodal MRI, histology and structural connectivity, for Lead-DBS
+**A subcortical atlas made for Lead-DBS,** built from multimodal MRI, histology and structural connectivity.
 
-Space
-: MNI ICBM 2009b NLIN Asym ([about the MNI spaces](/about-the-mni-spaces/))
-
-Get it
-: Comes with Lead-DBS: nothing to download ([where to find it](#download))
-
-Version
-: <span class="num">1.1</span>, released <time datetime="2018-02-05">5 February 2018</time> ([change log](#change-log))
-
-Cite
-: Ewert et al. 2018, *NeuroImage* 170: 271–282, [doi:10.1016/j.neuroimage.2017.05.015](https://doi.org/10.1016/j.neuroimage.2017.05.015) ([full citation](#what-to-cite))
-{{< /summary >}}
-
-## What it is
-
-An atlas precisely coregistered to the ICBM 2009b nonlinear asymmetric MNI template, and detailed enough to
-show every structure relevant to DBS surgery. Its thalamic nuclei come in three nomenclatures, with their
-abbreviations.
+</div>
+<p class="page-intro__actions"><a class="btn btn--primary" href="{{< relref `/download/` >}}">Download Lead-DBS</a><a class="btn btn--secondary btn--ext" href="https://doi.org/10.1016/j.neuroimage.2017.05.015">Read the paper<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></a></p>
+</div>
 
 ![The final DISTAL atlas in 3D with labelled structures and a DBS electrode](distal_fig_9-1030x501.png)
-{.fig-medium}
+{.atlas-hero}
 
-*Structures in red were defined on the multimodal template itself, those in black from histology; blue
-text names the functional zones of the STN and GPi, from structural connectivity.*
+{{< cells key="glance" label="DISTAL at a glance" >}}
 
+{{% hub-section %}}
+## What it is
+
+**Every structure relevant to DBS surgery,** precisely on the MNI template.
+
+It is coregistered to the ICBM 2009b nonlinear asymmetric template ([about the MNI spaces](/about-the-mni-spaces/)),
+and its thalamic nuclei come in three nomenclatures, with their abbreviations. In the picture above,
+structures in red were defined on the multimodal template itself, those in black from histology; blue text
+names the functional zones of the STN and GPi, from structural connectivity.
+{{% /hub-section %}}
+
+{{% hub-section %}}
 ## How to get it {#download}
 
-DISTAL is installed with Lead-DBS. Inside the Lead-DBS folder it is under
-`templates/space/MNI152NLin2009bAsym/atlases/`, in the atlas sets *DISTAL Minimal (Ewert 2017)*, the
-default atlas set of Lead-DBS, and *DISTAL Nano (Ewert 2017)*. Choose it from the atlas list of the 3D
-viewer, where presets show, for instance, only the structures relevant to DBS, or the functional zones of
-the STN and GPi.
+**Installed with Lead-DBS,** as its default atlas set.
 
-Lead-DBS ships version 1.1, which differs slightly from the paper (see the [change log](#change-log)). The version
-described in the paper is available on request: [write to us](/contact/).
+Inside the Lead-DBS folder it is under `templates/space/MNI152NLin2009bAsym/atlases/`, in the atlas sets
+*DISTAL Minimal (Ewert 2017)*, the default, and *DISTAL Nano (Ewert 2017)*. Choose it from the atlas list
+of the 3D viewer, where presets show, for instance, only the structures relevant to DBS, or the functional
+zones of the STN and GPi.
+{{% /hub-section %}}
 
-## What to cite
+{{% hub-section %}}
+## How it was built
 
-{{% copybox label="Copy the citation" %}}
-{{< paper ewert2018 "full" >}}
-{{% /copybox %}}
-
-## How DISTAL was built
+**In three stages,** directly on the MNI template.
 
 None of the atlases collected since 2012 matched the STN of the MNI template precisely, and in DBS imaging
-millimetres matter. DISTAL was therefore built in three stages, directly on the ICBM 2009b template:
-the core nuclei (STN, red nucleus, internal and external pallidum) were segmented on its four MRI
-contrasts; a histological atlas was warped to the template with these nuclei as anchor points, to fill in
-the other structures; and the STN and GPi were divided into functional zones by their structural
-connectivity.
+millimetres matter.
+
+{{< cells key="stages" label="The three stages" >}}
 
 <details class="more more--wide">
 <summary>Why an atlas made for Lead-DBS</summary>
@@ -85,7 +77,7 @@ When work on Lead-DBS was started in 2012, we began [collecting subcortical atla
 
 Over the years, with growing experience, we noticed that none of the available atlases was precisely suited for use in Lead-DBS, none of them was explicitly built for our toolbox.
 
-One limitation of most available atlases (when used in Lead-DBS) can be seen in the figure below:
+One limitation of most available atlases (when used in Lead-DBS) is shown in this figure:
 
 {{% row %}}
 {{% col "2/3" %}}
@@ -93,7 +85,7 @@ One limitation of most available atlases (when used in Lead-DBS) can be seen in 
 
 {{% /col %}}
 {{% col "1/3" %}}
-*Left: In the left upper panel you see the hypointense region of the subthalamic nucleus as defined by the [most modern MNI template available](/about-the-mni-spaces/). The region of the STN is further magnified in the next panel. Subsequent panels overlay available atlases of the STN to this region. As you can see, neither of them precisely matches the STN of the template. The reasons for this are manifold but since in DBS imaging, millimeters matter, such discrepancy really does matter.*
+*In the left upper panel you see the hypointense region of the subthalamic nucleus as defined by the [most modern MNI template available](/about-the-mni-spaces/). The region of the STN is further magnified in the next panel. Subsequent panels overlay available atlases of the STN to this region. As you can see, neither of them precisely matches the STN of the template. The reasons for this are manifold but since in DBS imaging, millimeters matter, such discrepancy really does matter.*
 
 {{% /col %}}
 {{% /row %}}
@@ -106,9 +98,9 @@ Your patient data will (if quality allows) show a similar hypointense region tha
 
 ![Diagram of how a misregistered atlas leads to a wrong electrode placement model, in four steps](misplacement-1030x366.png)
 
-*Above: This figure further illustrates the systematic error introduced by a misplaced atlas (i.e. an atlas not precisely matching the template that is used for normalization).*
+*This figure further illustrates the systematic error introduced by a misplaced atlas (i.e. an atlas not precisely matching the template that is used for normalization).*
 
-> Above conclusions forced us to create an atlas that is “made for Lead-DBS”
+> These conclusions led us to create an atlas that is “made for Lead-DBS”
 
 </details>
 
@@ -122,7 +114,7 @@ In this stage, the T1-, T2-, PD- and T2rlx weighted templates were segmented sim
 
 {{% row %}}
 {{% col "1/3" %}}
-*Right: The final result of manual segmentations that were performed directly on the MNI template using its four spectra simultaneously. These four structures i) align perfectly with the template and ii) were used as anchorpoints to warp histology to the template.*
+*The final result of manual segmentations that were performed directly on the MNI template using its four spectra simultaneously. These four structures i) align perfectly with the template and ii) were used as anchorpoints to warp histology to the template.*
 
 {{% /col %}}
 {{% col "2/3" %}}
@@ -139,14 +131,14 @@ To “fill the gaps” between the regions defined on the template itself, a pre
 
 {{% /col %}}
 {{% col "1/3" %}}
-*Left: Conventional (left panel) and additional anchor point warp (right panel). Both warps apply multiple spectra to align histology to the template. The right warp includes an additional high signal-to-noise (binary) manual segmentation of the same structures (STN, RN, GPi/GPe) defined on histology and the template (manual anchorpoints). This leads to a very precise alignment of i) these structures and ii) structures ultimately neighboring them. Notably, these structures are the most important ones in DBS imaging.*
+*Conventional (left panel) and additional anchor point warp (right panel). Both warps apply multiple spectra to align histology to the template. The right warp includes an additional high signal-to-noise (binary) manual segmentation of the same structures (STN, RN, GPi/GPe) defined on histology and the template (manual anchorpoints). This leads to a very precise alignment of i) these structures and ii) structures ultimately neighboring them. Notably, these structures are the most important ones in DBS imaging.*
 
 {{% /col %}}
 {{% /row %}}
 
 {{% row %}}
 {{% col "1/3" %}}
-*Right: Comparisons of results when warping the STN as defined by histology onto the template. Top panels show the conventional approach (without additional anchor points), bottom panels the approach with additional anchorpoints, showing a clearly superior alignment to the hypointense STN region defined by the template.*
+*Comparisons of results when warping the STN as defined by histology onto the template. Top panels show the conventional approach (without additional anchor points), bottom panels the approach with additional anchorpoints, showing a clearly superior alignment to the hypointense STN region defined by the template.*
 
 {{% /col %}}
 {{% col "2/3" %}}
@@ -163,14 +155,14 @@ The final stage was to further subdivide the primary DBS targets, namely the STN
 
 {{% /col %}}
 {{% col "1/3" %}}
-*Left: Afferent connectivity to different cortical regions defines a sensorimotor, associative prefrontal and limbic functional zone of the subthalamic nucleus. Of note, in our study, this was done with both connectivity data from healthy subjects and patients suffering from Parkinson’s disease. Results were highly similar and replicate findings published by [Accolla et al.](https://onlinelibrary.wiley.com/doi/10.1002/hbm.22533/full) and [Lambert et al.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3315017/) in humans and various studies published based on animal models (e.g. see this study by [Haynes & Haber](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3755746/))*
+*Afferent connectivity to different cortical regions defines a sensorimotor, associative prefrontal and limbic functional zone of the subthalamic nucleus. Of note, in our study, this was done with both connectivity data from healthy subjects and patients suffering from Parkinson’s disease. Results were highly similar and replicate findings published by [Accolla et al.](https://onlinelibrary.wiley.com/doi/10.1002/hbm.22533/full) and [Lambert et al.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3315017/) in humans and various studies published based on animal models (e.g. see this study by [Haynes & Haber](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3755746/))*
 
 {{% /col %}}
 {{% /row %}}
 
 {{% row %}}
 {{% col "1/3" %}}
-*Right: A similar approach was used to parcellate the GPi into seven functional zones using the Oxford thalamic connectivity atlas as seed-regions. Of note, the postero-ventral third of the nucleus corresponds to its sensorimotor functional zone, as previously published (e.g. [Cif et al.](https://www.ncbi.nlm.nih.gov/pubmed/22339165), [Tisch et al.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2095629/))*
+*A similar approach was used to parcellate the GPi into seven functional zones using the Oxford thalamic connectivity atlas as seed-regions. Of note, the postero-ventral third of the nucleus corresponds to its sensorimotor functional zone, as previously published (e.g. [Cif et al.](https://www.ncbi.nlm.nih.gov/pubmed/22339165), [Tisch et al.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2095629/))*
 
 {{% /col %}}
 {{% col "2/3" %}}
@@ -186,7 +178,7 @@ The final stage was to further subdivide the primary DBS targets, namely the STN
 
 {{% /col %}}
 {{% col "1/3" %}}
-*Left: Summary of methods. The figure shows the three stages described above. First, core nuclei were manually segmented based on multimodal probability maps created directly on the MNI template. Then, these nuclei served as anchor points to register histological data that was used to fill the gaps. Finally, two core structures were further subdivided using structural connectivity.*
+*Summary of methods. The figure shows the three stages described above. First, core nuclei were manually segmented based on multimodal probability maps created directly on the MNI template. Then, these nuclei served as anchor points to register histological data that was used to fill the gaps. Finally, two core structures were further subdivided using structural connectivity.*
 
 {{% /col %}}
 {{% /row %}}
@@ -202,7 +194,7 @@ The final stage was to further subdivide the primary DBS targets, namely the STN
 
 {{% /col %}}
 {{% col "3/5" %}}
-*Left: Based on the highly unique histology dataset graciously provided by our colleagues in Montreal (see above), the DISTAL atlas comes in three nomenclatures as well as their abbreviations. For people that are interested in the thalamus, this represents a rosetta stone of thalamic nomenclatures in MNI space.*
+*Based on the highly unique histology dataset graciously provided by our colleagues in Montreal (see above), the DISTAL atlas comes in three nomenclatures as well as their abbreviations. For people that are interested in the thalamus, this represents a rosetta stone of thalamic nomenclatures in MNI space.*
 
 *Structures can be easily explored in the 3D viewer built into Lead-DBS and several presets are available.*
 
@@ -216,7 +208,7 @@ The video below shows these features (recorded in 2017):
 
 {{% row %}}
 {{% col "2/3" %}}
-*Right: The DISTAL atlas significantly outperforms other published atlases when performing atlas-based segmentation within Lead-DBS.*
+*The DISTAL atlas significantly outperforms other published atlases when performing atlas-based segmentation within Lead-DBS.*
 
 {{% /col %}}
 {{% col "1/3" %}}
@@ -226,8 +218,22 @@ The video below shows these features (recorded in 2017):
 {{% /row %}}
 
 </details>
+{{% /hub-section %}}
 
+{{% hub-section %}}
+## What to cite
+
+**Ewert et al. 2018,** NeuroImage.
+
+{{% copybox label="Copy the citation" %}}
+{{< paper ewert2018 "full" >}}
+{{% /copybox %}}
+{{% /hub-section %}}
+
+{{% hub-section %}}
 ## Versions {#change-log}
+
+**The version in Lead-DBS differs slightly from the paper.**
 
 - **1.1**, 5 February 2018: improved registration of left-hemispheric histology, symmetrized functional parcellations of the STN and GPi subregions.
 - **1.0**, 9 September 2017: first release.
@@ -244,3 +250,6 @@ The video below shows these features (recorded in 2017):
   warp that Lead-DBS provides.
 
 </details>
+
+The version described in the paper is available on request: [write to us](/contact/).
+{{% /hub-section %}}

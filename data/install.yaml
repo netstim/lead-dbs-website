@@ -1,15 +1,34 @@
-# Installing Lead-DBS, printed on the download page (shortcodes {{< install "requirements" >}} and
-# {{< install "steps" >}}, at /download/#what-you-need and /download/#install; First steps links
-# there). The software requirements (MATLAB, toolboxes, SPM12, memory) come from data/release.yaml. Follows the manual's installation page,
-# https://netstim.gitbook.io/leaddbs/installation ("Normal installation"). Markdown works.
+# Installing Lead-DBS, printed on the download page (layouts/download.html, at /download/#what-you-need
+# and /download/#install; First steps links there). The software requirements (MATLAB, toolboxes, SPM12,
+# memory) come from data/release.yaml. Follows the manual's installation page,
+# https://netstim.gitbook.io/leaddbs/installation ("Normal installation"). Markdown works in text.
 
-# Printed after the software requirements.
+# Printed after the software requirements: a label, the value set large, one short line.
 requirements_more:
-  - "**Disk space** for the zip file of about 11 GB and the unpacked folder."
-  - "**Your data:** postoperative (and, if available, preoperative) structural MRI, or postoperative CT together with preoperative MRI."
+  - {label: "Disk space", value: "11 GB", text: "For the zip file, plus the unpacked folder."}
+  - {label: "Your data", value: "MRI or CT", text: "Postoperative MRI, or postoperative CT with preoperative MRI."}
 
+# The steps after the download: a title, one or two sentences, and a small picture of the step:
+#   show: path  the folders in "path", the last one holding "folder"
+#   show: menu  the right-clicked "folder" and MATLAB's "Add to Path" menu with the entry "pick" chosen
+#   show: command  the Command Window with "command" typed
 steps:
-  - "Unzip Lead-DBS into your MATLAB toolbox folder, for example `Documents/MATLAB/toolbox` in your home folder. Avoid the MATLAB installation folder, folders that need administrator rights, and paths with spaces."
-  - "In MATLAB, add SPM12 to the search path: right-click the SPM12 folder and choose *Add to Path → Selected Folders* (not *and Subfolders*)."
-  - "Add Lead-DBS to the search path: right-click the Lead-DBS folder and choose *Add to Path → Selected Folders and Subfolders*."
-  - "Type `lead dbs` in the MATLAB Command Window: the Lead-DBS window opens."
+  - title: "Unzip"
+    text: "Into your MATLAB toolbox folder. Avoid the MATLAB installation folder, folders that need administrator rights, and paths with spaces."
+    show: path
+    path: ["Documents", "MATLAB", "toolbox"]
+    folder: "Lead-DBS"
+  - title: "Add SPM12"
+    text: "In MATLAB, right-click the SPM12 folder and choose *Add to Path → Selected Folders*, not *and Subfolders*."
+    show: menu
+    folder: "spm12"
+    pick: 1
+  - title: "Add Lead-DBS"
+    text: "Right-click the Lead-DBS folder and choose *Add to Path → Selected Folders and Subfolders*."
+    show: menu
+    folder: "Lead-DBS"
+    pick: 2
+  - title: "Start"
+    text: "Type `lead dbs` in the Command Window: the Lead-DBS window opens."
+    show: command
+    command: "lead dbs"

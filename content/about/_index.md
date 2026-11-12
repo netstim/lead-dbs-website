@@ -7,25 +7,27 @@ lastmod: "2026-11-11"
 # /hallo-welt/ was the old site's "Welcome to Lead-DBS" post
 aliases: ["/hallo-welt/"]
 keywords: ["about", "deep brain stimulation", "DBS", "team", "history", "funding", "prize"]
-# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
-related:
-  - "/helpsupport/knowledge-base/lead-dbs-methods/"
-  - "/gallery/"
-  - "/community/"
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-about.jpg"
-# the cards at the end of the page (layouts/_partials/next-steps.html)
+# "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
-  - {page: "/about/citing_leaddbs/", text: "The papers to cite in yours"}
-  - {page: "/download/", text: "The current release and the install steps"}
-  - {page: "/helpsupport/first-steps/", text: "Your first electrode localization"}
+  - {page: "/about/citing_leaddbs/"}
+  - {page: "/download/"}
+  - {page: "/helpsupport/first-steps/"}
+# the history rail (layouts/_shortcodes/milestones.html): a short headline per year, at most one line under it
+history:
+  - {year: 2012, title: "Work begins at Charité Berlin", text: "In Andrea Kühn’s Movement Disorders Unit"}
+  - {year: 2015, title: "The first paper, and the Max Rubner Prize", text: "[Horn & Kühn, NeuroImage 2015](https://doi.org/10.1016/j.neuroimage.2014.12.002) · prize of [Stiftung Charité](https://www.stiftung-charite.de/)"}
+  - {year: 2016, title: "Researchers from other institutions join", text: "Exploratory Ventures Grant of the [Radcliffe Institute](https://www.radcliffe.harvard.edu/), Harvard"}
+  - {year: 2017, title: "Robert Koch Prize of Charité", text: "Essay: [Commercial vs. academic software](/commercial-vs-academic-software/)"}
+  - {year: 2019, title: "Lead-DBS v2", text: "[Horn, Li et al., NeuroImage 2019](https://doi.org/10.1016/j.neuroimage.2018.08.068) · coordinated by Andreas Horn’s lab"}
+  - {year: 2023, title: "Lead-DBS v3.0", text: "[Neudorfer et al., NeuroImage 2023](https://doi.org/10.1016/j.neuroimage.2023.119862)"}
+  - {year: 2025, title: "The lab becomes the Institute for Network Stimulation", text: "University Hospital Cologne"}
+layout: "hub"
 ---
-Lead-DBS is an open-source MATLAB toolbox for deep brain stimulation (DBS) imaging, free under the GNU
-General Public Licence with its code on [GitHub](https://github.com/netstim/leaddbs). Researchers from
-several institutions develop it, coordinated by the [Institute for Network Stimulation](https://www.netstim.org)
-at the University Hospital Cologne. What it does: [Features](/helpsupport/knowledge-base/lead-dbs-methods/).
+Lead-DBS is a free, open-source MATLAB toolbox for deep brain stimulation (DBS) imaging.
 
-{{< childpages menu="true" >}}
+{{< resource-index menu="about" >}}
 
 ## Deep brain stimulation {#deep-brain-stimulation}
 
@@ -45,19 +47,9 @@ effect: this is what Lead-DBS helps researchers study.
 
 <span id="recognition-and-funding"></span>
 
-<!-- a list marked {.history} is drawn as a ruled timeline: each item starts with its year in bold -->
-- **2012** Work on the toolbox begins at the Movement Disorders Unit of Andrea Kühn, Department of Neurology, Charité – Universitätsmedizin Berlin.
-- **2015** The first paper ([Horn & Kühn, NeuroImage 2015](https://doi.org/10.1016/j.neuroimage.2014.12.002)); the Max Rubner Prize for Innovation and Technology of [Stiftung Charité](https://www.stiftung-charite.de/) funds further development.
-- **2016** Researchers from several institutions join the development; a Harvard Radcliffe Exploratory Ventures Grant of the [Radcliffe Institute for Advanced Study](https://www.radcliffe.harvard.edu/).
-- **2017** Robert Koch Prize of Charité, Berlin. An essay of that year, [Commercial vs. academic software](/commercial-vs-academic-software/), sets out why Lead-DBS is academic research software.
-- **2019** The Network Stimulation Laboratory led by Andreas Horn coordinates it; Lead-DBS v2 is published ([Horn, Li et al., NeuroImage 2019](https://doi.org/10.1016/j.neuroimage.2018.08.068)).
-- **2023** Lead-DBS v3.0 ([Neudorfer et al., NeuroImage 2023](https://doi.org/10.1016/j.neuroimage.2023.119862)).
-- **2025** The lab becomes the Institute for Network Stimulation at the University Hospital Cologne.
-{.history}
+{{< milestones key="history" >}}
 
 Lead-DBS has been funded by a [six-year grant of the German Research Foundation (DFG)](https://gepris.dfg.de/gepris/projekt/410169619?context=projekt&task=showDetail&id=410169619&)
 and supported by the Berlin Institute of Health, KFO 247, Stiftung Charité and the Prof. Dr. Klaus
 Thiemann Foundation.
 
-Lead-DBS is research software, not meant for clinical decisions about an individual patient ([full statement](/download/#research-use)).
-{#research-use .fine-print}

@@ -8,22 +8,17 @@ lastmod: "2026-11-11"
 weight: 2
 # the picture shown when the page is shared (head.html)
 share: "betaalpha3d.png"
-# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
-related:
-  - "/helpsupport/knowledge-base/atlasesresources/distal-atlas/"
-  - "/helpsupport/knowledge-base/atlasesresources/normative-connectomes/"
-  - "/about/publications/"
-# the cards at the end of the page (layouts/_partials/next-steps.html)
+# "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
-  - {page: "/helpsupport/knowledge-base/atlasesresources/atlases-2/#dbs-maps", name: "Sweet spots and response tracts", text: "The STN and GPi atlases made with this method"}
-  - {page: "/helpsupport/knowledge-base/lead-dbs-methods/", text: "The other methods developed within Lead-DBS"}
+  - {page: "/helpsupport/knowledge-base/atlasesresources/atlases-2/#dbs-maps", name: "Sweet spots and response tracts"}
+  - {page: "/helpsupport/knowledge-base/lead-dbs-methods/"}
 ---
 
 Subcortical electrophysiology mapping (SEM) pools signals recorded from DBS electrodes across many patients and maps them onto anatomical space, so that a recording, such as beta power in the subthalamic nucleus, becomes a 3D map.
 
 ![Methods summary in four panels: images in standard space, electrode localization, recordings per contact, interpolated map](fig_1.png)
 
-*Methods summary. Postoperative images are transformed to standard space (A); electrodes are localized for each patient (B); electrophysiological recording estimates (such as beta power) are projected onto the midpoint of each contact pair (C); This leads to a 3D point cloud, each point associated with a beta power value. These points are used to fit a scattered interpolant to define beta values within covered subcortical space (D).*
+*Methods summary. Postoperative images are transformed to standard space (A); electrodes are localized for each patient (B); electrophysiological recording estimates (such as beta power) are projected onto the midpoint of each contact pair (C); this leads to a 3D point cloud, each point associated with a beta power value. These points are used to fit a scattered interpolant to define beta values within covered subcortical space (D).*
 
 ## Use it in Lead-DBS
 
@@ -149,11 +144,11 @@ We went ahead and created three-dimensional peak ROI associated with high beta a
 
 We were then interested whether our standardized structural connectomes were equally precise enough to find differences in cortical connectivity associated with these regions. Of note, the two regions are both very small and close to each other.
 
-For this analysis – which could only be performed on group level – a standardized high precision structural connectome [[Horn 2017](https://www.sciencedirect.com/science/article/pii/S1053811917301088)] was used to select fiber-tracts connected to the alpha and beta peaks, respectively.
+For this analysis – which could only be performed on group level – a standardized high precision structural connectome [[Horn 2017](https://www.sciencedirect.com/science/article/pii/S1053811917301088)] was used to select fibre-tracts connected to the alpha and beta peaks, respectively.
 
 However, the two regions exhibited a (slightly) different connectivity profile that was largely consistent with data presented in [[Acolla 2015](https://academic.oup.com/brain/article-abstract/139/9/2503/1744844/Brain-networks-modulated-by-subthalamic-nucleus?redirectedFrom=fulltext)], before (see below).
 
-![Structural connectivity from alpha and beta seeds to the cortex](fibertracts-1030x841.png "Fig. 5: Contrasting fiber tract maps seeding either from the “alpha-hotspot” or “beta-hotspot”. Please note that panel B shows a contrast map between the two seeds. Given their spatial proximity, the overall connectivity profiles from both seeds is similar.")
+![Structural connectivity from alpha and beta seeds to the cortex](fibertracts-1030x841.png "Fig. 5: Contrasting fibre tract maps seeding either from the “alpha-hotspot” or “beta-hotspot”. Please note that panel B shows a contrast map between the two seeds. Given their spatial proximity, the overall connectivity profiles from both seeds is similar.")
 
 ### A beta atlas for programming
 

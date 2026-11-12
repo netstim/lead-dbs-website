@@ -888,17 +888,12 @@ aliases:
   - "/forums/topic/error-visualization-electrodes-with-different-lenght/"
   - "/forums/topic/move-electrode-in-3d/"
   - "/forums/topic/pre-reconstruct-error/"
-# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
-related:
-  - "/helpsupport/slack-user-channel/"
-  - {name: "Report a bug on GitHub", url: "https://github.com/netstim/leaddbs/issues"}
-  - "/contact/"
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-docs.jpg"
-# the cards at the end of the page (layouts/_partials/next-steps.html)
+# "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
-  - {url: "https://inviter.co/lead-dbs", name: "Join the user Slack", text: "Ask your question there"}
-  - {page: "/helpsupport/#get-help", name: "Get help", text: "Where to ask what"}
+  - {url: "https://inviter.co/lead-dbs", name: "Join the user Slack"}
+  - {page: "/helpsupport/#get-help", name: "Get help"}
 ---
 
 The Lead-DBS support forum is closed, and its posts were not moved to this website. Questions are
