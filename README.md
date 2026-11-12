@@ -472,7 +472,7 @@ Text on the left …
 - `chapter` opens a numbered chapter of a long showcase page (Features): `{{% chapter n="1" img="images/renders/…" %}}`
   around the chapter's `##` heading and a one-line lede; from 1024px the render is a low band beside them,
   below that it follows them, and a phone leaves it out. Its number has the style of the numbers of `jumps`
-  and of the steps of First steps: a label in Geist Mono.
+  and of the steps of First steps: a label.
 - `copybox` holds a text to copy as a whole (the methods paragraph on `/about/citing_leaddbs/` and every "What to cite"); the button
   copies it as plain text and is hidden where the browser cannot copy.
 - `clip` is a short silent animation (see [Pictures in pages](#pictures-in-pages)).
@@ -516,7 +516,7 @@ opens the page at its entry. Never change an existing `id`: it is the entry's ad
 
 **An atlas page of its own** (DISTAL, FOCUS) opens with its summary box (Lead-OR and Lead Tutor have the same box after
 a one-line intro); a date in it is a `<time datetime="2018-02-05">` element and a version a `<span class="num">`, both
-set in Geist Mono as on the event cards;
+set in medium weight as on the event cards;
 background and change-logs follow, longer parts folded:
 
 ```markdown
@@ -575,15 +575,22 @@ and checks events against the visitor's clock.
   up while the clip settles. The page head hides the words until `main.js` starts it, and shows them anyway
   after 700 ms; under reduced motion nothing moves.
 
-- Palette: off-white ground `#f7f9fa`, ink `#1f3038`, one accent `#0d7480` (buttons, links, focus);
-  the renders sit on black, and so does every inner page's title. Fonts: Open Sans, self-hosted in `static/fonts/` (from the `@fontsource/open-sans` release, licence in `OFL.txt`) in four weights: 400 text, 500 the menu and values, 600 buttons and titles below 48 px, 700 page and section headings; and Geist Mono (`@fontsource/geist-mono`, licence in `OFL-geist-mono.txt`), one weight (500, Latin, about 10 KB), for capital labels and for numbers that stand as data (dates, times, versions). Running text, headings, buttons and the menu are Open Sans. Each family has a fallback `@font-face` with its metrics, so nothing moves when the fonts arrive.
+- Palette ("Blend", tokens at the top of `site.css`): white ground `#ffffff`, a grey surface `#f5f6f7`,
+  warm dark grey ink `#2f3437`, muted `#6f7479`; one action colour, deep blue `#2b5c8a` (buttons, links,
+  focus); coral `#e0645a` as the one signal; periwinkle `#c6cdf7` and blush `#f4c6cf` as pale tints. The
+  colours come from Wes Anderson films (The Darjeeling Limited, The Grand Budapest Hotel), the family of
+  the logo's wedges. The renders sit on black, and so does every inner page's title.
+- Font: Inter, one variable file per script (`@fontsource-variable/inter` 5.2.5, licence in
+  `static/fonts/OFL-inter.txt`) with the weight and optical-size axes, self-hosted in `static/fonts/`, with a
+  fallback `@font-face` sized to its metrics so nothing moves when it arrives. One face for everything:
+  400 text, 500 the menu, labels and values, 600 buttons and headings, large headings tracked tighter.
 - Type scale at 1440 (tokens in `base.css`): 80 the hero, 48 home sections and page titles, 32 a page's
   sections, the Features chapters and the smaller home sections ("Upcoming events", "Latest news"), 23
   subsections and Features cards, 20 cards and the lead, 18 documentation text, 16 text elsewhere, 14 small
-  print. Labels ("Release", "Input", "Manual", table heads, chapter numbers) are 13 px capitals in Geist Mono,
-  one rule in `site.css` (`--font-label`, `--label-*`). The only other use of Geist Mono is a number that
-  stands as data: every date and time is a `<time>` element and every version or count a `.num` span, set
-  in Geist Mono; words, even in the hero's row of facts, stay in Open Sans.
+  print. Labels ("Release", "Input", "Manual", table heads, chapter numbers) are 13 px, medium weight, muted
+  and in sentence case, one rule in `site.css` (`--font-label`, `--label-*`). Every date and time is a
+  `<time>` element and every version or count a `.num` span, with figures of equal width; where the value
+  is a line or cell of its own it is also medium weight.
 - Text pages: 18 px on a desktop (17 on a phone), lines of about 70 characters.
 - Motion: the hero's entrance and clip, and the electrode insertion in the localization section. Nothing else
   moves by itself; hover and press feedback are short CSS transitions.
