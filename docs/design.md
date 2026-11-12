@@ -72,7 +72,7 @@ electrode insertion), `atlas-filter.js` and `globe.js`, each loaded only where i
   warm dark grey ink `#2f3437`, muted `#6a6f74`; one action colour, deep blue `#2b5c8a` (buttons, links,
   focus); coral `#e0645a` as the one signal; periwinkle `#c6cdf7` and blush `#f4c6cf` as pale tints. The
   colours come from Wes Anderson films (The Darjeeling Limited, The Grand Budapest Hotel), the family of
-  the logo's wedges. The renders sit on black, and so does every ordinary inner page's title. The manual keeps its heading on the reading background.
+  the logo's wedges. The renders sit on black: in a rounded panel under an inner page's title, and as the whole head of Download and 404. The manual keeps its heading on the reading background.
 - Main website font: Inter, one variable file per script (`@fontsource-variable/inter` 5.2.5, licence in
   `static/fonts/OFL-inter.txt`) with the weight and optical-size axes, self-hosted in `static/fonts/`, with a
   fallback `@font-face` sized to its metrics so nothing moves when it arrives. The main website uses one face:
