@@ -165,8 +165,7 @@ until the nightly build of that day. `hugo server -F` shows it now. Pictures in 
 ## Cut a release
 
 1. `data/release.yaml`: `version`, `date`, `summary` (one or two sentences for the home page), `notes`
-   (the post about the release), `changes_url` (the GitHub compare view from the release before),
-   and `matlab`, `toolboxes`, `memory`, `standalone` and the rest if they changed (the manual's
+   (the post about the release), and `matlab`, `toolboxes`, `memory`, `standalone` and the rest if they changed (the manual's
    [installation page](https://netstim.gitbook.io/leaddbs/installation) is the reference for the requirements). Every current version, date and requirement
    on the site comes from this file: the home page, the download page (and its browser title), First steps,
    the structured data, and the archive note on old news posts.
