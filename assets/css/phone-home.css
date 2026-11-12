@@ -201,4 +201,40 @@
   .pulse-card__meta { font: 400 var(--t-label)/1.54 var(--font-text); }
   .pulse-card__meta .ev-countdown { color: var(--p-accent-text); white-space: nowrap; }
   .pulse-card__title { font: 500 var(--t-doc)/1.42 var(--font-text); letter-spacing: 0; }
+
+  /* -------------------------------------------------------------- 8. the close
+     a hairline, "Need help?" with one full-width pill; a hairline, the citation with one outline pill (the
+     reference to copy is not shown) */
+  .home > .closing { padding-top: var(--s-9); }
+  .closing .wrap { padding-top: var(--s-7); border-top: 1px solid var(--line); }
+  .closing__cols { gap: 0; }
+  .closing__col + .closing__col { margin-top: var(--s-7); padding-top: var(--s-7); border-top: 1px solid var(--line); }
+  .closing__col > .closing__text { margin-top: var(--s-3); }
+  .closing .closing__actions { --btn-h: 48px; width: 100%; margin-top: var(--s-5); }
+  .closing .closing__actions > .btn { width: 100%; }
+  .closing .closing__actions .m-arrow { display: none; }
+  .closing .cite-snip, .cite .closing__actions { display: none; }
+  .cite__actions { width: 100%; margin-top: var(--s-5); }
+  :is(.cite__actions, .research-band__actions) .btn::after { content: none; }
+
+  /* -------------------------------------------------------------- 9. supported by
+     a logo wall: the label centred, then two columns of equal cells in one rounded frame, hairlines between
+     the cells only, each logo in one ink at about one optical size, the fifth across both columns */
+  .funders-row { margin-top: var(--s-8); padding: 0 0 var(--s-9); border-top: 0; }
+  .home .funders__h { margin: 0 0 var(--s-5); color: var(--muted); font: 500 var(--t-label)/1.54 var(--font-text); text-align: center; }
+  .funders { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--line); overflow: hidden; }
+  .funders li { min-height: 0; height: 92px; padding: 0 var(--s-4); border-bottom: 1px solid var(--line); }
+  .funders li:nth-child(odd):not(:last-child) { border-right: 1px solid var(--line); }
+  .funders > li:last-child { border-bottom: 0; }
+  .funders a { justify-content: center; max-width: 60%; }
+  .funders img { max-width: 60%; max-height: 30px; opacity: .6; }
+  .funders a img { max-width: 100%; }
+  /* the dark theme inverts the logos (assets/css/site.css); a logo drawn on a white ground then has a black
+     one, which the screen blend drops on the dark page */
+  [data-theme="dark"] .funders li img { mix-blend-mode: screen; }
+  .funders li:nth-child(1) img { max-height: 34px; }
+  .funders li:nth-child(2) img { max-height: 22px; }
+  .funders li:nth-child(3) img { max-height: 26px; }
+  .funders li:nth-child(4) img { max-height: 20px; }
+  .funders li:nth-child(5) img { max-height: 32px; }
 }
