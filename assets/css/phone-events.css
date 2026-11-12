@@ -100,4 +100,52 @@
   .ev-head__soon:has(> [hidden]) { display: none; }
   .page-head:has(.ev-head__flyer) h1 { order: 3; margin: 0; font: 600 var(--t-h1-event)/1.12 var(--font-display); letter-spacing: var(--display-tracking-xl); }
   .ev-head__host { order: 4; margin-top: var(--s-3); color: var(--muted); font: 400 var(--t-note)/1.47 var(--font-text); }
+
+  /* -------------------------------------------------------------- an event page: the body (events/page-body.html)
+     the desktop's text, cells, actions and flyer give way to the phone's copy (.ev-m) */
+  .ev-page .doc-layout { padding-top: var(--s-5); }
+  .ev-page .doc-layout > .prose > :not(.ev-m, .section-nav, .next-steps) { display: none; }
+  .ev-page .prose > .section-nav { margin-top: var(--s-8); }
+
+  /* two fact rows: a 44px tile (the date: the month on a grey strip over the day; or the place's icon),
+     two lines, and on the date's row a round "Add to calendar" */
+  .prose .ev-facts { max-width: none; margin: 0; padding: 0; list-style: none; }
+  .prose .ev-fact { display: flex; align-items: center; gap: var(--s-3); min-height: 70px; max-width: none; margin: 0; padding: var(--s-3) 0; }
+  .ev-fact__tile { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: var(--r-md);
+    background: var(--bg); color: var(--ink); overflow: hidden; font-size: var(--t-label); }
+  .ev-fact__tile--date { grid-template-rows: auto minmax(0, 1fr); place-items: stretch; text-align: center; }
+  .ev-fact__tile--date span { background: var(--surface); color: var(--muted); font: 600 70%/1.7 var(--font-text); text-transform: uppercase; }
+  .ev-fact__tile--date b { display: grid; place-items: center; font: 500 var(--t-doc)/1 var(--font-text); }
+  .ev-fact__text { display: flex; flex: 1; flex-direction: column; min-width: 0; }
+  .ev-fact__t { color: var(--ink); font: 500 var(--t-note)/1.43 var(--font-text); }
+  .ev-fact__d { color: var(--muted); font: 400 var(--t-small)/1.5 var(--font-text); }
+  .prose a.ev-fact__cal { position: relative; flex: none; display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--line-strong);
+    border-radius: var(--r-pill); background: var(--bg); color: var(--ink); text-decoration: none; }
+  .ev-fact__cal::before { content: ""; position: absolute; inset: -3px; }
+
+  /* the registration card: a strip with its label, an icon tile, a title and a note, one full-width pill */
+  .ev-reg { margin-top: var(--s-5); border-radius: var(--r-md); box-shadow: 0 0 0 1px var(--line); overflow: hidden; }
+  .prose .ev-reg__h, .prose .ev-block__h { margin: 0; color: var(--muted); font: 500 var(--t-label)/1.54 var(--font-text); letter-spacing: 0; }
+  .prose .ev-reg__h { padding: var(--s-2) var(--s-4); border-bottom: 1px solid var(--line); background: color-mix(in oklab, var(--surface) 50%, var(--bg)); }
+  .ev-reg__body { padding: var(--s-4); }
+  .ev-reg__row { display: flex; align-items: flex-start; gap: var(--s-3); }
+  .ev-reg__ic { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--r-sm); background: var(--surface); }
+  .prose .ev-reg__t { margin: 0; font: 500 var(--t-note)/1.43 var(--font-text); }
+  .prose .ev-reg__note { max-width: none; margin: var(--s-1) 0 0; color: var(--muted); font: 400 var(--t-label)/1.38 var(--font-text); }
+  .ev-reg__body > .btn { margin-top: var(--s-4); }
+  .prose .ev-over { max-width: none; margin: var(--s-5) 0 0; padding: var(--s-3) var(--s-4); border-radius: var(--r-md);
+    background: color-mix(in oklab, var(--surface) 50%, var(--bg)); font: 400 var(--t-small)/1.5 var(--font-text); }
+
+  /* About, Hosted by, More events: a small label over a hairline, the content 16px under it */
+  .ev-block { margin-top: var(--s-7); }
+  .prose .ev-block__h { margin-bottom: var(--s-4); padding-bottom: var(--s-2); border-bottom: 1px solid var(--line); }
+  .prose .ev-about p { max-width: none; margin: 0 0 1em; font: 400 var(--t-doc)/1.6 var(--font-text); }
+  .prose .ev-about > :last-child { margin-bottom: 0; }
+  .prose :is(a, p).ev-host { display: flex; align-items: center; gap: var(--s-3); min-height: 44px; max-width: none; margin: 0; color: var(--ink);
+    font: 500 var(--t-body)/1.4 var(--font-text); text-decoration: none; }
+  .ev-host__av { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 50%;
+    background: var(--surface); color: var(--muted); font: 500 var(--t-xs)/1 var(--font-text); }
+  .ev-host .ext-mark { margin-left: auto; }
+  .prose .ev-more { display: grid; gap: var(--s-3); max-width: none; margin: 0; padding: 0; list-style: none; }
+  .prose .ev-more > li { max-width: none; margin: 0; }
 }

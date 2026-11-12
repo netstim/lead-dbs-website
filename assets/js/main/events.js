@@ -6,6 +6,7 @@
 // /events/: move ended events from the upcoming list to the past list (latest first), and add the same
 // line when the upcoming list is empty. The line is not in the page while events are listed.
 // [data-ev-live] / [data-ev-over-note] (an event's page): swap the actions for the "took place" line.
+// [data-ev-hide-over] / [data-ev-show-over] (an event's page on a phone): the same swap, for that copy.
 // [data-ev-local]: add the start time in the visitor's own time zone when it differs.
 (() => {
   const now = Date.now();
@@ -55,6 +56,10 @@
     note.id = 'register';
     note.hidden = false;
   }
+  // the phone's copy of an event page (events/page-body.html): the registration card and "Add to
+  // calendar" carry data-ev-hide-over, the "took place" line data-ev-show-over
+  document.querySelectorAll('[data-ev-hide-over]').forEach((el) => { if (over(el)) el.hidden = true; });
+  document.querySelectorAll('[data-ev-show-over]').forEach((el) => { if (over(el)) el.hidden = false; });
   document.querySelectorAll('[data-ev-local]').forEach((el) => {
     try {
       const t = new Date(el.dataset.evLocal);
