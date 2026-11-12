@@ -45,8 +45,14 @@
 }
 /* the dark theme: html[data-theme="dark"], set before the first paint by the script in head.html (the
    reader's choice from the header's toggle, else the system's setting). The same family on a near-black
-   warm grey: the ink and the blue lightened, the coral a touch brighter; the black of the renders stays. */
-:root[data-theme="dark"] {
+   warm grey: the ink and the blue lightened, the coral a touch brighter; the black of the renders stays.
+   Pictures keep their own colours, so a white screenshot or figure is toned down a little and framed, and
+   the logos (dark marks on white) are drawn light.
+   Without script <html> has no data-theme, and the same rules apply when the system asks for dark (the
+   @media rule below). Both are printed from this one template string (this file is run as a Hugo template,
+   head.html): %[1]s is the selector of the palette, %[2]s the one in front of the picture rules. Edit the
+   dark colours here. */
+{{- $dark := `%[1]s {
   color-scheme: dark;
   --p-bg: #161819; --p-surface: #212426; --p-ink: #e6e8e9; --p-muted: #9ca2a6;
   --p-accent: #ec7a70; --p-accent-ink: #161819; --p-action: #8fb5e3; --p-action-ink: #10202e;
@@ -54,11 +60,14 @@
   --p-tint-1: #8e97d6; --p-tint-2: #d897a4; --p-tint-ink: #161819;
   --p-inv-surface: #1b1e20;
 }
-/* dark theme: pictures keep their own colours, so a white screenshot or figure is toned down a little and
-   framed, and the logos (dark marks on white) are drawn light */
-[data-theme="dark"] .prose img { filter: brightness(.86); }
-[data-theme="dark"] :is(.funders img, .qcard__logo) { filter: grayscale(1) invert(1) brightness(1.4); mix-blend-mode: normal; opacity: .7; }
-[data-theme="dark"] .atlas__thumb img { filter: brightness(.78); }
+%[2]s .prose img { filter: brightness(.86); }
+%[2]s :is(.funders img, .qcard__logo) { filter: grayscale(1) invert(1) brightness(1.4); mix-blend-mode: normal; opacity: .7; }
+%[2]s .atlas__thumb img { filter: brightness(.78); }` }}
+{{ printf $dark `:root[data-theme="dark"]` `[data-theme="dark"]` }}
+/* :where() keeps the picture rules as specific as with script ([data-theme="dark"]: one attribute) */
+@media (prefers-color-scheme: dark) {
+{{ printf $dark `:root:not([data-theme])` `:where(:root):not([data-theme])` }}
+}
 /* browsers without color-mix() (Safari before 16.2): the hairlines would vanish */
 @supports not (color: color-mix(in oklab, red 50%, blue)) {
   :root { --line: rgb(47 52 55 / .12); --line-strong: rgb(47 52 55 / .24); }
