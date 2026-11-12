@@ -5,8 +5,8 @@
                manual="Reconstruction of electrode trajectories|https://netstim.gitbook.io/…"
                papers="horn2015 husch2018" >}}Finds the electrodes …{{< /capability >}}
        The text between the tags is the sentence (Markdown); keep it to one.
-       img: a lab render under assets/images/renders/ (alt text from the renders list of
-            content/gallery/_index.md; the page credits the renders once), a published figure
+       img: a lab render under assets/images/renders/ (alt text from data/renders.yaml; the page
+            credits the renders once), a published figure
             "gallery/<file>" (credited in a small line on the picture, with a link to its entry in the
             gallery; alt text its "shows" in data/gallery.yaml), or a picture of another page,
             "/path/of/the/page/file.png" (then also give alt=).
@@ -37,7 +37,7 @@
   {{- $img = $p.Resources.GetMatch (path.Base $src) -}}
 {{- else -}}
   {{- $img = resources.Get $src -}}
-  {{- range $gallery.Params.renders }}{{ if eq (printf "images/renders/%s" .file) $src }}{{ $alt = $alt | default .alt }}{{ end }}{{ end -}}
+  {{- with index hugo.Data.renders.renders (strings.TrimPrefix "images/renders/" $src) }}{{ $alt = $alt | default .alt }}{{ end -}}
 {{- end -}}
 {{- if not $img }}{{ errorf "capability %q: no picture %q (%s)" $title $src .Page.File.Path }}{{ end -}}
 {{- if not $alt }}{{ errorf "capability %q: the picture needs alt text (%s)" $title .Page.File.Path }}{{ end -}}

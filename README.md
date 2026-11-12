@@ -101,7 +101,7 @@ Give it a `title`, a `description` (at most 155 characters) and, if it belongs i
 | Home page texts, quotes, help links, history, funders, citation; the hero's `proof` (a list of short parts) and `manual` (`{label, url}`, shown as a fact) | `content/_index.md` (front matter only; the layout is `layouts/home.html`) |
 | **Events** (developer meetings, workshops) | `data/events.yaml` (see [Events](docs/editing.md#events)) |
 | Home page pictures | `assets/images/renders/` (see [Pictures on the home page](docs/home-and-media.md#pictures-on-the-home-page)) |
-| Gallery ("Made with Lead-DBS", `/gallery/`) | Figures from papers: `data/gallery.yaml` + image files in `static/gallery/`. Lab renders: `content/gallery/_index.md` (see [Gallery](docs/home-and-media.md#the-gallery-of-published-figures)) |
+| Gallery ("Made with Lead-DBS", `/gallery/`) | Figures from papers: `data/gallery.yaml` + image files in `static/gallery/`. Lab renders: their alt text and captions in `data/renders.yaml` (also read by Features), the ones the gallery shows and their order in `content/gallery/_index.md` (see [Gallery](docs/home-and-media.md#the-gallery-of-published-figures)) |
 | The footer's "Institute" column | `data/links.yaml` |
 | A page's closing cards | its front matter `next:` (see [Page types](#page-types)) |
 | Main menu, legal links, the GitHub link | `hugo.toml` → `[menus]` (the entry with `params.role = "action"`, identifier `download`, is drawn as the header's button) and `[params] github`; see [Site structure](docs/structure.md) |

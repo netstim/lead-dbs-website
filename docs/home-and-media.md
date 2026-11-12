@@ -101,7 +101,7 @@ render instead. Keep it the only scroll-linked motion on the site.
 
 ## The gallery of published figures
 
-`/gallery/` has three sections: the lab's renders (the first one of the front matter is shown large), the figures
+`/gallery/` has three sections: the lab's renders (listed by file in its front matter, the first shown large; what each shows, alt text and caption, is in `data/renders.yaml`, which the Features page reads too), the figures
 from open-access papers made with Lead-DBS, in the order of `data/gallery.yaml`, and the journal covers. Each figure is one block in that file, starting with `- file:`:
 
 - **To remove a figure**, delete its whole block and its file in `static/gallery/`. Nothing else

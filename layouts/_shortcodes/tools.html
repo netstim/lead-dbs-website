@@ -4,18 +4,17 @@
            - {id: "lead-group", name: "Lead Group", text: "One sentence.", img: "images/renders/cohort-hero.jpg",
               manual: "label|url", papers: "treu2020", link: "/a/page/", code: "https://…"}
        Each cell is a lab render in the rounded black box, under it the tool's name, one sentence and its
-       links. img is a render under assets/images/renders/ (alt text from the
-       renders list of content/gallery/_index.md; the page credits the renders once).
+       links. img is a render under assets/images/renders/ (alt text from data/renders.yaml; the page
+       credits the renders once).
        id is the anchor (the site search links to it, searchEntries); manual, papers, link and code are
        optional, as in {{< capability >}}. */ -}}
 {{- $page := .Page -}}
-{{- $gallery := site.GetPage "/gallery" -}}
 <div class="tool-cells">
 {{- range $page.Params.tools }}{{ $t := . }}
   {{- $more := false }}{{ with .link }}{{ $more = site.GetPage (strings.TrimSuffix "/" .) }}{{ if not $more }}{{ errorf "tools: %q: link %q is not a page" $t.name . }}{{ end }}{{ end }}
   {{- $img := resources.Get .img }}{{ if not $img }}{{ errorf "tools: %q: no picture %q" $t.name .img }}{{ end }}
-  {{- $alt := "" }}{{ range $gallery.Params.renders }}{{ if eq (printf "images/renders/%s" .file) $t.img }}{{ $alt = .alt }}{{ end }}{{ end }}
-  {{- if not $alt }}{{ errorf "tools: %q: %s is not in the renders list of the gallery" $t.name .img }}{{ end }}
+  {{- $alt := "" }}{{ with index hugo.Data.renders.renders (strings.TrimPrefix "images/renders/" $t.img) }}{{ $alt = .alt }}{{ end }}
+  {{- if not $alt }}{{ errorf "tools: %q: %s has no alt text in data/renders.yaml" $t.name .img }}{{ end }}
   {{- $set := slice }}{{ $mid := false }}
   {{- range slice 480 800 1280 }}{{ $r := $img.Fill (printf "%dx%d webp q82 Center" . (div (mul . 5) 8)) }}{{ $set = $set | append (printf "%s %dw" $r.RelPermalink $r.Width) }}{{ if eq . 800 }}{{ $mid = $r }}{{ end }}{{ end }}
   <section class="tool" id="{{ .id }}" aria-labelledby="{{ .id }}-h">
