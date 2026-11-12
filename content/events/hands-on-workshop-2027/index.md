@@ -21,24 +21,10 @@ next:
 
 Two days of hands-on work with Lead-DBS in Cologne, hosted by the [Institute for Network Stimulation](https://www.netstim.org/) and Uniklinik Köln (University Hospital Cologne). Participants will be among the first to try the pre-release of Lead-DBS 4.0, rebuilt completely in Python.
 
-{{< summary label="The workshop in short" >}}
-When
-: <time datetime="2027-02-11">11–12 February 2027</time>, starting at <time datetime="2027-02-11T09:00+01:00">9:00 CET</time>
-
-Where
-: Cologne
-
-Hosted by
-: Institute for Network Stimulation and Uniklinik Köln
-
-Registration
-: Not open yet
-{{< /summary >}}
-
-## Get notified {#register}
+{{< event-details event="hands-on-lead-dbs-workshop-2027-02-11" >}}
+Hosted by the Institute for Network Stimulation and Uniklinik Köln.
+{{< /event-details >}}
 
 The venue, programme, fee and registration will be announced in the newsletter and on the [user Slack](/helpsupport/slack-user-channel/).
-
-{{< button href="/subscribe-to-our-newsletter/#subscribe" variant="primary" >}}Get notified{{< /button >}}
 
 ![Save the date: Hands-on Lead-DBS Workshop, 11–12 February 2027, Institute for Network Stimulation and Uniklinik Köln](workshop-2027-flyer.png)

@@ -16,9 +16,4 @@ next:
   - {page: "/helpsupport/first-steps/", text: "New to Lead-DBS? Start here"}
 ---
 
-How to take part:
-
-- **Developer meeting** (online, monthly): see [Join the developer meeting](/events/developer-meeting/).
-- **Workshops** (on site, hands-on): see the next one below. Details and registration follow in the [newsletter](/subscribe-to-our-newsletter/) and on the [user Slack](/helpsupport/slack-user-channel/).
-
-The workshops of 2016 to 2020, in Berlin, Shanghai, Hamburg and Brisbane, are on [Past workshops](/helpsupport/workshops/).
+Developer meetings and hands-on workshops.

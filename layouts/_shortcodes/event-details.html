@@ -1,0 +1,29 @@
+{{- /* An event's key facts and registration action, read from data/events.yaml. */ -}}
+{{- $id := .Get "event" -}}
+{{- $ev := false -}}
+{{- range partial "events/list.html" .Page -}}{{ if eq .id $id }}{{ $ev = . }}{{ end }}{{- end -}}
+{{- if not $ev }}{{ errorf "event-details: unknown event %q on %s" $id .Page.File.Path }}{{ end -}}
+{{- with $ev -}}
+{{- $date := .start.Format "2 January 2006" -}}
+{{- with .e.end }}{{ if and (eq (len (string .)) 10) (ne (string .) $ev.date_only) }}{{ $date = $ev.when }}{{ end }}{{ end -}}
+<section class="event-details" id="register" aria-label="Event details">
+  <div class="event-details__main">
+    <div class="event-details__when">
+      {{ with $.Get "label" }}<p class="event-details__label">{{ . }}</p>{{ end }}
+      <p class="event-details__date"><time datetime="{{ .iso_start }}">{{ $date }}</time></p>
+      {{ with .time }}<p class="event-details__time">{{ if ne $date ($ev.start.Format "2 January 2006") }}Starts {{ end }}{{ . }}</p>{{ end }}
+      <p class="event-details__place">{{ .e.where }}</p>
+    </div>
+    <div class="event-details__action">
+      {{ with .e.register_url }}
+      <a class="btn btn--primary" href="{{ partial "resolve-url.html" (dict "url" . "page" $.Page) }}">Register{{ if strings.Contains (lower $ev.e.where) "zoom" }} on Zoom{{ end }}<span class="ext-mark" aria-hidden="true">↗</span></a>
+      <p class="event-details__note">{{ if $ev.e.online }}Zoom emails you the meeting link.{{ else }}Registration details on the booking page.{{ end }}</p>
+      {{ else }}
+      <a class="btn btn--primary" href="{{ with site.GetPage "/subscribe-to-our-newsletter" }}{{ .RelPermalink }}{{ end }}#subscribe">Get notified</a>
+      <p class="event-details__note">Registration is not open yet.</p>
+      {{ end }}
+    </div>
+  </div>
+  {{ with $.Inner }}<div class="event-details__host">{{ . | $.Page.RenderString (dict "display" "block") }}</div>{{ end }}
+</section>
+{{- end -}}
