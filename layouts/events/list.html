@@ -35,6 +35,7 @@
       </ul>
       <p><a class="link" href="{{ $archive.RelPermalink }}">{{ $archive.LinkTitle }}: programmes and photos</a></p>
       {{ end }}
+      {{ partial "next-steps.html" . }}
     </article>
     <aside class="sidebar" aria-label="In this section">{{ partial "sidebar.html" . }}</aside>
   </div>

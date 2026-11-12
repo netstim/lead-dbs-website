@@ -4,10 +4,16 @@
    The palette and fonts are set at the top of site.css. */
 
 /* ---------------------------------------------------------------- tokens
-   Sizes step up at 640px (tablet) and 1024px (desktop). */
+   Sizes step up at 640px (tablet) and 1024px (desktop). The type scale at 1440 (site.css has the
+   display size and the labels): 80 the hero, 48 (--t-h2) a home section and a page's title, 32 (--t-h3)
+   a page's sections, the smaller home sections and the 4.0 statements, 23 (--t-sub) subsections and the
+   titles of the Features cards, 20 (--t-card) cards, news and events and the lead, 18 the documentation
+   text, 16 the text elsewhere, 15 captions and notes (--t-note), 14 short small print, 13 the labels.
+   Every heading is at least 1.25 times the text under it and 1.25 times the next heading level down, so
+   a heading never reads as bold text. */
 :root {
   --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px;
-  --t-body: 16px; --t-small: 14px; --t-label: 14px; --t-lead: 18px; --t-card: 18px; --t-h3: 24px;
+  --t-body: 16px; --t-small: 14px; --t-note: 15px; --t-label: 14px; --t-lead: 18px; --t-card: 18px; --t-sub: 22px; --t-h3: 26px;
   --t-h1: clamp(38px, 3.24vw + 25.4px, 72px);
   --t-h2: clamp(30px, 1.72vw + 23.3px, 48px);
   --r-sm: 8px; --r-md: 12px; --r-lg: 20px; --r-btn: 8px;
@@ -26,10 +32,10 @@
   --t-out: 120ms;           /* and goes out a little faster */
 }
 @media (min-width: 640px) {
-  :root { --gut: 48px; --gutter: 24px; --row-gap: 16px; --nav: 72px; --head-gap: 48px; --band: 72px; }
+  :root { --gut: 48px; --gutter: 24px; --row-gap: 16px; --nav: 72px; --head-gap: 48px; --band: 72px; --t-h3: 28px; }
 }
 @media (min-width: 1024px) {
-  :root { --gut: 80px; --row-gap: 24px; --band: 96px; --t-lead: 20px; --t-card: 20px; --t-h3: 28px; }
+  :root { --gut: 80px; --row-gap: 24px; --band: 96px; --t-lead: 20px; --t-card: 20px; --t-sub: 23px; --t-h3: 32px; }
 }
 
 /* colours: the page ground; .ground-surface (a grey band) and .ground-inverse (the dark footer) swap them */
@@ -112,7 +118,7 @@ p { text-wrap: pretty; }
 
 /* ---------------------------------------------------------------- buttons
    Two looks: .btn--primary, filled in the accent (one main action per view), and .btn--secondary, an
-   underlined word with an arrow (every second choice; site.css draws .btn--outline the same way). The
+   underlined word with an arrow (every second choice; content.css draws .btn--outline, the download shortcodes' name for it, the same way). The
    icon buttons of the header and the hero's pause button are the third, square or round, 44px.
    A button that carries its own arrow (svg.m-arrow) gets no drawn one. */
 .btn {
@@ -210,7 +216,7 @@ p a:not([class]) { --rest: color-mix(in oklab, currentColor 45%, transparent); }
 .card:hover { border-color: color-mix(in oklab, var(--action) 55%, transparent); background: color-mix(in oklab, var(--action) 4%, var(--bg)); transition-duration: var(--t-in); }
 .card__title { font: var(--title-weight) var(--t-card)/1.3 var(--font-display); letter-spacing: -0.01em; color: var(--ink); }
 .card:hover .card__title { color: var(--action); }
-.card__text { color: var(--muted); font-size: var(--t-small); line-height: 1.5; }
+.card__text { color: var(--muted); font-size: var(--t-note); line-height: 1.5; }
 .panel { padding: var(--s-5); border-radius: var(--r-lg); background: var(--card); color: var(--ink); }
 @media (min-width: 1024px) { .panel { padding: var(--s-6); } }
 

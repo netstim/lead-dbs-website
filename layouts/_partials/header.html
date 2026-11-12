@@ -26,8 +26,9 @@
       {{ if ne .Name "Download" }}{{ $m := . }}
       {{ $current := eq (.Identifier | default .Name) $best }}
       <div class="nav__item">
-        {{- /* a word with a panel names it (aria-controls); main.js keeps aria-expanded in step with the
-               panel. No aria-haspopup: the panel is a list of links (a disclosure), not an ARIA menu. */}}
+        {{- /* a word with a panel: main.js adds a chevron button beside it that opens the panel and carries
+               aria-expanded and aria-controls (the panel's id below). No aria-haspopup: the panel is a list
+               of links (a disclosure), not an ARIA menu. The chevron here is for the view without script. */}}
         {{- $panel := printf "menu-%s" (.Identifier | default (.Name | urlize)) }}
         <a class="nav__link" href="{{ .URL }}"{{ if $current }} aria-current="page"{{ end }}{{ if .HasChildren }} aria-controls="{{ $panel }}"{{ end }}>{{ partial "nobreak-html.html" (.Name | htmlEscape) }}{{ if .HasChildren }} <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ end }}</a>
         {{ if .HasChildren }}
@@ -37,7 +38,7 @@
             {{ range .Children }}{{ if .HasChildren }}{{ $groups = $groups | append . }}{{ else }}{{ $plain = $plain | append . }}{{ end }}{{ end }}
             <div class="menu-col">
               {{- /* params.divider: a line above the entry that starts a small group of its own; when it is a
-                     text, that text is the group's caption ("Method articles"). The manual is a first-level
+                     text, that text is the group's caption ("In depth"). The manual is a first-level
                      word of the phone sheet, so its copy here is hidden there. */}}
               {{ range $plain }}{{ $d := .Params.divider | default false }}{{ $cap := cond (eq (printf "%T" $d) "string") $d "" -}}
               {{ with $cap }}<span class="menu-caption t-label">{{ partial "nobreak-html.html" (. | htmlEscape) }}</span>{{ end -}}

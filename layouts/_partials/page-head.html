@@ -4,7 +4,7 @@
        menu entry / page; it ends with the page's own name, except on a news post, where the title follows
        right under "News" (the BreadcrumbList for search engines still ends with the post). A background
        article that began as a post (front matter showDate: true) shows when it was written and last
-       changed. */ -}}
+       changed; with archived: true it adds that it is kept for the record and no longer kept up to date. */ -}}
 {{ $crumbs := partial "crumbs.html" . }}
 {{ $post := and (eq .Section "news") .IsPage }}
 <header class="page-head page-head--render" data-nav-dark>
@@ -21,6 +21,6 @@
     <h1>{{ partial "nobreak.html" .Title }}</h1>
     {{- /* a release's announcement that came later than the release itself says both (data/releases.yaml) */}}
     {{ if $post }}<p class="page-head__meta">{{ with partial "release-of.html" . }}{{ if ne (time.Format "2006-01-02" .date) ($.Date.Format "2006-01-02") }}Released <time datetime="{{ time.Format "2006-01-02" .date }}">{{ time.Format "2 January 2006" .date }}</time> · announced {{ end }}{{ end }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time></p>
-    {{ else if .Params.showDate }}<p class="page-head__meta">Written <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2006" }}</time>{{ if gt (.Lastmod.Sub .Date).Hours 720.0 }}, updated <time datetime="{{ .Lastmod.Format "2006-01-02" }}">{{ .Lastmod.Format "January 2006" }}</time>{{ end }}</p>{{ end }}
+    {{ else if .Params.showDate }}<p class="page-head__meta">Written <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2006" }}</time>{{ if gt (.Lastmod.Sub .Date).Hours 720.0 }}, updated <time datetime="{{ .Lastmod.Format "2006-01-02" }}">{{ .Lastmod.Format "January 2006" }}</time>{{ end }}{{ if .Params.archived }}, kept for the record{{ end }}</p>{{ end }}
   </div>
 </header>

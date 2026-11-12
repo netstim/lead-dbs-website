@@ -1,6 +1,7 @@
-{{- /* The next event, as one of the home hero's facts ("fact", a desktop), a line under the hero's release notice ("line", below
+{{- /* The next event, as one of the home hero's facts ("fact": its name, under it the short date and time
+       as a line of its own), a line under the hero's release notice ("line", below
        1024px), a strip ("strip", not used now) or a
-       sidebar block ("side"). Argument: dict "variant" ("fact" | "line" | "strip" | "side") "page". Every event still upcoming at build time is
+       sidebar block ("side": the name, then the short date and time, then the place). Argument: dict "variant" ("fact" | "line" | "strip" | "side") "page". Every event still upcoming at build time is
        in the markup, all but the first hidden; assets/js/main.js shows the first one that is not over
        by the visitor's clock, and hides the block when none is left. Without script, the build's
        choice shows. */ -}}
@@ -13,7 +14,7 @@
 <div class="hero__event" data-ev-next>
   <dt>Next event</dt>
   {{- range $i, $ev := . }}
-  <dd data-ev data-ev-ends="{{ $ev.iso_ends }}"{{ if gt $i 0 }} hidden{{ end }}><a href="{{ $all }}#{{ $ev.id }}">{{ $ev.e.title | replaceRE "^Lead-DBS " "" }}, <span class="nowrap"><time datetime="{{ $ev.iso_start }}">{{ $ev.start.Format "2 Jan" }}{{ with $ev.time_short }}, {{ . }}{{ end }}</time>{{ $arrow }}</span></a></dd>
+  <dd data-ev data-ev-ends="{{ $ev.iso_ends }}"{{ if gt $i 0 }} hidden{{ end }}><a href="{{ $all }}#{{ $ev.id }}">{{ $ev.e.title | replaceRE "^Lead-DBS " "" }}<span class="sr-only">,</span> <span class="event-when"><time datetime="{{ $ev.iso_start }}">{{ $ev.when_short }}{{ with $ev.time_short }} · {{ . }}{{ end }}</time>{{ $arrow }}</span></a></dd>
   {{- end }}
 </div>
 {{- else if eq $.variant "line" -}}
@@ -41,7 +42,7 @@
   {{- range $i, $ev := . }}
   <div class="next-event__item" data-ev data-ev-ends="{{ $ev.iso_ends }}"{{ if gt $i 0 }} hidden{{ end }}>
     <p class="next-event__title"><a href="{{ $all }}#{{ $ev.id }}">{{ $ev.e.title }}</a></p>
-    <p class="t-small muted"><time datetime="{{ $ev.iso_start }}">{{ $ev.when }}{{ with $ev.time }}, {{ . }}{{ end }}</time><br>{{ $ev.e.where }}</p>
+    <p class="t-small muted"><time class="event-when" datetime="{{ $ev.iso_start }}">{{ $ev.when_short }}{{ with $ev.time_short }} · {{ . }}{{ end }}</time><br>{{ $ev.e.where }}</p>
   </div>
   {{- end }}
   <a class="link t-small" href="{{ $all }}">All events</a>

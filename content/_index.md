@@ -19,10 +19,16 @@ hero:
   # The clip behind the words: files in static/media/, poster in assets/images/renders/.
   # One directional lead in the subthalamic nucleus, the camera swaying slowly (±18°, 32 s loop),
   # framed on a black 16:10 canvas with the render on the right (see README, "hero clip").
-  # video: 1600 px, for screens wider than 1440 px and high-density screens; video_medium: 1280 px, the
-  # other screens from 640 px; video_phone: a square crop around the render, for phones.
-  video: "media/hero-lead-stn.mp4"
-  video_medium: "media/hero-lead-stn-1280.mp4"
+  # Each size comes as AV1 (the browser takes it when it can play it) and as H.264 (every other browser):
+  # video_av1: 1600 px AV1, for windows from 1024 px; video_hevc: the same in HEVC, for desktop browsers
+  # without AV1 (Safari on older Macs); video_medium_av1: 1280 px AV1, windows from 640 px;
+  # video: 1280 px H.264, windows from 640 px without AV1; video_phone_av1 and video_phone: a square
+  # crop around the render, for phones (loaded only when play is pressed).
+  video_av1: "media/hero-lead-stn-av1.mp4"
+  video_hevc: "media/hero-lead-stn-hevc.mp4"
+  video_medium_av1: "media/hero-lead-stn-1280-av1.mp4"
+  video: "media/hero-lead-stn-1280.mp4"
+  video_phone_av1: "media/hero-lead-stn-phone-av1.mp4"
   video_phone: "media/hero-lead-stn-phone.mp4"
   poster: "hero-lead-stn-poster.jpg"
   # proof: one quiet line under the buttons, in the first screen, of things a visitor can check: who
@@ -46,20 +52,30 @@ localize:
   link: {label: "Watch the walkthrough videos", url: "/helpsupport/knowledge-base/walkthrough-videos/"}
 
 # Three things it does besides localization: a compact row of three. Each card leads to its part of the
-# overview of everything Lead-DBS does (anchor: an id on that page), "more" beside the heading to its top;
-# "data" beside it to the atlases and connectomes.
+# overview of everything Lead-DBS does (anchor: an id on that page), "more" beside the heading to its top.
+# "data": the slim band under the cards for the atlases and data hub (page): its render (image, cut to
+# crop: x0, y0, x1, y1 in the file's pixels), one line (text), and counts: the number of entries in each
+# catalogue page's atlases.yaml, counted at build time, with what they are (label).
 features:
   title: "From the electrode to the brain’s networks"
   more: {label: "What Lead-DBS does", url: "/helpsupport/knowledge-base/lead-dbs-methods/"}
-  data: {label: "Atlases and connectomes", url: "/helpsupport/knowledge-base/atlasesresources/"}
+  data:
+    page: "/helpsupport/knowledge-base/atlasesresources"
+    text: "All in MNI space, many included with Lead-DBS."
+    image: "head-data.jpg"
+    crop: [1500, 150, 2950, 1250]
+    counts:
+      - {page: "/helpsupport/knowledge-base/atlasesresources/atlases-2", label: "subcortical atlases"}
+      - {page: "/helpsupport/knowledge-base/atlasesresources/cortical-atlas-parcellations-mni-space", label: "cortical parcellations"}
+      - {page: "/helpsupport/knowledge-base/atlasesresources/normative-connectomes", label: "normative connectomes"}
   cards:
     - title: "Simulates the stimulation"
-      text: "Volume of tissue activated, electric fields and pathway activation, computed with the integrated OSS-DBS v2."
+      text: "Volume of tissue activated, electric fields and pathway activation, computed with OSS-DBS v2, the stimulation model built into Lead-DBS."
       anchor: "stimulation"
       image: "pathway-activation.jpg"
       alt: "Two electrodes with their stimulation volumes in blue and the fibre pathways they activate in red and white"
     - title: "Connects it to networks"
-      text: "Connectivity from the stimulation volume to other brain regions, with normative or patient-specific connectomes."
+      text: "Connectivity from the stimulation volume to other brain regions, with the patient's own connectome or a normative one, an average wiring diagram of many human brains."
       anchor: "connectivity"
       image: "fiber-filtering.jpg"
       alt: "Fibre tracts around the electrodes, coloured from red to yellow by their association with outcome, over a 7 tesla MRI slice"
@@ -81,7 +97,7 @@ next:
     - {title: "Completely in Python", text: "Lead-DBS is being rebuilt from the ground up in Python."}
     - {title: "No MATLAB required", text: "Version 4.0 will run without a MATLAB licence."}
     - {title: "First to try it", text: "Participants of the Hands-on Lead-DBS Workshop on 11–12 February 2027 will be among the first to try the pre-release."}
-  link: {label: "The workshop", url: "/hands-on-lead-dbs-workshop-cologne-2027/"}
+  link: {label: "The workshop", url: "/events/hands-on-workshop-2027/"}
 
 # Events: the upcoming entries of data/events.yaml, in one band with the latest news.
 events:
@@ -144,28 +160,25 @@ quotes_more:
     role: "Frontiers in Neuroanatomy 2018"
 
 
-# The last band has three columns: where to get help (help, the same four ways as /helpsupport/#get-help;
-# a link to another site is marked with ↗), who develops it (team) and how to cite it (cite).
+# The last band, two halves: where to get help (help) and how to cite Lead-DBS (cite), the funders'
+# logos in one row under both. help: a heading, one line, the actions as buttons (the first is the main
+# one; the Slack link goes straight to its self-invite page) and the other ways as links. A link to
+# another site is marked with ↗. Who develops Lead-DBS is told on /about/ (content/about/_index.md).
 help:
   title: "Need help?"
+  text: "Ask other users and the developers in the user Slack, or look it up in the manual."
+  actions:
+    - {label: "Join the user Slack", url: "https://inviter.co/lead-dbs"}
+    - {label: "Manual", url: "https://netstim.gitbook.io/leaddbs"}
   links:
-    - {label: "Ask on the user Slack", url: "/helpsupport/slack-user-channel/"}
-    - {label: "Look it up in the manual", url: "https://netstim.gitbook.io/leaddbs"}
     - {label: "Report a bug on GitHub", url: "https://github.com/netstim/leaddbs/issues"}
     - {label: "Write to us", url: "/contact/"}
 
-# Who develops it, the middle column of the last band; its funders in one row under the three columns.
-# The history is on /about/ (content/about/_index.md).
-team:
-  title: "Who develops Lead-DBS"
-  text: "Lead-DBS began at Charité – Universitätsmedizin Berlin. Since 2016 researchers from several institutions develop it, coordinated by the Institute for Network Stimulation at the University Hospital Cologne."
-  links:
-    - {label: "All contributors", url: "/about/team/"}
-    - {label: "The history of Lead-DBS", url: "/about/#history"}
-    - {label: "More tools from the team", url: "/helpsupport/knowledge-base/lead-dbs-methods/#tools"}
-  funders_title: "Lead-DBS has been supported by"
-  # Logo files sit next to this file (content/). url only where the funder's page still exists.
-  funders:
+# The funders, in one row under the last band. Logo files sit next to this file (content/). url only
+# where the funder's page still exists.
+funders:
+  title: "Lead-DBS has been supported by"
+  logos:
     # crop (optional): Hugo crop steps that cut a logo file's empty margin, applied in order
     # scale (optional): makes a logo that looks too heavy (below 1) or too light (above 1) match the others
     - {name: "Berlin Institute of Health", file: "BIH_BIG_en_400fullmargin.png", url: "https://www.bihealth.org/en/", crop: ["316x165 TopLeft", "266x115 BottomRight"], scale: 1.1}
@@ -176,7 +189,9 @@ team:
 
 cite:
   title: "Cite Lead-DBS in your paper"
-  # the current paper; every paper to cite is on the page the link leads to
+  # the current paper: short on the home page (reference: in full, used when short is missing); every
+  # paper to cite, in full, is on the page the link leads to
+  short: "Neudorfer et al. (2023), Lead-DBS v3.0, NeuroImage 268, 119862"
   reference: "Neudorfer C, Butenko K, Oxenford S, Rajamani N, Achtzehn J, Goede L, et al. (2023). Lead-DBS v3.0: Mapping deep brain stimulation effects to local anatomy and global networks. NeuroImage, 268, 119862."
   doi: "10.1016/j.neuroimage.2023.119862"
   link: {label: "Every paper to cite", url: "/about/citing_leaddbs/"}

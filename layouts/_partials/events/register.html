@@ -1,14 +1,17 @@
-{{- /* How to take part in one event (argument: one entry of events/list.html, plus "page").
+{{- /* How to take part in one event (argument: one entry of events/list.html, plus "page", and "compact":
+       true on the home page, where an event that has its button drops the note that explains it).
        Never prints a meeting link: an online meeting's link is sent by its registration page. */ -}}
 {{- $e := .ev.e -}}
 {{- $slack := "" }}{{ with site.GetPage "/helpsupport/slack-user-channel" }}{{ $slack = .RelPermalink }}{{ end -}}
 {{- if $e.register_url -}}
-<p class="event__register"><a class="btn btn--primary" href="{{ partial "resolve-url.html" (dict "url" $e.register_url "page" .page) }}">Register{{ if strings.Contains (lower $e.where) "zoom" }} on Zoom{{ end }}</a></p>
+{{- /* a registration page on another site (Zoom) ends in the site's ↗, as every link that leaves it */ -}}
+{{- $ext := strings.HasPrefix $e.register_url "http" }}
+<p class="event__register"><a class="btn btn--primary{{ if $ext }} btn--ext{{ end }}" href="{{ partial "resolve-url.html" (dict "url" $e.register_url "page" .page) }}">Register{{ if strings.Contains (lower $e.where) "zoom" }} on Zoom{{ end }}{{ if $ext }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ end }}</a></p>
 {{- else if $e.online -}}
 <p class="event__note">Registration opens soon: leave your e-mail address and you get the {{ if strings.Contains (lower $e.where) "zoom" }}Zoom {{ end }}link. Until then, the link is shared in the <a href="{{ $slack }}">user Slack</a>.</p>
 {{- else -}}
 {{- /* an event on site whose registration is not open yet: the newsletter announces it */ -}}
 {{- $nl := "" }}{{ with site.GetPage "/subscribe-to-our-newsletter" }}{{ $nl = .RelPermalink }}{{ end -}}
-<p class="event__note">Details and registration will follow in the newsletter and on the <a href="{{ $slack }}">user Slack</a>.</p>
-{{ with $nl }}<p class="event__register"><a class="btn btn--primary" href="{{ . }}">Get notified</a></p>{{ end }}
+{{ if or (not .compact) (not $nl) }}<p class="event__note">Details and registration will follow in the newsletter and on the <a href="{{ $slack }}">user Slack</a>.</p>{{ end }}
+{{ with $nl }}<p class="event__register"><a class="btn btn--primary" href="{{ . }}#subscribe">Get notified</a></p>{{ end }}
 {{- end -}}
