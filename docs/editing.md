@@ -171,7 +171,8 @@ until the nightly build of that day. `hugo server -F` shows it now. Pictures in 
    on the site comes from this file: the home page, the download page (and its browser title), First steps,
    the structured data, and the archive note on old news posts.
 2. `data/releases.yaml`: the same version, date and announcement as a new first row of the release history
-   (the table at `/download/#releases`); the build stops if its first row is not the version in `release.yaml`.
+   (the table at `/download/#releases`); the build stops if its first row differs from `release.yaml` in version,
+   date or `notes`.
 3. A news post about the release (above), titled "Lead-DBS 3.3 released" (a few words may follow after a
    colon when there is something urgent to say), and its address in `notes`. The post's date is the day it
    was announced; when that differs from the release date, the post's head and the release history show both.
@@ -266,7 +267,9 @@ picture on a light mat. The entries are the index: the filter keeps those whose 
 typed (`?atlas=word` in the address fills it in), and a link to an entry's `#id` opens it. The header of `atlases.yaml` lists the fields. To add an atlas,
 add an entry with a new `id` to the right group and put its picture next to the page; to add a group, add it
 under `groups` and a `{{% atlas-group %}}` line on the page. The site search finds every atlas by itself and
-opens the page at its entry. Never change an existing `id`: it is the entry's address (`#id`).
+opens the page at its entry. Never change an existing `id`: it is the entry's address (`#id`). The build stops
+when an id (of a group, an atlas or an older anchor under `also`) is used twice in one file, and when a group
+has no `{{% atlas-group %}}` line on its page.
 
 **An atlas page of its own** (DISTAL, FOCUS) opens with its summary box (Lead-OR and Lead Tutor have the same box after
 a one-line intro); a date in it is a `<time datetime="2018-02-05">` element and a version a `<span class="num">`, both

@@ -1,0 +1,15 @@
+{{- /* data/papers.yaml, checked: the shortcodes papers and paper read it through this partial (partialCached,
+       so the checks run once per build). Stops the build with the paper's id when a paper has an unknown
+       field, lacks one of short, group, authors, year, title, journal or doi, has a DOI that is not of the
+       form 10.xxxx/…, or names a group that is not under "groups": Publications prints only those groups,
+       so the paper would vanish from it without a word. Returns the data (groups, papers). */ -}}
+{{- $d := hugo.Data.papers -}}
+{{- $groups := slice }}{{ range $d.groups }}{{ $groups = $groups | append .id }}{{ end -}}
+{{- $fields := slice "short" "group" "authors" "year" "title" "journal" "volume" "issue" "pages" "doi" "note" -}}
+{{- range $id, $p := $d.papers -}}
+  {{- range $k, $_ := $p }}{{ if not (in $fields $k) }}{{ errorf "data/papers.yaml: %s has an unknown field %q" $id $k }}{{ end }}{{ end -}}
+  {{- range slice "short" "group" "authors" "year" "title" "journal" "doi" }}{{ if not (index $p .) }}{{ errorf "data/papers.yaml: %s has no %s" $id . }}{{ end }}{{ end -}}
+  {{- with $p.doi }}{{ if not (findRE `^10\.\d{4,9}/\S+$` (string .)) }}{{ errorf "data/papers.yaml: %s: doi %q is not of the form 10.1016/j.neuroimage.2023.119862 (no https://doi.org/ before it)" $id . }}{{ end }}{{ end -}}
+  {{- with $p.group }}{{ if not (in $groups .) }}{{ errorf "data/papers.yaml: %s: group %q is not one of the groups (%s), so Publications would leave it out" $id . (delimit $groups ", ") }}{{ end }}{{ end -}}
+{{- end -}}
+{{- return $d -}}

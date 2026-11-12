@@ -64,7 +64,9 @@ anchor `id`): the tools on Features, "Lead-DBS 4.0" on the download page (`/down
 place that says what may be said about it), troubleshooting on First steps. Below the results (or in their place when
 there are none) a last line offers the manual, for questions about how to do something in Lead-DBS. The manual has a
 result of its own (its menu entry's `params.keywords`), and each result names the page above it as the breadcrumb
-does. Left out of the index: pages with `search: false` and the closed forum's page; the footer's pages (contact,
+does. Left out of the index: pages with `search: false`, redirect pages (`layout: redirect`) and the closed
+forum's page. A page marked `noindex` for search engines is still in the site search; `search: false` is what
+takes it out. The footer's pages (contact,
 imprint, privacy) are found by their title only. `/search/` shows the same
 box on a page (`/search/?q=atlas`); until a query is typed (and without script, with a line that the search
 needs it) it shows the 404 page's nine rows to start from (`layouts/_partials/search-doors.html`), and it is

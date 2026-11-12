@@ -5,7 +5,7 @@
        history, and the licence. Where the content comes from:
          data/release.yaml    the current version, its date and notes, MATLAB, toolboxes, SPM12, memory
          data/install.yaml    the other requirements and the install steps
-         data/releases.yaml   the release history (the build stops if its first row is not the current release)
+         data/releases.yaml   the release history (the build stops if its first row differs from release.yaml)
          front matter         mirrors (the servers, the recommended one first), size, standalone (the
                               builds), upcoming (the next version), terms (the terms of use, in the dialog)
                 The section ids (#what-you-need, #install, #standalone-version, #lead-dbs-4, #releases) are linked
@@ -16,7 +16,11 @@
 {{- $repo := site.Params.github -}}
 {{- $mirrors := .Params.mirrors -}}
 {{- if not $mirrors }}{{ errorf "%s: no mirrors in the front matter" .File.Path }}{{ end -}}
-{{- if ne (index $rows 0).version $r.version }}{{ errorf "data/releases.yaml starts with %s, but data/release.yaml says %s is current" (index $rows 0).version $r.version }}{{ end -}}
+{{- /* the first row of the history is the current release: the same version, date and announcement */ -}}
+{{- $top := index $rows 0 -}}
+{{- if ne $top.version $r.version }}{{ errorf "data/releases.yaml starts with %s, but data/release.yaml says %s is current" $top.version $r.version }}{{ end -}}
+{{- if ne (time.Format "2006-01-02" $top.date) (time.Format "2006-01-02" $r.date) }}{{ errorf "data/releases.yaml: %s is dated %s, but data/release.yaml says %s" $top.version (time.Format "2006-01-02" $top.date) (time.Format "2006-01-02" $r.date) }}{{ end -}}
+{{- if and $top.notes $r.notes (ne $top.notes $r.notes) }}{{ errorf "data/releases.yaml: the notes of %s are %q, but data/release.yaml says %q" $top.version $top.notes $r.notes }}{{ end -}}
 {{- $first := index $mirrors 0 -}}
 {{- $dl := `<svg class="dl-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>` | safeHTML -}}
 {{- $folder := `<svg class="vg-folder" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.75 4.25c0-.83.67-1.5 1.5-1.5h2.6l1.5 1.75h5.4c.83 0 1.5.67 1.5 1.5v5.75c0 .83-.67 1.5-1.5 1.5h-9.5c-.83 0-1.5-.67-1.5-1.5z" fill="currentColor"/></svg>` | safeHTML -}}

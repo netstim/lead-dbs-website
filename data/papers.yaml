@@ -5,7 +5,9 @@
 #
 # Fields: short (link text), group (one of the groups below), authors (as printed: up to six, then
 # "et al."), year, title, journal, volume, issue, pages, doi, note (printed after the journal,
-# e.g. "preprint").
+# e.g. "preprint"). short, group, authors, year, title, journal and doi are required; doi is the bare
+# DOI (10.1016/…). The build stops with the paper's id on a missing or unknown field, a doi in
+# another form, or a group that is not listed under groups (Publications would leave the paper out).
 
 groups:
   - id: toolbox

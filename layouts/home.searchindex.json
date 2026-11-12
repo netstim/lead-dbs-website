@@ -3,12 +3,14 @@
        matter "keywords"), headings, description and the start of its text; and one entry per atlas of
        an atlas catalogue (atlases.yaml), pointing at its entry.
        Left out: pages with "search: false" in their front matter, pages that are not listed anywhere
-       (build list: never, such as the closed forum's page) and redirects. The footer's pages (contact,
+       (build list: never, such as the closed forum's page) and redirects (layout: redirect). A page
+       marked noindex stays in: search: false is what takes a page out. The footer's pages (contact,
        imprint, privacy) are found by their title only; the manual, on another site, by its menu entry. */ -}}
 {{- $out := slice -}}
 {{- $legal := slice -}}{{- range site.Menus.footer }}{{ with .Page }}{{ $legal = $legal | append .RelPermalink }}{{ end }}{{ end -}}
 {{- range where site.Pages "Kind" "in" (slice "page" "section" "home") -}}
-  {{- if and (ne .Params.search false) (not .Params.private) .Title (ne .Params.build.list "never") -}}
+  {{- /* a redirect is left out by its layout, not only by the search: false it should also carry */ -}}
+  {{- if and (ne .Params.search false) (not .Params.private) .Title (ne .Params.build.list "never") (ne .Layout "redirect") -}}
     {{- $isLegal := in $legal .RelPermalink -}}
     {{- /* a heading and the text after it are kept apart, so a snippet does not read "Motivation The following …" */ -}}
     {{- $text := .Content | replaceRE `</h[1-6]>` ": " | replaceRE `<span class="sr-only img-zoom__hint">[^<]*</span>` "" | plainify | htmlUnescape -}}
