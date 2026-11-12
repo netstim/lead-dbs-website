@@ -1490,6 +1490,13 @@ html:not(.js) .g-item__info { display: block; padding: var(--s-2) 0 var(--s-3); 
   --pele-series-1: var(--p-action); --pele-series-2: var(--p-tint-1); --pele-series-3: var(--p-accent); --pele-series-4: var(--p-tint-2); }
 .usage__chart svg { display: block; width: 100%; height: auto; max-width: none !important; }
 .usage__chart text { font-variant-numeric: tabular-nums; }
+/* the three numbers: side by side from 640px; on a phone each is a row, its label left and the
+   number right, so the three take one short block instead of a screen */
+@media (min-width: 640px) and (max-width: 1023px) { .usage > .dl-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 639px) {
+  .usage > .dl-grid--3 .dl-cell { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-4); }
+  .usage > .dl-grid--3 .dl-cell dd.dl-cell__v { margin: 0; }
+}
 /* a phone keeps the charts at a readable size and scrolls them sideways */
 @media (max-width: 639px) {
   :is(.usage__chart--months, .usage__chart--countries) { overflow-x: auto; overscroll-behavior-x: contain; }
