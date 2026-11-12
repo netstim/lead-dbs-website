@@ -4,19 +4,24 @@
          hub        a menu group's own page: the full width; its body is the section's list
        Below 1024px the sidebar gives way: "On this page" folds under the title, the section's pages
        follow the text. Every page ends with its "Related" links (partial next-steps.html). */ -}}
+{{- /* Argument: the page, or dict "page" "body" (the rendered body of a type with its own template) "class". */ -}}
+{{ $p := . }}{{ $body := "" }}{{ $class := "" }}
+{{ if reflect.IsMap . }}{{ $p = .page }}{{ $body = .body }}{{ $class = .class }}{{ end }}
+{{ with $p }}
 {{ $t := partial "page-type.html" . }}
 {{ $toc := and $t.side (partial "has-toc.html" .) }}
 {{ $post := and (eq .Section "news") .IsPage }}
 {{ $side := and $t.side (or $toc (and (not $post) (partial "nav-place.html" .).group)) }}
-<main id="top" class="page page--{{ $t.name }}{{ if $side }} page--side{{ end }}">
+<main id="top" class="page page--{{ $t.name }}{{ if $side }} page--side{{ end }}{{ with $class }} {{ . }}{{ end }}">
   {{ partial "page-head.html" . }}
   <div class="wrap doc-layout{{ if $t.wide }} doc-layout--wide{{ else if $side }} doc-layout--side{{ end }}">
     <article class="prose">
       {{ if $toc }}{{ partial "toc.html" (dict "page" . "variant" "top") }}{{ end }}
-      {{ partial "nobreak-html.html" .Content }}
+      {{ with $body }}{{ . }}{{ else }}{{ partial "nobreak-html.html" $p.Content }}{{ end }}
       {{ if ne $t.name "hub" }}{{ partial "section-nav.html" (dict "page" . "variant" "end") }}{{ end }}
       {{ partial "next-steps.html" . }}
     </article>
     {{ if $side }}<aside class="sidebar" aria-label="Section">{{ partial "sidebar.html" (dict "page" . "toc" $toc) }}</aside>{{ end }}
   </div>
 </main>
+{{ end }}
