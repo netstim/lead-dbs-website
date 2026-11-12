@@ -290,6 +290,16 @@ html:not(.dl-terms-ready) .dl-terms__close { display: none; }
   .fs-fixes li { grid-template-columns: minmax(0, 1fr) auto; }
   .fs-fixes li > span:first-child { grid-column: 1 / -1; color: var(--muted); font-size: var(--t-small); }
 }
+/* a phone: the cells keep a little less air, so the words get the width; a step's actions stack, the
+   pill full width and the plain link centred under it */
+@media (max-width: 639px) {
+  .dl-cell { padding: var(--s-4); }
+  .dl-cell dd.dl-cell__v { margin-top: var(--s-3); }
+  .dl-step :is(h2, h3) { margin-inline: var(--s-4); }
+  .dl-step > p { margin-inline: var(--s-4); margin-bottom: var(--s-4); }
+  .dl-step > p.dl-step__actions { flex-direction: column; align-items: stretch; gap: var(--s-1); }
+  .dl-step__actions .dl-more-link { justify-content: center; min-height: var(--btn-h); }
+}
 /* release history */
 
 /* a link to another site in the menus and the sidebar: a small arrow after the label */
