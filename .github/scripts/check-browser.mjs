@@ -1,48 +1,78 @@
 // Opens every page of a build in Chromium, on a desktop (1440 px) and a phone (390 px), in the light and the
 // dark theme, and fails on what only a browser shows:
 //   - a script error, or an error logged to the console;
-//   - a request to this site that fails (a missing image, script or font);
-//   - a picture that does not load;
-//   - a page that scrolls sideways, or text cut off at the screen's edge (the page clips what is wider);
+//   - a request to this site that fails or answers with an error (a missing image, script or font);
+//   - a picture that does not load, or does not finish loading within 5 seconds of being scrolled to;
+//   - anything drawn past the screen's left or right edge (the page clips what is wider, so it would not
+//     scroll: the reader just never sees it), and text cut off inside its own box (a line that may not
+//     wrap and is wider than its box);
 //   - a request to another server (nothing loads from elsewhere until a visitor starts a video).
 // With a third argument it saves a full-page screenshot of every page and view there, for review.
 //
 //     npm install --no-save playwright@1.48.2 && npx playwright install chromium
 //     node .github/scripts/check-browser.mjs public https://www.lead-dbs.org/ [screenshots/]
 //
+// The pages are every index.html of the build that is not a redirect (old addresses), and the 404 page.
 // The build is served from its folder on a local port; the second argument is its baseURL, which the
-// sitemap's addresses start with. CHROME_PATH runs an installed Chrome instead of Playwright's Chromium.
+// sitemap's addresses must start with. CHROME_PATH runs an installed Chrome instead of Playwright's Chromium.
 import { createServer } from 'node:http';
-import { readFile, mkdir, writeFile } from 'node:fs/promises';
-import { extname, join, normalize } from 'node:path';
+import { readFile, readdir, mkdir, writeFile, realpath } from 'node:fs/promises';
+import { extname, join, normalize, sep } from 'node:path';
 import { chromium } from 'playwright';
 
 const [dir, baseURL, shots] = process.argv.slice(2);
 if (!dir || !baseURL) { console.error('usage: check-browser.mjs <build folder> <baseURL> [screenshot folder]'); process.exit(2); }
 
+// Things that are drawn past the screen's edge on purpose, each with a comment saying why. An element (or an
+// ancestor of it) that matches is not reported. Markup can say the same with a data-overflow-ok attribute.
+// Today's pages need nothing else: the renders that bleed off a page's side sit in boxes that clip them at
+// the screen's edge.
+const OVERFLOW_OK = [
+  '[data-overflow-ok]',
+];
+// at least this many pages, or the folder is not the build (or the baseURL is not the build's)
+const MIN_PAGES = 10;
+
 const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.xml': 'application/xml',
   '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.gif': 'image/gif',
   '.avif': 'image/avif', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.mp4': 'video/mp4', '.pdf': 'application/pdf', '.txt': 'text/plain' };
+const root = await realpath(dir);
 const basePath = new URL(baseURL).pathname;   // "/" for production, "/lead-dbs-website/" for the preview
 const server = createServer(async (req, res) => {
-  let path = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+  let path;
+  try { path = decodeURIComponent(new URL(req.url, 'http://x').pathname); } catch { res.writeHead(400).end(); return; }   // %ZZ
   if (!path.startsWith(basePath)) { res.writeHead(404).end(); return; }
   path = normalize(path.slice(basePath.length - 1));
   if (path.endsWith('/')) path += 'index.html';
   try {
-    const body = await readFile(join(dir, path));
-    res.writeHead(200, { 'content-type': types[extname(path)] || 'application/octet-stream' }).end(body);
+    // only files inside the build: a symlink that leads out of it is not served
+    const file = await realpath(join(root, path));
+    if (file !== root && !file.startsWith(root + sep)) { res.writeHead(403).end(); return; }
+    const body = await readFile(file);
+    res.writeHead(200, { 'content-type': types[extname(file)] || 'application/octet-stream' }).end(body);
   } catch {
-    try { res.writeHead(404, { 'content-type': 'text/html' }).end(await readFile(join(dir, '404.html'))); } catch { res.writeHead(404).end(); }
+    try { res.writeHead(404, { 'content-type': 'text/html' }).end(await readFile(join(root, '404.html'))); } catch { res.writeHead(404).end(); }
   }
 });
 await new Promise((r) => server.listen(0, '127.0.0.1', r));
 const origin = `http://127.0.0.1:${server.address().port}`;
-const local = (u) => origin + basePath + u.slice(baseURL.length);
 
-const sitemap = await readFile(join(dir, 'sitemap.xml'), 'utf8');
-const pages = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]).filter((u) => u.startsWith(baseURL) && !u.endsWith('.xml'));
-pages.push(baseURL + 'no-such-page/');   // the 404 page
+const fail = (why) => { console.log(why); server.close(); process.exit(1); };
+const sitemap = await readFile(join(root, 'sitemap.xml'), 'utf8').catch(() => '');
+const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+if (!locs.length || !locs.every((u) => u.startsWith(baseURL))) {
+  fail(`${dir}/sitemap.xml has ${locs.length ? `addresses that do not start with ${baseURL}, e.g. ${locs.find((u) => !u.startsWith(baseURL))}` : 'no addresses'}: is ${baseURL} the baseURL this build was made with?`);
+}
+// every page of the build, not only those in the sitemap (search, the forum's note, noindex pages)
+const pages = [];
+for (const f of (await readdir(root, { recursive: true })).sort()) {
+  if (f !== 'index.html' && !f.endsWith(`${sep}index.html`)) continue;
+  if (/<meta[^>]+http-equiv=["']?refresh/i.test(await readFile(join(root, f), 'utf8'))) continue;   // a redirect
+  pages.push(f.slice(0, -'index.html'.length).split(sep).join('/'));
+}
+if (pages.length < MIN_PAGES) fail(`${dir}: only ${pages.length} pages: is it the output folder of hugo?`);
+const NOT_FOUND = 'no-such-page/';   // the 404 page
+pages.push(NOT_FOUND);
 
 const views = [
   { name: 'desktop', width: 1440, height: 900, mobile: false },
@@ -52,67 +82,124 @@ const browser = await chromium.launch(process.env.CHROME_PATH ? { executablePath
 const problems = [];
 if (shots) await mkdir(shots, { recursive: true });
 
-for (const view of views) {
-  for (const scheme of ['light', 'dark']) {
-    const context = await browser.newContext({ viewport: { width: view.width, height: view.height }, isMobile: view.mobile, hasTouch: view.mobile,
-      colorScheme: scheme, reducedMotion: 'reduce' });
-    const page = await context.newPage();
-    let current = '';
-    const note = (what) => problems.push(`${current} (${view.name}, ${scheme}): ${what}`);
-    page.on('pageerror', (e) => note(`script error: ${e.message.split('\n')[0]}`));
-    page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource/.test(m.text())) note(`console: ${m.text().slice(0, 200)}`); });
-    page.on('requestfailed', (r) => { if (r.url().startsWith(origin)) note(`request failed: ${r.url().slice(origin.length)}`); });
-    page.on('response', (r) => {
-      if (r.url().startsWith(origin) && r.status() >= 400 && !current.includes('no-such-page')) note(`HTTP ${r.status()}: ${r.url().slice(origin.length)}`);
-    });
-    await page.route('**/*', (route) => {
-      const u = route.request().url();
-      if (u.startsWith(origin) || u.startsWith('data:') || u.startsWith('blob:')) return route.continue();
-      note(`request to another server: ${u.slice(0, 120)}`);
-      return route.abort();
-    });
-    for (const url of pages) {
-      current = url.slice(baseURL.length - 1) || '/';
-      try {
-        await page.goto(local(url), { waitUntil: 'load', timeout: 30000 });
-        // scroll through, so pictures that load near the screen load
-        await page.evaluate(async () => {
-          for (let y = 0; y < document.documentElement.scrollHeight; y += innerHeight * 0.8) { scrollTo(0, y); await new Promise((r) => setTimeout(r, 60)); }
-          scrollTo(0, 0);
-        });
-        await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {});
-        const r = await page.evaluate(() => ({
-          wide: document.documentElement.scrollWidth - innerWidth,
-          // text past the right edge that no scroll container holds: the page clips it, so it is cut off
-          cut: [...document.querySelectorAll('body *')].filter((el) => {
-            if (!el.checkVisibility?.() || ![...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) return false;
-            const r = el.getBoundingClientRect();
-            if (r.width === 0 || r.right <= innerWidth + 1) return false;
-            for (let a = el.parentElement; a; a = a.parentElement) {
-              const o = getComputedStyle(a).overflowX;
-              if (o === 'auto' || o === 'scroll' || o === 'hidden') return false;
-            }
-            return true;
-          }).slice(0, 3).map((el) => `${el.tagName.toLowerCase()}${el.className && typeof el.className === 'string' ? '.' + el.className.trim().split(/\s+/)[0] : ''} "${el.textContent.trim().slice(0, 40)}"`),
-          broken: [...document.images].filter((i) => i.complete && i.currentSrc && i.naturalWidth === 0).map((i) => i.currentSrc.replace(location.origin, '')),
-        }));
-        if (r.wide > 0) note(`scrolls sideways by ${r.wide}px`);
-        for (const c of r.cut) note(`text cut off at the right edge: ${c}`);
-        for (const b of r.broken) note(`picture does not load: ${b}`);
-        if (shots) {
-          const file = `${(current.replace(/^\/|\/$/g, '').replace(/\//g, '_') || 'home')}--${view.name}-${scheme}.png`;
-          await writeFile(join(shots, file), await page.screenshot({ fullPage: true }));
+// What the reader cannot see, measured in the page (see the list at the top).
+function measure(okSelectors) {
+  const edge = document.documentElement.clientWidth;
+  const ok = okSelectors.join(', ');
+  const name = (el) => `${el.tagName.toLowerCase()}${el.id ? '#' + el.id : ''}${typeof el.className === 'string' && el.className.trim() ? '.' + el.className.trim().split(/\s+/)[0] : ''}`
+    + (el.textContent.trim() ? ` "${el.textContent.trim().replace(/\s+/g, ' ').slice(0, 40)}"` : '');
+  const shown = (el) => el.checkVisibility({ visibilityProperty: true, opacityProperty: false });
+  const out = [], cut = [], reported = new Set();
+  let hidden = null;   // the last visually hidden box (.sr-only: 1 px, clipped); what is inside it is not drawn
+  for (const el of document.querySelectorAll('body *')) {
+    if (hidden?.contains(el) || el.closest(ok) || !shown(el)) continue;
+    const r = el.getBoundingClientRect();
+    if (r.width <= 1 && r.height <= 1) { hidden = el; continue; }
+    if (r.width < 1 || r.height < 1) continue;
+    const past = Math.max(r.right - edge, -r.left);
+    if (past > 1) {
+      // inside a box that scrolls sideways, the reader can scroll to it; inside a box that clips, it is cut
+      // at that box's edge, which is a problem only if that box is itself past the screen's edge (and then
+      // the box is reported). The page itself (html, body) clips at the screen's edge: that does not count.
+      let excused = false;
+      for (let a = el.parentElement; a && a !== document.body && a !== document.documentElement; a = a.parentElement) {
+        if (reported.has(a)) { excused = true; break; }
+        const o = getComputedStyle(a).overflowX;
+        if (o === 'auto' || o === 'scroll') { excused = true; break; }
+        if (o === 'hidden' || o === 'clip') {
+          const b = a.getBoundingClientRect();
+          if (b.right <= edge + 1 && b.left >= -1) { excused = true; break; }
         }
-      } catch (e) {
-        note(`did not open: ${e.message.split('\n')[0]}`);
+      }
+      if (!excused) { reported.add(el); out.push(`${name(el)} by ${Math.round(past)}px`); }
+    }
+    // a line that may not wrap and is wider than its own box: the rest of it is hidden or spills (SVG text
+    // never wraps and has no box of its own to measure against). The text itself is measured too, since
+    // scrollWidth also counts a decoration that pokes out (a button's arrow has a negative margin).
+    const texts = el instanceof SVGElement ? [] : [...el.childNodes].filter((n) => n.nodeType === 3 && n.textContent.trim());
+    if (texts.length) {
+      const s = getComputedStyle(el);
+      const nowrap = s.whiteSpace === 'nowrap' || s.whiteSpace === 'pre' || s.textWrapMode === 'nowrap';
+      if (nowrap && s.display !== 'inline' && ['visible', 'hidden', 'clip'].includes(s.overflowX) && el.scrollWidth > el.clientWidth + 1) {
+        const range = document.createRange();
+        const right = Math.max(...texts.map((n) => { range.selectNodeContents(n); return range.getBoundingClientRect().right; }));
+        const box = r.left + el.clientLeft + el.clientWidth;
+        if (right > box + 1) cut.push(`${name(el)} (${Math.round(right - box)}px)`);
       }
     }
-    await context.close();
   }
+  return { out, cut };
 }
+
+async function check(view, scheme) {
+  const context = await browser.newContext({ viewport: { width: view.width, height: view.height }, isMobile: view.mobile, hasTouch: view.mobile,
+    colorScheme: scheme, reducedMotion: 'reduce' });
+  const page = await context.newPage();
+  let current = '';
+  const note = (what) => problems.push(`${current} (${view.name}, ${scheme}): ${what}`);
+  page.on('pageerror', (e) => note(`script error: ${e.message.split('\n')[0]}`));
+  page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource/.test(m.text())) note(`console: ${m.text().slice(0, 200)}`); });
+  page.on('requestfailed', (r) => { if (r.url().startsWith(origin)) note(`request failed: ${r.url().slice(origin.length)}`); });
+  page.on('response', (r) => {
+    if (!r.url().startsWith(origin) || r.status() < 400) return;
+    // the 404 page's own document answers 404; anything it loads must not
+    const own404 = current === '/' + NOT_FOUND && r.status() === 404 && r.request().isNavigationRequest() && r.frame() === page.mainFrame();
+    if (!own404) note(`HTTP ${r.status()}: ${r.url().slice(origin.length)}`);
+  });
+  await page.route('**/*', (route) => {
+    const u = route.request().url();
+    if (u.startsWith(origin) || u.startsWith('data:') || u.startsWith('blob:')) return route.continue();
+    note(`request to another server: ${u.slice(0, 120)}`);
+    return route.abort();
+  });
+  for (const p of pages) {
+    current = '/' + p;
+    try {
+      await page.goto(origin + basePath + p, { waitUntil: 'load', timeout: 30000 });
+      // scroll through, so pictures that load near the screen load, and through every box that scrolls
+      // sideways (a row of covers), as a reader would
+      await page.evaluate(async () => {
+        const pause = () => new Promise((r) => setTimeout(r, 60));
+        for (let y = 0; y < document.documentElement.scrollHeight; y += innerHeight * 0.8) {
+          scrollTo(0, y); await pause();
+          for (const box of document.querySelectorAll('body *')) {
+            const o = getComputedStyle(box).overflowX;
+            const r = box.getBoundingClientRect();
+            if ((o !== 'auto' && o !== 'scroll') || box.scrollWidth <= box.clientWidth + 1 || r.bottom < 0 || r.top > innerHeight) continue;
+            for (let x = 0; x < box.scrollWidth; x += box.clientWidth * 0.8) { box.scrollLeft = x; await pause(); }
+            box.scrollLeft = 0;
+          }
+        }
+        scrollTo(0, 0);
+      });
+      // then give the pictures that were scrolled to 5 seconds to finish (a picture that is not drawn, in a
+      // closed menu or hidden at this width, is never fetched and is not waited for)
+      const waiting = () => [...document.querySelectorAll('img[loading]')].filter((i) => !i.complete && i.checkVisibility()).map((i) => (i.currentSrc || i.src).replace(location.origin, ''));
+      await page.waitForFunction(() => ![...document.querySelectorAll('img[loading]')].some((i) => !i.complete && i.checkVisibility()),
+        null, { timeout: 5000, polling: 100 }).catch(() => {});   // what is still loading then is reported below
+      const r = await page.evaluate(measure, OVERFLOW_OK);
+      const slow = await page.evaluate(waiting);
+      const broken = await page.evaluate(() => [...document.images].filter((i) => i.complete && i.currentSrc && i.naturalWidth === 0).map((i) => i.currentSrc.replace(location.origin, '')));
+      for (const o of r.out) note(`past the screen's edge: ${o}`);
+      for (const c of r.cut) note(`text cut off in its box: ${c}`);
+      for (const b of broken) note(`picture does not load: ${b}`);
+      for (const s of slow) note(`picture did not finish loading: ${s}`);
+      if (shots) {
+        const file = `${(p.replace(/\/$/, '').replace(/\//g, '_') || 'home')}--${view.name}-${scheme}.png`;
+        await writeFile(join(shots, file), await page.screenshot({ fullPage: true }));
+      }
+    } catch (e) {
+      note(`did not open: ${e.message.split('\n')[0]}`);
+    }
+  }
+  await context.close();
+}
+
+// the four views run side by side, each in its own browser context
+await Promise.all(views.flatMap((view) => ['light', 'dark'].map((scheme) => check(view, scheme))));
 await browser.close();
 server.close();
 
-for (const p of problems) console.log(p);
+for (const p of problems.sort()) console.log(p);
 console.log(`${pages.length} pages in ${views.length * 2} views checked, ${problems.length} problems`);
 process.exit(problems.length ? 1 : 0);
