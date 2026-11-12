@@ -63,8 +63,8 @@ Neurosurgery Society (DGNC).
 
 ![Group photo of the 2nd International Lead-DBS Workshop, Shanghai 2018](foto_postcard-1030x728.png)
 
-Over 45 participants from across the globe, from preprocessing and electrode localization to VTA modelling
-and connectomic DBS. A satellite symposium of the TRDBS meeting, hosted by Prof. Shouyan Wang.
+Over 45 participants from around the world attended sessions on preprocessing, electrode localization, VTA
+modelling and connectomic DBS. A satellite symposium of the TRDBS meeting, hosted by Prof. Shouyan Wang.
 
 ## Berlin, November 2016 {#berlin-2016}
 

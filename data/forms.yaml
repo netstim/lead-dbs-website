@@ -8,7 +8,7 @@
 # without one.
 newsletter:
   submit: Subscribe
-  offline: "Until sign-up opens here, release news is posted under [News](/news/) and in its [feed](/news/index.xml)."
+  offline: "Newsletter sign-up is not yet available here. Read release announcements in [News](/news/) or subscribe to the [RSS feed](/news/index.xml)."
   fields:
     - {name: first_name, label: First name, autocomplete: given-name, half: true}
     - {name: last_name, label: Last name, autocomplete: family-name, half: true}

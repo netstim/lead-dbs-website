@@ -41,7 +41,7 @@ hero:
 # The frames are in static/media/insertion/ (see docs/home-and-media.md, "The electrode insertion").
 localize:
   title: "Electrode localization from MRI and CT"
-  text: "Reconstructs every electrode from postoperative imaging, in 2D and 3D, for one patient or a whole cohort."
+  text: "Reconstruct electrode positions from postoperative imaging and view individual patients or cohorts in 2D and 3D."
   # the steps of the diagram (assets/diagrams/localize.mmd holds the same four words), read out as a list
   steps:
     - {name: "Coregister", value: "postoperative to preoperative imaging"}
@@ -59,7 +59,7 @@ features:
   more: {label: "What Lead-DBS does", url: "/helpsupport/knowledge-base/lead-dbs-methods/"}
   data:
     page: "/helpsupport/knowledge-base/atlasesresources"
-    text: "Most in MNI space, many included with Lead-DBS."
+    text: "Most in MNI space, many shipped with Lead-DBS."
     image: "head-data.jpg"
     crop: [1500, 150, 2950, 1250]
     links:
@@ -67,17 +67,17 @@ features:
       - {page: "/helpsupport/knowledge-base/atlasesresources/cortical-atlas-parcellations-mni-space", label: "Cortical parcellations"}
       - {page: "/helpsupport/knowledge-base/atlasesresources/normative-connectomes", label: "Normative connectomes"}
   cards:
-    - title: "Simulates the stimulation"
+    - title: "Stimulation modelling"
       text: "Model electric fields, activated tissue and pathways."
       anchor: "stimulation"
       image: "pathway-activation.jpg"
       alt: "Two electrodes with their stimulation volumes in blue and the fibre pathways they activate in red and white"
-    - title: "Connects it to networks"
+    - title: "Connectivity analysis"
       text: "Map connections from stimulation sites to other brain regions."
       anchor: "connectivity"
       image: "fiber-filtering.jpg"
       alt: "Fibre tracts around the electrodes, coloured from red to yellow by their association with outcome, over a 7 tesla MRI slice"
-    - title: "Compares whole cohorts"
+    - title: "Group analysis"
       text: "Relate electrode placement to clinical outcomes across patients."
       anchor: "groups-of-patients"
       image: "cohort-top.jpg"
@@ -97,10 +97,10 @@ next:
   label: "Coming next"
   title: "Lead-DBS 4.0"
   points:
-    - {title: "Completely in Python", text: "Lead-DBS is being rebuilt from the ground up in Python."}
+    - {title: "Lead-DBS 4.0", text: "We’re rewriting Lead-DBS in Python."}
     - {title: "No MATLAB required", text: "Version 4.0 will run without a MATLAB licence."}
     - {title: "First to try it", text: "Participants of the hands-on workshop will be among the first to try the pre-release."}
-  link: {label: "The workshop", url: "/events/hands-on-workshop-2027/"}
+  link: {label: "Hands-on workshop", url: "/events/hands-on-workshop-2027/"}
 
 # Events: the upcoming entries of data/events.yaml, in one band with the latest news.
 events:
@@ -155,6 +155,6 @@ cite:
   # the paper to cite now: its id in data/papers.yaml (the home page shows it as a reference and as BibTeX);
   # every paper to cite is on the page the link leads to
   paper: "neudorfer2023"
-  link: {label: "Every paper to cite", url: "/about/citing_leaddbs/"}
+  link: {label: "Citation guidance", url: "/about/citing_leaddbs/"}
 
 ---

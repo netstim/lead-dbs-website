@@ -24,7 +24,7 @@ steps:
     show: release
     actions:
       - {text: "Download Lead-DBS", page: "/download/"}
-      - {text: "Install steps", page: "/download/#install"}
+      - {text: "Installation instructions", page: "/download/#install"}
   - id: "lead-tutor"
     title: "Get the practice data"
     text: "[Lead Tutor](/helpsupport/learn-lead-dbs-yourself/) is an open dataset of ten real patients, with their electrodes already localized by experts."
@@ -36,7 +36,7 @@ steps:
       - {text: "Guide", url: "https://netstim.gitbook.io/leaddbs/lead-dbs/self-tutoring-with-lead-tutor"}
   - id: "compare"
     title: "Localize, then get your report"
-    text: "Localize each patient’s electrodes and press *Submit Results…*: the report shows how far yours lie from the experts’."
+    text: "Localize each patient’s electrodes and press *Submit Results…* to receive a report of their distances from expert localizations."
     show: report
     actions:
       - {text: "See a report", page: "/helpsupport/learn-lead-dbs-yourself/#your-report"}

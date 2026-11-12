@@ -36,20 +36,18 @@ layout: "showcase"
 {{< cells key="glance" label="FOCUS at a glance" >}}
 
 {{% hub-section %}}
-## What it is
-
-**The nuclei and fibre tracts of the subcortex,** in submillimetre detail.
+## Anatomical coverage
 
 FOCUS gives submillimetre definitions of the nuclei and fibre tracts of the basal ganglia, thalamus,
-subthalamus, midbrain and cerebellum, including delicate pathways often invisible on conventional MRI: the
-detail needed to model deep brain stimulation (DBS), focused ultrasound and lesion surgery. Its
+subthalamus, midbrain and cerebellum, including delicate pathways often invisible on conventional MRI:
+anatomical detail for modelling deep brain stimulation (DBS), focused ultrasound and lesion surgery. Its
 registration to MNI space allows it to be transformed into an individual brain.
 
 ![FOCUS atlas: subcortical structures and fibre pathways of the right hemisphere in 3D, medial-lateral view](Fig1_newdraft_rh_segtracts_mediolateral-1030x1019.png)
 {{% /hub-section %}}
 
 {{% hub-section %}}
-## How to get it {#download}
+## Download FOCUS {#download}
 
 **For academic research only,** not for commercial applications.
 
@@ -67,8 +65,8 @@ which is sent rarely; you can opt out with one click, and your details are not s
 
 **Segmented by hand,** checked against histology and fibre dissections.
 
-The structures were segmented on 7T ex vivo MRI. Alongside them, the pathways were curated from anatomical priors (“tract architectonics”), so that complex fibre systems are
-reconstructed faithfully to the anatomy. The atlas was validated against 48 additional anatomical
+The structures were segmented on 7T ex vivo MRI. Fibre pathways were curated using anatomical priors (“tract architectonics”) to reconstruct complex fibre
+anatomy. The atlas was validated against 48 additional anatomical
 resources, including histology and fibre dissections, and will be refined version by version.
 {{% /hub-section %}}
 

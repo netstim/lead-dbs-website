@@ -361,7 +361,7 @@ enableGitInfo = true
     pageRef = "/impressum-datenschutzerklarung"
     weight = 1
   [[menus.footer]]
-    name = "Privacy Policy"
+    name = "Privacy policy"
     pageRef = "/privacy-policy"
     weight = 2
 

@@ -11,7 +11,7 @@ share: "images/renders/cohort-black.jpg"
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
   - {page: "/develop/#add-your-atlas-or-dataset", name: "Add your atlas or dataset"}
-# the rows under "Other data" (layouts/_shortcodes/link-rows.html)
+# the rows under "Templates and practice data" (layouts/_shortcodes/link-rows.html)
 other:
   - {name: "About the MNI spaces", text: "Template versions and coordinate spaces", url: "/about-the-mni-spaces/"}
   - {name: "IXI dataset", text: "Age-matched reference for AC/PC to MNI conversion", url: "/helpsupport/knowledge-base/lead-dbs-methods/acpc-to-mni-conversion-2/#ixi"}
@@ -27,7 +27,7 @@ layout: "hub"
 {{< atlas-hub >}}
 
 {{% hub-section %}}
-## Other data {#other-data}
+## Templates and practice data {#other-data}
 
 {{< link-rows key="other" >}}
 {{% /hub-section %}}

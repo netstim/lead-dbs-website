@@ -70,11 +70,11 @@
       if (!q) { list.replaceChildren(); status.textContent = ''; return; }
       status.textContent = 'Searching…';
       let rows;
-      try { rows = await load(); } catch { if (request === generation) status.textContent = 'The search index could not be loaded.'; return; }
+      try { rows = await load(); } catch { if (request === generation) status.textContent = 'Search is unavailable. Please try again.'; return; }
       if (request !== generation || input.value.trim() !== q) return;
       const all = rank(rows, q);
       const hits = all.slice(0, SHOWN);
-      status.textContent = !all.length ? 'Nothing found on this website. Try fewer or other words.'
+      status.textContent = !all.length ? 'No results found on this website. Try fewer or different words.'
         : all.length > SHOWN ? `The best ${SHOWN} of ${all.length} results` : `${all.length} result${all.length === 1 ? '' : 's'}`;
       // how to do something in Lead-DBS is in the manual (another site): offered after the results, and in their place when there are none
       const manual = `<li><a class="search__hit search__hit--manual" href="${MANUAL}"><span class="search__title">${hits.length ? 'Not here? ' : ''}Look it up in the Lead-DBS manual<span class="ext-mark" aria-hidden="true">↗</span></span><span class="search__section">netstim.gitbook.io, another site</span><span class="search__snippet">How to install Lead-DBS and do each step of an analysis.</span></a></li>`;

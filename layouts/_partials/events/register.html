@@ -4,19 +4,19 @@
 {{- $e := .ev.e -}}
 {{- $slack := "" }}{{ with site.GetPage "/helpsupport/slack-user-channel" }}{{ $slack = .RelPermalink }}{{ end -}}
 {{- if and .terse (not $e.register_url) -}}
-{{ with site.GetPage "/subscribe-to-our-newsletter" }}<p class="event__register"><a class="btn btn--primary" href="{{ .RelPermalink }}#subscribe">Get notified</a></p>{{ end }}
+{{ with site.GetPage "/subscribe-to-our-newsletter" }}<p class="event__register"><a class="btn btn--primary" href="{{ .RelPermalink }}#subscribe">Subscribe to our newsletter</a></p>{{ end }}
 {{- else -}}
 {{- if $e.register_url -}}
 {{- /* a registration page on another site (Zoom) ends in the site's ↗, as every link that leaves it */ -}}
 {{- $ext := strings.HasPrefix $e.register_url "http" }}
 <p class="event__register"><a class="{{ if .compact }}link{{ if $ext }} link--ext{{ end }}{{ else }}btn btn--primary{{ if $ext }} btn--ext{{ end }}{{ end }}" href="{{ partial "resolve-url.html" (dict "url" $e.register_url "page" .page) }}">Register{{ if and (not .terse) (strings.Contains (lower $e.where) "zoom") }} on Zoom{{ end }}{{ if $ext }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ end }}</a></p>
 {{- else if $e.online -}}
-<p class="event__note">Registration opens soon: leave your email address and you get the {{ if strings.Contains (lower $e.where) "zoom" }}Zoom {{ end }}link. Until then, the link is shared in the <a href="{{ $slack }}">user Slack</a>.</p>
+<p class="event__note">Registration opens soon. After registering, you will receive the meeting link by email. Until then, the link is shared in the <a href="{{ $slack }}">user Slack</a>.</p>
 {{- else -}}
 {{- /* an event on site whose registration is not open yet: the newsletter announces it */ -}}
 {{- $nl := "" }}{{ with site.GetPage "/subscribe-to-our-newsletter" }}{{ $nl = .RelPermalink }}{{ end -}}
 {{ if or (not .compact) (not $nl) }}<p class="event__note">Details and registration will follow in the newsletter and on the <a href="{{ $slack }}">user Slack</a>.</p>{{ end }}
-{{ with $nl }}<p class="event__register"><a class="{{ if $.compact }}link{{ else }}btn btn--primary{{ end }}" href="{{ . }}#subscribe">Get notified</a></p>{{ end }}
+{{ with $nl }}<p class="event__register"><a class="{{ if $.compact }}link{{ else }}btn btn--primary{{ end }}" href="{{ . }}#subscribe">Subscribe to our newsletter</a></p>{{ end }}
 {{- end -}}
 
 {{- end -}}

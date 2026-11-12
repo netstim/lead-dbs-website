@@ -34,7 +34,7 @@
 # lines of script in the page also hide events that are over by the visitor's clock.
 events:
   - id: "developer-meeting"
-    title: "Lead-DBS Developer Meeting"
+    title: "Lead-DBS developer meeting"
     start: "2026-11-18T15:00"
     timezone: "Europe/Berlin"
     also_in: "America/New_York"
@@ -47,13 +47,13 @@ events:
       - {label: "Flyer and details", url: "/events/developer-meeting/"}
 
   - id: "hands-on-workshop-2027"
-    title: "Hands-on Lead-DBS Workshop"
+    title: "Hands-on Lead-DBS workshop"
     start: "2027-02-11T09:00"
     end: "2027-02-12"
     timezone: "Europe/Berlin"
     where: "Cologne"
     host: "Institute for Network Stimulation and Uniklinik Köln"
-    text: "Two days of hands-on work with Lead-DBS. Participants will be among the first to try the pre-release of Lead-DBS 4.0, rebuilt completely in Python."
+    text: "A two-day Lead-DBS workshop with access to a pre-release of Lead-DBS 4.0, rewritten in Python."
     register_url: ""
     links:
       - {label: "Workshop details", url: "/events/hands-on-workshop-2027/"}

@@ -14,8 +14,8 @@ next:
   - {page: "/helpsupport/knowledge-base/lead-dbs-methods/"}
 ---
 
-Lead-DBS converts the AC/PC coordinates of neurosurgery into MNI space and back, by warping the same
-coordinate in many age-matched brains.
+Lead-DBS converts between surgical AC/PC and MNI coordinates by transforming the same coordinate across
+multiple age-matched brains.
 
 ## Use it in Lead-DBS
 
@@ -27,8 +27,8 @@ Open the *AC/PC to MNI conversion tool* from the Tools menu of Lead-DBS.
 
 ### The IXI reference data {#ixi}
 
-To convert coordinates without patients of your own, use the preprocessed
-[IXI dataset](https://brain-development.org/ixi-dataset/) (open licence) of healthy subjects: Lead-DBS picks
+No patient data yet? Use the preprocessed
+[IXI dataset](https://brain-development.org/ixi-dataset/) of healthy subjects (open licence): Lead-DBS picks
 an age-matched sample from it, as described in [Horn et al. 2017](https://doi.org/10.1016/j.neuroimage.2017.02.004).
 
 {{< button href="https://filedn.com/lsPIJ4ragTWjjmV6PvlDQLu/data/IXI.tgz" >}}Download the IXI dataset{{< /button >}}
@@ -39,7 +39,7 @@ an age-matched sample from it, as described in [Horn et al. 2017](https://doi.or
 {{< paper horn2017acpc "full" >}}
 {{% /copybox %}}
 
-A short talk on the method, held at AAN 2017: [slides (PDF)](https://www.lead-dbs.org/docs/talks/AAN_presentation_Horn_2017.pdf).
+Slides from a short talk on the method at AAN 2017 ([PDF](https://www.lead-dbs.org/docs/talks/AAN_presentation_Horn_2017.pdf)).
 
 ## Background: DBS targets in MNI space {#background}
 
@@ -156,7 +156,7 @@ available in MNI space.
 
 ### One target, many resources: essential tremor
 
-Atlases are not the only resources in MNI space. The study made this point with the DBS target for
+The study combined atlases and connectivity data in MNI space to characterize the DBS target for
 essential tremor, commonly placed in the ventral intermediate nucleus of the thalamus (VIM), an
 assumption based on early, pre-MRI studies (for example by Hassler or Jones). The nucleus has many
 names: *VIM/Vim* in the Walker and Ohye notations, *Vimi* in those of Hassler and of Van Buren and
