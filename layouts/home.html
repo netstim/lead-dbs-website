@@ -243,21 +243,23 @@
   {{ end }}
 
   {{/* 6. Lead-DBS around the world: the words left (heading, one line, a pill to /usage/), right a wireframe
-       globe drawn by assets/js/globe.js from data/usage.json (tools/usage.py writes it from the launch
-       log): countries only. Without the script, or until the map has loaded, the figure is not shown. */}}
-  {{ with $p.worldwide }}{{ with hugo.Data.usage }}
-  {{ $u := . }}{{ $w := $p.worldwide }}
-  {{ $since := "" }}{{ range $y, $n := $u.years }}{{ if not $since }}{{ $since = $y }}{{ end }}{{ end }}
+       globe drawn by assets/js/globe.js that replays the downloads of Lead-DBS since 2015, from
+       data/downloads.json (tools/downloads.py writes it from the download log): countries only. Without the
+       script, or until the map has loaded, the figure is not shown. */}}
+  {{ with $p.worldwide }}{{ with hugo.Data.downloads }}
+  {{ $d := . }}{{ $w := $p.worldwide }}
   {{ $map := resources.Get "data/world-110m.json" | minify | fingerprint }}
-  {{- /* the globe's script (about 70 KB with d3 and topojson) and the map are fetched only when the section
-         comes near the screen: main/home.js adds the script, which then fetches the map */}}
+  {{- /* the figures for the globe (about 35 KB) are fetched with the map, not written into the page */}}
+  {{ $figures := dict "countries" $d.countries "months" $d.months | jsonify | resources.FromString "data/downloads.json" | fingerprint }}
+  {{- /* the globe's script (about 70 KB with d3 and topojson), the map and the figures are fetched only when
+         the section comes near the screen: main/home.js adds the script, which then fetches the rest */}}
   {{ $globe := slice (resources.Get "js/vendor/d3-array.min.js") (resources.Get "js/vendor/d3-geo.min.js") (resources.Get "js/vendor/topojson-client.min.js") (resources.Get "js/globe.js" | minify) | resources.Concat "js/globe.bundle.js" | fingerprint }}
-  <section class="section home-sec worldwide" id="worldwide" aria-labelledby="worldwide-h" data-map="{{ $map.RelPermalink }}" data-globe-src="{{ $globe.RelPermalink }}" data-globe-integrity="{{ $globe.Data.Integrity }}">
+  <section class="section home-sec worldwide" id="worldwide" aria-labelledby="worldwide-h" data-map="{{ $map.RelPermalink }}" data-downloads="{{ $figures.RelPermalink }}" data-globe-src="{{ $globe.RelPermalink }}" data-globe-integrity="{{ $globe.Data.Integrity }}">
     <div class="wrap">
       <div class="grid split home-split">
         <div class="split__text worldwide__text">
-          <h2 id="worldwide-h">{{ replace $w.title "{countries}" (len $u.countries) | partial "nobreak.html" }}</h2>
-          <p class="t-lead">{{ replace (replace $w.text "{launches}" (lang.FormatNumber 0 $u.launches_year)) "{year}" $u.year | partial "nobreak.html" }}</p>
+          <h2 id="worldwide-h">{{ replace $w.title "{countries}" (len $d.countries) | partial "nobreak.html" }}</h2>
+          <p class="t-lead">{{ replace (replace $w.text "{downloads}" (lang.FormatNumber 0 $d.total)) "{year}" (substr $d.from 0 4) | partial "nobreak.html" }}</p>
           {{- /* the globe can only be read with a mouse: the second link leads to the table of every country */}}
           {{ with site.GetPage "/usage" }}<p class="worldwide__links"><a class="btn btn--primary" href="{{ .RelPermalink }}">{{ $w.link_label }}</a><a class="btn btn--secondary" href="{{ .RelPermalink }}#all-countries">{{ $w.table_label }}</a></p>{{ end }}
         </div>
@@ -273,7 +275,6 @@
         </figure>
       </div>
     </div>
-    <script type="application/json" data-globe-data>{{ dict "countries" $u.countries "launches" $u.launches "day" $u.day "since" $since | jsonify | safeJS }}</script>
   </section>
   {{ end }}{{ end }}
 

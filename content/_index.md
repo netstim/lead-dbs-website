@@ -83,11 +83,11 @@ features:
       image: "cohort-top.jpg"
       alt: "The electrodes of nine Lead Tutor patients seen from above, ending in the subthalamic nucleus (orange) between the internal pallidum (green) and red nucleus (red)"
 
-# Lead-DBS around the world (the globe; figures from data/usage.json, see docs/home-and-media.md, "Usage figures").
-# {countries}, {launches} and {year} are filled in from the data.
+# Lead-DBS around the world (the globe; figures from data/downloads.json, see docs/home-and-media.md, "Download figures").
+# {countries}, {downloads} and {year} (the year of the first download) are filled in from the data.
 worldwide:
-  title: "Used in {countries} countries"
-  text: "Researchers started Lead-DBS {launches} times in {year}."
+  title: "Downloaded in {countries} countries"
+  text: "Lead-DBS has been downloaded {downloads} times since {year}."
   link_label: "Usage statistics"
   # the link to the table of every country on /usage/ (the globe itself can only be read with a mouse)
   table_label: "All countries"
