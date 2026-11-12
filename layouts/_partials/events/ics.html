@@ -7,5 +7,5 @@
 {{- $dt := "" -}}
 {{- if $allDay }}{{ $dt = printf "DTSTART;VALUE=DATE:%s\r\nDTEND;VALUE=DATE:%s" (replace $ev.date_only "-" "") ($ev.ends.Format "20060102") -}}
 {{- else }}{{ $end := $ev.start.Add (time.ParseDuration "1h") }}{{ if $e.end }}{{ $end = $ev.ends }}{{ end }}{{ $dt = printf "DTSTART:%s\r\nDTEND:%s" ($ev.start.UTC.Format "20060102T150405Z") ($end.UTC.Format "20060102T150405Z") }}{{ end -}}
-{{- $ics := printf "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Lead-DBS//Events//EN\r\nBEGIN:VEVENT\r\nUID:%s@lead-dbs.org\r\nDTSTAMP:%s\r\n%s\r\nSUMMARY:%s\r\nLOCATION:%s\r\n%sEND:VEVENT\r\nEND:VCALENDAR\r\n" $ev.id ($ev.start.UTC.Format "20060102T150405Z") $dt (replace $e.title "," `\,`) (replace $e.where "," `\,`) (cond (ne .details "") (printf "URL:%s\r\n" (.details | absURL)) "") -}}
+{{- $ics := printf "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Lead-DBS//Events//EN\r\nBEGIN:VEVENT\r\nUID:%s-%s@lead-dbs.org\r\nDTSTAMP:%s\r\n%s\r\nSUMMARY:%s\r\nLOCATION:%s\r\n%sEND:VEVENT\r\nEND:VCALENDAR\r\n" $ev.id (replace $ev.date_only "-" "") ($ev.start.UTC.Format "20060102T150405Z") $dt (replace $e.title "," `\,`) (replace $e.where "," `\,`) (cond (ne .details "") (printf "URL:%s\r\n" (.details | absURL)) "") -}}
 {{- return (printf "data:text/calendar;charset=utf-8;base64,%s" ($ics | base64Encode)) -}}

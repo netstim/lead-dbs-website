@@ -2,8 +2,19 @@
        .e (the entry), .id, .start / .ends (time.Time; ends is exclusive), .iso_start / .iso_ends,
        .when (date text), .when_short ("18 Nov", "11–12 Feb"), .time (time with its zone, or ""), .time_short (the same, zone abbreviation only), .over (true when it ended before this build).
        Returns a slice of dicts. */ -}}
-{{- $out := slice -}}
+{{- $out := slice }}{{ $ids := slice -}}
+{{- $fields := slice "id" "title" "start" "end" "timezone" "also_in" "tz_label" "where" "online" "host" "text" "register_url" "links" -}}
 {{- range hugo.Data.events.events -}}
+  {{- /* the entry is checked here, so a mistake in data/events.yaml stops the build with its name */ -}}
+  {{- $entry := . }}{{ $name := .title | default .id | default "an entry" -}}
+  {{- range $k, $_ := . }}{{ if not (in $fields $k) }}{{ errorf "data/events.yaml: %s has an unknown field %q" $name $k }}{{ end }}{{ end -}}
+  {{- range slice "id" "title" "start" "timezone" "where" "text" }}{{ if not (index $entry .) }}{{ errorf "data/events.yaml: %s has no %s" $name . }}{{ end }}{{ end -}}
+  {{- if not (findRE `^[a-z0-9]+(-[a-z0-9]+)*$` .id) }}{{ errorf "data/events.yaml: the id %q of %s may hold only a-z, 0-9 and hyphens" .id $name }}{{ end -}}
+  {{- if in $ids .id }}{{ errorf "data/events.yaml: the id %q is used twice" .id }}{{ end }}{{ $ids = $ids | append .id -}}
+  {{- if not (findRE `^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$` (string .start)) }}{{ errorf "data/events.yaml: %s: start %q is not 2027-02-11 or 2027-02-11T09:00" $name .start }}{{ end -}}
+  {{- with .end }}{{ if not (findRE `^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$` (string .)) }}{{ errorf "data/events.yaml: %s: end %q is not 2027-02-12 or 2027-02-12T16:30" $name . }}{{ end }}{{ end -}}
+  {{- with .register_url }}{{ if findRE `zoom\.us/(j|wc|s)/` . }}{{ errorf "data/events.yaml: %s: register_url is a meeting's join link; use its registration page" $name }}{{ end }}{{ end -}}
+  {{- range .links }}{{ if not (and .label .url) }}{{ errorf "data/events.yaml: %s: every link needs label and url" $name }}{{ end }}{{ end -}}
   {{- $tz := .timezone | default "Europe/Berlin" -}}
   {{- $s := string .start -}}{{- if eq (len $s) 16 }}{{ $s = printf "%s:00" $s }}{{ end -}}
   {{- $timed := gt (len $s) 10 -}}
@@ -47,7 +58,7 @@
   {{- $iso := "2006-01-02T15:04:05Z07:00" -}}
   {{- $out = $out | append (dict
       "e" .
-      "id" (printf "%s-%s" (urlize .title) ($day.Format "2006-01-02"))
+      "id" .id
       "start" $start "ends" $ends "start_unix" $start.Unix
       "iso_start" ($start.Format $iso) "iso_ends" ($ends.Format $iso)
       "date_only" ($day.Format "2006-01-02") "timed" $timed "tz" $tz

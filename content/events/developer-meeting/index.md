@@ -7,7 +7,7 @@ description: "The Lead-DBS Developer Meeting: monthly on Zoom, open to anyone wh
 keywords: ["zoom", "register", "registration", "developer meeting", "flyer"]
 # an event page (layouts/event.html): the facts and registration come from data/events.yaml
 layout: "event"
-event: "lead-dbs-developer-meeting-2026-11-18"
+event: "developer-meeting"
 host: {name: "Institute for Network Stimulation", url: "https://www.netstim.org/"}
 # the flyer: a file next to this page and what it shows
 flyer:

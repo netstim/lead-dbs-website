@@ -82,7 +82,8 @@ it under `links`, and other pages link the page rather than a news post about th
 **To add an event**, copy an entry and change it:
 
 ```yaml
-  - title: "Lead-DBS Developer Meeting"
+  - id: "developer-meeting"        # never changes: the event's #id on /events/ and its page's event:
+    title: "Lead-DBS Developer Meeting"
     start: "2027-06-16T15:00"      # in the event's own time zone
     end: "2027-06-16T16:30"        # optional; without it the event counts as over at midnight
     timezone: "Europe/Berlin"
@@ -93,6 +94,9 @@ it under `links`, and other pages link the page rather than a news post about th
     register_url: "/events/developer-meeting/"
 ```
 
+- The build checks every entry and stops with its name on an unknown field, a missing `id`, `title`,
+  `start`, `timezone`, `where` or `text`, an id used twice, a date in another format, a link without `label`
+  and `url`, and a Zoom join link in `register_url`.
 - The time zone is printed from `timezone` and the date: this entry reads "15:00 CEST (09:00 EDT)",
   a winter one "15:00 CET (09:00 EST)"; without `also_in` just "15:00 CEST". Visitors elsewhere also see the
   start in their own time. (`tz_label` replaces the printed zone; it is rarely needed.)
