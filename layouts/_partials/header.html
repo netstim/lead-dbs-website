@@ -1,5 +1,5 @@
-{{- /* The one header of every page: logo left, the main menu (hugo.toml [menus.main]), then search,
-     GitHub and the main action. The menu entry "Download" is drawn as the button. Entries with
+{{- /* The one header of every page: logo left, the main menu (hugo.toml [menus.main]) beside it, then
+     search and the main action at the right end. The menu entry "Download" is drawn as the button. Entries with
      children open a small panel on hover and keyboard focus. Below 1200px the words move into a
      full-screen sheet that the menu button opens (assets/js/main.js); below 640px GitHub and the
      Download button live in that sheet too, so nothing in the bar is pushed off a phone's screen.
@@ -30,7 +30,7 @@
                aria-expanded and aria-controls (the panel's id below). No aria-haspopup: the panel is a list
                of links (a disclosure), not an ARIA menu. The chevron here is for the view without script. */}}
         {{- $panel := printf "menu-%s" (.Identifier | default (.Name | urlize)) }}
-        <a class="nav__link" href="{{ .URL }}"{{ if $current }} aria-current="page"{{ end }}{{ if .HasChildren }} aria-controls="{{ $panel }}"{{ end }}>{{ partial "nobreak-html.html" (.Name | htmlEscape) }}{{ if .HasChildren }} <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ end }}</a>
+        <a class="nav__link" href="{{ .URL }}"{{ if $current }} aria-current="page"{{ end }}{{ if .HasChildren }} aria-controls="{{ $panel }}"{{ end }}>{{ partial "nobreak-html.html" (.Params.short | default .Name | htmlEscape) }}{{ if .HasChildren }} <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ end }}</a>
         {{ if .HasChildren }}
         <div class="nav__menu" id="{{ $panel }}">
           <div class="nav__menu-cols">
@@ -86,11 +86,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4.2-4.2"/></svg>
       </a>
       {{ end }}
-      {{ with site.Params.github }}
-      <a class="nav__icon nav__github" href="{{ . }}" aria-label="Lead-DBS on GitHub" title="Lead-DBS on GitHub">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
-      </a>
-      {{ end }}
+      {{- /* GitHub is not an icon of the bar: the menu sheet ("Lead-DBS on GitHub") and the footer link it */}}
       <a class="btn btn--primary nav__download" href="{{ $dl }}"><span>Download<span class="nav__dl-more"> Lead-DBS</span></span></a>
     </div>
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open the menu">

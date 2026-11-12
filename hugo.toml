@@ -87,11 +87,17 @@ enableGitInfo = true
     pageRef = "/helpsupport"
     identifier = "docs"
     weight = 2
+    [menus.main.params]
+      # the word in the header's bar (the full name stays everywhere else: breadcrumbs, the band, the sheet's captions)
+      short = "Docs"
   [[menus.main]]
     name = "Atlases and data"
     pageRef = "/helpsupport/knowledge-base/atlasesresources"
     identifier = "data"
     weight = 3
+    [menus.main.params]
+      # the word in the header's bar (the full name stays everywhere else: breadcrumbs, the band, the sheet's captions)
+      short = "Atlases"
   [[menus.main]]
     name = "Community"
     pageRef = "/community"

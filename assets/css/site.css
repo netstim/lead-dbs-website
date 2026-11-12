@@ -93,10 +93,11 @@ html.is-preview .nav { display: flex; flex-direction: column; }
 html.is-preview .nav__bar { flex: 1; height: auto; min-height: 0; width: min(100% - 2 * var(--gut), var(--container)); }
 
 /* ---------------------------------------------------------------- header
-   1440 and up: logo, the six words in the middle, search, GitHub and "Download Lead-DBS" on the right.
-   1200 to 1439: the same in one row, the words closer together; below 1366 the button says "Download",
-   below 1280 the words are a size smaller. Below 1200: logo, search, GitHub, "Download" and the menu
-   button; the words open in a sheet. Below 640: logo, search, menu button.
+   1200 and up: logo, the six words beside it (short names from hugo.toml params.short: "Docs",
+   "Atlases"), each with its chevron, then search and the "Download" pill at the right end; below 1280
+   the words are a size smaller. Below 1200: logo, search, "Download" and the menu button; the words open
+   in a sheet. Below 640: logo, search, menu button. GitHub is not an icon of the bar: the sheet and the
+   footer link it.
    The script for the sheet and the panels is in assets/js/main.js. */
 .nav { position: fixed; inset: 0 0 auto; z-index: 50; height: var(--nav); background: var(--bg); color: var(--ink); border-bottom: 1px solid var(--line); }
 .nav__bar { height: 100%; display: flex; align-items: center; gap: var(--s-3); }
@@ -137,12 +138,19 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) .nav__toggle { background: 
 .nav__icon:hover { background: var(--surface); color: var(--action); }
 .nav__icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .nav__actions .btn { height: var(--btn-h); padding-inline: var(--s-5); font-size: 15px; }
-.nav__actions .nav__download { margin-left: var(--s-2); }
+/* the main action: a short pill, "Download", ink on the light bar and white on the black one (the hero and the
+   download page say "Download Lead-DBS" in full; the phone's sheet too) */
+.nav__actions .nav__download { margin-left: var(--s-2); height: 40px; padding-inline: 18px; border-radius: 999px;
+  background: var(--p-ink); color: #fff; }
+.nav__actions .nav__download::after { content: none; }
+.nav__actions .nav__download:hover { background: color-mix(in oklab, var(--p-ink) 85%, #fff); }
+:is(.nav.is-dark:not(.is-open), html:not(.nav-ready) .top-dark .nav:not(.is-open)) .nav__actions .nav__download { background: #fff; color: #000; }
+:is(.nav.is-dark:not(.is-open), html:not(.nav-ready) .top-dark .nav:not(.is-open)) .nav__actions .nav__download:hover { background: rgb(255 255 255 / .85); }
 .nav__item.nav__item--sheet, .nav__nojs-menu, .nav__expand, .nav__toggle { display: none; }
 /* without script there is no chevron button, and a panel opens on hover and keyboard focus only, so the
    word carries no chevron either */
 html:not(.js) .nav__link .chev { display: none; }
-@media (max-width: 1365px) { .nav__dl-more { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } }
+.nav__dl-more { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 /* "Skip to content" shows over the bar's left end while it has the keyboard focus */
 .skip-link { position: absolute; z-index: 2; top: 50%; left: max(var(--gut), (100% - var(--container)) / 2);
   width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
@@ -172,7 +180,7 @@ html:not(.js) .nav__link .chev { display: none; }
    (hugo.toml params.divider), a caption over each, every entry its title over a line (params.card). */
 @media (min-width: 1200px) {
   .nav__bar { gap: var(--s-6); }
-  .nav__links { display: flex; align-self: stretch; justify-content: center; flex: none; min-width: 0; }
+  .nav__links { display: flex; align-self: stretch; justify-content: flex-start; flex: none; min-width: 0; }
   .nav__menu { position: absolute; top: 100%; left: 0; right: 0; z-index: 1;
     padding: var(--s-6) 0 var(--s-7); color: var(--ink);
     opacity: 0; visibility: hidden;
@@ -202,14 +210,14 @@ html:not(.js) .nav__link .chev { display: none; }
   html:not(.js) .top-dark .nav .nav__menu { background: var(--render); }
   /* with script the chevron is a button of its own beside the word (it opens the panel from the keyboard) */
   html.js .nav__link .chev { display: none; }
-  /* the chevron is drawn 28px wide, its target 44 × 44: it reaches 8px into the space on either side
-     (the word's end padding and the next word's start padding), never over a letter */
-  html.js .nav__item:has(> .nav__expand) > .nav__link { padding-right: 6px; }
-  html.js .nav__item:has(> .nav__expand) > .nav__link::before, html.js .nav__item:has(> .nav__expand) > .nav__link[aria-current="page"]::after { right: 6px; }
-  .nav__expand { position: relative; display: inline-grid; place-items: center; width: 28px; height: 36px; margin-right: var(--s-1); padding: 0; border: 0; border-radius: var(--r-sm);
+  /* the chevron sits close after its word (about 4px); its button is 22px wide, its target 36 × 44: it
+     reaches into the space after it (the next word's start padding), never over a letter */
+  html.js .nav__item:has(> .nav__expand) > .nav__link { padding-right: 3px; }
+  html.js .nav__item:has(> .nav__expand) > .nav__link::before, html.js .nav__item:has(> .nav__expand) > .nav__link[aria-current="page"]::after { right: 3px; }
+  .nav__expand { position: relative; display: inline-grid; place-items: center start; width: 22px; height: 36px; margin-right: var(--s-1); padding: 0; border: 0; border-radius: var(--r-sm);
     background: none; color: inherit; cursor: pointer; }
   .nav__expand { z-index: 1; }
-  .nav__expand::before { content: ""; position: absolute; inset: -4px -8px; }
+  .nav__expand::before { content: ""; position: absolute; inset: -4px -10px -4px -4px; }
   .nav__expand svg { width: 12px; height: 12px; opacity: .6; transition: transform var(--dur) var(--ease); }
   .nav__expand:hover svg { opacity: 1; }
   .nav__expand:focus-visible { outline-offset: -2px; }
@@ -238,20 +246,19 @@ html:not(.js) .nav__link .chev { display: none; }
   .nav__expand { margin-right: 0; }
   .nav__link::before { left: var(--s-2); right: var(--s-2); }
 }
-/* 1200 to 1279: the words a size smaller and the bar's parts closer, so logo, words, search, GitHub and
-   Download fit the 1040px of the bar without touching */
+/* 1200 to 1279: the words a size smaller and the bar's parts closer, so logo, words, search and Download
+   fit the 1040px of the bar without touching */
 @media (min-width: 1200px) and (max-width: 1279px) {
   .nav__bar { gap: var(--s-3); }
   .nav__link { font-size: 14px; }
   .nav__actions { gap: 0; margin-left: auto; }
   .nav__actions .nav__download { margin-left: var(--s-1); padding-inline: var(--s-4); }
 }
-/* 1280 and up: three columns, so the words sit in the middle of the window */
-@media (min-width: 1280px) {
-  .nav__bar { display: grid; grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr); gap: var(--s-5); }
-  .nav__logo { justify-self: start; }
-  .nav__links { gap: var(--s-1); }
-  .nav__actions { justify-self: end; }
+/* 1200 and up: the words beside the logo, the actions at the right end, so the bar reads left to right:
+   the name, what is here, then the one thing to do */
+@media (min-width: 1200px) {
+  .nav__links { margin-left: var(--s-4); gap: var(--s-1); }
+  .nav__actions { margin-left: auto; }
 }
 
 /* below 1200: the menu button opens the words in a sheet over the page; a word's pages open with the
@@ -286,7 +293,7 @@ html:not(.js) .nav__link .chev { display: none; }
 @media (max-width: 639px) {
   .nav__bar { gap: var(--s-2); }
   .nav__logo { font-size: 19px; min-height: 44px; gap: 6px; white-space: nowrap; }
-  .nav:not(.is-open) .nav__actions > :is(.nav__github, .nav__download) { display: none; }
+  .nav:not(.is-open) .nav__actions > .nav__download { display: none; }
   .nav.is-open .nav__links { padding-bottom: calc(48px + 2 * var(--s-4) + var(--s-6)); }
   .nav.is-open .nav__actions { position: fixed; inset: auto 0 0; z-index: 51; display: grid; grid-template-columns: 1fr; gap: var(--s-2);
     padding: var(--s-4) var(--gut) calc(var(--s-4) + env(safe-area-inset-bottom)); background: var(--bg); border-top: 1px solid var(--line); }

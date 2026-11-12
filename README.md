@@ -125,7 +125,7 @@ posts get their newer and older post and "All news" as their cards by themselves
 | Gallery ("Made with Lead-DBS", `/gallery/`) | Figures from papers: `data/gallery.yaml` + image files in `static/gallery/`. Lab renders: `content/gallery/_index.md` (see [Gallery](#the-gallery-of-published-figures)) |
 | The footer's "Institute" column | `data/links.yaml` |
 | A page's related links (sidebar) | its front matter `related:` (see [Site structure](#site-structure)) |
-| Main menu, legal links, the GitHub link in the header | `hugo.toml` → `[menus]` (the entry named "Download" is drawn as the header's button) and `[params] github`; see [Site structure](#site-structure) |
+| Main menu, legal links, the GitHub link | `hugo.toml` → `[menus]` (the entry named "Download" is drawn as the header's button) and `[params] github`; see [Site structure](#site-structure) |
 | Download / contact / developer-meeting form fields | `data/forms.yaml` |
 | Colours, fonts, page styles | `assets/css/site.css` (tokens, buttons, grid: `assets/css/base.css`) |
 | Templates | `layouts/` |
@@ -568,8 +568,11 @@ and checks events against the visitor's clock.
 - **Three kinds of card**: the outlined link card (`.card`: help, atlases, child pages), the filled panel
   (`.panel`: events, quotes, the citation) and the media card (a picture with its words under it). One arrow
   everywhere: the chevron that grows a stem on hover.
-- **The header switches to its menu sheet below 1200 px**, so the words, search, GitHub and the button never
-  collide; between 1200 and 1279 the button says "Download". A word's panel opens after the pointer rests on
+- **The header switches to its menu sheet below 1200 px**, so the words, search and the button never
+  collide. On a desktop the words sit beside the logo with short names (`params.short` in `hugo.toml`:
+  "Docs", "Atlases"; breadcrumbs, the band and the sheet keep the full names), and the main action is a
+  short "Download" pill (white on the black bar, dark grey on the light one). GitHub is linked from the
+  menu sheet and the footer, not from the bar. A word's panel opens after the pointer rests on
   it for 150 ms, at once on keyboard focus.
 - **The hero's entrance**: the title's words rise line by line, then the lead, the buttons and the facts fade
   up while the clip settles. The page head hides the words until `main.js` starts it, and shows them anyway
@@ -599,7 +602,7 @@ and checks events against the visitor's clock.
 - The research-use statement is a short line, not a feature: the hero's "Intended use", the
   footer's legal line, and one small-print sentence on /about/ and the download page.
 - Icons: Lucide line icons (`static/images/icons/ui-*.svg`, ISC licence, listed in `icons-credits.json`), drawn
-  in the accent colour; the header's search and GitHub icons are inline in `layouts/_partials/header.html`.
+  in the accent colour; the header's search icon is inline in `layouts/_partials/header.html`.
 - After a change to a layout, check the home page at 1366×768, 1440×900 and 390×844, and that no page scrolls
   sideways on a phone.
 
