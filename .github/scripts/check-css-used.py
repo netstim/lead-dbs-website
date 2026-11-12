@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Fails on CSS selectors that style nothing: a selector (one item of a rule's comma list) is unused
 when one of its classes, outside :is()/:where()/:not()/:has(), is used nowhere: not in a built page's class
-attribute (arguments: the build folders, production and preview), a template's class attribute or inline
-script, or a script in assets/js.
+attribute (arguments: the build folders, production and preview), a template's class attribute, or a
+script (inline in a template, or in assets/js) that sets or looks for it: classList.add/remove/toggle/
+contains/replace, className or setAttribute('class', …), class="…" in markup the script builds, and
+querySelector(All)/closest/matches selectors. Any other string in a script does not count, so a log
+message or a key that happens to spell a class name does not keep a dead rule alive.
 
     python3 .github/scripts/check-css-used.py public preview
 
@@ -15,8 +18,52 @@ import sys
 root = pathlib.Path(".")
 builds = [pathlib.Path(a) for a in sys.argv[1:]] or [pathlib.Path("public")]
 
+STRING = r"'(?:[^'\\\n]|\\.)*'|\"(?:[^\"\\\n]|\\.)*\"|`(?:[^`\\]|\\.)*`"
+NAME = r"[A-Za-z][\w-]*"
+
+
+def args(js, start):
+    """The text of a call's arguments: from start (just after its opening parenthesis) to the
+    parenthesis that closes it, skipping parentheses inside strings."""
+    depth, i = 1, start
+    while i < len(js) and depth:
+        m = re.compile(STRING).match(js, i)
+        if m:
+            i = m.end(); continue
+        depth += (js[i] == "(") - (js[i] == ")")
+        i += 1
+    return js[start:i - 1]
+
+
+def literals(text):
+    """The contents of the string literals in text, template literals without their ${…} parts."""
+    return [re.sub(r"\$\{[^}]*\}", " ", m.group(0)[1:-1]) for m in re.finditer(STRING, text)]
+
+
+def script_classes(js):
+    """The class names a script sets or looks for."""
+    found = set()
+    # classList.add('a', 'b'), .toggle('a', on), .replace('a', 'b'), setAttribute('class', 'a b')
+    for m in re.finditer(r"\.classList\s*\.\s*(?:add|remove|toggle|contains|replace)\s*\(|\.setAttribute\s*\(\s*['\"]class['\"]\s*,", js):
+        for lit in literals(args(js, m.end()) if m.group(0).endswith("(") else js[m.end():js.find(")", m.end())]):
+            found.update(re.findall(NAME, lit))
+    # el.className = 'a b' (or +=), up to the end of the statement
+    for m in re.finditer(r"\.className\s*\+?=(?!=)", js):
+        end = re.compile(r";|\n").search(js, m.end())
+        for lit in literals(js[m.end():end.start() if end else len(js)]):
+            found.update(re.findall(NAME, lit))
+    # class="…" in markup a script builds (innerHTML, template literals)
+    for m in re.finditer(r"\bclass=\\?([\"'])((?:(?!\1)[^\\])*)", re.sub(r"\$\{[^}]*\}", " ", js)):
+        found.update(re.findall(NAME, m.group(2)))
+    # selectors: querySelector('.a .b'), closest('.a'), matches('.a')
+    for m in re.finditer(r"\.(?:querySelector(?:All)?|closest|matches)\s*\(", js):
+        for lit in literals(args(js, m.end())):
+            found.update(re.findall(r"\.(" + NAME + ")", lit))
+    return found
+
+
 # a class counts as used when it is in a built page's class attribute (pass the production and the preview
-# build), in a template's class attribute, or in a script's strings (classList, className, markup it builds)
+# build), in a template's class attribute, or in what a script sets or looks for (script_classes)
 used, prefixes = set(), set()
 for build in builds:
     for f in build.rglob("*.html"):
@@ -25,17 +72,14 @@ for build in builds:
 for f in (root / "layouts").rglob("*.html"):
     t = f.read_text(errors="ignore")
     for script in re.findall(r"<script[^>]*>(.*?)</script>", t, re.S):      # inline scripts set classes too
-        for lit in re.findall(r"'([^'\n]*)'|\"([^\"\n]*)\"", script):
-            used.update(re.findall(r"[A-Za-z][\w-]*", " ".join(lit)))
+        used.update(script_classes(script))
     for c in re.findall(r'class="([^"]*)"', t):
         bare = re.sub(r"\{\{.*?\}\}", " ", c)
         used.update(re.findall(r"[A-Za-z][\w-]*", bare))
         used.update(re.findall(r'"([A-Za-z][\w -]*)"', c))           # names inside template actions
         prefixes.update(re.findall(r"([A-Za-z][\w-]*-)\{\{", c))
 for f in (root / "assets/js").rglob("*.js"):
-    t = f.read_text(errors="ignore")
-    for lit in re.findall(r"'([^'\n]*)'|\"([^\"\n]*)\"|`([^`]*)`", t):
-        used.update(re.findall(r"[A-Za-z][\w-]*", " ".join(lit)))
+    used.update(script_classes(f.read_text(errors="ignore")))
 
 
 def live(cls):
