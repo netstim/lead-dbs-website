@@ -42,6 +42,26 @@
   // Escape (or the focus leaving the word) closes it, the focus back on the chevron.
   const items = [];
   const close = (item) => { item.classList.remove('is-expanded'); item.sync(); };
+  // On a desktop the panels share one ground: a band under the header (.nav__band) that stays while the
+  // pointer moves from word to word and only eases to the height of the panel now shown; the panels
+  // themselves are clear and cross-fade on it (assets/css/site.css). It opens without easing its height.
+  const band = document.createElement('div');
+  band.className = 'nav__band';
+  band.setAttribute('aria-hidden', 'true');
+  nav.append(band);
+  band.sync = () => {
+    const shown = wide.matches && items.find((i) => i.querySelector('.nav__expand')?.getAttribute('aria-expanded') === 'true');
+    const panel = shown && shown.querySelector('.nav__menu');
+    if (panel) {
+      if (!nav.classList.contains('band-open')) {
+        nav.classList.add('band-instant');
+        requestAnimationFrame(() => requestAnimationFrame(() => nav.classList.remove('band-instant')));
+      }
+      band.style.height = `${panel.offsetHeight}px`;
+    }
+    nav.classList.toggle('band-open', !!panel);
+  };
+  addEventListener('resize', () => band.sync());
   nav.querySelectorAll('.nav__item').forEach((item) => {
     const panel = item.querySelector('.nav__menu');
     if (!panel) return;
@@ -57,15 +77,14 @@
     btn.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     word.after(btn);
     items.push(item);
-    // open: in the sheet, the chevron's state; on a desktop, also while the pointer rests on the word
-    // (unless Escape or the chevron closed it there)
-    let wait = 0;
+    // open: in the sheet, the chevron's state; on a desktop, also while the pointer is on the word or its
+    // band (.is-hovered, set below; unless Escape or the chevron closed it there)
     item.sync = () => {
       const open = item.classList.contains('is-expanded')
-        || (wide.matches && !item.classList.contains('is-dismissed') && item.matches(':hover'));
+        || (wide.matches && !item.classList.contains('is-dismissed') && item.classList.contains('is-hovered'));
       btn.setAttribute('aria-expanded', String(open));
+      band.sync();
     };
-    const later = (ms) => { clearTimeout(wait); wait = setTimeout(item.sync, ms); };
     const links = () => [...panel.querySelectorAll('a[href]')].filter((a) => a.getClientRects().length);
     const openTo = (i) => {
       if (wide.matches) items.forEach((other) => { if (other !== item) close(other); });
@@ -83,7 +102,7 @@
       if (!wide.matches || e.altKey || e.ctrlKey || e.metaKey) return;
       const l = links();
       const at = l.indexOf(document.activeElement);
-      if (e.key === 'Escape' && (item.classList.contains('is-expanded') || item.matches(':hover'))) {
+      if (e.key === 'Escape' && (item.classList.contains('is-expanded') || item.classList.contains('is-hovered'))) {
         e.preventDefault(); e.stopPropagation();
         close(item); item.classList.add('is-dismissed'); item.sync(); btn.focus();
       } else if (e.key === 'ArrowDown') {
@@ -103,8 +122,7 @@
       item.classList.remove('is-dismissed');
       if (wide.matches) close(item);
     });
-    item.addEventListener('pointerleave', () => { item.classList.remove('is-dismissed'); later(0); });
-    item.addEventListener('pointerenter', () => later(160));
+    item.addEventListener('pointerleave', () => item.classList.remove('is-dismissed'));
     wide.addEventListener('change', () => { close(item); item.classList.remove('is-dismissed'); });
     item.sync();
   });
@@ -112,18 +130,33 @@
   document.addEventListener('click', (e) => {
     if (wide.matches) items.forEach((item) => { if (!item.contains(e.target)) close(item); });
   });
-  // a desktop panel opens after the pointer has rested 150ms on its word (assets/css/site.css); once one
-  // is open, the panels of the other words open at once (.is-browsing) until the pointer leaves the header
-  let rest = 0;
-  nav.querySelectorAll('.nav__links > .nav__item').forEach((item) => {
-    const panel = !!item.querySelector('.nav__menu');
-    item.addEventListener('pointerenter', () => {
-      clearTimeout(rest);
-      if (panel) rest = setTimeout(() => nav.classList.add('is-browsing'), 150);
-      else nav.classList.remove('is-browsing');
+  // Hover on a desktop, for the header as a whole: a panel opens once the pointer has rested 150ms on its
+  // word (one passing over opens nothing); while a panel is open, the next word's opens at once. The
+  // spaces between the words, the band and the bar around them keep the open panel, so moving along the
+  // words never closes and reopens it; the logo, the actions on the right and a word without pages (News)
+  // close it after 120ms, leaving the header after 200ms, so a pointer that slips out and back keeps it.
+  let hovered = null, timer = 0;
+  const hover = (item) => {
+    clearTimeout(timer);
+    if (item === hovered) return;
+    hovered = item;
+    items.forEach((i) => {
+      i.classList.toggle('is-hovered', i === item);
+      if (item && i !== item) i.classList.remove('is-expanded');
+      i.sync();
     });
+  };
+  const later = (item, ms) => { clearTimeout(timer); timer = setTimeout(() => hover(item), ms); };
+  nav.addEventListener('pointerover', (e) => {
+    if (!wide.matches || e.pointerType === 'touch' || nav.classList.contains('is-open')) return;
+    const t = e.target;
+    if (t.closest('.nav__menu')) { clearTimeout(timer); return; }
+    const item = t.closest('.nav__links > .nav__item');
+    if (item && items.includes(item)) { if (item !== hovered) later(item, hovered ? 0 : 150); else clearTimeout(timer); return; }
+    if (item || t.closest('.nav__logo, .nav__actions')) { later(null, hovered ? 120 : 0); return; }
+    clearTimeout(timer); // a space between the words or around them: the open panel stays
   });
-  nav.addEventListener('pointerleave', () => { clearTimeout(rest); nav.classList.remove('is-browsing'); });
+  nav.addEventListener('pointerleave', (e) => { if (e.pointerType !== 'touch') later(null, 200); });
   nav.addEventListener('click', (e) => {
     if (nav.classList.contains('is-open') && e.target.closest('a[href]')) setOpen(false);
   });

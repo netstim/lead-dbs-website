@@ -53,8 +53,7 @@
 <link rel="icon" href="{{ "images/favicon-32x32.png" | relURL }}" sizes="32x32">
 <link rel="icon" href="{{ "images/favicon-192x192.png" | relURL }}" sizes="192x192">
 <link rel="apple-touch-icon" href="{{ "images/favicon-180x180.png" | relURL }}">
-<link rel="preload" href="{{ "fonts/open-sans-latin-400.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="{{ "fonts/open-sans-latin-700.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ "fonts/inter-latin-var.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 {{- /* one stylesheet: assets/css/base.css (tokens, grid, buttons, links, forms), then assets/css/site.css
      (palette, fonts, header, pages, footer), then assets/css/content.css (content building blocks); see README, Design */}}
 {{ $site := resources.Get "css/site.css" | resources.ExecuteAsTemplate "css/site.css" . }}

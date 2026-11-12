@@ -120,7 +120,7 @@
   .atlas__body--fig .atlas__refs { grid-area: refs; }
   .atlas__body--fig .atlas__fig { grid-area: fig; align-self: start; }
 }
-.prose .atlas__label { margin: var(--s-4) 0 var(--s-1); font-size: var(--t-small); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.prose .atlas__label { margin: var(--s-4) 0 var(--s-1); font-size: var(--t-small); font-weight: 500; color: var(--muted); }
 .prose .atlas__cite { font-size: var(--t-note); line-height: 1.55; color: var(--muted); }
 .prose .atlas__cite li { overflow-wrap: anywhere; }
 .prose .atlas__cite li + li { margin-top: var(--s-2); }
@@ -197,7 +197,7 @@
 
 /* {{< chapters >}}: a video's chapters, the time on the left in figures of equal width */
 .chapters { margin: 0 0 1.4em; max-width: var(--measure); }
-.prose .chapters__h { margin: 0 0 var(--s-2); font-size: var(--t-small); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.prose .chapters__h { margin: 0 0 var(--s-2); font-size: var(--t-small); font-weight: 500; color: var(--muted); }
 .prose .chapters__list { list-style: none; padding: 0; margin: 0; font-size: var(--t-small); line-height: 1.45; }
 .prose .chapters__list li { display: grid; grid-template-columns: 4.2em minmax(0, 1fr); gap: var(--s-3); margin: 0; padding: 5px 0; border-top: 1px solid var(--line); }
 .chapters__t { font-variant-numeric: tabular-nums; color: var(--muted); text-align: right; }
@@ -254,11 +254,11 @@
 /* {{< summary >}}: the box at the top of an atlas page, a definition list of what, space, get it, version */
 .summary-box { max-width: var(--measure); margin: 0 0 var(--s-5); padding: var(--s-4) var(--s-5); border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); }
 .prose .summary-box dl { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-1) var(--s-5); margin: 0; }
-/* its terms are labels, as in every other spec row of the site (site.css: Geist Mono capitals) */
+/* its terms are labels, as in every other spec row of the site (site.css: --label-*) */
 .prose .summary-box dt { font-family: var(--font-label); font-size: var(--label-size); font-weight: var(--label-weight); line-height: 1.4; letter-spacing: var(--label-tracking); text-transform: var(--label-case); font-synthesis: none; color: var(--muted); padding-top: .25em; }
 .prose .summary-box dd { margin: 0 0 var(--s-2); }
-/* its dates, times and versions in Geist Mono, as on the event cards (site.css: time and .num) */
-.prose .summary-box dd :where(time, .num) { font-family: var(--font-meta); font-weight: 500; font-size: .94em; letter-spacing: 0; font-synthesis: none; }
+/* its dates, times and versions in medium weight, as on the event cards (site.css: time and .num) */
+.prose .summary-box dd :where(time, .num) { font-family: var(--font-meta); font-weight: 500; letter-spacing: 0; }
 @media (min-width: 640px) {
   .prose .summary-box dl { grid-template-columns: max-content minmax(0, 1fr); }
   .prose .summary-box dd { margin: 0; }
@@ -291,8 +291,14 @@
 /* the header's panels: a line above an entry that starts a small group of its own (hugo.toml
    params.divider: DISTAL and FOCUS after the catalogues). In the phone sheet the manual is a first-level
    word right under "Docs and help", so the panel's own copy is hidden there (with and without script). */
-.nav__menu .menu-col a.menu-divider { border-top: 1px solid var(--line); margin-top: var(--s-2); padding-top: calc(7px + var(--s-2)); }
-.nav__menu .menu-col .menu-caption { display: block; border-top: 1px solid var(--line); margin-top: var(--s-2); padding-top: calc(7px + var(--s-2)); color: var(--muted); }
+/* the sheet (and the view without script): a section after the first starts under a hairline, its
+   caption (if any) over it; the first section's caption repeats the word above it, so it is left out,
+   and the one-line descriptions are for the desktop band only */
+@media (max-width: 1199px) {
+  .nav__menu .menu-caption { display: block; color: var(--muted); padding-block: var(--s-2) var(--s-1); }
+  .nav__menu :is(.menu-caption--lead, .menu-caption:empty, .menu-entry__text, .menu-entry .m-arrow) { display: none; }
+  .nav__menu .menu-col + .menu-col { border-top: 1px solid var(--line); padding-top: var(--s-2); }
+}
 @media (max-width: 1199px) { .nav__menu a.menu-sheet-dup { display: none !important; } }
 
 /* {{< capability >}}: one thing Lead-DBS does (Features): its name, a picture, what it does, its
@@ -381,7 +387,7 @@
 .prose .chapter { margin: var(--s-8) 0 var(--s-6); max-width: none; scroll-margin-top: calc(var(--nav) + var(--s-4)); border-top: 1px solid var(--line-strong); padding-top: var(--s-5); }
 .prose .chapter__head { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-2) var(--gutter); }
 /* the numbers of chapters and steps: the chapter's number, the numbers of the contents (jumps) and the
-   steps of a how-to page (a heading marked {.step}, First steps): one style, a label (Geist Mono, as the
+   steps of a how-to page (a heading marked {.step}, First steps): one style, a label (as the
    label rule of site.css says) in the link colour */
 .prose .chapter .chapter__n, .prose .jumps a::before, .prose h2.step::before { margin: 0; font-family: var(--font-label); font-size: var(--label-size); font-weight: var(--label-weight); font-style: normal; line-height: 1.4;
   letter-spacing: var(--label-tracking); word-spacing: normal; text-transform: none; font-synthesis: none; color: var(--action); font-variant-numeric: tabular-nums; }
