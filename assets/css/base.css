@@ -29,8 +29,9 @@
   --t-in: 150ms;            /* hover feedback comes in */
   --t-out: 120ms;           /* and goes out a little faster */
 }
-/* a phone: a 20px page margin, larger titles than the clamps give at 360-639px (h1 44, h2 32), labels 13 */
-@media (max-width: 639px) { :root { --gut: 20px; --t-logo: 19px; --t-card: 19px; --t-h1: 44px; --t-h2: 32px; } }
+/* a phone: a 20px page margin, larger titles than the clamps give at 360-639px (h1 44, h2 32), labels 13;
+   an event page's title under its flyer (34) */
+@media (max-width: 639px) { :root { --gut: 20px; --t-logo: 19px; --t-card: 19px; --t-h1: 44px; --t-h2: 32px; --t-h1-event: 34px; } }
 @media (min-width: 640px) {
   :root { --gut: 48px; --gutter: 24px; --row-gap: 16px; --nav: 72px; --head-gap: 48px; --band: 72px; --t-h3: 28px; }
 }
@@ -152,6 +153,14 @@ p { text-wrap: pretty; }
   :is(.btn-row, .page-intro__actions) > .btn--secondary { padding-inline: var(--s-5); text-decoration: none;
     border-color: color-mix(in oklab, var(--ink) 15%, transparent); background: color-mix(in oklab, var(--ink) 4%, transparent); }
   :is(.btn-row, .page-intro__actions) > .btn--secondary:hover { border-color: color-mix(in oklab, var(--ink) 30%, transparent); }
+  /* pills in a card (the event cards and the registration card): .btn--sm a small one (32px) in a
+     footer strip, .btn--block one across the card (44px), .btn--outline the ground with a 1px ring
+     where the action is not the main one; neither size takes the arrow */
+  .btn.btn--sm { --btn-h: 32px; gap: var(--s-1); padding: 0 var(--s-3); font-size: var(--t-label); }
+  .btn--block { width: 100%; }
+  .btn--outline { border-color: var(--line-strong); background: var(--bg); color: var(--ink); }
+  .btn--outline:hover { border-color: color-mix(in oklab, var(--ink) 40%, transparent); }
+  :is(.btn--sm, .btn--block)::after { content: none; }
 }
 /* the narrowest phones: a little less air either side, so a four-word label stays on one line */
 @media (max-width: 359px) { .btn:not(.btn--secondary) { padding-inline: var(--s-4); } }
