@@ -167,6 +167,8 @@
     if (nav.classList.contains('is-open') && e.target.closest('a[href]')) setOpen(false);
   });
   document.addEventListener('keydown', (e) => {
+    // a modal dialog opened over the sheet (search, a video) holds the keys until it closes
+    if (document.querySelector('dialog[open]')) return;
     if (e.key === 'Escape') {
       if (nav.classList.contains('is-open')) { setOpen(false); toggle.focus(); }
       return;
