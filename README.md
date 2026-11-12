@@ -121,6 +121,15 @@ python3 .github/scripts/check-copy.py /tmp/site                             # le
 python3 .github/scripts/check-css-used.py /tmp/site /tmp/preview            # selectors that style nothing
 ```
 
+A second job opens every page in Chromium on a desktop and a phone, light and dark, and fails on script
+errors, missing files or pictures, text cut off at the screen's edge and requests to other servers; its
+screenshots are kept with the run (Summary → Artifacts). It needs Node:
+
+```bash
+npm install --no-save playwright@1.48.2 && npx playwright install chromium
+node .github/scripts/check-browser.mjs /tmp/site https://www.lead-dbs.org/ /tmp/screenshots   # about 3 minutes
+```
+
 `check-design.py` keeps budgets for literal colours, `!important`, px spacing, literal line-heights and
 letter-spacings that may only go down;
 after removing some, `--ratchet` lowers them. See [docs/design.md](docs/design.md).
