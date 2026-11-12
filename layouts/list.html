@@ -1,21 +1,3 @@
 {{ define "main" }}
-{{- /* An inner page: its head, the text, the sidebar. A long page (has-toc.html) shows its table of
-       contents at the top of the text below 1024px, and sticky in the sidebar on a desktop.
-       Front matter "sidebar: false": no sidebar, the text uses the container's full width (a showcase
-       page; its table of contents, if any, stays at the top of the text at every width).
-       The page ends with its next steps (front matter next:, partial next-steps.html). */ -}}
-{{ $toc := partial "has-toc.html" . }}
-{{ $side := ne .Params.sidebar false }}
-<main id="top" class="page{{ if and $side $toc }} page--toc{{ end }}">
-  {{ partial "page-head.html" . }}
-  <div class="wrap doc-layout{{ if not $side }} doc-layout--wide{{ else if $toc }} doc-layout--toc{{ end }}">
-    {{ if and $side $toc }}<aside class="sidebar" aria-label="Page contents">{{ partial "toc.html" (dict "page" . "variant" "side") }}</aside>{{ end }}
-    <article class="prose">
-      {{ if $toc }}{{ partial "toc.html" (dict "page" . "variant" "top") }}{{ end }}
-      {{ partial "nobreak-html.html" .Content }}
-      {{ partial "next-steps.html" . }}
-    </article>
-    {{ if and $side (not $toc) }}<aside class="sidebar" aria-label="In this section">{{ partial "sidebar.html" . }}</aside>{{ end }}
-  </div>
-</main>
+{{ partial "content-page.html" . }}
 {{ end }}

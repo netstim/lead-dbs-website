@@ -352,7 +352,7 @@
         {{ with $p.cite }}{{ $pp := index hugo.Data.papers.papers .paper }}
         {{- if not $pp }}{{ errorf "home: cite.paper %q is not in data/papers.yaml" .paper }}{{ end }}
         {{- /* the citation as a snippet to copy: the reference (as on the citing page, data/papers.yaml) and the
-               same paper as BibTeX, two tabs and a copy button in its top bar (assets/js/main.js). Without
+               same paper as BibTeX, tabs in main.js and shared copying in clipboard.js. Without
                script the bar stays hidden and the reference shows, to select by hand. */}}
         {{- $names := findRE `[^,]+, (?:[A-Z][a-z]?\. ?)+` (replace $pp.authors ", et al." "") }}
         {{- $bibAuthors := delimit (apply $names "strings.TrimSpace" ".") " and " }}{{ if strings.Contains $pp.authors "et al." }}{{ $bibAuthors = printf "%s and others" $bibAuthors }}{{ end }}
@@ -364,10 +364,10 @@
                 <button type="button" class="cite-snip__tab" aria-pressed="true" data-show="ref">Reference</button>
                 <button type="button" class="cite-snip__tab" aria-pressed="false" data-show="bib">BibTeX</button>
               </div>
-              <button type="button" class="cite-snip__copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg><span>Copy</span></button>
+              <button type="button" class="cite-snip__copy" data-copy="cite-reference" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg><span data-copy-label>Copy</span></button>
             </div>
-            <p class="cite-snip__text" data-fmt="ref">{{ partial "paper/full.html" $pp }}</p>
-            <pre class="cite-snip__text cite-snip__bib" data-fmt="bib" hidden>@article{ {{- .paper -}},
+            <p class="cite-snip__text" id="cite-reference" data-fmt="ref">{{ partial "paper/full.html" $pp }}</p>
+            <pre class="cite-snip__text cite-snip__bib" id="cite-bibtex" data-fmt="bib" hidden>@article{ {{- .paper -}},
   author  = { {{- $bibAuthors -}} },
   title   = { {{- $pp.title -}} },
   journal = { {{- $pp.journal -}} },

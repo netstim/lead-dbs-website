@@ -91,18 +91,4 @@
 
   <div class="wrap dl-related">{{ partial "next-steps.html" . }}</div>
 </main>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  if (!navigator.clipboard) return;
-  document.querySelectorAll('[data-copy-text]').forEach((b) => {
-    b.hidden = false;
-    b.addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(b.dataset.copyText); } catch { return; }
-      const was = b.firstChild.textContent;
-      b.firstChild.textContent = 'Copied';
-      setTimeout(() => { b.firstChild.textContent = was; }, 1600);
-    });
-  });
-});
-</script>
 {{ end }}

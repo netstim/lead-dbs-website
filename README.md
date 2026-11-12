@@ -508,7 +508,10 @@ Text on the left …
   below that it follows them, and a phone leaves it out. Its number has the style of the numbers of `jumps`
   and of the steps of First steps: a label.
 - `copybox` holds a text to copy as a whole (the methods paragraph on `/about/citing_leaddbs/` and every "What to cite"); the button
-  copies it as plain text and is hidden where the browser cannot copy.
+  copies it as plain text and is hidden where the browser cannot copy. All copy buttons use
+  `assets/js/clipboard.js`: `data-copy` names an element ID; `data-copy-text` holds a literal command.
+  Citation tabs update the target ID. Success and failure are announced through a status element;
+  page templates and shortcodes do not install their own clipboard handlers.
 - `video-grid` and `video-card` lay videos out as a grid of cards (Walkthrough videos): the video, a small tag, a
   heading and a sentence; `lead="true"` makes a card span the grid.
 - `clip` is a short silent animation (see [Pictures in pages](#pictures-in-pages)).
@@ -730,3 +733,8 @@ running it again with `--force` overwrites any edits made since:
 ```bash
 uv run tools/import_wordpress.py --force
 ```
+
+### Shared implementation boundaries
+
+- `layouts/single.html` and `layouts/list.html` both render `layouts/_partials/content-page.html`; change the common article/sidebar structure there.
+- `assets/css/base.css` owns form layout and field defaults for inputs, selects and textareas. `site.css` holds component-specific variations such as newsletter fields.

@@ -993,14 +993,6 @@ html .video-embed--poster .video-embed__start { background: linear-gradient(to t
 /* a phone: the title and note fill most of the frame, so the shade covers all of it */
 @media (max-width: 639px) { html .video-embed--poster .video-embed__start { background: linear-gradient(to top, rgb(0 0 0 / .88) 0, rgb(0 0 0 / .74) 55%, rgb(0 0 0 / .5) 100%); } }
 
-/* forms (labels above, 48px fields) */
-.form { display: grid; gap: var(--s-4); max-width: var(--measure); margin: 0 0 1.5em; }
-.form:not(.site-form) { grid-template-columns: minmax(0, 1fr); }
-.field { display: grid; gap: var(--s-2); }
-.field label { font-size: 14px; font-weight: 500; color: var(--ink); }
-.field__req { font-weight: 400; color: var(--muted); }
-.field input, .field textarea { width: 100%; min-height: 48px; padding: 12px 14px; font: 16px/1.4 var(--font-text); color: var(--ink);
-  background: var(--bg); border: 1px solid var(--line-strong); border-radius: var(--r-sm); }
 /* a form that is not connected yet: its button is drawn as unavailable (a dashed outline, no underline,
    no arrow) in the muted text colour, which keeps at least 4.5:1 on every light ground of the site; the
    note right under it says why */

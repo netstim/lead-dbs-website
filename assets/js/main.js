@@ -622,26 +622,19 @@ document.addEventListener('click', (e) => {
 })();
 
 // ------------------------------------------------------------------ the citation snippet
-// The home page's citation (layouts/home.html): two tabs show the reference or its BibTeX; Copy puts the
-// shown one on the clipboard and says so for two seconds. Without the clipboard the bar stays hidden.
+// The home page citation tabs select a format and update the shared clipboard controller's target.
 document.querySelectorAll('.cite-snip').forEach((box) => {
   const bar = box.querySelector('.cite-snip__bar');
-  if (!bar || !navigator.clipboard?.writeText) return;
+  if (!bar) return;
   bar.hidden = false;
   const tabs = [...box.querySelectorAll('.cite-snip__tab')];
   const texts = [...box.querySelectorAll('[data-fmt]')];
   tabs.forEach((tab) => tab.addEventListener('click', () => {
     tabs.forEach((t) => t.setAttribute('aria-pressed', String(t === tab)));
     texts.forEach((t) => { t.hidden = t.dataset.fmt !== tab.dataset.show; });
+    box.querySelector('[data-copy]').dataset.copy = texts.find((t) => !t.hidden).id;
   }));
-  const copy = box.querySelector('.cite-snip__copy');
-  const label = copy.querySelector('span');
-  copy.addEventListener('click', async () => {
-    const shown = texts.find((t) => !t.hidden);
-    try { await navigator.clipboard.writeText(shown.innerText.trim()); label.textContent = 'Copied'; }
-    catch { label.textContent = 'Copy failed'; }
-    setTimeout(() => { label.textContent = 'Copy'; }, 2000);
-  });
+
 });
 
 // The news rail follows the reading position; stories remain visible and stationary.

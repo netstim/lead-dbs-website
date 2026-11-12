@@ -14,6 +14,7 @@
   {{ partial "footer.html" . }}
   {{ partial "search-dialog.html" . }}
   {{ with resources.Get "js/main.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}
+  {{ with resources.Get "js/clipboard.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}
   {{ with resources.Get "js/search.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}
   {{ if .IsHome }}{{ with resources.Get "js/insertion.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}{{ end }}
   {{ if and .IsHome hugo.Data.usage }}{{ $globe := slice (resources.Get "js/vendor/d3-array.min.js") (resources.Get "js/vendor/d3-geo.min.js") (resources.Get "js/vendor/topojson-client.min.js") (resources.Get "js/globe.js" | minify) | resources.Concat "js/globe.bundle.js" | fingerprint }}<script src="{{ $globe.RelPermalink }}" integrity="{{ $globe.Data.Integrity }}" defer></script>{{ end }}
