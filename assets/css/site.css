@@ -512,6 +512,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .next-band__point .link { margin-top: var(--s-4); }
 @media (max-width: 767px) {
   .next-band__inner { border-radius: var(--r-md); }
+  .home .next-band__title { font-size: var(--t-display); }
   .next-band__points { grid-template-columns: minmax(0, 1fr); gap: var(--s-5); }
 }
 

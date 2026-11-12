@@ -279,7 +279,7 @@
     <div class="wrap next-band__inner">
       <div class="next-band__head">
         <p class="t-label next-band__label">{{ .label }}</p>
-        <h2 id="next-h" class="next-band__title">{{ .title }}</h2>
+        <h2 id="next-h" class="next-band__title">{{ partial "nobreak.html" .title }}</h2>
       </div>
       <div class="next-band__points">
         {{ range $i, $pt := .points }}
