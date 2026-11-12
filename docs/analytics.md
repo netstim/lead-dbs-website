@@ -47,8 +47,8 @@ name/date record the geography vintage. `quality` contains:
 - `tool_requests = sum(tools)` (cutoff year only; a different denominator)
 
 There are no individual events, address identifiers, exact timestamps, network
-names, source paths, or source fingerprints in the public artifact. The old
-`launches` and `day` replay fields were removed. Source/database/parser checksums
+names, source paths, or source fingerprints in the public artifact. The old individual access-event `launches` and `day` replay fields were removed.
+The approved monthly download globe remains, using its separate download data. Source/database/parser checksums
 and dependency versions live in a separate **private** run manifest. Its
 `public_sha256` identifies the exact intended public JSON bytes. A manifest is
 not proof that publication succeeded: if the public write fails, compare that
@@ -63,9 +63,9 @@ The script has no network calls. Initial dependency installation is separate.
 
 ```sh
 python3 -m venv /tmp/ldbs-analytics-env
-/tmp/ldbs-analytics-env/bin/pip install maxminddb==3.2.0 pycountry==26.2.16
+/tmp/ldbs-analytics-env/bin/pip install --require-hashes -r tools/requirements.txt
 /tmp/ldbs-analytics-env/bin/python tools/usage.py /private/path/to/logs /private/path/to/country.mmdb --cutoff YYYY-MM-DD --manifest /private/path/to/access-run-manifest.json
-npm install --no-save pele@1.13.0
+npm ci
 node scripts/usage.mjs
 python3 -m unittest discover -s tests -v
 node tests/test_usage_charts.mjs
@@ -97,8 +97,9 @@ policy. This importer does not delete source files or the user's archive and doe
 not alter server retention. The private manifest contains source fingerprints;
 retain it only in the restricted operational area under the same policy.
 
-Phase 2 is separately defined download-request aggregation, after inventorying
-artifact aliases and verifying the handler's semantics. Collection changes need
-the PHP/MATLAB producer sources. Optional installation telemetry, consent UX,
-retention enforcement and ingestion scheduling are not implemented by this
-static-site branch. See [analytics-plan.md](analytics-plan.md).
+Download aggregation is implemented in the existing importer: see
+[download-analytics.md](download-analytics.md). The collector/retention/maintenance
+package and opt-in MATLAB helpers are prepared for lab integration, not deployed.
+See [server package](../server/analytics/README.md) and the honest whole-system
+status in [analytics-completion.md](analytics-completion.md). No persistent
+installation telemetry is added.

@@ -53,6 +53,25 @@
         </div>
         <figure class="usage__chart usage__chart--tools">{{ index $svg "tools" }}</figure>
       </section>
+      {{ with hugo.Data.downloads }}
+      {{ $d := . }}{{ $a := .all_requests }}
+      <section class="usage__cell usage__cell--full" aria-labelledby="u-downloads">
+        <h2 id="u-downloads">Download requests</h2>
+        <p>One address requesting one artifact on one day counts once. A request can be a retry, an automatic update or a redirect; it does not prove a completed download. The first and last years may be partial.</p>
+        <div class="table-scroll"><table class="usage__table">
+          <caption>All requested artifacts, {{ $a.from }} to {{ $a.to }}; before the globe's heuristic exclusions</caption>
+          <thead><tr><th scope="col">Year</th><th scope="col">Program</th><th scope="col">Updates</th><th scope="col">Other artifacts</th><th scope="col">All requests</th></tr></thead>
+          <tbody>{{ range $year, $counts := $a.years }}{{ $total := 0 }}{{ range $counts }}{{ $total = add $total . }}{{ end }}{{ $program := index $counts "program" | default 0 }}{{ $updates := index $counts "program_update" | default 0 }}
+          <tr><th scope="row">{{ $year }}</th><td class="num">{{ lang.FormatNumber 0 $program }}</td><td class="num">{{ lang.FormatNumber 0 $updates }}</td><td class="num">{{ lang.FormatNumber 0 (sub (sub $total $program) $updates) }}</td><td class="num">{{ lang.FormatNumber 0 $total }}</td></tr>{{ end }}</tbody>
+        </table></div>
+        <details class="dl-more"><summary>Artifact categories and data quality</summary>
+          <ul>{{ range $category, $count := $a.categories }}<li>{{ $category }}: {{ lang.FormatNumber 0 $count }} requests</li>{{ end }}</ul>
+          <p>{{ $a.quality.unknown_artifact }} requests have unclassified artifact names; {{ $a.quality.unknown_country }} have unknown geography. {{ $a.quality.malformed }} malformed rows were skipped. {{ $a.quality.high_frequency_groups }} address/artifact/day groups had at least {{ $a.high_frequency_threshold }} raw records; repetition is a diagnostic, not proof of automation.</p>
+        </details>
+        <p class="usage__note">The globe and country-table download column use {{ lang.FormatNumber 0 $d.total }} program and hotfix requests with known geography, after the existing exclusions: {{ lang.FormatNumber 0 $d.selection.excluded.network_heuristic }} by hosting/crawler-range heuristic, {{ lang.FormatNumber 0 $d.selection.excluded.high_lifetime_frequency }} from addresses exceeding {{ $d.selection.lifetime_threshold }} program requests over the full period, and {{ lang.FormatNumber 0 $d.selection.excluded.unknown_country }} without a known country. These rules can remove legitimate activity and miss automation. All countries remaining in that series are shown, with no minimum count.</p>
+      </section>
+      {{ end }}
+
       {{- /* every country with its downloads (data/downloads.json, tools/downloads.py) and access requests, as a
              table: the chart above leaves out the smallest, and the globe on Home, which replays the
              downloads, can only be read with a mouse (Home links here, #all-countries). Most downloads

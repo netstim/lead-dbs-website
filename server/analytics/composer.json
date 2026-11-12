@@ -1,0 +1,7 @@
+{
+  "name": "netstim/lead-analytics",
+  "description": "Private first-party Lead-DBS aggregate collection",
+  "type": "project",
+  "require": {"php": ">=8.2", "ext-pdo": "*", "ext-pdo_sqlite": "*", "maxmind-db/reader": "1.14.0"},
+  "config": {"allow-plugins": false, "sort-packages": true}
+}

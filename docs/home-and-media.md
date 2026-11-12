@@ -121,15 +121,22 @@ really made with Lead-DBS.
 
 ## Download figures (the globe on the home page)
 
-The home page's "Downloaded in N countries" section replays the downloads of Lead-DBS since November 2015
-on a globe, a month every 0.3 seconds. The figures are a snapshot in `data/downloads.json`. To refresh them,
-copy `download.log` (and `download.log.bak`) from the lead-dbs.org server into a folder and run
-`python3 tools/downloads.py <log folder> <database.mmdb>` (same packages and database as below).
+The home globe replays recorded Lead-DBS download requests since November 2015,
+one month every 0.3 seconds. Refresh `data/downloads.json` from private local
+logs with the same offline database as the access importer:
 
-What is counted: one IP address fetching one item on one day is one download; only Lead-DBS itself
-(latest, hotfix, the standalone builds ...), not data packs or atlases; bots are left out (known crawler
-and cloud address blocks, and addresses with more than 50 downloads). `tools/downloads.py` says more.
-`data/downloads.json` holds downloads by country and month only: no IP address, city or network name.
+```sh
+python3 tools/downloads.py /private/logs /private/country.mmdb --cutoff YYYY-MM-DD --manifest /private/download-run-manifest.json
+```
+
+A request is one address fetching one item on one day, deduplicating retries.
+The globe preserves #24's selected program/hotfix aliases and standalone names.
+Its hosting-range and lifetime-frequency exclusions are imperfect heuristics;
+they do not prove that the remaining requests are human or completed transfers.
+The separate all-request breakdown covers all artifact categories before those
+exclusions. Public output contains aggregate counts and quality information,
+with no addresses, event timestamps, cities or network names. See
+[download-analytics.md](download-analytics.md) for definitions and limitations.
 
 - **The globe** is drawn by `assets/js/globe.js` with d3-array, d3-geo and topojson-client
   (`assets/js/vendor/`, ISC licence) and the Natural Earth country map `assets/data/world-110m.json`

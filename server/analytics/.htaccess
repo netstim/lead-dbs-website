@@ -1,0 +1,4 @@
+Options -Indexes
+<FilesMatch "^(?!collect\.php$).*">
+  Require all denied
+</FilesMatch>
