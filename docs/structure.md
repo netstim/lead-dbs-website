@@ -111,6 +111,6 @@ An old page whose content now sits in a section of another is a stub with `layou
 a stub goes straight to the final address. The old forum's index, topics, replies and topic
 tags all lead to `/helpsupport/forum/`, which says that the forum is closed and where to ask instead; the
 old "portfolio" pages of software lead to the dependencies page (3D Slicer to Lead-OR). Every address in the
-old site's sitemap (`/wp-sitemap.xml`) resolves, except the forum's user profiles (`/author/…`). The old feeds `/feed/` and `/news/feed/` lead to `/news/`, which names the
+old site's sitemap (`/wp-sitemap.xml`) resolves; the 112 author profiles (`/author/…`) lead to the Contributors page (`/about/team/`). The old feeds `/feed/` and `/news/feed/` lead to `/news/`, which names the
 RSS feed `/news/index.xml`; on a server that can redirect, send them straight to the feed.
 Files outside WordPress (`/release/download.php`, `/docs/…`) are on the current server; see Deployment.
