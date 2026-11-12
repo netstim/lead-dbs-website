@@ -1,11 +1,45 @@
-{{- /* "Add to calendar": an event as an .ics file in a data: address, for a link with the download
-       attribute. A meeting with a start time and no end is entered as one hour; an event whose end is a
-       day is entered as whole days. Argument: dict "ev" (an entry of events/list.html) "details" (the
-       address of its page, or ""). Returns the address (print it with safeURL). */ -}}
+{{- /* "Add to calendar": an event as an iCalendar file (RFC 5545) in a data: address, for a link with the
+       download attribute. Argument: dict "ev" (an entry of events/list.html) "details" (the address of its
+       page, or ""). Returns the address (print it with safeURL).
+       When it happens:
+         start is a day          whole days, DTSTART and DTEND as dates (DTEND is the day after the last)
+         start has a time        DTSTART at that time, in UTC (a TZID would need a VTIMEZONE block too),
+                                 and DTEND at the end time; without an end one hour later; with an end
+                                 that is a day, midnight after that day in the event's zone, the moment
+                                 the site counts the event as over (events/list.html, .ends)
+       UID is the event's id and its start day: each date of a monthly meeting (the same id, a new start)
+       is a calendar entry of its own, and the same date downloaded twice replaces the first.
+       DTSTAMP is the time of the build, in UTC: when this copy of the event was made.
+       Text values (summary, place, description) are escaped (\ ; , and line breaks), and every line
+       longer than 75 bytes is folded (CRLF and a space) between two characters, never inside one. */ -}}
 {{- $ev := .ev }}{{ $e := $ev.e -}}
-{{- $allDay := or (not $ev.timed) (and $e.end (eq (len (string $e.end)) 10)) -}}
-{{- $dt := "" -}}
-{{- if $allDay }}{{ $dt = printf "DTSTART;VALUE=DATE:%s\r\nDTEND;VALUE=DATE:%s" (replace $ev.date_only "-" "") ($ev.ends.Format "20060102") -}}
-{{- else }}{{ $end := $ev.start.Add (time.ParseDuration "1h") }}{{ if $e.end }}{{ $end = $ev.ends }}{{ end }}{{ $dt = printf "DTSTART:%s\r\nDTEND:%s" ($ev.start.UTC.Format "20060102T150405Z") ($end.UTC.Format "20060102T150405Z") }}{{ end -}}
-{{- $ics := printf "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Lead-DBS//Events//EN\r\nBEGIN:VEVENT\r\nUID:%s-%s@lead-dbs.org\r\nDTSTAMP:%s\r\n%s\r\nSUMMARY:%s\r\nLOCATION:%s\r\n%sEND:VEVENT\r\nEND:VCALENDAR\r\n" $ev.id (replace $ev.date_only "-" "") ($ev.start.UTC.Format "20060102T150405Z") $dt (replace $e.title "," `\,`) (replace $e.where "," `\,`) (cond (ne .details "") (printf "URL:%s\r\n" (.details | absURL)) "") -}}
+{{- $utc := "20060102T150405Z" -}}
+{{- $esc := slice -}}
+{{- range slice $e.title $e.where ($e.text | default "") -}}
+  {{- $esc = $esc | append (. | replaceRE `\\` `\\` | replaceRE `([;,])` `\$1` | replaceRE `\r?\n` `\n`) -}}
+{{- end -}}
+{{- $lines := slice "BEGIN:VCALENDAR" "VERSION:2.0" "PRODID:-//Lead-DBS//Events//EN" "CALSCALE:GREGORIAN" "BEGIN:VEVENT"
+    (printf "UID:%s-%s@lead-dbs.org" $ev.id (replace $ev.date_only "-" ""))
+    (printf "DTSTAMP:%s" (now.UTC.Format $utc)) -}}
+{{- if not $ev.timed -}}
+  {{- $lines = $lines | append (printf "DTSTART;VALUE=DATE:%s" ($ev.start.Format "20060102")) (printf "DTEND;VALUE=DATE:%s" ($ev.ends.Format "20060102")) -}}
+{{- else -}}
+  {{- $end := $ev.ends -}}
+  {{- if not $e.end }}{{ $end = $ev.start.Add (time.ParseDuration "1h") }}{{ end -}}
+  {{- $lines = $lines | append (printf "DTSTART:%s" ($ev.start.UTC.Format $utc)) (printf "DTEND:%s" ($end.UTC.Format $utc)) -}}
+{{- end -}}
+{{- $lines = $lines | append (printf "SUMMARY:%s" (index $esc 0)) (printf "LOCATION:%s" (index $esc 1)) -}}
+{{- with index $esc 2 }}{{ $lines = $lines | append (printf "DESCRIPTION:%s" .) }}{{ end -}}
+{{- with .details }}{{ $lines = $lines | append (printf "URL:%s" (absURL .)) }}{{ end -}}
+{{- $lines = $lines | append "END:VEVENT" "END:VCALENDAR" -}}
+{{- $ics := "" -}}
+{{- range $lines -}}
+  {{- /* a continuation line starts with a space, so it holds 74 bytes of the value */ -}}
+  {{- $cur := "" }}{{ $max := 75 -}}
+  {{- range split . "" -}}
+    {{- if gt (add (len $cur) (len .)) $max }}{{ $ics = printf "%s%s\r\n " $ics $cur }}{{ $cur = "" }}{{ $max = 74 }}{{ end -}}
+    {{- $cur = printf "%s%s" $cur . -}}
+  {{- end -}}
+  {{- $ics = printf "%s%s\r\n" $ics $cur -}}
+{{- end -}}
 {{- return (printf "data:text/calendar;charset=utf-8;base64,%s" ($ics | base64Encode)) -}}

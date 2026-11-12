@@ -100,6 +100,9 @@ it under `links`, and other pages link the page rather than a news post about th
   `start`, a `timezone` or `also_in` that is not an IANA zone, an `online` that is not `true` or `false`
   (without quotes), a link without `label` and `url`, and a Zoom join link (`zoom.us/j/`, `/wc/`, `/s/`,
   `/w/`, `/my/`) in `register_url` or `links`.
+- "Add to calendar" (on `/events/` and the event's page) is a calendar file made from the entry: a meeting
+  with a start time and no end lasts an hour; one whose `end` is a day runs to the end of that day; an event
+  whose `start` is a day is entered as whole days. Each date of the monthly meeting is its own calendar entry.
 - The time zone is printed from `timezone` and the date: this entry reads "15:00 CEST (09:00 EDT)",
   a winter one "15:00 CET (09:00 EST)"; without `also_in` just "15:00 CEST". Visitors elsewhere also see the
   start in their own time. (`tz_label` replaces the printed zone; it is rarely needed.)
