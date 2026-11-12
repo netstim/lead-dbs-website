@@ -6,7 +6,7 @@
        2. the current release (data/release.yaml) only on the groups' hub pages, not on the download page;
        3. two to four pages related to this one (front matter related:, see below);
        4. on a long page its table of contents, which stays in view while the text scrolls (desktop);
-          on a short page the next event (data/events.yaml), and on News the newsletter and the news feed.
+          on short pages outside documentation the next event, and on News the newsletter and news feed.
      The download page has no group list, only its contents.
      related: a list of site paths ("/about/citing_leaddbs/", "/develop/#add-your-atlas-or-dataset"; a page
      with its own url: front matter by its folder, "/helpsupport/knowledge-base/atlasesresources/about-the-mni-spaces/") or
@@ -16,7 +16,6 @@
 {{ $page := . }}{{ $toc := false }}
 {{ if reflect.IsMap . }}{{ $page = .page }}{{ $toc = .toc }}{{ end }}
 {{ $r := hugo.Data.release }}
-{{ $date := time.AsTime $r.date }}
 {{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Name "Download" }}{{ $dl = .URL }}{{ end }}{{ end }}
 {{ $onDownload := false }}{{ with site.GetPage "/download" }}{{ $onDownload = eq $page .  }}{{ end }}
 {{ $place := partial "nav-place.html" $page }}
@@ -73,12 +72,11 @@
 
 {{ if and $isHub (not $onDownload) }}
 <section class="side-card release-card" aria-labelledby="side-release">
-  <p class="t-label muted" id="side-release">Current release</p>
-  <p class="release-card__version">Lead-DBS {{ $r.version }}</p>
-  <p class="t-small muted">Released <time datetime="{{ $date | time.Format "2006-01-02" }}">{{ $date | time.Format "2 January 2006" }}</time> · MATLAB <span class="num">{{ $r.matlab }}</span> or later</p>
-  <a class="btn btn--primary" href="{{ $dl }}">Download Lead-DBS</a>
-  {{- /* release information has one name on the site: "Release history", the list on the download page */}}
-  {{ with site.GetPage "/download" }}<a class="link t-small" href="{{ .RelPermalink }}#releases">Release history</a>{{ end }}
+  <p class="release-card__version" id="side-release">Lead-DBS <span class="num">{{ $r.version }}</span></p>
+  <footer class="release-card__footer">
+    <a class="btn release-card__download" href="{{ $dl }}" aria-label="Download Lead-DBS">Download<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4"/></svg></a>
+    {{ with site.GetPage "/download" }}<a class="release-card__history" href="{{ .RelPermalink }}#releases">Release history</a>{{ end }}
+  </footer>
 </section>
 {{ end }}
 
@@ -107,9 +105,9 @@
 {{ partial "toc.html" (dict "page" $page "variant" "side") }}
 {{ else }}
 
-{{ if ne $page.Section "events" }}{{ partial "events/next.html" (dict "variant" "side" "page" $page) }}{{ end }}
+{{ if not (in (slice "events" "helpsupport") $page.Section) }}{{ partial "events/next.html" (dict "variant" "side" "page" $page) }}{{ end }}
 
-{{ if eq $page.Section "news" }}
+{{ if and (eq $page.Section "news") $page.IsPage }}
 <section class="side-block newsletter-box" aria-labelledby="side-news">
   <p class="t-label muted" id="side-news">Newsletter</p>
   <p class="t-small">Release and workshop news by email.</p>

@@ -800,25 +800,17 @@ main.page { padding-top: var(--nav); }
   .page-head__render { width: 100%; opacity: .3; }
 }
 
-/* the text and the sidebar on the header's container, so the logo, the breadcrumb, the title and the
-   text share one left edge, and the sidebar ends where the header's button ends.
-   Two right edges: the text (paragraphs, lists, the lead, notes, boxes, forms) stops at --text, about 36em
-   of the 18px text, so a line holds about 70 characters; pictures, tables, videos, rows of cards and
-   figures use the whole column (--col). 1280 and up on the 12 columns: the column in the first 7, the
-   sidebar in the last 4. 1024 to 1279: the column and a sidebar of about 30 %, so the column stays
-   within --col. Below 1024 the column is at most --col wide and the sidebar follows it. */
+/* The article keeps its readable measure; navigation is a compact rail with a generous gutter.
+   Below 1024px the rail follows the article. */
 :root { --col: 740px; --text: 612px; }
 @media (min-width: 1024px) { :root { --text: 648px; } }
 .doc-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-7); padding: var(--s-7) 0 var(--s-9); align-items: start; }
 .doc-layout > :not(.sidebar) { max-width: var(--col); --measure: min(100%, var(--text)); }
 @media (min-width: 1024px) {
-  .doc-layout { grid-template-columns: minmax(0, 1fr) minmax(260px, 30%); column-gap: var(--s-7); }
-  .doc-layout--single { grid-template-columns: minmax(0, 1fr); }
+  .doc-layout:has(> .sidebar) { grid-template-columns: minmax(0, 1fr) 220px; column-gap: var(--s-7); }
 }
 @media (min-width: 1280px) {
-  .doc-layout { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
-  .doc-layout > :not(.sidebar) { grid-column: 1 / span 7; }
-  .doc-layout > .sidebar { grid-column: 9 / span 4; }
+  .doc-layout:has(> .sidebar) { grid-template-columns: minmax(0, var(--col)) 240px; column-gap: var(--s-8); justify-content: space-between; }
 }
 /* the sidebar stays in view while the text scrolls, so it never leaves an empty column beside a long
    page: on a page with a table of contents that list is the sticky part (below), on the others the
@@ -900,15 +892,27 @@ main.page { padding-top: var(--nav); }
 .prose blockquote a:not([class]):hover { color: var(--action); }
 .prose iframe { max-width: 100%; border: 0; }
 .prose video { max-width: 100%; height: auto; }
-/* tables scroll inside their box instead of the page */
-.table-scroll { overflow-x: auto; max-width: 100%; border: 1px solid var(--line); border-radius: var(--r-md); }
+/* Tables use open rows and typographic hierarchy; wide content scrolls within its region. */
+.table-scroll { overflow-x: auto; max-width: 100%; }
 .table-scroll:focus-visible { outline: 2px solid var(--action); outline-offset: 2px; }
-.prose table { border-collapse: collapse; width: 100%; font-size: 16px; line-height: 1.55; }
+.prose table { border-collapse: collapse; width: 100%; font-size: var(--t-note); line-height: 1.5; }
 .prose > table, .prose .col > table, .prose div:not(.table-scroll) > table { display: block; overflow-x: auto; max-width: 100%; }
 .prose .table-scroll table { margin: 0; }
-.prose th, .prose td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
-.prose th { background: var(--surface); font-weight: 600; }
-.prose tr:last-child td { border-bottom: 0; }
+.prose th, .prose td { border-bottom: 1px solid var(--line); padding: var(--s-4) var(--s-4) var(--s-4) 0; text-align: left; vertical-align: top; }
+.prose th:last-child, .prose td:last-child { padding-right: 0; }
+.prose thead th { padding-top: 0; padding-bottom: var(--s-3); border-bottom-color: var(--line-strong); background: none; color: var(--muted); font-weight: 500; }
+.prose tbody td { color: var(--muted); }
+.prose tbody td:first-child, .prose tbody th { color: var(--ink); font-weight: 500; background: none; }
+@media (min-width: 640px) {
+.prose .table--templates :is(th, td):nth-child(1) { width: 23%; }
+.prose .table--templates :is(th, td):nth-child(2) { width: 37%; }
+.prose .table--templates :is(th, td):nth-child(3) { width: 14%; }
+.prose .table--templates :is(th, td):nth-child(4) { width: 26%; }
+}
+@media (max-width: 639px) {
+  .prose .table--stack td { color: var(--ink); }
+  .prose .table--stack :is(th, td) { width: auto; }
+}
 /* pictures in text open large: a link to the full file */
 .img-zoom { display: inline-block; max-width: 100%; position: relative; cursor: zoom-in; border-radius: var(--r-sm); vertical-align: top; }
 .img-zoom img { display: block; }
@@ -1070,20 +1074,28 @@ img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md
 .post-back { margin-top: var(--s-7); }
 
 /* ---------------------------------------------------------------- sidebar */
-.sidebar { display: grid; gap: var(--s-6); font-size: 16px; line-height: 1.5; position: static; align-content: start; }
+.sidebar { display: grid; gap: var(--s-6); font-size: var(--t-small); line-height: 1.5; position: static; align-content: start; }
 .sidebar .t-label { margin: 0 0 var(--s-3); }
-.side-card { display: grid; gap: var(--s-2); padding: var(--s-5); background: var(--surface); border-radius: var(--r-lg); }
+.side-card { display: grid; gap: var(--s-4); padding: var(--s-4); border: 1px solid var(--line); border-radius: var(--r-md); background: var(--bg); }
 /* "In this section" above a table of contents: the section's pages, compact */
 .side-section ul { list-style: none; margin: 0; padding: 0; display: grid; font-size: var(--t-small); }
-.side-block.side-section li a { display: block; padding: 5px 0 5px var(--s-3); border: 0; border-left: 2px solid var(--line); color: var(--ink); line-height: 1.35; }
+.side-block.side-section li a { display: block; padding: 6px 0 6px var(--s-3); border: 0; border-left: 2px solid transparent; color: var(--muted); line-height: 1.35; }
 .side-section li a:hover { color: var(--action); }
-.side-block.side-section li a[aria-current="page"] { color: var(--action); border-left-color: var(--action); font-weight: 500; }
+.side-block.side-section li a[aria-current="page"] { color: var(--action); border-left-color: var(--action); font-weight: 600; }
 .side-section .t-label a { color: inherit; background: none; padding: 0; }
 .side-section .t-label a:hover { color: var(--action); }
-.side-card .t-label { margin: 0; }
+.side-card .t-label { margin: 0 0 var(--s-2); }
 .release-card__version { font: var(--title-weight) var(--t-card)/1.2 var(--font-display); letter-spacing: -0.02em; margin: 0; }
-.release-card .btn { margin-top: var(--s-3); width: 100%; }
-.release-card .link { justify-self: start; }
+.release-card__footer { display: grid; gap: var(--s-3); }
+.release-card__download { height: 40px; padding-inline: var(--s-4); gap: var(--s-3); background: var(--ink); color: var(--bg); font-size: var(--t-small); font-weight: 500; }
+.release-card__download::after { content: none; }
+.release-card__download:hover { background: color-mix(in srgb, var(--ink) 85%, var(--bg)); }
+.release-card__download svg { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.release-card__history { justify-self: start; font-size: var(--label-size); line-height: 1.5; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
+.release-card__history:hover { color: var(--action); }
+@media (max-width: 1023px) { .release-card__download, .release-card__history { min-height: 44px; } }
+.related-links { padding-top: var(--s-5); border-top: 1px solid var(--line); }
+.side-block.related-links li a { padding: 6px 0; border-bottom: 0; color: var(--muted); }
 .side-block ul { list-style: none; margin: 0; padding: 0; display: grid; }
 .side-block li a { display: block; padding: 9px 0; color: var(--ink); border-bottom: 1px solid var(--line); line-height: 1.35; }
 .side-block li a:hover { color: var(--action); }
@@ -1096,7 +1108,7 @@ img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md
 .newsletter-box .btn-row { display: block; }
 .newsletter-box .btn--secondary { padding-inline: 0; }
 @media (min-width: 640px) and (max-width: 1023px) { .sidebar { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; } }
-/* a phone: the sidebar after the text keeps the release and the next event; the links are in the footer */
+/* A phone keeps touch targets large; the newsletter form stays on its dedicated page. */
 @media (max-width: 639px) { .sidebar .quick-links, .sidebar .newsletter-box { display: none; } }
 /* below 1024px every row of the sidebar and of the table of contents is a 44px target */
 @media (max-width: 1023px) {
@@ -1126,10 +1138,21 @@ img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md
 @media (min-width: 1024px) {
   .doc-layout--toc .sidebar { align-self: stretch; }
   .toc--side { display: block; position: sticky; top: calc(var(--nav) + var(--s-5)); max-height: calc(100svh - var(--nav) - 2 * var(--s-5)); overflow-y: auto;
-    font-size: var(--t-small); border-left: 1px solid var(--line); padding: var(--s-1) 0 var(--s-1) 0; overscroll-behavior: contain; }
-  .toc--side .t-label { padding-left: var(--s-3); }
-  .toc--side > ol > li > a { font-weight: 500; }
-  .toc--side .toc__top { display: inline-block; margin: var(--s-4) 0 0; padding-left: var(--s-3); border-left: 0; font-size: 14px; color: var(--muted); }
+    font-size: 12px; padding: var(--s-1) 0; overscroll-behavior: contain; }
+  .toc--side .t-label { margin-bottom: var(--s-4); padding: 0; font-size: 12px; font-weight: 400; }
+  .toc--side ol { display: grid; gap: var(--s-4); }
+  .toc--side ol ol { margin-top: var(--s-3); padding-left: 14px; gap: var(--s-3); }
+  .toc--side a { padding: 0; border: 0; color: var(--muted); line-height: 1.35; font-weight: 400; }
+  .toc--side ol ol a { padding: 0; }
+  .toc--side a:hover { color: var(--ink); }
+  .toc--side a[aria-current] { color: var(--ink); font-weight: 400; }
+  .toc--side a:focus-visible { outline: 2px solid var(--action); outline-offset: 4px; border-radius: 2px; }
+  .page--toc { --toc-gap: clamp(64px, calc(25vw - 232px), 128px); }
+  .doc-layout.doc-layout--toc:has(> .sidebar) { grid-template-columns: 200px minmax(0, var(--col)); column-gap: var(--toc-gap); justify-content: start; }
+  .doc-layout--toc > .sidebar { grid-column: 1; grid-row: 1; }
+  .doc-layout--toc > .prose { grid-column: 2; grid-row: 1; }
+  .page--toc .page-head > .wrap { padding-left: calc(200px + var(--toc-gap)); }
+  .toc--side .toc__top { display: inline-block; margin: var(--s-5) 0 0; padding: 0; font-size: 12px; color: var(--muted); }
   .toc--side .toc__top:hover { color: var(--action); }
   .toc--top { display: none; }
 }
