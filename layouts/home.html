@@ -272,7 +272,7 @@
         <div class="split__text worldwide__text">
           <h2 id="worldwide-h">{{ replace $w.title "{countries}" (len $u.countries) | partial "nobreak.html" }}</h2>
           <p class="t-lead">{{ replace (replace $w.text "{launches}" (lang.FormatNumber 0 $u.launches_year)) "{year}" $u.year | partial "nobreak.html" }}</p>
-          {{ with site.GetPage "/usage" }}<p><a class="btn btn--primary" href="{{ .RelPermalink }}">{{ $w.link_label }}</a></p>{{ end }}
+          {{ with site.GetPage "/usage" }}<p class="worldwide__btn"><a class="btn btn--primary" href="{{ .RelPermalink }}">{{ $w.link_label }}</a></p>{{ end }}
         </div>
         <figure class="worldwide__fig">
           <div class="worldwide__stage" data-globe-stage>
@@ -284,6 +284,7 @@
             <button class="worldwide__pause" type="button" aria-label="Pause the globe" hidden data-globe-pause></button>
           </figcaption>
         </figure>
+        {{ with site.GetPage "/usage" }}<p class="phone-only worldwide__more"><a class="link home-more" href="{{ .RelPermalink }}">{{ $w.link_label }}{{ $arrow }}</a></p>{{ end }}
       </div>
     </div>
     <script type="application/json" data-globe-data>{{ dict "countries" $u.countries "launches" $u.launches "day" $u.day "since" $since | jsonify | safeJS }}</script>
