@@ -50,4 +50,16 @@
   .prose .ev-card__foot .btn { flex: none; text-decoration: none; }
   .ev-card__foot .ext-mark { margin-left: 0; }
   .event-list--past .ev-card__foot { display: none; }
+
+  /* -------------------------------------------------------------- the newsletter row and the empty line
+     one quiet tinted row each: a mail icon, the words, "Newsletter" muted at the right */
+  .prose a.ev-news { display: flex; align-items: center; gap: var(--s-3); min-height: 48px; margin: var(--s-5) 0 0; padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-md); background: color-mix(in oklab, var(--surface) 50%, var(--bg)); color: var(--ink);
+    font-size: var(--t-small); font-weight: 500; text-decoration: none; }
+  .ev-news__go { display: inline-flex; align-items: center; gap: var(--s-1); margin-left: auto; color: var(--muted); font-weight: 400; }
+  .ev-news__go::after { content: ""; width: 16px; height: 16px; background: currentColor;
+    -webkit-mask: var(--arrow) center / 12px no-repeat; mask: var(--arrow) center / 12px no-repeat; }
+  .prose .event-empty { max-width: none; margin: 0; padding: var(--s-3) var(--s-4); border-radius: var(--r-md);
+    background: color-mix(in oklab, var(--surface) 50%, var(--bg)); font: 400 var(--t-small)/1.5 var(--font-text); }
+  .prose .event-empty + .ev-news { margin-top: var(--s-2); }
 }
