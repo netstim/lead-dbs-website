@@ -69,7 +69,7 @@ atlases:
   alt: 'AAL atlas: colour-coded regions on a brain surface'
 - id: harvard-oxford-corticalsubcortical-atlases-makris-2006
   group: anatomical
-  name: Harvard-Oxford cortical/subcortical atlases
+  name: Harvard–Oxford (whole brain)
   ref: Makris 2006
   covers: Cortex and subcortex
   preinstalled: true

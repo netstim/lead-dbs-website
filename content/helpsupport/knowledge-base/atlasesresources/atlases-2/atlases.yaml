@@ -280,12 +280,13 @@ atlases:
   alt: 'BGHAT atlas: basal ganglia and thalamus in 3D'
 - id: harvard-oxford-subcorticalcortical-atlas
   group: basal-ganglia
-  name: Harvard-Oxford subcortical/cortical atlas
+  name: Harvard–Oxford (whole brain)
   ref: Makris 2006
   covers: Common subcortical structures; no STN
   preinstalled: false
   about: A widely used atlas of subcortical structures. Does not separate between subparts of the pallidum / thalamus and does not contain a volume for the subthalamic nucleus. In the context of DBS, this atlas can for example be used for whole pallidum, thalamus, nucleus accumbens, as well as subcortical subcallosal cortex visualization.
   get:
+  - 'Included as a whole-brain parcellation; see [Cortical parcellations](/helpsupport/knowledge-base/atlasesresources/cortical-atlas-parcellations-mni-space/#harvard-oxford-corticalsubcortical-atlases-makris-2006)'
   - 'Distributed with [FSL](http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/); description: [FSL atlases page](http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Atlases)'
   cite:
   - 'Makris N, Goldstein JM, Kennedy D, Hodge SM, Caviness VS, Faraone SV, Tsuang MT, Seidman LJ. Decreased volume of left and total anterior insular lobule in schizophrenia. Schizophr Res. 2006 Apr;83(2-3):155-71. [PubMed](http://www.ncbi.nlm.nih.gov/pubmed/16448806)'
