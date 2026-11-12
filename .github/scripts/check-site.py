@@ -12,8 +12,12 @@ The second argument is the baseURL the site was built with. Checked:
   build (and its #anchor), not to another redirect;
 - canonical, og:url and og:image, the sitemap's addresses and robots.txt's Sitemap line are absolute
   addresses on the baseURL's host (or, on a preview build, on the live site named by its canonical);
+- the sitemap lists no page that asks search engines not to index it (robots noindex; on a preview
+  build every page says so, and the check is skipped);
 - no page shows front matter as text (a "keywords:" or "title:" line, or a "---" fence) in its main
-  content, which happens when a Markdown file's front matter is broken.
+  content, which happens when a Markdown file's front matter is broken;
+- a page has one name: its browser title is its h1, or its h1 followed by " – Lead-DBS" (a later page of
+  the news list adds ", page 2" and so on).
 
 Only the Python standard library is used.
 """
@@ -46,6 +50,8 @@ class Page(html.parser.HTMLParser):
         self.main_depth = 0
         self.skip_depth = 0
         self.text = []
+        self.title, self.h1 = None, None
+        self.in_title = self.in_h1 = False
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
@@ -65,24 +71,36 @@ class Page(html.parser.HTMLParser):
             self.meta["canonical"] = a.get("href", "")
         if tag == "meta":
             prop = a.get("property") or a.get("name")
-            if prop in ("og:url", "og:image"):
+            if prop in ("og:url", "og:image", "robots"):
                 self.meta[prop] = a.get("content", "")
             if (a.get("http-equiv") or "").lower() == "refresh":
                 m = re.search(r"url=(.+)$", a.get("content", ""), re.I)
                 if m:
                     self.refresh = m.group(1).strip()
+        if tag == "title" and self.title is None:
+            self.in_title, self.title = True, ""
+        if tag == "h1" and self.h1 is None:
+            self.in_h1, self.h1 = True, ""
         if tag == "main":
             self.main_depth += 1
         if self.main_depth and tag in ("script", "style", "pre", "code", "template"):
             self.skip_depth += 1
 
     def handle_endtag(self, tag):
+        if tag == "title":
+            self.in_title = False
+        if tag == "h1":
+            self.in_h1 = False
         if self.main_depth and tag in ("script", "style", "pre", "code", "template") and self.skip_depth:
             self.skip_depth -= 1
         if tag == "main" and self.main_depth:
             self.main_depth -= 1
 
     def handle_data(self, data):
+        if self.in_title:
+            self.title += data
+        if self.in_h1:
+            self.h1 += data
         if self.main_depth and not self.skip_depth:
             self.text.append(data)
 
@@ -168,6 +186,11 @@ for fp, p in sorted(pages.items()):
             continue
         if not re.match(r"https?://", v):
             err(f"{url}: {key} is not an absolute address: {v!r}")
+    if p.title is not None and p.h1 is not None:
+        name = lambda t: re.sub(r"\s+", " ", re.sub("[\u00ad\u200b\u2060]", "", t)).strip()
+        title, h1 = re.sub(r", page \d+(?= – |$)", "", name(p.title)), name(p.h1).rstrip("#").strip()
+        if title not in (h1, f"{h1} – Lead-DBS"):
+            err(f"{url}: the browser title {name(p.title)!r} is not the h1 {h1!r}")
     text = "".join(p.text)
     m = LEAK.search(text)
     if m:
@@ -176,13 +199,21 @@ for fp, p in sorted(pages.items()):
 
 sitemap = os.path.join(ROOT, "sitemap.xml")
 if os.path.isfile(sitemap):
-    for loc in re.findall(r"<loc>([^<]+)</loc>", open(sitemap, encoding="utf-8").read()):
+    locs = re.findall(r"<loc>([^<]+)</loc>", open(sitemap, encoding="utf-8").read())
+    noindex = []
+    for loc in locs:
+        tf = to_file(urllib.parse.urlparse(loc).path)
         if not re.match(r"https?://", loc):
             err(f"sitemap.xml: not an absolute address: {loc}")
         elif BASE_HOST and urllib.parse.urlparse(loc).netloc != BASE_HOST:
             err(f"sitemap.xml: {loc} is not on {BASE_HOST}")
-        elif not to_file(urllib.parse.urlparse(loc).path):
+        elif not tf:
             err(f"sitemap.xml: {loc} is not in the build")
+        elif tf in pages and "noindex" in pages[tf].meta.get("robots", ""):
+            noindex.append(loc)
+    if len(noindex) < len(locs):
+        for loc in noindex:
+            err(f"sitemap.xml: {loc} is marked noindex")
 robots = os.path.join(ROOT, "robots.txt")
 if os.path.isfile(robots):
     for line in open(robots, encoding="utf-8"):
