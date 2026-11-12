@@ -402,6 +402,7 @@
               <li><a class="link" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a></li>
             </ul>
           </div>
+          <div class="phone-only cite__actions"><div class="btn-row"><a class="btn btn--secondary" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}</a></div></div>
         </div>
         {{ end }}
       </div>
