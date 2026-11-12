@@ -340,9 +340,11 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .home-hero .hero__manual::after { content: none; }
 .home-hero .hero__manual .ext-mark { margin-left: 2px; opacity: .7; font-weight: 400; }
 @media (max-width: 639px) {
-  .home-hero .btn-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); }
+  .home-hero .btn-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-2); }
   .home-hero .btn-row > .btn--primary { grid-column: 1 / -1; }
 }
+/* the narrowest phones: the three actions stack, the pills full width */
+@media (max-width: 359px) { .home-hero .btn-row { grid-template-columns: minmax(0, 1fr); } }
 /* the announcement chip above the title (events/next.html, "chip"): an outlined pill, "Next" in the
    signal coral, the event and its date, an arrow */
 .hero__chip { margin: 0 0 var(--s-5); }
