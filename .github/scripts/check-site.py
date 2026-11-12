@@ -3,17 +3,24 @@
 
     python3 .github/scripts/check-site.py public https://netstim.github.io/lead-dbs-website/
 
-The second argument is the baseURL the site was built with. Checked:
+The second argument is the baseURL the site was built with. A build for https://www.lead-dbs.org/ is the
+production build; any other baseURL is a preview (GitHub Pages), which asks search engines to index nothing.
+Checked:
 
-- every internal link (written as a path, not a full address), image, script, stylesheet and srcset
-  entry leads to a file of the build, and
-  every #anchor to an element with that id on the page it points at;
+- the folder is a build: it has index.html, 404.html and sitemap.xml, and at least one page;
+- every internal link, image, script, stylesheet and srcset entry leads to a file of the build, and
+  every #anchor to an element with that id on the page it points at. A link is internal when it is a
+  path, or a full address on the build's host or on www.lead-dbs.org (the preview is a copy of that
+  site), except /release/, /docs/ and /?na=… addresses, which the old server keeps serving;
 - every redirect page (old addresses, `<meta http-equiv="refresh">`) leads straight to a page of the
   build (and its #anchor), not to another redirect;
-- canonical, og:url and og:image, the sitemap's addresses and robots.txt's Sitemap line are absolute
-  addresses on the baseURL's host (or, on a preview build, on the live site named by its canonical);
-- the sitemap lists no page that asks search engines not to index it (robots noindex; on a preview
-  build every page says so, and the check is skipped);
+- og:image, the sitemap's addresses and robots.txt's Sitemap line are absolute addresses, the sitemap's
+  on the baseURL's host;
+- every page that search engines may index has a canonical and an og:url, and both are the page's own
+  address on https://www.lead-dbs.org/ (on a preview build too, so the copy points search engines at
+  the live site);
+- the production sitemap lists no page that asks search engines not to index it (robots noindex), and
+  every page of a preview build asks it;
 - no page shows front matter as text (a "keywords:" or "title:" line, or a "---" fence) in its main
   content, which happens when a Markdown file's front matter is broken;
 - no page has an empty sidebar, the production build has no form that cannot be sent, and no page shows
@@ -34,6 +41,12 @@ BASE = sys.argv[2] if len(sys.argv) > 2 else "/"
 base = urllib.parse.urlparse(BASE)
 BASE_PATH = base.path if base.path.endswith("/") else base.path + "/"
 BASE_HOST = base.netloc
+# the live site: canonical addresses point there, from the preview too
+LIVE = "https://www.lead-dbs.org/"
+LIVE_HOST = urllib.parse.urlparse(LIVE).netloc
+# decided by the baseURL alone, never by what the build contains, so a production build that says
+# noindex on every page cannot pass as a preview
+IS_PREVIEW = BASE != LIVE
 
 errors = []
 
@@ -122,18 +135,37 @@ def to_file(path):
     return None
 
 
+OWN_HOSTS = {h for h in (BASE_HOST, LIVE_HOST, LIVE_HOST.removeprefix("www.")) if h}
+
+
 def internal_path(url, page_url):
-    """The site path a link points at, or None for links to other sites and non-web schemes."""
+    """The site path (under BASE_PATH) a link points at, or None for links to other sites, to files the
+    old server keeps serving, and to non-web schemes."""
     u = urllib.parse.urlparse(url)
     if u.scheme in ("mailto", "tel", "data", "javascript"):
         return None
     if u.scheme or u.netloc:
-        # a full address is another site, or a file the old server keeps serving beside the site
-        # (/release/download.php, /docs/…): the site's own links are written as paths
-        return None
+        if u.scheme not in ("http", "https", "") or u.netloc not in OWN_HOSTS:
+            return None
+        # a full address on the site's own host: on the build's host the path already starts with
+        # BASE_PATH; on the live site it is the same page at the root
+        path = u.path or "/"
+        if u.netloc == BASE_HOST and path.startswith(BASE_PATH):
+            live_path = "/" + path[len(BASE_PATH):]
+        else:
+            live_path, path = path, BASE_PATH + path.lstrip("/")
+        # the downloads (/release/download.php), PDFs (/docs/) and newsletters (/?na=view&id=…) stay on
+        # the old WordPress server beside the site (README, Deployment)
+        if live_path.startswith(("/release/", "/docs/")) or (live_path == "/" and u.query):
+            return None
+        return u._replace(scheme="", netloc="", path=path)
     full = urllib.parse.urljoin(page_url, url)
     return urllib.parse.urlparse(full)
 
+
+for need in ("index.html", "404.html", "sitemap.xml"):
+    if not os.path.isfile(os.path.join(ROOT, need)):
+        err(f"{ROOT} has no {need}: is it the output folder of hugo?")
 
 pages = {}
 for dirpath, _, files in os.walk(ROOT):
@@ -153,7 +185,6 @@ def page_url(fp):
     return BASE_PATH + rel
 
 
-IS_PREVIEW = BASE_HOST != "www.lead-dbs.org"
 LEAK = re.compile(r"(?m)^\s*(?:---\s*$|(?:keywords|aliases|menuParent|linkTitle|lastmod|htmlTitle|description|title|date|weight|slug):\s)")
 absolute_live = None
 checked = 0
@@ -161,8 +192,7 @@ for fp, p in sorted(pages.items()):
     url = page_url(fp)
     if p.refresh is not None:
         # redirect pages name their target as a full address on the site's own host
-        r = urllib.parse.urlparse(p.refresh)
-        target = r if r.netloc == BASE_HOST and BASE_HOST else internal_path(p.refresh, url)
+        target = internal_path(p.refresh, url)
         if target is not None:
             tf = to_file(target.path)
             if not tf:
@@ -183,12 +213,21 @@ for fp, p in sorted(pages.items()):
             continue
         if target.fragment and tf.endswith(".html") and target.fragment not in pages[tf].ids:
             err(f"{url}: {link}: no element with id {target.fragment!r} there")
-    for key in ("canonical", "og:url", "og:image"):
+    v = p.meta.get("og:image")
+    if v is not None and not re.match(r"https?://", v):
+        err(f"{url}: og:image is not an absolute address: {v!r}")
+    noindex = "noindex" in p.meta.get("robots", "")
+    if IS_PREVIEW and not noindex:
+        err(f"{url}: a page of the preview build without robots noindex")
+    # the preview says noindex on every page because it is the preview, so there every page counts
+    own = LIVE + url[len(BASE_PATH):]
+    for key in ("canonical", "og:url"):
         v = p.meta.get(key)
         if v is None:
-            continue
-        if not re.match(r"https?://", v):
-            err(f"{url}: {key} is not an absolute address: {v!r}")
+            if IS_PREVIEW or not noindex:
+                err(f"{url}: no {key} (expected {own})")
+        elif v != own:
+            err(f"{url}: {key} is {v!r}, not the page's address on the live site, {own}")
     if p.title is not None and p.h1 is not None:
         name = lambda t: re.sub(r"\s+", " ", re.sub("[\u00ad\u200b\u2060]", "", t)).strip()
         title, h1 = re.sub(r", page \d+(?= – |$)", "", name(p.title)), name(p.h1).rstrip("#").strip()
@@ -211,7 +250,6 @@ for fp, p in sorted(pages.items()):
 sitemap = os.path.join(ROOT, "sitemap.xml")
 if os.path.isfile(sitemap):
     locs = re.findall(r"<loc>([^<]+)</loc>", open(sitemap, encoding="utf-8").read())
-    noindex = []
     for loc in locs:
         tf = to_file(urllib.parse.urlparse(loc).path)
         if not re.match(r"https?://", loc):
@@ -220,16 +258,16 @@ if os.path.isfile(sitemap):
             err(f"sitemap.xml: {loc} is not on {BASE_HOST}")
         elif not tf:
             err(f"sitemap.xml: {loc} is not in the build")
-        elif tf in pages and "noindex" in pages[tf].meta.get("robots", ""):
-            noindex.append(loc)
-    if len(noindex) < len(locs):
-        for loc in noindex:
+        elif not IS_PREVIEW and tf in pages and "noindex" in pages[tf].meta.get("robots", ""):
             err(f"sitemap.xml: {loc} is marked noindex")
 robots = os.path.join(ROOT, "robots.txt")
 if os.path.isfile(robots):
     for line in open(robots, encoding="utf-8"):
         if line.lower().startswith("sitemap:") and not re.match(r"https?://", line.split(":", 1)[1].strip()):
             err(f"robots.txt: the Sitemap line is not an absolute address: {line.strip()}")
+
+if not checked:
+    err(f"{ROOT}: no pages")
 
 for e in errors:
     print("ERROR", e)
