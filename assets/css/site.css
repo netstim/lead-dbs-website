@@ -601,8 +601,9 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .link--ext::after { content: none; }
 .link--ext .ext-mark { margin-left: .2em; color: var(--muted); }
 /* a button that leaves the site (the Zoom registration): the ↗ in place of the chevron */
-.btn--ext::after { content: none; }
-.btn--ext .ext-mark { margin-left: var(--s-2); color: inherit; opacity: .8; font-size: .9em; }
+/* (also a black pill whose label ends in the ↗ of the Markdown links, which would otherwise show both marks) */
+:is(.btn--ext, .btn--primary:has(> .ext-mark))::after { content: none; }
+:is(.btn--ext, .btn--primary:has(> .ext-mark)) .ext-mark { margin-left: var(--s-2); color: inherit; opacity: .8; font-size: .9em; }
 .closing__cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-7) var(--gutter); align-items: stretch; }
 .closing__col { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-4); }
 .home .closing__h { margin: 0; font-size: var(--t-h3); line-height: 1.15; max-width: none; }
