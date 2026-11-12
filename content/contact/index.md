@@ -19,7 +19,7 @@ next:
   - {page: "/subscribe-to-our-newsletter/"}
 ---
 
-Questions and bugs are answered fastest where users and developers already are.
+Got a question or found a bug? Start here:
 
 {{< link-rows key="faster" >}}
 

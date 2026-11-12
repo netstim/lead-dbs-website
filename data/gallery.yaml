@@ -33,7 +33,7 @@ figures:
     license: "CC BY 4.0"
     license_url: "https://creativecommons.org/licenses/by/4.0/"
     modification: "cropped to the top 3D panel (title line and the two scatter plots below removed)"
-    shows: "Electrodes from two OCD patient groups with the nerve fibre tracts they reach: red tracts were linked to better improvement, blue tracts to less."
+    shows: "Electrodes from two OCD patient groups and fibre tracts reached by stimulation. Red indicates association with greater improvement; blue with less."
 
   - file: "hollunder2024_fig2_right.png"
     authors: "Hollunder B et al."
@@ -70,7 +70,7 @@ figures:
     license: "CC BY 4.0"
     license_url: "https://creativecommons.org/licenses/by/4.0/"
     modification: "none"
-    shows: "A 3D scene of a patient's skull in the stereotactic frame during surgery, with the planned electrode paths leading to small target structures deep in the brain."
+    shows: "A 3D view of a patient’s skull in a stereotactic frame, showing planned electrode trajectories and targets during surgery."
 
   - file: "li2020_fig1.png"
     authors: "Li N et al."
@@ -106,7 +106,7 @@ figures:
     license: "CC BY 4.0"
     license_url: "https://creativecommons.org/licenses/by/4.0/"
     modification: "none"
-    shows: "Symptom-related nerve fibre tracts near the subthalamic nucleus, reached by today's single stimulation volume (A) and by two separate volumes from a hypothetical future electrode (B)."
+    shows: "Symptom-related fibre tracts near the subthalamic nucleus, reached by a single stimulation volume (A) and two separate volumes from a hypothetical future electrode (B)."
 
 
   - file: "hollunder2024_fig4_panela.png"
@@ -119,7 +119,7 @@ figures:
     license: "CC BY 4.0"
     license_url: "https://creativecommons.org/licenses/by/4.0/"
     modification: "cropped to panel a (statistics panel b removed)"
-    shows: "For four brain disorders, the nerve fibre tracts passing the subthalamic nucleus are narrowed down, row by row, to the bundle whose stimulation went along with the best outcomes."
+    shows: "For four brain disorders, successive rows narrow the fibre tracts passing the subthalamic nucleus to the bundle whose stimulation was associated with the best outcomes."
 
   - file: "oxenford2022_fig6.jpg"
     authors: "Oxenford S et al."
@@ -132,7 +132,7 @@ figures:
     license: "CC BY 4.0"
     license_url: "https://creativecommons.org/licenses/by/4.0/"
     modification: "none"
-    shows: "As test stimulation during surgery is raised from 2.0 to 3.5 mA, more nerve fibres near the electrode are reached, alongside the arm-muscle activity recorded at the same time."
+    shows: "Increasing intraoperative test stimulation from 2.0 to 3.5 mA is modelled to activate more fibres near the electrode. Arm muscle activity recorded simultaneously is shown alongside."
 
   - file: "rios2022_fig6_panela.png"
     authors: "Ríos AS et al."
@@ -144,6 +144,6 @@ figures:
     license: "CC BY 4.0"
     license_url: "https://creativecommons.org/licenses/by/4.0/"
     modification: "cropped to panel a (panel b, which includes a reproduction of Penfield & Perot 1963, removed)"
-    shows: "Nerve fibre tracts whose stimulation went along with flashback-like experiences during fornix stimulation for Alzheimer's disease, shown in 3D on high-resolution brain sections."
+    shows: "Fibre tracts whose stimulation was associated with flashback-like experiences during fornix stimulation for Alzheimer’s disease, shown in 3D on high-resolution brain sections."
 
 

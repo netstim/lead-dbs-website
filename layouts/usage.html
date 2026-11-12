@@ -31,7 +31,7 @@
 
       <section class="usage__cell usage__cell--wide" aria-labelledby="u-countries">
         <h2 id="u-countries">{{ $c.countries.title }}</h2>
-        <p>{{ $c.countries.text }}{{ if gt (len $u.countries) $shown }} The {{ sub (len $u.countries) $shown }} smallest are not drawn.{{ end }}</p>
+        <p>{{ $c.countries.text }}{{ if gt (len $u.countries) $shown }} The {{ sub (len $u.countries) $shown }} countries with the fewest launches are not shown.{{ end }}</p>
         <figure class="usage__chart usage__chart--countries">{{ index $svg "countries" }}</figure>
         <ul class="usage__legend" aria-hidden="true"><li style="--sw: var(--p-action)">Americas</li><li style="--sw: var(--p-tint-1)">Europe</li><li style="--sw: var(--p-accent)">Asia</li><li style="--sw: var(--p-tint-2)">Oceania</li></ul>
         <ol class="sr-only">{{ range first 12 $u.countries }}<li>{{ index . 1 }}: {{ lang.FormatNumber 0 (index . 2) }} launches</li>{{ end }}</ol>

@@ -35,8 +35,8 @@ Lead-DBS is a free, open-source MATLAB toolbox for deep brain stimulation (DBS) 
 {{% col "1/2" %}}
 Electrodes implanted in deep brain structures deliver continuous electrical stimulation, mainly in
 Parkinson’s disease, essential tremor and dystonia, more rarely in disorders such as depression or
-Alzheimer’s disease. Where exactly an electrode sits, and which brain networks it reaches, shapes its
-effect: this is what Lead-DBS helps researchers study.
+Alzheimer’s disease. Lead-DBS helps researchers study how electrode placement and engagement of brain
+networks relate to stimulation effects.
 {{% /col %}}
 {{% col "1/2" %}}
 ![Atlas structures and a DBS electrode in 3D over a histological section](LEAD_Scene-1030x541.jpg)

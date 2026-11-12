@@ -21,7 +21,7 @@ results. Lead-DBS uses the ICBM 2009b nonlinear asymmetric template.
 | Template | What it is | Contrasts | Used by |
 | --- | --- | --- | --- |
 | MNI152 NLIN 6th generation | 152 brains, nonlinearly registered into MNI305 space | T1 | SPM and FSL (FSL in an asymmetric version) |
-| MNI152 NLIN 2009b | The same 152 brains registered again in 2009, at 0.5 mm: the most detailed | T1, T2, PD | Lead-DBS (asymmetric version) |
+| MNI152 NLIN 2009b | The same 152 brains registered again in 2009, at 0.5 mm resolution | T1, T2, PD | Lead-DBS (asymmetric version) |
 | Colin27 | One brain, scanned 27 times; a high-resolution version followed in 2008 | T1 (2008: T1 and T2) | SPM96 |
 {.table--stack .table--templates caption="Three MNI templates in short"}
 
@@ -104,7 +104,7 @@ and the Human Connectome Project. Largely after Matthew Brett's
 differences between Talairach and MNI space.
 
 <details class="more">
-<summary>Show the templates one by one</summary>
+<summary>MNI templates and related coordinate spaces</summary>
 
 - [MNI305](http://nist.mni.mcgill.ca/?p=957): 305 normal MRI brains were linearly coregistered (9-param) to 241 brains that had been coregistered (roughly) to the Talairach atlas. This was the first MNI template. It is T1 only.
 - [Colin27 original](http://nist.mni.mcgill.ca/?p=935): Colin Holmes, a lab member of the MNI, was scanned 27 times. This was used as the standard template in SPM96. This template was matched to the MNI305. In the original release, only a T1 template was available.

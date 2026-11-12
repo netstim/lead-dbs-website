@@ -1,6 +1,6 @@
 ---
 title: "News"
-description: "Lead-DBS news: releases, papers, workshops and the history of the project since 2017."
+description: "Lead-DBS releases, papers and workshop news since 2017."
 # old category pages, feeds and list pages; old posts whose content moved forward from their own
 # folders (layout: redirect) to the section that holds it now
 aliases: ["/category/dbs/", "/category/literature/", "/feed/", "/news/feed/", "/news/page/4/"]

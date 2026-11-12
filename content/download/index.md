@@ -1,6 +1,6 @@
 ---
 title: "Download Lead-DBS"
-description: "Download Lead-DBS: requirements, the download servers, installation in four steps, the standalone builds and the release history."
+description: "Download and install Lead-DBS."
 date: "2014-06-17T15:07:00"
 lastmod: "2026-11-12"
 weight: 7
@@ -40,7 +40,7 @@ standalone:
 # the next version, in the black panel
 upcoming:
   title: "Lead-DBS 4.0 is coming."
-  text: "Rebuilt completely in Python. No MATLAB required."
+  text: "Being rewritten entirely in Python; no MATLAB required."
   link: {page: "/events/hands-on-workshop-2027/", text: "Try the pre-release at the workshop, 11–12 February 2027"}
 # the terms of use, in the dialog the "Terms of use" button opens (text: Markdown; id: an anchor
 # other pages link to)
@@ -57,8 +57,8 @@ share: "images/renders/cohort-front.jpg"
 # found by the site search as results of their own (layouts/home.searchindex.json)
 searchEntries:
   - {title: "Standalone version: Windows, macOS, Linux", id: "standalone-version", keywords: "standalone no matlab without matlab compiled windows linux macos mac os mac apple silicon intel", description: "Experimental builds of Lead-DBS that run without MATLAB, for Windows, macOS (Intel and Apple silicon) and Linux."}
-  - {title: "Release history", id: "releases", keywords: "release history release notes changelog change log changes what changed versions version history older versions", description: "Every version of Lead-DBS with its date, its announcement and what changed."}
-  - {title: "Lead-DBS 4.0", id: "lead-dbs-4", keywords: "4.0 v4 version 4 Python next version no MATLAB pre-release", description: "Lead-DBS 4.0 is coming, rebuilt completely in Python: no MATLAB required."}
+  - {title: "Release history", id: "releases", keywords: "release history release notes changelog change log changes what changed versions version history older versions", description: "Lead-DBS release dates, announcements and changes."}
+  - {title: "Lead-DBS 4.0", id: "lead-dbs-4", keywords: "4.0 v4 version 4 Python next version no MATLAB pre-release", description: "Lead-DBS 4.0 is being rewritten entirely in Python and will run without MATLAB."}
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
   - {page: "/helpsupport/first-steps/"}

@@ -39,9 +39,7 @@ layout: "showcase"
 {{< cells key="glance" label="DISTAL at a glance" >}}
 
 {{% hub-section %}}
-## What it is
-
-**Every structure relevant to DBS surgery,** precisely on the MNI template.
+## Anatomical coverage
 
 It is coregistered to the ICBM 2009b nonlinear asymmetric template ([about the MNI spaces](/about-the-mni-spaces/)),
 and its thalamic nuclei come in three nomenclatures, with their abbreviations. In the picture above,
@@ -63,7 +61,7 @@ zones of the STN and GPi.
 {{% hub-section %}}
 ## How it was built
 
-**In three stages,** directly on the MNI template.
+**Built in three stages** on the MNI template.
 
 None of the atlases collected since 2012 matched the STN of the MNI template precisely, and in DBS imaging
 millimetres matter.
@@ -105,7 +103,7 @@ Your patient data will (if quality allows) show a similar hypointense region tha
 </details>
 
 <details class="more more--wide">
-<summary>The three stages, with the figures of the paper</summary>
+<summary>Three construction stages, with figures from the paper</summary>
 
 We wanted to create an atlas that is i) very precisely aligned to the ICBM 2009b MNI template and ii) accurate enough to visualize all structures relevant for DBS surgery. This resulted in three separate stages.
 

@@ -38,7 +38,7 @@ On a group level, Lead-DBS 2.5 maps
 The Sweetspot Explorer builds on Till Dembek's comparison of the approaches used to map sweet spots in
 the DBS literature; it brings their main choices together in one tool, without reproducing each paper
 exactly. A [walkthrough video](https://www.youtube.com/watch?v=xobhQDgtVfs) shows all three tools. Today
-they are described under [Features](/helpsupport/knowledge-base/lead-dbs-methods/).
+they are described under [Methods](/helpsupport/knowledge-base/lead-dbs-methods/).
 
 ## Unilateral leads, and new developers
 

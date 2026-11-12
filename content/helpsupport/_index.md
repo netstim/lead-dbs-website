@@ -25,7 +25,7 @@ manual:
 help:
   - {name: "User Slack", text: "Ask other users and the developers", url: "/helpsupport/slack-user-channel/"}
   - {name: "Troubleshooting", text: "Known problems and their fixes", url: "https://netstim.gitbook.io/leaddbs/appendix/troubleshooting-specific-help"}
-  - {name: "Bug reports", text: "With your version, system and the full error message", url: "https://github.com/netstim/leaddbs/issues"}
+  - {name: "Bug reports", text: "Include your Lead-DBS version, operating system and full error message", url: "https://github.com/netstim/leaddbs/issues"}
   - {name: "Contact", text: "For everything else", url: "/contact/"}
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
@@ -45,7 +45,7 @@ layout: "hub"
 {{% hub-section %}}
 ## Manual {#manual}
 
-**Every step of an analysis,** chapter by chapter, in the [manual](https://netstim.gitbook.io/leaddbs).
+**The [manual](https://netstim.gitbook.io/leaddbs)** covers installation and analysis workflows.
 
 {{< link-rows key="manual" >}}
 {{% /hub-section %}}

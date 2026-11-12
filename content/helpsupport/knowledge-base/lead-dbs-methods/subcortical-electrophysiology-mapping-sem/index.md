@@ -138,11 +138,11 @@ The above results show a clear relationship between alpha/beta power and spatial
 
 ![Beta and alpha peaks within the STN in 3D, with electrode trajectories](betaalpha3d.png "Fig. 4: 3D representation of peaks in electrophysiological activity (same data as shown in Fig. 3).")
 
-We went ahead and created three-dimensional peak ROI associated with high beta and alpha activity, respectively (above).
+Three-dimensional ROIs mark the peaks of high beta and alpha activity (above).
 
 ### Connectivity of the two hot spots
 
-We were then interested whether our standardized structural connectomes were equally precise enough to find differences in cortical connectivity associated with these regions. Of note, the two regions are both very small and close to each other.
+We tested whether a standardized structural connectome could distinguish cortical connectivity between these small, adjacent regions. Of note, the two regions are both very small and close to each other.
 
 For this analysis – which could only be performed on group level – a standardized high precision structural connectome [[Horn 2017](https://www.sciencedirect.com/science/article/pii/S1053811917301088)] was used to select fibre-tracts connected to the alpha and beta peaks, respectively.
 

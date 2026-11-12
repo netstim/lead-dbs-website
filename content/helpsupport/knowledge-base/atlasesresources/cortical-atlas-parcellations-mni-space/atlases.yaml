@@ -69,7 +69,7 @@ atlases:
   alt: 'AAL atlas: colour-coded regions on a brain surface'
 - id: harvard-oxford-corticalsubcortical-atlases-makris-2006
   group: anatomical
-  name: Harvard-Oxford cortical/subcortical atlases
+  name: Harvard–Oxford (whole brain)
   ref: Makris 2006
   covers: Cortex and subcortex
   preinstalled: true
@@ -227,7 +227,7 @@ atlases:
   group: functional
   name: Local-Global parcellation
   ref: Schaefer 2018
-  covers: Cortex, subdivided Yeo networks
+  covers: Cortex; subdivisions of the Yeo networks
   preinstalled: true
   about: Based on the influential brain networks published by Thomas Yeo (2011), these novel parcellations add further refinement by subparcellating the global networks based on a local gradient approach. Parcellations come in several version, breaking down the cortex into up to 1000 regions based on rs-fMRI.
   get:

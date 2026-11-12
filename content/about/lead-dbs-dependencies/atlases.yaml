@@ -60,7 +60,6 @@ atlases:
   covers: Electric fields and pathway activation, from Lead-DBS 3.1
   get:
   - '[github.com/SFB-ELAINE/OSS-DBSv2](https://github.com/SFB-ELAINE/OSS-DBSv2)'
-  about: By {{< paper zimmermann2026 "full" >}}.
   papers:
   - zimmermann2026
   ref: Zimmermann 2026
@@ -70,7 +69,6 @@ atlases:
   covers: Electric fields and pathway activation, the original version
   get:
   - '[github.com/SFB-ELAINE/OSS-DBS](https://github.com/SFB-ELAINE/OSS-DBS)'
-  about: By {{< paper butenko2020 "full" >}}.
   papers:
   - butenko2020
   ref: Butenko 2020

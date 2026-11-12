@@ -18,8 +18,8 @@ DBS network mapping relates the connections of each patient's stimulation site, 
 
 ## Use it in Lead-DBS
 
-Lead-DBS estimates the stimulation volumes and Lead Connectome Mapper their connectivity; Lead Group
-relates them to outcome. The manual explains each step under [Connectomics](https://netstim.gitbook.io/leaddbs/connectomics/connectomic-analyses)
+Lead-DBS estimates stimulation volumes, Lead Connectome Mapper estimates their connectivity, and Lead Group
+relates connectivity to clinical outcomes. The manual explains each step under [Connectomics](https://netstim.gitbook.io/leaddbs/connectomics/connectomic-analyses)
 and [Lead Group](https://netstim.gitbook.io/leaddbs/lead-group/group-analyses-with-lead-dbs).
 
 ## What to cite
@@ -37,8 +37,8 @@ It was discussed in an editorial in *Nature Reviews Neurology*:
 
 ![Steps of DBS network mapping, from postoperative imaging to connectivity maps](methods-1030x357.png "Fig. 1: First, based on postoperative imaging (A) derived DBS electrode localizations (B), the stimulation volume is estimated (C). Then, normative connectomes are queried to calculate which other brain structures are – in the average human brain – connected to the stimulation volume. This may be done both for functional (D) and structural (E) connectivity.")
 
-The connectivity profiles of all patients are then related to their clinical improvement: the result is
-a map of the regions a well-placed electrode is connected to, and it predicts the outcome of new patients.
+Relating patients’ connectivity profiles to clinical improvement produces a map of connections associated
+with improvement. This map can be used to predict outcomes in new patients.
 
 <details class="more more--wide">
 <summary>The method step by step, from the 2017 paper</summary>
@@ -61,14 +61,14 @@ Finally, these maps may be used to actually predict outcome (right hand scatter 
 
 ### Normative or individualized connectivity
 
-Patient-specific connectomes can replace the normative ones used above (and studies are running to do so). The concept could be used to guide DBS programming and/or DBS surgery. Finally, the connectivity profiles may help to define target maps for noninvasive brain stimulation (in this concept, the [2014 PNAS article by Michael Fox et al. is highly enlightening](https://doi.org/10.1073/pnas.1405003111)).
+Patient-specific connectomes can replace the normative ones used above (and studies are running to do so). The concept could be used to guide DBS programming and/or DBS surgery. Finally, the connectivity profiles may help to define target maps for noninvasive brain stimulation (see [Fox et al. 2014, PNAS](https://doi.org/10.1073/pnas.1405003111)).
 
 </details>
 
 ## Related approaches
 
-The same idea maps the symptoms of stroke and other brain lesions to common networks, and was applied to
-transcranial magnetic stimulation (TMS).
+Related methods identify networks associated with symptoms caused by brain lesions, including stroke. They
+have also been applied to transcranial magnetic stimulation (TMS).
 
 <details class="more">
 <summary>Show the studies</summary>

@@ -17,7 +17,7 @@ renders:
     caption: "The same nine patients from the front: one fan of electrodes on each side."
   cohort-top.jpg:
     alt: "The nuclei and the nine patients' electrodes seen from above, front at the top, on a 7 tesla MRI slice"
-    caption: "Seen from above, front at the top: the shapes of the nuclei on the 7 tesla anatomy, with the electrodes of the nine patients."
+    caption: "Nuclei and electrodes from nine patients over a 7 T MRI slice, viewed from above with anterior at the top."
   lead-closeup.jpg:
     alt: "Close-up of one directional electrode with segmented contacts entering the subthalamic nucleus, the red nucleus behind it"
     caption: "One directional electrode of one of these patients, entering the subthalamic nucleus."
@@ -26,13 +26,13 @@ renders:
     caption: "The nine patients' electrodes and the nuclei without the MRI behind them."
   pathway-activation.jpg:
     alt: "Example analysis on the Lead Tutor dataset: two electrodes with their stimulation volumes in blue and the activated fibre pathways in red and white"
-    caption: "Example analysis on the Lead Tutor dataset, with example stimulation settings: two electrodes, their stimulation volumes (blue) and the fibre pathways they activate."
+    caption: "Example Lead Tutor analysis with illustrative stimulation settings: two electrodes, modelled stimulation volumes (blue) and predicted fibre pathway activation."
   pathway-activation-2.jpg:
-    alt: "Example analysis on the Lead Tutor dataset: the activated pathways seen from closer"
-    caption: "The same example analysis, seen from closer."
+    alt: "Close-up of predicted pathway activation in an example Lead Tutor analysis"
+    caption: "Close-up of the same analysis."
   fiber-filtering.jpg:
     alt: "Example analysis on the Lead Tutor dataset: fibre tracts coloured by their association with simulated outcome scores"
-    caption: "Example analysis on the ten Lead Tutor patients, with simulated outcome scores: fibre filtering finds the tracts whose stimulation goes together with better (or worse) improvement across the group, and colours them accordingly."
+    caption: "Example fibre filtering analysis in ten Lead Tutor patients using simulated outcome scores. Tracts are coloured by the association between stimulation and greater or lesser improvement."
   fiber-filtering-wide.jpg:
     alt: "Example analysis on the Lead Tutor dataset: the fibre filtering result from a wider angle"
     caption: "The same fibre filtering example from the other side."

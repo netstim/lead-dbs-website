@@ -32,7 +32,7 @@ groups:
   intro: Parcellations of the subcortex and cerebellum by resting-state functional connectivity.
 - id: macaque
   title: Macaque
-  intro: 'Lead-DBS localizes electrodes in macaque MRI and CT too (since version 1.4.9): with the macaque toolbox installed, type `lead macaque` in MATLAB. The atlas for it:'
+  intro: 'Lead-DBS has supported electrode localization in macaque MRI and CT since version 1.4.9. Install the macaque toolbox, then type `lead macaque` in MATLAB.'
 atlases:
 - id: distal-atlas-ewert-2018
   group: basal-ganglia
@@ -56,7 +56,7 @@ atlases:
   group: basal-ganglia
   name: FOCUS atlas
   ref: Friedrich 2026
-  covers: 95 structures and 82 fibre pathways at 100 microns; by the Lead-DBS team
+  covers: 95 structures and 82 fibre pathways at 100 µm; by the Lead-DBS team
   page: /helpsupport/knowledge-base/atlasesresources/focus-atlas
   about: Made by the Lead-DBS team. A 100-micron atlas of the human subcortex from 7T ex vivo MRI, with 95 manually segmented grey and white matter structures and 82 curated fibre pathways, registered to MNI space.
   get:
@@ -154,7 +154,6 @@ atlases:
   about: The enhanced Tissue Probability Maps are a set of gray-, white- and csf- priors for segmentation of subcortical structures using SPM based on manual labelling of iron and myelin specific parameter maps of nearly 100 individuals aged 25-75yo. Not specifically a subcortical atlas (with strict boundaries for each nucleus), they are still a highly valuable source for patient-specific segmentation and normalization with specific focus on the subcortex. Lead-DBS uses the TPMs to generate customized space-specific TPMs for each “space” that you use (for instance, a TPM for the default ICBM 2009b NLIN Asym space is generated based on the Lorio et al. enhances TPMs).
   get:
   - 'Information and download: [enhanced TPMs at LREN, Lausanne](https://www.unil.ch/lren/home/menuinst/teaching--utilities/data--utilities.html)'
-  - As mentioned above, the TPM is used as a fundamental building block in Lead-DBS.
   cite:
   - 'Lorio, S., Fresard, S., Adaszewski, S., Kherif, F., Chowdhury, R., Frackowiak, R. S., et al. (2016). New tissue priors for improved automated classification of subcortical brain structures on MRI. *NeuroImage*, *130*, 157–166. [doi:10.1016/j.neuroimage.2016.01.062](https://doi.org/10.1016/j.neuroimage.2016.01.062)'
   image: Bildschirmfoto-2019-03-07-um-08.32.29.png
@@ -195,7 +194,7 @@ atlases:
   about: |-
     Histological atlas that has been normalized to MNI-Space.
 
-    Optimal for STN or thalamic targets. In case your DBS target is the ventral intermediate nucleus (VIM), please note that this nucleus (commonly appearing in Walker or Hassler nomenclatures of thalamic nuclei) is not directly represented in this atlas which follows the Jones / Hirai & Jones nomenclatures.
+    Optimal for STN or thalamic targets. The ventral intermediate nucleus (VIM) is not represented separately: this atlas follows Jones / Hirai & Jones nomenclature rather than Walker or Hassler.
 
     The VLpv is the nucleus of the atlas best corresponding to the VIM although it may not be exactly the same. For more information about conversions between thalamic nomenclatures e.g. see Paxinos, G. (2012). The Human Nervous System. Academic Press.
   get:
@@ -281,12 +280,13 @@ atlases:
   alt: 'BGHAT atlas: basal ganglia and thalamus in 3D'
 - id: harvard-oxford-subcorticalcortical-atlas
   group: basal-ganglia
-  name: Harvard-Oxford subcortical/cortical atlas
+  name: Harvard–Oxford (whole brain)
   ref: Makris 2006
   covers: Common subcortical structures; no STN
   preinstalled: false
   about: A widely used atlas of subcortical structures. Does not separate between subparts of the pallidum / thalamus and does not contain a volume for the subthalamic nucleus. In the context of DBS, this atlas can for example be used for whole pallidum, thalamus, nucleus accumbens, as well as subcortical subcallosal cortex visualization.
   get:
+  - 'Included as a whole-brain parcellation; see [Cortical parcellations](/helpsupport/knowledge-base/atlasesresources/cortical-atlas-parcellations-mni-space/#harvard-oxford-corticalsubcortical-atlases-makris-2006)'
   - 'Distributed with [FSL](http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/); description: [FSL atlases page](http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Atlases)'
   cite:
   - 'Makris N, Goldstein JM, Kennedy D, Hodge SM, Caviness VS, Faraone SV, Tsuang MT, Seidman LJ. Decreased volume of left and total anterior insular lobule in schizophrenia. Schizophr Res. 2006 Apr;83(2-3):155-71. [PubMed](http://www.ncbi.nlm.nih.gov/pubmed/16448806)'
@@ -911,7 +911,7 @@ atlases:
   about: |-
     A detailed atlas informed from over 100 structural MR scans of 19 rhesus macaque animals.
 
-    Please note that the atlas is not exactly coregistered to macaque MNI space. However, a script to warp between the INIA19 and MNI space is supplied with the Lead-DBS macaque toolbox.
+    The atlas is not precisely registered to macaque MNI space. The Lead-DBS macaque toolbox includes a script for transformations between INIA19 and MNI space.
   get:
   - 'Information: [INIA19 on NITRC](https://www.nitrc.org/projects/inia19/)'
   - Comes with the Lead-DBS macaque toolbox

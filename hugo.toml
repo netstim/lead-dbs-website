@@ -81,7 +81,7 @@ enableGitInfo = true
   # not the folders (layouts/_partials/nav-place.html). A page that is not in the menu belongs to the
   # entry of its nearest folder that is, or to the page named by its front matter "menuParent".
   [[menus.main]]
-    name = "Features"
+    name = "Methods"
     pageRef = "/helpsupport/knowledge-base/lead-dbs-methods"
     identifier = "features"
     weight = 1
@@ -124,7 +124,7 @@ enableGitInfo = true
       # drawn as the header's button, not as a menu word (layouts/_partials/header.html)
       role = "action"
 
-  # Features: what the software does. The group's own page (the word "Features") is the overview: every
+  # Methods: what the software does. The group's own page (the word "Methods") is the overview: every
   # capability with its name, a picture, its manual chapter and papers, in four numbered chapters. The
   # panel lists those chapters first: the anchors of the page (entries with url, not pages; params.panelOnly
   # keeps them out of the sidebar of the group's articles, where they would read as pages), and for the
@@ -361,7 +361,7 @@ enableGitInfo = true
     pageRef = "/impressum-datenschutzerklarung"
     weight = 1
   [[menus.footer]]
-    name = "Privacy Policy"
+    name = "Privacy policy"
     pageRef = "/privacy-policy"
     weight = 2
 
