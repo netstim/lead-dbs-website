@@ -11,12 +11,12 @@ share: "video-CYCodpND7TE.jpg"
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
   - {page: "/helpsupport/learn-lead-dbs-yourself/"}
-  - {url: "https://netstim.gitbook.io/leaddbs", name: "Manual"}
+  - {page: "/manual/", name: "Manual"}
   - {page: "/helpsupport/slack-user-channel/"}
 layout: "showcase"
 ---
 
-New here? Start with [First steps](/helpsupport/first-steps/). See the [manual](https://netstim.gitbook.io/leaddbs) for current instructions.
+New here? Start with [First steps](/helpsupport/first-steps/). See the [manual](/manual/) for current instructions.
 {.video-intro}
 
 {{% video-grid %}}

@@ -19,19 +19,22 @@
       button.disabled = true;
       status.textContent = '';
       try {
+        const target = document.getElementById(button.dataset.copy);
         const text = button.hasAttribute('data-copy-text')
           ? button.dataset.copyText
-          : document.getElementById(button.dataset.copy)?.innerText.trim();
+          : (target?.hasAttribute('data-copy-verbatim') ? target.textContent : target?.innerText)?.trim();
         if (text == null) throw new Error('Missing copy target');
         await navigator.clipboard.writeText(text);
+        button.dataset.copyState = 'copied';
         status.textContent = 'Copied.';
         if (label) label.textContent = 'Copied';
       } catch {
+        button.dataset.copyState = 'error';
         status.textContent = 'Could not copy: please select the text instead.';
         if (label) label.textContent = 'Copy failed';
       } finally {
         button.disabled = false;
-        timer = setTimeout(() => { if (label) label.textContent = original; }, 2000);
+        timer = setTimeout(() => { if (label) label.textContent = original; delete button.dataset.copyState; }, 2000);
       }
     });
   });

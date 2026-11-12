@@ -13,7 +13,7 @@ hero:
   primary: {label: "Download Lead-DBS"}
   # the second action is for newcomers; the manual (another site, marked ↗) follows it as a third, quieter link
   secondary: {label: "First steps", url: "/helpsupport/first-steps/"}
-  manual: {label: "Manual", url: "https://netstim.gitbook.io/leaddbs"}
+  manual: {label: "Manual", url: "/manual/"}
   # The clip behind the words: files in static/media/, poster in assets/images/renders/.
   # One directional lead in the subthalamic nucleus, the camera swaying slowly (±18°, 32 s loop),
   # framed on a black 16:10 canvas with the render on the right (see docs/home-and-media.md, "hero clip").

@@ -1,0 +1,6 @@
+{{- $out := slice -}}
+{{- range . -}}
+  {{- if and (ge .Level 2) (le .Level 3) (strings.TrimSpace .Title) }}{{ $out = $out | append . }}{{ end -}}
+  {{- range partial "manual-toc-items.html" .Headings }}{{ $out = $out | append . }}{{ end -}}
+{{- end -}}
+{{- return $out -}}

@@ -1,0 +1,908 @@
+{
+  "groups": [
+    {
+      "id": "getting-started",
+      "title": "Getting started",
+      "chapters": [
+        {
+          "title": "Introduction",
+          "page": "/manual/",
+          "group": "getting-started",
+          "depth": 0,
+          "children": [],
+          "label": "Introduction"
+        },
+        {
+          "title": "Installation",
+          "page": "/manual/installation/",
+          "group": "getting-started",
+          "depth": 0,
+          "children": [],
+          "label": "Installation"
+        },
+        {
+          "title": "How to contribute to Lead-DBS",
+          "page": "/manual/ways-to-contribute-to-lead-dbs/",
+          "group": "getting-started",
+          "depth": 0,
+          "children": [],
+          "label": "Contributing"
+        }
+      ]
+    },
+    {
+      "id": "lead-dbs",
+      "title": "Single-patient analysis",
+      "chapters": [
+        {
+          "title": "Overview",
+          "page": "/manual/lead-dbs/step0-overview/",
+          "group": "lead-dbs",
+          "depth": 0,
+          "children": [],
+          "label": "Overview"
+        },
+        {
+          "title": "Self-Tutoring with Lead-Tutor",
+          "page": "/manual/lead-dbs/self-tutoring-with-lead-tutor/",
+          "group": "lead-dbs",
+          "depth": 0,
+          "children": [],
+          "label": "Lead Tutor"
+        },
+        {
+          "title": "1. Load Patient Folder",
+          "page": "/manual/lead-dbs/step1-load-patient-folder/",
+          "group": "lead-dbs",
+          "depth": 0,
+          "children": [
+            {
+              "title": "Importing a classic Lead-DBS dataset to BIDS version",
+              "page": "/manual/lead-dbs/step1-load-patient-folder/importing-a-classic-lead-dbs-dataset-to-bids-version/",
+              "group": "lead-dbs",
+              "depth": 1,
+              "children": [],
+              "label": "Importing a classic Lead-DBS dataset to BIDS version"
+            }
+          ],
+          "label": "Load a patient"
+        },
+        {
+          "title": "2. Image Import",
+          "page": "/manual/lead-dbs/step2-image-import/",
+          "group": "lead-dbs",
+          "depth": 0,
+          "children": [
+            {
+              "title": "Converting NIfTI-images into BIDS",
+              "page": "/manual/lead-dbs/step2-image-import/converting-nifti-images-into-bids/",
+              "group": "lead-dbs",
+              "depth": 1,
+              "children": [],
+              "label": "Converting NIfTI-images into BIDS"
+            },
+            {
+              "title": "Converting DICOM files into BIDS",
+              "page": "/manual/lead-dbs/step2-image-import/converting-dicom-files-into-bids/",
+              "group": "lead-dbs",
+              "depth": 1,
+              "children": [],
+              "label": "Converting DICOM files into BIDS"
+            }
+          ],
+          "label": "Import images"
+        },
+        {
+          "title": "3. Volume Registrations",
+          "page": "/manual/lead-dbs/step3-volume-registrations/",
+          "group": "lead-dbs",
+          "depth": 0,
+          "children": [
+            {
+              "title": "Coregister Volumes",
+              "page": "/manual/lead-dbs/step3-volume-registrations/coregister-volumes/",
+              "group": "lead-dbs",
+              "depth": 1,
+              "children": [],
+              "label": "Coregistration"
+            },
+            {
+              "title": "Normalizing the Images",
+              "page": "/manual/lead-dbs/step3-volume-registrations/normalization-of-images/",
+              "group": "lead-dbs",
+              "depth": 1,
+              "children": [],
+              "label": "Normalization"
+            },
+            {
+              "title": "Brainshift Correction",
+              "page": "/manual/lead-dbs/step3-volume-registrations/subcortical-refine-post-to-pre-transforms/",
+              "group": "lead-dbs",
+              "depth": 1,
+              "children": [],
+              "label": "Brainshift correction"
+            },
+            {
+              "title": "Checking the Coregistration and Normalization",
+              "page": "/manual/lead-dbs/step3-volume-registrations/checking-the-coregistration/",
+              "group": "lead-dbs",
+              "depth": 1,
+              "children": [],
+              "label": "Check registration"
+            }
+          ],
+          "label": "Registration"
+        },
+        {
+          "title": "4. (optional) Surface Reconstruction",
+          "page": "/manual/lead-dbs/step4-optional-surface-reconstruction/",
+          "group": "lead-dbs",
+          "depth": 0,
+          "children": [],
+          "label": "Surface reconstruction"
+        },
+        {
+          "title": "5. (optional) Reconstruction of Electrode Trajectories",
+          "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/",
+          "group": "lead-dbs",
+          "depth": 0,
+          "children": [
+            {
+              "title": "Orientation of Directional Leads",
+              "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/determining-the-orientation-of-directional-leads/",
+              "group": "lead-dbs",
+              "depth": 1,
+              "children": [
+                {
+                  "title": "Prerequisites",
+                  "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/determining-the-orientation-of-directional-leads/prerequisites/",
+                  "group": "lead-dbs",
+                  "depth": 2,
+                  "children": [],
+                  "label": "Prerequisites"
+                },
+                {
+                  "title": "Automatic Algorithm",
+                  "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/determining-the-orientation-of-directional-leads/automatic-algorithm/",
+                  "group": "lead-dbs",
+                  "depth": 2,
+                  "children": [],
+                  "label": "Automatic Algorithm"
+                },
+                {
+                  "title": "Possible Problems with the Automatic Algorithm",
+                  "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/determining-the-orientation-of-directional-leads/possible-problems-with-the-automatic-algorithm/",
+                  "group": "lead-dbs",
+                  "depth": 2,
+                  "children": [],
+                  "label": "Common problems"
+                },
+                {
+                  "title": "User-Assisted Algorithm (Manual Refine)",
+                  "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/determining-the-orientation-of-directional-leads/user-assisted-algorithm-manual-refine/",
+                  "group": "lead-dbs",
+                  "depth": 2,
+                  "children": [],
+                  "label": "Manual refinement"
+                }
+              ],
+              "label": "Directional leads"
+            },
+            {
+              "title": "TRAC/CORE Details",
+              "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/trac-core-details/",
+              "group": "lead-dbs",
+              "depth": 1,
+              "children": [],
+              "label": "TRAC/CORE Details"
+            },
+            {
+              "title": "Manual Reconstruction",
+              "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/manual-reconstruction/",
+              "group": "lead-dbs",
+              "depth": 1,
+              "children": [],
+              "label": "Manual Reconstruction"
+            },
+            {
+              "title": "SEEG electrode reconstruction (LeGUI)",
+              "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/seeg-electrode-reconstruction-legui/",
+              "group": "lead-dbs",
+              "depth": 1,
+              "children": [],
+              "label": "SEEG electrode reconstruction (LeGUI)"
+            },
+            {
+              "title": "Reconstruction File",
+              "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/reconstruction-file/",
+              "group": "lead-dbs",
+              "depth": 1,
+              "children": [],
+              "label": "Reconstruction File"
+            }
+          ],
+          "label": "Electrode reconstruction"
+        },
+        {
+          "title": "6. (optional) Perform Connectivity Analysis",
+          "page": "/manual/lead-dbs/step6-optional-perform-connectivity-analysis/",
+          "group": "lead-dbs",
+          "depth": 0,
+          "children": [],
+          "label": "Connectivity analysis"
+        },
+        {
+          "title": "7. Visualization",
+          "page": "/manual/lead-dbs/step7-visualization/",
+          "group": "lead-dbs",
+          "depth": 0,
+          "children": [
+            {
+              "title": "MER Analysis",
+              "page": "/manual/lead-dbs/step7-visualization/mer-analysis/",
+              "group": "lead-dbs",
+              "depth": 1,
+              "children": [],
+              "label": "MER Analysis"
+            }
+          ],
+          "label": "Visualization"
+        },
+        {
+          "title": "Reconstruction Statistics",
+          "page": "/manual/lead-dbs/reconstruction-statistics/",
+          "group": "lead-dbs",
+          "depth": 0,
+          "children": [],
+          "label": "Reconstruction statistics"
+        }
+      ]
+    },
+    {
+      "id": "lead-group",
+      "title": "Group analysis",
+      "chapters": [
+        {
+          "title": "Group analyses with Lead-DBS",
+          "page": "/manual/lead-group/group-analyses-with-lead-dbs/",
+          "group": "lead-group",
+          "depth": 0,
+          "children": [],
+          "label": "Overview"
+        },
+        {
+          "title": "Setup Analysis",
+          "page": "/manual/lead-group/setup-analysis/",
+          "group": "lead-group",
+          "depth": 0,
+          "children": [],
+          "label": "Set up an analysis"
+        },
+        {
+          "title": "General Settings",
+          "page": "/manual/lead-group/general-settings/",
+          "group": "lead-group",
+          "depth": 0,
+          "children": [],
+          "label": "General settings"
+        },
+        {
+          "title": "Group Visualization",
+          "page": "/manual/lead-group/group-visualization/",
+          "group": "lead-group",
+          "depth": 0,
+          "children": [],
+          "label": "Group visualization"
+        },
+        {
+          "title": "Calculate VTA and Stats",
+          "page": "/manual/lead-group/calculate-vta-and-stats/",
+          "group": "lead-group",
+          "depth": 0,
+          "children": [],
+          "label": "VTAs & statistics"
+        },
+        {
+          "title": "Sweetspot Explorer",
+          "page": "/manual/lead-group/sweetspot-explorer/",
+          "group": "lead-group",
+          "depth": 0,
+          "children": [],
+          "label": "Sweetspot explorer"
+        }
+      ]
+    },
+    {
+      "id": "connectomics",
+      "title": "Connectomics",
+      "chapters": [
+        {
+          "title": "Connectomics",
+          "page": "/manual/connectomics/connectomic-analyses/",
+          "group": "connectomics",
+          "depth": 0,
+          "children": [
+            {
+              "title": "Diffusion MRI: Patient Specific Processing",
+              "page": "/manual/connectomics/connectomic-analyses/dmri/",
+              "group": "connectomics",
+              "depth": 1,
+              "children": [],
+              "label": "Diffusion MRI"
+            },
+            {
+              "title": "fMRI-Analysis: Patient Specific Processing",
+              "page": "/manual/connectomics/connectomic-analyses/fmri/",
+              "group": "connectomics",
+              "depth": 1,
+              "children": [],
+              "label": "Functional MRI"
+            },
+            {
+              "title": "Using Normative Connectomes",
+              "page": "/manual/connectomics/connectomic-analyses/using-normative-connectomes/",
+              "group": "connectomics",
+              "depth": 1,
+              "children": [],
+              "label": "Normative connectomes"
+            },
+            {
+              "title": "Network Mapping Explorer",
+              "page": "/manual/connectomics/connectomic-analyses/network-mapping-explorer/",
+              "group": "connectomics",
+              "depth": 1,
+              "children": [],
+              "label": "Network Mapping Explorer"
+            },
+            {
+              "title": "Discriminative Fibertracts analysis",
+              "page": "/manual/connectomics/connectomic-analyses/discriminative-fibertracts-analysis/",
+              "group": "connectomics",
+              "depth": 1,
+              "children": [],
+              "label": "Discriminative Fibertracts analysis"
+            },
+            {
+              "title": "Fiber Filtering Explorer",
+              "page": "/manual/connectomics/connectomic-analyses/fiber-filtering-explorer/",
+              "group": "connectomics",
+              "depth": 1,
+              "children": [],
+              "label": "Fiber Filtering Explorer"
+            }
+          ],
+          "label": "Connectomics"
+        },
+        {
+          "title": "Lead Connectome Mapper",
+          "page": "/manual/connectomics/lead-mapper/",
+          "group": "connectomics",
+          "depth": 0,
+          "children": [],
+          "label": "Lead Connectome Mapper"
+        }
+      ]
+    },
+    {
+      "id": "lead-or",
+      "title": "Lead-OR",
+      "chapters": [
+        {
+          "title": "Imaging setup",
+          "page": "/manual/lead-or/imaging-setup/",
+          "group": "lead-or",
+          "depth": 0,
+          "children": [],
+          "label": "Imaging setup"
+        },
+        {
+          "title": "Electrophysiology setup",
+          "page": "/manual/lead-or/electrophysiology-setup/",
+          "group": "lead-or",
+          "depth": 0,
+          "children": [],
+          "label": "Electrophysiology setup"
+        },
+        {
+          "title": "Using the platform",
+          "page": "/manual/lead-or/using-the-platform/",
+          "group": "lead-or",
+          "depth": 0,
+          "children": [],
+          "label": "Using the platform"
+        }
+      ]
+    },
+    {
+      "id": "appendix",
+      "title": "Reference",
+      "chapters": [
+        {
+          "title": "Code Backbone",
+          "page": "/manual/appendix/code-backbone/",
+          "group": "appendix",
+          "depth": 0,
+          "children": [],
+          "label": "Code structure"
+        },
+        {
+          "title": "Acquiring and Installing Atlases",
+          "page": "/manual/appendix/acquiring-and-setting-atlases/",
+          "group": "appendix",
+          "depth": 0,
+          "children": [
+            {
+              "title": "Customizing Atlas Visualization",
+              "page": "/manual/appendix/acquiring-and-setting-atlases/customizing-atlas-visualization/",
+              "group": "appendix",
+              "depth": 1,
+              "children": [],
+              "label": "Customizing Atlas Visualization"
+            }
+          ],
+          "label": "Install atlases"
+        },
+        {
+          "title": "Troubleshooting / Specific Help",
+          "page": "/manual/appendix/troubleshooting-specific-help/",
+          "group": "appendix",
+          "depth": 0,
+          "children": [
+            {
+              "title": "Adding Fortran dependencies for VTA modeling",
+              "page": "/manual/appendix/troubleshooting-specific-help/adding-fortran-dependencies-for-vta-modeling/",
+              "group": "appendix",
+              "depth": 1,
+              "children": [],
+              "label": "Adding Fortran dependencies for VTA modeling"
+            },
+            {
+              "title": "VTA Calculation Troubleshoot",
+              "page": "/manual/appendix/troubleshooting-specific-help/vta-calculation-troubleshoot/",
+              "group": "appendix",
+              "depth": 1,
+              "children": [],
+              "label": "VTA Calculation Troubleshoot"
+            }
+          ],
+          "label": "Troubleshooting"
+        },
+        {
+          "title": "Command line interface",
+          "page": "/manual/appendix/command-line-interface/",
+          "group": "appendix",
+          "depth": 0,
+          "children": [
+            {
+              "title": "Command line options",
+              "page": "/manual/appendix/command-line-interface/command-line-options/",
+              "group": "appendix",
+              "depth": 1,
+              "children": [],
+              "label": "Command line options"
+            }
+          ],
+          "label": "Command line"
+        },
+        {
+          "title": "Matlab scripting examples",
+          "page": "/manual/appendix/useful-command-line-tools/",
+          "group": "appendix",
+          "depth": 0,
+          "children": [
+            {
+              "title": "Installing an atlas from an online repository",
+              "page": "/manual/appendix/useful-command-line-tools/installing-an-atlas-from-a-repository/",
+              "group": "appendix",
+              "depth": 1,
+              "children": [],
+              "label": "Installing an atlas from an online repository"
+            },
+            {
+              "title": "Warping a normative connectome to native subject space",
+              "page": "/manual/appendix/useful-command-line-tools/warping-a-normative-connectome-to-native-subject-space/",
+              "group": "appendix",
+              "depth": 1,
+              "children": [],
+              "label": "Warping a normative connectome to native subject space"
+            },
+            {
+              "title": "Plotting atlas structures onto 3D slices",
+              "page": "/manual/appendix/useful-command-line-tools/plotting-atlas-structures-onto-3d-slices/",
+              "group": "appendix",
+              "depth": 1,
+              "children": [],
+              "label": "Plotting atlas structures onto 3D slices"
+            }
+          ],
+          "label": "MATLAB scripting"
+        },
+        {
+          "title": "Using Slicer",
+          "page": "/manual/appendix/using-slicer/",
+          "group": "appendix",
+          "depth": 0,
+          "children": [
+            {
+              "title": "Sweet-sour spot",
+              "page": "/manual/appendix/using-slicer/sweet-sour-spot/",
+              "group": "appendix",
+              "depth": 1,
+              "children": [],
+              "label": "Sweet-sour spot"
+            }
+          ],
+          "label": "Using Slicer"
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "title": "Introduction",
+      "page": "/manual/",
+      "group": "getting-started",
+      "depth": 0
+    },
+    {
+      "title": "Installation",
+      "page": "/manual/installation/",
+      "group": "getting-started",
+      "depth": 0
+    },
+    {
+      "title": "Overview",
+      "page": "/manual/lead-dbs/step0-overview/",
+      "group": "lead-dbs",
+      "depth": 0
+    },
+    {
+      "title": "Self-Tutoring with Lead-Tutor",
+      "page": "/manual/lead-dbs/self-tutoring-with-lead-tutor/",
+      "group": "lead-dbs",
+      "depth": 0
+    },
+    {
+      "title": "1. Load Patient Folder",
+      "page": "/manual/lead-dbs/step1-load-patient-folder/",
+      "group": "lead-dbs",
+      "depth": 0
+    },
+    {
+      "title": "Importing a classic Lead-DBS dataset to BIDS version",
+      "page": "/manual/lead-dbs/step1-load-patient-folder/importing-a-classic-lead-dbs-dataset-to-bids-version/",
+      "group": "lead-dbs",
+      "depth": 1
+    },
+    {
+      "title": "2. Image Import",
+      "page": "/manual/lead-dbs/step2-image-import/",
+      "group": "lead-dbs",
+      "depth": 0
+    },
+    {
+      "title": "Converting NIfTI-images into BIDS",
+      "page": "/manual/lead-dbs/step2-image-import/converting-nifti-images-into-bids/",
+      "group": "lead-dbs",
+      "depth": 1
+    },
+    {
+      "title": "Converting DICOM files into BIDS",
+      "page": "/manual/lead-dbs/step2-image-import/converting-dicom-files-into-bids/",
+      "group": "lead-dbs",
+      "depth": 1
+    },
+    {
+      "title": "3. Volume Registrations",
+      "page": "/manual/lead-dbs/step3-volume-registrations/",
+      "group": "lead-dbs",
+      "depth": 0
+    },
+    {
+      "title": "Coregister Volumes",
+      "page": "/manual/lead-dbs/step3-volume-registrations/coregister-volumes/",
+      "group": "lead-dbs",
+      "depth": 1
+    },
+    {
+      "title": "Normalizing the Images",
+      "page": "/manual/lead-dbs/step3-volume-registrations/normalization-of-images/",
+      "group": "lead-dbs",
+      "depth": 1
+    },
+    {
+      "title": "Brainshift Correction",
+      "page": "/manual/lead-dbs/step3-volume-registrations/subcortical-refine-post-to-pre-transforms/",
+      "group": "lead-dbs",
+      "depth": 1
+    },
+    {
+      "title": "Checking the Coregistration and Normalization",
+      "page": "/manual/lead-dbs/step3-volume-registrations/checking-the-coregistration/",
+      "group": "lead-dbs",
+      "depth": 1
+    },
+    {
+      "title": "4. (optional) Surface Reconstruction",
+      "page": "/manual/lead-dbs/step4-optional-surface-reconstruction/",
+      "group": "lead-dbs",
+      "depth": 0
+    },
+    {
+      "title": "5. (optional) Reconstruction of Electrode Trajectories",
+      "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/",
+      "group": "lead-dbs",
+      "depth": 0
+    },
+    {
+      "title": "Orientation of Directional Leads",
+      "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/determining-the-orientation-of-directional-leads/",
+      "group": "lead-dbs",
+      "depth": 1
+    },
+    {
+      "title": "Prerequisites",
+      "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/determining-the-orientation-of-directional-leads/prerequisites/",
+      "group": "lead-dbs",
+      "depth": 2
+    },
+    {
+      "title": "Automatic Algorithm",
+      "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/determining-the-orientation-of-directional-leads/automatic-algorithm/",
+      "group": "lead-dbs",
+      "depth": 2
+    },
+    {
+      "title": "Possible Problems with the Automatic Algorithm",
+      "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/determining-the-orientation-of-directional-leads/possible-problems-with-the-automatic-algorithm/",
+      "group": "lead-dbs",
+      "depth": 2
+    },
+    {
+      "title": "User-Assisted Algorithm (Manual Refine)",
+      "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/determining-the-orientation-of-directional-leads/user-assisted-algorithm-manual-refine/",
+      "group": "lead-dbs",
+      "depth": 2
+    },
+    {
+      "title": "TRAC/CORE Details",
+      "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/trac-core-details/",
+      "group": "lead-dbs",
+      "depth": 1
+    },
+    {
+      "title": "Manual Reconstruction",
+      "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/manual-reconstruction/",
+      "group": "lead-dbs",
+      "depth": 1
+    },
+    {
+      "title": "SEEG electrode reconstruction (LeGUI)",
+      "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/seeg-electrode-reconstruction-legui/",
+      "group": "lead-dbs",
+      "depth": 1
+    },
+    {
+      "title": "Reconstruction File",
+      "page": "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/reconstruction-file/",
+      "group": "lead-dbs",
+      "depth": 1
+    },
+    {
+      "title": "6. (optional) Perform Connectivity Analysis",
+      "page": "/manual/lead-dbs/step6-optional-perform-connectivity-analysis/",
+      "group": "lead-dbs",
+      "depth": 0
+    },
+    {
+      "title": "7. Visualization",
+      "page": "/manual/lead-dbs/step7-visualization/",
+      "group": "lead-dbs",
+      "depth": 0
+    },
+    {
+      "title": "MER Analysis",
+      "page": "/manual/lead-dbs/step7-visualization/mer-analysis/",
+      "group": "lead-dbs",
+      "depth": 1
+    },
+    {
+      "title": "Reconstruction Statistics",
+      "page": "/manual/lead-dbs/reconstruction-statistics/",
+      "group": "lead-dbs",
+      "depth": 0
+    },
+    {
+      "title": "Group analyses with Lead-DBS",
+      "page": "/manual/lead-group/group-analyses-with-lead-dbs/",
+      "group": "lead-group",
+      "depth": 0
+    },
+    {
+      "title": "Setup Analysis",
+      "page": "/manual/lead-group/setup-analysis/",
+      "group": "lead-group",
+      "depth": 0
+    },
+    {
+      "title": "General Settings",
+      "page": "/manual/lead-group/general-settings/",
+      "group": "lead-group",
+      "depth": 0
+    },
+    {
+      "title": "Group Visualization",
+      "page": "/manual/lead-group/group-visualization/",
+      "group": "lead-group",
+      "depth": 0
+    },
+    {
+      "title": "Calculate VTA and Stats",
+      "page": "/manual/lead-group/calculate-vta-and-stats/",
+      "group": "lead-group",
+      "depth": 0
+    },
+    {
+      "title": "Sweetspot Explorer",
+      "page": "/manual/lead-group/sweetspot-explorer/",
+      "group": "lead-group",
+      "depth": 0
+    },
+    {
+      "title": "Connectomics",
+      "page": "/manual/connectomics/connectomic-analyses/",
+      "group": "connectomics",
+      "depth": 0
+    },
+    {
+      "title": "Diffusion MRI: Patient Specific Processing",
+      "page": "/manual/connectomics/connectomic-analyses/dmri/",
+      "group": "connectomics",
+      "depth": 1
+    },
+    {
+      "title": "fMRI-Analysis: Patient Specific Processing",
+      "page": "/manual/connectomics/connectomic-analyses/fmri/",
+      "group": "connectomics",
+      "depth": 1
+    },
+    {
+      "title": "Using Normative Connectomes",
+      "page": "/manual/connectomics/connectomic-analyses/using-normative-connectomes/",
+      "group": "connectomics",
+      "depth": 1
+    },
+    {
+      "title": "Network Mapping Explorer",
+      "page": "/manual/connectomics/connectomic-analyses/network-mapping-explorer/",
+      "group": "connectomics",
+      "depth": 1
+    },
+    {
+      "title": "Discriminative Fibertracts analysis",
+      "page": "/manual/connectomics/connectomic-analyses/discriminative-fibertracts-analysis/",
+      "group": "connectomics",
+      "depth": 1
+    },
+    {
+      "title": "Fiber Filtering Explorer",
+      "page": "/manual/connectomics/connectomic-analyses/fiber-filtering-explorer/",
+      "group": "connectomics",
+      "depth": 1
+    },
+    {
+      "title": "Lead Connectome Mapper",
+      "page": "/manual/connectomics/lead-mapper/",
+      "group": "connectomics",
+      "depth": 0
+    },
+    {
+      "title": "Imaging setup",
+      "page": "/manual/lead-or/imaging-setup/",
+      "group": "lead-or",
+      "depth": 0
+    },
+    {
+      "title": "Electrophysiology setup",
+      "page": "/manual/lead-or/electrophysiology-setup/",
+      "group": "lead-or",
+      "depth": 0
+    },
+    {
+      "title": "Using the platform",
+      "page": "/manual/lead-or/using-the-platform/",
+      "group": "lead-or",
+      "depth": 0
+    },
+    {
+      "title": "Code Backbone",
+      "page": "/manual/appendix/code-backbone/",
+      "group": "appendix",
+      "depth": 0
+    },
+    {
+      "title": "Acquiring and Installing Atlases",
+      "page": "/manual/appendix/acquiring-and-setting-atlases/",
+      "group": "appendix",
+      "depth": 0
+    },
+    {
+      "title": "Customizing Atlas Visualization",
+      "page": "/manual/appendix/acquiring-and-setting-atlases/customizing-atlas-visualization/",
+      "group": "appendix",
+      "depth": 1
+    },
+    {
+      "title": "Troubleshooting / Specific Help",
+      "page": "/manual/appendix/troubleshooting-specific-help/",
+      "group": "appendix",
+      "depth": 0
+    },
+    {
+      "title": "Adding Fortran dependencies for VTA modeling",
+      "page": "/manual/appendix/troubleshooting-specific-help/adding-fortran-dependencies-for-vta-modeling/",
+      "group": "appendix",
+      "depth": 1
+    },
+    {
+      "title": "VTA Calculation Troubleshoot",
+      "page": "/manual/appendix/troubleshooting-specific-help/vta-calculation-troubleshoot/",
+      "group": "appendix",
+      "depth": 1
+    },
+    {
+      "title": "Command line interface",
+      "page": "/manual/appendix/command-line-interface/",
+      "group": "appendix",
+      "depth": 0
+    },
+    {
+      "title": "Command line options",
+      "page": "/manual/appendix/command-line-interface/command-line-options/",
+      "group": "appendix",
+      "depth": 1
+    },
+    {
+      "title": "Matlab scripting examples",
+      "page": "/manual/appendix/useful-command-line-tools/",
+      "group": "appendix",
+      "depth": 0
+    },
+    {
+      "title": "Installing an atlas from an online repository",
+      "page": "/manual/appendix/useful-command-line-tools/installing-an-atlas-from-a-repository/",
+      "group": "appendix",
+      "depth": 1
+    },
+    {
+      "title": "Warping a normative connectome to native subject space",
+      "page": "/manual/appendix/useful-command-line-tools/warping-a-normative-connectome-to-native-subject-space/",
+      "group": "appendix",
+      "depth": 1
+    },
+    {
+      "title": "Plotting atlas structures onto 3D slices",
+      "page": "/manual/appendix/useful-command-line-tools/plotting-atlas-structures-onto-3d-slices/",
+      "group": "appendix",
+      "depth": 1
+    },
+    {
+      "title": "Using Slicer",
+      "page": "/manual/appendix/using-slicer/",
+      "group": "appendix",
+      "depth": 0
+    },
+    {
+      "title": "Sweet-sour spot",
+      "page": "/manual/appendix/using-slicer/sweet-sour-spot/",
+      "group": "appendix",
+      "depth": 1
+    },
+    {
+      "title": "How to contribute to Lead-DBS",
+      "page": "/manual/ways-to-contribute-to-lead-dbs/",
+      "group": "getting-started",
+      "depth": 0
+    }
+  ]
+}

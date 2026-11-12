@@ -9,12 +9,21 @@
    everything: text, headings, labels, and dates and times (with figures of equal width). */
 @font-face { font-family: "Inter"; font-style: normal; font-display: swap; font-weight: 100 900; src: url("{{ "fonts/inter-latin-var.woff2" | relURL }}") format("woff2-variations"), url("{{ "fonts/inter-latin-var.woff2" | relURL }}") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 @font-face { font-family: "Inter"; font-style: normal; font-display: swap; font-weight: 100 900; src: url("{{ "fonts/inter-latin-ext-var.woff2" | relURL }}") format("woff2-variations"), url("{{ "fonts/inter-latin-ext-var.woff2" | relURL }}") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+/* Documentation: Geist 5.3.0 (@fontsource-variable/geist, SIL OFL-1.1).
+   Self-hosted; full licence in static/fonts/OFL-geist.txt. */
+@font-face { font-family: "Geist"; font-style: normal; font-display: swap; font-weight: 100 900; src: url("{{ "fonts/geist-latin-var.woff2" | relURL }}") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Geist"; font-style: normal; font-display: swap; font-weight: 100 900; src: url("{{ "fonts/geist-latin-ext-var.woff2" | relURL }}") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+2020-202F, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Geist Mono"; font-style: normal; font-display: swap; font-weight: 500; src: url("{{ "fonts/geist-mono-latin-500-normal.woff2" | relURL }}") format("woff2"); }
+@font-face { font-family: "Geist Mono"; font-style: normal; font-display: swap; font-weight: 400; src: url("{{ "fonts/geist-mono-latin-400-normal.woff2" | relURL }}") format("woff2"); }
+
 /* until Inter has loaded, a system sans scaled to Inter's width and line height, so nothing moves */
 @font-face { font-family: "Inter Fallback"; src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Helvetica");
   size-adjust: 107.4%; ascent-override: 90.2%; descent-override: 22.48%; line-gap-override: 0%; }
 
 /* ---------------------------------------------------------------- palette (light theme; dark below) */
 :root {
+  --docs-code-keyword: #a02362; --docs-code-string: #18704b; --docs-code-number: #185ec4; --docs-backdrop: #000000;
+  --docs-bg: #ffffff; --docs-ink: #171717; --docs-muted: #666666; --docs-nav-ink: #525252; --docs-surface: #f7f7f6;
   --p-bg: #ffffff; --p-surface: #f5f6f7; --p-ink: #2f3437; --p-muted: #6a6f74;
   --p-accent: #e0645a; --p-accent-ink: #ffffff; --p-action: #2b5c8a; --p-action-ink: #ffffff;
   /* the coral as small text: darkened on the light ground to 4.5:1 or more (WCAG 1.4.3) */
@@ -54,6 +63,8 @@
    dark colours here. */
 {{- $dark := `%[1]s {
   color-scheme: dark;
+  --docs-code-keyword: #f08ab4; --docs-code-string: #8bcca4; --docs-code-number: #8fbaff;
+  --docs-bg: #0a0a0a; --docs-ink: #ededed; --docs-muted: #a1a1a1; --docs-nav-ink: #b5b5b5; --docs-surface: #171717;
   --p-bg: #161819; --p-surface: #212426; --p-ink: #e6e8e9; --p-muted: #9ca2a6;
   --p-accent: #ec7a70; --p-accent-ink: #161819; --p-action: #8fb5e3; --p-action-ink: #10202e;
   --p-accent-text: var(--p-accent);
@@ -745,8 +756,8 @@ main.page { padding-top: var(--nav); }
 .prose { min-width: 0; font-size: var(--t-doc); line-height: 1.7; color: var(--ink); }
 .prose > :first-child { margin-top: 0; }
 /* the first paragraph under the title is the page's lead: larger, so the eye has a way in */
-.prose > p:first-child:not([class]):not(:has(> img, > picture, > .img-zoom, > .btn, > iframe, > video)),
-.prose > .toc--top:first-child + p:not([class]):not(:has(> img, > picture, > .img-zoom, > .btn, > iframe, > video)) {
+.prose:where(:not(.manual-prose)) > p:first-child:not([class]):not(:has(> img, > picture, > .img-zoom, > .btn, > iframe, > video)),
+.prose:where(:not(.manual-prose)) > .toc--top:first-child + p:not([class]):not(:has(> img, > picture, > .img-zoom, > .btn, > iframe, > video)) {
   font-size: var(--t-lead); line-height: 1.55; max-width: var(--measure); margin-bottom: 1.3em; }
 @media (min-width: 1024px) { .prose > .toc--top:first-child + * { margin-top: 0; } }
 .prose :is(p, ul, ol, dl, blockquote, figure, pre, .table-scroll, table, iframe) { margin: 0 0 1.1em; }
@@ -1173,6 +1184,7 @@ html:not(.js) .g-item__info { display: block; padding: var(--s-2) 0 var(--s-3); 
 .search-dialog .search__hit { grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--s-4); }
 .search-dialog .search__title { color: var(--ink); font-size: var(--t-small); }
 .search-dialog .search__section { max-width: 22ch; font-size: var(--t-label); }
+.search__fallback { margin-top: var(--s-2); padding-top: var(--s-2); border-top: 1px solid var(--line); font-size: var(--t-small); color: var(--muted); }
 .search-dialog .search__hit--manual { grid-template-columns: minmax(0, 1fr); }
 .search-dialog .search__snippet { grid-column: 1 / -1; color: var(--muted); font-size: var(--t-small); line-height: 1.45; }
 .search__start[hidden] { display: none; }

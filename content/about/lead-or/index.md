@@ -27,7 +27,7 @@ layout: "showcase"
 **Lead-OR supports research** during DBS surgery.
 
 </div>
-<p class="page-intro__actions"><a class="btn btn--primary btn--ext" href="https://netstim.gitbook.io/leaddbs/lead-or/imaging-setup">Get started<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></a><a class="btn btn--secondary btn--ext" href="https://github.com/netstim/SlicerNetstim">SlicerNetstim on GitHub<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></a></p>
+<p class="page-intro__actions"><a class="btn btn--primary btn--ext" href="{{< relref "/manual/lead-or/imaging-setup/" >}}">Get started</a><a class="btn btn--secondary btn--ext" href="https://github.com/netstim/SlicerNetstim">SlicerNetstim on GitHub<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></a></p>
 </div>
 
 {{< cells key="glance" label="Lead-OR at a glance" >}}
@@ -47,7 +47,7 @@ images as they are made, and models the effect of test stimulation on fibre trac
 **Prepare the images in Lead-DBS first.**
 
 Lead-OR uses coregistrations and segmentations prepared in Lead-DBS. Follow the
-[imaging setup](https://netstim.gitbook.io/leaddbs/lead-or/imaging-setup) instructions in the manual.
+[imaging setup](/manual/lead-or/imaging-setup/) instructions in the manual.
 {{% /hub-section %}}
 
 {{% hub-section %}}

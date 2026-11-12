@@ -9,15 +9,15 @@
   {{ partial "head.html" . }}
 </head>
 <body class="kind-{{ .Kind }}{{ with .Section }} section-{{ . }}{{ end }}{{ if or (eq .Kind "404") (eq .Layout "download") }} top-dark{{ end }}">
-  {{ partial "header.html" . }}
+  {{ if eq .Layout "manual" }}{{ partial "manual-header.html" . }}{{ else }}{{ partial "header.html" . }}{{ end }}
   {{- if .File }}{{ partial "page-check.html" . }}{{ end }}
   {{ block "main" . }}{{ end }}
-  {{ partial "footer.html" . }}
+  {{ if ne .Layout "manual" }}{{ partial "footer.html" . }}{{ end }}
   {{ partial "search-dialog.html" . }}
   {{- /* The site's own script, one file per concern in assets/js/main/, bundled into one. Each block stands alone and
          does nothing on a page without its markup; without script every page still works (the menu button links
          the footer's list of pages, videos are links, events show what the build chose). */}}
-  {{ $main := slice }}{{ range slice "header" "theme" "page" "home" "events" "videos" "news" "features" "gallery" }}{{ $main = $main | append (resources.Get (printf "js/main/%s.js" .)) }}{{ end -}}
+  {{ $main := slice }}{{ range slice "header" "theme" "page" "home" "events" "videos" "news" "features" "gallery" "manual" }}{{ $main = $main | append (resources.Get (printf "js/main/%s.js" .)) }}{{ end -}}
   {{ with $main | resources.Concat "js/main.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}
   {{ with resources.Get "js/clipboard.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}
   {{ with resources.Get "js/search.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}

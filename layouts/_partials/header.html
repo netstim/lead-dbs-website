@@ -71,8 +71,8 @@
         {{ end }}
       </div>
       {{- /* on a phone the manual is a first-level word of the sheet, right under the documentation group
-             (a link to another site, so it is not a group of its own on a desktop) */}}
-      {{ range .Children }}{{ if and (eq .Params.role "sheet-word") (strings.HasPrefix .URL "http") }}
+             (on a desktop it is an entry of that group's panel, not a word of its own) */}}
+      {{ range .Children }}{{ if eq .Params.role "sheet-word" }}
       <div class="nav__item nav__item--sheet nav__item--manual"><a class="nav__link" href="{{ .URL }}">{{ partial "menu-label.html" . }}</a></div>
       {{ end }}{{ end }}
       {{ end }}

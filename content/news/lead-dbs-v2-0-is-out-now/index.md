@@ -64,7 +64,7 @@ reconstruct curved electrodes, which Lead-DBS does not support yet. PaCER is als
 Ari Kappel (Richardson lab, University of Pittsburgh) and Chadwick Boulay (Sachs lab, University of
 Ottawa) created a tool that maps microelectrode recordings (MER) onto the subcortical anatomy. It shows
 how electrophysiological regions overlap with atlas regions, manual segmentations or raw MRI. How to
-use it is in the [manual](https://netstim.gitbook.io/leaddbs).
+use it is in the [manual](/manual/).
 
 {{< clip src="MER.mp4" poster="MER-poster.jpg" alt="Microelectrode recording trajectories through atlas structures in 3D" >}}
 

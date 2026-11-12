@@ -33,7 +33,7 @@ steps:
     facts: "10 patients · MRI and CT"
     actions:
       - {text: "Download Lead Tutor", url: "https://osf.io/jxecg/?view_only=f2765a6aa3604dea8afa14365b70381c"}
-      - {text: "Guide", url: "https://netstim.gitbook.io/leaddbs/lead-dbs/self-tutoring-with-lead-tutor"}
+      - {text: "Guide", page: "/manual/lead-dbs/self-tutoring-with-lead-tutor/"}
   - id: "compare"
     title: "Localize, then get your report"
     text: "Localize each patient’s electrodes and press *Submit Results…* to receive a report of their distances from expert localizations."
@@ -50,7 +50,7 @@ searchEntries:
   - {title: "Troubleshooting: if something goes wrong", id: "troubleshooting", keywords: "troubleshooting FAQ frequently asked questions error errors problem not working ea_restoreprefs ea_setpath unrecognized function", description: "Errors after an update, unrecognized functions, and where to ask when you are stuck."}
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
-  - {url: "https://netstim.gitbook.io/leaddbs", name: "Manual"}
+  - {page: "/manual/", name: "Manual"}
   - {page: "/helpsupport/knowledge-base/lead-dbs-methods/"}
   - {page: "/about/citing_leaddbs/"}
 ---

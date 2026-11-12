@@ -9,7 +9,7 @@ share: "images/renders/lead-closeup.jpg"
 
 Unfortunately, there has been a critical bug in Lead-DBS which could, in very rare circumstances, lead to the accidental deletion of files. It is fixed in Lead-DBS v3.2.1.
 
-We urge you to update Lead-DBS before further use, either [via GitHub](https://netstim.gitbook.io/leaddbs/installation#installation-via-github) or by [downloading the newest version from this website](/download/) and installing it as described in the [manual](https://netstim.gitbook.io/leaddbs/installation#normal-installation).
+We urge you to update Lead-DBS before further use, either [via GitHub](/manual/installation/#installation-via-github) or by [downloading the newest version from this website](/download/) and installing it as described in the [manual](/manual/installation/#normal-installation).
 
 ## What else changed
 

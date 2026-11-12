@@ -46,7 +46,7 @@ setup:
   - {text: "Switch to the develop branch", command: "git checkout develop"}
   - {text: "Download the data and unzip it into the repository", link: {text: "Download the data", url: "https://www.lead-dbs.org/release/download.php?id=data_pcloud"}}
   - {text: "Add SPM12 and Lead-DBS to the MATLAB path, then run", command: "ea_setpath"}
-setup_note: "Each step is described in the manual: [installation via GitHub](https://netstim.gitbook.io/leaddbs/installation#installation-via-github)."
+setup_note: "Each step is described in the manual: [installation via GitHub](/manual/installation/#installation-via-github)."
 # what an atlas or dataset needs, a cell each (text: Markdown)
 atlas:
   - label: "Source"

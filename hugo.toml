@@ -194,7 +194,7 @@ enableGitInfo = true
       # a line above the entry, without a caption
       divider = true
 
-  # Docs and help: the documentation (the manual is on another site) and the one list of where to ask
+  # Docs and help: the documentation (the manual is integrated at /manual/) and the one list of where to ask
   # (/helpsupport/#get-help; the contact page sits under it through its front matter menuParent)
   [[menus.main]]
     parent = "docs"
@@ -206,7 +206,7 @@ enableGitInfo = true
   [[menus.main]]
     parent = "docs"
     name = "Manual"
-    url = "https://netstim.gitbook.io/leaddbs"
+    pageRef = "/manual"
     identifier = "manual"
     weight = 2
     [menus.main.params]

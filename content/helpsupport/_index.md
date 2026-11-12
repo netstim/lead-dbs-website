@@ -16,15 +16,15 @@ learn:
   - {name: "Lead Tutor", text: "10 patients with expert localizations", url: "/helpsupport/learn-lead-dbs-yourself/"}
   - {name: "Walkthrough videos", text: "Tutorials and recorded workshops", url: "/helpsupport/knowledge-base/walkthrough-videos/"}
 manual:
-  - {name: "Installation", url: "https://netstim.gitbook.io/leaddbs/installation"}
-  - {name: "One patient, step by step", url: "https://netstim.gitbook.io/leaddbs/lead-dbs/step0-overview"}
-  - {name: "Registration and normalization", url: "https://netstim.gitbook.io/leaddbs/lead-dbs/step3-volume-registrations"}
-  - {name: "Electrode reconstruction", url: "https://netstim.gitbook.io/leaddbs/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories"}
-  - {name: "Group analyses", url: "https://netstim.gitbook.io/leaddbs/lead-group/group-analyses-with-lead-dbs"}
-  - {name: "Connectomics", url: "https://netstim.gitbook.io/leaddbs/connectomics/connectomic-analyses"}
+  - {name: "Installation", url: "/manual/installation/"}
+  - {name: "One patient, step by step", url: "/manual/lead-dbs/step0-overview/"}
+  - {name: "Registration and normalization", url: "/manual/lead-dbs/step3-volume-registrations/"}
+  - {name: "Electrode reconstruction", url: "/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/"}
+  - {name: "Group analyses", url: "/manual/lead-group/group-analyses-with-lead-dbs/"}
+  - {name: "Connectomics", url: "/manual/connectomics/connectomic-analyses/"}
 help:
   - {name: "User Slack", text: "Ask other users and the developers", url: "/helpsupport/slack-user-channel/"}
-  - {name: "Troubleshooting", text: "Known problems and their fixes", url: "https://netstim.gitbook.io/leaddbs/appendix/troubleshooting-specific-help"}
+  - {name: "Troubleshooting", text: "Known problems and their fixes", url: "/manual/appendix/troubleshooting-specific-help/"}
   - {name: "Bug reports", text: "Include your Lead-DBS version, operating system and full error message", url: "https://github.com/netstim/leaddbs/issues"}
   - {name: "Contact", text: "For everything else", url: "/contact/"}
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
@@ -45,7 +45,7 @@ layout: "hub"
 {{% hub-section %}}
 ## Manual {#manual}
 
-**The [manual](https://netstim.gitbook.io/leaddbs)** covers installation and analysis workflows.
+**The [manual](/manual/)** covers installation and analysis workflows.
 
 {{< link-rows key="manual" >}}
 {{% /hub-section %}}

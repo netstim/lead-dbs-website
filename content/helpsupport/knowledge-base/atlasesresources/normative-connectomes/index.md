@@ -11,7 +11,7 @@ share: "images/renders/fiber-filtering.jpg"
 next:
   - {page: "/helpsupport/knowledge-base/atlasesresources/cortical-atlas-parcellations-mni-space/"}
   - {page: "/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping/"}
-  - {url: "https://netstim.gitbook.io/leaddbs/connectomics/connectomic-analyses", name: "Connectivity in the manual"}
+  - {page: "/manual/connectomics/connectomic-analyses/", name: "Connectivity in the manual"}
 ---
 Average structural (tractography) and functional (resting-state fMRI) wiring of the human brain in MNI space,
 for when a patient's own diffusion or fMRI data are missing.

@@ -55,12 +55,12 @@
 <link rel="icon" href="{{ "images/favicon-32x32.png" | relURL }}" sizes="32x32">
 <link rel="icon" href="{{ "images/favicon-192x192.png" | relURL }}" sizes="192x192">
 <link rel="apple-touch-icon" href="{{ "images/favicon-180x180.png" | relURL }}">
-<link rel="preload" href="{{ "fonts/inter-latin-var.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ (cond (eq .Layout "manual") "fonts/geist-latin-var.woff2" "fonts/inter-latin-var.woff2") | relURL }}" as="font" type="font/woff2" crossorigin>
 {{- /* one stylesheet: assets/css/base.css (tokens, grid, buttons, links, forms), then assets/css/site.css
-     (palette, fonts, header, pages, footer), then assets/css/content.css (content building blocks), then assets/css/phone.css (the phone layout below 640px: the shared pieces), then the phone
+     (palette, fonts, header, pages, footer), then assets/css/content.css (content building blocks), then assets/css/manual.css (the manual), then assets/css/phone.css (the phone layout below 640px: the shared pieces), then the phone
      layouts of single pages, assets/css/phone-home.css, phone-events.css and phone-features.css; see docs/design.md */}}
 {{ $site := resources.Get "css/site.css" | resources.ExecuteAsTemplate "css/site.css" . }}
-{{ $css := slice (resources.Get "css/base.css") $site (resources.Get "css/content.css") (resources.Get "css/phone.css") (resources.Get "css/phone-home.css") (resources.Get "css/phone-events.css") (resources.Get "css/phone-features.css") | resources.Concat "css/style.css" | minify | fingerprint }}
+{{ $css := slice (resources.Get "css/base.css") $site (resources.Get "css/content.css") (resources.Get "css/manual.css") (resources.Get "css/phone.css") (resources.Get "css/phone-home.css") (resources.Get "css/phone-events.css") (resources.Get "css/phone-features.css") | resources.Concat "css/style.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 {{- /* "js": script runs, so the phone menu is a button (without it, a link that opens the menu as a target,
      assets/css/content.css). The home hero's entrance waits for assets/js/main/home.js; after 700ms the style

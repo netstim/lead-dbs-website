@@ -1,0 +1,54 @@
+{{ define "main" }}
+{{ $p := . }}
+{{ $order := -1 }}{{ range $i, $entry := hugo.Data.manual.pages }}{{ if eq (site.GetPage $entry.page) $p }}{{ $order = $i }}{{ end }}{{ end }}
+{{ $tocItems := partial "manual-page-items.html" . }}
+{{ $home := eq .RelPermalink (site.GetPage "/manual").RelPermalink }}
+<main id="top" class="manual{{ if $home }} manual--home{{ end }}">
+  <aside class="manual-nav" aria-label="Manual chapters">
+    <div class="manual-mobile-bar" hidden><button class="manual-menu" aria-controls="manual-drawer" aria-expanded="false" hidden>{{ partial "manual-icon.html" "menu" }}<span>Chapters</span><span class="manual-menu__chevron" aria-hidden="true">⌄</span></button>{{ if $tocItems }}<button class="manual-sections" aria-controls="manual-contents" aria-expanded="false" hidden>On this page <span aria-hidden="true">⌄</span></button>{{ end }}</div>
+    <details class="manual-nav__fold" open>
+      <summary>Manual <span aria-hidden="true">⌄</span></summary>
+      <nav class="manual-nav__tree" aria-label="Chapters">
+        {{ range hugo.Data.manual.groups }}
+        {{ $group := . }}
+        <section class="manual-nav__group">
+          <h2>{{ .title }}</h2>
+          <ul>
+          {{ partial "manual-tree.html" (dict "entries" .chapters "page" $p) }}
+          </ul>
+        </section>
+        {{ end }}
+      </nav>
+    </details>
+  </aside>
+  <div class="manual-body">
+    <nav class="manual-crumbs" aria-label="Breadcrumb">
+      {{ $groupPage := site.GetPage (printf "/manual/%s" .Params.manual_group) }}{{ if not $groupPage }}{{ $groupPage = site.GetPage "/manual" }}{{ end }}
+      {{ range hugo.Data.manual.groups }}{{ if eq .id $p.Params.manual_group }}<a href="{{ $groupPage.RelPermalink }}">{{ .title }}</a>{{ end }}{{ end }}
+      {{ with .Parent }}{{ if and (ne . $groupPage) (ne . (site.GetPage "/manual")) (eq .Section "manual") }}<span aria-hidden="true">/</span><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}{{ end }}
+    </nav>
+    <header class="manual-head">
+      <h1>{{ .Title }}</h1>
+      {{ with .Params.manual_lead }}<p>{{ . }}</p>{{ end }}
+      {{ if not $home }}<div class="manual-actions"><button class="manual-copy" data-copy-link aria-label="Copy page link">{{ partial "manual-icon.html" "link" }}<span data-copy-label>Copy link</span></button><span aria-hidden="true"></span><a href="https://github.com/netstim/lead-dbs-website/edit/main/content/{{ .File.Path }}">{{ partial "manual-icon.html" "edit" }}Edit this page</a></div>{{ end }}
+    </header>
+    {{ if and (not $home) .Fragments.Headings }}{{ partial "manual-toc.html" (dict "page" . "variant" "top") }}{{ end }}
+    {{ if $home }}{{ partial "manual-start.html" . }}{{ end }}
+    <article class="prose manual-prose">{{ .Content }}</article>
+    <div class="manual-meta"><span>Help improve these docs.</span><a href="https://github.com/netstim/lead-dbs-website/edit/main/content/{{ .File.Path }}">Suggest an edit {{ partial "manual-icon.html" "external" }}</a></div>
+    {{ if ge $order 0 }}<nav class="manual-pagination" aria-label="Previous and next chapter">
+      {{ range $i, $entry := hugo.Data.manual.pages }}
+      {{ if or (eq $i (sub $order 1)) (eq $i (add $order 1)) }}
+      {{ with site.GetPage $entry.page }}<a class="manual-pagination__{{ if lt $i $order }}prev{{ else }}next{{ end }}" href="{{ .RelPermalink }}"><span>{{ if lt $i $order }}← Previous{{ else }}Next →{{ end }}</span><strong>{{ .LinkTitle }}</strong></a>{{ end }}
+      {{ end }}{{ end }}
+    </nav>{{ end }}
+    <footer class="manual-footer"><a href="{{ site.Home.RelPermalink }}">Lead-DBS</a><span>For research use only.</span><a href="https://github.com/netstim/leaddbs">GitHub ↗</a></footer>
+  </div>
+  <aside class="manual-outline" aria-label="Page contents">
+    {{ if $tocItems }}{{ partial "manual-toc.html" (dict "page" . "variant" "side") }}{{ end }}
+    <div class="manual-help"><a href="{{ "helpsupport/slack-user-channel/" | relURL }}">Get help on Slack {{ partial "manual-icon.html" "arrow" }}</a><a href="https://github.com/netstim/leaddbs/issues">Report an issue {{ partial "manual-icon.html" "external" }}</a></div>
+  </aside>
+</main>
+<dialog class="manual-drawer" id="manual-drawer" aria-labelledby="manual-drawer-title"><div class="manual-drawer__head"><span id="manual-drawer-title">Documentation</span><button class="docs-icon-button" data-manual-close aria-label="Close chapters">{{ partial "manual-icon.html" "close" }}</button></div><div class="manual-drawer__body"></div><div class="manual-drawer__footer"><a href="{{ (site.GetPage "/download").RelPermalink }}">Download Lead-DBS {{ partial "manual-icon.html" "arrow" }}</a><a href="{{ (site.GetPage "/community").RelPermalink }}">Community {{ partial "manual-icon.html" "arrow" }}</a></div></dialog>
+{{ if $tocItems }}<dialog class="manual-contents" id="manual-contents" aria-labelledby="manual-contents-title"><div class="manual-drawer__head"><span id="manual-contents-title">On this page</span><button class="docs-icon-button" data-manual-close aria-label="Close page contents">{{ partial "manual-icon.html" "close" }}</button></div><nav class="toc manual-contents__list" aria-label="Page sections"><ol>{{ range $tocItems }}<li{{ if eq .Level 3 }} class="manual-toc__sub"{{ end }}><a href="#{{ .ID }}">{{ .Title | plainify | htmlUnescape }}</a></li>{{ end }}</ol></nav></dialog>{{ end }}
+{{ end }}

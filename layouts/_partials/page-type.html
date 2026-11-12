@@ -1,6 +1,7 @@
 {{- /* The page's type (front matter `layout`, default "doc") and its layout policy; stops the build on an
        unknown type and on the retired per-page switches sidebar:, related:, toc:. README, Page types. */ -}}
 {{- $types := dict
+  "manual"   (dict "side" false "wide" true)
   "doc"      (dict "side" true  "wide" false)
   "hub"      (dict "side" false "wide" true)
   "showcase" (dict "side" false "wide" true)

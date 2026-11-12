@@ -1,0 +1,14 @@
+{{ $p := .page }}
+{{ range .entries }}
+{{ $entry := . }}{{ $target := site.GetPage .page }}
+<li>
+  {{ if .children }}
+  <details{{ if or (eq $p $target) ($target.IsAncestor $p) }} open{{ end }}>
+    <summary><a href="{{ $target.RelPermalink }}"{{ if eq $p $target }} aria-current="page"{{ end }}>{{ .label | default .title }}</a></summary>
+    <ul>{{ partial "manual-tree.html" (dict "entries" .children "page" $p) }}</ul>
+  </details>
+  {{ else }}
+  <a href="{{ $target.RelPermalink }}"{{ if eq $p $target }} aria-current="page"{{ end }}>{{ .label | default .title }}</a>
+  {{ end }}
+</li>
+{{ end }}

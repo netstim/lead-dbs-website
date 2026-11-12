@@ -19,8 +19,8 @@ DBS network mapping relates the connections of each patient's stimulation site, 
 ## Use it in Lead-DBS
 
 Lead-DBS estimates stimulation volumes, Lead Connectome Mapper estimates their connectivity, and Lead Group
-relates connectivity to clinical outcomes. The manual explains each step under [Connectomics](https://netstim.gitbook.io/leaddbs/connectomics/connectomic-analyses)
-and [Lead Group](https://netstim.gitbook.io/leaddbs/lead-group/group-analyses-with-lead-dbs).
+relates connectivity to clinical outcomes. The manual explains each step under [Connectomics](/manual/connectomics/connectomic-analyses/)
+and [Lead Group](/manual/lead-group/group-analyses-with-lead-dbs/).
 
 ## What to cite
 

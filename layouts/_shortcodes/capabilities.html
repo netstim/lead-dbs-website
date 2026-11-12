@@ -37,7 +37,7 @@
         {{ partial "cap-figure.html" (dict "c" $c "class" "cap-fig--inline" "sizes" "(min-width: 640px) calc(100vw - 96px), calc(100vw - 48px)") }}
         {{ .text }}
         <p class="capability__links">
-          {{- with .manual }}<a href="{{ .url }}" title="{{ .label }}">Manual<span class="ext-mark" aria-hidden="true">↗</span></a>{{ end -}}
+          {{- with .manual }}<a href="{{ .url }}" title="{{ .label }}">Manual</a>{{ end -}}
           {{- with .more }}<a href="{{ .RelPermalink }}">In depth<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 6h8M4.5 2.5 8 6l-3.5 3.5"/></svg></a>{{ end -}}
           {{- range .papers }}<a class="capability__paper" href="https://doi.org/{{ .doi }}" title="The paper">{{ .short }}<span class="ext-mark" aria-hidden="true">↗</span></a>{{ end -}}
         </p>

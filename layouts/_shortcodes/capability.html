@@ -2,7 +2,7 @@
        sentence, a picture and a row of links (its chapter in the manual, its papers, a page in depth).
          {{< capability title="Electrode localization" id="localization" link="/path/of/its/page/"
                img="images/renders/lead-closeup.jpg"
-               manual="Reconstruction of electrode trajectories|https://netstim.gitbook.io/…"
+               manual="Reconstruction of electrode trajectories|/manual/lead-dbs/…/"
                papers="horn2015 husch2018" >}}Finds the electrodes …{{< /capability >}}
        The text between the tags is the sentence (Markdown); keep it to one.
        img: a lab render under assets/images/renders/ (alt text from data/renders.yaml; the page
@@ -47,7 +47,7 @@
 {{- /* a figure opens at full size: a WebP copy at most 1750px wide, as on the gallery page */ -}}
 {{- $full := "" }}{{ if $contain }}{{ $full = ($img.Resize (printf "%dx webp q85" (int (math.Min $img.Width 1750)))).RelPermalink }}{{ end -}}
 {{- $more := false }}{{ with .Get "link" }}{{ $more = site.GetPage (strings.TrimSuffix "/" (urls.Parse .).Path) }}{{ if not $more }}{{ errorf "capability %q: link %q is not a page" $title . }}{{ end }}{{ end -}}
-{{- $manual := false }}{{ with .Get "manual" }}{{ $kv := split (strings.TrimSpace (index (split . ";") 0)) "|" }}{{ $manual = dict "label" (index $kv 0) "url" (index $kv 1) }}{{ end -}}
+{{- $manual := false }}{{ with .Get "manual" }}{{ $kv := split (strings.TrimSpace (index (split . ";") 0)) "|" }}{{ $manual = dict "label" (index $kv 0) "url" (partial "resolve-url.html" (dict "url" (index $kv 1) "page" $.Page)) }}{{ end -}}
 {{- $papers := slice }}{{ with .Get "papers" }}{{ range split . " " }}{{ $p := index hugo.Data.papers.papers . }}{{ if not $p }}{{ errorf "capability %q: no paper %q in data/papers.yaml" $title . }}{{ end }}{{ $papers = $papers | append (dict "short" $p.short "doi" $p.doi) }}{{ end }}{{ end -}}
 {{- .Parent.Store.Add "caps" (slice (dict
       "id" (.Get "id" | default (anchorize $title))

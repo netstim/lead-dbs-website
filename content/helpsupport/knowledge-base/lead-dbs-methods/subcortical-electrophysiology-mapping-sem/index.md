@@ -23,7 +23,7 @@ Subcortical electrophysiology mapping (SEM) pools signals recorded from DBS elec
 ## Use it in Lead-DBS
 
 SEM runs in Lead Group, the group-analysis module of Lead-DBS: see the manual's chapter
-[Group analyses with Lead-DBS](https://netstim.gitbook.io/leaddbs/lead-group/group-analyses-with-lead-dbs).
+[Group analyses with Lead-DBS](/manual/lead-group/group-analyses-with-lead-dbs/).
 
 ## What to cite
 

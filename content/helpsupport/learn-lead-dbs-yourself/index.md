@@ -30,7 +30,7 @@ layout: "showcase"
 
 {{< button href="https://osf.io/jxecg/?view_only=f2765a6aa3604dea8afa14365b70381c" variant="primary" external="true" >}}Download the dataset{{< /button >}}
 
-<a class="link link--ext" href="https://netstim.gitbook.io/leaddbs/lead-dbs/self-tutoring-with-lead-tutor">Guide in the manual <span class="ext-mark" aria-hidden="true">↗</span></a>
+<a class="link link--ext" href="{{< relref "/manual/lead-dbs/self-tutoring-with-lead-tutor/" >}}">Guide in the manual </a>
 
 </div>
 
