@@ -1,8 +1,53 @@
 /* ================================================================ the events pages on a phone (below 640px)
    layouts/events/list.html, layouts/event.html and layouts/_partials/events/. Loaded after
-   assets/css/phone.css (the shared phone chrome). Nothing here applies from 640px up. */
+   assets/css/phone.css (the shared phone chrome). Nothing here applies from 640px up.
+   After lu.ma on a phone: /events/ is a rail of days with one card per event, then the past workshops as
+   a grid of pictures; an event's page has its flyer in the black head, two fact rows, a registration card
+   and the event's text. Where the phone needs other markup than the desktop, it is a .phone-only copy
+   beside the desktop's (events/card.html, m-card.html, head.html, page-body.html), and the desktop's is
+   hidden here; assets/js/main/events.js updates both. */
 @media (max-width: 639px) {
-  /* the event list: no box around it, a hairline between the rows, the text at the page margin */
-  html .event-list:has(> .event--listing) { border: 0; border-radius: 0; }
-  html .prose .event.event--listing { padding-inline: 0; }
+
+  /* -------------------------------------------------------------- /events/: "Upcoming" and the rail
+     "Upcoming" a small muted label. Per event a rail item: an 8px dot, a dashed line down to the next
+     event, the day as a small heading (the countdown at its right, in coral), the card 12px under it */
+  .prose.events-page > #upcoming { margin: 0 0 var(--s-4); color: var(--muted); font: 500 var(--t-label)/1.5 var(--font-text); letter-spacing: 0; }
+  .prose.events-page > .event-list:not(:has(> li)) { display: none; }
+  html .event-list:has(> .event--listing) { display: block; margin: 0; border: 0; border-radius: 0; overflow: visible; }
+  html .prose .event.event--listing { position: relative; display: block; margin: 0; padding: 0 0 var(--s-6) var(--s-5); border: 0; background: none; }
+  html .prose .event.event--listing + .event--listing { border-top: 0; }
+  html .prose .event.event--listing:last-child { padding-bottom: var(--s-5); }
+  html .prose .event--listing > :is(.event__day, .event__body, .event__poster) { display: none; }
+  .event--listing::before { content: ""; position: absolute; top: 7px; left: 0; width: 8px; height: 8px; border-radius: 50%;
+    background: color-mix(in oklab, var(--ink) 25%, transparent); }
+  .event--listing:not(:last-child)::after { content: ""; position: absolute; top: 24px; bottom: 2px; left: 3.5px; border-left: 1px dashed var(--line-strong); }
+  html .prose .event--listing > .ev-day { display: flex; align-items: baseline; gap: var(--s-3); max-width: none; margin: 0 0 var(--s-3);
+    font: 400 var(--t-body)/1.375 var(--font-text); }
+  .ev-day time { display: flex; gap: var(--s-2); font-variant-numeric: tabular-nums; }
+  .ev-day b { font-weight: 500; }
+  .ev-day time span { color: var(--muted); }
+  .ev-day__soon { display: inline-block; margin-left: auto; color: var(--p-accent-text); font-size: var(--t-label); font-weight: 500; }
+  .ev-day__soon::first-letter, .ev-head__soon span::first-letter { text-transform: uppercase; }
+
+  /* -------------------------------------------------------------- the event card (events/m-card.html)
+     a 12px frame with a 1px ring; the body one link (time, title and place left, the flyer as a 3:4
+     poster right); a strip at its foot with the state of registration and one small pill */
+  .ev-card { border-radius: var(--r-md); background: var(--bg); box-shadow: 0 0 0 1px var(--line); overflow: hidden; }
+  .prose .ev-card__body { display: flex; align-items: flex-start; gap: var(--s-3); padding: var(--s-4); color: var(--ink);
+    text-decoration: none; background: none; }
+  .ev-card__text { flex: 1; min-width: 0; }
+  .prose .ev-card__line { display: flex; align-items: center; gap: var(--s-2); max-width: none; margin: 0; color: var(--muted); font: 400 var(--t-small)/1.43 var(--font-text); }
+  .prose .ev-card__line time { white-space: nowrap; }
+  .prose .ev-card__line .ev-card__date { color: var(--ink); font-weight: 500; }
+  .prose .ev-card__line:first-child { display: block; }
+  .prose .ev-card__title { margin: var(--s-1) 0 0; color: var(--ink); font: 600 var(--t-card)/1.26 var(--font-display); letter-spacing: var(--display-tracking); }
+  .prose .ev-card__place { margin-top: var(--s-2); }
+  .ev-ic { flex: none; width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .prose img.ev-card__poster { flex: none; width: 78px; height: 104px; object-fit: cover; border-radius: var(--r-sm); box-shadow: 0 0 0 1px var(--line); }
+  .ev-card__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); min-height: 52px; padding: var(--s-2) var(--s-2) var(--s-2) var(--s-4);
+    border-top: 1px solid var(--line); background: color-mix(in oklab, var(--surface) 50%, var(--bg)); }
+  .prose .ev-card__status { max-width: none; margin: 0; color: var(--muted); font: 400 var(--t-label)/1.5 var(--font-text); }
+  .prose .ev-card__foot .btn { flex: none; text-decoration: none; }
+  .ev-card__foot .ext-mark { margin-left: 0; }
+  .event-list--past .ev-card__foot { display: none; }
 }

@@ -73,6 +73,8 @@ document.querySelectorAll('[data-ev-countdown]').forEach((chip) => {
   const day = (t) => { const d = new Date(t); d.setHours(0, 0, 0, 0); return d.getTime(); };
   const days = Math.round((day(start) - day(Date.now())) / 864e5);
   if (start <= Date.now() && days < 0) return;
+  // [data-ev-near] (the phone's rail and event head): only while the event is days away, not months
+  if (chip.hasAttribute('data-ev-near') && days >= 45) return;
   chip.textContent = days <= 0 ? 'today' : days === 1 ? 'tomorrow' : days < 45 ? `in ${days} days` : `in ${Math.round(days / 30.4)} months`;
   chip.hidden = false;
 });
