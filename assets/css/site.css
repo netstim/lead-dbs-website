@@ -1333,7 +1333,7 @@ html:not(.js) .g-item__info { display: block; padding: var(--s-2) 0 var(--s-3); 
 .flow-diagram .pele-node[data-id="C"] :is(rect, path, polygon) { fill: color-mix(in oklab, var(--p-tint-1) 55%, var(--p-bg)); stroke: color-mix(in oklab, var(--p-tint-1) 80%, var(--ink) 10%); }
 .flow-diagram .pele-node[data-id="C"] text { font-weight: 600; }
 .flow-diagram__tb { display: none; }
-@media (max-width: 479px) { .flow-diagram__lr { display: none; } .flow-diagram__tb { display: block; } .flow-diagram__tb svg { width: 176px; } }
+@media (max-width: 479px) { .flow-diagram__lr { display: none; } .flow-diagram__tb { display: block; } .flow-diagram__tb svg { width: 128px; } }
 #localize .home-split { align-items: center; }
 
 /* Atlas hub: primary catalogues, then individual atlases and the coordinate-space guide. */
