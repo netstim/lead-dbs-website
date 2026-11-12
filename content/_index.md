@@ -6,12 +6,10 @@
 title: "Lead-DBS"
 description: "Lead-DBS is an open-source toolbox that localizes deep brain stimulation electrodes on MRI and CT and maps their effects on brain networks."
 date: "2014-06-17T12:22:42"
-lastmod: "2026-11-10"
+lastmod: "2026-11-12"
 hero:
   title: "Open-source DBS imaging toolbox"
-  # lead_more follows the lead (on a phone too: a visitor without MATLAB should learn it before downloading)
-  lead: "Lead-DBS localizes deep brain stimulation electrodes on postoperative MRI or CT, simulates the stimulation and maps its effects on brain networks."
-  lead_more: "Free and open source; runs in MATLAB."
+  lead: "Localize electrodes, model stimulation and analyse connectivity."
   primary: {label: "Download Lead-DBS"}
   # the second action is for newcomers; the manual (another site, marked ↗) follows it as a third, quieter link
   secondary: {label: "First steps", url: "/helpsupport/first-steps/"}
@@ -45,7 +43,7 @@ hero:
 # The frames are in static/media/insertion/ (see README, "The electrode insertion").
 localize:
   title: "Electrode localization from MRI and CT"
-  text: "Lead-DBS reconstructs the electrodes of each patient from postoperative imaging and shows the result in 2D and 3D, for one patient or a whole cohort."
+  text: "Reconstructs every electrode from postoperative imaging, in 2D and 3D, for one patient or a whole cohort."
   rows:
     - {name: "Input", value: "Postoperative MRI, or postoperative CT with preoperative MRI"}
     - {name: "Output", value: "Electrode trajectories and contacts in native and template space"}
@@ -70,26 +68,24 @@ features:
       - {page: "/helpsupport/knowledge-base/atlasesresources/normative-connectomes", label: "normative connectomes"}
   cards:
     - title: "Simulates the stimulation"
-      text: "Volume of tissue activated, electric fields and pathway activation, computed with OSS-DBS v2, the stimulation model built into Lead-DBS."
+      text: "Model electric fields, activated tissue and pathways."
       anchor: "stimulation"
       image: "pathway-activation.jpg"
       alt: "Two electrodes with their stimulation volumes in blue and the fibre pathways they activate in red and white"
     - title: "Connects it to networks"
-      text: "Connectivity from the stimulation volume to other brain regions, with the patient's own connectome or a normative one, an average wiring diagram of many human brains."
+      text: "Map connections from stimulation sites to other brain regions."
       anchor: "connectivity"
       image: "fiber-filtering.jpg"
       alt: "Fibre tracts around the electrodes, coloured from red to yellow by their association with outcome, over a 7 tesla MRI slice"
     - title: "Compares whole cohorts"
-      text: "Group analysis of electrode placement and its relation to clinical outcomes, across all patients of a study."
+      text: "Relate electrode placement to clinical outcomes across patients."
       anchor: "groups-of-patients"
       image: "cohort-top.jpg"
       alt: "The electrodes of nine Lead Tutor patients seen from above, ending in the subthalamic nucleus (orange) between the internal pallidum (green) and red nucleus (red)"
-  note: "Pictures: example analyses on the open Lead Tutor dataset, with example stimulation settings and simulated outcome scores. Illustrations, not findings."
-  link: {label: "See renders and published figures", url: "/gallery/"}
+  note: "Illustrative analyses using Lead Tutor data."
+  link: {label: "View gallery", url: "/gallery/"}
 
-# Lead-DBS 4.0: a text-only announcement (no date, features, pictures or links to it yet).
-# points: three statements set large in three columns, each with one line under it. The home page says "first to try the
-# pre-release" here only; the workshop card below it and the events text do not repeat it.
+# The forthcoming release: three points, with the workshop as the next step.
 next:
   label: "Coming next"
   title: "Lead-DBS 4.0"
