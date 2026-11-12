@@ -258,7 +258,8 @@
         <div class="split__text worldwide__text">
           <h2 id="worldwide-h">{{ replace $w.title "{countries}" (len $u.countries) | partial "nobreak.html" }}</h2>
           <p class="t-lead">{{ replace (replace $w.text "{launches}" (lang.FormatNumber 0 $u.launches_year)) "{year}" $u.year | partial "nobreak.html" }}</p>
-          {{ with site.GetPage "/usage" }}<p><a class="btn btn--primary" href="{{ .RelPermalink }}">{{ $w.link_label }}</a></p>{{ end }}
+          {{- /* the globe can only be read with a mouse: the second link leads to the table of every country */}}
+          {{ with site.GetPage "/usage" }}<p class="worldwide__links"><a class="btn btn--primary" href="{{ .RelPermalink }}">{{ $w.link_label }}</a><a class="btn btn--secondary" href="{{ .RelPermalink }}#all-countries">{{ $w.table_label }}</a></p>{{ end }}
         </div>
         <figure class="worldwide__fig">
           <div class="worldwide__stage" data-globe-stage>

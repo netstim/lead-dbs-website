@@ -89,6 +89,8 @@ worldwide:
   title: "Used in {countries} countries"
   text: "Researchers started Lead-DBS {launches} times in {year}."
   link_label: "Usage statistics"
+  # the link to the table of every country on /usage/ (the globe itself can only be read with a mouse)
+  table_label: "All countries"
 
 # The forthcoming release: three points, with the workshop as the next step.
 next:

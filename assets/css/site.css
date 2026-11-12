@@ -1450,6 +1450,8 @@ html:not(.js) .g-item__info { display: block; padding: var(--s-2) 0 var(--s-3); 
    The localization section mirrored: a wireframe globe left, drawn in the page's own ink straight on
    the white ground (assets/js/globe.js), the words right: the heading, one line, a pill to /usage/.
    The figure shows once the map has loaded (.is-drawn); without the script the words stand alone. */
+/* the pill to /usage/ and, beside it, the link to its table of every country (side by side on a phone too) */
+.worldwide__links { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); }
 .worldwide__fig { margin: 0; display: none; }
 .worldwide.is-drawn .worldwide__fig { display: block; }
 .worldwide__stage { position: relative; aspect-ratio: 1; max-width: 600px; margin-inline: auto; }
@@ -1471,7 +1473,8 @@ html:not(.js) .g-item__info { display: block; padding: var(--s-2) 0 var(--s-3); 
 }
 
 /* ---------- usage ----------
-   /usage/ (layouts/usage.html): three large numbers, then the charts in a grid of hairlines. The charts
+   /usage/ (layouts/usage.html): three large numbers, then the charts and the table of every country in a
+   grid of hairlines. The charts
    are Pele SVG (scripts/usage.mjs), coloured here: ink lines, the action blue for the one series,
    periwinkle for the rest. */
 .usage { padding-block: var(--s-8) var(--s-9); }
@@ -1518,6 +1521,13 @@ html:not(.js) .g-item__info { display: block; padding: var(--s-2) 0 var(--s-3); 
 .usage__list { list-style: none; margin: var(--s-5) 0 0; padding: 0; max-width: 360px; }
 .usage__list li { display: flex; justify-content: space-between; gap: var(--s-4); padding: var(--s-3) 0; border-top: 1px solid var(--line); }
 .usage__list li span:last-child { color: var(--muted); }
+/* every country as a table, folded (the fold is the download page's .dl-more): the name, its launches */
+.usage__all { max-width: 480px; margin-top: var(--s-5); }
+.usage__table { width: 100%; border-collapse: collapse; font-size: var(--t-note); }
+.usage__table :is(th, td) { padding: var(--s-2) 0; border-bottom: 1px solid var(--line); text-align: left; font-weight: 400; }
+.usage__table thead th { padding-top: var(--s-4); color: var(--muted); font-weight: 500; }
+.usage__table :is(td, thead th:last-child) { text-align: right; }
+.usage__table td { color: var(--muted); font-variant-numeric: tabular-nums; }
 .usage__method { margin: var(--s-5) 0 0; max-width: 80ch; color: var(--muted); font-size: var(--t-small); line-height: 1.6; }
 @media (min-width: 1000px) {
   .usage__cell--wide { grid-column: span 7; }

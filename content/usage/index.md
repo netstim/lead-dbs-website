@@ -9,6 +9,8 @@ charts:
   countries: {title: "Where it runs", text: "A tile for each country, sized by its launches."}
   hours: {title: "Around the clock", text: "Launches by hour of the day, Central European Time."}
   tools: {title: "Which tool is started", text: "Lead-DBS is four tools; most sessions start in the main one."}
+  # the table of every country ({since}: the first year of the figures)
+  all: {title: "Every country", text: "Launches since {since}, from the most to the fewest."}
 method: "A launch is one start of Lead-DBS; the same address counts once an hour. Countries are worked out from IP addresses, which are not published."
 next:
   - {page: "/about/"}
