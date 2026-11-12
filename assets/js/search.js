@@ -54,16 +54,20 @@
     const input = box.querySelector('.search__input');
     const list = box.querySelector('.search__results');
     const status = box.querySelector('.search__status');
-    let timer = 0;
+    let timer = 0, generation = 0;
+    const start = box.querySelector('.search__start');
     // on /search/ the cards to start from show only while there is no query
     const doors = box.closest('.search-page')?.querySelectorAll('[data-search-doors]') || [];
     const run = async () => {
+      const request = ++generation;
       const q = input.value.trim();
+      if (start) start.hidden = !!q;
       doors.forEach((d) => { d.hidden = !!q; });
       if (!q) { list.replaceChildren(); status.textContent = ''; return; }
       status.textContent = 'Searching…';
       let rows;
-      try { rows = await load(); } catch { status.textContent = 'The search index could not be loaded.'; return; }
+      try { rows = await load(); } catch { if (request === generation) status.textContent = 'The search index could not be loaded.'; return; }
+      if (request !== generation || input.value.trim() !== q) return;
       const all = rank(rows, q);
       const hits = all.slice(0, SHOWN);
       status.textContent = !all.length ? 'Nothing found on this website. Try fewer or other words.'
@@ -77,7 +81,7 @@
     // arrow keys: from the box to the results and between them
     box.addEventListener('keydown', (e) => {
       if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
-      const links = [...list.querySelectorAll('a')];
+      const links = [...box.querySelectorAll('.search__results a, .search__start:not([hidden]) a')];
       if (!links.length) return;
       const at = links.indexOf(document.activeElement);
       e.preventDefault();

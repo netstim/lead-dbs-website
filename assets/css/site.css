@@ -1312,33 +1312,59 @@ html .prose .download-grid--secondary .download-btn { width: auto; min-height: 4
 }
 
 /* ---------------------------------------------------------------- search (dialog, /search/, 404) */
-.search-dialog { width: min(720px, calc(100% - 2 * var(--s-4))); max-height: min(80svh, 760px); margin: calc(var(--nav) + var(--s-4)) auto auto; padding: 0; border: 1px solid var(--line); border-radius: var(--r-lg);
-  background: var(--bg); color: var(--ink); box-shadow: 0 24px 64px -24px rgb(31 48 56 / .45); overflow: hidden; }
-/* a dark, blurred scrim, so the page behind does not compete with the results; one close control (the
-   field's own clear button is hidden: Escape and the close button do its job) */
-.search-dialog::backdrop { background: rgb(10 16 19 / .72); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+/* The command-style dialog keeps the page sharp behind a light scrim. */
+.search-dialog { width: min(640px, calc(100% - 2 * var(--s-4))); max-height: min(calc(100svh - var(--nav) - var(--s-7)), 640px); margin: calc(var(--nav) + var(--s-5)) auto auto; padding: 0; border: 1px solid var(--line-strong); border-radius: var(--r-md); background: var(--bg); color: var(--ink); box-shadow: 0 20px 60px -16px rgb(0 0 0 / .25); overflow: hidden; }
+.search-dialog::backdrop { background: rgb(0 0 0 / .12); -webkit-backdrop-filter: none; backdrop-filter: none; }
 .search-dialog input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; display: none; }
-.search-dialog__box { position: relative; padding: var(--s-5); max-height: inherit; overflow-y: auto; }
-.search-dialog__close { position: absolute; top: var(--s-4); right: var(--s-4); display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: var(--r-btn); background: none; color: var(--ink); cursor: pointer; }
-.search-dialog__close:hover { background: var(--surface); }
-.search-dialog__close svg { width: 18px; height: 18px; }
-.search__label { display: block; font-size: 14px; font-weight: 500; color: var(--muted); margin: 0 0 var(--s-2); }
-.search-dialog .search__label { padding-right: 52px; }
+.search-dialog__box { position: relative; max-height: inherit; }
+.search-dialog__close { position: absolute; top: 8px; right: 8px; display: grid; place-items: center; width: 44px; height: 40px; border: 0; border-radius: var(--r-sm); background: none; color: var(--muted); cursor: pointer; }
+.search-dialog__close:hover { background: var(--surface); color: var(--ink); }
+.search-dialog__close svg { display: none; width: 18px; height: 18px; }
+.search-dialog kbd { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding-inline: 4px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--muted); font: 500 11px/1 var(--font-text); }
+.search__label { display: block; font-size: var(--t-small); font-weight: 500; color: var(--muted); margin: 0 0 var(--s-2); }
 .search__row { position: relative; }
 .search__icon { position: absolute; left: 14px; top: 50%; translate: 0 -50%; width: 20px; height: 20px; fill: none; stroke: var(--muted); stroke-width: 1.8; stroke-linecap: round; pointer-events: none; }
-.search__input { width: 100%; min-height: 52px; padding: 12px 14px 12px 44px; font: 18px/1.3 var(--font-text); color: var(--ink); background: #fff; border: 1px solid var(--line-strong); border-radius: var(--r-md); }
+.search__input { width: 100%; min-height: 52px; padding: 12px 14px 12px 44px; font: 18px/1.3 var(--font-text); color: var(--ink); background: var(--bg); border: 1px solid var(--line-strong); border-radius: var(--r-md); }
 .search__input:focus-visible { outline: 2px solid var(--action); outline-offset: 1px; border-color: var(--action); }
-.search__status { margin: var(--s-3) 0 0; font-size: 14px; color: var(--muted); min-height: 1.4em; }
+.search__status { margin: var(--s-3) 0 0; font-size: var(--t-small); color: var(--muted); min-height: 1.4em; }
 .search__status:empty { min-height: 0; margin: 0; }
 .search__results { list-style: none; margin: var(--s-2) 0 0; padding: 0; display: grid; gap: 2px; }
 .search__results li { margin: 0; max-width: none; }
-.search__hit { display: grid; gap: 2px; padding: var(--s-3) var(--s-3); border-radius: var(--r-md); color: var(--ink); text-decoration: none !important; }
+.search__hit { display: grid; gap: 2px; padding: var(--s-3); border-radius: var(--r-sm); color: var(--ink); text-decoration: none !important; }
 .search__hit:is(:hover, :focus-visible) { background: var(--surface); outline-offset: -2px; }
 .search__title { font-weight: 500; color: var(--action); font-size: var(--t-body); line-height: 1.35; }
 .search__section { font-size: var(--t-label); color: var(--muted); }
 .search__snippet { font-size: var(--t-note); line-height: 1.5; color: var(--ink); }
 .search__hint { margin: var(--s-4) 0 0; font-size: var(--t-label); color: var(--muted); }
-@media (hover: none) { .search__hint { display: none; } }
+.search-dialog .search__label { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.search-dialog .search__row { border-bottom: 1px solid var(--line); }
+.search-dialog .search__row:focus-within { box-shadow: inset 0 -2px color-mix(in srgb, var(--action) 25%, var(--bg)); }
+.search-dialog .search__input { min-height: 56px; padding-right: 64px; border: 0; border-radius: 0; font-size: var(--t-body); background: transparent; }
+.search-dialog .search__input:focus-visible { outline: none; }
+.search-dialog .search__content { max-height: min(55svh, 440px); overflow-y: auto; overscroll-behavior: contain; padding: var(--s-2); }
+.search-dialog .search__status { margin: 0; padding: var(--s-2) var(--s-3); font-size: var(--t-small); }
+.search-dialog .search__status:empty { display: none; }
+.search-dialog .search__results { margin: 0; }
+.search-dialog .search__hit { grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--s-4); }
+.search-dialog .search__title { color: var(--ink); font-size: var(--t-small); }
+.search-dialog .search__section { max-width: 22ch; font-size: var(--label-size); }
+.search-dialog .search__hit--manual { grid-template-columns: minmax(0, 1fr); }
+.search-dialog .search__snippet { grid-column: 1 / -1; color: var(--muted); font-size: var(--t-small); line-height: 1.45; }
+.search__start[hidden] { display: none; }
+.search__group-label { margin: 0; padding: var(--s-2) var(--s-3); font-size: var(--label-size); font-weight: 500; color: var(--muted); }
+.search__start ul { margin: 0; padding: 0; list-style: none; }
+.search__start a { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); min-height: 44px; padding: var(--s-2) var(--s-3); border-radius: var(--r-sm); font-size: var(--t-small); }
+.search__start a:is(:hover, :focus-visible) { background: var(--surface); outline-offset: -2px; }
+.search__quick-arrow { color: var(--muted); }
+.search-dialog .search__hint { display: flex; gap: var(--s-5); align-items: center; margin: 0; padding: var(--s-3) var(--s-4); border-top: 1px solid var(--line); font-size: 12px; }
+.search-dialog .search__hint > span { display: inline-flex; align-items: center; gap: var(--s-1); }
+@media (hover: none) { .search__hint, .search-dialog .search__hint { display: none; } }
+@media (max-width: 639px) {
+  .search-dialog__close svg { display: block; }
+  .search-dialog__close kbd, .search-dialog .search__hint { display: none; }
+  .search-dialog .search__hit { grid-template-columns: minmax(0, 1fr); }
+  .search-dialog .search__section { max-width: none; }
+}
 .search-page .search { max-width: var(--measure); }
 /* the 404 page's doors: on a desktop the page's text uses the whole width, so eight doors make two rows
    of four wide tiles (the paragraphs keep their measure); three, two or one across below */
