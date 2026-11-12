@@ -64,7 +64,7 @@
 }
 .nowrap { white-space: nowrap; }
 /* one style for every label of the site; the colour stays that of its place (muted on most grounds) */
-:is(.label, .home-hero__facts dt, .spec-rows dt, .next-band__label, .home .render-band__h, .home .funders__h,
+:is(.label, .home-hero__facts dt, .spec-rows dt, .next-band__label, .home .render-band__h,
     .sidebar p.t-label, .prose th, .prose .capability__refs dt) {
   font-family: var(--font-label); font-size: var(--label-size); font-weight: var(--label-weight); font-style: normal;
   line-height: 1.4; letter-spacing: var(--label-tracking); text-transform: var(--label-case); font-synthesis: none; }
@@ -724,18 +724,27 @@ main > .home-hero { position: relative; isolation: isolate; background: var(--re
 .home .closing__h { margin: 0; font-size: var(--t-h3); line-height: 1.15; max-width: none; }
 .closing__text { max-width: 44ch; font-size: var(--t-lead); line-height: 1.55; }
 .closing__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-6); margin-top: var(--s-2); }
-.cite__copy { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
-.cite__copy::after { content: none; }
-.cite__copy:hover { background: color-mix(in oklab, var(--surface) 70%, var(--ink) 8%); }
+/* the citation snippet: a white box with a hairline, its bar (format tabs, copy) over the text */
+.cite-snip { align-self: stretch; border: 1px solid var(--line-strong); border-radius: var(--r-md); background: var(--bg); overflow: hidden; }
+.cite-snip__bar { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding: var(--s-2) var(--s-2) var(--s-2) var(--s-3); border-bottom: 1px solid var(--line); }
+.cite-snip__bar[hidden] { display: none; }
+.cite-snip__tabs { display: flex; gap: var(--s-1); }
+.cite-snip__tab, .cite-snip__copy { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 var(--s-3); border: 0; border-radius: 999px;
+  background: none; font: 500 var(--t-small)/1 var(--font-text); color: var(--muted); cursor: pointer; }
+.cite-snip__tab:hover, .cite-snip__copy:hover { color: var(--ink); background: var(--surface); }
+.cite-snip__tab[aria-pressed="true"] { background: var(--surface); color: var(--ink); }
+.cite-snip__copy svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.cite-snip__text { margin: 0; padding: var(--s-4); font-size: var(--t-small); line-height: 1.6; color: var(--ink); overflow-wrap: anywhere; }
+.cite-snip__text a { color: var(--action); }
+.cite-snip__bib { font: 13px/1.6 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
 .closing__list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-6); }
-.cite__ref { overflow-wrap: anywhere; color: var(--ink); }
-.cite__ref a { color: var(--action); }
 @media (min-width: 768px) { .closing__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1024px) { .closing__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: calc(var(--gutter) * 3); } }
 @media (max-width: 639px) { .closing__list { flex-direction: column; gap: 0; } .closing__list .link { min-height: 44px; } }
 .funders-row { margin-top: var(--s-7); padding-top: var(--s-6); border-top: 1px solid var(--line); text-align: center; }
-/* the line over the logos is centred over the row, as the logos are centred in their cells, so the two line up */
-.home .funders__h { margin: 0 0 var(--s-5); color: var(--muted); }
+/* the heading over the logos: short, in the text's size and ink (a label's small grey would lose to five
+   heavy logos), centred over the row as the logos are centred in their cells */
+.home .funders__h { margin: 0 0 var(--s-6); font-size: var(--t-body); font-weight: 500; line-height: 1.4; letter-spacing: 0; color: var(--ink); }
 /* one equal cell per logo, each logo centred in it, so the gaps between them are the same */
 .funders { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); align-items: center; gap: var(--s-5) var(--gutter); }
 .funders li { display: flex; align-items: center; justify-content: center; min-height: 56px; }
@@ -744,7 +753,7 @@ main > .home-hero { position: relative; isolation: isolate; background: var(--re
    (a pale mark darkened, a white ground kept white and dropped by the multiply), then set at one opacity.
    The template gives each about the same area; scale in content/_index.md evens out the weight. Under the
    pointer a logo shows its own colours. */
-.funders img { display: block; width: auto; max-width: 190px; object-fit: contain; filter: grayscale(1) brightness(.6) contrast(6); opacity: .55; mix-blend-mode: multiply;
+.funders img { display: block; width: auto; max-width: 190px; object-fit: contain; filter: grayscale(1) brightness(.6) contrast(6); opacity: .45; mix-blend-mode: multiply;
   transition: opacity var(--t-out) var(--ease), filter var(--t-out) var(--ease); }
 .funders li:hover img { filter: none; opacity: 1; }
 @media (max-width: 639px) { .funders { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4) var(--gutter); } .funders img { max-width: 140px; }

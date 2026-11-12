@@ -531,16 +531,25 @@ document.addEventListener('click', (e) => {
   addEventListener('hashchange', open);
 })();
 
-// ------------------------------------------------------------------ copy the citation
-// The home page's "Copy citation" (layouts/home.html): shown only where the clipboard can be written; it
-// puts the full reference and its DOI there and says so for two seconds.
-document.querySelectorAll('.cite__copy[data-copy]').forEach((btn) => {
-  if (!navigator.clipboard?.writeText) return;
-  btn.hidden = false;
-  const label = btn.textContent;
-  btn.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(btn.dataset.copy); btn.textContent = 'Copied'; }
-    catch { btn.textContent = 'Copy failed'; }
-    setTimeout(() => { btn.textContent = label; }, 2000);
+// ------------------------------------------------------------------ the citation snippet
+// The home page's citation (layouts/home.html): two tabs show the reference or its BibTeX; Copy puts the
+// shown one on the clipboard and says so for two seconds. Without the clipboard the bar stays hidden.
+document.querySelectorAll('.cite-snip').forEach((box) => {
+  const bar = box.querySelector('.cite-snip__bar');
+  if (!bar || !navigator.clipboard?.writeText) return;
+  bar.hidden = false;
+  const tabs = [...box.querySelectorAll('.cite-snip__tab')];
+  const texts = [...box.querySelectorAll('[data-fmt]')];
+  tabs.forEach((tab) => tab.addEventListener('click', () => {
+    tabs.forEach((t) => t.setAttribute('aria-pressed', String(t === tab)));
+    texts.forEach((t) => { t.hidden = t.dataset.fmt !== tab.dataset.show; });
+  }));
+  const copy = box.querySelector('.cite-snip__copy');
+  const label = copy.querySelector('span');
+  copy.addEventListener('click', async () => {
+    const shown = texts.find((t) => !t.hidden);
+    try { await navigator.clipboard.writeText(shown.innerText.trim()); label.textContent = 'Copied'; }
+    catch { label.textContent = 'Copy failed'; }
+    setTimeout(() => { label.textContent = 'Copy'; }, 2000);
   });
 });
