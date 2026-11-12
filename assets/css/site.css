@@ -287,16 +287,12 @@ html:not(.js) .nav__link .chev { display: none; }
   .nav.is-open .menu-col > p.t-label a { color: var(--muted); }
   body.nav-locked { overflow: hidden; }
 }
-/* a phone: the name stays, the search and menu buttons; GitHub and Download are in the sheet, in a bar
-   along its bottom edge */
+/* a phone: the name stays, the search and menu buttons; GitHub and Download are in the sheet, Download
+   in a bar along its bottom edge, so the open sheet's bar keeps only the logo and the close button */
 @media (max-width: 639px) {
   .nav__bar { gap: var(--s-2); }
   .nav__logo { min-height: 44px; gap: 6px; white-space: nowrap; }
   .nav:not(.is-open) .nav__actions > .nav__download { display: none; }
-}
-/* the narrowest phones (320px): the theme toggle joins them in the sheet's bar, so the menu button fits */
-@media (max-width: 359px) {
-  .nav:not(.is-open) .nav__actions > .nav__theme { display: none; }
   .nav.is-open .nav__links { padding-bottom: calc(48px + 2 * var(--s-4) + var(--s-6)); }
   .nav.is-open .nav__actions { position: fixed; inset: auto 0 0; z-index: 51; display: grid; grid-template-columns: 1fr; gap: var(--s-2);
     padding: var(--s-4) var(--gut) calc(var(--s-4) + env(safe-area-inset-bottom)); background: var(--bg); border-top: 1px solid var(--line); }
@@ -304,6 +300,10 @@ html:not(.js) .nav__link .chev { display: none; }
   .nav.is-open .nav__toggle { margin-left: auto; }
   .nav.is-open .nav__actions .nav__download { width: 100%; height: 48px; margin: 0; font-size: var(--t-body); }
   .nav.is-open .nav__actions .nav__dl-more { position: static; width: auto; height: auto; clip-path: none; }
+}
+/* the narrowest phones (320px): the theme toggle moves out of the bar, so the menu button fits */
+@media (max-width: 359px) {
+  .nav:not(.is-open) .nav__actions > .nav__theme { display: none; }
 }
 
 /* ---------------------------------------------------------------- home: the hero
