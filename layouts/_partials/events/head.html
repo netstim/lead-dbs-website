@@ -1,0 +1,17 @@
+{{- /* The head of an event page on a phone (called by page-head.html for layout: event): the event's flyer
+       is the head's picture, under it a badge with the countdown while the event is days away, the title
+       (page-head.html's h1) and who hosts it. assets/css/phone-events.css puts them in that order and hides
+       the render and the lead; an event without a flyer keeps the normal head. Shown below 640px only.
+       Argument: the page. */ -}}
+{{- $page := . -}}
+{{- $ev := false -}}
+{{- range partial "events/list.html" . }}{{ if eq .id $page.Params.event }}{{ $ev = . }}{{ end }}{{ end -}}
+{{- with .Params.flyer }}{{ with $page.Resources.Get .file }}{{ $f := .Resize "480x webp q84" }}
+<a class="ev-head__flyer phone-only" href="{{ .RelPermalink }}"><img src="{{ $f.RelPermalink }}" width="{{ $f.Width }}" height="{{ $f.Height }}" alt="{{ $page.Params.flyer.alt }}" loading="lazy" decoding="async"></a>
+{{- with $ev }}{{ if not .over }}
+<p class="ev-head__soon phone-only"><span data-ev-countdown="{{ .start_unix }}" data-ev-near hidden></span></p>
+{{- end }}{{ end }}
+{{- with $page.Params.host }}
+<p class="ev-head__host phone-only">Hosted by {{ .name }}</p>
+{{- end }}
+{{- end }}{{ end -}}

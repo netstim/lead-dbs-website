@@ -80,4 +80,24 @@
   .ws-tile--lead .ws-tile__cap b { font-size: var(--t-note); letter-spacing: 0; }
   .ws-tile:last-child:nth-child(even) { grid-column: auto; }
   .prose .workshop-archive__more { margin-top: var(--s-5); font-size: var(--t-note); }
+
+  /* -------------------------------------------------------------- an event page: the head (events/head.html)
+     the flyer is the head's picture: 236px wide, centred, a ring and a deep soft shadow, one light behind
+     it; under it the countdown badge (while the event is days away), the title (34/38) and the host */
+  .page-head:has(.ev-head__flyer) { padding: var(--s-3) 0 calc(var(--s-6) + var(--s-2));
+    background-image: radial-gradient(58% 230px at 50% 270px, color-mix(in srgb, var(--on-render) 12%, transparent), transparent); }
+  .page-head:has(.ev-head__flyer) > .page-head__render,
+  .page-head:has(.ev-head__flyer) .page-head__lead { display: none; }
+  .page-head:has(.ev-head__flyer) > .wrap { display: flex; flex-direction: column; align-items: flex-start; }
+  .ev-head__flyer { order: 1; align-self: center; width: 236px; margin: var(--s-5) 0 var(--s-6); border-radius: var(--r-md); overflow: hidden;
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--on-render) 15%, transparent), 0 25px 50px -12px var(--render); }
+  .ev-head__flyer img { width: 100%; height: auto; }
+  .ev-head__soon { order: 2; display: inline-flex; align-items: center; gap: var(--s-2); min-height: 20px; margin: 0 0 var(--s-3); padding: 0 var(--s-2);
+    border: 1px solid color-mix(in srgb, var(--on-render) 10%, transparent); border-radius: var(--r-pill);
+    background: color-mix(in srgb, var(--on-render) 4%, transparent); color: var(--on-render); font: 500 var(--t-xs)/1.33 var(--font-text); }
+  .ev-head__soon::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--p-accent); }
+  .ev-head__soon span { display: inline-block; }
+  .ev-head__soon:has(> [hidden]) { display: none; }
+  .page-head:has(.ev-head__flyer) h1 { order: 3; margin: 0; font: 600 var(--t-h1-event)/1.12 var(--font-display); letter-spacing: var(--display-tracking-xl); }
+  .ev-head__host { order: 4; margin-top: var(--s-3); color: var(--muted); font: 400 var(--t-note)/1.47 var(--font-text); }
 }
