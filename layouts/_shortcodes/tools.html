@@ -1,0 +1,22 @@
+{{- /* The named tools of Lead-DBS as plain columns (the Features page), from the page's front matter:
+         tools:
+           - {id: "lead-group", name: "Lead Group", text: "One sentence.",
+              manual: "label|url", papers: "treu2020", link: "/a/page/", code: "https://…"}
+       id is the anchor (the site search links to it, searchEntries); manual, papers, link and code are
+       optional, as in {{< capability >}}. */ -}}
+{{- $page := .Page -}}
+<div class="tool-cols">
+{{- range $page.Params.tools }}{{ $t := . }}
+  {{- $more := false }}{{ with .link }}{{ $more = site.GetPage (strings.TrimSuffix "/" .) }}{{ if not $more }}{{ errorf "tools: %q: link %q is not a page" $t.name . }}{{ end }}{{ end }}
+  <section class="tool" id="{{ .id }}" aria-labelledby="{{ .id }}-h">
+    <h3 id="{{ .id }}-h">{{ .name }}</h3>
+    {{ .text | $page.RenderString (dict "display" "block") }}
+    <p class="capability__links">
+      {{- with $more }}<a href="{{ .RelPermalink }}">In depth</a>{{ end -}}
+      {{- with $t.manual }}{{ $kv := split . "|" }}<a href="{{ index $kv 1 }}" title="{{ index $kv 0 }}">Manual<span class="ext-mark" aria-hidden="true">↗</span></a>{{ end -}}
+      {{- with $t.code }}<a href="{{ . }}">Code<span class="ext-mark" aria-hidden="true">↗</span></a>{{ end -}}
+      {{- with $t.papers }}{{ range split . " " }}{{ $p := index hugo.Data.papers.papers . }}{{ if not $p }}{{ errorf "tools: %q: no paper %q in data/papers.yaml" $t.name . }}{{ end }}<a class="capability__paper" href="https://doi.org/{{ $p.doi }}">{{ $p.short }}</a>{{ end }}{{ end -}}
+    </p>
+  </section>
+{{- end }}
+</div>
