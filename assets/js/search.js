@@ -11,9 +11,12 @@
   const MANUAL = 'https://netstim.gitbook.io/leaddbs';
   const SHOWN = 12; // results listed; the status line counts them all
   let index = null;
-  const load = () => (index ||= fetch(indexUrl).then((r) => r.json()).then((rows) => rows.map((r) => ({
+  const load = () => (index ||= fetch(indexUrl).then((r) => {
+    if (!r.ok) throw new Error(`Search index: HTTP ${r.status}`);
+    return r.json();
+  }).then((rows) => rows.map((r) => ({
     ...r, lt: fold(r.t), lk: fold(r.k), lh: fold(r.h), ld: fold(r.d), lx: fold(r.x),
-  }))));
+  }))).catch((error) => { index = null; throw error; }));
   const fold = (s) => (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[‐-‑]/g, '-');
   const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
@@ -54,16 +57,21 @@
     const input = box.querySelector('.search__input');
     const list = box.querySelector('.search__results');
     const status = box.querySelector('.search__status');
-    let timer = 0;
+    let timer = 0, generation = 0;
+    const start = box.querySelector('.search__start');
     // on /search/ the cards to start from show only while there is no query
     const doors = box.closest('.search-page')?.querySelectorAll('[data-search-doors]') || [];
     const run = async () => {
+      const request = ++generation;
       const q = input.value.trim();
+      list.replaceChildren();
+      if (start) start.hidden = !!q;
       doors.forEach((d) => { d.hidden = !!q; });
       if (!q) { list.replaceChildren(); status.textContent = ''; return; }
       status.textContent = 'Searching…';
       let rows;
-      try { rows = await load(); } catch { status.textContent = 'The search index could not be loaded.'; return; }
+      try { rows = await load(); } catch { if (request === generation) status.textContent = 'The search index could not be loaded.'; return; }
+      if (request !== generation || input.value.trim() !== q) return;
       const all = rank(rows, q);
       const hits = all.slice(0, SHOWN);
       status.textContent = !all.length ? 'Nothing found on this website. Try fewer or other words.'
@@ -71,13 +79,23 @@
       // how to do something in Lead-DBS is in the manual (another site): offered after the results, and in their place when there are none
       const manual = `<li><a class="search__hit search__hit--manual" href="${MANUAL}"><span class="search__title">${hits.length ? 'Not here? ' : ''}Look it up in the Lead-DBS manual<span class="ext-mark" aria-hidden="true">↗</span></span><span class="search__section">netstim.gitbook.io, another site</span><span class="search__snippet">How to install Lead-DBS and do each step of an analysis.</span></a></li>`;
       list.innerHTML = hits.map((r) => `<li><a class="search__hit" href="${esc(r.u)}"><span class="search__title">${esc(r.t)}</span>${r.s ? `<span class="search__section">${esc(r.s)}</span>` : ''}<span class="search__snippet">${snippet(r, q)}</span></a></li>`).join('') + manual;
+      return true;
     };
-    input.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(run, 120); });
-    box.querySelector('form').addEventListener('submit', (e) => { e.preventDefault(); const first = list.querySelector('a'); if (first) first.click(); else run(); });
+    input.addEventListener('input', () => {
+      ++generation;
+      list.replaceChildren();
+      clearTimeout(timer);
+      timer = setTimeout(run, 120);
+    });
+    box.querySelector('form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearTimeout(timer);
+      if (await run()) list.querySelector('a')?.click();
+    });
     // arrow keys: from the box to the results and between them
     box.addEventListener('keydown', (e) => {
       if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
-      const links = [...list.querySelectorAll('a')];
+      const links = [...box.querySelectorAll('.search__results a, .search__start:not([hidden]) a')];
       if (!links.length) return;
       const at = links.indexOf(document.activeElement);
       e.preventDefault();

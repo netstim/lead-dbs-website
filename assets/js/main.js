@@ -32,7 +32,10 @@
     if (open && focus) inSheet().find((el) => menu?.contains(el))?.focus();
   };
   toggle.addEventListener('click', () => setOpen(!nav.classList.contains('is-open'), true));
-  wide.addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+  wide.addEventListener('change', (e) => {
+    hovered = null; clearTimeout(timer);
+    if (e.matches) setOpen(false);
+  });
   // A word with pages gets a chevron button beside it (the disclosure pattern with top-level links): the
   // word stays a link to its group's page, the button opens and closes the word's panel and says
   // whether it is open (aria-expanded). In the sheet it opens the pages under the word. On a desktop the
@@ -41,7 +44,23 @@
   // chevron opens it and moves to its first link, Arrow Up and Down, Home and End move inside it, and
   // Escape (or the focus leaving the word) closes it, the focus back on the chevron.
   const items = [];
-  const close = (item) => { item.classList.remove('is-expanded'); item.sync(); };
+  const close = (item, updateBand = true) => { item.classList.remove('is-expanded'); item.sync(updateBand); };
+  // A stable frame holds every desktop panel. Commit all disclosure states before measuring
+  // it, so switching groups never briefly closes the band or animates its height.
+  const band = document.createElement('div');
+  band.className = 'nav__band';
+  band.setAttribute('aria-hidden', 'true');
+  nav.append(band);
+  band.sync = () => {
+    const shown = wide.matches && items.some((i) => i.querySelector('.nav__expand')?.getAttribute('aria-expanded') === 'true');
+    if (wide.matches) {
+      const panels = [...nav.querySelectorAll('.nav__menu')];
+      band.style.height = `${Math.ceil(Math.max(0, ...panels.map(p => p.offsetHeight)))}px`;
+    }
+    nav.classList.toggle('band-open', !!shown);
+  };
+  addEventListener('resize', () => band.sync());
+  document.fonts?.ready.then(() => band.sync());
   nav.querySelectorAll('.nav__item').forEach((item) => {
     const panel = item.querySelector('.nav__menu');
     if (!panel) return;
@@ -57,22 +76,32 @@
     btn.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     word.after(btn);
     items.push(item);
-    // open: in the sheet, the chevron's state; on a desktop, also while the pointer rests on the word
-    // (unless Escape or the chevron closed it there)
-    let wait = 0;
-    item.sync = () => {
+    // open: in the sheet, the chevron's state; on a desktop, also while the pointer is on the word or its
+    // band (.is-hovered, set below; unless Escape or the chevron closed it there)
+    item.sync = (updateBand = true) => {
       const open = item.classList.contains('is-expanded')
-        || (wide.matches && !item.classList.contains('is-dismissed') && item.matches(':hover'));
+        || (wide.matches && !item.classList.contains('is-dismissed') && item.classList.contains('is-hovered'));
       btn.setAttribute('aria-expanded', String(open));
+      panel.inert = !open;
+      panel.setAttribute('aria-hidden', String(!open));
+      if (updateBand) band.sync();
     };
-    const later = (ms) => { clearTimeout(wait); wait = setTimeout(item.sync, ms); };
     const links = () => [...panel.querySelectorAll('a[href]')].filter((a) => a.getClientRects().length);
     const openTo = (i) => {
-      if (wide.matches) items.forEach((other) => { if (other !== item) close(other); });
+      if (wide.matches) {
+        hovered = null;
+        items.forEach((other) => {
+          if (other !== item) { other.classList.remove('is-hovered'); close(other, false); }
+        });
+      }
       item.classList.remove('is-dismissed');
       item.classList.add('is-expanded');
       item.sync();
-      if (i !== undefined) requestAnimationFrame(() => { const l = links(); l[i < 0 ? l.length - 1 : i]?.focus(); });
+      if (i !== undefined) setTimeout(() => {
+        if (btn.getAttribute('aria-expanded') !== 'true') return;
+        const l = links();
+        l[i < 0 ? l.length - 1 : i]?.focus();
+      }, wide.matches ? 120 : 0);
     };
     btn.addEventListener('click', () => {
       const open = btn.getAttribute('aria-expanded') === 'true';
@@ -83,7 +112,7 @@
       if (!wide.matches || e.altKey || e.ctrlKey || e.metaKey) return;
       const l = links();
       const at = l.indexOf(document.activeElement);
-      if (e.key === 'Escape' && (item.classList.contains('is-expanded') || item.matches(':hover'))) {
+      if (e.key === 'Escape' && (item.classList.contains('is-expanded') || item.classList.contains('is-hovered'))) {
         e.preventDefault(); e.stopPropagation();
         close(item); item.classList.add('is-dismissed'); item.sync(); btn.focus();
       } else if (e.key === 'ArrowDown') {
@@ -103,27 +132,42 @@
       item.classList.remove('is-dismissed');
       if (wide.matches) close(item);
     });
-    item.addEventListener('pointerleave', () => { item.classList.remove('is-dismissed'); later(0); });
-    item.addEventListener('pointerenter', () => later(160));
-    wide.addEventListener('change', () => { close(item); item.classList.remove('is-dismissed'); });
+    item.addEventListener('pointerleave', () => item.classList.remove('is-dismissed'));
+    wide.addEventListener('change', () => { item.classList.remove('is-hovered', 'is-dismissed'); close(item); });
     item.sync();
   });
   // a click elsewhere closes an open desktop panel
   document.addEventListener('click', (e) => {
     if (wide.matches) items.forEach((item) => { if (!item.contains(e.target)) close(item); });
   });
-  // a desktop panel opens after the pointer has rested 150ms on its word (assets/css/site.css); once one
-  // is open, the panels of the other words open at once (.is-browsing) until the pointer leaves the header
-  let rest = 0;
-  nav.querySelectorAll('.nav__links > .nav__item').forEach((item) => {
-    const panel = !!item.querySelector('.nav__menu');
-    item.addEventListener('pointerenter', () => {
-      clearTimeout(rest);
-      if (panel) rest = setTimeout(() => nav.classList.add('is-browsing'), 150);
-      else nav.classList.remove('is-browsing');
+  // Hover on a desktop, for the header as a whole: a panel opens once the pointer has rested 180ms on its
+  // word; moving to another word also waits briefly, so a passing pointer opens nothing. The
+  // spaces between the words, the band and the bar around them keep the open panel, so moving along the
+  // words never closes and reopens it; the logo, the actions on the right and a word without pages (News)
+  // close it after 120ms, leaving the header after 200ms, so a pointer that slips out and back keeps it.
+  let hovered = null, timer = 0;
+  const hover = (item) => {
+    clearTimeout(timer);
+    if (item === hovered) return;
+    hovered = item;
+    items.forEach((i) => {
+      i.classList.toggle('is-hovered', i === item);
+      if (item && i !== item) i.classList.remove('is-expanded');
+      i.sync(false);
     });
+    band.sync();
+  };
+  const later = (item, ms) => { clearTimeout(timer); timer = setTimeout(() => hover(item), ms); };
+  nav.addEventListener('pointerover', (e) => {
+    if (!wide.matches || e.pointerType === 'touch' || nav.classList.contains('is-open')) return;
+    const t = e.target;
+    if (t.closest('.nav__menu')) { clearTimeout(timer); return; }
+    const item = t.closest('.nav__links > .nav__item');
+    if (item && items.includes(item)) { if (item !== hovered) later(item, hovered ? 130 : 180); else clearTimeout(timer); return; }
+    if (item || t.closest('.nav__logo, .nav__actions')) { later(null, hovered ? 120 : 0); return; }
+    clearTimeout(timer); // a space between the words or around them: the open panel stays
   });
-  nav.addEventListener('pointerleave', () => { clearTimeout(rest); nav.classList.remove('is-browsing'); });
+  nav.addEventListener('pointerleave', (e) => { if (e.pointerType !== 'touch') later(null, 200); });
   nav.addEventListener('click', (e) => {
     if (nav.classList.contains('is-open') && e.target.closest('a[href]')) setOpen(false);
   });
@@ -140,35 +184,6 @@
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
   });
-})();
-
-// ------------------------------------------------------------------ the footer on a phone
-// Below 640px each column of the footer folds to its heading, with a chevron button that opens its links
-// (assets/css/site.css, "footer"). Without script, and from 640px up, every column is open.
-(() => {
-  const footer = document.querySelector('.footer');
-  const cols = footer ? [...footer.querySelectorAll('.footer__col')] : [];
-  if (!cols.length) return;
-  cols.forEach((col, i) => {
-    const h = col.querySelector('.footer__h');
-    const list = col.querySelector('ul');
-    if (!h || !list) return;
-    if (!list.id) list.id = `footer-list-${i + 1}`;
-    const btn = document.createElement('button');
-    btn.className = 'footer__expand';
-    btn.type = 'button';
-    btn.setAttribute('aria-expanded', 'false');
-    btn.setAttribute('aria-controls', list.id);
-    btn.setAttribute('aria-label', `${h.textContent.trim()}: show the links`);
-    btn.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    h.after(btn);
-    btn.addEventListener('click', () => {
-      const open = !col.classList.contains('is-expanded');
-      col.classList.toggle('is-expanded', open);
-      btn.setAttribute('aria-expanded', String(open));
-    });
-  });
-  footer.classList.add('is-foldable');
 })();
 
 // ------------------------------------------------------------------ the home page's figure strip
@@ -207,11 +222,22 @@ document.querySelectorAll('.fig-strip').forEach((strip) => {
   let queued = false;
   const update = () => {
     queued = false;
-    const line = nav.getBoundingClientRect().bottom;
-    nav.classList.toggle('is-dark', grounds.some((g) => {
+    const box = nav.getBoundingClientRect();
+    // How much of the strip just under the bar (as tall as the bar) is a dark ground: the bar blends over
+    // that much scroll instead of flipping at one line. A page head that starts right under the bar
+    // counts in full, so such a page opens with the black bar (as body.top-dark paints it first).
+    // Smoothstep gives the surface a gentle arrival at either end of the crossing.
+    const top = box.bottom, bottom = box.bottom + box.height;
+    const overlap = grounds.reduce((sum, g) => {
       const r = g.getBoundingClientRect();
-      return r.height > 0 && r.top < line + 1 && r.bottom > line;
-    }));
+      return sum + Math.max(0, Math.min(r.bottom, bottom) - Math.max(r.top, top));
+    }, 0);
+    const coverage = Math.min(1, overlap / Math.max(1, box.height));
+    const darkness = coverage * coverage * (3 - 2 * coverage);
+    nav.style.setProperty('--nav-darkness', darkness.toFixed(3));
+    // A small dead zone prevents theme chatter when the scroll rests at the midpoint.
+    if (darkness > .53) nav.classList.add('is-dark');
+    else if (darkness < .47) nav.classList.remove('is-dark');
     nav.classList.toggle('is-scrolled', window.scrollY > 0);
   };
   const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
@@ -298,7 +324,7 @@ document.querySelectorAll('.fig-strip').forEach((strip) => {
       [{ transform: 'translateY(calc(100% + .2em))' }, { transform: 'none' }],
       { duration: 700, delay: 80 + i * step, easing: ease, fill: 'both' }))));
     const after = 80 + (lines.length - 1) * step + 220;
-    const rest = [hero.querySelector('.hero__lead'), ...hero.querySelectorAll('.btn-row > *'), hero.querySelector('.hero__proof'), hero.querySelector('.home-hero__facts')];
+    const rest = [hero.querySelector('.hero__chip'), hero.querySelector('.hero__lead'), ...hero.querySelectorAll('.btn-row > *'), hero.querySelector('.hero__proof'), hero.querySelector('.home-hero__facts')];
     rest.filter(Boolean).forEach((el, k) => anims.push(el.animate(
       [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }],
       { duration: 520, delay: after + Math.min(k, 6) * 60, easing: ease, fill: 'both' })));
@@ -424,11 +450,93 @@ document.querySelectorAll('.fig-strip').forEach((strip) => {
 // ------------------------------------------------------------------ videos (youtube / vimeo shortcodes)
 // Nothing loads from YouTube or Vimeo until the visitor starts a video: then the privacy-enhanced
 // player takes the place of the button. A click with a modifier key opens the video's own page.
+// On a video-grid (the videos page) a card's video opens in a popup instead (.v-box): the player
+// large on black, the card's tag, title and sentence under it, its chapters beside it as buttons that
+// start the video at that time. In the card the chapters fold to one "n chapters" button. Closing the
+// popup removes the player, which stops the video.
+const vbox = (() => {
+  const cards = document.querySelectorAll('.video-card');
+  if (!cards.length || !window.HTMLDialogElement) return null;
+  const d = document.createElement('dialog');
+  d.className = 'v-box';
+  d.setAttribute('aria-label', 'Video');
+  d.innerHTML = '<div class="v-box__main"><div class="v-box__player"></div><div class="v-box__info"><div class="v-box__words"></div>'
+    + '<form method="dialog"><button class="v-box__close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></form></div></div><div class="v-box__chapters" hidden></div>';
+  document.body.append(d);
+  const player = d.querySelector('.v-box__player'), info = d.querySelector('.v-box__words'), side = d.querySelector('.v-box__chapters');
+  let src = '', label = '';
+  const chapters = new WeakMap();  // a card's chapters, taken out of the card
+  const secs = (t) => t.split(':').reduce((n, x) => n * 60 + Number(x), 0);
+  const play = (start) => {
+    let u = src;
+    if (start) u = /vimeo/.test(u) ? `${u}#t=${start}s` : `${u}&start=${start}`;
+    const f = document.createElement('iframe');
+    f.src = u; f.title = label;
+    f.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
+    f.allowFullscreen = true;
+    f.referrerPolicy = 'strict-origin-when-cross-origin';
+    player.replaceChildren(f);
+  };
+  d.addEventListener('close', () => { player.replaceChildren(); document.documentElement.classList.remove('v-box-open'); });
+  d.addEventListener('click', (e) => {
+    if (e.target === d) { d.close(); return; }
+    const c = e.target.closest('.v-box__chapter');
+    if (!c) return;
+    side.querySelectorAll('.v-box__chapter').forEach((b) => b.setAttribute('aria-current', String(b === c)));
+    play(Number(c.dataset.t));
+  });
+  const open = (card, start = 0) => {
+    const box = card.querySelector('.video-embed');
+    src = box.dataset.embed; label = box.dataset.embedTitle;
+    info.replaceChildren();
+    const tag = card.querySelector('.video-card__tag'), h = card.querySelector('h2, h3');
+    if (tag) { const t = document.createElement('p'); t.className = 'v-box__tag'; t.textContent = tag.textContent; info.append(t); }
+    if (h) { const t = document.createElement('h2'); t.className = 'v-box__title'; t.textContent = [...h.childNodes].filter((n) => !n.classList?.contains('heading-anchor')).map((n) => n.textContent).join('').trim(); info.append(t); }
+    card.querySelectorAll(':scope > p:not(.video-card__tag)').forEach((p) => { const t = p.cloneNode(true); t.className = 'v-box__text'; info.append(t); });
+    const rows = [...(chapters.get(card)?.querySelectorAll('li') || [])];
+    side.hidden = !rows.length;
+    side.replaceChildren();
+    if (rows.length) {
+      const hd = document.createElement('p'); hd.className = 'v-box__chapters-h'; hd.textContent = `${rows.length} chapters`;
+      const ol = document.createElement('ol');
+      rows.forEach((li) => {
+        const t = li.querySelector('time').textContent, n = secs(t);
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'v-box__chapter'; b.dataset.t = n;
+        b.setAttribute('aria-current', String(n === start));
+        b.innerHTML = '<time></time><span></span>';
+        b.firstChild.textContent = t; b.lastChild.textContent = li.querySelector('span').textContent;
+        const item = document.createElement('li'); item.append(b); ol.append(item);
+      });
+      side.append(hd, ol);
+    }
+    d.classList.toggle('v-box--chapters', rows.length > 0);
+    play(start);
+    document.documentElement.classList.add('v-box-open');
+    d.showModal();
+    d.querySelector('.v-box__close').focus();
+  };
+  cards.forEach((card) => {
+    const ch = card.querySelector('.chapters');
+    if (!ch) return;
+    const n = ch.querySelectorAll('li').length;
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'video-card__chapters';
+    b.innerHTML = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 4h10M3 8h10M3 12h6"/></svg>${n} chapters`;
+    b.addEventListener('click', () => open(card));
+    chapters.set(card, ch);
+    ch.replaceWith(b);
+  });
+  return open;
+})();
+
 document.addEventListener('click', (e) => {
   const a = e.target.closest?.('.video-embed__start');
   if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
   const box = a.closest('.video-embed');
   e.preventDefault();
+  const card = box.closest('.video-card');
+  if (vbox && card) { vbox(card); return; }
   const f = document.createElement('iframe');
   f.src = box.dataset.embed;
   f.title = box.dataset.embedTitle;
@@ -496,4 +604,163 @@ document.addEventListener('click', (e) => {
   };
   open();
   addEventListener('hashchange', open);
+})();
+
+// ------------------------------------------------------------------ the citation snippet
+// The home page citation tabs select a format and update the shared clipboard controller's target.
+document.querySelectorAll('.cite-snip').forEach((box) => {
+  const bar = box.querySelector('.cite-snip__bar');
+  if (!bar) return;
+  bar.hidden = false;
+  const tabs = [...box.querySelectorAll('.cite-snip__tab')];
+  const texts = [...box.querySelectorAll('[data-fmt]')];
+  tabs.forEach((tab) => tab.addEventListener('click', () => {
+    tabs.forEach((t) => t.setAttribute('aria-pressed', String(t === tab)));
+    texts.forEach((t) => { t.hidden = t.dataset.fmt !== tab.dataset.show; });
+    box.querySelector('[data-copy]').dataset.copy = texts.find((t) => !t.hidden).id;
+  }));
+
+});
+
+// The news rail follows the reading position; stories remain visible and stationary.
+document.querySelectorAll('.news-timeline').forEach((timeline) => {
+  const stories = [...timeline.querySelectorAll('.news-story')];
+  if (!stories.length) return;
+  let queued = false;
+  const update = () => {
+    queued = false;
+    const navHeight = document.querySelector('.nav')?.getBoundingClientRect().bottom || 0;
+    const readingLine = navHeight + Math.min(180, (innerHeight - navHeight) * .25);
+    const boxes = stories.map(story => story.getBoundingClientRect());
+    const top = boxes[0].top + 9;
+    const length = Math.max(1, boxes[boxes.length - 1].top - boxes[0].top);
+    const progress = Math.max(0, Math.min(1, (readingLine - top) / length));
+    timeline.style.setProperty('--rail-top', `${top - timeline.getBoundingClientRect().top}px`);
+    timeline.style.setProperty('--rail-length', `${length}px`);
+    timeline.style.setProperty('--rail-progress', progress.toFixed(5));
+    let current = 0;
+    boxes.forEach((box, i) => { if (box.top + 9 <= readingLine) current = i; });
+    stories.forEach((story, i) => {
+      story.classList.toggle('is-current', i === current);
+      story.classList.toggle('is-passed', i < current);
+    });
+    timeline.classList.add('is-tracked');
+  };
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+  addEventListener('scroll', queue, { passive: true });
+  addEventListener('resize', queue);
+  new ResizeObserver(queue).observe(timeline);
+  update();
+});
+
+// The countdown at the end of an event's meta line (events/card.html, home.html): "today", "tomorrow",
+// "in 6 days", "in 3 months", by the visitor's clock; it stays hidden once the event has started.
+document.querySelectorAll('[data-ev-countdown]').forEach((chip) => {
+  const start = Number(chip.dataset.evCountdown) * 1000;
+  const day = (t) => { const d = new Date(t); d.setHours(0, 0, 0, 0); return d.getTime(); };
+  const days = Math.round((day(start) - day(Date.now())) / 864e5);
+  if (start <= Date.now() && days < 0) return;
+  chip.textContent = days <= 0 ? 'today' : days === 1 ? 'tomorrow' : days < 45 ? `in ${days} days` : `in ${Math.round(days / 30.4)} months`;
+  chip.hidden = false;
+});
+
+// Paper rows (Publications): a year is written once, on its first row.
+document.querySelectorAll('.paper-rows').forEach((list) => {
+  let last = '';
+  list.querySelectorAll('.paper-row__year').forEach((y) => { if (y.textContent === last) y.classList.add('is-repeat'); else last = y.textContent; });
+});
+
+// {{< capabilities >}} (Features): a click on a capability's name chooses it: its sentence and links
+// open under the name and its picture shows on the stage. The address takes its id, so the chosen one can
+// be linked; a link to a capability (from the home page, the search) chooses it too.
+document.querySelectorAll('[data-cap-show]').forEach((show) => {
+  const items = [...show.querySelectorAll('.capability')];
+  const figs = [...show.querySelectorAll('[data-cap-fig]')];
+  if (items.length < 2) return;
+  const open = (item) => {
+    items.forEach((it) => {
+      it.classList.toggle('is-active', it === item);
+      it.querySelector('h3 > button').setAttribute('aria-expanded', String(it === item));
+    });
+    figs.forEach((f) => f.classList.toggle('is-active', f.dataset.capFig === item.id));
+  };
+  items.forEach((it) => it.querySelector('h3 > button').addEventListener('click', () => {
+    open(it);
+    history.replaceState(null, '', '#' + it.id);
+  }));
+  const fromHash = () => {
+    const it = items.find((x) => '#' + x.id === location.hash);
+    if (!it) return;
+    open(it);
+    if (matchMedia('(min-width: 1024px)').matches) show.scrollIntoView();
+  };
+  addEventListener('hashchange', fromHash);
+  fromHash();
+});
+
+// The gallery (layouts/gallery/list.html): the pills show one section (a kind of picture) or all; a click on a
+// picture opens the lightbox with the picture larger and its words (its .g-item__info), arrows and the
+// arrow keys step through the pictures shown; #fig-… or #covers in the address opens or filters at once.
+(() => {
+  const walls = document.querySelectorAll('[data-gallery]');
+  const box = document.querySelector('.g-box');
+  if (!walls.length) return;
+  const items = [...document.querySelectorAll('[data-gallery] .g-item')];
+  const secs = document.querySelectorAll('.g-sec');
+  const pills = document.querySelector('.g-pills');
+  const show = (kind) => {
+    pills?.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.show === kind)));
+    items.forEach((it) => { it.hidden = kind !== 'all' && it.dataset.kind !== kind; });
+    secs.forEach((sec) => { sec.hidden = kind !== 'all' && sec.dataset.kind !== kind; });
+  };
+  if (pills) { pills.hidden = false; pills.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) show(b.dataset.show); }); }
+  if (!box || !box.showModal) return;
+  const img = box.querySelector('.g-box__img'), info = box.querySelector('.g-box__info');
+  let cur = -1;
+  const visible = () => items.filter((it) => !it.hidden);
+  const open = (it) => {
+    const a = it.querySelector('.g-item__img');
+    img.src = a.href; img.alt = a.querySelector('img').alt;
+    info.innerHTML = it.querySelector('.g-item__info').innerHTML;
+    cur = visible().indexOf(it);
+    if (!box.open) box.showModal();
+  };
+  const step = (d) => { const v = visible(); if (v.length) open(v[(cur + d + v.length) % v.length]); };
+  items.forEach((it) => it.querySelector('.g-item__img').addEventListener('click', (e) => { e.preventDefault(); open(it); }));
+  box.querySelector('.g-box__nav--prev').addEventListener('click', () => step(-1));
+  box.querySelector('.g-box__nav--next').addEventListener('click', () => step(1));
+  box.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') step(-1); if (e.key === 'ArrowRight') step(1); });
+  box.addEventListener('click', (e) => { if (e.target === box) box.close(); });
+  const hash = () => {
+    if (location.hash === '#covers') show('cover');
+    else if (location.hash === '#renders') show('render');
+    const it = location.hash.startsWith('#fig-') && document.getElementById(location.hash.slice(1));
+    if (it) open(it);
+  };
+  hash(); addEventListener('hashchange', hash);
+})();
+
+// ------------------------------------------------------------------ light and dark
+// head.html sets html[data-theme] before the first paint: the reader's choice (localStorage "theme"),
+// else the system's. The header's button flips it and keeps the choice; without a choice the page
+// follows the system when that changes.
+(() => {
+  const root = document.documentElement;
+  const buttons = document.querySelectorAll('[data-theme-toggle]');
+  const label = () => {
+    const words = root.dataset.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+    buttons.forEach((b) => { b.setAttribute('aria-label', words); b.title = words; });
+  };
+  const set = (t) => { root.dataset.theme = t; label(); };
+  buttons.forEach((b) => b.addEventListener('click', () => {
+    const t = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem('theme', t); } catch (e) { /* private mode: the choice lasts this page */ }
+    set(t);
+  }));
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    let saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (e) { /* none */ }
+    if (!saved) set(e.matches ? 'dark' : 'light');
+  });
+  label();
 })();

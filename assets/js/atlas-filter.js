@@ -5,6 +5,7 @@
 // entry shows. Loaded once per page by the atlas-index shortcode.
 document.querySelectorAll('[data-atlas-index]').forEach((box) => {
   const input = box.querySelector('[data-atlas-filter]');
+  if (!input) return; // a short list has no filter
   const count = box.querySelector('[data-atlas-count]');
   const none = box.querySelector('[data-atlas-none]');
   const entries = [...document.querySelectorAll('[data-atlas-entry]')].map((el) => {
@@ -17,7 +18,6 @@ document.querySelectorAll('[data-atlas-index]').forEach((box) => {
     const intro = list.previousElementSibling !== heading ? list.previousElementSibling : null;
     return { list, parts: [list, heading, intro].filter(Boolean) };
   });
-  const links = [...box.querySelectorAll('.atlas-groups a')];
   box.querySelector('[data-atlas-filter-box]').hidden = false;
   const run = () => {
     const words = input.value.toLowerCase().split(/\s+/).filter(Boolean);
@@ -30,8 +30,6 @@ document.querySelectorAll('[data-atlas-index]').forEach((box) => {
     groups.forEach(({ list, parts }) => {
       const empty = !list.querySelector('[data-atlas-entry]:not([hidden])');
       parts.forEach((p) => { p.hidden = empty; });
-      const link = links.find((a) => a.hash === `#${list.dataset.atlasGroup}`);
-      if (link) link.parentElement.hidden = empty;
     });
     count.textContent = words.length ? `${shown} of ${entries.length} match` : '';
     none.hidden = shown > 0;
