@@ -127,6 +127,9 @@ it under `links`, and other pages link the page rather than a news post about th
    the build and show the next one, and on `/events/` move it to "Past events". Without script, the build's
    choice shows.
 
+An event's own page stays when the event is over: Register and "Add to calendar" give way to a line that says
+when it took place and leads to `/events/` (by the build's time, and again by the visitor's clock).
+
 To see the site as it will look on another day: `hugo server --clock 2026-11-20T10:00:00+01:00`.
 
 ## Add a news post
