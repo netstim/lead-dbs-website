@@ -86,6 +86,9 @@
         <div class="span-5 split__text">
           <h2 id="localize-h">{{ partial "nobreak.html" .title }}</h2>
           <p class="t-lead">{{ .text }}</p>
+          {{- /* a phone: the same text as a statement, its first three words in the ink of the heading (a copy,
+                 so the line above keeps one run of text from 640px up) */}}
+          <p class="phone-only localize__statement">{{ replaceRE `^(\S+ \S+ \S+)` `<span class="split__first">$1</span>` (.text | htmlEscape) | safeHTML }}</p>
           {{- /* the four steps from scans to a 3D scene: a diagram drawn with Pele (assets/diagrams/localize.mmd,
                rendered to SVG by scripts/diagrams.mjs), left to right, top to bottom on a phone; for
                screen readers the same steps as a list */}}
@@ -94,7 +97,13 @@
             <div class="flow-diagram__tb">{{ (resources.Get "diagrams/localize-tb.svg").Content | safeHTML }}</div>
             <ol class="sr-only">{{ range .steps }}<li>{{ .name }}: {{ .value }}</li>{{ end }}</ol>
           </figure>
-          <p><a class="btn btn--primary" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}</a></p>
+          <p class="localize__btn"><a class="btn btn--primary" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}</a></p>
+          {{- /* a phone: the steps' names as a plain list under a label (the diagram is not shown there), the link as a text link */}}
+          <div class="localize__steps phone-only">
+            <p>Steps</p>
+            <ol>{{ range .steps }}<li>{{ .name }}</li>{{ end }}</ol>
+          </div>
+          <p class="phone-only localize__more"><a class="link home-more" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a></p>
         </div>
         {{ if and $final (gt (len $frames) 1) }}
         {{ $s := $final.Resize "720x webp q82" }}{{ $m := $final.Resize "1200x webp q82" }}
@@ -130,10 +139,11 @@
       <ul class="feature-row">
         {{ range .cards }}
         <li class="feature">
-          {{ partial "render.html" (dict "file" .image "alt" .alt "class" "feature__img" "sizes" "(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 30vw") }}
+          {{ partial "render.html" (dict "file" .image "alt" .alt "class" "feature__img" "sizes" "(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 100vw") }}
           <div class="feature__text">
             <h3><a class="feature__link" href="{{ $more }}{{ with .anchor }}#{{ . }}{{ end }}">{{ partial "nobreak.html" .title }}</a></h3>
             <p>{{ .text }}</p>
+            <span class="feature__go phone-only" aria-hidden="true">{{ $arrow }}</span>
           </div>
         </li>
         {{ end }}
