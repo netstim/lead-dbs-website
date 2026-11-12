@@ -1,56 +1,41 @@
-{{- /* The footer of every page, on the dark ground: the logo and its line, then the link columns, named
-     and grouped as the header's menu (hugo.toml [menus.main]): getting Lead-DBS first, then Features,
-     Docs and help, Atlases and data, Community (with the news) and About, each with its main pages, and the
-     institute's own sites (data/links.yaml); under them the legal line, which also carries the
-     research-use statement and the credits of the renders. It also keeps what the menu does not have:
-     the source code, the bug reports, the news feed, search, and the legal pages in [menus.footer].
-     Release information has one name and one place, the download page's "Release history". A site path
-     (optionally with #section) that names no page stops the build. On a phone the columns fold to rows
-     that open with a chevron (assets/js/main.js); without script they stay open. */ -}}
-{{ $r := hugo.Data.release }}
+{{- /* The footer of every page, on the dark ground. It carries only what the header's menu does not, plus
+     what a visitor looks for at the end of a page, so it stays short: the logo, four columns of at most five
+     links, and one legal line. (The version is not repeated here: the hero, the download page and the
+     sidebar have it.)
+     - Lead-DBS: download, release history, how to cite it, the source code and the bug reports.
+     - Help: first steps, the manual, the user Slack, contact.
+     - Stay in touch: events, the newsletter, the news and its feed, Lead-DBS on Bluesky.
+     - Institute: the institute's own sites (data/links.yaml).
+     The legal line: the year and the institute, the research-use statement, the legal pages
+     ([menus.footer]) and the image credits, which are on the gallery page (#image-credits). Every other
+     page is one hover away in the header. A site path (optionally with #section) that names no page stops
+     the build. On a phone the four columns are a 2 × 2 grid, all open. */ -}}
 {{ $gh := site.Params.github }}
 {{ $cols := slice
-  (dict "h" "Get Lead-DBS" "links" (slice
-    (dict "l" "Download Lead-DBS" "u" "/download")
+  (dict "h" "Lead-DBS" "links" (slice
+    (dict "l" "Download" "u" "/download")
     (dict "l" "Release history" "u" "/download/#releases")
-    (dict "l" "Source code on GitHub" "u" $gh)
+    (dict "l" "Cite Lead-DBS" "u" "/about/citing_leaddbs")
+    (dict "l" "Source code" "u" $gh)
     (dict "l" "Bug reports" "u" (cond (ne $gh nil) (printf "%s/issues" $gh) ""))))
-  (dict "h" "Features" "links" (slice
-    (dict "l" "Features" "u" "/helpsupport/knowledge-base/lead-dbs-methods")
-    (dict "l" "Lead-OR" "u" "/about/lead-or")
-    (dict "l" "Made with Lead-DBS" "u" "/gallery")))
-  (dict "h" "Docs and help" "links" (slice
-    (dict "l" "Docs and help" "u" "/helpsupport")
+  (dict "h" "Help" "links" (slice
     (dict "l" "First steps" "u" "/helpsupport/first-steps")
     (dict "l" "Manual" "u" "https://netstim.gitbook.io/leaddbs")
-    (dict "l" "Walkthrough videos" "u" "/helpsupport/knowledge-base/walkthrough-videos")
-    (dict "l" "Search" "u" "/search")))
-  (dict "h" "Atlases and data" "links" (slice
-    (dict "l" "Atlases and data" "u" "/helpsupport/knowledge-base/atlasesresources")
-    (dict "l" "Subcortical atlases" "u" "/helpsupport/knowledge-base/atlasesresources/atlases-2")
-    (dict "l" "Cortical parcellations" "u" "/helpsupport/knowledge-base/atlasesresources/cortical-atlas-parcellations-mni-space")
-    (dict "l" "Normative connectomes" "u" "/helpsupport/knowledge-base/atlasesresources/normative-connectomes")))
-  (dict "h" "Community" "links" (slice
-    (dict "l" "Events" "u" "/events")
     (dict "l" "User Slack" "u" "/helpsupport/slack-user-channel")
-    (dict "l" "Contribute" "u" "/develop")
+    (dict "l" "Contact" "u" "/contact")))
+  (dict "h" "Stay in touch" "links" (slice
+    (dict "l" "Events" "u" "/events")
     (dict "l" "Newsletter" "u" "/subscribe-to-our-newsletter")
     (dict "l" "News" "u" "/news")
-    (dict "l" "News feed (RSS)" "u" "rss")))
-  (dict "h" "About" "links" (slice
-    (dict "l" "About Lead-DBS" "u" "/about")
-    (dict "l" "Cite Lead-DBS" "u" "/about/citing_leaddbs")
-    (dict "l" "Publications" "u" "/about/publications")
-    (dict "l" "Contributors" "u" "/about/team")
-    (dict "l" "Dependencies" "u" "/about/lead-dbs-dependencies")))
+    (dict "l" "RSS feed" "u" "rss")
+    (dict "l" "Bluesky" "u" "https://bsky.app/profile/lead-dbs.org")))
 -}}
 {{ $lab := index (hugo.Data.links.footer | default slice) 0 }}
 <footer class="footer footer--dark ground-inverse" id="site-footer">
   <div class="wrap">
     <div class="footer__main">
       <div class="footer__brand">
-        <a class="nav__logo" href="{{ site.Home.RelPermalink }}">{{ partial "logo.html" (dict "h" 48 "lazy" true) }}Lead-DBS</a>
-        <p class="footer__lede">Open-source DBS imaging toolbox, version {{ $r.version }}.</p>
+        <a class="nav__logo" href="{{ site.Home.RelPermalink }}">{{ partial "logo.html" (dict "h" 40 "lazy" true) }}Lead-DBS</a>
       </div>
       <div class="footer__cols">
         {{ range $cols }}
@@ -75,9 +60,11 @@
       </div>
     </div>
     <div class="footer__legal">
-      <p>&copy; {{ now.Year }} Lead-DBS, Institute for Network Stimulation. For research use only, not for clinical use.</p>
-      <ul class="footer__legal-links">{{ range site.Menus.footer }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}<li><a href="https://github.com/netstim/lead-dbs-website">Edit this site on GitHub</a></li></ul>
-      <p class="footer__credits">Renders made with BrainDeer from the Lead Tutor dataset (Hart et al.), with the DISTAL atlas (Ewert et al. 2018), the 100 µm 7T ex vivo MRI (Edlow et al. 2019) and the MNI ICBM 2009b template. Product names and logos are trademarks of their owners.</p>
+      <p>&copy; {{ now.Year }} Institute for Network Stimulation · For research use only, not for clinical use</p>
+      <ul class="footer__legal-links">
+        {{ range site.Menus.footer }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}
+        {{ with site.GetPage "/gallery" }}<li><a href="{{ .RelPermalink }}#image-credits">Image credits</a></li>{{ end }}
+      </ul>
     </div>
   </div>
 </footer>
@@ -86,5 +73,5 @@
 {{- define "_partials/footer-ext-label.html" -}}
 {{- $w := split . " " -}}{{- $n := len $w -}}
 {{- with first (sub $n 1) $w }}{{ delimit . " " }} {{ end -}}
-<span class="nowrap">{{ index $w (sub $n 1) }}<span class="ext-mark" aria-hidden="true">↗</span></span><span class="sr-only"> (another site)</span>
+<span class="nowrap">{{ index $w (sub $n 1) }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></span>
 {{- end -}}

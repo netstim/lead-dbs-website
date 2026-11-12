@@ -92,6 +92,8 @@
         </div>
         {{ end }}
       </div>
+      {{- /* the credits of the renders, the one place for them (the footer's "Image credits" links here) */}}
+      {{ with $p.renders_credits }}<p class="gallery-credits" id="image-credits">{{ $.RenderString . }}</p>{{ end }}
     </section>
     {{ partial "next-steps.html" . }}
   </div>

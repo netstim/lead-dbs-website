@@ -175,35 +175,6 @@
   });
 })();
 
-// ------------------------------------------------------------------ the footer on a phone
-// Below 640px each column of the footer folds to its heading, with a chevron button that opens its links
-// (assets/css/site.css, "footer"). Without script, and from 640px up, every column is open.
-(() => {
-  const footer = document.querySelector('.footer');
-  const cols = footer ? [...footer.querySelectorAll('.footer__col')] : [];
-  if (!cols.length) return;
-  cols.forEach((col, i) => {
-    const h = col.querySelector('.footer__h');
-    const list = col.querySelector('ul');
-    if (!h || !list) return;
-    if (!list.id) list.id = `footer-list-${i + 1}`;
-    const btn = document.createElement('button');
-    btn.className = 'footer__expand';
-    btn.type = 'button';
-    btn.setAttribute('aria-expanded', 'false');
-    btn.setAttribute('aria-controls', list.id);
-    btn.setAttribute('aria-label', `${h.textContent.trim()}: show the links`);
-    btn.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    h.after(btn);
-    btn.addEventListener('click', () => {
-      const open = !col.classList.contains('is-expanded');
-      col.classList.toggle('is-expanded', open);
-      btn.setAttribute('aria-expanded', String(open));
-    });
-  });
-  footer.classList.add('is-foldable');
-})();
-
 // ------------------------------------------------------------------ the home page's figure strip
 // Where the strip scrolls sideways (a phone or a tablet), its right edge fades out while more figures
 // follow, and its left edge once the first has moved away (assets/css/site.css, .fig-strip). While it
