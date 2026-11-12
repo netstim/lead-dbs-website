@@ -44,11 +44,13 @@
           "@context" "https://schema.org"
           "@type" "Event"
           "name" $e.title
-          "startDate" $x.iso_start
+          "startDate" (cond $x.timed $x.iso_start $x.date_only)
           "eventStatus" "https://schema.org/EventScheduled"
           "url" $url
           "organizer" $org -}}
-      {{- with $e.end }}{{ $ev = merge $ev (dict "endDate" (cond (gt (len (string .)) 10) (printf "%s:00" (string .)) (string .))) }}{{ end -}}
+      {{- /* each date in its own precision: a day as 2027-02-12, a time with its zone's offset
+             (2026-11-18T16:30:00+01:00), so a search engine neither guesses the zone nor reads a day as midnight */ -}}
+      {{- with $e.end }}{{ $ev = merge $ev (dict "endDate" (cond (gt (len (string .)) 10) $x.iso_ends (string .))) }}{{ end -}}
       {{- with $e.text }}{{ $ev = merge $ev (dict "description" .) }}{{ end -}}
       {{- if $e.online -}}
         {{- $ev = merge $ev (dict "eventAttendanceMode" "https://schema.org/OnlineEventAttendanceMode" "location" (dict "@type" "VirtualLocation" "url" $url)) -}}
