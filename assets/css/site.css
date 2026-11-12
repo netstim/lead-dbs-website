@@ -560,10 +560,11 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .drift__row { overflow: hidden; }
 .drift__track { display: flex; width: max-content; animation: drift var(--dur, 150s) linear infinite; }
 .drift__row--rev .drift__track { animation-direction: reverse; }
-.drift:hover .drift__track { animation-play-state: paused; }
+.drift:hover .drift__track, .drift.is-held .drift__track { animation-play-state: paused; }
 .drift__set { display: flex; gap: clamp(40px, 4vw, 64px); padding-right: clamp(40px, 4vw, 64px); }
 @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.drift__item { margin: 0; display: grid; gap: var(--s-2); cursor: default; }
+.drift__item { cursor: default; }
+.drift__item > figure { margin: 0; display: grid; gap: var(--s-2); }
 .drift__item { transition: opacity 300ms var(--ease); }
 .drift__item blockquote { margin: 0; white-space: nowrap; font: 500 var(--t-sub)/1.2 var(--font-display); letter-spacing: -.02em; color: var(--on-render); }
 .drift__q { color: rgb(255 255 255 / .35); }
@@ -1407,6 +1408,8 @@ html:not(.js) .g-item__info { display: block; padding: var(--s-2) 0 var(--s-3); 
 @media (min-width: 768px) { .ws-tile:nth-child(4):nth-last-child(2) { grid-column: span 2; } }
 @media (max-width: 767px) { .ws-tile:last-child:nth-child(even) { grid-column: span 2; } }
 /* the voices band's heading with "All quotes" (to the wall on Publications) at its right */
+.render-band__actions { display: flex; align-items: center; gap: var(--s-3); }
+.drift__pause { position: static; flex: none; }
 .render-band__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--s-3) var(--s-6); }
 
 /* ---------------------------------------------------------------- Community (layouts/community.html)

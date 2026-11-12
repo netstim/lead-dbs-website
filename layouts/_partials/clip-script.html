@@ -5,10 +5,29 @@
 document.addEventListener('DOMContentLoaded', () => {
   const clips = document.querySelectorAll('video[data-clip]');
   if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  // a clip plays while in view; its round button pauses it for good (WCAG 2.2.2) and plays it again
+  const icons = {
+    pause: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+    play: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6L12.6 8z" fill="currentColor"/></svg>',
+  };
+  const held = new WeakSet();
   const io = new IntersectionObserver((entries) => entries.forEach((e) => {
-    if (e.isIntersecting) e.target.play().catch(() => {}); else e.target.pause();
+    if (e.isIntersecting && !held.has(e.target)) e.target.play().catch(() => {}); else e.target.pause();
   }), { threshold: 0.25 });
-  clips.forEach((v) => { v.controls = false; io.observe(v); });
+  clips.forEach((v) => {
+    v.controls = false;
+    const btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'media-pause';
+    const show = () => { const on = !held.has(v); btn.innerHTML = on ? icons.pause : icons.play; btn.setAttribute('aria-label', on ? 'Pause the animation' : 'Play the animation'); };
+    btn.addEventListener('click', () => {
+      if (held.has(v)) { held.delete(v); v.play().catch(() => {}); } else { held.add(v); v.pause(); }
+      show();
+    });
+    show();
+    v.after(btn);
+    v.parentElement.classList.add('has-media-pause');
+    io.observe(v);
+  });
 });
 </script>
 {{- end }}

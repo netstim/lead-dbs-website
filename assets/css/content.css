@@ -41,6 +41,14 @@
 .clip { margin: 0 0 1.4em; max-width: var(--measure); }
 .clip video { display: block; width: 100%; max-width: 100%; height: auto; border-radius: var(--r-sm); background: var(--surface); }
 .clip figcaption { margin-top: var(--s-2); font-size: var(--t-note); color: var(--muted); }
+/* the round button that pauses a clip that plays by itself (layouts/_partials/clip-script.html), in the
+   manner of the hero's: on the clip's top right corner, a 44px target */
+.has-media-pause { position: relative; }
+.media-pause { position: absolute; top: var(--s-3); right: var(--s-3); width: 44px; height: 44px; display: grid; place-items: center; padding: 0;
+  border: 1px solid color-mix(in oklab, var(--on-render) 25%, transparent); border-radius: 50%; cursor: pointer;
+  background: color-mix(in oklab, var(--render) 55%, transparent); color: var(--on-render); transition: background-color var(--t-out) var(--ease); }
+.media-pause:hover { background: color-mix(in oklab, var(--render) 75%, transparent); }
+.media-pause svg { width: 14px; height: 14px; }
 
 /* atlas catalogues (shortcodes atlas-index and atlas-group): a filter and the group links, then every
    atlas in one pattern: thumbnail, name and paper, what it covers; folded out, its text, "Get it",
