@@ -322,7 +322,7 @@
           {{- /* every logo gets about the same area, so a wide word mark is lower and a compact mark taller;
                  scale (front matter) corrects a logo that still looks too heavy or too light */ -}}
           {{ $aspect := div (float $img.Width) $img.Height }}
-          {{ $h := mul (math.Sqrt (div 5000.0 $aspect)) ($f.scale | default 1.0) | math.Round }}{{ $h = math.Max 28 (math.Min 54 $h) }}
+          {{ $h := mul (math.Sqrt (div 6600.0 $aspect)) ($f.scale | default 1.0) | math.Round }}{{ $h = math.Max 32 (math.Min 62 $h) }}
           {{ $w := math.Round (mul $h $aspect) }}
           {{ if gt $img.Height (mul $h 2) }}{{ $img = $img.Resize (printf "x%d" (int (mul $h 2))) }}{{ end }}
           <li>{{ with $f.url }}<a href="{{ . }}">{{ end }}<img src="{{ $img.RelPermalink }}" width="{{ int $w }}" height="{{ int $h }}" style="height: {{ int $h }}px" alt="{{ $f.name }}" loading="lazy" decoding="async">{{ if $f.url }}</a>{{ end }}</li>
