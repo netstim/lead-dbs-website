@@ -29,7 +29,7 @@ results. Lead-DBS uses the ICBM 2009b nonlinear asymmetric template.
 | MNI152 NLIN 6th generation | 152 brains, nonlinearly registered into MNI305 space | T1 | SPM and FSL (FSL in an asymmetric version) |
 | MNI152 NLIN 2009b | The same 152 brains registered again in 2009, at 0.5 mm: the most detailed | T1, T2, PD | Lead-DBS (asymmetric version) |
 | Colin27 | One brain, scanned 27 times; a high-resolution version followed in 2008 | T1 (2008: T1 and T2) | SPM96 |
-{.table--stack caption="Three MNI templates in short"}
+{.table--stack .table--templates caption="Three MNI templates in short"}
 
 {{< notice >}}The [BIDS appendix on coordinate systems](https://bids-specification.readthedocs.io/en/latest/99-appendices/08-coordinate-systems.html), published after this article, is a more complete reference, including which spaces SPM and FSL use.{{< /notice >}}
 
