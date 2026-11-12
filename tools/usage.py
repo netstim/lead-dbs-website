@@ -10,8 +10,7 @@ Needs maxminddb and pycountry, at the versions in tools/requirements.txt:
 
 What is counted: a launch is one start of Lead-DBS; the same address counts once an hour, so a script
 that restarts Lead-DBS in a loop does not weigh more than a person. What leaves this script: totals by
-country, year, month, hour and tool, and for the last full day of the log the time (to the minute) and
-country of each launch. No IP address, city or network name is written.
+country, year, month, hour and tool. No single launch, IP address, city or network name is written.
 
 Afterwards: node scripts/usage.mjs (redraws the charts of /usage/ from data/usage.json).
 """
@@ -72,7 +71,6 @@ def main(logdir, db, last=None):
     names = {}
     hours = collections.Counter()
     tools = collections.Counter()
-    launches = []
     for day, hh, mm, ip, tool in rows:
         years[day[:4]] += 1
         months[day[:7]] += 1
@@ -84,9 +82,6 @@ def main(logdir, db, last=None):
             hours[hh] += 1
             if tool in TOOLS:
                 tools[TOOLS[tool]] += 1
-        if day == last and num:
-            launches.append([hh * 60 + mm, num])
-    launches.sort()
 
     # months: complete ones only
     end = datetime.date.fromisoformat(last)
@@ -104,8 +99,6 @@ def main(logdir, db, last=None):
         'hours_year': this_year,
         'hours': [hours[h] for h in range(24)],
         'tools': dict(tools.most_common()),
-        'day': last,
-        'launches': launches,
     }
     dest = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', 'usage.json')
     with open(dest, 'w') as fh:

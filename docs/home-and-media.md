@@ -151,9 +151,9 @@ site is built or viewed. To refresh them:
    (`assets/diagrams/usage-*.svg`) with Pele, the tool that also draws the flow diagram on the home page.
 
 What is counted and published: a launch is one start of Lead-DBS, and the same address counts once an
-hour. `data/usage.json` holds totals by country, year, month, hour and tool, and for the last full day of
-the log the minute and country of each launch (no longer shown). It holds no IP address, city
-or network name; do not add any.
+hour. `data/usage.json` holds totals by country, year, month, hour and tool only. It holds no single
+launch, IP address, city or network name; do not add any (single launches to the minute could point
+to one researcher).
 
 - **The page `/usage/`** is `content/usage/index.md` (chart headings) and `layouts/usage.html`. It runs no
   script: the charts are inline SVG, coloured in `assets/css/site.css` ("usage"). Below them, folded, a
