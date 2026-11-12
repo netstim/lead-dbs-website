@@ -3,9 +3,10 @@
 
     python3 .github/scripts/check-copy.py public
 
-Only the <main> of each page is read, without code blocks, citations and links' addresses.
-Checked: template or comment leftovers, text that describes the interface instead of the content,
-and the house spelling (British -our/-re/-ll- with -ize: fibre, colour, modelling, centre; "email").
+Only the <main> of each page (and of the 404 page) is read, without code blocks, citations and links'
+addresses. Checked: template or comment leftovers, text that describes the interface instead of the content,
+a word written twice in a row (also across inline tags: "the <a>the</a>"), and the house spelling (British
+-our/-re/-ll- with -ize: fibre, colour, modelling, centre; "email").
 Paper titles and citations (.paper, .cite, blockquote), news posts and texts kept for the record
 are left as published.
 
@@ -32,6 +33,12 @@ SKIP_CLASSES = re.compile(r"\b(paper|cite|copy-box|citation|atlas__cite)\b")
 
 
 VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
+# elements inside a line of text: their text runs on with the text around them; every other element (and
+# a skipped subtree, and a void element such as <br> or <img>) ends a run, so a word at the end of one
+# paragraph and the same word at the start of the next is not a repeat
+INLINE = {"a", "abbr", "b", "bdi", "bdo", "cite", "data", "dfn", "em", "i", "kbd", "mark", "q", "s", "samp",
+          "small", "span", "strong", "sub", "sup", "time", "u", "var"}
+BREAK = "\x00"   # \s does not match it, so a repeat never spans a break
 
 
 class Text(html.parser.HTMLParser):
@@ -44,10 +51,11 @@ class Text(html.parser.HTMLParser):
         self.main_at = None     # depth of <main>
         self.skip_at = None     # depth of the element whose subtree is skipped
         self.out = []
-        self.repeats = []
         self.body_class = ""
 
     def handle_starttag(self, tag, attrs):
+        if tag not in INLINE:
+            self.out.append(BREAK)
         if tag in VOID:
             return
         a = dict(attrs)
@@ -60,6 +68,8 @@ class Text(html.parser.HTMLParser):
             self.skip_at = self.depth
 
     def handle_endtag(self, tag):
+        if tag not in INLINE:
+            self.out.append(BREAK)
         if tag in VOID:
             return
         if self.skip_at == self.depth:
@@ -70,24 +80,30 @@ class Text(html.parser.HTMLParser):
 
     def handle_data(self, data):
         if self.main_at and self.main_at > 0 and self.skip_at is None:
-            self.out.append(data)
-            for m in re.finditer(r"\b(\w{3,}) \1\b", data):
-                self.repeats.append(data[max(0, m.start() - 40): m.end() + 40].strip())
+            # a line break alone between two elements is a template's markup between parts that CSS sets
+            # apart (a tile's title and its text), not a space inside a sentence
+            self.out.append(BREAK if not data.strip() and "\n" in data else data)
+
+    def repeats(self):
+        """A word written twice in a row, in the visible text with inline tags removed."""
+        runs = re.sub(r"[ \t\r\n\u00a0]+", " ", "".join(self.out))
+        for m in re.finditer(r"\b(\w{3,}) \1\b", runs, re.I):
+            yield runs[max(0, m.start() - 40): m.end() + 40].replace(BREAK, " ").strip()
 
 
 errors = []
 pages = 0
-for f in sorted(ROOT.rglob("index.html")):
+for f in sorted(ROOT.rglob("index.html")) + [ROOT / "404.html"]:
     raw = f.read_text(errors="ignore")
     if 'http-equiv="refresh"' in raw or "http-equiv=refresh" in raw:
         continue
     pages += 1
     p = Text()
     p.feed(raw)
-    text = re.sub(r"\s+", " ", " ".join(p.out))
+    text = re.sub(r"\s+", " ", "".join(p.out).replace(BREAK, " "))
     # news posts and texts kept for the record stay as they were published
     as_published = "section-news" in p.body_class.split() or "kept for the record" in raw.lower()
-    for ctx in [] if as_published else p.repeats:
+    for ctx in [] if as_published else p.repeats():
         errors.append(f"{f.relative_to(ROOT)}: repeated word: …{ctx}…")
     for pattern, why in RULES:
         if as_published and "spelling" in why:
