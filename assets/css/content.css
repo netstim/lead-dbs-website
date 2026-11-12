@@ -766,6 +766,7 @@ html .prose .event--listing .event__facts-list li { display: flex; align-items: 
 html .prose .event--listing .event__actions .event__upcoming-only { margin: 0; }
 html .prose a.event__more { color: var(--ink); font-size: var(--t-note); font-weight: 500; text-decoration: none; background-image: none; }
 html .prose a.event__more:hover { text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 639px) { html .prose a.event__more { display: inline-flex; align-items: center; min-height: var(--btn-h); } }
 html .event--listing .event__poster { display: block; aspect-ratio: auto; width: 132px; padding: 0; border-radius: var(--r-xs); background: none; overflow: hidden; box-shadow: 0 0 0 1px var(--line), 0 10px 24px -14px rgb(0 0 0 / .35); }
 html .event--listing .event__poster img { position: static; max-width: none; max-height: none; width: 100%; height: auto; border-radius: 0; box-shadow: none; }
 @media (max-width: 767px) { html .event--listing .event__poster { display: none; } }
