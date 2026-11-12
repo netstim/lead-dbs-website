@@ -105,7 +105,7 @@ Give it a `title`, a `description` (at most 155 characters) and, if it belongs i
 | A page's closing cards | its front matter `next:` (see [Page types](#page-types)) |
 | Main menu, legal links, the GitHub link | `hugo.toml` → `[menus]` (the entry named "Download" is drawn as the header's button) and `[params] github`; see [Site structure](docs/structure.md) |
 | Download / contact / developer-meeting form fields | `data/forms.yaml` |
-| Colours, fonts, page styles | `assets/css/site.css` (tokens, buttons, grid: `assets/css/base.css`) |
+| Colours, fonts, page styles | `assets/css/site.css` (tokens, buttons, grid: `assets/css/base.css`; phones, below 640px: `assets/css/phone.css` and the pages' `phone-*.css`) |
 | Templates | `layouts/` |
 
 ## Checks

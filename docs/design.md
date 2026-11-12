@@ -19,7 +19,7 @@ A value that has to break a rule says why on its line: `/* design-exempt: <reaso
 `.github/scripts/check-copy.py` reads the built pages' text and fails on template leftovers, text that
 describes the interface, and spelling outside the house style (fibre, colour, modelling, centre, email).
 
-The styles are the site's own, in three files that `layouts/_partials/head.html` bundles into one
+The styles are the site's own, in the files that `layouts/_partials/head.html` bundles into one
 fingerprinted stylesheet:
 
 - `assets/css/base.css`: the tokens (spacing `--s-1`…`--s-9`, type sizes `--t-*`, radii `--r-*`, the page
@@ -31,6 +31,12 @@ fingerprinted stylesheet:
   page, the documentation pages, the gallery, events, search and the footer.
 - `assets/css/content.css`: the content building blocks that come after those: hub cards with a line of
   text, the copy box, clips, the newer/older links under news posts, and the Features chapters and cards.
+- `assets/css/phone.css`: the phone layout (below 640px only, every rule in one `@media (max-width: 639px)`
+  block) of what several pages share: the header, the inner page head, buttons in heroes, the footer, the
+  "Related" and "More in …" rows, open frames, chip rows and the download page's small rules.
+- `assets/css/phone-home.css`, `assets/css/phone-events.css`, `assets/css/phone-features.css`: the phone
+  layout of the home page, the events pages and the Features page, loaded after `phone.css`, below 640px
+  only as well.
 
 The site's own script is one file per concern in `assets/js/main/`, which `layouts/baseof.html` bundles into
 one `main.js`: `header.js` (the menu sheet, the panels, the header over black), `theme.js` (light and dark),

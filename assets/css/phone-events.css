@@ -1,0 +1,8 @@
+/* ================================================================ the events pages on a phone (below 640px)
+   layouts/events/list.html, layouts/event.html and layouts/_partials/events/. Loaded after
+   assets/css/phone.css (the shared phone chrome). Nothing here applies from 640px up. */
+@media (max-width: 639px) {
+  /* the event list: no box around it, a hairline between the rows, the text at the page margin */
+  html .event-list:has(> .event--listing) { border: 0; border-radius: 0; }
+  html .prose .event.event--listing { padding-inline: 0; }
+}

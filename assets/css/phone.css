@@ -2,6 +2,9 @@
    Loaded last (layouts/_partials/head.html), so these rules win over base, site and content at equal
    specificity. Nothing here applies from 640px up: tablets and desktops keep the layout the other
    files describe.
+   This file holds what several pages share (the header, the page head, the footer, the related rows,
+   open frames, chip rows, the download page's small rules); each larger page has its own phone sheet,
+   loaded after this one: assets/css/phone-home.css, phone-events.css and phone-features.css.
    The idea, after vercel.com and x.ai on a phone: the screen is the frame. Content runs the full width
    between the page margins, and sections are separated by space and a hairline, never by a border
    drawn around them. Frames that read as cards on a desktop (fact cells, steps, the event list) open
@@ -17,17 +20,8 @@
   .nav.is-open .nav__actions .nav__download { order: -1; }
   .nav.is-open .nav__actions .nav__icon { display: inline-grid; place-items: center; width: 48px; height: 48px; border-radius: var(--r-pill); background: var(--surface); }
 
-  /* -------------------------------------------------------------- home hero
-     the black panel runs from edge to edge; the actions are stacked full-width pills, the manual a plain
-     word under them */
-  .home-hero__wrap { width: 100%; }
-  .home-hero__panel { border-radius: 0; }
-  .home-hero .btn-row { grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
-  .home-hero .btn-row > .btn { justify-content: center; width: 100%; }
-  .home-hero .btn--secondary.hero__manual { min-height: 44px; }
-
   /* -------------------------------------------------------------- open frames
-     fact cells, steps and the event list: no box around them, a hairline between the rows, the text at
+     fact cells and steps: no box around them, a hairline between the rows, the text at
      the page margin */
   .dl-grid { border: 0; border-radius: 0; }
   .dl-os { padding-inline: 0; }
@@ -38,8 +32,6 @@
   .dl-step > p { margin-inline: 0; }
   .dl-step .vg { border: 0; border-radius: var(--r-md); margin-top: var(--s-5); }
   .dl-step { padding-bottom: var(--s-3); }
-  html .event-list:has(> .event--listing) { border: 0; border-radius: 0; }
-  html .prose .event.event--listing { padding-inline: 0; }
 
   /* -------------------------------------------------------------- chip rows
      one line that scrolls sideways, running out to the screen's edge so it reads as more to swipe */
@@ -50,29 +42,7 @@
   .dl-hero__mirrors { display: grid; }
 
   /* -------------------------------------------------------------- fewer things on a phone
-     a phone shows each section's heading, one sentence, its picture and its link. What is there to
-     look at on a large screen (the facts under the hero, the flow diagram, the drifting quotes, the
-     globe, the atlas list, the reference to copy, the footer's columns) is left out; every one of them
-     is a page of its own or in the menu. */
-  .home-hero__foot,
-  #localize .flow-diagram,
-  #features .data-band,
-  #voices,
-  #worldwide .worldwide__fig,
-  .next-band__point p,
-  .closing .cite-snip,
+     the footer's columns and the breadcrumb are in the menu */
   .footer__cols,
   .breadcrumb { display: none; }
-  .next-band__point h3 { margin: 0; }
-  .funders img { max-height: 32px; }
-
-  /* the home page, after the hero: the gallery is one row of figures at one height, the 4.0 points
-     are a short list of three lines, the funders' logos one centred group */
-  .home > .research-band { padding-top: var(--band); }
-  .fig-strip__item { width: auto; }
-  .research-band .fig-strip__img { width: auto; height: 300px; max-width: none; }
-  .next-band__points { gap: 0; }
-  .next-band__point { padding-block: var(--s-3); }
-  .funders { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2) var(--s-6); }
-  .funders li { min-height: 44px; }
 }

@@ -1,0 +1,8 @@
+/* ================================================================ the Features page on a phone (below 640px)
+   content/helpsupport/knowledge-base/lead-dbs-methods/, the capabilities, capability, tools, chapter,
+   chapters and jumps shortcodes, assets/js/main/features.js. Loaded after assets/css/phone.css (the
+   shared phone chrome). Nothing here applies from 640px up. */
+@media (max-width: 639px) {
+  /* the jump chips: the numbered group labels orient on a phone */
+  .prose:has(> .cap-show) > .page-intro .jumps { display: none; }
+}

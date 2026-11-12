@@ -1,0 +1,37 @@
+/* ================================================================ the home page on a phone (below 640px)
+   layouts/home.html. Loaded after assets/css/phone.css (the shared phone chrome), so these rules win over
+   it at equal specificity. Nothing here applies from 640px up. */
+@media (max-width: 639px) {
+
+  /* -------------------------------------------------------------- hero
+     the black panel runs from edge to edge; the actions are stacked full-width pills, the manual a plain
+     word under them */
+  .home-hero__wrap { width: 100%; }
+  .home-hero__panel { border-radius: 0; }
+  .home-hero .btn-row { grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
+  .home-hero .btn-row > .btn { justify-content: center; width: 100%; }
+  .home-hero .btn--secondary.hero__manual { min-height: 44px; }
+
+  /* -------------------------------------------------------------- fewer things on a phone
+     the facts under the hero, the flow diagram, the atlas list and the reference to copy are pages of
+     their own or in the menu */
+  .home-hero__foot,
+  #localize .flow-diagram,
+  #features .data-band,
+  #voices,
+  #worldwide .worldwide__fig,
+  .next-band__point p,
+  .closing .cite-snip { display: none; }
+  .next-band__point h3 { margin: 0; }
+  .funders img { max-height: 32px; }
+
+  /* the gallery is one row of figures at one height, the 4.0 points a short list of three lines, the
+     funders' logos one centred group */
+  .home > .research-band { padding-top: var(--band); }
+  .fig-strip__item { width: auto; }
+  .research-band .fig-strip__img { width: auto; height: 300px; max-width: none; }
+  .next-band__points { gap: 0; }
+  .next-band__point { padding-block: var(--s-3); }
+  .funders { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2) var(--s-6); }
+  .funders li { min-height: 44px; }
+}
