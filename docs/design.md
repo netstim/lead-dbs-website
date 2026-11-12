@@ -8,8 +8,9 @@ pull request by `.github/workflows/checks.yml` and before every deploy):
 - type: `--t-xs` 12, `--t-label` 13, `--t-small` 14, `--t-note` 15, `--t-body` 16, `--t-doc` 17/18 (documentation
   text), `--t-lead`, `--t-card`, `--t-sub`, `--t-statement` (the one-sentence lead under a page head), `--t-h3`,
   `--t-h2`, `--t-h1`, `--t-display`; every `font-size` is one of them;
+- font families: a named `--font-*` token or `inherit`, including `font:` shorthands; literal family names belong in font-face declarations and token definitions;
 - radius: `--r-xs` 4, `--r-sm` 8, `--r-md` 12, `--r-lg` 20, `--r-pill`; every `border-radius` is one of them (or 0, 50%);
-- weights 400, 500 and 600 only;
+- weights 400, 500 and 600, or a named weight token; manual titles use the explicit `--docs-heading-weight` value 450;
 - tokens are defined in `assets/css/base.css`, the palette (and `--render`/`--on-render`, the renders' black
   and the white on it) at the top of `assets/css/site.css`;
 - literal colours, `!important`, px spacing, literal line-heights and letter-spacings have budgets that may
@@ -19,7 +20,7 @@ A value that has to break a rule says why on its line: `/* design-exempt: <reaso
 `.github/scripts/check-copy.py` reads the built pages' text and fails on template leftovers, text that
 describes the interface, and spelling outside the house style (fibre, colour, modelling, centre, email).
 
-The styles are the site's own, in three files that `layouts/_partials/head.html` bundles into one
+The styles are the site's own, in four files that `layouts/_partials/head.html` bundles into one
 fingerprinted stylesheet:
 
 - `assets/css/base.css`: the tokens (spacing `--s-1`…`--s-9`, type sizes `--t-*`, radii `--r-*`, the page
@@ -29,6 +30,7 @@ fingerprinted stylesheet:
   reduced-motion rules.
 - `assets/css/site.css`: the palette and fonts (change colours and fonts here only), the header, the home
   page, the documentation pages, the gallery, events, search and the footer.
+- `assets/css/manual.css`: the manual's three-column reading layout, responsive chapter tree, callouts and previous/next navigation. It shares the existing palette and type tokens.
 - `assets/css/content.css`: the content building blocks that come after those: hub cards with a line of
   text, the copy box, clips, the newer/older links under news posts, and the Features chapters and cards.
 
@@ -36,7 +38,7 @@ The site's own script is one file per concern in `assets/js/main/`, which `layou
 one `main.js`: `header.js` (the menu sheet, the panels, the header over black), `theme.js` (light and dark),
 `page.js` (the table of contents, links into folds, paper rows, citation tabs, the old forum's addresses),
 `home.js` (the hero's entrance and clip, the figure strip), `events.js` (events by the visitor's clock, the
-countdown), `videos.js`, `news.js`, `features.js` (the capabilities) and `gallery.js`. Each block does
+countdown), `videos.js`, `news.js`, `features.js` (the capabilities) `gallery.js`, and `manual.js` (the chapter drawer, long code examples and page-link copying). Each block does
 nothing on a page without its markup. Beside them: `search.js`, `clipboard.js`, `insertion.js` (the
 electrode insertion), `atlas-filter.js` and `globe.js`, each loaded only where it is needed.
 
@@ -64,10 +66,10 @@ electrode insertion), `atlas-filter.js` and `globe.js`, each loaded only where i
   warm dark grey ink `#2f3437`, muted `#6a6f74`; one action colour, deep blue `#2b5c8a` (buttons, links,
   focus); coral `#e0645a` as the one signal; periwinkle `#c6cdf7` and blush `#f4c6cf` as pale tints. The
   colours come from Wes Anderson films (The Darjeeling Limited, The Grand Budapest Hotel), the family of
-  the logo's wedges. The renders sit on black, and so does every inner page's title.
-- Font: Inter, one variable file per script (`@fontsource-variable/inter` 5.2.5, licence in
+  the logo's wedges. The renders sit on black, and so does every ordinary inner page's title. The manual keeps its heading on the reading background.
+- Main website font: Inter, one variable file per script (`@fontsource-variable/inter` 5.2.5, licence in
   `static/fonts/OFL-inter.txt`) with the weight and optical-size axes, self-hosted in `static/fonts/`, with a
-  fallback `@font-face` sized to its metrics so nothing moves when it arrives. One face for everything:
+  fallback `@font-face` sized to its metrics so nothing moves when it arrives. The main website uses one face:
   400 text, 500 the menu, labels and values, 600 buttons and headings, large headings tracked tighter.
 - Type scale at 1440 (tokens in `base.css`): 80 the hero, 48 home sections and page titles, 32 a page's
   sections, the Features chapters and the smaller home sections ("Upcoming events", "Latest news"), 23
@@ -87,3 +89,21 @@ electrode insertion), `atlas-filter.js` and `globe.js`, each loaded only where i
   colour of the text around them.
 - After a change to a layout, check the home page at 1366×768, 1440×900 and 390×844, and that no page scrolls
   sideways on a phone.
+
+The integrated manual uses Geist and Geist Mono with a dedicated type scale, open chapter navigation, and a single-row header. Its measured reference decisions and font licence are recorded in [manual.md](manual.md#visual-system).
+
+## Manual regression checks
+
+The manual uses the same design-token lint and unused-selector checks as the main site.
+No extra lint exemptions were added for it. Manual Markdown and templates also reject
+inline style attributes and style blocks, keeping presentation in the checked stylesheet. `check-browser.mjs` also checks the rendered
+cascade on every manual page: opening prose must keep the article's body size, and
+nested code must keep its containing block's size. The mobile search control must retain
+an accessible name when its visible text is hidden.
+
+The browser suite exercises long-code expansion and complete clipboard contents, drawer
+focus containment and Escape/focus return, the introduction's next-page link, and search
+excerpts. These tests run automatically in the existing pull-request and pre-deployment
+workflows. They complement the full-site desktop/mobile light/dark layout and asset checks.
+Visual resemblance and editorial quality still require rendered review; passing lint is
+not a substitute for that judgment.

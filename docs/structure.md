@@ -11,7 +11,7 @@ The main menu is grouped by what visitors come for and lists every page of its g
 | Menu | Page | Holds |
 |---|---|---|
 | Features | `/helpsupport/knowledge-base/lead-dbs-methods/` ("Features": what Lead-DBS does in four numbered chapters, listed 01–04 beside the intro (`{{< jumps >}}`): "Single patients" `#single-patients`, "Groups of patients" `#groups-of-patients`, "In the operating theatre" `#operating-theatre` and "Tools and modules" `#tools`. Each chapter (`{{% chapter %}}`) has a short heading and a one-line lede, then its capabilities as cards (`{{< capabilities >}}`), each with its name, a picture, its manual chapter and papers: renders three to a row, figures from papers two, each opening at full size; a chapter's last figure, and Lead-OR, is a wide row; the tools a table (Lead Group, Lead Connectome, OSS-DBS, Lead Tutor). The renders are credited once, at the end; figures from papers carry their licence under the text; full width, no sidebar) | The page's chapters: the anchors Single patients and Groups of patients, Lead-OR (the page `/about/lead-or/`, the one tool of chapter 03 "In the operating theatre"; the anchor `#operating-theatre` stays on Features) and the anchor Tools and modules; the anchors are listed in the header's panel only, not in the sidebar of the articles (`params.panelOnly`). Under the caption "In depth", the articles: DBS network mapping, subcortical electrophysiology mapping, AC/PC to MNI conversion (with the former article "DBS targets in MNI space" as its background section); then, after a line, Made with Lead-DBS (`/gallery/`). Each article has the same sections: what it does (with a figure), how to use it, what to cite; longer material is folded. The overview is the word "Features" itself, as every group's hub is its word; the tools are its chapter 04 (`#tools`), and the former "Lead tools" page `/about/tools/` forwards there |
-| Docs and help | `/helpsupport/` | First steps (step 1 links to the install steps on the download page), the manual (another site; on a phone a first-level word of the menu instead), Practice dataset (Lead Tutor) (the dataset's reference page; the exercise itself is step 2 of First steps), walkthrough videos (current recordings first, then "Older recordings"), get help (`/helpsupport/#get-help`, the one list of where to ask; the contact page sits under it) |
+| Docs and help | `/helpsupport/` | First steps (step 1 links to the install steps on the download page), the manual (`/manual/`; on a phone a first-level word of the menu instead), Practice dataset (Lead Tutor) (the dataset's reference page; the exercise itself is step 2 of First steps), walkthrough videos (current recordings first, then "Older recordings"), get help (`/helpsupport/#get-help`, the one list of where to ask; the contact page sits under it) |
 | Atlases and data | `/helpsupport/knowledge-base/atlasesresources/` | Three catalogues built alike (subcortical atlases with the macaque atlas, DISTAL and FOCUS; cortical parcellations; normative connectomes), then under the caption "By the Lead-DBS team" in the menu the two atlases by the Lead-DBS team, DISTAL and FOCUS (both with What it is, How to get it `#download`, What to cite and How it was built; DISTAL has the newer layout); "Choosing and using an atlas or connectome" (`#choosing` on the hub); under the caption "Background", the article "About the MNI spaces" (`/about-the-mni-spaces/`) |
 | Community | `/community/` | Events (with a page for each upcoming event that needs one, both with a summary box (when, where, hosted by, registration): the developer meeting `/events/developer-meeting/` (who it is for, how to register, the flyer), the Hands-on Lead-DBS Workshop 2027 `/events/hands-on-workshop-2027/` (its "Get notified" button leads straight to the newsletter form, `/subscribe-to-our-newsletter/#subscribe`), the one place where the workshop's details grow; its news post only points there; and the past workshops), user Slack, Contribute (`/develop/`: code, atlases and datasets, bug reports; `/about/data-code-inclusion-philosophy/` forwards to its section `#add-your-atlas-or-dataset`), newsletter (with links to recent issues) |
 | News | `/news/` | Releases and announcements (each post at `/<slug>/`); posts more than three calendar years older than the newest are listed under "Archive"; the RSS feed `/news/index.xml` |
@@ -21,14 +21,14 @@ The main menu is grouped by what visitors come for and lists every page of its g
 The footer's legal line lists Imprint and Privacy Policy (`[menus.footer]`); Contact is in its Help column. The two legal pages end with
 "Next" cards to each other, Contact and About like every other page.
 
-**The menu is the site's one hierarchy.** Addresses stay those of the old site, so the folders in
+**The menu is the ordinary site pages' hierarchy.** The manual uses its own chapter tree in `data/manual.json`; see [manual.md](manual.md). Addresses stay those of the old site, so the folders in
 `content/` follow the old addresses, not the menu (the atlases live under
 `content/helpsupport/knowledge-base/atlasesresources/`). The header's marked group, the breadcrumb and the
 closing cards are therefore all drawn from the menu, not from the folders
 (`layouts/_partials/nav-place.html`), so they always agree: a page belongs to the menu entry that is the page
 itself, or else its nearest folder that is in the menu. Where that is not the right place, the page (or its
 folder's `_index.md`) names it in its front matter, e.g. `menuParent: "/events"` on the past workshops. The breadcrumb then reads Home / Community / Events /
-Past workshops. A menu entry that leads to another site (the manual) gets a small
+Past workshops. A menu entry that leads to another site gets a small
 arrow wherever menus are drawn.
 
 **One name per page.** A page's menu label, its `linkTitle` (breadcrumb, footer, closing cards, search), its
@@ -62,9 +62,7 @@ atlas catalogue is a result of its own that opens at its entry; so is each secti
 front matter `searchEntries` (`{title, id, keywords, description}`; the build stops when the page has no
 anchor `id`): the tools on Features, "Lead-DBS 4.0" on the download page (`/download/#lead-dbs-4`, the one
 place that says what may be said about it), troubleshooting on First steps. Below the results (or in their place when
-there are none) a last line offers the manual, for questions about how to do something in Lead-DBS. The manual has a
-result of its own (its menu entry's `params.keywords`), and each result names the page above it as the breadcrumb
-does. Left out of the index: pages with `search: false`, redirect pages (`layout: redirect`) and the closed
+there are none) a last line offers the manual, for questions about how to do something in Lead-DBS. Every manual chapter is indexed in full and labelled "Manual". Other results name the page above them as the breadcrumb does. Left out of the index: pages with `search: false`, redirect pages (`layout: redirect`) and the closed
 forum's page. A page marked `noindex` for search engines is still in the site search; `search: false` is what
 takes it out. The footer's pages (contact,
 imprint, privacy) are found by their title only. `/search/` shows the same

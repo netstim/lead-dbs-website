@@ -36,6 +36,7 @@ pictures a screen-reader user cannot see. Write the alt text and the warning goe
 | Read | For |
 |---|---|
 | This file | running the site, page types, where to edit, the checks, deployment |
+| [docs/manual.md](docs/manual.md) | the integrated user guide, chapter navigation, imported figures and migration boundaries |
 | [docs/editing.md](docs/editing.md) | pictures and videos, writing, shortcodes, atlas catalogues, events, news posts, releases |
 | [docs/structure.md](docs/structure.md) | the menu and the footer, search, metadata, old addresses |
 | [docs/design.md](docs/design.md) | the design tokens, the palette and type, motion, the CSS and JS files |
@@ -49,6 +50,7 @@ stops the build on `sidebar:`, `related:` and `toc:`, and on an unknown type).
 
 | Type | For | Width | Sidebar |
 |---|---|---|---|
+| `manual` | the user guide at `/manual/` | reading column | chapters left, local outline right |
 | `doc` (default) | Cite, Publications, Slack, Contact, past workshops, the method articles, About the MNI spaces, the atlas catalogues, legal pages, news posts | the text column | right |
 | `contributors` | Contributors (`layouts/about/contributors.html`): who coordinates Lead-DBS, then the people | the text column | right |
 | `event` | an event page (`layouts/event.html`): facts and registration from `data/events.yaml` | the text column | right |
@@ -56,7 +58,7 @@ stops the build on `sidebar:`, `related:` and `toc:`, and on an unknown type).
 | `hub` | a menu group's page (Docs and help, Atlases and data, About) | full | none; its body is the section's list |
 | own template | Home, Download, First steps, Contribute, Events, Gallery, Community, Usage, News | full | none |
 
-The sidebar rule: **one sidebar, on the right**, with the same two blocks on every sibling page: the
+For ordinary pages, the sidebar rule is **one sidebar, on the right**, with the same two blocks on every sibling page: the
 section's pages (the current one marked), then "On this page" when the page has three or more `##`
 sections (`site.Params.tocMinHeadings`). A news post has only the second block, and no sidebar at all when
 it is short. Below 1024px the sidebar gives way: "On this page" folds under the title and the section's
@@ -69,7 +71,7 @@ outside its own section, one hairline row each, title only.
 next:
   - {page: "/helpsupport/first-steps/"}                                       # named by its linkTitle
   - {page: "/develop/#add-your-atlas-or-dataset", name: "Add your atlas or dataset"}
-  - {url: "https://netstim.gitbook.io/leaddbs", name: "Manual"}                # another site: url and name
+  - {page: "/manual/", name: "Manual"}                # the integrated manual
 ```
 
 Point to the related page, the next tutorial step or the section's hub; write no "Next" section in the text.
