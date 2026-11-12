@@ -31,5 +31,7 @@
     {{- if and $plain (le (len $plain) 100) (ne (index $m 2) "<p>") (not (findRE `<img|\sid=` $text 1)) }}
     <p class="page-head__lead phone-only">{{ $text | safeHTML }}</p>
     {{- end }}{{ end }}{{ end }}
+    {{- /* a phone: an event page's flyer, countdown and host (events/head.html) */}}
+    {{ if eq .Layout "event" }}{{ partial "events/head.html" . }}{{ end }}
   </div>
 </header>
