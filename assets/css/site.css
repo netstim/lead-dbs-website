@@ -733,8 +733,9 @@ main > .home-hero { position: relative; isolation: isolate; background: var(--re
 @media (min-width: 768px) { .closing__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1024px) { .closing__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: calc(var(--gutter) * 3); } }
 @media (max-width: 639px) { .closing__list { flex-direction: column; gap: 0; } .closing__list .link { min-height: 44px; } }
-.funders-row { margin-top: var(--s-7); padding-top: var(--s-5); border-top: 1px solid var(--line); }
-.home .funders__h { margin: 0 0 var(--s-4); color: var(--muted); }
+.funders-row { margin-top: var(--s-7); padding-top: var(--s-6); border-top: 1px solid var(--line); text-align: center; }
+/* the line over the logos is centred over the row, as the logos are centred in their cells, so the two line up */
+.home .funders__h { margin: 0 0 var(--s-5); color: var(--muted); }
 /* one equal cell per logo, each logo centred in it, so the gaps between them are the same */
 .funders { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); align-items: center; gap: var(--s-5) var(--gutter); }
 .funders li { display: flex; align-items: center; justify-content: center; min-height: 56px; }

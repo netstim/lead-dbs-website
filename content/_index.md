@@ -182,7 +182,7 @@ funders:
     # scale (optional): makes a logo that looks too heavy (below 1) or too light (above 1) match the others
     - {name: "Berlin Institute of Health", file: "BIH_BIG_en_400fullmargin.png", url: "https://www.bihealth.org/en/", crop: ["316x165 TopLeft", "266x115 BottomRight"], scale: 1.1}
     - {name: "KFO 247", file: "kfo247logo.png"}
-    - {name: "German Research Foundation", file: "logo_dfg.png", url: "https://www.dfg.de", scale: 0.7}
+    - {name: "German Research Foundation", file: "logo_dfg.png", url: "https://www.dfg.de", scale: 0.6}
     - {name: "Stiftung Charité", file: "stiftungcharitelogo.png"}
     - {name: "Prof. Dr. Klaus Thiemann Foundation", file: "thiemannfoundation.png", crop: ["558x311 TopLeft", "543x294 BottomRight"]}
 
