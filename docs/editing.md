@@ -95,8 +95,11 @@ it under `links`, and other pages link the page rather than a news post about th
 ```
 
 - The build checks every entry and stops with its name on an unknown field, a missing `id`, `title`,
-  `start`, `timezone`, `where` or `text`, an id used twice, a date in another format, a link without `label`
-  and `url`, and a Zoom join link in `register_url`.
+  `start`, `timezone`, `where` or `text`, an id used twice, a date in another format or one that does not
+  exist (30 February, or a time the clock skips when summer time begins), an `end` that is not after
+  `start`, a `timezone` or `also_in` that is not an IANA zone, an `online` that is not `true` or `false`
+  (without quotes), a link without `label` and `url`, and a Zoom join link (`zoom.us/j/`, `/wc/`, `/s/`,
+  `/w/`, `/my/`) in `register_url` or `links`.
 - The time zone is printed from `timezone` and the date: this entry reads "15:00 CEST (09:00 EDT)",
   a winter one "15:00 CET (09:00 EST)"; without `also_in` just "15:00 CEST". Visitors elsewhere also see the
   start in their own time. (`tz_label` replaces the printed zone; it is rarely needed.)

@@ -6,7 +6,7 @@
       {{- $host := "" }}{{ with .Params.host }}{{ $host = printf "Hosted by %s" (cond (isset . "url") (printf `<a href="%s">%s</a>` (.url | htmlEscape) (.name | htmlEscape)) (.name | htmlEscape)) }}{{ end }}
       <dl class="dl-grid cells cells--{{ cond (ne $ev.time_short "") 3 2 }}" aria-label="When and where">
         {{ partial "fact.html" (dict "label" "Date" "value" (printf `<time datetime="%s">%s</time>` $ev.iso_start $date | safeHTML)) }}
-        {{ with $ev.time_short }}{{ $t := . }}{{ with $e.also_in }}{{ $t = printf `%s <span class="dl-cell__aside">(%s)</span>` $t ((time.In . $ev.start).Format "15:04 MST") }}{{ end }}{{ partial "fact.html" (dict "label" "Time" "value" ($t | safeHTML)) }}{{ end }}
+        {{ with $ev.time_short }}{{ $t := . }}{{ with $ev.also_in }}{{ $t = printf `%s <span class="dl-cell__aside">(%s)</span>` $t ((time.In . $ev.start).Format "15:04 MST") }}{{ end }}{{ partial "fact.html" (dict "label" "Time" "value" ($t | safeHTML)) }}{{ end }}
         {{ partial "fact.html" (dict "label" "Where" "value" $e.where "text" ($host | safeHTML)) }}
       </dl>
       <p class="btn-row" id="register">
