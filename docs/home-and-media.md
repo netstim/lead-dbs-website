@@ -157,5 +157,5 @@ to one researcher).
 
 - **The page `/usage/`** is `content/usage/index.md` (chart headings) and `layouts/usage.html`. It runs no
   script: the charts are inline SVG, coloured in `assets/css/site.css` ("usage"). Below them, folded, a
-  table of every country and its launches (`#all-countries`), which the globe's section links to as
+  table of every country with its downloads and launches (`#all-countries`), which the globe's section links to as
   `table_label` ("All countries"): the globe itself can only be read with a mouse.
