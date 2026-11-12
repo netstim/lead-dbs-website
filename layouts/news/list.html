@@ -1,8 +1,18 @@
 {{ define "main" }}
-<main id="top" class="page">
-  {{ partial "page-head.html" . }}
-  <div class="wrap doc-layout">
-    <div class="prose news-list">
+<main id="top" class="page newsroom">
+  <header class="newsroom__head wrap">
+    <div class="newsroom__heading">
+      <h1>{{ .Title }}</h1>
+      <nav class="newsroom__links" aria-label="News resources">
+        {{ with site.GetPage "/events" }}<a href="{{ .RelPermalink }}">Events</a>{{ end }}
+        {{ with site.GetPage "/subscribe-to-our-newsletter" }}<a href="{{ .RelPermalink }}">Newsletter</a>{{ end }}
+        {{ with .OutputFormats.Get "rss" }}<a href="{{ .RelPermalink }}">RSS feed</a>{{ end }}
+      </nav>
+    </div>
+    <p>Releases, workshops and updates from the Lead-DBS project.</p>
+  </header>
+  <div class="wrap newsroom__content doc-layout">
+    <div class="newsroom__stories news-timeline">
       {{ partial "nobreak-html.html" .Content }}
       {{- /* the default order (newest first); the page title in head.html reads the same paginator */}}
       {{ $paginator := .Paginator }}
@@ -11,26 +21,36 @@
       {{ $newest := (index .Pages.ByDate.Reverse 0).Date.Year }}{{ $cut := sub $newest 3 }}
       {{ $oldest := (index .Pages.ByDate 0).Date.Year }}
       {{ $archived := false }}
-      {{ range $paginator.Pages }}
+      {{ range $i, $post := $paginator.Pages }}
       {{ if and (not $archived) (lt .Date.Year $cut) }}{{ $archived = true }}
-      <h2 class="news-archive" id="archive">Archive ({{ $oldest }}–{{ sub $cut 1 }})</h2>
+      <h2 class="newsroom__archive" id="archive">Archive ({{ $oldest }}–{{ sub $cut 1 }})</h2>
       {{ end }}
-      <article class="post-summary">
-        <time class="post-summary__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
-        <div class="post-summary__body">
-          <h2 class="post-summary__title"><a href="{{ .RelPermalink }}">{{ partial "nobreak-html.html" (.Title | htmlEscape) }}</a></h2>
+      {{ $image := .Resources.GetMatch (.Params.image | default "__none__") }}
+      <article class="news-story{{ if and (eq $i 0) (eq $paginator.PageNumber 1) }} news-story--lead{{ end }}{{ if $archived }} news-story--archived{{ end }}{{ if $image }} news-story--illustrated{{ end }}">
+        <div class="news-story__body">
+          {{ if and (eq $i 0) (eq $paginator.PageNumber 1) }}<p class="news-story__eyebrow">Latest news</p>{{ end }}
+          <time class="news-story__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+          <h2 class="news-story__title"><a href="{{ .RelPermalink }}">{{ partial "nobreak-html.html" (.Title | htmlEscape) }}</a></h2>
           {{- /* the post's own one-line description; an older post without one shows the start of its text,
                cut at a word */}}
           {{- $text := .Description -}}
           {{- if not $text }}{{ $text = .Summary | replaceRE ` ?\(open the full-size image\)` "" | plainify | htmlUnescape | truncate 200 }}{{ end }}
           <p>{{ partial "nobreak-html.html" ($text | htmlEscape) }}</p>
+          <a class="news-story__more link" href="{{ .RelPermalink }}" aria-label="Read more: {{ .Title }}">Read more</a>
         </div>
+        {{ $postURL := .RelPermalink }}
+        {{ with $image }}
+          {{ $thumb := .Resize "720x webp q82" }}
+          <a class="news-story__image" href="{{ $postURL }}" tabindex="-1" aria-hidden="true">
+            <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="" loading="lazy" decoding="async">
+          </a>
+        {{ end }}
       </article>
       {{ end }}
       {{ partial "pagination.html" $paginator }}
-      {{ partial "next-steps.html" . }}
+
     </div>
-    <aside class="sidebar" aria-label="In this section">{{ partial "sidebar.html" . }}</aside>
+    <aside class="sidebar" aria-label="News resources">{{ partial "sidebar.html" . }}</aside>
   </div>
 </main>
 {{ end }}

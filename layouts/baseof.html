@@ -8,7 +8,7 @@
 <head>
   {{ partial "head.html" . }}
 </head>
-<body class="kind-{{ .Kind }}{{ with .Section }} section-{{ . }}{{ end }} top-dark">
+<body class="kind-{{ .Kind }}{{ with .Section }} section-{{ . }}{{ end }}{{ if not (and (eq .Section "news") (eq .Kind "section")) }} top-dark{{ end }}">
   {{ partial "header.html" . }}
   {{ block "main" . }}{{ end }}
   {{ partial "footer.html" . }}
