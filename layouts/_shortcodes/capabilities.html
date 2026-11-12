@@ -48,4 +48,7 @@
     {{ partial "cap-figure.html" (dict "c" $c "stage" true "class" (cond (eq $i 0) "is-active" "") "sizes" (printf "(max-width: 639px) %s, (min-width: 1440px) 850px, 62vw" (cond $c.contain "80vw" "135vw"))) }}
   {{- end }}
   </div>
+  {{- if not $one }}
+  <div class="cap-show__segs phone-only" aria-hidden="true">{{ range $i, $c := $caps }}<span{{ if not $i }} class="is-on"{{ end }}></span>{{ end }}</div>
+  {{- end }}
 </div>

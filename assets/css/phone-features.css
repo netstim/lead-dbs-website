@@ -51,4 +51,29 @@
   .prose .cap-show__stage .cap-fig:has(.cap-fig__sheet) .cap-fig__credit { position: static; text-align: center; color: color-mix(in srgb, var(--on-render) 50%, transparent); }
   .prose .cap-show__stage .cap-fig__credit a:hover { color: var(--on-render); }
 
+  /* the segments: one per name, the chosen one in ink (decoration; the names say which is chosen) */
+  .prose .cap-show__segs { display: flex; gap: calc(var(--s-1) * 1.5); margin-top: var(--s-4); }
+  .prose .cap-show__segs > span { flex: 1; height: 3px; border-radius: var(--r-pill); background: color-mix(in oklab, var(--ink) 12%, transparent); }
+  .prose .cap-show__segs > .is-on { background: var(--ink); }
+  @media (scripting: none) { .prose .cap-show__segs { display: none; } }
+
+  /* the names: 22/28 medium; the others grey, each a 44px button; the chosen one in ink with its sentence
+     (16/24, muted, its links in ink) and its links in one wrapping row, without frames */
+  .prose .capability h3 { display: flex; align-items: center; min-height: 44px; font-family: var(--font-display); font-size: var(--t-sub); font-weight: 500;
+    line-height: calc(var(--s-6) - var(--s-1)); letter-spacing: var(--display-tracking); }
+  .prose .capability h3 > button { padding: var(--s-2) 0; font-weight: inherit; }
+  .prose .capability__mark { display: none; }
+  .prose .cap-show--one .capability h3 { padding: 0; }
+  .prose .cap-show:not(.cap-show--one) .capability__panel { transition: none; }
+  .prose .cap-show:not(.cap-show--one) .capability__clip { transition: none; }
+  .prose .capability__body { padding: 0 0 var(--s-4); }
+  .prose .capability__body > p:not(.capability__links) { max-width: none; margin: 0; font-size: var(--t-body); line-height: var(--s-5); color: var(--muted); }
+  .prose .capability__body > p:not(.capability__links) a { --rest: color-mix(in oklab, var(--ink) 25%, transparent); color: var(--ink); }
+  .prose .capability__links { gap: 0 calc(var(--s-4) + var(--s-1)); margin: var(--s-2) 0 0; }
+  .prose .capability__links a,
+  .prose .capability__links a:hover { gap: var(--s-1); min-height: 36px; padding: 0; border: 0; border-radius: 0; background: none;
+    font-size: var(--t-small); color: var(--ink); }
+  .prose .capability__links :is(.ext-mark, .m-arrow) { color: var(--muted); opacity: 1; }
+  @media (scripting: none) { .prose .capability h3 > button { color: var(--ink); } }
+
 }
