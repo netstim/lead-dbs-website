@@ -53,18 +53,24 @@
         <figure class="usage__chart usage__chart--tools">{{ index $svg "tools" }}</figure>
       </section>
 
-      {{- /* every country with its launches, as a table: the chart above leaves out the smallest, and the
-             globe on Home can only be read with a mouse (Home links here, #all-countries). Folded, so the
-             page stays short; a link to #all-countries opens it (assets/js/main/page.js). */}}
+      {{- /* every country with its downloads (data/downloads.json, tools/downloads.py) and launches, as a
+             table: the chart above leaves out the smallest, and the globe on Home, which replays the
+             downloads, can only be read with a mouse (Home links here, #all-countries). Most downloads
+             first. Folded, so the page stays short; a link to #all-countries opens it
+             (assets/js/main/page.js). */}}
+      {{ $d := hugo.Data.downloads }}{{ $by := dict }}
+      {{ range $d.countries }}{{ $by = merge $by (dict (index . 0) (dict "name" (index . 1) "dl" (index . 2) "la" 0)) }}{{ end }}
+      {{ range $u.countries }}{{ $k := index . 0 }}{{ $row := index $by $k | default (dict "name" (index . 1) "dl" 0) }}{{ $by = merge $by (dict $k (merge $row (dict "la" (index . 2)))) }}{{ end }}
+      {{ $rows := slice }}{{ range $by }}{{ $rows = $rows | append . }}{{ end }}
       <section class="usage__cell usage__cell--full" aria-labelledby="u-all">
         <h2 id="u-all">{{ $c.all.title }}</h2>
         <p>{{ replace $c.all.text "{since}" $since }}</p>
         <details class="dl-more usage__all" id="all-countries">
-          <summary>All {{ len $u.countries }} countries</summary>
+          <summary>All {{ len $rows }} countries</summary>
           <table class="usage__table">
-            <caption class="sr-only">Launches of Lead-DBS by country, {{ $since }} to {{ $to.Format "2 January 2006" }}</caption>
-            <thead><tr><th scope="col">Country</th><th scope="col">Launches</th></tr></thead>
-            <tbody>{{ range $u.countries }}<tr><th scope="row">{{ index . 1 }}</th><td class="num">{{ lang.FormatNumber 0 (index . 2) }}</td></tr>{{ end }}</tbody>
+            <caption class="sr-only">Downloads and launches of Lead-DBS by country, {{ $since }} to {{ $to.Format "2 January 2006" }}</caption>
+            <thead><tr><th scope="col">Country</th><th scope="col">Downloads</th><th scope="col">Launches</th></tr></thead>
+            <tbody>{{ range sort (sort $rows "la" "desc") "dl" "desc" }}<tr><th scope="row">{{ .name }}</th><td class="num">{{ lang.FormatNumber 0 .dl }}</td><td class="num">{{ lang.FormatNumber 0 .la }}</td></tr>{{ end }}</tbody>
           </table>
         </details>
       </section>

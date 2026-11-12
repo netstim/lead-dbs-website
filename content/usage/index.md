@@ -1,7 +1,7 @@
 ---
 title: "Usage statistics"
 layout: "usage"
-description: "Where and how often Lead-DBS is used: launches by country, month, hour of the day and tool."
+description: "Where and how often Lead-DBS is downloaded and used: launches by country, month, hour of the day and tool."
 # The charts (layouts/usage.html): a heading and one line each. The figures come from data/usage.json
 # and the drawings from scripts/usage.mjs (docs/home-and-media.md, "Usage figures").
 charts:
@@ -10,8 +10,8 @@ charts:
   hours: {title: "Around the clock", text: "Launches by hour of the day, Central European Time."}
   tools: {title: "Which tool is started", text: "Lead-DBS is four tools; most sessions start in the main one."}
   # the table of every country ({since}: the first year of the figures)
-  all: {title: "Every country", text: "Launches since {since}, from the most to the fewest."}
-method: "A launch is one start of Lead-DBS; the same address counts once an hour. Countries are worked out from IP addresses, which are not published."
+  all: {title: "Every country", text: "Downloads and launches since {since}, most downloads first."}
+method: "A download is one download of Lead-DBS from one address on one day, without bots. A launch is one start of Lead-DBS; the same address counts once an hour. Countries are worked out from IP addresses, which are not published."
 next:
   - {page: "/about/"}
   - {page: "/download/"}
