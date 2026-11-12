@@ -1,8 +1,8 @@
 ---
-title: "Features"
+title: "Methods"
 description: "Electrode localization, stimulation modelling, connectivity and group analysis in Lead-DBS."
 weight: 3
-linkTitle: "Features"
+linkTitle: "Methods"
 date: "2017-04-19T16:59:05"
 lastmod: "2026-11-12"
 keywords: ["what Lead-DBS does", "methods", "tools", "methods and tools", "capabilities", "overview", "Lead tools", "features", "what it does", "electrode localization", "reconstruction", "normalization", "registration", "WarpDrive", "VTA", "volume of tissue activated", "electric field", "OSS-DBS", "sweet spot", "fibre filtering", "fiber filtering", "network mapping", "Lead Group", "group analysis", "Lead Connectome", "Lead Connectome Mapper", "Lead-OR", "Lead Tutor", "SlicerNetstim", "connectome"]

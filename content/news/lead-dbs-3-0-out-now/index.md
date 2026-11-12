@@ -27,7 +27,7 @@ after converting them to BIDS, with the import tool that comes with Lead-DBS. Be
 
 The DBS sweetspot, fibre filtering and network mapping explorers, first introduced in
 [version 2.5](/lead-dbs-v2-5-out-now/), have grown much further and are the methodological centrepiece
-of version 3. What each one does is under [Features](/helpsupport/knowledge-base/lead-dbs-methods/).
+of version 3. What each one does is under [Methods](/helpsupport/knowledge-base/lead-dbs-methods/).
 
 ## WarpDrive
 
