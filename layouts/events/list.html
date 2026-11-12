@@ -53,6 +53,8 @@
              on it, a link to its section there. A picture that is only a wide text banner (more than twice
              as wide as tall) gives way to the city's name set large on a tint. */}}
       <h3 class="past-workshops__h" id="past-workshops">Workshops</h3>
+      {{- /* a phone: the workshops are the page's second part, under a heading of their own */}}
+      <h2 class="ev-past-h phone-only">Past workshops</h2>
       <ol class="ws-mosaic" aria-labelledby="past-workshops">
         {{ $n := 0 }}
         {{ range sort $years "value" "desc" }}{{ range index $groups . }}
