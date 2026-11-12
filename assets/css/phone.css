@@ -96,5 +96,5 @@
     -webkit-mask-image: linear-gradient(to bottom, color-mix(in srgb, var(--render) 50%, transparent), var(--render) 25%, transparent 55%);
     mask-image: linear-gradient(to bottom, color-mix(in srgb, var(--render) 50%, transparent), var(--render) 25%, transparent 55%); }
   .dl-next .dl-chip { display: flex; justify-content: center; width: 100%; height: auto; min-height: 48px; padding: var(--s-3) var(--s-5);
-    border-radius: var(--r-lg); text-align: center; line-height: 1.3; }
+    border-radius: var(--r-lg); text-align: center; }
 }

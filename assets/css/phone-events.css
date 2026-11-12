@@ -80,7 +80,7 @@
   .ws-tile--lead .ws-tile__cap b { font-size: var(--t-note); letter-spacing: 0; }
   .ws-tile:last-child:nth-child(even) { grid-column: auto; }
   .prose .workshop-archive__more { margin-top: var(--s-3); }
-  .prose .workshop-archive__more .link { min-height: 44px; padding: 0; background: none; color: var(--ink); font: 500 var(--t-note)/1.5 var(--font-text); text-decoration: none; }
+  .prose .workshop-archive__more .link { min-height: 44px; padding: 0; background: none; color: var(--ink); font-size: var(--t-note); font-weight: 500; text-decoration: none; }
   .prose .workshop-archive__more .link::after { width: 14px; height: 14px; margin: 0; background: var(--muted); }
 
   /* -------------------------------------------------------------- an event page: the head (events/head.html)
