@@ -77,7 +77,8 @@
      muted label, then rows 58px high, the title 17px medium, a chevron in muted, hairlines between */
   :is(.next-steps__h, .prose .next-steps__h, .section-nav--end .section-nav__h, .prose .section-nav--end .section-nav__h) {
     margin-bottom: var(--s-1); color: var(--muted); font-family: var(--font-text); font-size: var(--t-label); font-weight: 500; }
-  .section-nav--end .section-nav__h a { color: inherit; }
+  .section-nav--end .section-nav__h a { color: inherit; text-decoration: none; background: none; }
+  .next-step .m-arrow__stem { display: none; }
   :is(.next-step, .prose a.next-step) { min-height: 58px; padding-block: var(--s-3); }
   .next-step__title { font-size: var(--t-doc); }
   .next-step .next-step__arrow { width: 16px; height: 16px; }
@@ -85,4 +86,5 @@
     padding-block: var(--s-3); font-size: var(--t-doc); }
   .section-nav--end li a::after { content: ""; flex: none; width: 16px; height: 16px; background: var(--muted);
     -webkit-mask: var(--arrow) center / contain no-repeat; mask: var(--arrow) center / contain no-repeat; }
+
 }
