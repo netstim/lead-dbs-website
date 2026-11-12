@@ -347,7 +347,7 @@
               {{- with .ev }}<span class="pulse-card__day" aria-hidden="true"><span>{{ .start.Format "Jan" }}</span>{{ .start.Format "2" }}</span>{{ end -}}
               {{- with $img }}{{ $t := cond (eq $c.kind "Event") (.Fit "560x560 webp q82") (.Fill "640x480 webp q82 Center") }}<img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="" loading="lazy" decoding="async">{{ else }}<span class="pulse-card__version">{{ $c.version | default "News" }}</span>{{ end -}}
             </span>
-            <span class="pulse-card__meta"><span class="pulse-card__kind">{{ .kind }}</span> · {{ .date }}{{ with .place }}<span class="pulse-card__place"> · {{ . }}</span>{{ end }}{{ with .ev }}<span class="ev-countdown" data-ev-countdown="{{ .start_unix }}" hidden></span>{{ end }}</span>
+            <span class="pulse-card__meta"><span class="pulse-card__kind">{{ .kind }}</span>{{ if .place }}<span class="pulse-card__long"> · {{ .date }} · {{ .place }}</span><span class="phone-only"> · {{ .date }}</span>{{ else }} · {{ .date }}{{ end }}{{ with .ev }}<span class="ev-countdown" data-ev-countdown="{{ .start_unix }}" hidden></span>{{ end }}</span>
             <span class="pulse-card__title">{{ partial "nobreak-html.html" (.title | htmlEscape) }}</span>
           </a>
         </li>
