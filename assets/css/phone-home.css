@@ -159,4 +159,46 @@
   .research-band .fig-strip__cite { position: static; max-width: none; padding: 0; border-radius: 0; background: none;
     -webkit-backdrop-filter: none; backdrop-filter: none; color: color-mix(in srgb, var(--on-render) 63%, transparent); font: 400 var(--t-label)/1.54 var(--font-text); }
   .research-band__actions { margin-top: var(--s-6); }
+
+  /* -------------------------------------------------------------- 5. the globe
+     centred: the heading, the line, the globe at 310px, its clock line, the link */
+  .worldwide .home-split { display: flex; flex-direction: column; align-items: center; gap: 0; text-align: center; }
+  .worldwide__text h2 { margin-inline: auto; }
+  .home .worldwide .t-lead { max-width: 300px; margin-inline: auto; margin-top: var(--s-4); }
+  .worldwide__btn { display: none; }
+  .worldwide__fig { width: min(310px, 100%); margin-top: var(--s-6); }
+  .worldwide__foot { margin-top: var(--s-3); min-height: 0; }
+  .worldwide__foot .caption { font-size: var(--t-label); }
+  .worldwide__pause { width: 32px; height: 32px; border-color: var(--line); }
+  .worldwide__more { margin: var(--s-2) 0 0; }
+
+  /* -------------------------------------------------------------- 6. Lead-DBS 4.0
+     the page's one tinted panel, inside the margins: the badge, the name 44/44, the points as rows with a
+     hairline above each, the link as the last row */
+  .home > .next-band { padding: var(--s-9) 0 0; }
+  .next-band__inner { gap: var(--s-6); padding: var(--s-5) var(--s-5) var(--s-2); border-radius: var(--r-lg); }
+  .next-band__label { margin: 0 0 var(--s-7); padding: var(--s-1) var(--s-2); border: 1px solid color-mix(in srgb, var(--p-ink) 10%, transparent);
+    background: color-mix(in srgb, var(--p-bg) 60%, transparent); font-size: var(--t-xs); }
+  .home .next-band__title { font: 600 var(--t-h1)/1 var(--font-display); letter-spacing: var(--display-tracking-xl); }
+  .next-band__points { gap: 0; }
+  .next-band__point { padding-block: var(--s-3); border-top-color: color-mix(in srgb, var(--ink) 10%, transparent); }
+  .home .next-band__point h3 { margin: 0; font: 500 var(--t-doc)/1.42 var(--font-text); letter-spacing: 0; }
+  .next-band__point p { max-width: none; color: color-mix(in srgb, var(--ink) 60%, transparent); font: 400 var(--t-small)/1.43 var(--font-text); }
+  .next-band__point .link { display: flex; width: 100%; margin: var(--s-3) 0 0; margin-bottom: calc(-1 * var(--s-3)); border-top: 1px solid color-mix(in srgb, var(--ink) 10%, transparent); padding-top: var(--s-1); }
+
+  /* -------------------------------------------------------------- 7. what's happening
+     one row of cards that scrolls sideways (248px): the picture a 4:3 tile with a hairline ring (an
+     event's flyer upright in it, a release its number), the meta line, the title; the links under it */
+  .pulse .wrap { display: flex; flex-direction: column; }
+  .pulse__head { display: contents; }
+  .pulse__links { order: 3; gap: var(--s-5); margin-top: var(--s-3); }
+  .pulse__row { order: 2; grid-auto-columns: 248px; gap: var(--s-3); margin-top: var(--s-6); }
+  .pulse-card__link { gap: 0; }
+  .pulse-card__media { margin-bottom: var(--s-3); border-radius: var(--r-md); box-shadow: inset 0 0 0 1px var(--line); }
+  .pulse-card__media--poster > img { max-width: none; max-height: none; height: 84%; border-radius: var(--r-xs); }
+  .pulse-card__day { display: none; }
+  .pulse-card__version { font: 500 3.5em/1 var(--font-display); letter-spacing: var(--display-tracking-xl); }
+  .pulse-card__meta { font: 400 var(--t-label)/1.54 var(--font-text); }
+  .pulse-card__meta .ev-countdown { color: var(--p-accent-text); white-space: nowrap; }
+  .pulse-card__title { font: 500 var(--t-doc)/1.42 var(--font-text); letter-spacing: 0; }
 }
