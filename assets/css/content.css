@@ -870,6 +870,8 @@ html.v-box-open { overflow: hidden; }
    the software's name in the ink, its link and its paper small. */
 .prose .cells { max-width: none; margin: 0 0 var(--s-8); grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 640px) { .prose .cells { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* two to a row on a tablet: an odd last cell takes the whole row, so no empty grey cell is left */
+@media (min-width: 640px) and (max-width: 1023px) { .prose .cells > :last-child:nth-child(odd) { grid-column: 1 / -1; } }
 @media (min-width: 1024px) { .prose .cells--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } .prose .cells--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .prose .cells dd { max-width: none; }
 .prose .cells + h2, .prose .cells + .hub-section { margin-top: 0; }
