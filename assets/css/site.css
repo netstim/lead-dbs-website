@@ -1422,3 +1422,33 @@ html .prose .download-grid--secondary .download-btn { width: auto; min-height: 4
   .footer.is-foldable .footer__col > ul { grid-column: 1 / -1; display: none; padding-bottom: var(--s-3); }
   .footer.is-foldable .footer__col.is-expanded > ul { display: grid; }
 }
+/* Contributors: consistent people rows and one spacing system for every group. */
+.contributors-intro { display: grid; gap: var(--s-3); margin-bottom: 40px; }
+.prose .contributors-intro > p { margin: 0; }
+.contributors-intro > .t-lead { color: var(--ink); }
+.prose .contributors-context { max-width: 60ch; font-size: var(--t-body); line-height: 1.6; color: var(--muted); }
+.prose .contributors-links { display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-5); padding-top: var(--s-1); font-size: var(--t-small); }
+.contributors-body { display: flow-root; }
+.prose .contributors-body > h2 { margin: var(--s-7) 0 var(--s-4); padding-top: var(--s-5); border-top: 1px solid var(--line); font-size: 22px; line-height: 1.25; letter-spacing: -.015em; scroll-margin-top: calc(var(--nav) + var(--s-5)); }
+.prose .contributors-body > h2:first-child { margin-top: 0; }
+.prose .contributors-body > h3 { margin: var(--s-6) 0 var(--s-4); font-size: 15px; font-weight: 600; color: var(--muted); line-height: 1.3; scroll-margin-top: calc(var(--nav) + var(--s-5)); }
+.prose .people-list { list-style: none; margin: 0; padding: 0; max-width: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: var(--s-4) var(--s-6); }
+@media (min-width: 1200px) { .prose .people-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.prose .people-list > li { display: flex; flex-direction: column; gap: 2px; margin: 0; max-width: none; padding: 0; line-height: 1.5; }
+.people-list__name { color: var(--ink); font-size: 15px; line-height: 1.45; font-weight: 600; }
+.people-list__affiliation { color: var(--muted); font-size: var(--t-small); line-height: 1.45; }
+.people-list__name .people-link { display: inline; min-height: 0; padding: 0; font: inherit; color: inherit; background: none; text-decoration: none; }
+.people-list__name .people-link::after { content: none; }
+.people-list__name .people-link:hover { color: var(--action); text-decoration: underline; text-underline-offset: 3px; }
+.prose .contributors-join { margin: var(--s-7) 0 0; padding-top: var(--s-5); border-top: 1px solid var(--line); font-size: var(--t-body); line-height: 1.55; }
+.contributors .next-steps { margin-top: var(--s-7); }
+/* the lists use the full width beside the contents, not the reading measure */
+@media (min-width: 1024px) { .doc-layout.doc-layout--toc.contributors-layout:has(> .sidebar) { grid-template-columns: 200px minmax(0, 1fr); } .contributors-layout > .prose.contributors { max-width: none; } }
+@media (max-width: 1023px) { .doc-layout--toc > .sidebar { display: none; } }
+@media (max-width: 639px) {
+  .contributors-intro { margin-bottom: var(--s-6); }
+  .prose .contributors-body > h2 { margin-top: 40px; font-size: 24px; }
+  .prose .contributors-body > h2:first-child { margin-top: 0; }
+  .prose .people-list { grid-template-columns: minmax(0, 1fr); gap: var(--s-4); }
+}
+

@@ -1,0 +1,18 @@
+{{ define "main" }}
+<main id="top" class="page page--toc contributors-page">
+  {{ partial "page-head.html" . }}
+  <div class="wrap doc-layout doc-layout--toc contributors-layout">
+    <aside class="sidebar" aria-label="Contributor sections">{{ partial "toc.html" (dict "page" . "variant" "side") }}</aside>
+    <article class="prose contributors">
+      {{ partial "toc.html" (dict "page" . "variant" "top") }}
+      <div class="contributors-intro">
+        <p class="t-lead">The researchers and developers who build Lead-DBS.</p>
+        <p class="contributors-context">Coordinated by the <a href="https://www.netstim.org">Institute for Network Stimulation</a> at University Hospital Cologne, led by Andreas Horn.</p>
+        <p class="contributors-links"><a class="link link--ext" href="https://www.netstim.org/about-us/about-us/">Institute team <span class="ext-mark" aria-hidden="true">↗</span></a><a class="link link--ext" href="https://github.com/netstim/leaddbs/graphs/contributors">GitHub contributors <span class="ext-mark" aria-hidden="true">↗</span></a></p>
+      </div>
+      <div class="contributors-body">{{ partial "nobreak-html.html" .Content }}</div>
+      {{ partial "next-steps.html" . }}
+    </article>
+  </div>
+</main>
+{{ end }}
