@@ -11,9 +11,12 @@
   const MANUAL = 'https://netstim.gitbook.io/leaddbs';
   const SHOWN = 12; // results listed; the status line counts them all
   let index = null;
-  const load = () => (index ||= fetch(indexUrl).then((r) => r.json()).then((rows) => rows.map((r) => ({
+  const load = () => (index ||= fetch(indexUrl).then((r) => {
+    if (!r.ok) throw new Error(`Search index: HTTP ${r.status}`);
+    return r.json();
+  }).then((rows) => rows.map((r) => ({
     ...r, lt: fold(r.t), lk: fold(r.k), lh: fold(r.h), ld: fold(r.d), lx: fold(r.x),
-  }))));
+  }))).catch((error) => { index = null; throw error; }));
   const fold = (s) => (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[‐-‑]/g, '-');
   const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
