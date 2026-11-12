@@ -34,16 +34,20 @@ jobs:
         run: python3 .github/scripts/check-copy.py public
       - name: Preview build (the GitHub Pages variant)
         run: HUGO_PARAMS_PREVIEW=true hugo --gc --minify --baseURL https://netstim.github.io/lead-dbs-website/ --destination "$RUNNER_TEMP/preview"
+      # the variant that is deployed: its links, its noindex on every page, its canonicals to the live site
+      - name: Links in the preview build (.github/scripts/check-site.py)
+        run: python3 .github/scripts/check-site.py "$RUNNER_TEMP/preview" https://netstim.github.io/lead-dbs-website/
       - name: Unused CSS (.github/scripts/check-css-used.py)
         run: python3 .github/scripts/check-css-used.py public "$RUNNER_TEMP/preview"
 
   # Every page in Chromium, on a desktop and a phone, light and dark (.github/scripts/check-browser.mjs): script
-  # errors, missing files and pictures, text cut off at the screen's edge, requests to other servers. The
-  # screenshots are kept with the run (Summary → Artifacts) for review.
+  # errors, missing files and pictures, anything past the screen's edge, text cut off, requests to other
+  # servers. The screenshots are kept with the run (Summary → Artifacts) for review.
   browser:
     runs-on: ubuntu-latest
     env:
       HUGO_VERSION: 0.169.0
+      PLAYWRIGHT_VERSION: 1.48.2
     steps:
       - uses: actions/checkout@v7
       - name: Install Hugo (checked against the release's checksums)
@@ -57,8 +61,13 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 22
+      # Chromium is kept between runs for the pinned Playwright (the system libraries are installed each time)
+      - uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ env.PLAYWRIGHT_VERSION }}
       - name: Install Playwright and Chromium
-        run: npm install --no-save playwright@1.48.2 && npx playwright install --with-deps chromium
+        run: npm install --no-save "playwright@$PLAYWRIGHT_VERSION" && npx playwright install --with-deps chromium
       - name: Build
         run: hugo --gc --minify
       - name: Pages in the browser (.github/scripts/check-browser.mjs)

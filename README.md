@@ -115,24 +115,30 @@ Every pull request runs `.github/workflows/checks.yml`, and every deploy runs th
 
 ```bash
 hugo --gc -d /tmp/site && HUGO_PARAMS_PREVIEW=true hugo --gc -d /tmp/preview --baseURL https://netstim.github.io/lead-dbs-website/
-python3 .github/scripts/check-site.py /tmp/site https://www.lead-dbs.org/   # links, anchors, redirects, sidebars, forms
+python3 .github/scripts/check-site.py /tmp/site https://www.lead-dbs.org/   # links, anchors, redirects, canonicals, sidebars, forms
+python3 .github/scripts/check-site.py /tmp/preview https://netstim.github.io/lead-dbs-website/   # the same, and noindex on every page
 python3 .github/scripts/check-design.py                                     # tokens, radii, type, budgets
-python3 .github/scripts/check-copy.py /tmp/site                             # leftovers, house spelling, struck phrases
+python3 .github/scripts/check-copy.py /tmp/site                             # leftovers, repeated words, house spelling, struck phrases
 python3 .github/scripts/check-css-used.py /tmp/site /tmp/preview            # selectors that style nothing
 ```
 
-A second job opens every page in Chromium on a desktop and a phone, light and dark, and fails on script
-errors, missing files or pictures, text cut off at the screen's edge and requests to other servers; its
-screenshots are kept with the run (Summary → Artifacts). It needs Node:
+A build is the production build when its baseURL is `https://www.lead-dbs.org/`, and a preview otherwise.
+
+A second job opens every page of the build (every `index.html` that is not a redirect, and the 404 page) in
+Chromium on a desktop and a phone, light and dark, and fails on script errors, missing files or pictures,
+pictures that do not finish loading, anything drawn past the screen's edge, text cut off in its box and
+requests to other servers; its screenshots are kept with the run (Summary → Artifacts). The Pages workflow
+runs it on the production build before it deploys. It needs Node:
 
 ```bash
 npm install --no-save playwright@1.48.2 && npx playwright install chromium
-node .github/scripts/check-browser.mjs /tmp/site https://www.lead-dbs.org/ /tmp/screenshots   # about 3 minutes
+node .github/scripts/check-browser.mjs /tmp/site https://www.lead-dbs.org/ /tmp/screenshots   # about a minute
 ```
 
-`check-design.py` keeps budgets for literal colours, `!important`, px spacing, literal line-heights and
-letter-spacings that may only go down;
-after removing some, `--ratchet` lowers them. See [docs/design.md](docs/design.md).
+`check-design.py` keeps budgets for literal colours (named colours too), `!important`, px spacing, literal
+line-heights and letter-spacings that may only go down;
+after removing some, `--ratchet` lowers them. Its `KNOWN` list names the rule breaks the stylesheets already
+had when it began to read whole declarations; fix one and remove it from the list. See [docs/design.md](docs/design.md).
 
 ## Deployment
 
@@ -140,7 +146,9 @@ The preview is built by `.github/workflows/pages.yml` for GitHub Pages under `/l
 `HUGO_PARAMS_PREVIEW=true` (banner, `noindex`, canonical addresses pointing at www.lead-dbs.org). The same
 workflow also builds the site for `https://www.lead-dbs.org/`, and runs `.github/scripts/check-site.py` on both
 builds; the run fails on a broken internal link, image or #anchor, a redirect that leads nowhere or to another
-redirect, a canonical, og:image or sitemap address that is not absolute, or front matter shown as page text.
+redirect, a canonical or og:url that is not the page's address on www.lead-dbs.org, an og:image or sitemap
+address that is not absolute, or front matter shown as page text. It then opens every page of the production
+build in a browser (`check-browser.mjs`) and deploys only if all of that passes.
 Run it locally the same way:
 
 ```bash
