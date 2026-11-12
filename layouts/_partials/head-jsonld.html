@@ -1,5 +1,5 @@
 {{- /* Structured data (JSON-LD) for search engines: the software on the home and download pages, the
-       upcoming events (data/events.yaml) on /events/, an article for each news post, and on every inner
+       upcoming events (data/events.yaml) on /events/ and each on its own page, an article for each news post, and on every inner
        page its breadcrumb trail. */ -}}
 {{- $r := hugo.Data.release -}}
 {{- $org := dict "@type" "Organization" "name" "Institute for Network Stimulation, University Hospital Cologne" "url" "https://www.netstim.org" -}}
@@ -27,26 +27,36 @@
       "publisher" $org) -}}
 {{- end -}}
 
-{{- if and (eq .Section "events") .IsSection -}}
+{{- /* events: on /events/ every upcoming one, on an event's own page (the page its entry links to) that
+       event, with the facts of data/events.yaml only: name, dates, place or online, host, its text */ -}}
+{{- if eq .Section "events" -}}
   {{- $page := . -}}
   {{- range where (partial "events/list.html" .) "over" false -}}
-    {{- $e := .e -}}
-    {{- $ev := dict
-        "@context" "https://schema.org"
-        "@type" "Event"
-        "name" $e.title
-        "startDate" .iso_start
-        "eventStatus" "https://schema.org/EventScheduled"
-        "url" (printf "%s#%s" $page.Permalink .id)
-        "organizer" $org -}}
-    {{- with $e.end }}{{ $ev = merge $ev (dict "endDate" (cond (gt (len (string .)) 10) (printf "%s:00" (string .)) (string .))) }}{{ end -}}
-    {{- with $e.text }}{{ $ev = merge $ev (dict "description" .) }}{{ end -}}
-    {{- if $e.online -}}
-      {{- $ev = merge $ev (dict "eventAttendanceMode" "https://schema.org/OnlineEventAttendanceMode" "location" (dict "@type" "VirtualLocation" "url" (printf "%s#%s" $page.Permalink .id))) -}}
+    {{- $x := . }}{{ $e := .e -}}
+    {{- $url := "" -}}
+    {{- if $page.IsSection -}}
+      {{- $url = printf "%s#%s" $page.Permalink $x.id -}}
     {{- else -}}
-      {{- $ev = merge $ev (dict "eventAttendanceMode" "https://schema.org/OfflineEventAttendanceMode" "location" (dict "@type" "Place" "name" ($e.host | default $e.where) "address" $e.where)) -}}
+      {{- range $e.links }}{{ if hasPrefix .url "/" }}{{ if eq (site.GetPage (strings.TrimSuffix "/" (urls.Parse .url).Path)) $page }}{{ $url = $page.Permalink }}{{ end }}{{ end }}{{ end -}}
     {{- end -}}
-    {{- $out = $out | append $ev -}}
+    {{- if $url -}}
+      {{- $ev := dict
+          "@context" "https://schema.org"
+          "@type" "Event"
+          "name" $e.title
+          "startDate" $x.iso_start
+          "eventStatus" "https://schema.org/EventScheduled"
+          "url" $url
+          "organizer" $org -}}
+      {{- with $e.end }}{{ $ev = merge $ev (dict "endDate" (cond (gt (len (string .)) 10) (printf "%s:00" (string .)) (string .))) }}{{ end -}}
+      {{- with $e.text }}{{ $ev = merge $ev (dict "description" .) }}{{ end -}}
+      {{- if $e.online -}}
+        {{- $ev = merge $ev (dict "eventAttendanceMode" "https://schema.org/OnlineEventAttendanceMode" "location" (dict "@type" "VirtualLocation" "url" $url)) -}}
+      {{- else -}}
+        {{- $ev = merge $ev (dict "eventAttendanceMode" "https://schema.org/OfflineEventAttendanceMode" "location" (dict "@type" "Place" "name" ($e.host | default $e.where) "address" $e.where)) -}}
+      {{- end -}}
+      {{- $out = $out | append $ev -}}
+    {{- end -}}
   {{- end -}}
 {{- end -}}
 

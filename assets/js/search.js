@@ -9,6 +9,7 @@
   const indexUrl = dialog?.dataset.index;
   if (!indexUrl) return;
   const MANUAL = 'https://netstim.gitbook.io/leaddbs';
+  const SHOWN = 12; // results listed; the status line counts them all
   let index = null;
   const load = () => (index ||= fetch(indexUrl).then((r) => r.json()).then((rows) => rows.map((r) => ({
     ...r, lt: fold(r.t), lk: fold(r.k), lh: fold(r.h), ld: fold(r.d), lx: fold(r.x),
@@ -27,7 +28,7 @@
         let s = 0;
         const wordStart = (t) => t.startsWith(w) || t.includes(' ' + w) || t.includes('-' + w);
         if (r.lt.includes(w)) s += (wordStart(r.lt) ? 40 : 25) + Math.max(0, 12 - r.lt.length / 6); // short titles first
-        if (r.lk.includes(w)) s += 20;
+        if (r.lk.includes(w)) s += 20 + (` ${r.lk} `.includes(` ${w} `) ? 10 : 0); // a whole keyword ("mac", not "macaque") counts more
         if (r.lh.includes(w)) s += 6;
         if (r.ld.includes(w)) s += 4;
         if (r.lx.includes(w)) s += 1 + Math.min(3, r.lx.split(w).length - 2);
@@ -39,7 +40,7 @@
       if (r.s.startsWith('News')) score = score * 0.85 - 1; // a post after a page that says the same
       out.push([score, r]);
     }
-    return out.sort((a, b) => b[0] - a[0]).slice(0, 12).map(([, r]) => r);
+    return out.sort((a, b) => b[0] - a[0]).map(([, r]) => r);
   };
   const snippet = (r, q) => {
     const w = fold(q).split(/\s+/).find((x) => x.length > 1 && r.lx.includes(x));
@@ -54,14 +55,19 @@
     const list = box.querySelector('.search__results');
     const status = box.querySelector('.search__status');
     let timer = 0;
+    // on /search/ the cards to start from show only while there is no query
+    const doors = box.closest('.search-page')?.querySelectorAll('[data-search-doors]') || [];
     const run = async () => {
       const q = input.value.trim();
+      doors.forEach((d) => { d.hidden = !!q; });
       if (!q) { list.replaceChildren(); status.textContent = ''; return; }
       status.textContent = 'Searching…';
       let rows;
       try { rows = await load(); } catch { status.textContent = 'The search index could not be loaded.'; return; }
-      const hits = rank(rows, q);
-      status.textContent = hits.length ? `${hits.length}${hits.length === 12 ? ' or more' : ''} results` : 'Nothing found on this website. Try fewer or other words.';
+      const all = rank(rows, q);
+      const hits = all.slice(0, SHOWN);
+      status.textContent = !all.length ? 'Nothing found on this website. Try fewer or other words.'
+        : all.length > SHOWN ? `The best ${SHOWN} of ${all.length} results` : `${all.length} result${all.length === 1 ? '' : 's'}`;
       // how to do something in Lead-DBS is in the manual (another site): offered after the results, and in their place when there are none
       const manual = `<li><a class="search__hit search__hit--manual" href="${MANUAL}"><span class="search__title">${hits.length ? 'Not here? ' : ''}Look it up in the Lead-DBS manual<span class="ext-mark" aria-hidden="true">↗</span></span><span class="search__section">netstim.gitbook.io, another site</span><span class="search__snippet">How to install Lead-DBS and do each step of an analysis.</span></a></li>`;
       list.innerHTML = hits.map((r) => `<li><a class="search__hit" href="${esc(r.u)}"><span class="search__title">${esc(r.t)}</span>${r.s ? `<span class="search__section">${esc(r.s)}</span>` : ''}<span class="search__snippet">${snippet(r, q)}</span></a></li>`).join('') + manual;

@@ -1,11 +1,12 @@
 {{- /* The sidebar of inner pages, the same model on every page of a menu group:
        1. the group's pages from the main menu (partial nav-place.html, so it agrees with the header and
-          the breadcrumb), with the pages under the current entry opened below it, and the pages placed
+          the breadcrumb; entries with params.panelOnly, anchors of the hub such as the chapters of
+          Features, are left out), with the pages under the current entry opened below it, and the pages placed
           under the group's own page by front matter menuParent;
        2. the current release (data/release.yaml) only on the groups' hub pages, not on the download page;
        3. two to four pages related to this one (front matter related:, see below);
        4. on a long page its table of contents, which stays in view while the text scrolls (desktop);
-          on a short page the next event (data/events.yaml), and on News the newsletter.
+          on a short page the next event (data/events.yaml), and on News the newsletter and the news feed.
      The download page has no group list, only its contents.
      related: a list of site paths ("/about/citing_leaddbs/", "/develop/#add-your-atlas-or-dataset"; a page
      with its own url: front matter by its folder, "/helpsupport/knowledge-base/atlasesresources/about-the-mni-spaces/") or
@@ -29,7 +30,7 @@
 <nav class="side-block side-section" aria-label="{{ $group.Name }}: pages">
   <p class="t-label muted"><a href="{{ $group.URL }}"{{ if $isHub }} aria-current="page"{{ end }}>{{ $group.Name }}</a></p>
   <ul>
-    {{ range $group.Children }}
+    {{ range $group.Children }}{{ if not .Params.panelOnly }}
     {{ $e := . }}
     {{ $here := and .Page (eq .Page $page) }}
     {{ $open := in $branch $e }}
@@ -58,7 +59,7 @@
         {{ end }}
       {{ end }}
     </li>
-    {{ end }}
+    {{ end }}{{ end }}
     {{- /* pages placed directly under the group's own page (front matter menuParent), such as a
            background article: after the group's entries */}}
     {{ with $group.Page }}{{ $gp := . }}
@@ -74,9 +75,10 @@
 <section class="side-card release-card" aria-labelledby="side-release">
   <p class="t-label muted" id="side-release">Current release</p>
   <p class="release-card__version">Lead-DBS {{ $r.version }}</p>
-  <p class="t-small muted">Released {{ $date | time.Format "2 January 2006" }} · MATLAB {{ $r.matlab }} or later</p>
+  <p class="t-small muted">Released <time datetime="{{ $date | time.Format "2006-01-02" }}">{{ $date | time.Format "2 January 2006" }}</time> · MATLAB <span class="num">{{ $r.matlab }}</span> or later</p>
   <a class="btn btn--primary" href="{{ $dl }}">Download Lead-DBS</a>
-  {{ with $r.notes }}<a class="link t-small" href="{{ partial "resolve-url.html" (dict "url" . "page" $page) }}">The {{ $r.version }} announcement</a>{{ end }}
+  {{- /* release information has one name on the site: "Release history", the list on the download page */}}
+  {{ with site.GetPage "/download" }}<a class="link t-small" href="{{ .RelPermalink }}#releases">Release history</a>{{ end }}
 </section>
 {{ end }}
 
@@ -112,6 +114,7 @@
   <p class="t-label muted" id="side-news">Newsletter</p>
   <p class="t-small">Release and workshop news by email.</p>
   {{ partial "newsletter-form.html" (dict "compact" true "id" "side") }}
+  {{ with site.GetPage "/news" }}{{ with .OutputFormats.Get "rss" }}<p class="t-small side-feed"><a href="{{ .RelPermalink }}" type="application/rss+xml">News feed (RSS)</a> for your feed reader</p>{{ end }}{{ end }}
 </section>
 {{ end }}
 {{ end }}

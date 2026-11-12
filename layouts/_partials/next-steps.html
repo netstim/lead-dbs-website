@@ -1,0 +1,50 @@
+{{- /* The end of a page: the heading "Next" and one to three link cards (a title, a few words, an arrow),
+       the same on every page that has them. From the page's front matter:
+
+         next:
+           - {page: "/helpsupport/first-steps/", text: "Your first electrode localization"}
+           - {page: "/download/#install", name: "Install Lead-DBS", text: "The four install steps"}
+           - {url: "https://netstim.gitbook.io/leaddbs", name: "Manual", text: "Every step of an analysis"}
+
+       page: a site path (a page with its own url: front matter by its folder, a news post by its slug),
+       optionally with #section; the card's title is the page's linkTitle unless name is given.
+       url: another site; needs a name, and the card says that it leads there.
+       text: the line under the title, a few words (required).
+       The build stops on a path that is not a page, on the page itself, on an entry without text, and on
+       more than three entries.
+       Argument: the page, or dict "page" "items" with cards already resolved ({href, name, text}; the
+       news posts pass their newer and older post this way). */ -}}
+{{- $page := . }}{{ $items := slice -}}
+{{- if reflect.IsMap . }}{{ $page = .page }}{{ $items = .items }}{{ end -}}
+{{- with $page.Params.next -}}
+{{- if not (reflect.IsSlice .) }}{{ errorf "%s: next must be a list of {page|url, name, text}" $page.File.Path }}{{ end -}}
+{{- if gt (len .) 3 }}{{ errorf "%s: next has %d entries; at most three" $page.File.Path (len .) }}{{ end -}}
+    {{- range . }}
+    {{- if not (reflect.IsMap .) }}{{ errorf "%s: next entry %v must be {page|url, name, text}" $page.File.Path . }}{{ end -}}
+    {{- if not .text }}{{ errorf "%s: next entry %v has no text" $page.File.Path . }}{{ end -}}
+    {{- $href := "" }}{{ $name := .name }}{{ $ext := false -}}
+    {{- with .page -}}
+      {{- $u := urls.Parse . -}}
+      {{- $path := strings.TrimSuffix "/" $u.Path -}}
+      {{- $t := or (site.GetPage $path) (site.GetPage (printf "/news%s" $path)) -}}
+      {{- if not $t }}{{ errorf "%s: next %q is not a page" $page.File.Path . }}{{ end -}}
+      {{- if and (eq $t $page) (not $u.Fragment) }}{{ errorf "%s: next %q is the page itself" $page.File.Path . }}{{ end -}}
+      {{- $name = $name | default $t.LinkTitle -}}
+      {{- $href = printf "%s%s" $t.RelPermalink (cond (ne $u.Fragment "") (printf "#%s" $u.Fragment) "") -}}
+    {{- else -}}
+      {{- if not (and .url .name) }}{{ errorf "%s: next entry %v needs page, or url and name" $page.File.Path . }}{{ end -}}
+      {{- $href = .url }}{{ $ext = strings.HasPrefix .url "http" -}}
+    {{- end }}
+    {{- $items = $items | append (dict "href" $href "name" $name "text" .text "ext" $ext) -}}
+    {{- end -}}
+{{- end -}}
+{{- with $items }}
+<nav class="next-steps" aria-labelledby="next">
+  <h2 class="next-steps__h" id="next">Next</h2>
+  <ul class="next-steps__list">
+    {{- range . }}
+    <li><a class="card next-step" href="{{ .href }}"{{ with .rel }} rel="{{ . }}"{{ end }}><span class="next-step__title">{{ partial "nobreak-html.html" (.name | htmlEscape) }}{{ if .ext }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ end }}</span><span class="next-step__text">{{ partial "nobreak-html.html" (.text | htmlEscape) }}</span><svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a></li>
+    {{- end }}
+  </ul>
+</nav>
+{{- end -}}
