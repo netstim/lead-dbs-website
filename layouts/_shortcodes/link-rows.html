@@ -11,6 +11,6 @@
 {{- if not $rows }}{{ errorf "link-rows: %s has no front matter %q" .Page.File.Path $key }}{{ end -}}
 <ul class="resource-index">
   {{- range $rows }}{{ $ext := hasPrefix .url "http" }}
-  <li><a class="link resource-index__link" href="{{ if $ext }}{{ .url }}{{ else }}{{ partial "resolve-url.html" (dict "url" .url "page" $.Page) }}{{ end }}"><span class="resource-index__title">{{ .name }}{{ if $ext }}<span class="sr-only"> (another site)</span>{{ end }}</span>{{ with .text }}<span class="resource-index__text">{{ . }}</span>{{ end }}{{ if $ext }}<span class="ext-mark resource-index__arrow" aria-hidden="true">↗</span>{{ else }}<svg class="m-arrow resource-index__arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg>{{ end }}</a></li>
+  {{ partial "link-row.html" (dict "href" (cond $ext .url (partial "resolve-url.html" (dict "url" .url "page" $.Page))) "title" .name "text" .text "ext" $ext) }}
   {{- end }}
 </ul>

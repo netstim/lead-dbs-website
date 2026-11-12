@@ -5,11 +5,6 @@
 {{- if not $group }}{{ errorf "resource-index: unknown menu %q" $want }}{{ end -}}
 <ul class="resource-index" aria-label="{{ $group.Name }}">
   {{- range $group.Children }}{{ if and (not .HasChildren) (ne .Page $.Page) (not (hasPrefix .URL (printf "%s#" $.Page.RelPermalink))) }}
-  {{- $external := hasPrefix .URL "http" -}}
-  <li><a class="link resource-index__link" href="{{ .URL }}">
-    <span class="resource-index__title">{{ partial "nobreak-html.html" ((.Params.indexTitle | default .Name) | htmlEscape) }}{{ if $external }}<span class="sr-only"> (another site)</span>{{ end }}</span>
-    {{ with .Params.card }}<span class="resource-index__text">{{ . }}</span>{{ end }}
-    {{ if $external }}<span class="ext-mark resource-index__arrow" aria-hidden="true">↗</span>{{ else }}<svg class="m-arrow resource-index__arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg>{{ end }}
-  </a></li>
+  {{ partial "link-row.html" (dict "href" .URL "title" (.Params.indexTitle | default .Name) "text" .Params.card "ext" (hasPrefix .URL "http")) }}
   {{- end }}{{ end }}
 </ul>

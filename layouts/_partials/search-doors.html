@@ -3,6 +3,6 @@
        Argument: dict "attrs" (extra attributes for the list, as a safe HTML string; may be empty). */ -}}
 {{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Name "Download" }}{{ $dl = .URL }}{{ end }}{{ end -}}
 <ul class="next-steps__list search-doors"{{ with .attrs }} {{ . }}{{ end }}>
-  <li><a class="next-step" href="{{ $dl }}"><span class="next-step__title">Download <span class="nowrap">Lead-DBS</span></span><svg class="m-arrow next-step__arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a></li>
-  {{ range slice "/helpsupport/knowledge-base/lead-dbs-methods" "/about/citing_leaddbs" "/helpsupport" "/helpsupport/knowledge-base/atlasesresources" "/community" "/news" "/about" "/contact" }}{{ with site.GetPage . }}<li><a class="next-step" href="{{ .RelPermalink }}"><span class="next-step__title">{{ partial "nobreak-html.html" (.LinkTitle | htmlEscape) }}</span><svg class="m-arrow next-step__arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a></li>{{ end }}{{ end }}
+  {{ partial "link-row.html" (dict "kind" "next" "href" $dl "title" "Download Lead-DBS") }}
+  {{ range slice "/helpsupport/knowledge-base/lead-dbs-methods" "/about/citing_leaddbs" "/helpsupport" "/helpsupport/knowledge-base/atlasesresources" "/community" "/news" "/about" "/contact" }}{{ with site.GetPage . }}{{ partial "link-row.html" (dict "kind" "next" "href" .RelPermalink "title" .LinkTitle) }}{{ end }}{{ end }}
 </ul>
