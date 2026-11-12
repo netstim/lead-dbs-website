@@ -23,6 +23,7 @@
   {{ with resources.Get "js/search.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}
   {{ if .HasShortcode "atlas-index" }}{{ with resources.Get "js/atlas-filter.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}{{ end }}
   {{ if .IsHome }}{{ with resources.Get "js/insertion.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}{{ end }}
-  {{ if and .IsHome hugo.Data.usage }}{{ $globe := slice (resources.Get "js/vendor/d3-array.min.js") (resources.Get "js/vendor/d3-geo.min.js") (resources.Get "js/vendor/topojson-client.min.js") (resources.Get "js/globe.js" | minify) | resources.Concat "js/globe.bundle.js" | fingerprint }}<script src="{{ $globe.RelPermalink }}" integrity="{{ $globe.Data.Integrity }}" defer></script>{{ end }}
+  {{- /* the home page's globe (assets/js/globe.js and its libraries) is not loaded here: main/home.js adds its
+         script when the section comes near the screen (layouts/home.html, data-globe-src) */}}
 </body>
 </html>

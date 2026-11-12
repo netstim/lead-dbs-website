@@ -249,7 +249,10 @@
   {{ $u := . }}{{ $w := $p.worldwide }}
   {{ $since := "" }}{{ range $y, $n := $u.years }}{{ if not $since }}{{ $since = $y }}{{ end }}{{ end }}
   {{ $map := resources.Get "data/world-110m.json" | minify | fingerprint }}
-  <section class="section home-sec worldwide" id="worldwide" aria-labelledby="worldwide-h" data-map="{{ $map.RelPermalink }}">
+  {{- /* the globe's script (about 70 KB with d3 and topojson) and the map are fetched only when the section
+         comes near the screen: main/home.js adds the script, which then fetches the map */}}
+  {{ $globe := slice (resources.Get "js/vendor/d3-array.min.js") (resources.Get "js/vendor/d3-geo.min.js") (resources.Get "js/vendor/topojson-client.min.js") (resources.Get "js/globe.js" | minify) | resources.Concat "js/globe.bundle.js" | fingerprint }}
+  <section class="section home-sec worldwide" id="worldwide" aria-labelledby="worldwide-h" data-map="{{ $map.RelPermalink }}" data-globe-src="{{ $globe.RelPermalink }}" data-globe-integrity="{{ $globe.Data.Integrity }}">
     <div class="wrap">
       <div class="grid split home-split">
         <div class="split__text worldwide__text">

@@ -3,9 +3,10 @@
 // the countries that use Lead-DBS tinted periwinkle (deeper with more launches); the launches of one
 // day replayed in a minute as small leads with a coral tip. It turns slowly towards where people are
 // working; a mouse can drag it and read a country's total; the round button pauses it. Countries only.
-// Data: data/usage.json, inlined by layouts/home.html. The map (assets/data/world-110m.json, Natural
-// Earth via world-atlas) is fetched when the section comes near the screen. d3-array, d3-geo and
-// topojson-client (assets/js/vendor/, ISC) are bundled before this file.
+// Data: data/usage.json, inlined by layouts/home.html. This file, with d3-array, d3-geo and
+// topojson-client (assets/js/vendor/, ISC) bundled before it, is loaded by assets/js/main/home.js when
+// the section comes near the screen; the map (assets/data/world-110m.json, Natural Earth via
+// world-atlas) is fetched then, at the same distance.
 (() => {
   const sec = document.getElementById('worldwide');
   const src = sec && sec.querySelector('[data-globe-data]');

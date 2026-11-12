@@ -180,3 +180,22 @@ document.querySelectorAll('.fig-strip').forEach((strip) => {
     btn.setAttribute('aria-label', held ? 'Play the quotes' : 'Pause the quotes');
   });
 })();
+
+// ------------------------------------------------------------------ the home page's globe: its script
+// The globe (assets/js/globe.js with d3 and topojson, about 70 KB) is not needed until its section is
+// near: its script is added when the section comes within 800 px of the screen, the distance at which
+// globe.js then fetches the map (layouts/home.html, data-globe-src and data-globe-integrity).
+(() => {
+  const sec = document.getElementById('worldwide');
+  const src = sec?.dataset.globeSrc;
+  if (!src || !('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver((es) => {
+    if (!es.some((e) => e.isIntersecting)) return;
+    io.disconnect();
+    const s = document.createElement('script');
+    s.src = src;
+    s.integrity = sec.dataset.globeIntegrity;
+    document.head.append(s);
+  }, { rootMargin: '800px 0px' });
+  io.observe(sec);
+})();

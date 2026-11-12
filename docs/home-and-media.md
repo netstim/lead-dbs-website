@@ -139,7 +139,8 @@ or network name; do not add any.
 
 - **The globe** is drawn by `assets/js/globe.js` with d3-array, d3-geo and topojson-client
   (`assets/js/vendor/`, ISC licence) and the Natural Earth country map `assets/data/world-110m.json`
-  (from the world-atlas package). The map is fetched when the section comes near the screen. Without
+  (from the world-atlas package). The script and then the map are fetched when the section comes within
+  800 px of the screen (`assets/js/main/home.js` adds the script). Without
   JavaScript the section shows its words only. Its texts are `worldwide:` in `content/_index.md`.
 - **The page `/usage/`** is `content/usage/index.md` (chart headings) and `layouts/usage.html`. It runs no
   script: the charts are inline SVG, coloured in `assets/css/site.css` ("usage").
