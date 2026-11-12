@@ -59,7 +59,7 @@ features:
   more: {label: "What Lead-DBS does", url: "/helpsupport/knowledge-base/lead-dbs-methods/"}
   data:
     page: "/helpsupport/knowledge-base/atlasesresources"
-    text: "All in MNI space, many included with Lead-DBS."
+    text: "Most in MNI space, many included with Lead-DBS."
     image: "head-data.jpg"
     crop: [1500, 150, 2950, 1250]
     links:
