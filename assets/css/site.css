@@ -293,6 +293,10 @@ html:not(.js) .nav__link .chev { display: none; }
   .nav__bar { gap: var(--s-2); }
   .nav__logo { min-height: 44px; gap: 6px; white-space: nowrap; }
   .nav:not(.is-open) .nav__actions > .nav__download { display: none; }
+}
+/* the narrowest phones (320px): the theme toggle joins them in the sheet's bar, so the menu button fits */
+@media (max-width: 359px) {
+  .nav:not(.is-open) .nav__actions > .nav__theme { display: none; }
   .nav.is-open .nav__links { padding-bottom: calc(48px + 2 * var(--s-4) + var(--s-6)); }
   .nav.is-open .nav__actions { position: fixed; inset: auto 0 0; z-index: 51; display: grid; grid-template-columns: 1fr; gap: var(--s-2);
     padding: var(--s-4) var(--gut) calc(var(--s-4) + env(safe-area-inset-bottom)); background: var(--bg); border-top: 1px solid var(--line); }
