@@ -9,7 +9,7 @@ substitute for deployment, a successful scheduled run, or client-release testing
 | Area | Required evidence | Status |
 | --- | --- | --- |
 | Historical access | Validated aggregate import, honest definitions, tests and CI | Implemented in 32add7a |
-| Historical downloads | Versioned inventory, categories, deduplication, diagnostics, public report, approved globe contract | Implemented and locally tested; final independent review pending |
+| Historical downloads | Versioned inventory, categories, deduplication, diagnostics, public report, approved globe contract | Implemented, locally tested and approved by Opus 5.5 medium at 017791c (2026-11-13) |
 | Actual producers | Audit deployed PHP and public MATLAB build call sites and response semantics | Public MATLAB source inspected; live PHP access pending |
 | Structured collection | Schema validation, bounded inputs, UTC, explicit event/outcome, privacy-safe identity, no patient/path/free-text collection | PHP implementation and loopback tests pass; lab activation pending |
 | Compatibility | Existing download redirects/file delivery unchanged; opted-out clients send no optional analytics | Internal hook and default-off MATLAB helpers prepared; deployed handler audit and MATLAB runtime/release test remain lab dependencies |
@@ -17,7 +17,7 @@ substitute for deployment, a successful scheduled run, or client-release testing
 | Ingestion and reporting | Idempotent ingestion, atomic aggregate report, backup/restore, quality checks | Local PHP-to-Python end-to-end test passes; report is a separate UTC series, not automatically merged into legacy globe |
 | Monitoring | Health/freshness checks, successful scheduled run and actionable failure state | Script, failure/age tests and inactive cron example prepared; lab schedule and monitoring activation pending |
 | Deployment | Host prerequisites, backup/rollback, live end-to-end smoke tests | Handoff bundle and activation/rollback guide prepared. Server writes prohibited in this session; lab must execute/verify |
-| Independent review | Opus 5.5 medium reviews this whole checklist and implementation; findings addressed | Pending |
+| Independent review | Opus 5.5 medium reviews this whole checklist and implementation; findings addressed | Completed 2026-11-13 at 017791c: code and local handoff ready; no code blockers. Production dependencies remain open. |
 
 ## Audit evidence
 
@@ -60,10 +60,27 @@ an explicit open dependency; it is not marked complete by narrowing the scope.
   private output paths are enforced.
 - The globe retains exactly 39,403 requests, identical monthly totals and
   country counts to #24; only equal-count country ordering is deterministic.
-  Homepage wording describes recorded requests rather than completed transfers.
+  Homepage wording describes recorded requests rather than completed transfers;
+  the user approved preserving #24’s selection and using “download requests”.
 - Desktop/mobile browser checks preserve monthly progression, pause/play/drag,
   all-country anchor opening and the added download tables without overflow.
 - This branch does not claim the whole production analytics setup is finished.
   The coordinating session explicitly reserves deployment for the lab. A full
   production completion verdict requires their activation and client-release
   evidence; independent code review must not waive those dependencies.
+
+## Independent review outcome (2026-11-13)
+
+Opus 5.5 medium reviewed commit `017791c829472980d164a4158815d53aed80021b`
+and independently reran the Python, PHP, chart, Hugo and site checks. Two
+handoff bundle builds were byte-identical; a fresh unpack installed the locked
+dependencies and passed all 16 included Python tests plus the PHP tests, with
+none skipped. Verdict: code and local handoff ready, with no remaining code
+blockers. This document update records that verdict; it does not certify live
+activation.
+
+Optional follow-ups from the review: decouple retention from GeoIP database
+loading; reject operational output paths that collide with internal state files;
+expose hourly retention failures independently of daily status. These are
+hardening opportunities, not prerequisites for this reviewed handoff. The lab
+must still verify every pending production item in the table above.
