@@ -83,6 +83,21 @@ Scientific accuracy, obsolete instructions and missing descriptive image alt tex
 from the original manual still need subject-matter review. Figures without source alt text
 use their caption or a chapter-based label; the importer does not infer scientific descriptions.
 
+## Screenshot follow-up
+
+The existing GitBook screenshots are accepted for this migration. Replace the soft
+GUI figures with authentic higher-resolution captures later, starting with:
+
+- Coregistration controls: `assets/manual/16d44d8d6ed46fdd.png`, used in
+  `content/manual/lead-dbs/step3-volume-registrations/coregister-volumes/_index.md`.
+- Sweetspot Explorer overview and model setup: `assets/manual/3ae1e40a0a40ebff.png`
+  and `assets/manual/e433ef760758138f.png`, used in
+  `content/manual/lead-group/sweetspot-explorer/_index.md`.
+
+When replacing these figures, verify that their GUI labels, numbered arrows and
+captions still agree with the written steps. Keep the current images until the
+replacement captures are available and checked.
+
 ## Checks
 
 The existing PR and deployment workflows enforce the manual's design tokens, links,
