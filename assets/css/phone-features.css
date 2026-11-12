@@ -1,9 +1,29 @@
 /* ================================================================ the Features page on a phone (below 640px)
    content/helpsupport/knowledge-base/lead-dbs-methods/, the capabilities, capability, tools, chapter,
    chapters and jumps shortcodes, assets/js/main/features.js. Loaded after assets/css/phone.css (the
-   shared phone chrome). Nothing here applies from 640px up. */
+   shared phone chrome). Nothing here applies from 640px up.
+   After vercel.com's feature module on a phone: each chapter is one module, repeated. A small numbered
+   label (the chapter's heading, set small), the chapter's two-tone sentence as the large statement, one
+   square black stage that scrolls sideways (one picture per name), a row of thin segments that counts,
+   then the names in type only: the chosen one in ink with its sentence and its links, the others grey.
+   Swiping the stage chooses a name, a tap on a name turns the stage (features.js). Tools is the same
+   module on a black band. Without script every name stands open under the stage. */
 @media (max-width: 639px) {
   /* the page's intro: its statement is the lead in the page head (assets/css/phone.css), and the jump
      chips are left out (the numbered group labels orient on a phone) */
   .prose:has(> .cap-show) > .page-intro { display: none; }
+  /* so the first chapter's label stands 96px (its own padding) under the page head */
+  .doc-layout:has(> .prose > .cap-show) { padding-top: 0; }
+
+  /* -------------------------------------------------------------- a chapter's head
+     the number and the heading as a small label (14/20, medium), the lede under it as the statement
+     (32/36, medium, tight): its bold clause in ink, the rest muted */
+  .prose .chapter { margin: 0; padding-top: var(--s-9); }
+  .prose .chapter__head { grid-template-columns: auto minmax(0, 1fr); column-gap: calc(var(--s-1) * 2.5); row-gap: var(--s-4); }
+  .prose .chapter__n { color: var(--muted); font-size: var(--t-small); font-weight: 500; line-height: calc(var(--s-4) + var(--s-1)); font-variant-numeric: tabular-nums; }
+  .prose .chapter__head h2 { font-family: var(--font-text); font-size: var(--t-small); font-weight: 500; line-height: calc(var(--s-4) + var(--s-1)); letter-spacing: normal; text-wrap: wrap; }
+  .prose .chapter__head > p { grid-column: 1 / -1; max-width: none; font-family: var(--font-display); font-size: var(--t-h2); font-weight: 500;
+    line-height: calc(var(--t-h2) + var(--s-1)); letter-spacing: var(--display-tracking-xl); }
+  .prose .chapter + :is(.cap-show, .tool-cells) { margin-top: calc(var(--s-6) + var(--s-2)); }
+
 }
