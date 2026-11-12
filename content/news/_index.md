@@ -9,8 +9,8 @@ outputs: ["html", "rss"]
 keywords: ["news", "announcements", "releases", "rss", "feed", "news feed"]
 # the picture shown when the page is shared (head.html)
 share: "images/renders/lead-closeup.jpg"
-# the cards at the end of the page (layouts/_partials/next-steps.html)
+# "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
-  - {page: "/subscribe-to-our-newsletter/", text: "Release and workshop news by e-mail"}
-  - {page: "/events/", text: "Developer meetings and workshops"}
+  - {page: "/subscribe-to-our-newsletter/"}
+  - {page: "/events/"}
 ---
