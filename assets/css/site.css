@@ -1288,9 +1288,7 @@ html .prose .atlas-groups .atlas-groups__n { color: var(--muted); font-weight: 5
 html .prose .btn.btn--outline { min-height: 44px; height: auto; padding: 0; border: 0; background: none; color: var(--ink);
   text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; text-decoration-color: var(--line-strong); }
 html .prose .btn.btn--outline:hover { text-decoration-color: currentColor; transform: none; }
-html .prose .dl-alt, html .prose .download-grid--secondary { gap: 0 var(--s-6); }
-html .prose .dl-alt .btn::before { content: ""; flex: none; width: 18px; height: 18px; background: currentColor;
-  -webkit-mask: var(--dl-mark) center / contain no-repeat; mask: var(--dl-mark) center / contain no-repeat; }
+html .prose .download-grid--secondary { gap: 0 var(--s-6); }
 :root { --dl-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10'/%3E%3C/svg%3E"); }
 html .prose .download-grid--secondary li { flex: 0 1 auto; min-width: 0; }
 html .prose .download-grid--secondary .download-btn { width: auto; min-height: 44px; gap: var(--s-2); }
@@ -1303,14 +1301,6 @@ html .prose .download-grid--secondary .download-btn { width: auto; min-height: 4
 .prose .download-btn::after { margin-left: auto; }
 .download-btn__icon { width: 18px; height: 18px; flex: none; }
 @media (max-width: 639px) { .prose .download-grid li { flex-basis: 100%; } }
-/* the download page's main button on a phone: the whole width, one line ("Download Lead-DBS 3.2.1"
-   fits at 320px), with the box around it a little narrower in padding */
-@media (max-width: 639px) {
-  .prose .dl-release { padding: var(--s-4); }
-  .prose .dl-release .dl-release__btn { width: 100%; padding-inline: var(--s-3); gap: var(--s-2); font-size: var(--t-body); white-space: nowrap; }
-  .prose .dl-release .dl-release__via { flex-basis: 100%; }
-}
-
 /* ---------------------------------------------------------------- search (dialog, /search/, 404) */
 .search-dialog { width: min(720px, calc(100% - 2 * var(--s-4))); max-height: min(80svh, 760px); margin: calc(var(--nav) + var(--s-4)) auto auto; padding: 0; border: 1px solid var(--line); border-radius: var(--r-lg);
   background: var(--bg); color: var(--ink); box-shadow: 0 24px 64px -24px rgb(31 48 56 / .45); overflow: hidden; }
@@ -1399,3 +1389,53 @@ html .prose .download-grid--secondary .download-btn { width: auto; min-height: 4
   .footer.is-foldable .footer__col > ul { grid-column: 1 / -1; display: none; padding-bottom: var(--s-3); }
   .footer.is-foldable .footer__col.is-expanded > ul { display: grid; }
 }
+/* Dedicated newsletter signup: a compact field group, with an independent preview status. */
+.prose .newsletter-signup { max-width: 480px; margin-bottom: var(--s-8); }
+.prose .newsletter-signup__intro { margin-bottom: var(--s-5); }
+.prose .newsletter-signup__intro h2 { margin: 0 0 var(--s-2); font-size: var(--t-h3); line-height: 1.2; }
+.prose .newsletter-signup__intro p { margin: 0; font-size: var(--t-body); line-height: 1.55; color: var(--muted); }
+.newsletter-form--full { gap: var(--s-5); margin: 0; }
+.newsletter-form__names { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
+.newsletter-form--full .field { gap: var(--s-2); }
+.newsletter-form--full .field input { height: 44px; min-height: 44px; padding: 10px 12px; box-shadow: 0 1px 2px rgb(0 0 0 / .03); }
+.newsletter-form--full .field input::placeholder { color: var(--muted); opacity: .8; }
+.newsletter-form--full .btn-row { display: block; }
+.newsletter-form--full .btn { width: 100%; height: 44px; min-height: 44px; border-radius: var(--r-sm); font-size: 15px; }
+.newsletter-form--full .btn[disabled] { color: var(--bg); background: var(--ink); border: 1px solid var(--ink); opacity: .55; }
+.prose .newsletter-form--full .form-note { margin: calc(-1 * var(--s-2)) 0 0; font-size: 13px; line-height: 1.5; }
+.prose .newsletter-signup__optional { padding-top: var(--s-5); margin: var(--s-5) 0 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; line-height: 1.6; }
+@media (max-width: 399px) { .newsletter-form__names { grid-template-columns: minmax(0, 1fr); gap: var(--s-5); } }
+
+/* Slack: introduce the workspace before the invitation action. */
+.prose .slack-logo { display: block; width: 48px; height: 48px; max-width: none; margin: 0 0 var(--s-5); }
+.prose .slack-lead { margin: 0 0 var(--s-4); max-width: 50ch; font-size: var(--t-lead); line-height: 1.55; }
+.prose .slack-instructions { margin: 0 0 var(--s-5); color: var(--muted); font-size: var(--t-body); line-height: 1.55; }
+.slack-instructions + .button-wrap { margin-bottom: var(--s-5); }
+.prose .slack-member { margin: 0; font-size: var(--t-small); }
+.prose .slack-support { margin: var(--s-6) 0 0; padding-top: var(--s-5); border-top: 1px solid var(--line); color: var(--muted); font-size: var(--t-small); line-height: 1.6; }
+
+/* Dataset overview: brief facts first, specifications available on demand. */
+.prose .resource-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5) var(--s-6); max-width: var(--measure); margin: var(--s-6) 0 var(--s-5); }
+.resource-facts > div { min-width: 0; padding-top: var(--s-4); border-top: 1px solid var(--line); }
+.prose .resource-facts dt { margin: 0 0 var(--s-2); font-size: 20px; line-height: 1.3; font-weight: 600; letter-spacing: -.015em; }
+.prose .resource-facts dd { margin: 0; font-size: var(--t-small); line-height: 1.55; color: var(--muted); }
+.resource-actions { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-4) var(--s-5); max-width: var(--measure); margin-bottom: var(--s-6); }
+.prose .resource-actions > .button-wrap { margin: 0; }
+.resource-actions .btn { background: var(--ink); color: var(--bg); font-size: var(--t-small); }
+.resource-actions .btn:hover { background: color-mix(in srgb, var(--ink) 85%, var(--bg)); }
+.resource-actions .link { font-size: var(--t-small); }
+.prose details.more.dataset-details { max-width: var(--measure); margin: 0 0 var(--s-7); }
+.prose details.more.dataset-details > summary { display: flex; justify-content: space-between; align-items: center; font-size: var(--t-small); font-weight: 500; }
+.prose details.more.dataset-details > summary::before, .prose details.more.dataset-details[open] > summary::before { content: none; }
+.prose details.more.dataset-details > summary::after { content: ""; width: 7px; height: 7px; margin-right: 3px; border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted); transform: rotate(45deg); }
+.prose details.more.dataset-details[open] > summary::after { transform: rotate(225deg); }
+.dataset-details .summary-box { margin: 0; }
+.prose .dataset-details .summary-box dl { border-top: 0; }
+.prose .dataset-details .summary-box dt:last-of-type, .prose .dataset-details .summary-box dd:last-of-type { border-bottom: 0; }
+@media (max-width: 479px) {
+  .prose .resource-facts { gap: var(--s-5) var(--s-4); }
+  .prose .resource-facts dt { font-size: 18px; }
+}
+
+.prose .dataset-intro { margin: 0; max-width: var(--measure); font-size: var(--t-lead); line-height: 1.55; }
+

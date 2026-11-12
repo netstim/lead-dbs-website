@@ -19,8 +19,6 @@ next:
   - {page: "/helpsupport/slack-user-channel/", text: "Questions about using Lead-DBS"}
 ---
 
-Our newsletter is sent out rarely and informs you about new Lead-DBS releases, crucial updates and bugs/issues, and upcoming workshops. Subscribing is optional: you can [download Lead-DBS](/download/) without it.
-
 {{< newsletter >}}
 
 ## Recent issues

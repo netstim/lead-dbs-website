@@ -142,20 +142,29 @@
   .prose .paper-refs a { padding-block: 13px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 }
 
-/* the download page: the current release with one main button, the other servers as outline buttons */
-.dl-release { margin: 0 0 var(--s-6); padding: var(--s-5); border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); max-width: none; }
-.prose .dl-release__meta { margin: 0 0 var(--s-4); font-size: var(--t-small); color: var(--muted); }
-.prose .dl-release__meta abbr { text-decoration: none; }
-.prose .dl-release__main { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-4); margin: 0; }
-.prose .dl-release__btn { min-height: 56px; padding-inline: var(--s-6); gap: var(--s-3); font-size: 18px; text-decoration: none; }
+/* Current release: one download action, with mirrors and release links below. */
+.dl-release { max-width: none; margin: 0 0 var(--s-7); }
+.prose .dl-release__meta { margin: 0 0 var(--s-5); font-size: var(--t-small); line-height: 1.5; color: var(--muted); }
+.dl-release__main { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-4) var(--s-5); }
+.prose .dl-release__btn { height: 44px; min-height: 44px; padding-inline: 20px; gap: 10px; background: var(--ink); color: var(--bg); font-size: var(--t-body); font-weight: 500; text-decoration: none; }
+.prose .dl-release__btn:hover { background: color-mix(in srgb, var(--ink) 85%, var(--bg)); }
 .prose .dl-release__btn::after { content: none; }
-.dl-release__via { font-size: var(--t-small); color: var(--muted); }
-.prose .dl-release__alt-label { margin: var(--s-5) 0 var(--s-2); font-size: var(--t-small); }
-.prose .dl-alt { display: flex; flex-wrap: wrap; gap: var(--s-2); list-style: none; padding: 0; margin: 0; }
-.prose .dl-alt li { margin: 0; }
-.prose .dl-alt .btn { min-height: 44px; text-decoration: none; }
-.prose .dl-alt .btn::after { content: none; }
-@media (max-width: 639px) { .prose .dl-release__btn { width: 100%; justify-content: center; } }
+.prose .dl-release__file { margin: 0; font-size: var(--t-small); line-height: 1.5; color: var(--muted); }
+.dl-release__file span { display: block; font-size: 12px; }
+.dl-release__mirrors { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--s-2) var(--s-4); margin-top: var(--s-5); font-size: var(--t-small); line-height: 1.5; }
+.dl-release__mirrors > span { color: var(--muted); font-size: 13px; }
+.prose .dl-release__mirrors ul { display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-4); list-style: none; margin: 0; padding: 0; max-width: none; }
+.prose .dl-release__mirrors li { margin: 0; max-width: none; }
+.dl-release__links { display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-5); padding-top: var(--s-4); margin-top: var(--s-5); border-top: 1px solid var(--line); font-size: var(--t-small); line-height: 1.5; }
+.prose .dl-release .link { color: var(--muted); background: none; font-size: var(--t-small); font-weight: 400; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
+.dl-release .link::after { content: none; }
+.prose .dl-release .link:hover { color: var(--ink); text-decoration-color: currentColor; }
+@media (max-width: 639px) {
+  .dl-release__main { align-items: center; gap: var(--s-3) var(--s-4); }
+  .dl-release__mirrors { display: block; }
+  .prose .dl-release__mirrors ul { margin-top: var(--s-2); gap: var(--s-3) var(--s-5); }
+  .dl-release__mirrors a { display: inline-block; min-height: 32px; }
+}
 .prose .download-grid--secondary .download-btn { min-height: 48px; }
 /* release history */
 .prose .release-table th[scope="row"] { white-space: nowrap; background: none; }
@@ -251,17 +260,16 @@
    every fold now is; the class stays for the pages that set it */
 .prose details.more--wide { max-width: none; }
 
-/* {{< summary >}}: the box at the top of an atlas page, a definition list of what, space, get it, version */
-.summary-box { max-width: var(--measure); margin: 0 0 var(--s-5); padding: var(--s-4) var(--s-5); border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); }
-.prose .summary-box dl { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-1) var(--s-5); margin: 0; }
-/* its terms are labels, as in every other spec row of the site (site.css: --label-*) */
-.prose .summary-box dt { font-family: var(--font-label); font-size: var(--label-size); font-weight: var(--label-weight); line-height: 1.4; letter-spacing: var(--label-tracking); text-transform: var(--label-case); font-synthesis: none; color: var(--muted); padding-top: .25em; }
-.prose .summary-box dd { margin: 0 0 var(--s-2); }
-/* its dates, times and versions in medium weight, as on the event cards (site.css: time and .num) */
+/* Resource summaries use open rows; labels stay secondary to their values. */
+.summary-box { max-width: var(--measure); margin: var(--s-6) 0; }
+.prose .summary-box dl { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 var(--s-5); margin: 0; border-top: 1px solid var(--line); }
+.prose .summary-box dt { padding: var(--s-4) 0 var(--s-1); color: var(--muted); font: 400 var(--label-size)/1.5 var(--font-text); }
+.prose .summary-box dd { margin: 0; padding: 0 0 var(--s-4); border-bottom: 1px solid var(--line); font-size: var(--t-body); line-height: 1.55; }
 .prose .summary-box dd :where(time, .num) { font-family: var(--font-meta); font-weight: 500; letter-spacing: 0; }
 @media (min-width: 640px) {
-  .prose .summary-box dl { grid-template-columns: max-content minmax(0, 1fr); }
-  .prose .summary-box dd { margin: 0; }
+  .prose .summary-box dl { grid-template-columns: minmax(88px, max-content) minmax(0, 1fr); }
+  .prose .summary-box dt { padding-block: var(--s-4); border-bottom: 1px solid var(--line); }
+  .prose .summary-box dd { padding-block: var(--s-4); }
 }
 
 /* {{% papers %}}: the full references on Publications, one per row */
