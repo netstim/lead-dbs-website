@@ -154,9 +154,9 @@ until the nightly build of that day. `hugo server -F` shows it now. Pictures in 
 1. `data/release.yaml`: `version`, `date`, `summary` (one or two sentences for the home page), `notes`
    (the post about the release), `changes_url` (the GitHub compare view from the release before),
    and `matlab`, `toolboxes`, `memory`, `standalone` and the rest if they changed (the manual's
-   [installation page](https://netstim.gitbook.io/leaddbs/installation) is the reference for the requirements). Every version, date and requirement
-   on the site comes from this file: the home page, the footer, and pages that write
-   `{{< release version >}}`, `{{< release date >}}`, `{{< release matlab >}}` or `{{< release standalone >}}`.
+   [installation page](https://netstim.gitbook.io/leaddbs/installation) is the reference for the requirements). Every current version, date and requirement
+   on the site comes from this file: the home page, the download page (and its browser title), First steps,
+   the structured data, and the archive note on old news posts.
 2. `data/releases.yaml`: the same version, date and announcement as a new first row of the release history
    (the table at `/download/#releases`); the build stops if its first row is not the version in `release.yaml`.
 3. A news post about the release (above), titled "Lead-DBS 3.3 released" (a few words may follow after a
@@ -164,8 +164,8 @@ until the nightly build of that day. `hugo server -F` shows it now. Pictures in 
    was announced; when that differs from the release date, the post's head and the release history show both.
 4. The download links on `/download/` if the files' names changed (they point to `/release/download.php` on
    the current server; see [Deployment](../README.md#deployment)).
-5. Search the content for the old version number (`grep -rn "3\.2\.1" content/`): old news posts keep theirs,
-   anything current should use the shortcode.
+5. Search the content for the old version number (`grep -rn "3\.2\.1" content/`): old news posts keep theirs;
+   change any other mention by hand.
 
 ## Building blocks
 

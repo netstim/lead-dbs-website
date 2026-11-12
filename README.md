@@ -67,14 +67,15 @@ outside its own section, one hairline row each, title only.
 
 ```yaml
 next:
-  - {page: "/helpsupport/first-steps/", text: "Your first electrode localization"}  # named by its linkTitle
-  - {page: "/develop/#add-your-atlas-or-dataset", name: "Add your atlas or dataset", text: "Missing an atlas?"}
-  - {url: "https://netstim.gitbook.io/leaddbs", name: "Manual", text: "Each step of a full analysis"}
+  - {page: "/helpsupport/first-steps/"}                                       # named by its linkTitle
+  - {page: "/develop/#add-your-atlas-or-dataset", name: "Add your atlas or dataset"}
+  - {url: "https://netstim.gitbook.io/leaddbs", name: "Manual"}                # another site: url and name
 ```
 
 Point to the related page, the next tutorial step or the section's hub; write no "Next" section in the text.
-The build stops on a path that is not a page, on an entry without `text`, and on more than three entries. News
-posts get their newer and older post and "All news" as their cards by themselves.
+The build stops on a path that is not a page or is the page itself, on an entry that has neither `page` nor
+`url` and `name`, and on more than three entries; links to pages of the page's own section are left out
+(the sidebar lists them). News posts link their newer and older post and "All news" by themselves.
 
 ### Add a page
 
@@ -96,7 +97,7 @@ Give it a `title`, a `description` (at most 155 characters) and, if it belongs i
 | A paper about Lead-DBS, a method or a tool | `data/papers.yaml` (see [Building blocks](docs/editing.md#building-blocks): `paper`, `papers`) |
 | Requirements and install steps (download page; First steps links there) | `data/release.yaml` (MATLAB, toolboxes, SPM12, memory) and `data/install.yaml` (disk space, data, the steps and their small pictures) |
 | An atlas or parcellation | `atlases.yaml` next to the atlas page's `index.md` (see [Atlas catalogues](docs/editing.md#atlas-catalogues)) |
-| Home page texts, quotes, help links, history, funders, citation; the hero's `proof` (a list of short parts) and `manual` (`{label, link, url}`, shown as a fact) | `content/_index.md` (front matter only; the layout is `layouts/home.html`) |
+| Home page texts, quotes, help links, history, funders, citation; the hero's `proof` (a list of short parts) and `manual` (`{label, url}`, shown as a fact) | `content/_index.md` (front matter only; the layout is `layouts/home.html`) |
 | **Events** (developer meetings, workshops) | `data/events.yaml` (see [Events](docs/editing.md#events)) |
 | Home page pictures | `assets/images/renders/` (see [Pictures on the home page](docs/home-and-media.md#pictures-on-the-home-page)) |
 | Gallery ("Made with Lead-DBS", `/gallery/`) | Figures from papers: `data/gallery.yaml` + image files in `static/gallery/`. Lab renders: `content/gallery/_index.md` (see [Gallery](docs/home-and-media.md#the-gallery-of-published-figures)) |
@@ -120,7 +121,8 @@ python3 .github/scripts/check-copy.py /tmp/site                             # le
 python3 .github/scripts/check-css-used.py /tmp/site /tmp/preview            # selectors that style nothing
 ```
 
-`check-design.py` keeps budgets for literal colours, `!important` and px spacing that may only go down;
+`check-design.py` keeps budgets for literal colours, `!important`, px spacing, literal line-heights and
+letter-spacings that may only go down;
 after removing some, `--ratchet` lowers them. See [docs/design.md](docs/design.md).
 
 ## Deployment

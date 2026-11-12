@@ -25,12 +25,15 @@ The renders are BrainDeer renders of **nine** of the ten Lead Tutor patients (20
 the insertion frames; `lead-closeup.jpg` and the hero clip show one lead of one of them); the
 pathway-activation and fibre-filtering pictures are older example analyses of all ten. A caption or alt text
 that gives a number of patients must match its picture. The faint picture behind an inner page's title
-depends on the page's menu group (`layouts/_partials/page-head-render.html`): `head-features.jpg` (one lead
-with its stimulation volume and activated fibres), `head-docs.jpg` (a lead on the axes of MNI space),
-`head-data.jpg` (DISTAL atlas structures, no leads), `head-community.jpg` (the cohort's 18 leads from below),
-`head-about.jpg` (a 7T slab from above), plus `lead-closeup.jpg` for News and `cohort-front.jpg` for
-Download; each group has its own, so keep them distinct. All are 3200×1440 BrainDeer renders of template-
-space data (Lead Tutor, DISTAL, 7T Edlow 2019), black on the left so the title stays readable.
+depends on the page's menu group (`layouts/_partials/page-head-render.html`): Features `head-features.jpg` (one lead
+with its stimulation volume and activated fibres), Docs `lead-closeup.jpg` (one lead, cut to its contacts),
+Atlases `head-data.jpg` (DISTAL atlas structures, no leads), Community `head-community.jpg` (the cohort's 18
+leads from below), About `fiber-filtering-wide.jpg` (fibre bundles, shown whole) and Download
+`cohort-front.jpg`; each group has its own, so keep them distinct. News, Contact, Search, the legal pages and
+404 get no render: their head is a lower band of text. All are BrainDeer renders of template-space data
+(Lead Tutor, DISTAL, 7T Edlow 2019), 1920 to 3200 px wide and black on the left so the title stays readable;
+a crop in the partial is at least 1800 px wide. `head-docs.jpg` and `head-about.jpg` are no longer behind
+a title but remain share pictures (Contact, About, Cite).
 
 The hero clip comes in six files in `static/media/`, each size as AV1 (taken first, by every browser
 that can play it) and a fallback: `hero-lead-stn-av1.mp4` (1600×1000 AV1, 0.45 MB) for windows from
@@ -113,7 +116,7 @@ from open-access papers made with Lead-DBS, in the order of `data/gallery.yaml`,
 - Then open `/gallery/` and check the new figure at 1440 and on a phone.
 
 Figures are shown whole (scaled to fit, never cropped) from resized WebP copies; the link under each
-opens the original file. Keep it to at most 10 figures, each understandable without context and
+opens the original file. Keep it to about a dozen figures, each understandable without context and
 really made with Lead-DBS.
 
 ## Usage figures (the globe on the home page and /usage/)

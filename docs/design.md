@@ -12,7 +12,8 @@ pull request by `.github/workflows/checks.yml` and before every deploy):
 - weights 400, 500 and 600 only;
 - tokens are defined in `assets/css/base.css`, the palette (and `--render`/`--on-render`, the renders' black
   and the white on it) at the top of `assets/css/site.css`;
-- literal colours, `!important` and px spacing have budgets that may only go down.
+- literal colours, `!important`, px spacing, literal line-heights and letter-spacings have budgets that may
+  only go down.
 
 A value that has to break a rule says why on its line: `/* design-exempt: <reason> */`.
 `.github/scripts/check-copy.py` reads the built pages' text and fails on template leftovers, text that
@@ -36,7 +37,7 @@ insertion on the home page). It opens the header's menu sheet and panels, plays 
 and checks events against the visitor's clock.
 
 - **Sections take the height of their content.** The hero is the window's height less about 90 px (so the
-  row of figures under it shows on the first screen; at least 600, at most 1040 px) and grows with its
+  row of figures under it shows on the first screen; at least 540, at most 860 px) and grows with its
   content; the other sections share one vertical rhythm (`--rhythm`).
 - **The header over black**: while the home page's hero or an inner page's black head lies under it, the
   header is black (clear over the hero on a desktop) with white words; past it, the light bar returns
@@ -50,13 +51,13 @@ and checks events against the visitor's clock.
   "Docs", "Atlases"; breadcrumbs, the band and the sheet keep the full names), and the main action is a
   short "Download" pill (white on the black bar, dark grey on the light one). GitHub is linked from the
   menu sheet and the footer, not from the bar. A word's panel opens after the pointer rests on
-  it for 150 ms, at once on keyboard focus.
+  it for a moment (about 180 ms; switching between words is quicker), at once on keyboard focus.
 - **The hero's entrance**: the title's words rise line by line, then the lead, the buttons and the facts fade
   up while the clip settles. The page head hides the words until `main.js` starts it, and shows them anyway
   after 700 ms; under reduced motion nothing moves.
 
 - Palette ("Blend", tokens at the top of `site.css`): white ground `#ffffff`, a grey surface `#f5f6f7`,
-  warm dark grey ink `#2f3437`, muted `#6f7479`; one action colour, deep blue `#2b5c8a` (buttons, links,
+  warm dark grey ink `#2f3437`, muted `#6a6f74`; one action colour, deep blue `#2b5c8a` (buttons, links,
   focus); coral `#e0645a` as the one signal; periwinkle `#c6cdf7` and blush `#f4c6cf` as pale tints. The
   colours come from Wes Anderson films (The Darjeeling Limited, The Grand Budapest Hotel), the family of
   the logo's wedges. The renders sit on black, and so does every inner page's title.
