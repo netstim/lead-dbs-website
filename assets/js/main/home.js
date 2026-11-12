@@ -162,6 +162,19 @@ document.querySelectorAll('.fig-strip').forEach((strip) => {
   else addEventListener('load', start, { once: true });
 })();
 
+// ------------------------------------------------------------------ the quotes on a phone
+// There the two rows stand still and the quotes are one row of cards that scrolls sideways
+// (assets/css/phone-home.css): while it scrolls it is a tab stop of its own, so the arrow keys move it.
+(() => {
+  const drift = document.querySelector('.drift');
+  if (!drift) return;
+  const update = () => {
+    if (drift.scrollWidth > drift.clientWidth + 4) drift.tabIndex = 0; else drift.removeAttribute('tabindex');
+  };
+  addEventListener('resize', update);
+  update();
+})();
+
 // ------------------------------------------------------------------ the home page's drifting quotes
 // The round button beside "All quotes" holds both rows until it is pressed again (hover holds them only
 // while the pointer rests). Under reduced motion the rows stand anyway, so the button stays hidden.

@@ -205,7 +205,7 @@
             {{ range $row }}{{ $paper := eq .kind "paper" }}{{ $roles := split .role ", " }}
             <div class="drift__item"{{ if not $copy }} role="listitem"{{ end }}><figure title="“{{ .text }}”">
               <blockquote><span aria-hidden="true"><span class="drift__q">“</span>{{ .phrase }}<span class="drift__q">”</span></span><span class="sr-only">{{ .text }}</span></blockquote>
-              <figcaption><span><b>{{ index (split .name ", ") 0 }}</b>{{ if $paper }} <em>{{ .role }}</em>{{ else }}, {{ index $roles (sub (len $roles) 1) }}{{ end }}</span></figcaption>
+              <figcaption><span><b>{{ index (split .name ", ") 0 }}</b>{{ if $paper }} <em>{{ .role }}</em>{{ else }}, {{ index $roles (sub (len $roles) 1) }}{{ end }}</span>{{ if not $paper }}<span class="drift__who phone-only"><b>{{ index (split .name ", ") 0 }}</b> {{ index $roles (sub (len $roles) 1) }}</span>{{ end }}</figcaption>
             </figure></div>
             {{ end }}
           </div>
@@ -214,6 +214,7 @@
       </div>
       {{ end }}
     </div>
+    {{ with site.GetPage "/about/publications" }}<p class="wrap phone-only render-band__more"><a class="link home-more" href="{{ .RelPermalink }}#what-others-write">All quotes{{ $arrow }}</a></p>{{ end }}
   </section>
   {{ end }}
 
@@ -253,6 +254,7 @@
         {{ end }}
         {{ end }}
       </ul>
+      {{ with $gallery }}<div class="phone-only research-band__actions"><div class="btn-row"><a class="btn btn--secondary" href="{{ .RelPermalink }}">{{ $p.research.link_label }}</a></div></div>{{ end }}
     </div>
   </section>
   {{ end }}
