@@ -170,9 +170,8 @@ help:
   actions:
     - {label: "Join the user Slack", url: "https://inviter.co/lead-dbs"}
     - {label: "Manual", url: "https://netstim.gitbook.io/leaddbs"}
-  links:
-    - {label: "Report a bug on GitHub", url: "https://github.com/netstim/leaddbs/issues"}
-    - {label: "Write to us", url: "/contact/"}
+  # (bug reports and contact are in the footer, so this half ends in one row as the citation does)
+  links: []
 
 # The funders, in one row under the last band. Logo files sit next to this file (content/). url only
 # where the funder's page still exists.

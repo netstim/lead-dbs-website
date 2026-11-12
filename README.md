@@ -279,7 +279,7 @@ drawn on a canvas by scroll position:
   the frames, in file-name order, first frame = leads outside, last = in place.
 - `assets/images/renders/insertion-final.png`: the picture shown until the frames have loaded, under
   reduced motion and without script. It must be the same image as the last frame.
-- `data/insertion.yaml`: its alt text and the caption printed under it.
+- `data/insertion.yaml`: its alt text (the clip has no caption on the home page).
 
 The frames load only after the visitor scrolls and the section is within a quarter screen; a desktop loads
 every second frame and blends between them, a phone loads every third frame of the small set, and a
@@ -516,7 +516,7 @@ opens the page at its entry. Never change an existing `id`: it is the entry's ad
 
 **An atlas page of its own** (DISTAL, FOCUS) opens with its summary box (Lead-OR and Lead Tutor have the same box after
 a one-line intro); a date in it is a `<time datetime="2018-02-05">` element and a version a `<span class="num">`, both
-set in medium weight as on the event cards;
+set in medium weight as on the event pages;
 background and change-logs follow, longer parts folded:
 
 ```markdown

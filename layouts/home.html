@@ -84,9 +84,11 @@
         <div class="span-5 split__text">
           <h2 id="localize-h">{{ partial "nobreak.html" .title }}</h2>
           <p class="t-lead">{{ .text }}</p>
-          <dl class="spec-rows">
-            {{ range .rows }}<div><dt>{{ .name }}</dt><dd>{{ .value }}</dd></div>{{ end }}
-          </dl>
+          {{- /* what goes in and what comes out, as two steps with an arrow between them (not a table) */}}
+          <div class="flow" role="group" aria-label="What goes in and what comes out">
+            {{ range $i, $r := .rows }}{{ if $i }}<svg class="flow__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>{{ end }}
+            <p class="flow__step"><span class="flow__label">{{ .name }}</span> {{ .value }}</p>{{ end }}
+          </div>
           <p><a class="link" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a></p>
         </div>
         {{ if and $final (gt (len $frames) 1) }}
@@ -99,7 +101,6 @@
             <img class="insertion__still" src="{{ $s.RelPermalink }}" srcset="{{ $s.RelPermalink }} 720w, {{ $m.RelPermalink }} 1200w" sizes="(min-width: 1024px) 54vw, 100vw" width="{{ $m.Width }}" height="{{ $m.Height }}" alt="{{ $meta.alt | default "Electrodes of Lead Tutor patients in place in the subthalamic nucleus" }}" loading="lazy" decoding="async">
             <canvas class="insertion__canvas" width="{{ $m.Width }}" height="{{ $m.Height }}" aria-hidden="true"></canvas>
           </div>
-          {{ with $meta.caption }}<figcaption class="insertion__caption">{{ . }}</figcaption>{{ end }}
         </figure>
         {{ else }}
         {{ partial "render.html" (dict "file" "cohort-front.jpg" "alt" "Electrodes of nine Lead Tutor patients, seen from the front, entering the subthalamic nucleus (orange) on both sides, beside the internal pallidum (green) and red nucleus (red), over a 7 tesla MRI slice" "class" "frame frame--photo frame--split span-7 start-6" "sizes" "(min-width: 1024px) 54vw, 100vw") }}
@@ -283,23 +284,29 @@
         <div class="closing__col">
           <h2 class="closing__h">{{ partial "nobreak.html" .title }}</h2>
           {{ with .text }}<p class="closing__text">{{ . }}</p>{{ end }}
-          <div class="btn-row closing__actions">
-            {{ range $i, $l := .actions }}{{ $ext := strings.HasPrefix .url "http" }}
-            <a class="btn {{ if eq $i 0 }}btn--primary{{ else }}btn--secondary{{ end }}{{ if $ext }} btn--ext{{ end }}" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}{{ if $ext }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ else }}{{ $arrow }}{{ end }}</a>
+          {{- /* the first action is the one button; the other actions and the links are one row of links */}}
+          <div class="closing__actions">
+            {{ with index .actions 0 }}{{ $ext := strings.HasPrefix .url "http" }}
+            <a class="btn btn--primary{{ if $ext }} btn--ext{{ end }}" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}{{ if $ext }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ else }}{{ $arrow }}{{ end }}</a>
             {{ end }}
+            <ul class="closing__list">
+              {{ range (after 1 .actions) | append .links }}{{ $ext := strings.HasPrefix .url "http" }}
+              <li><a class="link{{ if $ext }} link--ext{{ end }}" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}{{ if $ext }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ else }}{{ $arrow }}{{ end }}</a></li>
+              {{ end }}
+            </ul>
           </div>
-          <ul class="closing__list">
-            {{ range .links }}{{ $ext := strings.HasPrefix .url "http" }}
-            <li><a class="link{{ if $ext }} link--ext{{ end }}" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}{{ if $ext }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ else }}{{ $arrow }}{{ end }}</a></li>
-            {{ end }}
-          </ul>
         </div>
         {{ with $p.cite }}
         <div class="closing__col cite" id="cite">
           <h2 class="closing__h">{{ partial "nobreak.html" .title }}</h2>
           <p class="closing__text cite__ref">{{ .short | default .reference }}, <a href="https://doi.org/{{ .doi }}">doi:{{ .doi }}</a></p>
-          <div class="btn-row closing__actions">
-            <a class="btn btn--secondary" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a>
+          {{- /* "Copy citation" puts the full reference and its DOI on the clipboard (assets/js/main.js; without
+                 script the button stays hidden) */}}
+          <div class="closing__actions">
+            <button class="btn btn--secondary-solid cite__copy" type="button" data-copy="{{ .reference }} https://doi.org/{{ .doi }}" hidden>Copy citation</button>
+            <ul class="closing__list">
+              <li><a class="link" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a></li>
+            </ul>
           </div>
         </div>
         {{ end }}
