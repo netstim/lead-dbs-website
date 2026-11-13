@@ -116,7 +116,9 @@
   .manual-outline { grid-column: 3; }
 }
 @media (min-width: 1200px) {
-  .docs-header__bar { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(max-content, 1fr); }
+  /* Centre resources independently of the brand and platform-dependent action widths. */
+  .docs-header__bar { position: relative; }
+  .docs-links { position: absolute; left: 50%; transform: translateX(-50%); }
 }
 @media (max-width: 1199px) {
   .manual { grid-template-columns: 14rem minmax(0, 1fr); column-gap: var(--s-7); }

@@ -342,12 +342,14 @@ async function checkManualLayout() {
         require(Math.abs(box.brand.x - 24) <= 1, `Docs brand drifts away from the viewport edge at ${width}px`);
         // measured against the header bar itself: a fixed header's width next to a forced scrollbar differs between Chrome builds
         require(Math.abs(box.download.right - (box.bar.right - 24)) <= 1, `Header actions are inset at ${width}px`);
+        require(Math.abs((box.links.x + box.links.right) / 2 - (box.bar.x + box.bar.right) / 2) <= 1,
+          `Resource links are not centred within the header at ${width}px`);
         require(box.article.width <= 737 && box.article.x >= box.rail.right + 47, `Article overlaps navigation or exceeds its reading width at ${width}px`);
         if (baseline) {
           for (const part of ['brand', 'links', 'download', 'rail', 'article']) {
             for (const dimension of ['x', 'y', 'width']) {
               require(Math.abs(box[part][dimension] - baseline[part][dimension]) <= 1,
-                `${part} ${dimension} jumps between long and short pages at ${width}px`);
+                `${part} ${dimension} jumps between long and short pages at ${width}px on ${chapter}: ${baseline[part][dimension]} -> ${box[part][dimension]}`);
             }
           }
         } else baseline = box;
