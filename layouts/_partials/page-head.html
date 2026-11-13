@@ -22,5 +22,16 @@
     {{- /* a release's announcement that came later than the release itself says both (data/releases.yaml) */}}
     {{ if $post }}<p class="page-head__meta">{{ with partial "release-of.html" . }}{{ if ne (time.Format "2006-01-02" .date) ($.Date.Format "2006-01-02") }}Released <time datetime="{{ time.Format "2006-01-02" .date }}">{{ time.Format "2 January 2006" .date }}</time> · announced {{ end }}{{ end }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time></p>
     {{ else if .Params.showDate }}<p class="page-head__meta">Written <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2006" }}</time>{{ if gt (.Lastmod.Sub .Date).Hours 720.0 }}, updated <time datetime="{{ .Lastmod.Format "2006-01-02" }}">{{ .Lastmod.Format "January 2006" }}</time>{{ end }}{{ if .Params.archived }}, kept for the record{{ end }}</p>{{ end }}
+    {{- /* a phone: the page's one-line lead in the band, under the title. It is the content's first paragraph
+           (or the statement of a page-intro), when that is one short line (at most 100 characters) followed by
+           something other than another paragraph; the copy in the text is hidden on a phone
+           (assets/css/phone.css), this one from 640px up, so a desktop is unchanged. */}}
+    {{ if not $post }}{{ with findRESubmatch `^\s*(?:<div class="page-intro"><div class="page-intro__text">)?<p>((?s:.*?))</p>\s*(?:</div>\s*)?(<[a-z]+[^>]*>)?` .Content 1 }}
+    {{- $m := index . 0 }}{{ $text := index $m 1 }}{{ $plain := plainify $text | htmlUnescape | strings.TrimSpace }}
+    {{- if and $plain (le (len $plain) 100) (ne (index $m 2) "<p>") (not (findRE `<img|\sid=` $text 1)) }}
+    <p class="page-head__lead phone-only">{{ $text | safeHTML }}</p>
+    {{- end }}{{ end }}{{ end }}
+    {{- /* a phone: an event page's flyer, countdown and host (events/head.html) */}}
+    {{ if eq .Layout "event" }}{{ partial "events/head.html" . }}{{ end }}
   </div>
 </header>

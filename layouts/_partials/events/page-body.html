@@ -30,6 +30,79 @@
       {{ with $flyer }}{{ $f := .Resize "960x webp q84" }}
       <figure class="ev-flyer"><a href="{{ .RelPermalink }}"><img src="{{ $f.RelPermalink }}" width="{{ $f.Width }}" height="{{ $f.Height }}" alt="{{ $page.Params.flyer.alt }}" loading="lazy" decoding="async"></a></figure>
       {{ end }}
+      {{- /* a phone (lu.ma's event page; the flyer is in the head, events/head.html): two fact rows (the
+             date with "Add to calendar", the place), the registration card, then About, Hosted by and the
+             other upcoming events. The desktop's body above is hidden there (assets/css/phone-events.css).
+             Once the event is over by the visitor's clock, assets/js/main/events.js hides what carries
+             data-ev-hide-over and shows what carries data-ev-show-over. */}}
+      {{- $nl := "" }}{{ with site.GetPage "/subscribe-to-our-newsletter" }}{{ $nl = .RelPermalink }}{{ end }}
+      {{- $slack := "" }}{{ with site.GetPage "/helpsupport/slack-user-channel" }}{{ $slack = .RelPermalink }}{{ end }}
+      {{- $zoom := strings.Contains (lower $e.where) "zoom" }}
+      <div class="ev-m phone-only">
+        <ul class="ev-facts" aria-label="When and where">
+          <li class="ev-fact">
+            <span class="ev-fact__tile ev-fact__tile--date" aria-hidden="true"><span>{{ $ev.start.Format "Jan" }}</span><b class="num">{{ $ev.start.Format "2" }}</b></span>
+            <span class="ev-fact__text"><time class="ev-fact__t" datetime="{{ $ev.iso_start }}">{{ $ev.when }}</time>{{ with $ev.time }}<time class="ev-fact__d" datetime="{{ $ev.iso_start }}">{{ if strings.Contains $ev.when_short "–" }}From {{ end }}{{ . }}</time>{{ end }}</span>
+            {{- if not $ev.over }}
+            <a class="ev-fact__cal" data-ev-hide-over data-ev-ends="{{ $ev.iso_ends }}" download="{{ urlize $e.title }}.ics" href="{{ partial "events/ics.html" (dict "ev" $ev "details" .RelPermalink) | safeURL }}"><svg class="ev-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/></svg><span class="sr-only">Add to calendar</span></a>
+            {{- end }}
+          </li>
+          <li class="ev-fact">
+            <span class="ev-fact__tile" aria-hidden="true">{{ if $e.online }}<svg class="ev-ic" viewBox="0 0 24 24"><rect x="3" y="6.5" width="12.5" height="11" rx="2"/><path d="m15.5 10.5 5-3v9l-5-3"/></svg>{{ else }}<svg class="ev-ic" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>{{ end }}</span>
+            <span class="ev-fact__text"><span class="ev-fact__t">{{ $e.where }}</span></span>
+          </li>
+        </ul>
+        {{- if not $ev.over }}
+        <section class="ev-reg" data-ev-hide-over data-ev-ends="{{ $ev.iso_ends }}">
+          <h2 class="ev-reg__h">Registration</h2>
+          <div class="ev-reg__body">
+            <div class="ev-reg__row">
+              <span class="ev-reg__ic" aria-hidden="true">{{ if $e.register_url }}<svg class="ev-ic" viewBox="0 0 24 24"><path d="M3.5 8.5V6.5a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v2a3.5 3.5 0 0 0 0 7v2a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1v-2a3.5 3.5 0 0 0 0-7z"/><path d="M14 5.5v13" stroke-dasharray="2 2.5"/></svg>{{ else }}<svg class="ev-ic" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></svg>{{ end }}</span>
+              <div>
+                {{- if $e.register_url }}
+                <p class="ev-reg__t">Registration open</p>
+                {{- if $e.online }}<p class="ev-reg__note">Leave your email address and you get the {{ if $zoom }}Zoom {{ end }}link.</p>{{ end }}
+                {{- else if $e.online }}
+                <p class="ev-reg__t">Registration opens soon</p>
+                <p class="ev-reg__note">Leave your email address and you get the {{ if $zoom }}Zoom {{ end }}link. Until then, the link is shared in the <a href="{{ $slack }}">user Slack</a>.</p>
+                {{- else }}
+                <p class="ev-reg__t">Registration is not open yet</p>
+                <p class="ev-reg__note">Details and registration will follow in the newsletter and on the <a href="{{ $slack }}">user Slack</a>.</p>
+                {{- end }}
+              </div>
+            </div>
+            {{- with $e.register_url }}{{ $ext := strings.HasPrefix . "http" }}
+            <a class="btn btn--primary btn--block" href="{{ partial "resolve-url.html" (dict "url" . "page" $page) }}">Register{{ if $zoom }} on Zoom{{ end }}{{ if $ext }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ end }}</a>
+            {{- else }}{{ with $nl }}
+            <a class="btn btn--outline btn--block" href="{{ . }}#subscribe">Get notified</a>
+            {{- end }}{{ end }}
+          </div>
+        </section>
+        {{- end }}
+        <p class="ev-over"{{ if not $ev.over }} hidden{{ end }} data-ev-show-over data-ev-ends="{{ $ev.iso_ends }}">This event took place on <time datetime="{{ $ev.iso_start }}">{{ $ev.when }}</time>.{{ with $events }} The next dates are on <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>.{{ end }}</p>
+        <section class="ev-block">
+          <h2 class="ev-block__h">About</h2>
+          <div class="ev-about">{{ .Content }}</div>
+        </section>
+        {{- with .Params.host }}
+        {{- $ini := "" }}{{ range split .name " " }}{{ if and (lt (len $ini) 3) (findRE `^\p{Lu}` .) }}{{ $ini = printf "%s%s" $ini (substr . 0 1) }}{{ end }}{{ end }}
+        <section class="ev-block">
+          <h2 class="ev-block__h">Hosted by</h2>
+          {{ if .url }}<a class="ev-host" href="{{ .url }}">{{ else }}<p class="ev-host">{{ end }}<span class="ev-host__av" aria-hidden="true">{{ $ini }}</span><span class="ev-host__n">{{ .name }}</span>{{ if .url }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></a>{{ else }}</p>{{ end }}
+        </section>
+        {{- end }}
+        {{- $more := slice }}{{ range partial "events/list.html" $page }}{{ if and (not .over) (ne .id $ev.id) }}{{ $more = $more | append . }}{{ end }}{{ end }}
+        {{- with $more }}
+        <section class="ev-block">
+          <h2 class="ev-block__h">More events</h2>
+          <ol class="ev-more" data-ev-next-list data-ev-newsletter="{{ $nl }}">
+            {{- range . }}
+            <li data-ev data-ev-ends="{{ .iso_ends }}">{{ partial "events/m-card.html" (dict "ev" . "page" $page "dated" true) }}</li>
+            {{- end }}
+          </ol>
+        </section>
+        {{- end }}
+      </div>
 {{- end -}}
 
 {{- define "_partials/inline/event-host.html" -}}

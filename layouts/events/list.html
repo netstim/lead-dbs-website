@@ -29,6 +29,8 @@
         {{ range $up }}{{ partial "events/card.html" (dict "ev" . "page" $) }}{{ end }}
       </ol>
       {{ if not $up }}<p class="event-empty" data-ev-empty>No dates are set right now. New ones are announced in the <a href="{{ $nl }}">newsletter</a>.</p>{{ end }}
+      {{- /* a phone: one quiet row under the list that leads to the newsletter */}}
+      <a class="ev-news phone-only" href="{{ $nl }}"><svg class="ev-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></svg><span class="ev-news__t">New events by email</span><span class="ev-news__go">Newsletter</span></a>
       {{- /* the past workshops: one link per workshop section of the archive page (its h2 headings that
              name a year), newest first, as they stand on that page */}}
       <h2 id="past"{{ if not (or $past $workshops) }} hidden{{ end }} data-ev-past-h>Past events</h2>
@@ -51,6 +53,8 @@
              on it, a link to its section there. A picture that is only a wide text banner (more than twice
              as wide as tall) gives way to the city's name set large on a tint. */}}
       <h3 class="past-workshops__h" id="past-workshops">Workshops</h3>
+      {{- /* a phone: the workshops are the page's second part, under a heading of their own */}}
+      <h2 class="ev-past-h phone-only">Past workshops</h2>
       <ol class="ws-mosaic" aria-labelledby="past-workshops">
         {{ $n := 0 }}
         {{ range sort $years "value" "desc" }}{{ range index $groups . }}

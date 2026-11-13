@@ -5,6 +5,10 @@
        capability's id does too. Below 1024px there is no stage: the chosen one holds its own picture. A
        chapter with one capability shows it open, its name a plain heading. Without script every one is
        open with its picture.
+       On a phone (assets/css/phone-features.css) the stage comes first, as a row of square pictures that
+       scrolls sideways, then a row of thin segments (phone-only, decoration) and the names; swiping the
+       row chooses a name and a tap on a name turns the row (features.js). The pictures inside the names
+       are not shown there, so each picture is read once.
          {{< capabilities >}}
          {{< capability title="…" … >}}…{{< /capability >}}
          {{< /capabilities >}}
@@ -41,7 +45,10 @@
   </div>
   <div class="cap-show__stage">
   {{- range $i, $c := $caps }}
-    {{ partial "cap-figure.html" (dict "c" $c "stage" true "class" (cond (eq $i 0) "is-active" "") "sizes" "(min-width: 1440px) 850px, 62vw") }}
+    {{ partial "cap-figure.html" (dict "c" $c "stage" true "class" (cond (eq $i 0) "is-active" "") "sizes" (printf "(max-width: 639px) %s, (min-width: 1440px) 850px, 62vw" (cond $c.contain "80vw" "135vw"))) }}
   {{- end }}
   </div>
+  {{- if not $one }}
+  <div class="cap-show__segs phone-only" aria-hidden="true">{{ range $i, $c := $caps }}<span{{ if not $i }} class="is-on"{{ end }}></span>{{ end }}</div>
+  {{- end }}
 </div>

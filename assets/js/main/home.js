@@ -96,7 +96,7 @@ document.querySelectorAll('.fig-strip').forEach((strip) => {
       [{ transform: 'translateY(calc(100% + .2em))' }, { transform: 'none' }],
       { duration: 700, delay: 80 + i * step, easing: ease, fill: 'both' }))));
     const after = 80 + (lines.length - 1) * step + 220;
-    const rest = [hero.querySelector('.hero__chip'), hero.querySelector('.hero__lead'), ...hero.querySelectorAll('.btn-row > *'), hero.querySelector('.hero__proof'), hero.querySelector('.home-hero__facts')];
+    const rest = [hero.querySelector('.hero__chip'), hero.querySelector('.home-chip'), hero.querySelector('.hero__lead'), ...hero.querySelectorAll('.btn-row > *'), hero.querySelector('.hero__proof'), hero.querySelector('.home-hero__facts')];
     rest.filter(Boolean).forEach((el, k) => anims.push(el.animate(
       [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }],
       { duration: 520, delay: after + Math.min(k, 6) * 60, easing: ease, fill: 'both' })));
@@ -160,6 +160,19 @@ document.querySelectorAll('.fig-strip').forEach((strip) => {
   const start = () => idle(() => { if (wanted) attach(); watch(); }, { timeout: 2000 });
   if (document.readyState === 'complete') start();
   else addEventListener('load', start, { once: true });
+})();
+
+// ------------------------------------------------------------------ the quotes on a phone
+// There the two rows stand still and the quotes are one row of cards that scrolls sideways
+// (assets/css/phone-home.css): while it scrolls it is a tab stop of its own, so the arrow keys move it.
+(() => {
+  const drift = document.querySelector('.drift');
+  if (!drift) return;
+  const update = () => {
+    if (drift.scrollWidth > drift.clientWidth + 4) drift.tabIndex = 0; else drift.removeAttribute('tabindex');
+  };
+  addEventListener('resize', update);
+  update();
 })();
 
 // ------------------------------------------------------------------ the home page's drifting quotes
