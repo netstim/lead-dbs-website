@@ -326,7 +326,7 @@ async function checkManualLayout() {
       gutter: innerWidth - document.documentElement.clientWidth,
       viewport: document.documentElement.clientWidth,
       brand: rect('.docs-brand > a'), links: rect('.docs-links'),
-      download: rect('.docs-download'), rail: rect('.manual-nav'), article: rect('.manual-body'),
+      download: rect('.docs-download'), rail: rect('.manual-nav'), article: rect('.manual-body'), bar: rect('.docs-header__bar'),
     };
   });
   try {
@@ -340,17 +340,25 @@ async function checkManualLayout() {
         require(box.gutter >= 12, `Scrollbar space is not reserved on ${chapter} at ${width}px`);
         require(Math.abs(box.rail.x - 24) <= 1, `Chapter rail drifts away from the viewport edge at ${width}px`);
         require(Math.abs(box.brand.x - 24) <= 1, `Docs brand drifts away from the viewport edge at ${width}px`);
-        require(Math.abs(box.download.right - (box.viewport - 24)) <= 1, `Header actions are inset at ${width}px`);
+        // Measure the action inset against the header's own content width.
+        require(Math.abs(box.download.right - (box.bar.right - 24)) <= 1, `Header actions are inset at ${width}px`);
+        require(Math.abs((box.links.x + box.links.right) / 2 - (box.bar.x + box.bar.right) / 2) <= 1,
+          `Resource links are not centred within the header at ${width}px`);
         require(box.article.width <= 737 && box.article.x >= box.rail.right + 47, `Article overlaps navigation or exceeds its reading width at ${width}px`);
         if (baseline) {
-          for (const part of ['brand', 'links', 'download', 'rail', 'article']) {
+          for (const part of ['bar', 'brand', 'links', 'download', 'rail', 'article']) {
             for (const dimension of ['x', 'y', 'width']) {
               require(Math.abs(box[part][dimension] - baseline[part][dimension]) <= 1,
-                `${part} ${dimension} jumps between long and short pages at ${width}px`);
+                `${part} ${dimension} jumps between long and short pages at ${width}px on ${chapter}: ${baseline[part][dimension]} -> ${box[part][dimension]}`);
             }
           }
         } else baseline = box;
       }
+      await page.goto(manual + 'installation/');
+      await ready();
+      await page.evaluate(() => window.scrollTo(0, 600));
+      require(await page.evaluate(() => window.scrollY > 0 && Math.abs(document.querySelector('.docs-header').getBoundingClientRect().top) <= 1),
+        `Docs header does not stay at the top while scrolling at ${width}px`);
     }
     await page.goto(manual + 'installation/');
     await ready();
