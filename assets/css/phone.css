@@ -61,6 +61,12 @@
   main:has(.page-head__lead) .doc-layout > .prose > .toc--top:first-child + p,
   main:has(.page-head__lead) .fs-lead > p:first-child,
   main:has(.page-head__lead) .doc-layout > .prose > .page-intro:first-child > .page-intro__text { display: none; }
+  /* the open head (site.css): the words on the white page, the render in a rounded panel under them */
+  .page-head.page-head--open { padding: var(--s-6) 0 0; }
+  .page-head.page-head--open:not(:has(.page-head__render)) { padding-block: var(--s-6) 0; }
+  .page-head--open .page-head__panel { margin-top: var(--s-5); aspect-ratio: 4 / 3; }
+  .page-head--open .page-head__render { height: 100%; -webkit-mask-image: none; mask-image: none; }
+  .page-head--open .page-head__lead strong { color: var(--ink); }
   .breadcrumb ol { font-size: var(--t-label); }
   .breadcrumb li + li::before { content: "\203A"; }
   .breadcrumb li:nth-last-child(2):not(:first-child, :nth-child(2))::before { content: "\203A  \2026  \203A"; white-space: pre; }

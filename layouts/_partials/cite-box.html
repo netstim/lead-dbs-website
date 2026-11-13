@@ -1,0 +1,30 @@
+{{- /* A paper of data/papers.yaml as the citation box, the same everywhere a paper is to be cited (home
+       page, Cite Lead-DBS, every "What to cite", the Cite lists of the atlas catalogues): the reference,
+       a bar with Reference and BibTeX tabs and a Copy button that copies the format shown, and the
+       paper's further links (a preprint, a PDF) under it. Tabs in main/page.js, copying in clipboard.js;
+       without script the bar stays hidden and the reference shows, to select by hand.
+         {{ partial "cite-box.html" (dict "id" "neudorfer2023" "uid" "home") }}
+       id: the paper. uid: makes the element ids unique on the page (an atlas's id, a shortcode's ordinal),
+       so several boxes can sit on one page. label (optional): a line above the box, e.g. "Amygdala".
+       compact (optional): the tighter box of the atlas lists. */ -}}
+{{- $p := index (partialCached "paper/data.html" "papers").papers .id -}}
+{{- if not $p }}{{ errorf "cite-box: no paper %q in data/papers.yaml" .id }}{{ end -}}
+{{- $base := printf "cite-%s-%s" (.uid | default "x") .id | anchorize -}}
+<div class="cite-snip{{ if .compact }} cite-snip--compact{{ end }}">
+  {{- with .label }}<p class="cite-snip__label">{{ . }}</p>{{ end }}
+  <div class="cite-snip__box">
+    <div class="cite-snip__bar" hidden>
+      <div class="cite-snip__tabs" role="group" aria-label="Citation format">
+        <button type="button" class="cite-snip__tab" aria-pressed="true" data-show="ref">Reference</button>
+        <button type="button" class="cite-snip__tab" aria-pressed="false" data-show="bib">BibTeX</button>
+      </div>
+      <button type="button" class="cite-snip__copy" data-copy="{{ $base }}-ref" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg><span data-copy-label>Copy</span><span class="sr-only"> the citation</span></button>
+    </div>
+    <p class="cite-snip__text" id="{{ $base }}-ref" data-fmt="ref">{{ partial "paper/full.html" $p }}</p>
+    <pre class="cite-snip__text cite-snip__bib" id="{{ $base }}-bib" data-fmt="bib" data-copy-verbatim hidden>{{ partial "paper/bibtex.html" (dict "id" .id "paper" $p) }}</pre>
+    {{- with $p.links }}
+    <p class="cite-snip__links">{{ range $i, $l := . }}{{ if $i }} · {{ end }}<a href="{{ $l.url }}">{{ $l.label }}</a>{{ end }}</p>
+    {{- end }}
+  </div>
+</div>
+{{- /**/ -}}

@@ -29,8 +29,8 @@ ways:
     show: chips
     chips: ["Atlases", "Parcellations", "Connectomes", "Datasets"]
     actions:
-      - {text: "What it needs", page: "/develop/#atlas"}
-      - {text: "Who has contributed", page: "/about/team/#atlases-and-data-contributed-by"}
+      - {text: "Submission requirements", page: "/develop/#atlas"}
+      - {text: "Atlas and data contributors", page: "/about/team/#atlases-and-data-contributed-by"}
   - id: "report-a-bug"
     title: "Report a bug"
     text: "Open an issue on GitHub. Questions about using Lead-DBS are best asked on the [user Slack](/helpsupport/slack-user-channel/)."
@@ -46,23 +46,23 @@ setup:
   - {text: "Switch to the develop branch", command: "git checkout develop"}
   - {text: "Download the data and unzip it into the repository", link: {text: "Download the data", url: "https://www.lead-dbs.org/release/download.php?id=data_pcloud"}}
   - {text: "Add SPM12 and Lead-DBS to the MATLAB path, then run", command: "ea_setpath"}
-setup_note: "Each step is described in the manual: [installation via GitHub](https://netstim.gitbook.io/leaddbs/installation#installation-via-github)."
+setup_note: "Each step is described in the manual: [installation via GitHub](/manual/installation/#installation-via-github)."
 # what an atlas or dataset needs, a cell each (text: Markdown)
 atlas:
   - label: "Source"
     value: "Any source is welcome"
     text: "MRI, histology, connectivity, drawings or synthesized maps."
   - label: "Space"
-    value: "Say which space it is in"
-    text: "Lead-DBS works in the [ICBM 2009b nonlinear asymmetric space](http://nist.mni.mcgill.ca/?p=904) (Fonov 2009), one of [several MNI spaces](/about-the-mni-spaces/). An atlas made in another one, such as the [ATAG atlas](https://www.nitrc.org/projects/atag/) (FSL's [FNIRT](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FNIRT/UserGuide), [MNI 6th-generation template](http://nist.mni.mcgill.ca/?p=858)), fits best with data normalized the same way, which Lead-DBS can do, though not by [default](https://www.sciencedirect.com/science/article/pii/S1053811918318664)."
+    value: "Specify the template and coordinate space"
+    text: "Lead-DBS works in the [ICBM 2009b nonlinear asymmetric space](http://nist.mni.mcgill.ca/?p=904) (Fonov 2009), one of [several MNI spaces](/about-the-mni-spaces/). Atlases in another MNI space, such as [ATAG](https://www.nitrc.org/projects/atag/) (FSL [FNIRT](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FNIRT/UserGuide), [MNI 6th-generation template](http://nist.mni.mcgill.ca/?p=858)), are best used with data normalized to that space. Lead-DBS supports this, but not by [default](https://www.sciencedirect.com/science/article/pii/S1053811918318664)."
   - label: "Contact"
     value: "Get in touch"
     text: "[Write to us](/contact/) or [join the user Slack](https://inviter.co/lead-dbs) and ask there."
 # the facts, as link cells
 facts:
-  - {name: "Other tools", text: "SlicerNetstim with Lead-OR, and more, under github.com/netstim.", url: "https://github.com/netstim"}
+  - {name: "Other tools", text: "SlicerNetstim, including Lead-OR, and other Netstim repositories.", url: "https://github.com/netstim"}
   - {name: "Licence", text: "GNU General Public License, version 3.", url: "https://github.com/netstim/leaddbs/blob/master/LICENSE.md"}
-  - {name: "What changed", text: "Every version with its changes on GitHub.", url: "/download/#releases"}
+  - {name: "Release history", text: "Release notes and links to changes on GitHub.", url: "/download/#releases"}
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-community.jpg"
 # "Related" at the end of the page (layouts/_partials/next-steps.html)

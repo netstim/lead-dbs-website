@@ -22,7 +22,7 @@
         {{- with $e.register_url }}
         <a class="btn btn--primary" href="{{ partial "resolve-url.html" (dict "url" . "page" $page) }}">Register<span class="sr-only"> (another site)</span></a>
         {{- else }}
-        <a class="btn btn--primary" href="{{ with site.GetPage "/subscribe-to-our-newsletter" }}{{ .RelPermalink }}{{ end }}#subscribe">Get notified</a>
+        <a class="btn btn--primary" href="{{ with site.GetPage "/subscribe-to-our-newsletter" }}{{ .RelPermalink }}{{ end }}#subscribe">Subscribe to our newsletter</a>
         {{- end }}
         <a class="btn btn--secondary" download="{{ urlize $e.title }}.ics" href="{{ partial "events/ics.html" (dict "ev" $ev "details" .RelPermalink) | safeURL }}">Add to calendar</a>
       </p>

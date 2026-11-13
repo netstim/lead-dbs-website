@@ -1,0 +1,1 @@
+<button class="manual-code__copy" {{ with .target }}data-copy="{{ . }}"{{ else }}data-copy-text="{{ .text }}"{{ end }} aria-label="{{ .label | default "Copy code" }}" hidden>{{ partial "manual-icon.html" "copy" }}{{ partial "manual-icon.html" "check" }}{{ partial "manual-icon.html" "close" }}<span data-copy-label>Copy</span></button>

@@ -72,18 +72,21 @@ enableGitInfo = true
 
 [menus]
   # The main menu, grouped by what visitors come for. Each word's label is also the page's linkTitle
-  # (breadcrumb, footer, search), so a page has one name everywhere. "Download" is drawn as the
-  # header's button ("Download Lead-DBS"), not as a menu word. The footer lists the same groups.
+  # (breadcrumb, footer, search), so a page has one name everywhere. The entry with params.role
+  # "action" (identifier "download") is drawn as the header's button ("Download Lead-DBS"), not as a
+  # menu word; the one with params.role "sheet-word" (identifier "manual") is also a first-level word of
+  # the phone sheet. Templates find these two by identifier and role, never by their label, so either
+  # label can be renamed. The footer lists the same groups.
   # The menu is also the site's one hierarchy: breadcrumbs and the sidebar's section list follow it,
   # not the folders (layouts/_partials/nav-place.html). A page that is not in the menu belongs to the
   # entry of its nearest folder that is, or to the page named by its front matter "menuParent".
   [[menus.main]]
-    name = "Features"
+    name = "Methods"
     pageRef = "/helpsupport/knowledge-base/lead-dbs-methods"
     identifier = "features"
     weight = 1
   [[menus.main]]
-    name = "Docs and help"
+    name = "Docs"
     pageRef = "/helpsupport"
     identifier = "docs"
     weight = 2
@@ -115,9 +118,13 @@ enableGitInfo = true
   [[menus.main]]
     name = "Download"
     pageRef = "/download"
+    identifier = "download"
     weight = 7
+    [menus.main.params]
+      # drawn as the header's button, not as a menu word (layouts/_partials/header.html)
+      role = "action"
 
-  # Features: what the software does. The group's own page (the word "Features") is the overview: every
+  # Methods: what the software does. The group's own page (the word "Methods") is the overview: every
   # capability with its name, a picture, its manual chapter and papers, in four numbered chapters. The
   # panel lists those chapters first: the anchors of the page (entries with url, not pages; params.panelOnly
   # keeps them out of the sidebar of the group's articles, where they would read as pages), and for the
@@ -187,7 +194,7 @@ enableGitInfo = true
       # a line above the entry, without a caption
       divider = true
 
-  # Docs and help: the documentation (the manual is on another site) and the one list of where to ask
+  # Docs: the documentation (the manual is integrated at /manual/) and the one list of where to ask
   # (/helpsupport/#get-help; the contact page sits under it through its front matter menuParent)
   [[menus.main]]
     parent = "docs"
@@ -199,9 +206,12 @@ enableGitInfo = true
   [[menus.main]]
     parent = "docs"
     name = "Manual"
-    url = "https://netstim.gitbook.io/leaddbs"
+    pageRef = "/manual"
+    identifier = "manual"
     weight = 2
     [menus.main.params]
+      # also a first-level word of the phone sheet, right under its group (layouts/_partials/header.html)
+      role = "sheet-word"
       card = "Installation, workflows and reference"
       # printed on the hub's card for the manual (pages bring their own front matter description)
       description = "Installation guides, analysis workflows and software reference."
@@ -351,7 +361,7 @@ enableGitInfo = true
     pageRef = "/impressum-datenschutzerklarung"
     weight = 1
   [[menus.footer]]
-    name = "Privacy Policy"
+    name = "Privacy policy"
     pageRef = "/privacy-policy"
     weight = 2
 

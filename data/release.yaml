@@ -18,11 +18,8 @@ needs: "SPM12"
 needs_url: "https://www.fil.ion.ucl.ac.uk/spm/software/spm12/"
 # Recommended memory (the manual's installation page: "32GB or more").
 memory: "32 GB"
-# Version of the experimental standalone build (runs without MATLAB), and what to say about it.
+# Version of the experimental standalone build (runs without MATLAB).
 standalone: "3.1"
-standalone_note: "Experimental, for Linux, macOS and Windows, without regular updates or hotfixes"
 # Licence, as printed on the site, and the licence file.
 licence: "GNU GPL v3"
 licence_url: "https://github.com/netstim/leaddbs/blob/master/LICENSE.md"
-# The full list of changes since the release before this one.
-changes_url: "https://github.com/netstim/leaddbs/compare/v3.2...v3.2.1"

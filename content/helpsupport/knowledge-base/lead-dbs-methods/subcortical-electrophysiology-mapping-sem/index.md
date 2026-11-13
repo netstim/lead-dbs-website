@@ -23,17 +23,15 @@ Subcortical electrophysiology mapping (SEM) pools signals recorded from DBS elec
 ## Use it in Lead-DBS
 
 SEM runs in Lead Group, the group-analysis module of Lead-DBS: see the manual's chapter
-[Group analyses with Lead-DBS](https://netstim.gitbook.io/leaddbs/lead-group/group-analyses-with-lead-dbs).
+[Group analyses with Lead-DBS](/manual/lead-group/group-analyses-with-lead-dbs/).
 
 ## What to cite
 
 The method was first applied to beta power recorded in the subthalamic nucleus:
 
-{{% copybox label="Copy the citations" %}}
 {{< paper horn2017hbm "full" >}}
 
-Accolla, E. A., Horn, A., Herrojo Ruiz, M., Neumann, W.-J., & Kühn, A. A. (2017). Reply: Oscillatory coupling of the subthalamic nucleus in obsessive compulsive disorder. *Brain*, *140*(9), e57. [doi:10.1093/brain/awx165](https://doi.org/10.1093/brain/awx165)
-{{% /copybox %}}
+{{< paper accolla2017 "full" >}}
 
 ## Studies that used it
 
@@ -138,11 +136,11 @@ The above results show a clear relationship between alpha/beta power and spatial
 
 ![Beta and alpha peaks within the STN in 3D, with electrode trajectories](betaalpha3d.png "Fig. 4: 3D representation of peaks in electrophysiological activity (same data as shown in Fig. 3).")
 
-We went ahead and created three-dimensional peak ROI associated with high beta and alpha activity, respectively (above).
+Three-dimensional ROIs mark the peaks of high beta and alpha activity (above).
 
 ### Connectivity of the two hot spots
 
-We were then interested whether our standardized structural connectomes were equally precise enough to find differences in cortical connectivity associated with these regions. Of note, the two regions are both very small and close to each other.
+We tested whether a standardized structural connectome could distinguish cortical connectivity between these small, adjacent regions. Of note, the two regions are both very small and close to each other.
 
 For this analysis – which could only be performed on group level – a standardized high precision structural connectome [[Horn 2017](https://www.sciencedirect.com/science/article/pii/S1053811917301088)] was used to select fibre-tracts connected to the alpha and beta peaks, respectively.
 

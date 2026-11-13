@@ -86,9 +86,10 @@
   /* -------------------------------------------------------------- an event page: the head (events/head.html)
      the flyer is the head's picture: 236px wide, centred, a ring and a deep soft shadow, one light behind
      it; under it the countdown badge (while the event is days away), the title (34/38) and the host */
-  .page-head:has(.ev-head__flyer) { padding: var(--s-3) 0 calc(var(--s-6) + var(--s-2));
+  .page-head.page-head--open:has(.ev-head__flyer) { padding: var(--s-3) 0 calc(var(--s-6) + var(--s-2)); background-color: var(--render); color: var(--on-render);
+    --ink: var(--on-render); --muted: color-mix(in srgb, var(--on-render) 70%, transparent);
     background-image: radial-gradient(58% 230px at 50% 270px, color-mix(in srgb, var(--on-render) 12%, transparent), transparent); }
-  .page-head:has(.ev-head__flyer) > .page-head__render,
+  .page-head:has(.ev-head__flyer) .page-head__panel,
   .page-head:has(.ev-head__flyer) .page-head__lead { display: none; }
   .page-head:has(.ev-head__flyer) > .wrap { display: flex; flex-direction: column; align-items: flex-start; }
   .ev-head__flyer { order: 1; align-self: center; width: 236px; margin: var(--s-5) 0 var(--s-6); border-radius: var(--r-md); overflow: hidden;

@@ -1,0 +1,5 @@
+{
+  "database": "/private/lead-analytics/events.sqlite",
+  "key_file": "/private/lead-analytics/hmac.key",
+  "country_database": "/private/lead-analytics/country.mmdb"
+}

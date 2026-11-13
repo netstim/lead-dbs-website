@@ -1,0 +1,119 @@
+{
+  "schema": 1,
+  "version": "2026-11-13.1",
+  "categories": [
+    "program",
+    "program_update",
+    "data",
+    "template",
+    "connectome",
+    "companion",
+    "atlas",
+    "unknown"
+  ],
+  "aliases": {
+    "program": [
+      "latest",
+      "lead",
+      "lead_dbs",
+      "leaddbs",
+      "lead_dropbox",
+      "lead_onedrive",
+      "lead_pcloud",
+      "lead_standalone_linux",
+      "lead_standalone_mac",
+      "lead_standalone_windows",
+      "leaddbs_baidu",
+      "leaddbs_classic_onedrive",
+      "leaddbs_classic_sciebo",
+      "leaddbs_onedrive",
+      "leaddbs_pcloud",
+      "leaddbs_sciebo",
+      "leaddbs_standalone_linux",
+      "leaddbs_standalone_mac",
+      "leaddbs_standalone_mac_arm64",
+      "leaddbs_standalone_mac_x86_64",
+      "leaddbs_standalone_windows"
+    ],
+    "program_update": [
+      "hotfix",
+      "hotfix_classic"
+    ],
+    "data": [
+      "data",
+      "data_bids_onedrive",
+      "data_bids_pcloud",
+      "data_classic_onedrive",
+      "data_classic_pcloud",
+      "data_dropbox",
+      "data_onedrive",
+      "data_pcloud",
+      "data_sciebo",
+      "updates_data",
+      "updates_data_classic",
+      "fliplr",
+      "fliplR",
+      "fLiplR",
+      "fliplr_classic",
+      "allengenetics"
+    ],
+    "template": [
+      "7tcgflash",
+      "7tev100um",
+      "BigBrain300um",
+      "CIT168",
+      "DeepBrain7T",
+      "Deep_Brain_7T",
+      "MNIMacaque",
+      "MNIPD25",
+      "MNIPediatric",
+      "MNI_Macaque",
+      "MNI_Pediatric_4p5_18p5",
+      "OASIS30Atropos",
+      "OASIS_30_Atropos",
+      "PD25_MNI",
+      "WaxholmSpaceSDRat",
+      "Waxholm_Space_Atlas_SD_Rat_Brain",
+      "bigbrain",
+      "macaque"
+    ],
+    "connectome": [
+      "PedrsfMRI",
+      "pedrsfmri",
+      "TorPD",
+      "torpd",
+      "dTOR985_Full",
+      "dTOR985_Half",
+      "dTOR985_Quarter",
+      "dtor985_full",
+      "dtor985_half",
+      "dtor985_quarter",
+      "group2013",
+      "group2016",
+      "group2017",
+      "group2017_ppmi",
+      "fgroup2017_ppmi"
+    ],
+    "companion": [
+      "programmer_glnxa64",
+      "programmer_maca64",
+      "programmer_maci64",
+      "programmer_win64"
+    ],
+    "unknown": [
+      "git",
+      "sample",
+      "updates",
+      "group"
+    ],
+    "atlas": [
+      "macroscalehc"
+    ]
+  },
+  "notes": "Case-sensitive observed endpoint aliases. Categories describe the requested resource, not a verified successful response. Mirrors remain distinct artifacts for historical deduplication. Exact release is unknown for moving aliases. Unrecognized names stay unknown. Incremental update names are classified by the documented updates_<from>-<to> or underscore grammar. No prefix-based inference of program downloads.",
+  "sources": [
+    "netstim/leaddbs@5b1008d705e97fe0c8f693dece14455607f4afac:ea_checkinstall.m",
+    "netstim/leaddbs@5b1008d705e97fe0c8f693dece14455607f4afac:ea_update.m",
+    "Historical download.log artifact inventory; live download.php mapping verification pending"
+  ]
+}

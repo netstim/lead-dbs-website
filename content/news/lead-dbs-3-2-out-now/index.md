@@ -7,7 +7,7 @@ image: "lead-tutor.png"
 image_alt: "Title of the Lead Tutor paper in Aperture Neuro, over electrodes on a brain section"
 ---
 
-Ningfei Li just pushed Lead-DBS v3.2 to our servers. It comes with many minor fixes and a few larger updates, including [the Lead Tutor package](https://netstim.gitbook.io/leaddbs/lead-dbs/self-tutoring-with-lead-tutor) to self-train DBS electrode localizations with Lead-DBS.
+Ningfei Li just pushed Lead-DBS v3.2 to our servers. It comes with many minor fixes and a few larger updates, including [the Lead Tutor package](/manual/lead-dbs/self-tutoring-with-lead-tutor/) to self-train DBS electrode localizations with Lead-DBS.
 
 {{< button href="/download/" >}}Download Lead-DBS{{< /button >}}
 

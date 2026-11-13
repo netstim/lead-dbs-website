@@ -1,10 +1,12 @@
 {{- /* Every paper of data/papers.yaml by group, newest first, as rows (partial paper/row.html), as on Publications. Call it with % so its
        headings are Markdown and appear in the page's contents list:
          {{% papers %}}
-       Each group is an h3 with the anchor #papers-<group id>. */ -}}
+       Each group is an h3 with the anchor #papers-<group id>; a group with listed: false (the references
+       cited on the atlas pages) is left out. */ -}}
 {{- $d := partialCached "paper/data.html" "papers" -}}
 {{- $papers := $d.papers -}}
 {{- range $d.groups -}}
+{{- if not (and (isset . "listed") (not .listed)) -}}
 {{- $g := .id -}}
 {{- $title := .title -}}
 {{- $list := slice -}}
@@ -16,5 +18,6 @@
 ### {{ $title }} {#papers-{{ $g }}}
 
 <ol class="paper-rows">{{ range sort . "year" "desc" }}{{ partial "paper/row.html" . }}{{ end }}</ol>
+{{- end -}}
 {{- end -}}
 {{- end -}}

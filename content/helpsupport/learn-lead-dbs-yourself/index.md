@@ -1,6 +1,6 @@
 ---
 title: "Practice dataset (Lead Tutor)"
-description: "The open training dataset of ten DBS patients with expert electrode localizations: what it holds, how to get it and what to cite."
+description: "Ten DBS patients with expert electrode localizations, free to practise on."
 weight: 1
 linkTitle: "Practice dataset (Lead Tutor)"
 date: "2025-02-28T17:20:40"
@@ -14,23 +14,23 @@ next:
   - {page: "/helpsupport/knowledge-base/lead-dbs-methods/"}
 # the dataset at a glance (layouts/_shortcodes/cells.html; text: Markdown)
 glance:
-  - {label: "Patients", value: "Ten, both sides", text: "Eight with Parkinson's disease, one with dystonia, one with epilepsy."}
+  - {label: "Patients", value: "10 with bilateral electrodes", text: "Eight with Parkinson's disease, one with dystonia, one with epilepsy."}
   - {label: "Imaging", value: "MRI and CT", text: "Preoperative T1, T2 and in some FLAIR; postoperative CT. Defaced, as NIfTI in BIDS."}
   - {label: "Electrodes", value: "Directional in nine", text: "Boston Scientific Vercise Cartesia (6), Medtronic SenSight (2) and 3387 (1), Abbott Infinity (1)."}
-  - {label: "Benchmark", value: "Two experts", text: "And ten trained non-experts, for the range of usual results."}
+  - {label: "Benchmark", value: "Two experts", text: "Localizations from ten trained non-experts provide a comparison range."}
 layout: "showcase"
 ---
 
 <span id="learn-lead-dbs-yourself"></span>
 
-**Practise on ten real patients.** Localize their electrodes, then compare yours with two experts'.
+**Practise on imaging data from ten patients,** then compare your electrode localizations with those of two experts.
 {.dataset-intro}
 
 <div class="resource-actions">
 
 {{< button href="https://osf.io/jxecg/?view_only=f2765a6aa3604dea8afa14365b70381c" variant="primary" external="true" >}}Download the dataset{{< /button >}}
 
-<a class="link link--ext" href="https://netstim.gitbook.io/leaddbs/lead-dbs/self-tutoring-with-lead-tutor">Guide in the manual <span class="ext-mark" aria-hidden="true">↗</span></a>
+<a class="link" href="{{< relref "/manual/lead-dbs/self-tutoring-with-lead-tutor/" >}}">Guide in the manual</a>
 
 </div>
 
@@ -39,7 +39,7 @@ layout: "showcase"
 {{% hub-section %}}
 ## Your report {#your-report}
 
-**How close you came:** distance and rotation from the experts, patient by patient, from easy to hard.
+**The report shows** positional and rotational differences from expert localizations for each patient, ordered from easy to hard.
 
 <div class="report-shot">
 
@@ -47,7 +47,7 @@ layout: "showcase"
 
 </div>
 
-The colours show the usual range of non-experts.
+The colours show the range of non-expert localizations relative to the expert results.
 {.fine-print}
 {{% /hub-section %}}
 
@@ -73,9 +73,7 @@ where the images were acquired.
 </div>
 <div class="cite-row__text">
 
-{{% copybox label="Copy the citation" %}}
 {{< paper madan2025 "full" >}}
-{{% /copybox %}}
 
 </div>
 </div>

@@ -6,7 +6,7 @@
 {{ $p := .Params }}
 {{ $r := hugo.Data.release }}
 {{ $date := time.AsTime $r.date }}
-{{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Name "Download" }}{{ $dl = .URL }}{{ end }}{{ end }}
+{{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Identifier "download" }}{{ $dl = .URL }}{{ end }}{{ end }}
 {{ $arrow := `<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg>` | safeHTML }}
 <main id="top" class="home">
 
@@ -53,7 +53,7 @@
           <div class="btn-row">
             <a class="btn btn--primary" href="{{ $dl }}">{{ .primary.label }}{{ $arrow }}</a>
             <a class="btn btn--secondary" href="{{ partial "resolve-url.html" (dict "url" .secondary.url "page" $) }}">{{ .secondary.label }}{{ $arrow }}</a>
-            {{ with .manual }}<a class="btn btn--secondary hero__manual" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></a>{{ end }}
+            {{ with .manual }}<a class="btn btn--secondary hero__manual" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}</a>{{ end }}
           </div>
         </div>
         {{- /* one quiet line: the release, what it runs on, its licence, then the proof (content/_index.md) */}}
@@ -218,61 +218,80 @@
   </section>
   {{ end }}
 
-  {{/* 5. Made with Lead-DBS, on the black of the voices band above (the two read as one dark stretch): a strip of figures from papers (data/gallery.yaml, the files named in
-       research.figures), each whole at its own shape with a hairline edge, all one height on a desktop,
-       each linking to its entry on /gallery/. Below 1024px the strip scrolls sideways: it is then a
-       labelled list the keyboard can reach and scroll (assets/js/main/home.js gives it its tab stop). */}}
+  {{/* 5. Made with Lead-DBS, on the black of the voices band above (the two read as one dark stretch): the
+       heading and a pill to /gallery/, under them two equal halves. Left an endless grid of the figures
+       from papers (data/gallery.yaml) in a window with rounded corners: masonry columns that wrap
+       in every direction, dragged with the mouse or a finger, drifting slowly until they are (assets/js/main/home.js
+       builds the tiles from the list in [data-made-figs], and only once the section comes near the screen).
+       A click on a figure opens it on /gallery/. Right seven journal covers (data/covers.yaml) fanned out like
+       a hand of cards about a point far below them; one lifts after another, slowly, its journal and date
+       under the fan (a pointer on a card lifts it and holds the fan). The fan is one link to the covers on Publications.
+       Under reduced motion nothing moves by itself; the grid can still be dragged. On a phone the grid is
+       360px tall and the fan sits under it, smaller (assets/css/phone-home.css). */}}
   {{ with $p.research }}
   {{ $gallery := site.GetPage "/gallery" }}
-  {{ $byFile := dict }}{{ range hugo.Data.gallery.figures }}{{ $byFile = merge $byFile (dict .file .) }}{{ end }}
-  {{ $sum := 0.0 }}
-  {{ range .figures }}{{ $f := index $byFile . }}{{ if not $f }}{{ errorf "home: research.figures names %q, which is not in data/gallery.yaml" . }}{{ end }}{{ with resources.Get (printf "gallery/%s" $f.file) }}{{ $sum = add $sum (div (float .Width) .Height) }}{{ end }}{{ end }}
+  {{ $pubs := site.GetPage "/about/publications" }}
   <section class="section home-sec research-band" id="research" aria-labelledby="research-h" data-nav-dark>
     <div class="wrap">
       <div class="section-head section-head--row">
-        <div>
-          <h2 id="research-h">{{ partial "nobreak.html" .title }}</h2>
-          <p>{{ .text }}</p>
-        </div>
+        <h2 id="research-h">{{ partial "nobreak.html" .title }}</h2>
         {{ with $gallery }}<p class="section-head__more"><a class="btn btn--primary btn--on-dark" href="{{ .RelPermalink }}">{{ $p.research.link_label }}</a></p>{{ end }}
       </div>
-      <ul class="fig-strip" aria-label="{{ .text | strings.TrimSuffix "." }}">
-        {{ range .figures }}
-        {{ $f := index $byFile . }}
+      <div class="made">
+        {{- /* the figures as data for the grid: each one's sizes (WebP), shape, what it shows and its entry on /gallery/ */}}
+        {{ $figs := slice }}
+        {{ range hugo.Data.gallery.figures }}{{ $f := . }}
         {{ with resources.Get (printf "gallery/%s" $f.file) }}
-        {{ $s := .Resize "560x webp q80" }}{{ $m := .Resize (printf "%dx webp q80" (int (math.Min .Width 1000))) }}
-        {{ $ar := div (float .Width) .Height }}
-        {{- /* its width: its share of the row on a desktop (the container less two gaps), 320 px tall on a
-               tablet, about the full width on a phone */}}
-        {{ $share := div $ar $sum }}
-        <li class="fig-strip__item" style="--ar: {{ $ar | lang.FormatNumber 3 }}">
-          <a class="fig-strip__link" href="{{ with $gallery }}{{ .RelPermalink }}{{ end }}#fig-{{ path.BaseName $f.file }}">
-            <img class="fig-strip__img" src="{{ $s.RelPermalink }}" srcset="{{ $s.RelPermalink }} 560w, {{ $m.RelPermalink }} {{ $m.Width }}w" sizes="(min-width: 1280px) {{ math.Ceil (mul 1232 $share) | int }}px, (min-width: 1024px) calc((100vw - 208px) * {{ $share | lang.FormatNumber 3 }}), (min-width: 640px) {{ math.Ceil (mul 320 $ar) | int }}px, 86vw" width="{{ $m.Width }}" height="{{ $m.Height }}" alt="{{ $f.shows }}" loading="lazy" decoding="async">
-            <span class="fig-strip__cite"><em>{{ $f.journal }}</em> {{ $f.year }}</span>
-          </a>
-        </li>
+        {{ $s := .Resize "240x webp q78" }}{{ $m := .Resize "480x webp q78" }}
+        {{ $figs = $figs | append (dict "src" $s.RelPermalink "srcset" (printf "%s 240w, %s 480w" $s.RelPermalink $m.RelPermalink) "ar" (div (math.Round (mul 1000 (div (float .Width) .Height))) 1000) "alt" $f.shows "href" (printf "%s#fig-%s" (cond (ne $gallery nil) $gallery.RelPermalink "/gallery/") (path.BaseName $f.file))) }}
+        {{ else }}{{ errorf "home: no file static/gallery/%s (data/gallery.yaml)" $f.file }}{{ end }}
         {{ end }}
+        <div class="made-grid" role="region" tabindex="0" aria-label="{{ .label }}" aria-describedby="made-grid-how" data-made-grid>
+          <p class="sr-only" id="made-grid-how">Drag, or use the arrow keys, to look around. Every figure is also on the gallery page.</p>
+          <div class="made-grid__plane" aria-hidden="true"></div>
+          <script type="application/json" data-made-figs>{{ $figs | jsonify | safeJS }}</script>
+        </div>
+        {{ with $pubs }}
+        {{- /* seven covers, mixed journals, the newest on top at the right (the deck Fable drew for the home
+               page): positions in data/covers.yaml, newest first */}}
+        {{ $all := partial "covers.html" 0 }}
+        {{ $pick := slice }}{{ range slice 13 10 8 5 2 1 0 }}{{ if lt . (len $all) }}{{ $pick = $pick | append (index $all .) }}{{ end }}{{ end }}
+        {{ $n := len $pick }}
+        <a class="made-fan" href="{{ .RelPermalink }}#cover-art" aria-label="Journal covers made with Lead-DBS, on Publications" data-made-fan>
+          <span class="made-fan__deck" aria-hidden="true">
+            {{ range $k, $c := $pick }}{{ $s := $c.large.Resize "300x webp q78" }}{{ $m := $c.large.Resize "600x webp q78" }}
+            <span class="made-fan__card{{ if eq $k (sub $n 1) }} is-top is-up{{ end }}" style="--k: {{ sub $k (div (float (sub $n 1)) 2) }}; z-index: {{ $k }}" data-journal="{{ $c.journal }}" data-date="{{ $c.date }}">
+              <img src="{{ $s.RelPermalink }}" srcset="{{ $s.RelPermalink }} 300w, {{ $m.RelPermalink }} 600w" sizes="(max-width: 639px) 130px, 240px" width="{{ $s.Width }}" height="{{ $s.Height }}" alt="" loading="lazy" decoding="async" draggable="false">
+            </span>
+            {{ end }}
+          </span>
+          {{ with index $pick (sub $n 1) }}<span class="made-fan__cap" aria-hidden="true"><b data-made-journal>{{ .journal }}</b><span data-made-date>{{ .date }}</span></span>{{ end }}
+        </a>
         {{ end }}
-      </ul>
+      </div>
       {{ with $gallery }}<div class="phone-only research-band__actions"><div class="btn-row"><a class="btn btn--secondary" href="{{ .RelPermalink }}">{{ $p.research.link_label }}</a></div></div>{{ end }}
     </div>
   </section>
   {{ end }}
 
-  {{/* 6. Lead-DBS around the world: the words left (heading, one line, a pill to /usage/), right a wireframe
-       globe drawn by assets/js/globe.js from data/usage.json (tools/usage.py writes it from the launch
-       log): countries only. Without the script, or until the map has loaded, the figure is not shown. */}}
-  {{ with $p.worldwide }}{{ with hugo.Data.usage }}
-  {{ $u := . }}{{ $w := $p.worldwide }}
-  {{ $since := "" }}{{ range $y, $n := $u.years }}{{ if not $since }}{{ $since = $y }}{{ end }}{{ end }}
+  {{/* 6. Lead-DBS around the world: the words left (heading, one line), right a wireframe
+       globe drawn by assets/js/globe.js that replays monthly Lead-DBS download-request aggregates since 2015, from
+       data/downloads.json (tools/downloads.py writes it from the download log): no individual events. Without the
+       script, or until the map has loaded, the figure is not shown. */}}
+  {{ with $p.worldwide }}{{ with hugo.Data.downloads }}
+  {{ $d := . }}{{ $w := $p.worldwide }}
   {{ $map := resources.Get "data/world-110m.json" | minify | fingerprint }}
-  <section class="section home-sec worldwide" id="worldwide" aria-labelledby="worldwide-h" data-map="{{ $map.RelPermalink }}">
+  {{- /* the figures for the globe (about 35 KB) are fetched with the map, not written into the page */}}
+  {{ $figures := dict "countries" $d.countries "months" $d.months | jsonify | resources.FromString "data/downloads.json" | fingerprint }}
+  {{- /* the globe's script (about 70 KB with d3 and topojson), the map and the figures are fetched only when
+         the section comes near the screen: main/home.js adds the script, which then fetches the rest */}}
+  {{ $globe := slice (resources.Get "js/vendor/d3-array.min.js") (resources.Get "js/vendor/d3-geo.min.js") (resources.Get "js/vendor/topojson-client.min.js") (resources.Get "js/globe.js" | minify) | resources.Concat "js/globe.bundle.js" | fingerprint }}
+  <section class="section home-sec worldwide" id="worldwide" aria-labelledby="worldwide-h" data-map="{{ $map.RelPermalink }}" data-downloads="{{ $figures.RelPermalink }}" data-globe-src="{{ $globe.RelPermalink }}" data-globe-integrity="{{ $globe.Data.Integrity }}">
     <div class="wrap">
       <div class="grid split home-split">
         <div class="split__text worldwide__text">
-          <h2 id="worldwide-h">{{ replace $w.title "{countries}" (len $u.countries) | partial "nobreak.html" }}</h2>
-          <p class="t-lead">{{ replace (replace $w.text "{launches}" (lang.FormatNumber 0 $u.launches_year)) "{year}" $u.year | partial "nobreak.html" }}</p>
-          {{ with site.GetPage "/usage" }}<p class="worldwide__btn"><a class="btn btn--primary" href="{{ .RelPermalink }}">{{ $w.link_label }}</a></p>{{ end }}
+          <h2 id="worldwide-h">{{ replace $w.title "{countries}" (len $d.countries) | partial "nobreak.html" }}</h2>
+          <p class="t-lead">{{ replace (replace $w.text "{downloads}" (lang.FormatNumber 0 $d.total)) "{year}" (substr $d.from 0 4) | partial "nobreak.html" }}</p>
         </div>
         <figure class="worldwide__fig">
           <div class="worldwide__stage" data-globe-stage>
@@ -284,10 +303,8 @@
             <button class="worldwide__pause" type="button" aria-label="Pause the globe" hidden data-globe-pause></button>
           </figcaption>
         </figure>
-        {{ with site.GetPage "/usage" }}<p class="phone-only worldwide__more"><a class="link home-more" href="{{ .RelPermalink }}">{{ $w.link_label }}{{ $arrow }}</a></p>{{ end }}
       </div>
     </div>
-    <script type="application/json" data-globe-data>{{ dict "countries" $u.countries "launches" $u.launches "day" $u.day "since" $since | jsonify | safeJS }}</script>
   </section>
   {{ end }}{{ end }}
 
@@ -369,34 +386,12 @@
           {{ with .text }}<p class="closing__text">{{ . }}</p>{{ end }}
           <div class="closing__actions"><a class="btn btn--primary" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}{{ $arrow }}</a></div>
         </div>
-        {{ with $p.cite }}{{ $pp := index hugo.Data.papers.papers .paper }}
-        {{- if not $pp }}{{ errorf "home: cite.paper %q is not in data/papers.yaml" .paper }}{{ end }}
-        {{- /* the citation as a snippet to copy: the reference (as on the citing page, data/papers.yaml) and the
-               same paper as BibTeX, tabs in main/page.js and shared copying in clipboard.js. Without
-               script the bar stays hidden and the reference shows, to select by hand. */}}
-        {{- $names := findRE `[^,]+, (?:[A-Z][a-z]?\. ?)+` (replace $pp.authors ", et al." "") }}
-        {{- $bibAuthors := delimit (apply $names "strings.TrimSpace" ".") " and " }}{{ if strings.Contains $pp.authors "et al." }}{{ $bibAuthors = printf "%s and others" $bibAuthors }}{{ end }}
+        {{ with $p.cite }}
+        {{- /* the citation as a snippet to copy: the shared citation box (partial cite-box.html), the
+               reference as on the citing page and the same paper as BibTeX */}}
         <div class="closing__col cite" id="cite">
           <h2 class="closing__h">{{ partial "nobreak.html" .title }}</h2>
-          <div class="cite-snip">
-            <div class="cite-snip__bar" hidden>
-              <div class="cite-snip__tabs" role="group" aria-label="Citation format">
-                <button type="button" class="cite-snip__tab" aria-pressed="true" data-show="ref">Reference</button>
-                <button type="button" class="cite-snip__tab" aria-pressed="false" data-show="bib">BibTeX</button>
-              </div>
-              <button type="button" class="cite-snip__copy" data-copy="cite-reference" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg><span data-copy-label>Copy</span></button>
-            </div>
-            <p class="cite-snip__text" id="cite-reference" data-fmt="ref">{{ partial "paper/full.html" $pp }}</p>
-            <pre class="cite-snip__text cite-snip__bib" id="cite-bibtex" data-fmt="bib" hidden>@article{ {{- .paper -}},
-  author  = { {{- $bibAuthors -}} },
-  title   = { {{- $pp.title -}} },
-  journal = { {{- $pp.journal -}} },
-  volume  = { {{- $pp.volume -}} },
-  pages   = { {{- $pp.pages -}} },
-  year    = { {{- $pp.year -}} },
-  doi     = { {{- $pp.doi -}} }
-}</pre>
-          </div>
+          {{ partial "cite-box.html" (dict "id" .paper "uid" "home") }}
           <div class="closing__actions">
             <ul class="closing__list">
               <li><a class="link" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a></li>

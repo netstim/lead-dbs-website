@@ -1,6 +1,6 @@
 ---
 title: "Lead-OR"
-description: "Lead-OR, the 3D Slicer extension for research during DBS surgery: recordings and test stimulation shown on the images in real time."
+description: "Lead-OR supports research during DBS surgery in 3D Slicer, displaying recordings and modelling test stimulation on patient images in real time."
 date: "2023-07-07T18:58:13"
 lastmod: "2026-11-11"
 weight: 4
@@ -24,18 +24,16 @@ layout: "showcase"
 
 <div class="page-intro"><div class="page-intro__text">
 
-**Lead-DBS in the operating theatre:** research during DBS surgery.
+**Lead-OR supports research** during DBS surgery.
 
 </div>
-<p class="page-intro__actions"><a class="btn btn--primary btn--ext" href="https://netstim.gitbook.io/leaddbs/lead-or/imaging-setup">Get started<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></a><a class="btn btn--secondary btn--ext" href="https://github.com/netstim/SlicerNetstim">SlicerNetstim on GitHub<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></a></p>
+<p class="page-intro__actions"><a class="btn btn--primary" href="{{< relref "/manual/lead-or/imaging-setup/" >}}">Get started</a><a class="btn btn--secondary btn--ext" href="https://github.com/netstim/SlicerNetstim">SlicerNetstim on GitHub<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></a></p>
 </div>
 
 {{< cells key="glance" label="Lead-OR at a glance" >}}
 
 {{% hub-section %}}
-## What it is
-
-**Recordings and test stimulation on the patient's images,** in real time.
+## Recordings and stimulation modelling
 
 Lead-OR shows invasive recordings (microelectrode recordings and local field potentials) on the patient's
 images as they are made, and models the effect of test stimulation on fibre tracts.
@@ -44,12 +42,12 @@ images as they are made, and models the effect of test stimulation on fibre trac
 {{% /hub-section %}}
 
 {{% hub-section %}}
-## How to get it {#download}
+## Imaging setup {#download}
 
 **Prepare the images in Lead-DBS first.**
 
-Lead-OR works on the coregistrations and segmentations made in Lead-DBS. The manual's chapter on the
-[imaging setup](https://netstim.gitbook.io/leaddbs/lead-or/imaging-setup) takes you from there.
+Lead-OR uses coregistrations and segmentations prepared in Lead-DBS. Follow the
+[imaging setup](/manual/lead-or/imaging-setup/) instructions in the manual.
 {{% /hub-section %}}
 
 {{% hub-section %}}
@@ -57,9 +55,7 @@ Lead-OR works on the coregistrations and segmentations made in Lead-DBS. The man
 
 **Oxenford et al. 2022,** eLife.
 
-{{% copybox label="Copy the citation" %}}
 {{< paper oxenford2022 "full" >}}
-{{% /copybox %}}
 
 The preprint is on [medRxiv](https://www.medrxiv.org/content/10.1101/2021.08.09.21261792v1).
 {{% /hub-section %}}

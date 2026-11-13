@@ -11,6 +11,8 @@ other, and a commented-out declaration is not checked at all.
 Hard rules (no exceptions without `/* design-exempt: <reason> */` on a line of the declaration):
 - font-size, and the size in a `font:` shorthand, is a type token var(--t-*), a relative size (em, %),
   inherit or 0;
+- font-family uses a named --font-* token or inherits (except @font-face declarations);
+- font shorthands also use a named --font-* family token or inherit;
 - border-radius and its longhands (border-top-left-radius, border-start-end-radius, …) are a radius token
   var(--r-*), 0, 50% or inherit;
 - font-weight, and the weight in a `font:` shorthand, is 400, 500, 600, a var(), inherit or normal
@@ -36,7 +38,7 @@ import pathlib
 import re
 import sys
 
-BUDGET = {"colour": 150, "important": 41, "spacing": 183, "line-height": 134, "letter-spacing": 43}
+BUDGET = {"colour": 146, "important": 35, "spacing": 177, "line-height": 131, "letter-spacing": 42}
 EXEMPT_MAX = 6
 # hard-rule violations the stylesheets already had when this script began to read whole declarations (the
 # line-by-line reading missed them): "file: selector property". Each is allowed until it is fixed, and then
@@ -230,7 +232,11 @@ for path in CSS:
                 rule(d, f"{prop} {v!r} is not a radius token (var(--r-*))")
             if prop == "font-weight" and not FW_OK.match(v) and not in_font_face:
                 rule(d, f"font-weight {v!r}: use 400, 500 or 600")
+            if prop == "font-family" and not in_font_face and not re.fullmatch(r"var\(--font-[\w-]+\)|inherit", v):
+                rule(d, f"font-family {v!r}: use a named font token (var(--font-*)) or inherit")
             if prop == "font":
+                if v != "inherit" and not re.search(r"var\(--font-[\w-]+\)$", v):
+                    rule(d, f"font family in {v!r}: use a named font token (var(--font-*))")
                 weight, size = font_parts(v)
                 if size and not FS_OK.match(size):
                     rule(d, f"font size {size!r} in a font shorthand is not a type token")
@@ -254,6 +260,23 @@ for path in CSS:
         counts["important"] += d["important"]
         if SPACING.match(prop):
             counts["spacing"] += len(re.findall(r"(?<![\w.-])\d*\.?\d+px", v))
+
+# Manual articles use shared components; presentation cannot bypass token lint
+# through a one-off style attribute or style block in Markdown/templates.
+manual_sources = list(pathlib.Path("content/manual").rglob("*.md"))
+manual_sources += list(pathlib.Path("layouts/_partials").glob("manual-*.html"))
+manual_sources += list(pathlib.Path("layouts/_shortcodes").glob("manual-*.html"))
+manual_sources += [pathlib.Path(name) for name in (
+    "layouts/manual.html", "layouts/_markup/render-codeblock.html")]
+for path in manual_sources:
+    if not path.exists():
+        continue
+    source = path.read_text()
+    if path.suffix == ".md":
+        source = re.sub(r"(?ms)^```[^\n]*\n.*?^```[ \t]*$", "", source)
+        source = re.sub(r"`[^`\n]+`", "", source)
+    if re.search(r"<style(?:\s|>)|<[^>]+\sstyle\s*=", source, re.I):
+        errors.append(f"{path}: manual presentation belongs in shared CSS, not inline styles")
 
 if "--ratchet" in sys.argv:
     # lower each budget to its count (never raise one), then check as usual

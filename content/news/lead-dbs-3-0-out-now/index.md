@@ -20,14 +20,14 @@ after converting them to BIDS, with the import tool that comes with Lead-DBS. Be
 
 - finish projects in version 2 that are close to completion;
 - back up your data in the old format;
-- get to know the new format with the manual's [overview](https://netstim.gitbook.io/leaddbs/lead-dbs/step0-overview)
+- get to know the new format with the manual's [overview](/manual/lead-dbs/step0-overview/)
   and the [BIDS walkthrough video](https://www.youtube.com/watch?v=nvZ-PnVpnDg).
 
 ## Three explorers to map DBS effects
 
 The DBS sweetspot, fibre filtering and network mapping explorers, first introduced in
 [version 2.5](/lead-dbs-v2-5-out-now/), have grown much further and are the methodological centrepiece
-of version 3. What each one does is under [Features](/helpsupport/knowledge-base/lead-dbs-methods/).
+of version 3. What each one does is under [Methods](/helpsupport/knowledge-base/lead-dbs-methods/).
 
 ## WarpDrive
 

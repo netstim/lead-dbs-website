@@ -184,8 +184,8 @@
 })();
 
 // ------------------------------------------------------------------ the header over a dark ground
-// While a black ground ([data-nav-dark]: the home page's hero and its voices; every
-// .page-head) lies under the header, the header takes the black too (.nav.is-dark, assets/css/site.css);
+// While a black ground ([data-nav-dark]: the home page's hero and its voices; the black
+// .page-head of Download and 404) lies under the header, the header takes the black too (.nav.is-dark, assets/css/site.css);
 // once the ground has scrolled past, the light bar returns.
 // Until this has run, a page that starts on a black ground (body.top-dark) shows the dark header from
 // the first paint; html.nav-ready hands the state to this script, and only then do the colours fade.
@@ -194,7 +194,9 @@
 (() => {
   const nav = document.querySelector('.nav');
   if (!nav) return;
-  const grounds = [...document.querySelectorAll('[data-nav-dark], .page-head')];
+  // an event page's head stays black on a phone (assets/css/phone-events.css)
+  const evDark = matchMedia('(max-width: 639px)').matches ? ', .page-head:has(.ev-head__flyer)' : '';
+  const grounds = [...document.querySelectorAll(`[data-nav-dark], .page-head:not(.page-head--open)${evDark}`)];
   let queued = false;
   const update = () => {
     queued = false;

@@ -1,0 +1,10 @@
+{
+  "name": "lead-dbs-website-tools",
+  "private": true,
+  "description": "The Node tools beside the Hugo build (the site itself needs none): Pele draws the diagrams and the /usage/ charts (scripts/), Playwright runs the browser checks (.github/scripts/check-*.mjs). Install the locked versions with npm ci.",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "pele": "1.13.0",
+    "playwright": "1.48.2"
+  }
+}

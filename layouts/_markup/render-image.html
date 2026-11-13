@@ -25,6 +25,11 @@
   {{- if le $W 1600 }}{{ $r := $res.Resize (printf "%dx webp q82" $W) }}{{ $set = $set | append (printf "%s %dw" $r.RelPermalink $r.Width) }}{{ end -}}
   {{- $fb := $res }}{{ if gt $W 1200 }}{{ $fb = $res.Resize "1200x" }}{{ end -}}
   {{- $w := $W }}{{ $h := $H -}}
+  {{- /* Keep tall manual screenshots readable in context without occupying multiple screens.
+         The full-size original stays available through the zoom link below. */ -}}
+  {{- if and (eq .Page.Section "manual") (gt $h 512) -}}
+    {{- $w = int (math.Round (div (mul (float $W) 512) $H)) }}{{ $h = 512 -}}
+  {{- end -}}
   {{- with $setW }}{{ $w = int . }}{{ $h = int (math.Round (div (mul (float $H) $w) $W)) }}{{ end -}}
   {{- /* the width the browser should plan for: the text column, but never more than the picture's own
          width (a small picture is not blown up). No "auto": the picture's box takes its width from
@@ -32,7 +37,7 @@
   {{- $sizes = printf "(min-width: 1280px) min(900px, %dpx), (min-width: 1024px) min(66vw, %dpx), min(100vw, %dpx)" $w $w $w -}}
   {{- $img := printf `<img src="%s" alt="%s" width="%d" height="%d" sizes="%s" loading="lazy" decoding="async"%s>` $fb.RelPermalink ($alt | htmlEscape) $w $h $sizes $attrs -}}
   {{- $html = printf `<picture><source type="image/webp" srcset="%s" sizes="%s">%s</picture>` (delimit $set ", ") $sizes $img -}}
-  {{- if and (gt $W 900) (not $setW) }}{{ $full = $res.RelPermalink }}{{ end -}}
+  {{- if and (or (gt $W 900) (and (eq .Page.Section "manual") (or (gt $W 400) (gt $H 512)))) (not $setW) }}{{ $full = $res.RelPermalink }}{{ end -}}
 {{- else -}}
   {{- $src := .Destination }}{{ $dims := "" -}}
   {{- with $res -}}

@@ -1,4 +1,6 @@
 ---
+# /usage/ (the usage statistics) was taken off the site for now; it forwards here.
+aliases: ["/usage/"]
 # The home page. Every text and list on it is set here; the layout is layouts/home.html.
 # Version, date, requirements and licence come from data/release.yaml, events from data/events.yaml.
 # Pictures are file names in assets/images/renders/ (replace a file there, or change a name here).
@@ -13,7 +15,7 @@ hero:
   primary: {label: "Download Lead-DBS"}
   # the second action is for newcomers; the manual (another site, marked ↗) follows it as a third, quieter link
   secondary: {label: "First steps", url: "/helpsupport/first-steps/"}
-  manual: {label: "Manual", url: "https://netstim.gitbook.io/leaddbs"}
+  manual: {label: "Manual", url: "/manual/"}
   # The clip behind the words: files in static/media/, poster in assets/images/renders/.
   # One directional lead in the subthalamic nucleus, the camera swaying slowly (±18°, 32 s loop),
   # framed on a black 16:10 canvas with the render on the right (see docs/home-and-media.md, "hero clip").
@@ -41,7 +43,7 @@ hero:
 # The frames are in static/media/insertion/ (see docs/home-and-media.md, "The electrode insertion").
 localize:
   title: "Electrode localization from MRI and CT"
-  text: "Reconstructs every electrode from postoperative imaging, in 2D and 3D, for one patient or a whole cohort."
+  text: "Reconstruct electrode positions from postoperative imaging and view individual patients or cohorts in 2D and 3D."
   # the steps of the diagram (assets/diagrams/localize.mmd holds the same four words), read out as a list
   steps:
     - {name: "Coregister", value: "postoperative to preoperative imaging"}
@@ -59,7 +61,7 @@ features:
   more: {label: "What Lead-DBS does", url: "/helpsupport/knowledge-base/lead-dbs-methods/"}
   data:
     page: "/helpsupport/knowledge-base/atlasesresources"
-    text: "All in MNI space, many included with Lead-DBS."
+    text: "Most in MNI space, many shipped with Lead-DBS."
     image: "head-data.jpg"
     crop: [1500, 150, 2950, 1250]
     links:
@@ -67,38 +69,37 @@ features:
       - {page: "/helpsupport/knowledge-base/atlasesresources/cortical-atlas-parcellations-mni-space", label: "Cortical parcellations"}
       - {page: "/helpsupport/knowledge-base/atlasesresources/normative-connectomes", label: "Normative connectomes"}
   cards:
-    - title: "Simulates the stimulation"
+    - title: "Stimulation modelling"
       text: "Model electric fields, activated tissue and pathways."
       anchor: "stimulation"
       image: "pathway-activation.jpg"
       alt: "Two electrodes with their stimulation volumes in blue and the fibre pathways they activate in red and white"
-    - title: "Connects it to networks"
+    - title: "Connectivity analysis"
       text: "Map connections from stimulation sites to other brain regions."
       anchor: "connectivity"
       image: "fiber-filtering.jpg"
       alt: "Fibre tracts around the electrodes, coloured from red to yellow by their association with outcome, over a 7 tesla MRI slice"
-    - title: "Compares whole cohorts"
+    - title: "Group analysis"
       text: "Relate electrode placement to clinical outcomes across patients."
       anchor: "groups-of-patients"
       image: "cohort-top.jpg"
       alt: "The electrodes of nine Lead Tutor patients seen from above, ending in the subthalamic nucleus (orange) between the internal pallidum (green) and red nucleus (red)"
 
-# Lead-DBS around the world (the globe; figures from data/usage.json, see docs/home-and-media.md, "Usage figures").
-# {countries}, {launches} and {year} are filled in from the data.
+# Lead-DBS around the world (the globe; figures from data/downloads.json, see docs/home-and-media.md, "Download figures").
+# {countries}, {downloads} and {year} (the year of the first download) are filled in from the data.
 worldwide:
-  title: "Used in {countries} countries"
-  text: "Researchers started Lead-DBS {launches} times in {year}."
-  link_label: "Usage statistics"
+  title: "Download requests from {countries} countries"
+  text: "{downloads} Lead-DBS download requests recorded since {year}."
 
 # The forthcoming release: three points, with the workshop as the next step.
 next:
   label: "Coming next"
   title: "Lead-DBS 4.0"
   points:
-    - {title: "Completely in Python", text: "Lead-DBS is being rebuilt from the ground up in Python."}
+    - {title: "Lead-DBS 4.0", text: "We’re rewriting Lead-DBS in Python."}
     - {title: "No MATLAB required", text: "Version 4.0 will run without a MATLAB licence."}
     - {title: "First to try it", text: "Participants of the hands-on workshop will be among the first to try the pre-release."}
-  link: {label: "The workshop", url: "/events/hands-on-workshop-2027/"}
+  link: {label: "Hands-on workshop", url: "/events/hands-on-workshop-2027/"}
 
 # Events: the upcoming entries of data/events.yaml, in one band with the latest news.
 events:
@@ -110,13 +111,12 @@ news:
   title: "Latest news"
   link: {label: "All news", url: "/news/"}
 
-# In published research, after the voices: figures from data/gallery.yaml (by file name), shown whole in
-# one row and linking to their entry on /gallery/.
+# In published research, after the voices: every figure of data/gallery.yaml in an endless grid that can be
+# dragged (label: what a screen reader hears for it), beside the journal covers of data/covers.yaml in a fan.
 research:
   title: "Made with Lead-DBS"
-  text: "Figures from peer-reviewed papers that used Lead-DBS."
+  label: "Figures from peer-reviewed papers that used Lead-DBS"
   link_label: "Open the gallery"
-  figures: ["edlow2019_fig7_panela.png", "hollunder2024_fig2_right.png", "rios2022_fig6_panela.png"]
 
 # The voices: a render across the whole width (a file in assets/images/renders/ that the page shows
 # nowhere else), the three quotes below over its dark lower part.
@@ -128,7 +128,7 @@ voices:
 
 
 # The closing band, two halves built alike: where to get help (a heading, one line, a button to the Get
-# help section of Docs and help) and how to cite Lead-DBS (cite); the funders in one row under both.
+# help section of Docs) and how to cite Lead-DBS (cite); the funders in one row under both.
 help:
   title: "Need help?"
   text: "Ask in the user Slack, look it up in the manual or report a bug."
@@ -153,6 +153,6 @@ cite:
   # the paper to cite now: its id in data/papers.yaml (the home page shows it as a reference and as BibTeX);
   # every paper to cite is on the page the link leads to
   paper: "neudorfer2023"
-  link: {label: "Every paper to cite", url: "/about/citing_leaddbs/"}
+  link: {label: "Citation guidance", url: "/about/citing_leaddbs/"}
 
 ---

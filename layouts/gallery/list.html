@@ -1,6 +1,7 @@
 {{ define "main" }}
 {{- /* /gallery/: the pictures on the dark ground of the renders, in three sections, each laid out for
-     its kind: the lab's renders (front matter renders:, files in assets/images/renders/) as a grid of
+     its kind: the lab's renders (front matter renders: the files in assets/images/renders/ to show, in
+     order; their alt text and captions in data/renders.yaml) as a grid of
      equal frames with the first one large; the figures from published papers (data/gallery.yaml, files
      in static/gallery/) whole on white mats in masonry columns, each with its first author, year,
      journal and licence; the journal covers (data/covers.yaml, files on /about/publications/) as a grid of small
@@ -26,8 +27,9 @@
     <section class="g-sec" data-kind="render" id="renders" aria-labelledby="g-renders-h">
       <h2 id="g-renders-h">Renders</h2>
       <ul class="g-wall g-wall--renders" data-gallery>
-      {{- range $n, $r := $p.renders }}
-      {{ with resources.Get (printf "images/renders/%s" $r.file) }}{{ $src := . }}
+      {{- range $n, $file := $p.renders }}
+      {{ $r := index hugo.Data.renders.renders $file }}{{ if not $r }}{{ errorf "gallery: the render %q (content/gallery/_index.md) is not in data/renders.yaml" $file }}{{ end }}
+      {{ with resources.Get (printf "images/renders/%s" $file) }}{{ $src := . }}
       {{ $t := $src.Resize (cond (eq $n 0) "1400x webp q80" "720x webp q80") }}{{ $full := $src.Resize (printf "%dx webp q85" (int (math.Min $src.Width 1920))) }}
       <li class="g-item" data-kind="render">
         <a class="g-item__img" href="{{ $full.RelPermalink }}"><img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="{{ $r.alt }}" loading="lazy" decoding="async"></a>
@@ -37,7 +39,7 @@
           </div>
         </div>
       </li>
-      {{ else }}{{ errorf "gallery: no render %q (content/gallery/_index.md)" $r.file }}{{ end }}
+      {{ else }}{{ errorf "gallery: no render %q (content/gallery/_index.md)" $file }}{{ end }}
       {{- end }}
       </ul>
     </section>

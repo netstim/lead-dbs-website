@@ -1,9 +1,9 @@
 ---
-title: "Lead-DBS Developer Meeting"
+title: "Lead-DBS developer meeting"
 # its place in the Events list of the sidebar: in date order, as /events/ lists them
 weight: 1
-linkTitle: "Lead-DBS Developer Meeting"
-description: "The Lead-DBS Developer Meeting: monthly on Zoom, open to anyone who wants to contribute or follow the development. How to register, and the flyer."
+linkTitle: "Lead-DBS developer meeting"
+description: "The Lead-DBS developer meeting: monthly on Zoom, open to anyone who wants to contribute or follow the development. How to register, and the flyer."
 keywords: ["zoom", "register", "registration", "developer meeting", "flyer"]
 # an event page (layouts/event.html): the facts and registration come from data/events.yaml
 layout: "event"

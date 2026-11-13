@@ -32,10 +32,12 @@
     <section class="capability{{ if not $i }} is-active{{ end }}" id="{{ .id }}" aria-labelledby="{{ .id }}-h">
       <h3 id="{{ .id }}-h">{{ if $one }}{{ partial "nobreak.html" .title }}{{ else }}<button type="button" aria-expanded="{{ if $i }}false{{ else }}true{{ end }}" aria-controls="{{ .id }}-p">{{ $w := split .title " " }}{{ with first (sub (len $w) 1) $w }}{{ partial "nobreak.html" (delimit . " ") }} {{ end }}<span class="capability__last">{{ partial "nobreak.html" (index $w (sub (len $w) 1)) }}<i class="capability__mark" aria-hidden="true"></i></span></button>{{ end }}</h3>
       <div class="capability__panel" id="{{ .id }}-p"><div class="capability__clip"><div class="capability__body">
-        {{ partial "cap-figure.html" (dict "c" $c "class" "cap-fig--inline" "sizes" "100vw") }}
+        {{- /* shown below 1024px only, as wide as the text column: the window less its two margins (--gut in
+               assets/css/base.css: 24px, from 640px 48px) */}}
+        {{ partial "cap-figure.html" (dict "c" $c "class" "cap-fig--inline" "sizes" "(min-width: 640px) calc(100vw - 96px), calc(100vw - 48px)") }}
         {{ .text }}
         <p class="capability__links">
-          {{- with .manual }}<a href="{{ .url }}" title="{{ .label }}">Manual<span class="ext-mark" aria-hidden="true">↗</span></a>{{ end -}}
+          {{- with .manual }}<a href="{{ .url }}" title="{{ .label }}">Manual</a>{{ end -}}
           {{- with .more }}<a href="{{ .RelPermalink }}">In depth<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 6h8M4.5 2.5 8 6l-3.5 3.5"/></svg></a>{{ end -}}
           {{- range .papers }}<a class="capability__paper" href="https://doi.org/{{ .doi }}" title="The paper">{{ .short }}<span class="ext-mark" aria-hidden="true">↗</span></a>{{ end -}}
         </p>

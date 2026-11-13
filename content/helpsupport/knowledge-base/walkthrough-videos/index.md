@@ -11,19 +11,19 @@ share: "video-CYCodpND7TE.jpg"
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
   - {page: "/helpsupport/learn-lead-dbs-yourself/"}
-  - {url: "https://netstim.gitbook.io/leaddbs", name: "Manual"}
+  - {page: "/manual/", name: "Manual"}
   - {page: "/helpsupport/slack-user-channel/"}
 layout: "showcase"
 ---
 
-New here? Start with [First steps](/helpsupport/first-steps/). The [manual](https://netstim.gitbook.io/leaddbs) always has the current steps.
+New here? Start with [First steps](/helpsupport/first-steps/). See the [manual](/manual/) for current instructions.
 {.video-intro}
 
 {{% video-grid %}}
 {{% video-card tag="March 2022 · for experienced users" lead="true" %}}
 ## Refresher course {#lead-dbs-refresher}
 
-Keeping control of your data, and making sure your results mean something.
+Organising your data and checking your results.
 
 {{< youtube id="pHKlTbkxz3o" title="Lead-DBS refresher course (March 2022)" >}}
 {{% /video-card %}}

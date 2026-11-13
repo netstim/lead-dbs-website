@@ -9,13 +9,11 @@
        n: the chapter's number: it names the chapter in build errors, and on a phone it stands before the
           heading ("01"), which is set small there as the chapter's label while the lede below it is set
           large (assets/css/phone-features.css); from 640px up it is not shown
-       img (optional): a lab render under assets/images/renders/ (alt text from the renders list of
-            content/gallery/_index.md; the page credits its renders once): on a desktop a low band in the
+       img (optional): a lab render under assets/images/renders/ (alt text from data/renders.yaml; the page credits its renders once): on a desktop a low band in the
             right seven of twelve columns, beside the heading, cut to focus (an object-position, default
             "50% 50%"); left out on a phone. A chapter without img is its heading alone. */ -}}
 {{- $n := int (.Get "n") -}}
 {{- $src := .Get "img" -}}
-{{- $gallery := site.GetPage "/gallery" -}}
 <div class="chapter{{ with $src }} chapter--fig{{ end }}">
 <div class="chapter__head">
 <span class="chapter__n phone-only" aria-hidden="true">{{ printf "%02d" $n }}</span>
@@ -26,8 +24,8 @@
 {{- with $src }}
 {{- $img := resources.Get . -}}
 {{- if not $img }}{{ errorf "chapter %d: no picture %q (%s)" $n . $.Page.File.Path }}{{ end -}}
-{{- $alt := "" }}{{ range $gallery.Params.renders }}{{ if eq (printf "images/renders/%s" .file) $src }}{{ $alt = .alt }}{{ end }}{{ end -}}
-{{- if not $alt }}{{ errorf "chapter %d: %s has no alt text in the renders list of content/gallery/_index.md" $n . }}{{ end -}}
+{{- $alt := "" }}{{ with index hugo.Data.renders.renders (strings.TrimPrefix "images/renders/" $src) }}{{ $alt = .alt }}{{ end -}}
+{{- if not $alt }}{{ errorf "chapter %d: %s has no alt text in data/renders.yaml" $n . }}{{ end -}}
 {{- $set := slice }}{{ $mid := false -}}
 {{- range slice 800 1280 1920 2560 }}{{ if le . $img.Width }}{{ $r := $img.Resize (printf "%dx webp q80" .) }}{{ $set = $set | append (printf "%s %dw" $r.RelPermalink $r.Width) }}{{ if eq . 1280 }}{{ $mid = $r }}{{ end }}{{ end }}{{ end }}
 <figure class="chapter__fig" style="--focus: {{ $.Get "focus" | default "50% 50%" }}"><img src="{{ $mid.RelPermalink }}" srcset="{{ delimit $set ", " }}" sizes="(min-width: 1440px) 750px, (min-width: 1024px) 56vw, calc(100vw - 2 * var(--gut))" width="{{ $mid.Width }}" height="{{ $mid.Height }}" alt="{{ $alt }}" loading="lazy" decoding="async"></figure>

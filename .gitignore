@@ -7,3 +7,10 @@ node_modules/
 *.log
 .idea/
 .vscode/
+
+# Analytics inputs and private provenance never belong in source control.
+*.log.bak
+*.mmdb
+!tests/fixtures/geoip/GeoIP2-Country-Test.mmdb
+*run-manifest.json
+__pycache__/

@@ -1,12 +1,37 @@
-{{- /* One paper of data/papers.yaml as a full reference: authors (year). Title. Journal, volume(issue),
-       pages. doi link. Context: the paper's map. */ -}}
+{{- /* One paper of data/papers.yaml as a full reference, in the form of the citing page:
+         article        Authors (year). Title. Journal, volume(issue), pages (note). doi:… link
+         inproceedings  Authors (year). Title. In Proceedings (Vol. volume, pp. pages). Address: Publisher. link
+         book           Authors (year). Title (edition ed.). Publisher, pages. link
+         misc           Authors (year). Title (note). Publisher. link
+       A field the paper does not have is left out with its punctuation. The DOI is the one link, as
+       "doi:10.…"; a paper without one links its url, named by site. Context: the paper's map. */ -}}
 {{- $p := . -}}
-{{- $title := $p.title -}}
-{{- if not (findRE `[.?!]$` $title) }}{{ $title = printf "%s." $title }}{{ end -}}
-{{- $out := printf "%s (%v). %s <em>%s</em>" $p.authors $p.year $title $p.journal -}}
-{{- with $p.volume }}{{ $out = printf "%s, <em>%s</em>" $out . }}{{ end -}}
-{{- with $p.issue }}{{ $out = printf "%s(%s)" $out . }}{{ end -}}
-{{- with $p.pages }}{{ $out = printf "%s, %s" $out . }}{{ end -}}
-{{- with $p.note }}{{ $out = printf "%s (%s)" $out . }}{{ end -}}
-{{- $out = printf "%s. <a href=\"https://doi.org/%s\">doi:%s</a>" $out $p.doi $p.doi -}}
+{{- $type := $p.type | default "article" -}}
+{{- $out := htmlEscape $p.authors -}}
+{{- with $p.year }}{{ $out = printf "%s (%v)." $out . }}{{ else }}{{ if not (findRE `\.$` $out) }}{{ $out = printf "%s." $out }}{{ end }}{{ end -}}
+{{- $title := htmlEscape $p.title -}}
+{{- if in (slice "book" "misc") $type }}{{ $title = printf "<em>%s</em>" $title }}{{ end -}}
+{{- $out = printf "%s %s" $out $title -}}
+{{- if eq $type "book" }}{{ with $p.edition }}{{ $out = printf "%s (%s ed.)" $out (htmlEscape .) }}{{ end }}{{ end -}}
+{{- if and (eq $type "misc") $p.note }}{{ $out = printf "%s (%s)" $out (htmlEscape $p.note) }}{{ end -}}
+{{- if not (findRE `[.?!]$` $p.title) }}{{ $out = printf "%s." $out }}{{ end -}}
+{{- if eq $type "inproceedings" -}}
+  {{- with $p.journal }}{{ $out = printf "%s In <em>%s</em>" $out (htmlEscape .) }}{{ end -}}
+  {{- $in := slice }}{{ with $p.volume }}{{ $in = $in | append (printf "Vol. %s" .) }}{{ end }}{{ with $p.pages }}{{ $in = $in | append (printf "pp. %s" .) }}{{ end -}}
+  {{- with $in }}{{ $out = printf "%s (%s)" $out (delimit . ", ") }}{{ end -}}
+  {{- if $p.journal }}{{ $out = printf "%s." $out }}{{ end -}}
+  {{- with $p.publisher }}{{ $out = printf "%s %s%s." $out (cond (isset $p "address") (printf "%s: " $p.address) "") (htmlEscape .) }}{{ end -}}
+{{- else if in (slice "book" "misc") $type -}}
+  {{- with $p.publisher }}{{ $out = printf "%s %s%s." $out (htmlEscape .) (cond (isset $p "pages") (printf ", %s" $p.pages) "") }}{{ else }}{{ with $p.pages }}{{ $out = printf "%s %s." $out . }}{{ end }}{{ end -}}
+{{- else -}}
+  {{- $src := "" -}}
+  {{- with $p.journal }}{{ $src = printf "<em>%s</em>" (htmlEscape .) }}{{ end -}}
+  {{- with $p.volume }}{{ $src = printf "%s%s<em>%s</em>" $src (cond (eq $src "") "" ", ") . }}{{ end -}}
+  {{- with $p.issue }}{{ $src = printf "%s(%s)" $src . }}{{ end -}}
+  {{- with $p.pages }}{{ $src = printf "%s%s%s" $src (cond (eq $src "") "" ", ") . }}{{ end -}}
+  {{- with $p.note }}{{ $src = printf "%s%s(%s)" $src (cond (eq $src "") "" " ") (htmlEscape .) }}{{ end -}}
+  {{- with $src }}{{ $out = printf "%s %s." $out . }}{{ end -}}
+{{- end -}}
+{{- with $p.doi }}{{ $out = printf `%s <a href="https://doi.org/%s">doi:%s</a>` $out . . }}
+{{- else }}{{ with $p.url }}{{ $out = printf `%s <a href="%s">%s</a>` $out . (htmlEscape ($p.site | default (urls.Parse .).Host)) }}{{ end }}{{ end -}}
 {{- $out | safeHTML -}}

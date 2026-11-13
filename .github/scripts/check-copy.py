@@ -106,7 +106,8 @@ for f in sorted(ROOT.rglob("index.html")) + [ROOT / "404.html"]:
     for ctx in [] if as_published else p.repeats():
         errors.append(f"{f.relative_to(ROOT)}: repeated word: …{ctx}…")
     for pattern, why in RULES:
-        if as_published and "spelling" in why:
+        # Imported manual wording preserves MATLAB field names, GUI labels and published terminology.
+        if (as_published or "section-manual" in p.body_class.split()) and "spelling" in why:
             continue
         if "struck" in why and str(f.relative_to(ROOT)).startswith("helpsupport/forum/"):
             continue  # the page old forum links land on says that the forum closed

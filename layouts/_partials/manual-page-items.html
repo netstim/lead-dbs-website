@@ -1,0 +1,5 @@
+{{- $items := partial "manual-toc-items.html" .Fragments.Headings -}}
+{{- if eq . (site.GetPage "/manual") -}}
+  {{- $items = (slice (dict "ID" "research-use" "Title" "Research use" "Level" 2) (dict "ID" "workflows" "Title" "Explore the workflows" "Level" 2)) | append $items -}}
+{{- end -}}
+{{- return $items -}}

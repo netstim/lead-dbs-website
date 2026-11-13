@@ -5,12 +5,12 @@ date: "2014-06-24T16:48:44"
 lastmod: "2022-03-15T20:30:21"
 weight: 10
 keywords: ["contact", "email", "email"]
-# In the menu hierarchy the contact page is the last step of "Get help" (breadcrumb Docs and help / Contact).
+# In the menu hierarchy the contact page is the last step of "Get help" (breadcrumb Docs / Contact).
 # the faster ways, as rows (layouts/_shortcodes/link-rows.html)
 faster:
   - {name: "Questions: the user Slack", url: "/helpsupport/slack-user-channel/"}
   - {name: "Bug reports: GitHub issues", url: "https://github.com/netstim/leaddbs/issues"}
-  - {name: "Known problems: troubleshooting in the manual", url: "https://netstim.gitbook.io/leaddbs/appendix/troubleshooting-specific-help"}
+  - {name: "Known problems: troubleshooting in the manual", url: "/manual/appendix/troubleshooting-specific-help/"}
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-docs.jpg"
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
@@ -19,7 +19,7 @@ next:
   - {page: "/subscribe-to-our-newsletter/"}
 ---
 
-Questions and bugs are answered fastest where users and developers already are.
+Got a question or found a bug? Start here:
 
 {{< link-rows key="faster" >}}
 

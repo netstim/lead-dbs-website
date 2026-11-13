@@ -24,7 +24,8 @@ hugo server -F         # the same, with pages whose date is still in the future
 hugo --gc --minify     # production build into public/
 ```
 
-No npm, bundler or CDN: Hugo is the only tool. The first build of a fresh clone makes the resized
+No npm, bundler or CDN in the build: Hugo is the only tool (`package.json` only locks the checks' and
+diagrams' Node tools, Playwright and Pele). The first build of a fresh clone makes the resized
 images (a few hundred files in `resources/_gen/`, which is not committed); that takes about half a
 minute, later builds take a second.
 
@@ -36,6 +37,7 @@ pictures a screen-reader user cannot see. Write the alt text and the warning goe
 | Read | For |
 |---|---|
 | This file | running the site, page types, where to edit, the checks, deployment |
+| [docs/manual.md](docs/manual.md) | the integrated user guide, chapter navigation, imported figures and migration boundaries |
 | [docs/editing.md](docs/editing.md) | pictures and videos, writing, shortcodes, atlas catalogues, events, news posts, releases |
 | [docs/structure.md](docs/structure.md) | the menu and the footer, search, metadata, old addresses |
 | [docs/design.md](docs/design.md) | the design tokens, the palette and type, motion, the CSS and JS files |
@@ -49,6 +51,7 @@ stops the build on `sidebar:`, `related:` and `toc:`, and on an unknown type).
 
 | Type | For | Width | Sidebar |
 |---|---|---|---|
+| `manual` | the user guide at `/manual/` | reading column | chapters left, local outline right |
 | `doc` (default) | Cite, Publications, Slack, Contact, past workshops, the method articles, About the MNI spaces, the atlas catalogues, legal pages, news posts | the text column | right |
 | `contributors` | Contributors (`layouts/about/contributors.html`): who coordinates Lead-DBS, then the people | the text column | right |
 | `event` | an event page (`layouts/event.html`): facts and registration from `data/events.yaml` | the text column | right |
@@ -56,7 +59,7 @@ stops the build on `sidebar:`, `related:` and `toc:`, and on an unknown type).
 | `hub` | a menu group's page (Docs and help, Atlases and data, About) | full | none; its body is the section's list |
 | own template | Home, Download, First steps, Contribute, Events, Gallery, Community, Usage, News | full | none |
 
-The sidebar rule: **one sidebar, on the right**, with the same two blocks on every sibling page: the
+For ordinary pages, the sidebar rule is **one sidebar, on the right**, with the same two blocks on every sibling page: the
 section's pages (the current one marked), then "On this page" when the page has three or more `##`
 sections (`site.Params.tocMinHeadings`). A news post has only the second block, and no sidebar at all when
 it is short. Below 1024px the sidebar gives way: "On this page" folds under the title and the section's
@@ -69,7 +72,7 @@ outside its own section, one hairline row each, title only.
 next:
   - {page: "/helpsupport/first-steps/"}                                       # named by its linkTitle
   - {page: "/develop/#add-your-atlas-or-dataset", name: "Add your atlas or dataset"}
-  - {url: "https://netstim.gitbook.io/leaddbs", name: "Manual"}                # another site: url and name
+  - {page: "/manual/", name: "Manual"}                # the integrated manual
 ```
 
 Point to the related page, the next tutorial step or the section's hub; write no "Next" section in the text.
@@ -100,10 +103,10 @@ Give it a `title`, a `description` (at most 155 characters) and, if it belongs i
 | Home page texts, quotes, help links, history, funders, citation; the hero's `proof` (a list of short parts) and `manual` (`{label, url}`, shown as a fact) | `content/_index.md` (front matter only; the layout is `layouts/home.html`) |
 | **Events** (developer meetings, workshops) | `data/events.yaml` (see [Events](docs/editing.md#events)) |
 | Home page pictures | `assets/images/renders/` (see [Pictures on the home page](docs/home-and-media.md#pictures-on-the-home-page)) |
-| Gallery ("Made with Lead-DBS", `/gallery/`) | Figures from papers: `data/gallery.yaml` + image files in `static/gallery/`. Lab renders: `content/gallery/_index.md` (see [Gallery](docs/home-and-media.md#the-gallery-of-published-figures)) |
+| Gallery ("Made with Lead-DBS", `/gallery/`) | Figures from papers: `data/gallery.yaml` + image files in `static/gallery/`. Lab renders: their alt text and captions in `data/renders.yaml` (also read by Features), the ones the gallery shows and their order in `content/gallery/_index.md` (see [Gallery](docs/home-and-media.md#the-gallery-of-published-figures)) |
 | The footer's "Institute" column | `data/links.yaml` |
 | A page's closing cards | its front matter `next:` (see [Page types](#page-types)) |
-| Main menu, legal links, the GitHub link | `hugo.toml` → `[menus]` (the entry named "Download" is drawn as the header's button) and `[params] github`; see [Site structure](docs/structure.md) |
+| Main menu, legal links, the GitHub link | `hugo.toml` → `[menus]` (the entry with `params.role = "action"`, identifier `download`, is drawn as the header's button) and `[params] github`; see [Site structure](docs/structure.md) |
 | Download / contact / developer-meeting form fields | `data/forms.yaml` |
 | Colours, fonts, page styles | `assets/css/site.css` (tokens, buttons, grid: `assets/css/base.css`; phones, below 640px: `assets/css/phone.css` and the pages' `phone-*.css`) |
 | Templates | `layouts/` |
@@ -127,12 +130,15 @@ A build is the production build when its baseURL is `https://www.lead-dbs.org/`,
 A second job opens every page of the build (every `index.html` that is not a redirect, and the 404 page) in
 Chromium on a desktop and a phone, light and dark, and fails on script errors, missing files or pictures,
 pictures that do not finish loading, anything drawn past the screen's edge, text cut off in its box and
-requests to other servers; its screenshots are kept with the run (Summary → Artifacts). The Pages workflow
-runs it on the production build before it deploys. It needs Node:
+requests to other servers; its screenshots are kept with the run (Summary → Artifacts). Then
+`check-interactions.mjs` uses the phone menu, the search (with "/" and the button), the atlas filter and the
+download page's terms dialog with the mouse and the keyboard, and fails when one stops opening, closing or
+giving the focus back. The Pages workflow runs both on the production build before it deploys. They need Node:
 
 ```bash
-npm install --no-save playwright@1.48.2 && npx playwright install chromium
+npm ci && npx playwright install chromium   # the versions locked in package-lock.json
 node .github/scripts/check-browser.mjs /tmp/site https://www.lead-dbs.org/ /tmp/screenshots   # about a minute
+node .github/scripts/check-interactions.mjs /tmp/site https://www.lead-dbs.org/                 # a few seconds
 ```
 
 `check-design.py` keeps budgets for literal colours (named colours too), `!important`, px spacing, literal
@@ -148,7 +154,7 @@ workflow also builds the site for `https://www.lead-dbs.org/`, and runs `.github
 builds; the run fails on a broken internal link, image or #anchor, a redirect that leads nowhere or to another
 redirect, a canonical or og:url that is not the page's address on www.lead-dbs.org, an og:image or sitemap
 address that is not absolute, or front matter shown as page text. It then opens every page of the production
-build in a browser (`check-browser.mjs`) and deploys only if all of that passes.
+build in a browser (`check-browser.mjs`, `check-interactions.mjs`) and deploys only if all of that passes.
 Run it locally the same way:
 
 ```bash

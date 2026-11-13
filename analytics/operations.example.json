@@ -1,0 +1,7 @@
+{
+  "php": "/usr/bin/php",
+  "collector_dir": "/srv/lead-analytics/collector",
+  "collector_config": "/private/lead-analytics/collector-config.json",
+  "private_dir": "/private/lead-analytics/operations",
+  "output": "/private/lead-analytics/operations/collected-usage.json"
+}

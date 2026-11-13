@@ -14,7 +14,7 @@ requirements_more:
 #   show: command  the Command Window with "command" typed
 steps:
   - title: "Unzip"
-    text: "Into your MATLAB toolbox folder. Avoid the MATLAB installation folder, folders that need administrator rights, and paths with spaces."
+    text: "Extract the ZIP file into your MATLAB toolbox folder. Avoid the MATLAB installation folder, folders that need administrator rights, and paths with spaces."
     show: path
     path: ["Documents", "MATLAB", "toolbox"]
     folder: "Lead-DBS"

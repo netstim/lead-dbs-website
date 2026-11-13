@@ -1,0 +1,4 @@
+<aside class="manual-note" aria-label="{{ if eq (.Get 0) "warning" }}Warning{{ else }}Note{{ end }}">
+<p class="manual-note__label">{{ if eq (.Get 0) "warning" }}Warning{{ else }}Note{{ end }}</p>
+{{ .Inner | .Page.RenderString (dict "display" "block") }}
+</aside>
