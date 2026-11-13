@@ -244,6 +244,7 @@ async function checkManualInteractions() {
     const chapters = page.getByRole('button', { name: 'Chapters', exact: true });
     await chapters.click();
     await page.locator('#manual-drawer[open]').waitFor();
+    require(await page.evaluate(() => getComputedStyle(document.documentElement).overflowY === 'hidden'), 'The chapter drawer does not lock background scrolling');
     const after = await page.locator('h1').boundingBox();
     require(before.y === after.y, 'Mobile chapters shifted the article');
     await page.keyboard.press('Tab');
@@ -294,9 +295,93 @@ async function checkManualInteractions() {
   }
 }
 
+// Headless Chromium normally hides scrollbars, masking the horizontal jump between
+// a long article and a short one. Exercise real scrollbar space as well as wide rails.
+async function checkManualLayout() {
+  const visibleScrollbars = await chromium.launch({
+    ...(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {}),
+    ignoreDefaultArgs: ['--hide-scrollbars'],
+  });
+  const context = await visibleScrollbars.newContext();
+  await context.addInitScript(() => {
+    const addScrollbar = () => {
+      const style = document.createElement('style');
+      // Force a measurable scrollbar even on machines that prefer overlay scrollbars.
+      style.textContent = 'html::-webkit-scrollbar { width: 16px; }';
+      document.head.append(style);
+    };
+    if (document.head) addScrollbar();
+    else document.addEventListener('DOMContentLoaded', addScrollbar, { once: true });
+  });
+  const page = await context.newPage();
+  const manual = origin + basePath + 'manual/';
+  const require = (ok, message) => { if (!ok) throw new Error(message); };
+  const ready = () => page.evaluate(() => document.fonts.ready.then(() => null));
+  const geometry = () => page.evaluate(() => {
+    const rect = (selector) => {
+      const box = document.querySelector(selector).getBoundingClientRect();
+      return { x: box.x, y: box.y, width: box.width, right: box.right };
+    };
+    return {
+      gutter: innerWidth - document.documentElement.clientWidth,
+      viewport: document.documentElement.clientWidth,
+      brand: rect('.docs-brand > a'), links: rect('.docs-links'),
+      download: rect('.docs-download'), rail: rect('.manual-nav'), article: rect('.manual-body'),
+    };
+  });
+  try {
+    for (const width of [1280, 1440, 1920, 3000]) {
+      await page.setViewportSize({ width, height: 1308 });
+      let baseline;
+      for (const chapter of ['installation/', 'ways-to-contribute-to-lead-dbs/', 'lead-dbs/step2-image-import/']) {
+        await page.goto(manual + chapter);
+        await ready();
+        const box = await geometry();
+        require(box.gutter >= 12, `Scrollbar space is not reserved on ${chapter} at ${width}px`);
+        require(Math.abs(box.rail.x - 24) <= 1, `Chapter rail drifts away from the viewport edge at ${width}px`);
+        require(Math.abs(box.brand.x - 24) <= 1, `Docs brand drifts away from the viewport edge at ${width}px`);
+        require(Math.abs(box.download.right - (box.viewport - 24)) <= 1, `Header actions are inset at ${width}px`);
+        require(box.article.width <= 737 && box.article.x >= box.rail.right + 47, `Article overlaps navigation or exceeds its reading width at ${width}px`);
+        if (baseline) {
+          for (const part of ['brand', 'links', 'download', 'rail', 'article']) {
+            for (const dimension of ['x', 'y', 'width']) {
+              require(Math.abs(box[part][dimension] - baseline[part][dimension]) <= 1,
+                `${part} ${dimension} jumps between long and short pages at ${width}px`);
+            }
+          }
+        } else baseline = box;
+      }
+    }
+    await page.goto(manual + 'installation/');
+    await ready();
+    const before = await page.evaluate(() => {
+      const rail = document.querySelector('.manual-nav');
+      rail.scrollTop = 40;
+      return { scroll: rail.scrollTop, linkY: rail.querySelector('a[href$="/ways-to-contribute-to-lead-dbs/"]').getBoundingClientRect().y };
+    });
+    require(before.scroll > 0, 'The navigation stability check needs a scrolled rail');
+    await Promise.all([
+      page.waitForURL(manual + 'ways-to-contribute-to-lead-dbs/'),
+      page.locator('.manual-nav a[href$="/ways-to-contribute-to-lead-dbs/"]').click(),
+    ]);
+    await ready();
+    const after = await page.evaluate(() => ({
+      scroll: document.querySelector('.manual-nav').scrollTop,
+      linkY: document.querySelector('.manual-nav a[aria-current="page"]').getBoundingClientRect().y,
+    }));
+    require(Math.abs(after.scroll - before.scroll) <= 1 && Math.abs(after.linkY - before.linkY) <= 1,
+      'An already-visible chapter jumps when navigating to it');
+  } catch (e) {
+    problems.push(`manual layout: ${e.message.split('\n')[0]}`);
+  } finally {
+    await visibleScrollbars.close();
+  }
+}
+
 // the four views run side by side, each in its own browser context
 await Promise.all(views.flatMap((view) => ['light', 'dark'].map((scheme) => check(view, scheme))));
 await checkManualInteractions();
+await checkManualLayout();
 await browser.close();
 server.close();
 
