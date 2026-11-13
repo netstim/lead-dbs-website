@@ -1,12 +1,6 @@
-{{- /* One level of the table of contents (argument: dict "items" (fragments) "depth"). Only the
-       ## sections; their subsections are left out. */ -}}
-{{- $out := slice -}}
-{{- range .items -}}
-  {{- if and (eq .Level 2) (strings.TrimSpace .Title) -}}
-    {{- $out = $out | append . -}}
-  {{- end -}}
-{{- end -}}
-{{- with $out }}
+{{- /* The list of the table of contents (argument: dict "items" (the page's .Fragments.Headings)): its ##
+       sections, found by toc-sections.html wherever they sit; their subsections are left out. */ -}}
+{{- with partial "toc-sections.html" .items }}
 <ol>
   {{- range . }}
   <li><a href="#{{ .ID }}">{{ .Title | plainify | htmlUnescape }}</a>
@@ -14,5 +8,3 @@
   {{- end }}
 </ol>
 {{- end -}}
-{{- /* headings that only hold others (a page without an h1 starts with an empty level) */ -}}
-{{- range .items -}}{{- if not (strings.TrimSpace .Title) }}{{ partial "toc-list.html" (dict "items" .Headings "depth" $.depth) }}{{ end -}}{{- end -}}

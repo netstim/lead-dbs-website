@@ -1,15 +1,24 @@
 {{- /* The body of an event page (layouts/event.html): the page's line, the facts as cells, the action and the flyer.
-       Argument: dict "page" "ev" (an entry of events/list.html) "date" (its date text) "flyer" (a resource or false). */ -}}
+       Argument: dict "page" "ev" (an entry of events/list.html) "date" (its date text) "flyer" (a resource or false).
+       Once the event is over the page stays, as a record: instead of Register and Add to calendar it says
+       when the event took place and leads to /events/. The build decides by its own time; between two
+       builds assets/js/main/events.js swaps the two by the visitor's clock ([data-ev-live] is hidden and
+       [data-ev-over-note] shown once data-ev-ends has passed). */ -}}
 {{- $page := .page }}{{ $ev := .ev }}{{ $e := $ev.e }}{{ $date := .date }}{{ $flyer := .flyer -}}
 {{- with $page -}}
       {{ .Content }}
-      {{- $host := "" }}{{ with .Params.host }}{{ $host = printf "Hosted by %s" (cond (isset . "url") (printf `<a href="%s">%s</a>` (.url | htmlEscape) (.name | htmlEscape)) (.name | htmlEscape)) }}{{ end }}
+      {{- /* front matter host: {name, url}; the link is written by the inline partial below, so html/template
+             checks its address, and an empty url gives the name without a link */}}
+      {{- $host := "" }}{{ with .Params.host }}{{ $host = partial "inline/event-host.html" . }}{{ end }}
       <dl class="dl-grid cells cells--{{ cond (ne $ev.time_short "") 3 2 }}" aria-label="When and where">
         {{ partial "fact.html" (dict "label" "Date" "value" (printf `<time datetime="%s">%s</time>` $ev.iso_start $date | safeHTML)) }}
-        {{ with $ev.time_short }}{{ $t := . }}{{ with $e.also_in }}{{ $t = printf `%s <span class="dl-cell__aside">(%s)</span>` $t ((time.In . $ev.start).Format "15:04 MST") }}{{ end }}{{ partial "fact.html" (dict "label" "Time" "value" ($t | safeHTML)) }}{{ end }}
+        {{ with $ev.time_short }}{{ $t := . }}{{ with $ev.also_in }}{{ $t = printf `%s <span class="dl-cell__aside">(%s)</span>` $t ((time.In . $ev.start).Format "15:04 MST") }}{{ end }}{{ partial "fact.html" (dict "label" "Time" "value" ($t | safeHTML)) }}{{ end }}
         {{ partial "fact.html" (dict "label" "Where" "value" $e.where "text" ($host | safeHTML)) }}
       </dl>
-      <p class="btn-row" id="register">
+      {{- $events := site.GetPage "/events" }}
+      <p{{ if $ev.over }} id="register"{{ else }} hidden{{ end }} data-ev-over-note data-ev-ends="{{ $ev.iso_ends }}">This event took place on <time datetime="{{ $ev.iso_start }}">{{ $ev.when }}</time>.{{ with $events }} The next dates are on <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>.{{ end }}</p>
+      {{- if not $ev.over }}
+      <p class="btn-row" id="register" data-ev-live data-ev-ends="{{ $ev.iso_ends }}">
         {{- with $e.register_url }}
         <a class="btn btn--primary" href="{{ partial "resolve-url.html" (dict "url" . "page" $page) }}">Register<span class="sr-only"> (another site)</span></a>
         {{- else }}
@@ -17,7 +26,12 @@
         {{- end }}
         <a class="btn btn--secondary" download="{{ urlize $e.title }}.ics" href="{{ partial "events/ics.html" (dict "ev" $ev "details" .RelPermalink) | safeURL }}">Add to calendar</a>
       </p>
+      {{- end }}
       {{ with $flyer }}{{ $f := .Resize "960x webp q84" }}
       <figure class="ev-flyer"><a href="{{ .RelPermalink }}"><img src="{{ $f.RelPermalink }}" width="{{ $f.Width }}" height="{{ $f.Height }}" alt="{{ $page.Params.flyer.alt }}" loading="lazy" decoding="async"></a></figure>
       {{ end }}
+{{- end -}}
+
+{{- define "_partials/inline/event-host.html" -}}
+Hosted by {{ with .url }}<a href="{{ . }}">{{ $.name }}</a>{{ else }}{{ .name }}{{ end }}
 {{- end -}}

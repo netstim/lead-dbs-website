@@ -4,6 +4,8 @@
 # optional field says so. No placeholders: the label is the only text of a field.
 # offline: what the page shows instead while the site has no form backend (params.formsEnabled = false;
 # the GitHub preview shows the form, disabled, with a note). Markdown.
+# action: the address the form sends to. Once params.formsEnabled is true, the build stops on a form
+# without one.
 newsletter:
   submit: Subscribe
   offline: "Until sign-up opens here, release news is posted under [News](/news/) and in its [feed](/news/index.xml)."

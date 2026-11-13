@@ -1,5 +1,6 @@
 {{- /* All events of data/events.yaml, sorted by start, each with what the templates print:
        .e (the entry), .id, .start / .ends (time.Time; ends is exclusive), .iso_start / .iso_ends,
+       .tz and .also_in (checked IANA zones; also_in "" when not set),
        .when (date text), .when_short ("18 Nov", "11–12 Feb"), .time (time with its zone, or ""), .time_short (the same, zone abbreviation only), .over (true when it ended before this build).
        Returns a slice of dicts. */ -}}
 {{- $out := slice }}{{ $ids := slice -}}
@@ -13,19 +14,36 @@
   {{- if in $ids .id }}{{ errorf "data/events.yaml: the id %q is used twice" .id }}{{ end }}{{ $ids = $ids | append .id -}}
   {{- if not (findRE `^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$` (string .start)) }}{{ errorf "data/events.yaml: %s: start %q is not 2027-02-11 or 2027-02-11T09:00" $name .start }}{{ end -}}
   {{- with .end }}{{ if not (findRE `^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$` (string .)) }}{{ errorf "data/events.yaml: %s: end %q is not 2027-02-12 or 2027-02-12T16:30" $name . }}{{ end }}{{ end -}}
-  {{- with .register_url }}{{ if findRE `zoom\.us/(j|wc|s)/` . }}{{ errorf "data/events.yaml: %s: register_url is a meeting's join link; use its registration page" $name }}{{ end }}{{ end -}}
-  {{- range .links }}{{ if not (and .label .url) }}{{ errorf "data/events.yaml: %s: every link needs label and url" $name }}{{ end }}{{ end -}}
+  {{- /* a meeting's own join link (zoom.us/j/, /wc/, /s/, /w/ for webinars, /my/ for a personal room) must
+         never be on the site, neither as register_url nor among the links */ -}}
+  {{- $join := `zoom\.us/(j|wc|s|w|my)/` -}}
+  {{- with .register_url }}{{ if findRE $join . }}{{ errorf "data/events.yaml: %s: register_url is a meeting's join link; use its registration page" $name }}{{ end }}{{ end -}}
+  {{- range .links }}{{ if not (and .label .url) }}{{ errorf "data/events.yaml: %s: every link needs label and url" $name }}{{ end -}}
+    {{- if findRE $join (string .url) }}{{ errorf "data/events.yaml: %s: the link %q is a meeting's join link; link its registration page" $name .label }}{{ end }}{{ end -}}
+  {{- /* online decides what the page says about registration, so it must be true or false: the text
+         "false" would count as true */ -}}
+  {{- if isset . "online" }}{{ if ne (printf "%T" .online) "bool" }}{{ errorf "data/events.yaml: %s: online is %q; write true or false, without quotes" $name .online }}{{ end }}{{ end -}}
   {{- $tz := .timezone | default "Europe/Berlin" -}}
+  {{- /* after a wrong zone the entry is read in UTC, so the build goes on to report every mistake */ -}}
+  {{- with try (time.In $tz now) }}{{ with .Err }}{{ errorf "data/events.yaml: %s: timezone %q is not an IANA time zone such as \"Europe/Berlin\"" $name $tz }}{{ $tz = "UTC" }}{{ end }}{{ end -}}
+  {{- $alsoIn := "" -}}
+  {{- with .also_in }}{{ with try (time.In . now) }}{{ if .Err }}{{ errorf "data/events.yaml: %s: also_in %q is not an IANA time zone such as \"America/New_York\"" $name $entry.also_in }}{{ else }}{{ $alsoIn = $entry.also_in }}{{ end }}{{ end }}{{ end -}}
+  {{- /* a date and time read in the event's zone; a day that does not exist (30 February) or a local time
+         that the clock skips when summer time starts (02:30 on the last Sunday of March in Berlin) stops
+         the build instead of moving the event by an hour */ -}}
   {{- $s := string .start -}}{{- if eq (len $s) 16 }}{{ $s = printf "%s:00" $s }}{{ end -}}
   {{- $timed := gt (len $s) 10 -}}
-  {{- $start := time.AsTime $s $tz -}}
-  {{- $day := time.AsTime (substr $s 0 10) $tz -}}
+  {{- $start := partial "events/local-time.html" (dict "s" $s "tz" $tz "what" "start" "name" $name) -}}
+  {{- $day := partial "events/local-time.html" (dict "s" (substr $s 0 10) "tz" $tz "what" "start" "name" $name "quiet" $timed) -}}
   {{- $ends := $day.AddDate 0 0 1 -}}
   {{- $lastDay := $day -}}
   {{- with .end -}}
     {{- $e := string . -}}{{- if eq (len $e) 16 }}{{ $e = printf "%s:00" $e }}{{ end -}}
-    {{- if gt (len $e) 10 -}}{{- $ends = time.AsTime $e $tz -}}{{- $lastDay = time.AsTime (substr $e 0 10) $tz -}}
-    {{- else -}}{{- $lastDay = time.AsTime $e $tz -}}{{- $ends = $lastDay.AddDate 0 0 1 -}}{{- end -}}
+    {{- if gt (len $e) 10 -}}
+      {{- $ends = partial "events/local-time.html" (dict "s" $e "tz" $tz "what" "end" "name" $name) -}}
+      {{- $lastDay = partial "events/local-time.html" (dict "s" (substr $e 0 10) "tz" $tz "what" "end" "name" $name "quiet" true) -}}
+    {{- else -}}{{- $lastDay = partial "events/local-time.html" (dict "s" $e "tz" $tz "what" "end" "name" $name) -}}{{- $ends = $lastDay.AddDate 0 0 1 -}}{{- end -}}
+    {{- if not ($start.Before $ends) }}{{ errorf "data/events.yaml: %s: end %q is not after start %q" $name (string .) (string $entry.start) }}{{ end -}}
   {{- end -}}
   {{- $when := "" -}}
   {{- if eq ($day.Format "2006-01-02") ($lastDay.Format "2006-01-02") -}}
@@ -53,7 +71,7 @@
   {{- if $timed -}}
     {{- $timeShort = printf "%s %s" ($start.Format "15:04") (.tz_label | default ($start.Format "MST")) -}}
     {{- $time = $timeShort -}}
-    {{- with .also_in -}}{{- $time = printf "%s (%s)" $timeShort ((time.In . $start).Format "15:04 MST") -}}{{- end -}}
+    {{- with $alsoIn -}}{{- $time = printf "%s (%s)" $timeShort ((time.In . $start).Format "15:04 MST") -}}{{- end -}}
   {{- end -}}
   {{- $iso := "2006-01-02T15:04:05Z07:00" -}}
   {{- $out = $out | append (dict
@@ -61,7 +79,7 @@
       "id" .id
       "start" $start "ends" $ends "start_unix" $start.Unix
       "iso_start" ($start.Format $iso) "iso_ends" ($ends.Format $iso)
-      "date_only" ($day.Format "2006-01-02") "timed" $timed "tz" $tz
+      "date_only" ($day.Format "2006-01-02") "timed" $timed "tz" $tz "also_in" $alsoIn
       "when" $when "when_short" $whenShort "time" $time "time_short" $timeShort
       "over" (not (now.Before $ends))) -}}
 {{- end -}}

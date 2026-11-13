@@ -10,6 +10,7 @@
 </head>
 <body class="kind-{{ .Kind }}{{ with .Section }} section-{{ . }}{{ end }}{{ if not (or .IsHome (and (eq .Section "news") (eq .Kind "section"))) }} top-dark{{ end }}">
   {{ partial "header.html" . }}
+  {{- if .File }}{{ partial "page-check.html" . }}{{ end }}
   {{ block "main" . }}{{ end }}
   {{ partial "footer.html" . }}
   {{ partial "search-dialog.html" . }}

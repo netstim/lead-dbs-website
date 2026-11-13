@@ -13,7 +13,7 @@ jobs:
     env:
       HUGO_VERSION: 0.169.0
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
       - name: Install Hugo (checked against the release's checksums)
@@ -34,18 +34,22 @@ jobs:
         run: python3 .github/scripts/check-copy.py public
       - name: Preview build (the GitHub Pages variant)
         run: HUGO_PARAMS_PREVIEW=true hugo --gc --minify --baseURL https://netstim.github.io/lead-dbs-website/ --destination "$RUNNER_TEMP/preview"
+      # the variant that is deployed: its links, its noindex on every page, its canonicals to the live site
+      - name: Links in the preview build (.github/scripts/check-site.py)
+        run: python3 .github/scripts/check-site.py "$RUNNER_TEMP/preview" https://netstim.github.io/lead-dbs-website/
       - name: Unused CSS (.github/scripts/check-css-used.py)
         run: python3 .github/scripts/check-css-used.py public "$RUNNER_TEMP/preview"
 
   # Every page in Chromium, on a desktop and a phone, light and dark (.github/scripts/check-browser.mjs): script
-  # errors, missing files and pictures, text cut off at the screen's edge, requests to other servers. The
-  # screenshots are kept with the run (Summary → Artifacts) for review.
+  # errors, missing files and pictures, anything past the screen's edge, text cut off, requests to other
+  # servers. The screenshots are kept with the run (Summary → Artifacts) for review.
   browser:
     runs-on: ubuntu-latest
     env:
       HUGO_VERSION: 0.169.0
+      PLAYWRIGHT_VERSION: 1.48.2
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Install Hugo (checked against the release's checksums)
         run: |
           cd "$RUNNER_TEMP"
@@ -54,18 +58,23 @@ jobs:
           curl -fsSL -O "$base/$deb" -O "$base/hugo_${HUGO_VERSION}_checksums.txt"
           grep " $deb\$" "hugo_${HUGO_VERSION}_checksums.txt" | sha256sum -c -
           sudo dpkg -i "$deb"
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
+      # Chromium is kept between runs for the pinned Playwright (the system libraries are installed each time)
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ env.PLAYWRIGHT_VERSION }}
       - name: Install Playwright and Chromium
-        run: npm install --no-save playwright@1.48.2 && npx playwright install --with-deps chromium
+        run: npm install --no-save "playwright@$PLAYWRIGHT_VERSION" && npx playwright install --with-deps chromium
       - name: Build
         run: hugo --gc --minify
       - name: Pages in the browser (.github/scripts/check-browser.mjs)
         run: node .github/scripts/check-browser.mjs public https://www.lead-dbs.org/ "$RUNNER_TEMP/screenshots"
       - name: Keep the screenshots
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: screenshots
           path: ${{ runner.temp }}/screenshots

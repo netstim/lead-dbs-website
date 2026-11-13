@@ -1,0 +1,18 @@
+{{- /* A date ("2027-02-11") or date and time ("2027-02-11T09:00:00") of data/events.yaml read in the event's
+       IANA zone, for events/list.html. Argument: dict "s" "tz" "what" (start or end) "name" (the entry, for
+       the message), "quiet" (true: no message, for the day of a start or end whose time is checked
+       already). Stops the build when the day does not exist (30 February), or when the clock skips that
+       local time (02:30 on the day summer time starts in Europe/Berlin): Go would quietly move it an
+       hour later. The check formats the time back in its zone and compares. Returns a time.Time (the
+       build time after an error, so the caller can go on and Hugo reports every mistake). */ -}}
+{{- $out := now -}}
+{{- with try (time.AsTime .s .tz) -}}
+  {{- if .Err -}}
+    {{- if not $.quiet }}{{ errorf "data/events.yaml: %s: %s %s is not a day of the calendar" $.name $.what (substr $.s 0 16) }}{{ end -}}
+  {{- else -}}
+    {{- $out = .Value -}}
+    {{- $back := $out.Format (cond (gt (len $.s) 10) "2006-01-02T15:04:05" "2006-01-02") -}}
+    {{- if and (ne $back $.s) (not $.quiet) }}{{ errorf "data/events.yaml: %s: %s %s does not exist in %s (the clock skips it when summer time begins); pick another time" $.name $.what (substr $.s 0 16) $.tz }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $out -}}

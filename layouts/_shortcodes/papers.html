@@ -2,8 +2,9 @@
        headings are Markdown and appear in the page's contents list:
          {{% papers %}}
        Each group is an h3 with the anchor #papers-<group id>. */ -}}
-{{- $papers := hugo.Data.papers.papers -}}
-{{- range hugo.Data.papers.groups -}}
+{{- $d := partialCached "paper/data.html" "papers" -}}
+{{- $papers := $d.papers -}}
+{{- range $d.groups -}}
 {{- $g := .id -}}
 {{- $title := .title -}}
 {{- $list := slice -}}

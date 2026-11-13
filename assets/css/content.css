@@ -41,6 +41,14 @@
 .clip { margin: 0 0 1.4em; max-width: var(--measure); }
 .clip video { display: block; width: 100%; max-width: 100%; height: auto; border-radius: var(--r-sm); background: var(--surface); }
 .clip figcaption { margin-top: var(--s-2); font-size: var(--t-note); color: var(--muted); }
+/* the round button that pauses a clip that plays by itself (layouts/_partials/clip-script.html), in the
+   manner of the hero's: on the clip's top right corner, a 44px target */
+.has-media-pause { position: relative; }
+.media-pause { position: absolute; top: var(--s-3); right: var(--s-3); width: 44px; height: 44px; display: grid; place-items: center; padding: 0;
+  border: 1px solid color-mix(in oklab, var(--on-render) 25%, transparent); border-radius: 50%; cursor: pointer;
+  background: color-mix(in oklab, var(--render) 55%, transparent); color: var(--on-render); transition: background-color var(--t-out) var(--ease); }
+.media-pause:hover { background: color-mix(in oklab, var(--render) 75%, transparent); }
+.media-pause svg { width: 14px; height: 14px; }
 
 /* atlas catalogues (shortcodes atlas-index and atlas-group): a filter and the group links, then every
    atlas in one pattern: thumbnail, name and paper, what it covers; folded out, its text, "Get it",
@@ -444,7 +452,7 @@ html:not(.dl-terms-ready) .dl-terms__close { display: none; }
 .prose .capability { margin: 0; max-width: none; scroll-margin-top: calc(var(--nav) + var(--s-4)); }
 .prose .capability h3 { margin: 0; font-size: var(--t-sub); font-weight: 600; line-height: 1.2; letter-spacing: -.025em; }
 .prose .capability h3 > button { display: block; width: 100%; margin: 0; padding: 9px 0; border: 0; border-radius: 0; background: none; font: inherit; letter-spacing: inherit; text-align: left;
-  color: color-mix(in oklab, var(--muted) 62%, var(--bg)); cursor: pointer; transition: color var(--t-out) var(--ease); }
+  color: var(--muted); cursor: pointer; transition: color var(--t-out) var(--ease); }
 .prose .capability h3 > button:hover { color: var(--ink); transition-duration: var(--t-in); }
 .prose .capability.is-active h3 > button { color: var(--ink); cursor: default; }
 /* a small chevron after a name says it can be chosen; it stays with the last word when the name wraps */
@@ -880,4 +888,7 @@ html .prose .cells a { color: var(--ink); text-decoration-color: var(--line-stro
 .prose .atlas-list { border-bottom: 0; }
 /* a figure from a paper is a sheet: it sits on the page's surface, close to the edges, not letterboxed on black */
 .prose .cap-fig:has(.cap-fig__sheet) { background: var(--surface); }
+/* on that light surface the credit is muted ink, not the white it has on a render's black */
+.prose .cap-fig:has(.cap-fig__sheet) .cap-fig__credit { color: var(--muted); }
+.prose .cap-fig:has(.cap-fig__sheet) .cap-fig__credit a:hover { color: var(--ink); }
 .prose .cap-fig:has(.cap-fig__sheet) .cap-fig__sheet { --pad: clamp(8px, 2cqw, 16px); }

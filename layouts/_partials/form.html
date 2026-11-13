@@ -8,6 +8,8 @@
 <p class="form-offline"{{ with $.anchor }} id="{{ . }}"{{ end }}>{{ .offline | default "" | markdownify }}</p>
 {{ if not .offline }}{{ errorf "form %q: no offline text in data/forms.yaml" $id }}{{ end }}
 {{ else }}
+{{- /* a live form without an action would post to the page it is on and lose what people typed */ -}}
+{{ if and site.Params.formsEnabled (not .action) }}{{ errorf "form %q: params.formsEnabled is true, but data/forms.yaml gives the form no action (the address it sends to)" $id }}{{ end }}
 {{- /* the rarer kind is marked: "(optional)" where most fields are required, "(required)" where most are optional */ -}}
 {{ $req := len (where .fields "required" true) }}{{ $markReq := lt (mul $req 2) (len .fields) }}
 <form class="form"{{ with $.anchor }} id="{{ . }}"{{ end }}{{ with .action }} action="{{ . }}"{{ end }} method="post"{{ if not site.Params.formsEnabled }} onsubmit="return false"{{ if site.Params.preview }} aria-describedby="f-{{ $id }}-{{ $n }}-note"{{ end }}{{ end }}>

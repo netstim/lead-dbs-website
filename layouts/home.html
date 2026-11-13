@@ -167,7 +167,13 @@
     <div class="wrap render-band__wrap">
       <div class="render-band__head">
         <h2 id="voices-h" class="render-band__h">{{ .title }}</h2>
-        {{ with site.GetPage "/about/publications" }}<a class="btn btn--primary btn--on-dark" href="{{ .RelPermalink }}#what-others-write">All quotes</a>{{ end }}
+        <div class="render-band__actions">
+          {{- /* holds the drifting rows for good (WCAG 2.2.2); assets/js/main/home.js shows it, not under reduced motion */}}
+          <button class="media-pause drift__pause" type="button" aria-label="Pause the quotes" hidden data-drift-pause>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          {{ with site.GetPage "/about/publications" }}<a class="btn btn--primary btn--on-dark" href="{{ .RelPermalink }}#what-others-write">All quotes</a>{{ end }}
+        </div>
       </div>
     </div>
     {{- /* two rows of key phrases drifting slowly in opposite directions (CSS only): each phrase is a few
@@ -182,10 +188,10 @@
           {{ range $copy := slice 0 1 }}
           <div class="drift__set"{{ if $copy }} aria-hidden="true"{{ end }}>
             {{ range $row }}{{ $paper := eq .kind "paper" }}{{ $roles := split .role ", " }}
-            <figure class="drift__item"{{ if not $copy }} role="listitem"{{ end }} title="“{{ .text }}”">
+            <div class="drift__item"{{ if not $copy }} role="listitem"{{ end }}><figure title="“{{ .text }}”">
               <blockquote><span aria-hidden="true"><span class="drift__q">“</span>{{ .phrase }}<span class="drift__q">”</span></span><span class="sr-only">{{ .text }}</span></blockquote>
               <figcaption><span><b>{{ index (split .name ", ") 0 }}</b>{{ if $paper }} <em>{{ .role }}</em>{{ else }}, {{ index $roles (sub (len $roles) 1) }}{{ end }}</span></figcaption>
-            </figure>
+            </figure></div>
             {{ end }}
           </div>
           {{ end }}

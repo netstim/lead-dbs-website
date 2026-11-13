@@ -60,7 +60,10 @@
         {{- /* a workshop whose only picture is a wide banner has no tile: its row is in the archive page */}}
         {{ if not $banner }}
         <li class="ws-tile{{ if eq $n 0 }} ws-tile--lead{{ end }}{{ if $banner }} ws-tile--type{{ end }}"><a href="{{ $archive.RelPermalink }}#{{ .id }}">
-          {{ if not $banner }}{{ $t := $img.Fill (cond (eq $n 0) "1200x900 webp q80 Center" "720x540 webp q80 Center") }}<img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="" loading="lazy" decoding="async">{{ else }}<span class="ws-tile__word" aria-hidden="true">{{ .city }}</span>{{ end }}
+          {{ if not $banner }}{{- /* the lead tile spans two columns from 768px; the others one (about a third), two on a phone */ -}}
+          {{ $ws := cond (eq $n 0) (slice 600 900 1200) (slice 360 540 720) }}{{ $set := slice }}{{ $t := false }}
+          {{ range $ws }}{{ $t = $img.Fill (printf "%dx%d webp q80 Center" . (div (mul . 3) 4)) }}{{ $set = $set | append (printf "%s %dw" $t.RelPermalink .) }}{{ end }}
+          <img src="{{ $t.RelPermalink }}" srcset="{{ delimit $set ", " }}" sizes="{{ cond (eq $n 0) "(min-width: 768px) 60vw, 100vw" "(min-width: 768px) 30vw, 50vw" }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="" loading="lazy" decoding="async">{{ else }}<span class="ws-tile__word" aria-hidden="true">{{ .city }}</span>{{ end }}
           <span class="ws-tile__cap"><b>{{ .city }}</b> {{ .month }} {{ index (findRE `\b(19|20)\d\d\b` .title 1) 0 }}</span>
         </a></li>
         {{ $n = add $n 1 }}

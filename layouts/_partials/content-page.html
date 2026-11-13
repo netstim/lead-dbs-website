@@ -11,7 +11,7 @@
 {{ $t := partial "page-type.html" . }}
 {{ $toc := and $t.side (partial "has-toc.html" .) }}
 {{ $post := and (eq .Section "news") .IsPage }}
-{{ $side := and $t.side (or $toc (and (not $post) (partial "nav-place.html" .).group)) }}
+{{ $side := and $t.side (or $toc (and (not $post) (partial "section-entries.html" .))) }}
 <main id="top" class="page page--{{ $t.name }}{{ if $side }} page--side{{ end }}{{ with $class }} {{ . }}{{ end }}">
   {{ partial "page-head.html" . }}
   <div class="wrap doc-layout{{ if $t.wide }} doc-layout--wide{{ else if $side }} doc-layout--side{{ end }}">

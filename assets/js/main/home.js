@@ -161,3 +161,22 @@ document.querySelectorAll('.fig-strip').forEach((strip) => {
   if (document.readyState === 'complete') start();
   else addEventListener('load', start, { once: true });
 })();
+
+// ------------------------------------------------------------------ the home page's drifting quotes
+// The round button beside "All quotes" holds both rows until it is pressed again (hover holds them only
+// while the pointer rests). Under reduced motion the rows stand anyway, so the button stays hidden.
+(() => {
+  const btn = document.querySelector('[data-drift-pause]');
+  const drift = document.querySelector('.drift');
+  if (!btn || !drift || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const icons = {
+    pause: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+    play: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6L12.6 8z" fill="currentColor"/></svg>',
+  };
+  btn.hidden = false;
+  btn.addEventListener('click', () => {
+    const held = drift.classList.toggle('is-held');
+    btn.innerHTML = held ? icons.play : icons.pause;
+    btn.setAttribute('aria-label', held ? 'Play the quotes' : 'Pause the quotes');
+  });
+})();

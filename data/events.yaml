@@ -8,21 +8,24 @@
 #                 when the date moves; a new event gets a new id.
 #   title         name of the event
 #   start         a date (2027-02-11) or a date and time in the event's time zone (2026-11-18T15:00)
-#   end           optional: last day (2027-02-12), or the end time (2026-11-18T16:30)
+#   end           optional: last day (2027-02-12), or the end time (2026-11-18T16:30); after start.
 #                 Without it the event counts as over at the end of its start day.
+#                 A time is a time of the clock in that zone: one the clock skips when summer time
+#                 begins (02:30 on the last Sunday of March in Berlin) stops the build.
 #   timezone      the IANA time zone of start and end, e.g. "Europe/Berlin". The site prints the
 #                 zone from it and the date: "15:00 CET", in summer "15:00 CEST".
 #   also_in       optional: a second IANA time zone printed after it, e.g. "America/New_York"
 #                 gives "15:00 CET (09:00 EST)"; summer and winter time are handled by the site.
 #   tz_label      optional, rarely needed: text that replaces the printed zone
 #   where         place, or "Online (Zoom)"
-#   online        true for an online meeting whose link people receive by registering
+#   online        true for an online meeting whose link people receive by registering (true or
+#                 false, without quotes)
 #   host          optional: who hosts it
 #   text          one or two sentences
 #   register_url  optional: the registration page. For an online meeting this is the page where
 #                 people leave their email address and receive the meeting link (e.g. Zoom's
 #                 /meeting/register/ page). Never put the meeting's own join link here or anywhere
-#                 else on the site. While it is empty, an
+#                 else on the site (the build stops on zoom.us/j/, /wc/, /s/, /w/ and /my/ links). While it is empty, an
 #                 online event says that registration opens soon and that the link is shared in
 #                 the user Slack; an event on site says that details and registration will follow.
 #   links         optional: more links, each {label, url}; url is a site path or a full URL

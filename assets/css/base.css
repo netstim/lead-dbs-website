@@ -215,6 +215,8 @@ p a:not([class]) { --rest: color-mix(in oklab, currentColor 45%, transparent); }
   outline: none; border-color: var(--action); transition-duration: 0s;
   box-shadow: 0 0 0 1px var(--action), 0 0 0 4px color-mix(in oklab, var(--action) 20%, transparent);
 }
+/* in forced colours (Windows contrast themes) shadows are dropped: a system-colour outline marks the field */
+@media (forced-colors: active) { .field :is(input, select, textarea):focus { outline: 2px solid CanvasText; outline-offset: 2px; } }
 
 /* ---------------------------------------------------------------- reduced motion: nothing slides, fades stay instant */
 @media (prefers-reduced-motion: reduce) {

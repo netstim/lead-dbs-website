@@ -5,12 +5,12 @@
 {{- if eq .variant "side" -}}
 <nav class="toc toc--side" aria-labelledby="toc-side-h" data-toc>
   <p class="t-label muted" id="toc-side-h">On this page</p>
-  {{ partial "toc-list.html" (dict "items" $items "depth" 0) }}
+  {{ partial "toc-list.html" (dict "items" $items) }}
   <a class="toc__top" href="#top">Back to the top</a>
 </nav>
 {{- else -}}
 <details class="toc toc--top">
   <summary>On this page</summary>
-  <nav aria-label="On this page">{{ partial "toc-list.html" (dict "items" $items "depth" 0) }}</nav>
+  <nav aria-label="On this page">{{ partial "toc-list.html" (dict "items" $items) }}</nav>
 </details>
 {{- end -}}

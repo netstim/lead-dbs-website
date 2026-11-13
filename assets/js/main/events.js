@@ -5,6 +5,7 @@
 // [data-ev-next-list] (home page): hide every ended event, add the line for no dates when none is left.
 // /events/: move ended events from the upcoming list to the past list (latest first), and add the same
 // line when the upcoming list is empty. The line is not in the page while events are listed.
+// [data-ev-live] / [data-ev-over-note] (an event's page): swap the actions for the "took place" line.
 // [data-ev-local]: add the start time in the visitor's own time zone when it differs.
 (() => {
   const now = Date.now();
@@ -43,6 +44,16 @@
       if (h) h.hidden = false;
       if (!up.children.length) noDates(up);
     }
+  }
+  // an event's own page (events/page-body.html): once the event is over, Register and Add to calendar
+  // give way to the line that says when it took place, which then also carries the #register anchor
+  const live = document.querySelector('[data-ev-live]');
+  const note = document.querySelector('[data-ev-over-note]');
+  if (live && note && over(live)) {
+    live.hidden = true;
+    live.removeAttribute('id');
+    note.id = 'register';
+    note.hidden = false;
   }
   document.querySelectorAll('[data-ev-local]').forEach((el) => {
     try {

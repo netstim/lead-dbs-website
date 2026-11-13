@@ -95,8 +95,14 @@ it under `links`, and other pages link the page rather than a news post about th
 ```
 
 - The build checks every entry and stops with its name on an unknown field, a missing `id`, `title`,
-  `start`, `timezone`, `where` or `text`, an id used twice, a date in another format, a link without `label`
-  and `url`, and a Zoom join link in `register_url`.
+  `start`, `timezone`, `where` or `text`, an id used twice, a date in another format or one that does not
+  exist (30 February, or a time the clock skips when summer time begins), an `end` that is not after
+  `start`, a `timezone` or `also_in` that is not an IANA zone, an `online` that is not `true` or `false`
+  (without quotes), a link without `label` and `url`, and a Zoom join link (`zoom.us/j/`, `/wc/`, `/s/`,
+  `/w/`, `/my/`) in `register_url` or `links`.
+- "Add to calendar" (on `/events/` and the event's page) is a calendar file made from the entry: a meeting
+  with a start time and no end lasts an hour; one whose `end` is a day runs to the end of that day; an event
+  whose `start` is a day is entered as whole days. Each date of the monthly meeting is its own calendar entry.
 - The time zone is printed from `timezone` and the date: this entry reads "15:00 CEST (09:00 EDT)",
   a winter one "15:00 CET (09:00 EST)"; without `also_in` just "15:00 CEST". Visitors elsewhere also see the
   start in their own time. (`tz_label` replaces the printed zone; it is rarely needed.)
@@ -120,6 +126,9 @@ it under `links`, and other pages link the page rather than a news post about th
 2. A few lines in `assets/js/main/events.js` check again by the visitor's clock: they hide an event that has ended since
    the build and show the next one, and on `/events/` move it to "Past events". Without script, the build's
    choice shows.
+
+An event's own page stays when the event is over: Register and "Add to calendar" give way to a line that says
+when it took place and leads to `/events/` (by the build's time, and again by the visitor's clock).
 
 To see the site as it will look on another day: `hugo server --clock 2026-11-20T10:00:00+01:00`.
 
@@ -162,7 +171,8 @@ until the nightly build of that day. `hugo server -F` shows it now. Pictures in 
    on the site comes from this file: the home page, the download page (and its browser title), First steps,
    the structured data, and the archive note on old news posts.
 2. `data/releases.yaml`: the same version, date and announcement as a new first row of the release history
-   (the table at `/download/#releases`); the build stops if its first row is not the version in `release.yaml`.
+   (the table at `/download/#releases`); the build stops if its first row differs from `release.yaml` in version,
+   date or `notes`.
 3. A news post about the release (above), titled "Lead-DBS 3.3 released" (a few words may follow after a
    colon when there is something urgent to say), and its address in `notes`. The post's date is the day it
    was announced; when that differs from the release date, the post's head and the release history show both.
@@ -257,7 +267,9 @@ picture on a light mat. The entries are the index: the filter keeps those whose 
 typed (`?atlas=word` in the address fills it in), and a link to an entry's `#id` opens it. The header of `atlases.yaml` lists the fields. To add an atlas,
 add an entry with a new `id` to the right group and put its picture next to the page; to add a group, add it
 under `groups` and a `{{% atlas-group %}}` line on the page. The site search finds every atlas by itself and
-opens the page at its entry. Never change an existing `id`: it is the entry's address (`#id`).
+opens the page at its entry. Never change an existing `id`: it is the entry's address (`#id`). The build stops
+when an id (of a group, an atlas or an older anchor under `also`) is used twice in one file, and when a group
+has no `{{% atlas-group %}}` line on its page.
 
 **An atlas page of its own** (DISTAL, FOCUS) opens with its summary box (Lead-OR and Lead Tutor have the same box after
 a one-line intro); a date in it is a `<time datetime="2018-02-05">` element and a version a `<span class="num">`, both

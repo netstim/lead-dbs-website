@@ -1,15 +1,31 @@
 {{- /* The atlas catalogue of a page: its own file atlases.yaml (next to index.md), with "groups" (id,
        title, intro) and "atlases" (one entry each; see docs/editing.md, Atlas catalogues). Returns the parsed
        data, or nothing when the page has no such file. Checks that every atlas names a known group
-       and has an id, a name and alt text for its picture. */ -}}
+       and has an id, a name and alt text for its picture; that no id is used twice, among the groups,
+       the atlases and their older anchors ("also"), since each is an anchor of the same page; and that
+       the page places every group with {{% atlas-group "id" %}}, since the search index and the filter
+       link to atlases of every group. */ -}}
 {{- $out := dict -}}
 {{- with .Resources.Get "atlases.yaml" -}}
   {{- $d := . | transform.Unmarshal -}}
-  {{- $ids := slice }}{{ range $d.groups }}{{ $ids = $ids | append .id }}{{ end -}}
+  {{- $f := printf "%satlases.yaml" $.File.Dir -}}
+  {{- $ids := slice }}{{ $anchors := slice -}}
+  {{- range $d.groups -}}
+    {{- if not .id }}{{ errorf "%s: a group needs an id" $f }}{{ end -}}
+    {{- if in $anchors .id }}{{ errorf "%s: the id %q is used twice" $f .id }}{{ end -}}
+    {{- $ids = $ids | append .id }}{{ $anchors = $anchors | append .id -}}
+    {{- $placed := findRE (printf `\{\{[%%<]\s*atlas-group\s+"%s"\s*[%%>]\}\}` .id) $.RawContent 1 -}}
+    {{- if not $placed }}{{ errorf "%s: the group %q is never placed on the page; add {{%% atlas-group %q %%}} to %s" $f .id .id $.File.Path }}{{ end -}}
+  {{- end -}}
   {{- range $d.atlases -}}
-    {{- if not (and .id .name) }}{{ errorf "%s: an atlas needs an id and a name" $.File.Path }}{{ end -}}
-    {{- if not (in $ids .group) }}{{ errorf "%s: atlas %q names an unknown group %q" $.File.Path .id .group }}{{ end -}}
-    {{- if and (or .image .clip) (not .alt) }}{{ errorf "%s: atlas %q: its picture needs alt text" $.File.Path .id }}{{ end -}}
+    {{- if not (and .id .name) }}{{ errorf "%s: an atlas needs an id and a name" $f }}{{ end -}}
+    {{- if not (in $ids .group) }}{{ errorf "%s: atlas %q names an unknown group %q" $f .id .group }}{{ end -}}
+    {{- if and (or .image .clip) (not .alt) }}{{ errorf "%s: atlas %q: its picture needs alt text" $f .id }}{{ end -}}
+    {{- $a := . -}}
+    {{- range (slice .id) | append (.also | default slice) -}}
+      {{- if in $anchors . }}{{ errorf "%s: atlas %q: the id %q is used twice" $f $a.name . }}{{ end -}}
+      {{- $anchors = $anchors | append . -}}
+    {{- end -}}
   {{- end -}}
   {{- $out = $d -}}
 {{- end -}}
