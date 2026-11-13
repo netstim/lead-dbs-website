@@ -26,7 +26,7 @@ import pathlib
 import re
 import sys
 
-BUDGET = {"colour": 152, "important": 72, "spacing": 183, "line-height": 135, "letter-spacing": 43}
+BUDGET = {"colour": 152, "important": 42, "spacing": 183, "line-height": 135, "letter-spacing": 43}
 EXEMPT_MAX = 6
 
 CSS = sorted(pathlib.Path("assets/css").glob("*.css"))
