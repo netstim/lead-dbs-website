@@ -1,28 +1,44 @@
 {{- /* One form of data/forms.yaml. Arguments: dict "id" (the form's key), "n" (a number that keeps field ids
-       unique on the page), "anchor" (optional id of the form). No backend yet (params.formsEnabled = false): the production site shows
-       the form's `offline` line instead; the GitHub preview shows the form disabled, with a note. */ -}}
+       unique on the page), "anchor" (optional id of the form). A form is live when params.formsEnabled is true
+       and it has an action. Until then the production site shows the form's `offline` line instead; the GitHub
+       preview shows the form disabled, with a note. A live form is sent by assets/js/main/forms.js (and without
+       script as a normal POST); its `offline` line is what the page offers when sending fails. */ -}}
 {{ $id := .id }}{{ $n := .n | default 0 }}
 {{ with index hugo.Data.forms $id }}
-{{ if and (not site.Params.formsEnabled) (not site.Params.preview) }}
-{{- /* no backend yet: the page offers the way that works instead of a dead form */ -}}
-<p class="form-offline"{{ with $.anchor }} id="{{ . }}"{{ end }}>{{ .offline | default "" | markdownify }}</p>
 {{ if not .offline }}{{ errorf "form %q: no offline text in data/forms.yaml" $id }}{{ end }}
+{{ $live := and site.Params.formsEnabled .action }}
+{{ if and (not $live) (not site.Params.preview) }}
+{{- /* not connected: the page offers the way that works instead of a dead form */ -}}
+<p class="form-offline"{{ with $.anchor }} id="{{ . }}"{{ end }}>{{ .offline | markdownify }}</p>
 {{ else }}
-{{- /* a live form without an action would post to the page it is on and lose what people typed */ -}}
-{{ if and site.Params.formsEnabled (not .action) }}{{ errorf "form %q: params.formsEnabled is true, but data/forms.yaml gives the form no action (the address it sends to)" $id }}{{ end }}
 {{- /* the rarer kind is marked: "(optional)" where most fields are required, "(required)" where most are optional */ -}}
 {{ $req := len (where .fields "required" true) }}{{ $markReq := lt (mul $req 2) (len .fields) }}
-<form class="form"{{ with $.anchor }} id="{{ . }}"{{ end }}{{ with .action }} action="{{ . }}"{{ end }} method="post"{{ if not site.Params.formsEnabled }} onsubmit="return false"{{ if site.Params.preview }} aria-describedby="f-{{ $id }}-{{ $n }}-note"{{ end }}{{ end }}>
+{{ $note := printf "f-%s-%d-note" $id $n }}
+<form class="form"{{ with $.anchor }} id="{{ . }}"{{ end }}{{ if $live }} action="{{ .action | relURL }}" data-form-live{{ end }} method="post"{{ if not $live }} onsubmit="return false" aria-describedby="{{ $note }}"{{ end }}>
+  <input type="hidden" name="form" value="{{ $id }}">
+  {{- /* a field people never see or reach: a bot that fills it is answered as if sent, and nothing is sent */}}
+  <div class="form__trap" aria-hidden="true"><label for="f-{{ $id }}-{{ $n }}-website">Leave this empty</label><input id="f-{{ $id }}-{{ $n }}-website" type="text" name="website" tabindex="-1" autocomplete="off"></div>
   {{ range .fields }}
   {{ $fid := printf "f-%s-%d-%s" $id $n .name }}
+  {{ if eq .type "checkbox" }}
+  <div class="field field--full field--check">
+    <input id="{{ $fid }}" type="checkbox" name="{{ .name }}" value="yes"{{ if .required }} required{{ end }}>
+    <label for="{{ $fid }}">{{ .label | markdownify }}{{ if and $markReq .required }} <span class="field__opt">(required)</span>{{ end }}</label>
+  </div>
+  {{ else }}
   <div class="field{{ if not .half }} field--full{{ end }}">
     <label for="{{ $fid }}">{{ .label }}{{ if and $markReq .required }} <span class="field__opt">(required)</span>{{ else if and (not $markReq) (not .required) }} <span class="field__opt">(optional)</span>{{ end }}</label>
-    {{ if eq .type "textarea" }}<textarea id="{{ $fid }}" name="{{ .name }}" rows="6"{{ if .required }} required{{ end }}></textarea>
-    {{ else }}<input id="{{ $fid }}" type="{{ .type | default "text" }}" name="{{ .name }}"{{ if .required }} required{{ end }}{{ with .autocomplete }} autocomplete="{{ . }}"{{ end }}>{{ end }}
+    {{ if eq .type "textarea" }}<textarea id="{{ $fid }}" name="{{ .name }}" rows="6" maxlength="5000"{{ if .required }} required{{ end }}></textarea>
+    {{ else }}<input id="{{ $fid }}" type="{{ .type | default "text" }}" name="{{ .name }}" maxlength="{{ if eq .type "email" }}254{{ else }}200{{ end }}"{{ if .required }} required{{ end }}{{ with .autocomplete }} autocomplete="{{ . }}"{{ end }}>{{ end }}
   </div>
   {{ end }}
-  <div class="btn-row"><button type="submit" class="btn btn--primary"{{ if not site.Params.formsEnabled }} disabled{{ end }}>{{ .submit }}</button></div>
-  {{ if and (not site.Params.formsEnabled) site.Params.preview }}<p class="form-note" id="f-{{ $id }}-{{ $n }}-note">This preview is not connected yet.</p>{{ end }}
+  {{ end }}
+  <div class="btn-row"><button type="submit" class="btn btn--primary"{{ if not $live }} disabled{{ end }}>{{ .submit }}</button></div>
+  {{ if $live }}
+  {{- /* forms.js says here what happened; when sending fails it adds the offline line, kept below */}}
+  <p class="form-status" role="status" aria-live="polite"></p>
+  <template class="form-fallback">{{ .offline | markdownify }}</template>
+  {{ else }}<p class="form-note" id="{{ $note }}">This preview is not connected yet.</p>{{ end }}
 </form>
 {{ end }}
 {{ else }}{{ errorf "form: no form %q in data/forms.yaml" $id }}{{ end }}

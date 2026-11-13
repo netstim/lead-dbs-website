@@ -883,6 +883,9 @@ html .video-embed--poster .video-embed__start { background: linear-gradient(to t
 @media (max-width: 639px) { html .video-embed--poster .video-embed__start { background: linear-gradient(to top, rgb(0 0 0 / .88) 0, rgb(0 0 0 / .74) 55%, rgb(0 0 0 / .5) 100%); } }
 
 .form-note { margin: 0; font-size: var(--t-label); color: var(--muted); }
+/* what happened to a live form (assets/js/main/forms.js) */
+.form-status { margin: 0; font-size: var(--t-small); color: var(--ink); }
+.form-status:empty { display: none; }
 
 /* news: a plain list, the date on the left and the title with two lines of summary on the right (one
    column on a phone). No thumbnails: the posts' pictures are of too many kinds (flyers, screenshots,

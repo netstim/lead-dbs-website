@@ -1,0 +1,19 @@
+{
+  "recipients": {
+    "contact": "mail@andreas-horn.de",
+    "downloadfocus": "mail@andreas-horn.de"
+  },
+  "from": "website@lead-dbs.org",
+  "envelope_sender": true,
+  "site": "www.lead-dbs.org",
+  "origins": ["https://www.lead-dbs.org", "https://lead-dbs.org"],
+  "pages": {
+    "contact": "/contact/",
+    "downloadfocus": "/helpsupport/knowledge-base/atlasesresources/focus-atlas/"
+  },
+  "rate_dir": "/private/lead-forms/rate",
+  "rate_key": "replace with a long random string generated on the server",
+  "limit": 5,
+  "window": 600,
+  "delivery": "mail"
+}

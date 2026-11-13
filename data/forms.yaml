@@ -1,11 +1,14 @@
 # Every form of the site, drawn by layouts/_partials/form.html (shortcodes `form` and `newsletter`).
-# A field: name, label (sentence case), type (text, email, textarea), required, autocomplete,
-# half (two half fields share a row). Fields are optional unless marked required; the label of an
+# A field: name, label (sentence case; Markdown for a checkbox), type (text, email, textarea, checkbox),
+# required, autocomplete, half (two half fields share a row). Fields are optional unless marked required; the label of an
 # optional field says so. No placeholders: the label is the only text of a field.
 # offline: what the page shows instead while the site has no form backend (params.formsEnabled = false;
 # the GitHub preview shows the form, disabled, with a note). Markdown.
-# action: the address the form sends to. Once params.formsEnabled is true, the build stops on a form
-# without one.
+# action: the address the form sends to, relative to the site root. A form is live once params.formsEnabled
+# is true and it has an action; until then production shows its offline line. The contact and FOCUS forms
+# send to server/forms/send.php (its README.md says how it is deployed), which keeps its own list of the
+# fields and must agree with this file (tests/test_forms_http.py checks that). The newsletter has no
+# action: it stays on its offline line until the newsletter service is settled.
 newsletter:
   submit: Subscribe
   offline: "Newsletter sign-up is not yet available here. Read release announcements in [News](/news/) or subscribe to the [RSS feed](/news/index.xml)."
@@ -15,14 +18,19 @@ newsletter:
     - {name: email, label: Email, type: email, required: true, autocomplete: email}
 downloadfocus:
   offline: "To get FOCUS, write to [mail@andreas-horn.de](mailto:mail@andreas-horn.de) with your name and institution."
-  # the FOCUS atlas (academic research only); downloading also subscribes to the newsletter
-  submit: Download FOCUS
+  # the FOCUS atlas (academic research only); the team emails the download link by hand. The newsletter is a
+  # separate choice, off unless ticked.
+  action: forms/send.php
+  submit: Request FOCUS
   fields:
     - {name: first_name, label: First name, autocomplete: given-name, half: true}
     - {name: last_name, label: Last name, autocomplete: family-name, half: true}
     - {name: institution, label: Institution, autocomplete: organization}
     - {name: email, label: Email, type: email, required: true, autocomplete: email}
+    - {name: academic, label: "I will use FOCUS for academic research only, not for commercial applications.", type: checkbox, required: true}
+    - {name: newsletter, label: "Also send me the Lead-DBS [newsletter](/subscribe-to-our-newsletter/).", type: checkbox}
 contact:
+  action: forms/send.php
   submit: Send message
   offline: "Write to [mail@andreas-horn.de](mailto:mail@andreas-horn.de)."
   fields:
