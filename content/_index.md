@@ -112,13 +112,12 @@ news:
   title: "Latest news"
   link: {label: "All news", url: "/news/"}
 
-# In published research, after the voices: figures from data/gallery.yaml (by file name), shown whole in
-# one row and linking to their entry on /gallery/.
+# In published research, after the voices: every figure of data/gallery.yaml in an endless grid that can be
+# dragged (label: what a screen reader hears for it), beside the journal covers of data/covers.yaml in a fan.
 research:
   title: "Made with Lead-DBS"
-  text: "Figures from peer-reviewed papers that used Lead-DBS."
+  label: "Figures from peer-reviewed papers that used Lead-DBS"
   link_label: "Open the gallery"
-  figures: ["edlow2019_fig7_panela.png", "hollunder2024_fig2_right.png", "rios2022_fig6_panela.png"]
 
 # The voices: a render across the whole width (a file in assets/images/renders/ that the page shows
 # nowhere else), the three quotes below over its dark lower part.

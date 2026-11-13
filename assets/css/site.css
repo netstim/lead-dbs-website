@@ -431,7 +431,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 
 /* one caption style for the pictures of the gallery and the home page: --t-note, muted, at a readable
    measure; a figure from a paper adds its short citation as the caption's second line */
-.caption, .fig-strip__cite { margin: 0; font-size: var(--t-note); line-height: 1.5; color: var(--muted); max-width: 60ch; }
+.caption { margin: 0; font-size: var(--t-note); line-height: 1.5; color: var(--muted); max-width: 60ch; }
 
 /* ---------------------------------------------------------------- home: sections */
 .home > .section { padding: var(--rhythm) 0; }
@@ -540,36 +540,6 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
    one action as a link (the host, the notes and the button are on /events/). */
 .event__upcoming-only > .event__note + .event__register { margin-top: var(--s-4); }
 
-/* in published research: figures from papers in one row, each whole at its own shape with the gallery's
-   hairline edge (no mat), their widths in proportion to their shapes so all are one height; a tablet
-   and a phone scroll the row sideways */
-.fig-strip { list-style: none; margin: 0; padding: 0; display: flex; align-items: flex-start; gap: var(--gutter); }
-.fig-strip__item { flex: var(--ar) 1 0; min-width: 0; }
-.fig-strip__link { display: grid; gap: var(--s-3); color: var(--ink); }
-.fig-strip__img { display: block; width: 100%; height: auto; border-radius: var(--r-xs); outline: 1px solid var(--line-strong); outline-offset: -1px;
-  transition: outline-color var(--t-out) var(--ease); }
-.fig-strip__link:hover .fig-strip__img { outline-color: color-mix(in oklab, var(--action) 70%, transparent); transition-duration: var(--t-in); }
-.fig-strip__link:hover .fig-strip__cite { color: var(--action); }
-/* a strip that scrolls sideways shows it: its right edge fades while more figures follow (assets/js/main/home.js
-   sets .is-end at the last one, .is-moved once it has scrolled); it is then a tab stop of its own, so the
-   arrow keys scroll it */
-@media (max-width: 1023px) {
-  .fig-strip { --fade-l: 0px; --fade-r: 56px; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(-1 * var(--gut));
-    padding: 0 var(--gut) var(--s-2); scroll-padding-inline: var(--gut); scrollbar-width: none;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, var(--render) var(--fade-l), var(--render) calc(100% - var(--fade-r)), transparent 100%);
-    mask-image: linear-gradient(90deg, transparent 0, var(--render) var(--fade-l), var(--render) calc(100% - var(--fade-r)), transparent 100%); }
-  .fig-strip::-webkit-scrollbar { display: none; }
-  .fig-strip.is-moved { --fade-l: 24px; }
-  .fig-strip.is-end { --fade-r: 0px; }
-  .fig-strip:focus-visible { outline-offset: -2px; }
-  .fig-strip__item { flex: none; scroll-snap-align: start; }
-}
-/* a phone: each figure about the full width at its own shape, the next one just showing at the edge */
-@media (max-width: 639px) {
-  .fig-strip { --fade-r: 20px; gap: var(--s-4); }
-  .fig-strip.is-moved { --fade-l: 20px; }
-  .fig-strip__item { width: 86%; }
-}
 /* The voices: the render on the black band, the heading over it, and under it two rows of key phrases
    drifting slowly across the whole width in opposite directions (layouts/home.html). Each row's track
    holds its phrases twice and moves by half its width, so it loops without a seam; the edges fade.
@@ -666,7 +636,6 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
    from 640 the news beside the events. The published figures scroll sideways at a readable height, as
    on a phone; the funders' five logos in one row. */
 @media (min-width: 640px) and (max-width: 1023px) {
-  .fig-strip__img { width: auto; height: 320px; max-width: none; }
   .funders { grid-template-columns: repeat(5, minmax(0, 1fr)); }
   .funders img { max-width: 100%; }
   .home-split > .insertion { max-width: 720px; }
@@ -1468,18 +1437,51 @@ html:not(.js) .g-item__info { display: block; padding: var(--s-2) 0 var(--s-3); 
 .cm-sections { margin-top: clamp(48px, 6vw, 88px); }
 .prose .cm-sections .hub-section:first-child, .prose .cm-sections .hub-section { margin-top: clamp(56px, 6vw, 96px); }
 
-/* a white pill on the dark bands (All quotes, Open the gallery) */
-/* Made with Lead-DBS on black, right under the voices: the figures as rounded tiles, the citation in a
-   small glass pill on each */
-.home > .research-band { background: var(--render); color: var(--on-render); padding-top: 0; --ink: var(--on-render); --muted: rgb(255 255 255 / .6); --line: rgb(255 255 255 / .16); }
+/* Made with Lead-DBS on black, right under the voices (layouts/home.html): the heading and its pill, under
+   them the endless grid of figures (7 of 12 columns) and the fan of journal covers. The grid is a rounded
+   frame a shade lighter than the band; the tiles inside fade out towards its edges (the one gradient here),
+   so they seem to run on beyond it. assets/js/main/home.js places the tiles (.made-tile) with transforms
+   and lifts the fan's cards in turn (.is-up). On a phone: assets/css/phone-home.css. */
+.home > .research-band { background: var(--render); color: var(--on-render); padding-top: 0; --ink: var(--on-render); --muted: color-mix(in oklab, var(--on-render) 60%, transparent); --line: color-mix(in oklab, var(--on-render) 16%, transparent); }
+.home > .research-band .section-head { align-items: center; }
 .home > .research-band .section-head h2 { color: var(--on-render); }
-.home > .research-band .section-head p { color: rgb(255 255 255 / .65); }
-.research-band .fig-strip__link { position: relative; display: block; border-radius: var(--r-md); overflow: hidden; color: var(--on-render); background-image: none !important; }
-.research-band .fig-strip__link::after { content: none !important; }
-.research-band .fig-strip__img { border: 0 !important; outline: 0 !important; border-radius: var(--r-md); transition: transform 600ms var(--ease); }
-.research-band .fig-strip__link:hover .fig-strip__img { transform: scale(1.025); }
-.research-band .fig-strip__cite { position: absolute; left: var(--s-3); bottom: var(--s-3); margin: 0; padding: 3px 10px; border-radius: var(--r-pill); background: rgb(0 0 0 / .6); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: var(--on-render); font-size: var(--t-xs); line-height: 1.5; white-space: nowrap; max-width: calc(100% - 2 * var(--s-3)); overflow: hidden; text-overflow: ellipsis; }
-.research-band .fig-strip__link:hover .fig-strip__cite { color: var(--on-render); }
+.made { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gutter); --made-h: clamp(460px, 40vw, 580px); }
+.made-grid { position: relative; height: var(--made-h); border-radius: var(--r-lg); overflow: hidden; isolation: isolate;
+  background: color-mix(in oklab, var(--on-render) 5%, var(--render)); cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+.made-grid::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 1px var(--line); }
+.made-grid.is-dragging { cursor: grabbing; }
+.made-grid:focus-visible { outline-offset: 4px; border-radius: var(--r-lg); }
+.made-grid__plane { position: absolute; inset: 0; --fade: 72px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, var(--render) var(--fade), var(--render) calc(100% - var(--fade)), transparent), linear-gradient(transparent, var(--render) var(--fade), var(--render) calc(100% - var(--fade)), transparent);
+  -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent, var(--render) var(--fade), var(--render) calc(100% - var(--fade)), transparent), linear-gradient(transparent, var(--render) var(--fade), var(--render) calc(100% - var(--fade)), transparent);
+  mask-composite: intersect; }
+.made-tile { position: absolute; top: 0; left: 0; display: block; border-radius: var(--r-md); overflow: hidden; background: color-mix(in oklab, var(--on-render) 10%, var(--render)); will-change: transform; -webkit-user-drag: none; }
+.made-tile img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transition: transform 600ms var(--ease); }
+.made-tile:hover img { transform: scale(1.04); }
+
+/* the fan (the deck Fable drew for the home page): seven covers turned about a point far below them, --k
+   from -3 (left, oldest) to 3 (the newest, on top); .is-up lifts the card whose journal the caption names */
+.made-fan { position: relative; display: block; height: var(--made-h); color: var(--on-render); }
+.made-fan:focus-visible { outline-offset: 4px; border-radius: var(--r-lg); }
+.made-fan__deck { position: absolute; inset: 0; }
+.made-fan__card { --spread: 7.5deg; --w: clamp(124px, 12.6vw, 190px); position: absolute; left: 50%; bottom: calc(var(--made-h) * .27); width: var(--w); aspect-ratio: 230 / 300; margin-left: calc(var(--w) / -2);
+  border-radius: var(--r-xs); overflow: hidden; background: color-mix(in oklab, var(--on-render) 12%, var(--render));
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--on-render) 10%, transparent), -10px 14px 36px -10px color-mix(in oklab, var(--render) 80%, transparent);
+  transform-origin: 50% 210%; transform: rotate(calc(var(--k) * var(--spread))); transition: transform 900ms var(--ease-out); }
+.made-fan__card.is-up { transform: rotate(calc(var(--k) * var(--spread))) translateY(var(--lift, -56px)); }
+.made-fan__card.is-top { --lift: -20px; }
+.made-fan__card img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.made-fan__cap { position: absolute; left: 0; right: 0; bottom: calc(var(--made-h) * .1); display: grid; justify-items: center; font-size: var(--t-small); line-height: 1.45; text-align: center; color: var(--muted); transition: opacity 300ms var(--ease); }
+.made-fan__cap b { font-weight: 500; color: var(--on-render); }
+.made-fan__cap.is-changing { opacity: 0; }
+.made-fan:hover .made-fan__cap b { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
+/* a tablet: the grid at full width, the fan under it */
+@media (max-width: 1023px) {
+  .made { grid-template-columns: minmax(0, 1fr); gap: var(--s-7); --made-h: 440px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .made-fan__card, .made-fan__cap, .made-tile img { transition: none; }
+}
 
 /* ---------- home: Lead-DBS around the world ----------
    The localization section mirrored: a wireframe globe left, drawn in the page's own ink straight on
