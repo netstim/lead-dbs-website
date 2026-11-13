@@ -35,9 +35,7 @@ an age-matched sample from it, as described in [Horn et al. 2017](https://doi.or
 
 ## What to cite
 
-{{% copybox label="Copy the citation" %}}
 {{< paper horn2017acpc "full" >}}
-{{% /copybox %}}
 
 Slides from a short talk on the method at AAN 2017 ([PDF](https://www.lead-dbs.org/docs/talks/AAN_presentation_Horn_2017.pdf)).
 

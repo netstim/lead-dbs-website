@@ -624,8 +624,12 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .home .closing__h { margin: 0; font-size: var(--t-h3); line-height: 1.15; max-width: none; }
 .closing__text { max-width: 44ch; font-size: var(--t-lead); line-height: 1.55; text-wrap: balance; }
 .closing__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-6); margin-top: var(--s-2); }
-/* the citation snippet: a white box with a hairline, its bar (format tabs, copy) over the text */
-.cite-snip { align-self: stretch; border: 1px solid var(--line-strong); border-radius: var(--r-md); background: var(--bg); overflow: hidden; }
+/* the citation box (partial cite-box.html), the same wherever a paper is to be cited: a white box with a
+   hairline, its bar (format tabs, copy) over the reference or its BibTeX, the paper's further links under it;
+   an optional label above. Compact: the stacked boxes of an atlas entry's Cite list. */
+.cite-snip { align-self: stretch; }
+.cite-snip__label { margin: 0 0 var(--s-2); font-size: var(--t-small); font-weight: 500; color: var(--muted); }
+.cite-snip__box { border: 1px solid var(--line-strong); border-radius: var(--r-md); background: var(--bg); overflow: hidden; }
 .cite-snip__bar { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding: var(--s-2) var(--s-2) var(--s-2) var(--s-3); border-bottom: 1px solid var(--line); }
 .cite-snip__bar[hidden] { display: none; }
 .cite-snip__tabs { display: flex; gap: var(--s-1); }
@@ -634,9 +638,18 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .cite-snip__tab:hover, .cite-snip__copy:hover { color: var(--ink); background: var(--surface); }
 .cite-snip__tab[aria-pressed="true"] { background: var(--surface); color: var(--ink); }
 .cite-snip__copy svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.cite-snip__text { margin: 0; padding: var(--s-4); font-size: var(--t-small); line-height: 1.6; color: var(--ink); overflow-wrap: anywhere; }
-.cite-snip__text a { color: var(--action); }
+.cite-snip__text { margin: 0; padding: var(--s-4); font-family: var(--font-text); font-size: var(--t-note); line-height: 1.6; color: var(--ink); overflow-wrap: anywhere; }
+.cite-snip__text a, .cite-snip__links a { color: var(--action); }
 .cite-snip__bib { font: var(--t-label)/1.6 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.cite-snip__links { margin: 0; padding: 0 var(--s-4) var(--s-4); font-size: var(--t-small); color: var(--muted); }
+.cite-snip--compact .cite-snip__text { padding: var(--s-3); }
+.cite-snip--compact .cite-snip__links { padding: 0 var(--s-3) var(--s-3); }
+/* in an article: the box keeps to the text's measure; the article's paragraph and code styles stay out */
+.prose .cite-snip { max-width: var(--measure); margin: 0 0 1.4em; }
+.prose .cite-snip :is(.cite-snip__text, .cite-snip__label, .cite-snip__links) { max-width: none; margin: 0; }
+.prose .cite-snip .cite-snip__bib { padding: var(--s-4); border-radius: 0; background: none; font-size: var(--t-label); overflow-x: visible; }
+.prose .cite-snip--compact .cite-snip__bib.cite-snip__text { padding: var(--s-3); }
+.prose .cite-snip .cite-snip__label { margin-bottom: var(--s-2); }
 .closing__list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-6); }
 @media (min-width: 768px) { .closing__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1024px) { .closing__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: calc(var(--gutter) * 3); } }
@@ -951,7 +964,7 @@ img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md
    event title, "Back to the filter") is a 44px target: vertical padding on the inline link widens the
    area a finger hits without moving a line of text. Text links in a paragraph keep their size. */
 @media (max-width: 1023px) {
-  .prose :is(ul, ol):not([class]) > li > a:not([class]), .prose :is(ul, ol):not([class]) > li > :is(strong, b) > a:not([class]), .prose :is(td, dd) > a:not([class]), .prose .atlas__more a, .prose .atlas__cite li > a:not([class]), .prose .atlas__cite li > strong > a, :is(.event__title, .news-item__title) > a { padding-block: calc(23px - .68em); }
+  .prose :is(ul, ol):not([class]) > li > a:not([class]), .prose :is(ul, ol):not([class]) > li > :is(strong, b) > a:not([class]), .prose :is(td, dd) > a:not([class]), .prose .atlas__more a, :is(.event__title, .news-item__title) > a { padding-block: calc(23px - .68em); }
 }
 
 /* the table of contents: sticky in the sidebar on a desktop, a collapsible list on top below 1024 */

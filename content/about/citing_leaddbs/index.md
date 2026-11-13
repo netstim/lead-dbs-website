@@ -19,9 +19,7 @@ next:
 **Cite the Lead-DBS v3 paper** in every study that used Lead-DBS.
 {.dataset-intro}
 
-{{% copybox label="Copy the citation" %}}
 {{< paper neudorfer2023 "full" >}}
-{{% /copybox %}}
 
 RRID: [SCR_002915](https://scicrunch.org/scicrunch/Resources/record/nlx_144509-1/5f2345e7-4b61-51f4-8d44-4b9b8cdf8868/search?q=lead%20dbs&l=lead%20dbs) · Lead-DBS v2 or earlier: {{< paper horn2019 >}} and {{< paper horn2015 >}}
 {.fine-print}

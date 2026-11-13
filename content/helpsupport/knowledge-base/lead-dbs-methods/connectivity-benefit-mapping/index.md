@@ -26,9 +26,7 @@ and [Lead Group](/manual/lead-group/group-analyses-with-lead-dbs/).
 
 The paper that introduced the method:
 
-{{% copybox label="Copy the citation" %}}
 {{< paper horn2017ana "full" >}}
-{{% /copybox %}}
 
 It was discussed in an editorial in *Nature Reviews Neurology*:
 [Ridler 2017, “Parkinson disease: deep brain stimulation — making the right connections”](https://www.nature.com/articles/nrneurol.2017.91).
