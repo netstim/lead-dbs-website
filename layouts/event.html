@@ -5,7 +5,6 @@
        beside it, and the flyer if there is one (an image next to the page named in front matter flyer).
        The id #register is linked from other pages: keep it. */ -}}
 {{- $page := . -}}
-{{- $_ := partial "page-type.html" . -}}
 {{- $ev := false -}}
 {{- range partial "events/list.html" . }}{{ if eq .id $page.Params.event }}{{ $ev = . }}{{ end }}{{ end -}}
 {{- if not $ev }}{{ errorf "%s: unknown event %q (data/events.yaml)" .File.Path .Params.event }}{{ end -}}
@@ -13,31 +12,6 @@
 {{- $date := $ev.start.Format "2 Jan 2006" -}}
 {{- with $e.end }}{{ if and (eq (len (string .)) 10) (ne (string .) $ev.date_only) }}{{ $date = printf "%s %s" $ev.when_short ($ev.start.Format "2006") }}{{ end }}{{ end -}}
 {{- $flyer := false }}{{ with .Params.flyer }}{{ $flyer = $page.Resources.Get .file }}{{ if not $flyer }}{{ errorf "%s: no flyer %q next to the page" $page.File.Path .file }}{{ end }}{{ end -}}
-<main id="top" class="page page--doc page--side ev-page">
-  {{ partial "page-head.html" . }}
-  <div class="wrap doc-layout doc-layout--side">
-    <article class="prose">
-      {{ .Content }}
-      <div class="dl-grid cells cells--{{ cond (ne $ev.time_short "") 3 2 }}" role="list" aria-label="When and where">
-        <div class="dl-cell" role="listitem"><p class="cells__l">Date</p><p class="cells__v"><time datetime="{{ $ev.iso_start }}">{{ $date }}</time></p></div>
-        {{ with $ev.time_short }}<div class="dl-cell" role="listitem"><p class="cells__l">Time</p><p class="cells__v">{{ . }}{{ with $e.also_in }} <span class="cells__t">({{ (time.In . $ev.start).Format "15:04 MST" }})</span>{{ end }}</p></div>{{ end }}
-        <div class="dl-cell" role="listitem"><p class="cells__l">Where</p><p class="cells__v">{{ $e.where }}</p>{{ with .Params.host }}<div class="cells__t"><p>Hosted by {{ with .url }}<a href="{{ . }}">{{ $.Params.host.name }}</a>{{ else }}{{ $.Params.host.name }}{{ end }}</p></div>{{ end }}</div>
-      </div>
-      <p class="btn-row" id="register">
-        {{- with $e.register_url }}
-        <a class="btn btn--primary" href="{{ partial "resolve-url.html" (dict "url" . "page" $page) }}">Register<span class="sr-only"> (another site)</span></a>
-        {{- else }}
-        <a class="btn btn--primary" href="{{ with site.GetPage "/subscribe-to-our-newsletter" }}{{ .RelPermalink }}{{ end }}#subscribe">Get notified</a>
-        {{- end }}
-        <a class="btn btn--secondary" download="{{ urlize $e.title }}.ics" href="{{ partial "events/ics.html" (dict "ev" $ev "details" .RelPermalink) | safeURL }}">Add to calendar</a>
-      </p>
-      {{ with $flyer }}{{ $f := .Resize "960x webp q84" }}
-      <figure class="ev-flyer"><a href="{{ .RelPermalink }}"><img src="{{ $f.RelPermalink }}" width="{{ $f.Width }}" height="{{ $f.Height }}" alt="{{ $page.Params.flyer.alt }}" loading="lazy" decoding="async"></a></figure>
-      {{ end }}
-      {{ partial "section-nav.html" (dict "page" . "variant" "end") }}
-      {{ partial "next-steps.html" . }}
-    </article>
-    <aside class="sidebar" aria-label="Section">{{ partial "sidebar.html" (dict "page" . "toc" false) }}</aside>
-  </div>
-</main>
+{{ $body := partial "events/page-body.html" (dict "page" . "ev" $ev "date" $date "flyer" $flyer) }}
+{{ partial "content-page.html" (dict "page" . "body" $body "class" "ev-page") }}
 {{ end }}

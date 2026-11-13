@@ -141,8 +141,10 @@
 .dl-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .dl-cell { padding: var(--s-5); }
 .dl-cell--wide { grid-column: span 2; }
-.dl-cell dt { color: var(--muted); font-size: var(--t-label); font-weight: var(--label-weight); }
-.dl-cell dd { margin: 0; color: var(--muted); font-size: var(--t-small); line-height: 1.5; text-wrap: pretty; }
+.dl-cell dt { color: var(--muted); font-size: var(--t-label); font-weight: var(--label-weight); line-height: 1.4; }
+.dl-cell dd { margin: 0; color: var(--muted); font-size: var(--t-small); line-height: 1.55; text-wrap: pretty; }
+.dl-cell dd p { margin: 0; color: inherit; font-size: inherit; line-height: inherit; }
+.dl-cell__aside { color: var(--muted); font-size: var(--t-small); }
 .dl-cell dd.dl-cell__v { margin: var(--s-4) 0 var(--s-2); color: var(--ink); font-size: var(--t-sub); font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; }
 
 /* a step: a small picture of it on a pale stage, then its number and title and a sentence */
@@ -851,10 +853,7 @@ html.v-box-open { overflow: hidden; }
 .prose .cells { max-width: none; margin: 0 0 var(--s-8); grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 640px) { .prose .cells { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1024px) { .prose .cells--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } .prose .cells--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.prose .cells p { margin: 0; max-width: none; }
-.cells .cells__l { color: var(--muted); font-size: var(--t-label); font-weight: var(--label-weight); line-height: 1.4; }
-.cells .cells__v { margin: var(--s-4) 0 var(--s-2); font-size: var(--t-sub); font-weight: 600; line-height: 1.2; letter-spacing: -.02em; }
-.cells .cells__t, .cells .cells__t p { color: var(--muted); font-size: var(--t-small); line-height: 1.55; text-wrap: pretty; }
+.prose .cells dd { max-width: none; }
 .prose .cells + h2, .prose .cells + .hub-section { margin-top: 0; }
 .prose .resource-actions + h2 { margin-top: var(--s-8); }
 .prose .hub-section + h2 { margin-top: clamp(56px, 6vw, 96px); }

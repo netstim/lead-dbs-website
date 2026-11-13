@@ -1,0 +1,7 @@
+{{- /* One row of a list of links, the site's one row style: the title, an optional short line, the arrow (↗ and a
+       note for screen readers when it leads to another site). Put it in a <ul> of the same kind.
+       Argument: dict "href", "title" (plain text; Lead-DBS will not break), and optionally "text", "ext" (true
+       for another site), "rel", "kind": "index" (default; hub, Community and link-rows lists, with the line)
+       or "next" ("Related" and the pages to start from on 404 and search, the title only). */ -}}
+{{- $b := cond (eq .kind "next") "next-step" "resource-index" -}}
+<li><a class="{{ if eq .kind "next" }}next-step{{ else }}link resource-index__link{{ end }}" href="{{ .href }}"{{ with .rel }} rel="{{ . }}"{{ end }}><span class="{{ $b }}__title">{{ partial "nobreak-html.html" (.title | htmlEscape) }}{{ if .ext }}<span class="sr-only"> (another site)</span>{{ end }}</span>{{ with .text }}<span class="{{ $b }}__text">{{ . }}</span>{{ end }}{{ if .ext }}<span class="ext-mark {{ $b }}__arrow" aria-hidden="true">↗</span>{{ else }}<svg class="m-arrow {{ $b }}__arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg>{{ end }}</a></li>

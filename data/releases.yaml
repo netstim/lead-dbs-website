@@ -2,7 +2,7 @@
 # ({{< release-history >}}). Dates are those of the version's tag on GitHub (netstim/leaddbs).
 # notes: the post or newsletter that announced it (a site path or a full URL), if there is one.
 # When you cut a release, add it here at the top as well as in data/release.yaml (the build stops if
-# the two disagree); see README, "Cut a release".
+# the two disagree); see docs/editing.md, "Cut a release".
 - {version: "3.2.1", date: 2026-03-02, notes: "/critical-update-lead-dbs-3-2-1/", summary: "Fixes a critical bug that could, in very rare cases, delete files"}
 - {version: "3.2", date: 2025-02-28, notes: "/lead-dbs-3-2-out-now/", summary: "Lead Tutor; Morel, updated THOMAS, PD non-motor tract and Von Economo–Koskinas atlases"}
 - {version: "3.1", date: 2024-02-13, notes: "/lead-dbs-3-1-out-now/", summary: "OSS-DBS v2 integrated; WarpDrive updates; built-in Python environment"}

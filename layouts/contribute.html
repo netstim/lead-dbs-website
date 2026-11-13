@@ -61,7 +61,7 @@
     <h2 id="atlas-h">What an atlas or dataset needs</h2>
     <dl class="dl-grid dl-grid--3">
       {{- range . }}
-      <div class="dl-cell"><dt>{{ .label }}</dt><dd class="dl-cell__v">{{ .value }}</dd><dd>{{ .text | $page.RenderString }}</dd></div>
+      {{ partial "fact.html" (dict "label" .label "value" .value "text" (.text | $page.RenderString)) }}
       {{- end }}
     </dl>
   </section>

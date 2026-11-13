@@ -46,11 +46,11 @@
   <section class="wrap dl-sec" id="what-you-need" aria-labelledby="need-h">
     <h2 id="need-h">What you need</h2>
     <dl class="dl-grid dl-grid--needs">
-      <div class="dl-cell dl-cell--wide"><dt>MATLAB</dt><dd class="dl-cell__v">{{ $r.matlab }} or later</dd><dd>With the {{ $r.toolboxes }}. The {{ $r.toolboxes_optional }} are optional.</dd></div>
-      <div class="dl-cell"><dt>Software</dt><dd class="dl-cell__v">{{ $r.needs }}</dd><dd><a href="{{ $r.needs_url }}">Get {{ $r.needs }}</a></dd></div>
-      <div class="dl-cell"><dt>Memory</dt><dd class="dl-cell__v">{{ $r.memory }} or more</dd></div>
+      {{ partial "fact.html" (dict "label" "MATLAB" "value" (printf "%s or later" $r.matlab) "text" (printf "With the %s. The %s are optional." $r.toolboxes $r.toolboxes_optional) "wide" true) }}
+      {{ partial "fact.html" (dict "label" "Software" "value" $r.needs "text" (printf `<a href="%s">Get %s</a>` $r.needs_url $r.needs | safeHTML)) }}
+      {{ partial "fact.html" (dict "label" "Memory" "value" (printf "%s or more" $r.memory)) }}
       {{- range $i.requirements_more }}
-      <div class="dl-cell"><dt>{{ .label }}</dt><dd class="dl-cell__v">{{ .value }}</dd><dd>{{ .text | $.RenderString }}</dd></div>
+      {{ partial "fact.html" (dict "label" .label "value" .value "text" (.text | $.RenderString)) }}
       {{- end }}
     </dl>
   </section>

@@ -37,7 +37,7 @@
   <h2 class="next-steps__h" id="next">Related</h2>
   <ul class="next-steps__list">
     {{- range . }}
-    <li><a class="next-step" href="{{ .href }}"{{ with .rel }} rel="{{ . }}"{{ end }}><span class="next-step__title">{{ partial "nobreak-html.html" (.name | htmlEscape) }}{{ if .ext }}<span class="sr-only"> (another site)</span>{{ end }}</span>{{ if .ext }}<span class="ext-mark next-step__arrow" aria-hidden="true">↗</span>{{ else }}<svg class="m-arrow next-step__arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg>{{ end }}</a></li>
+    {{ partial "link-row.html" (dict "kind" "next" "href" .href "title" .name "ext" .ext "rel" .rel) }}
     {{- end }}
   </ul>
 </nav>

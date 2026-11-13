@@ -14,11 +14,11 @@
 <main id="top" class="page">
   {{ partial "page-head.html" . }}
   <div class="wrap usage">
-    <div class="dl-grid dl-grid--3 cells cells--3" role="list" aria-label="Lead-DBS in numbers">
-      <div class="dl-cell" role="listitem"><p class="cells__l">Countries</p><p class="cells__v num">{{ len $u.countries }}</p></div>
-      <div class="dl-cell" role="listitem"><p class="cells__l">Launches in {{ $u.year }}</p><p class="cells__v num">{{ lang.FormatNumber 0 $u.launches_year }}</p></div>
-      <div class="dl-cell" role="listitem"><p class="cells__l">Launches since {{ $since }}</p><p class="cells__v num">{{ lang.FormatNumber 0 $u.total }}</p></div>
-    </div>
+    <dl class="dl-grid dl-grid--3 cells cells--3" aria-label="Lead-DBS in numbers">
+      {{ partial "fact.html" (dict "label" "Countries" "value" (len $u.countries) "num" true) }}
+      {{ partial "fact.html" (dict "label" (printf "Launches in %v" $u.year) "value" (lang.FormatNumber 0 $u.launches_year) "num" true) }}
+      {{ partial "fact.html" (dict "label" (printf "Launches since %v" $since) "value" (lang.FormatNumber 0 $u.total) "num" true) }}
+    </dl>
 
     <div class="usage__grid">
       <section class="usage__cell usage__cell--full" aria-labelledby="u-months">

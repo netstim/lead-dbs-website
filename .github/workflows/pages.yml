@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   # Nightly rebuild, so the "next event" (data/events.yaml) and every date that depends on the
   # build day stay current without a push. 02:17 UTC, off the full hour that most jobs share.
-  # GitHub pauses scheduled runs after 60 days without activity in the repository: see README, Events.
+  # GitHub pauses scheduled runs after 60 days without activity in the repository: see docs/editing.md, Events.
   schedule:
     - cron: "17 2 * * *"
 

@@ -16,7 +16,7 @@ hero:
   manual: {label: "Manual", url: "https://netstim.gitbook.io/leaddbs"}
   # The clip behind the words: files in static/media/, poster in assets/images/renders/.
   # One directional lead in the subthalamic nucleus, the camera swaying slowly (±18°, 32 s loop),
-  # framed on a black 16:10 canvas with the render on the right (see README, "hero clip").
+  # framed on a black 16:10 canvas with the render on the right (see docs/home-and-media.md, "hero clip").
   # Each size comes as AV1 (the browser takes it when it can play it) and as H.264 (every other browser):
   # video_av1: 1600 px AV1, for windows from 1024 px; video_hevc: the same in HEVC, for desktop browsers
   # without AV1 (Safari on older Macs); video_medium_av1: 1280 px AV1, windows from 640 px;
@@ -38,7 +38,7 @@ hero:
   alt: "Close-up of one directional DBS electrode with segmented contacts in the subthalamic nucleus (orange), the red nucleus behind it, over a 7 tesla MRI slice"
 
 # Electrode localization, with the scroll moment: the leads move into place as the section scrolls by.
-# The frames are in static/media/insertion/ (see README, "The electrode insertion").
+# The frames are in static/media/insertion/ (see docs/home-and-media.md, "The electrode insertion").
 localize:
   title: "Electrode localization from MRI and CT"
   text: "Reconstructs every electrode from postoperative imaging, in 2D and 3D, for one patient or a whole cohort."
@@ -83,7 +83,7 @@ features:
       image: "cohort-top.jpg"
       alt: "The electrodes of nine Lead Tutor patients seen from above, ending in the subthalamic nucleus (orange) between the internal pallidum (green) and red nucleus (red)"
 
-# Lead-DBS around the world (the globe; figures from data/usage.json, see README "Usage figures").
+# Lead-DBS around the world (the globe; figures from data/usage.json, see docs/home-and-media.md, "Usage figures").
 # {countries}, {launches} and {year} are filled in from the data.
 worldwide:
   title: "Used in {countries} countries"
