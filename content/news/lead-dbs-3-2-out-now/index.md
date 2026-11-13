@@ -52,8 +52,6 @@ We are excited to share that Andreas Horn is founding a new Institute for Networ
 
 Neuromodulation is one of the research focus areas of the University Hospital Cologne, which offers extensive stereotactic capabilities through the Stereotaxy Department of Dr. Veerle Visser-Vandewalle and provides deep brain stimulation for both neurological and psychiatric indications.
 
-*Update: since May 2025, the lab that coordinates the development of Lead-DBS is the [Institute for Network Stimulation](https://www.netstim.org/) at the University Hospital Cologne.*
-
 All changes since 3.1 are in the [full list of changes on GitHub](https://github.com/netstim/leaddbs/compare/v3.1...v3.2).
 
-Read the original announcement [in our newsletter](https://www.lead-dbs.org/?na=view&id=31). As always, feel free to connect with us via [Bluesky](https://bsky.app/profile/lead-dbs.org) or the [user Slack](/helpsupport/slack-user-channel/), or fork us on [GitHub](https://github.com/netstim/leaddbs) to contribute directly.
+Read the original announcement [in our newsletter](https://www.lead-dbs.org/?na=view&id=31).

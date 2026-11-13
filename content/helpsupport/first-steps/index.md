@@ -7,48 +7,51 @@ weight: 1
 keywords: ["getting started", "first steps", "install", "installation", "tutorial", "quick start", "documentation", "docs", "troubleshooting", "error", "errors", "problem", "not working", "FAQ", "frequently asked questions", "ea_restoreprefs", "ea_setpath", "Lead Tutor dataset", "exercise"]
 # the picture shown when the page is shared (head.html)
 share: "images/renders/insertion-final.png"
-# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
-related:
-  - {name: "Install Lead-DBS", url: "/download/#install"}
-  - "/helpsupport/knowledge-base/lead-dbs-methods/"
-  - "/helpsupport/slack-user-channel/"
+# this page has its own template (layouts/first-steps.html): the text below as the opening line, then
+# the steps in one frame, then the fixes
+layout: "first-steps"
+# the sections that template draws, for the search entries below (the build checks them against this list)
+anchors: ["install", "lead-tutor", "compare", "troubleshooting"]
+# The steps: a title, one or two sentences (Markdown) and up to two actions (page: a site path, or url:
+# another site; the first is drawn as the button). show: the small picture of the step:
+#   release   the current release as a file (data/release.yaml, the size from the download page)
+#   dataset   the practice dataset as a file ("name", "facts")
+#   report    a small drawing of the Lead Tutor report: distance from the experts, patient by patient
+steps:
+  - id: "install"
+    title: "Install Lead-DBS"
+    text: "You need MATLAB {matlab} or later with SPM12. The [standalone build](/download/#standalone-version) runs without MATLAB."
+    show: release
+    actions:
+      - {text: "Download Lead-DBS", page: "/download/"}
+      - {text: "Install steps", page: "/download/#install"}
+  - id: "lead-tutor"
+    title: "Get the practice data"
+    text: "[Lead Tutor](/helpsupport/learn-lead-dbs-yourself/) is an open dataset of ten real patients, with their electrodes already localized by experts."
+    show: dataset
+    name: "Lead Tutor"
+    facts: "10 patients · MRI and CT"
+    actions:
+      - {text: "Download Lead Tutor", url: "https://osf.io/jxecg/?view_only=f2765a6aa3604dea8afa14365b70381c"}
+      - {text: "Guide", url: "https://netstim.gitbook.io/leaddbs/lead-dbs/self-tutoring-with-lead-tutor"}
+  - id: "compare"
+    title: "Localize, then get your report"
+    text: "Localize each patient’s electrodes and press *Submit Results…*: the report shows how far yours lie from the experts’."
+    show: report
+    actions:
+      - {text: "See a report", page: "/helpsupport/learn-lead-dbs-yourself/#your-report"}
+      - {text: "Walkthrough videos", page: "/helpsupport/knowledge-base/walkthrough-videos/"}
+# If something goes wrong: the problem and the command to type in MATLAB
+fixes:
+  - {problem: "Errors after an update", command: "ea_restoreprefs(1,1)"}
+  - {problem: "Unrecognized function or variable", command: "ea_setpath"}
 # found by the site search as a result of its own (layouts/home.searchindex.json)
 searchEntries:
   - {title: "Troubleshooting: if something goes wrong", id: "troubleshooting", keywords: "troubleshooting FAQ frequently asked questions error errors problem not working ea_restoreprefs ea_setpath unrecognized function", description: "Errors after an update, unrecognized functions, and where to ask when you are stuck."}
-# the cards at the end of the page (layouts/_partials/next-steps.html)
+# "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
-  - {url: "https://netstim.gitbook.io/leaddbs", name: "Manual", text: "Each step of a full analysis"}
-  - {page: "/helpsupport/knowledge-base/walkthrough-videos/", text: "The steps on screen"}
-  - {page: "/about/citing_leaddbs/", text: "Before you publish"}
+  - {url: "https://netstim.gitbook.io/leaddbs", name: "Manual"}
+  - {page: "/helpsupport/knowledge-base/lead-dbs-methods/"}
+  - {page: "/about/citing_leaddbs/"}
 ---
 
-Install Lead-DBS, then localize the electrodes of the open Lead Tutor patients and let Lead Tutor score
-your result against experts. The [manual](https://netstim.gitbook.io/leaddbs) has the details of each step.
-
-## Download and install Lead-DBS {#install .step}
-
-[Download Lead-DBS](/download/) (about 11 GB) and follow the
-[install steps on the download page](/download/#install). You need MATLAB {{< release matlab >}} or later
-with SPM12; everything else is listed under [What you need](/download/#what-you-need). No MATLAB? The
-[standalone builds](/download/#standalone-version) run without it.
-
-## Localize your first electrodes with Lead Tutor {#lead-tutor .step}
-
-[Lead Tutor](/helpsupport/learn-lead-dbs-yourself/) is an open dataset of ten DBS patients whose
-electrodes experts have localized.
-
-{{< button href="https://osf.io/jxecg/?view_only=f2765a6aa3604dea8afa14365b70381c" >}}Download the Lead Tutor dataset{{< /button >}}
-
-1. Load the dataset in Lead-DBS and localize the electrodes of each patient.
-2. Press *Submit Results…* (top right in Lead-DBS): Lead Tutor compares your localizations with the
-   experts' and shows how close you came. Repeat as often as you like.
-
-The manual walks through it in [Self-tutoring with Lead Tutor](https://netstim.gitbook.io/leaddbs/lead-dbs/self-tutoring-with-lead-tutor).
-
-## If something goes wrong {#troubleshooting .step}
-
-- After updating from an older version, errors can come from old settings: run `ea_restoreprefs(1,1)`
-  in the MATLAB Command Window and try again.
-- *Unrecognized function or variable*: run `ea_setpath` to add all Lead-DBS folders to the search path.
-- Still stuck? [Join the user Slack](https://inviter.co/lead-dbs) and ask there; report bugs on
-  [GitHub](https://github.com/netstim/leaddbs/issues).

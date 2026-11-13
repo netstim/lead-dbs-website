@@ -1,20 +1,23 @@
 <!doctype html>
-{{- /* Styles: assets/css/base.css and assets/css/site.css, bundled in head.html (see README, Design). Font: Open Sans,
+{{- /* Styles: assets/css/base.css and assets/css/site.css, bundled in head.html (see README, Design). Font: Inter,
      self-hosted. Sections take the height of their content. The one scroll-linked motion is the electrode
      insertion on the home page. The research-use statement is a short line (hero facts, footer, about, download).
-     body.top-dark: every page starts on a black ground (the home page's hero, an inner page's head), so
+     body.top-dark: an inner page starts on a black ground (its head; the home page starts on white), so
      the header is dark from the first paint (see "header" in site.css). */}}
 <html lang="{{ site.Language.Locale }}"{{ if site.Params.preview }} class="is-preview"{{ end }}>
 <head>
   {{ partial "head.html" . }}
 </head>
-<body class="kind-{{ .Kind }}{{ with .Section }} section-{{ . }}{{ end }} top-dark">
+<body class="kind-{{ .Kind }}{{ with .Section }} section-{{ . }}{{ end }}{{ if not (or .IsHome (and (eq .Section "news") (eq .Kind "section"))) }} top-dark{{ end }}">
   {{ partial "header.html" . }}
   {{ block "main" . }}{{ end }}
   {{ partial "footer.html" . }}
   {{ partial "search-dialog.html" . }}
   {{ with resources.Get "js/main.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}
+  {{ with resources.Get "js/clipboard.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}
   {{ with resources.Get "js/search.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}
+  {{ if .HasShortcode "atlas-index" }}{{ with resources.Get "js/atlas-filter.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}{{ end }}
   {{ if .IsHome }}{{ with resources.Get "js/insertion.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}{{ end }}
+  {{ if and .IsHome hugo.Data.usage }}{{ $globe := slice (resources.Get "js/vendor/d3-array.min.js") (resources.Get "js/vendor/d3-geo.min.js") (resources.Get "js/vendor/topojson-client.min.js") (resources.Get "js/globe.js" | minify) | resources.Concat "js/globe.bundle.js" | fingerprint }}<script src="{{ $globe.RelPermalink }}" integrity="{{ $globe.Data.Integrity }}" defer></script>{{ end }}
 </body>
 </html>

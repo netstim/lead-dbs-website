@@ -5,20 +5,5 @@
 {{- $id := printf "copy-%d" .Ordinal -}}
 <div class="copy-box">
   <div class="copy-box__text" id="{{ $id }}">{{ .Inner | .Page.RenderString (dict "display" "block") }}</div>
-  <p class="copy-box__bar"><button type="button" class="btn btn--secondary copy-box__btn" data-copy="{{ $id }}" hidden>{{ .Get "label" | default "Copy" }}</button> <span class="copy-box__done" role="status"></span></p>
+  <p class="copy-box__bar"><button type="button" class="btn btn--secondary copy-box__btn" data-copy="{{ $id }}" hidden>{{ .Get "label" | default "Copy" }}</button> <span class="copy-box__done" data-copy-status role="status"></span></p>
 </div>
-{{- if not (.Page.Store.Get "copybox-script") }}{{ .Page.Store.Set "copybox-script" true }}
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  if (!navigator.clipboard) return;
-  document.querySelectorAll('[data-copy]').forEach((b) => {
-    b.hidden = false;
-    b.addEventListener('click', async () => {
-      const done = b.parentNode.querySelector('.copy-box__done');
-      try { await navigator.clipboard.writeText(document.getElementById(b.dataset.copy).innerText.trim()); done.textContent = 'Copied.'; }
-      catch { done.textContent = 'Could not copy: please select the text instead.'; }
-    });
-  });
-});
-</script>
-{{- end }}

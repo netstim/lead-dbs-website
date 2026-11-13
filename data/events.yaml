@@ -17,7 +17,7 @@
 #   host          optional: who hosts it
 #   text          one or two sentences
 #   register_url  optional: the registration page. For an online meeting this is the page where
-#                 people leave their e-mail address and receive the meeting link (e.g. Zoom's
+#                 people leave their email address and receive the meeting link (e.g. Zoom's
 #                 /meeting/register/ page). Never put the meeting's own join link here or anywhere
 #                 else on the site. While it is empty, an
 #                 online event says that registration opens soon and that the link is shared in
@@ -34,7 +34,7 @@ events:
     where: "Online (Zoom)"
     online: true
     text: "Monthly, online and open to anyone who wants to contribute or follow the development."
-    # Zoom's registration page: people leave their e-mail address and Zoom sends them the link
+    # Zoom's registration page: people leave their email address and Zoom sends them the link
     register_url: "https://uni-koeln.zoom.us/meeting/register/UiZRfHxiRHyyxCMEM0iSPg"
     links:
       - {label: "Flyer and details", url: "/events/developer-meeting/"}

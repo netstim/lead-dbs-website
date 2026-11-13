@@ -7,23 +7,15 @@ lastmod: "2026-11-11"
 keywords: ["AC/PC", "MNI", "coordinates", "targets", "conversion", "IXI", "STN", "GPi", "VIM", "Talairach"]
 # the picture shown when the page is shared (head.html)
 share: "fig_3.png"
-# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
-related:
-  - "/helpsupport/knowledge-base/atlasesresources/about-the-mni-spaces/"
-  - "/helpsupport/knowledge-base/atlasesresources/atlases-2/"
-  - "/about/publications/"
-# the cards at the end of the page (layouts/_partials/next-steps.html)
+# "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
-  - {page: "/helpsupport/knowledge-base/atlasesresources/about-the-mni-spaces/", text: "Why there is more than one MNI space"}
-  - {page: "/helpsupport/knowledge-base/atlasesresources/atlases-2/", text: "The atlases to compare targets with"}
-  - {page: "/helpsupport/knowledge-base/lead-dbs-methods/", text: "Everything else Lead-DBS does"}
+  - {page: "/helpsupport/knowledge-base/atlasesresources/about-the-mni-spaces/"}
+  - {page: "/helpsupport/knowledge-base/atlasesresources/atlases-2/"}
+  - {page: "/helpsupport/knowledge-base/lead-dbs-methods/"}
 ---
 
-Neurosurgeons report DBS targets in AC/PC coordinates, relative to the anterior and posterior
-commissures; imaging research works in MNI space. Lead-DBS converts coordinates from one to the other,
-probabilistically: it marks the same AC/PC coordinate in many age-matched brains and warps each one
-into MNI space. This made it possible to place the DBS targets of the surgical literature in MNI space
-for the first time, next to the atlases and connectomes defined there.
+Lead-DBS converts the AC/PC coordinates of neurosurgery into MNI space and back, by warping the same
+coordinate in many age-matched brains.
 
 ## Use it in Lead-DBS
 
@@ -186,5 +178,3 @@ the neurosurgical findings:
 
 </details>
 
-Every step described here is built into Lead-DBS: the [conversion tool](#use-it-in-lead-dbs) applies it
-to any AC/PC coordinate with a surrogate cohort of your choice.

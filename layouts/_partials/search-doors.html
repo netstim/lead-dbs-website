@@ -1,13 +1,8 @@
-{{- /* Ten cards to start from: the download, what Lead-DBS does, how to cite it, the manual, the groups'
-       hubs and Contact. On the 404 page under its search box, and on /search/ until a query is typed
-       (assets/js/search.js hides them then; without script they stay). Argument: dict "attrs" (extra
-       attributes for the list, as a safe HTML string; may be empty). */ -}}
+{{- /* Pages to start from, in the site's one link-row style (the rows of "Related"): on the 404 page under
+       its search box, and on /search/ until a query is typed (assets/js/search.js hides them then).
+       Argument: dict "attrs" (extra attributes for the list, as a safe HTML string; may be empty). */ -}}
 {{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Name "Download" }}{{ $dl = .URL }}{{ end }}{{ end -}}
-<ul class="child-pages notfound__doors"{{ with .attrs }} {{ . }}{{ end }}>
-  <li><a class="card child-page" href="{{ $dl }}"><span>Download <span class="nowrap">Lead-DBS</span></span></a></li>
-  {{- /* the pages' own titles, so the names match the menu and the page heads; first what a reader
-         arriving from a paper looks for (what Lead-DBS does, how to cite it) */}}
-  {{ range slice "/helpsupport/knowledge-base/lead-dbs-methods" "/about/citing_leaddbs" }}{{ with site.GetPage . }}<li><a class="card child-page" href="{{ .RelPermalink }}"><span>{{ partial "nobreak-html.html" (.LinkTitle | htmlEscape) }}</span></a></li>{{ end }}{{ end }}
-  <li><a class="card child-page" href="https://netstim.gitbook.io/leaddbs"><span>The manual</span></a></li>
-  {{ range slice "/helpsupport" "/helpsupport/knowledge-base/atlasesresources" "/community" "/news" "/about" "/contact" }}{{ with site.GetPage . }}<li><a class="card child-page" href="{{ .RelPermalink }}"><span>{{ partial "nobreak-html.html" (.LinkTitle | htmlEscape) }}</span></a></li>{{ end }}{{ end }}
+<ul class="next-steps__list search-doors"{{ with .attrs }} {{ . }}{{ end }}>
+  <li><a class="next-step" href="{{ $dl }}"><span class="next-step__title">Download <span class="nowrap">Lead-DBS</span></span><svg class="m-arrow next-step__arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a></li>
+  {{ range slice "/helpsupport/knowledge-base/lead-dbs-methods" "/about/citing_leaddbs" "/helpsupport" "/helpsupport/knowledge-base/atlasesresources" "/community" "/news" "/about" "/contact" }}{{ with site.GetPage . }}<li><a class="next-step" href="{{ .RelPermalink }}"><span class="next-step__title">{{ partial "nobreak-html.html" (.LinkTitle | htmlEscape) }}</span><svg class="m-arrow next-step__arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a></li>{{ end }}{{ end }}
 </ul>

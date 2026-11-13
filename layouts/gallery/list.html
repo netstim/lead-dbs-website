@@ -1,95 +1,99 @@
 {{ define "main" }}
-{{- /* /gallery/: figures from published papers (data/gallery.yaml, files in static/gallery/), in the order
-     of that file, then the lab's renders (content/gallery/_index.md, files in assets/images/renders/).
-     The page's own text (content/gallery/_index.md) is the introduction; front matter "next" the
-     cards at the end (partial next-steps.html). Each figure is shown whole at its own shape, with a
-     hairline as its edge and no mat: the first one large, its words beside it; the others in justified
-     rows, three to a row on a desktop and two on a tablet, all figures of a row at one height (each as
-     wide as its shape asks, from the row's sum of width-to-height ratios, --r3 and --r2 below); on a
-     phone each figure is the full width. Under each figure one caption: what it shows, then the short
-     citation as its second line. Only the first loads at once, the others as they come near the screen.
-     The full attribution its licence requires is in a "Source and licence" disclosure. The figure opens
-     a full-size WebP copy (at most 1750 px wide, much lighter than the PNG originals); the disclosure
-     links the original file. A figure with a missing field stops the build. */ -}}
+{{- /* /gallery/: the pictures on the dark ground of the renders, in three sections, each laid out for
+     its kind: the lab's renders (front matter renders:, files in assets/images/renders/) as a grid of
+     equal frames with the first one large; the figures from published papers (data/gallery.yaml, files
+     in static/gallery/) whole on white mats in masonry columns, each with its first author, year,
+     journal and licence; the journal covers (data/covers.yaml, files on /about/publications/) as a grid of small
+     equal tiles. Pills above show one section or all (assets/js/main.js; #covers or #renders in the
+     address selects one). A click opens the picture in a lightbox with what it shows, its source and,
+     for a figure, the citation and licence its CC licence requires; without script the link opens the
+     picture itself and the words show under it. Every figure keeps its anchor #fig-<file name> (the home
+     page and Features link to them), which opens its lightbox. A figure with a missing field stops the build. */ -}}
 {{ $p := .Params }}
-<main id="top" class="page">
+{{ $figs := hugo.Data.gallery.figures | default slice }}
+{{ $covers := partial "covers.html" 0 }}
+<main id="top" class="page gallery-page-dark" data-nav-dark>
   {{ partial "page-head.html" . }}
   <div class="wrap gallery-page">
-    {{ with .Content }}<div class="prose gallery-intro">{{ partial "nobreak-html.html" . }}</div>{{ end }}
-    <section class="gallery-section" aria-labelledby="papers-h">
-      <h2 id="papers-h">{{ partial "nobreak.html" $p.papers_title }}</h2>
-      {{ $figs := hugo.Data.gallery.figures | default slice }}
-      {{ if $figs }}
-      <p class="lead">{{ $p.papers_text }}</p>
-      {{- /* each figure's width-to-height ratio, and for every figure after the first the sum of the ratios
-             of its row of three (desktop) and of two (tablet); a row of tall figures counts as at least
-             3 (or 2.2), so it never grows taller than a row of wide ones */}}
-      {{ $ars := slice }}
-      {{ range $figs }}{{ with resources.Get (printf "gallery/%s" .file) }}{{ $ars = $ars | append (div (float .Width) .Height) }}{{ else }}{{ errorf "gallery: no file static/gallery/%s (data/gallery.yaml)" .file }}{{ end }}{{ end }}
-      {{ $rest := after 1 $ars | default slice }}
-      <ol class="paper-list">
-        {{ range $i, $f := $figs }}
-        {{ range slice "authors" "title" "journal" "year" "figure" "doi" "license" "license_url" "modification" "shows" }}{{ if not (index $f .) }}{{ errorf "gallery: %s has no %q (data/gallery.yaml)" $f.file . }}{{ end }}{{ end }}
-        {{ with resources.Get (printf "gallery/%s" $f.file) }}
-        {{ $src := . }}
-        {{ $ar := index $ars $i }}
-        {{ $r3 := 0.0 }}{{ $r2 := 0.0 }}
-        {{ if gt $i 0 }}
-          {{ $k := sub $i 1 }}
-          {{ $s3 := mul (div $k 3) 3 }}{{ range first 3 (after $s3 $rest) }}{{ $r3 = add $r3 . }}{{ end }}{{ $r3 = math.Max $r3 3.0 }}
-          {{ $s2 := mul (div $k 2) 2 }}{{ range first 2 (after $s2 $rest) }}{{ $r2 = add $r2 . }}{{ end }}{{ $r2 = math.Max $r2 2.2 }}
-        {{ end }}
-        {{ $set := slice }}{{ $mid := $src }}
-        {{- /* 480 and 720 for a phone at 1× and 2×, 1080 for a phone at 3× and the rows (quality 76: a phone
-               screen hides the difference), 1400 for the wide first figure (82) */}}
-        {{ range slice 480 720 1080 1400 }}{{ if lt . $src.Width }}{{ $r := $src.Resize (printf "%dx webp q%d" . (cond (gt . 1080) 82 76)) }}{{ $set = $set | append (printf "%s %dw" $r.RelPermalink $r.Width) }}{{ if eq . 1080 }}{{ $mid = $r }}{{ end }}{{ end }}{{ end }}
-        {{ if eq $mid $src }}{{ $mid = $src.Resize (printf "%dx webp q82" $src.Width) }}{{ $set = $set | append (printf "%s %dw" $mid.RelPermalink $mid.Width) }}{{ end }}
-        {{ $orig := printf "gallery/%s" $f.file | relURL }}
-        {{ $full := $src.Resize (printf "%dx webp q85" (int (math.Min $src.Width 1750))) }}
-        {{ $first := index (split $f.authors " ") 0 }}
-        {{- /* the width the figure gets (assets/css/site.css, "gallery page"): the lead two thirds of the
-               container on a desktop, the full width below; a row figure its share of its row */}}
-        {{ $sizes := "" }}
-        {{ if eq $i 0 }}{{ $sizes = "(min-width: 1280px) 845px, (min-width: 1024px) calc((100vw - 160px) * .66), calc(100vw - 48px)" }}
-        {{ else }}{{ $f3 := div $ar $r3 }}{{ $f2 := div $ar $r2 }}
-          {{ $sizes = printf "(min-width: 1280px) %dpx, (min-width: 1024px) calc((100vw - 208px) * %.3f), (min-width: 640px) calc((100vw - 120px) * %.3f), calc(100vw - 48px)" (int (math.Ceil (mul 1232 $f3))) $f3 $f2 }}
-        {{ end }}
-        <li class="paper-fig{{ if eq $i 0 }} paper-fig--lead{{ end }}" id="fig-{{ path.BaseName $f.file }}" style="--ar: {{ $ar | lang.FormatNumber 4 }}{{ if gt $i 0 }}; --r3: {{ $r3 | lang.FormatNumber 4 }}; --r2: {{ $r2 | lang.FormatNumber 4 }}{{ end }}">
-          {{- /* the picture's alt text is what it shows; the link's name says where it leads, without
-                 repeating that sentence */}}
-          <a class="paper-fig__img" href="{{ $full.RelPermalink }}" aria-label="Open {{ $f.figure }} of {{ $first }} et al. {{ $f.year }} larger">
-            <img src="{{ $mid.RelPermalink }}" srcset="{{ delimit $set ", " }}" sizes="{{ $sizes }}" width="{{ $src.Width }}" height="{{ $src.Height }}" alt="{{ $f.shows }}"{{ if eq $i 0 }} fetchpriority="high"{{ else }} loading="lazy"{{ end }} decoding="async">
-          </a>
-          <div class="paper-fig__text">
-            {{ with $f.tool }}<p class="paper-fig__tool">Made with {{ . }}, the sister tool of Lead-DBS</p>{{ end }}
-            <p class="caption paper-fig__caption"><span class="paper-fig__shows">{{ $f.shows }}</span> <span class="caption__cite">{{ $first }} et al., <em>{{ $f.journal }}</em> {{ $f.year }}</span></p>
-            <details class="paper-fig__more">
-              <summary>Source and licence</summary>
-              <p class="paper-fig__cite">{{ $f.figure }} from {{ $f.authors }} ({{ $f.year }}). <span class="paper-fig__title">{{ $f.title }}</span>. <em>{{ $f.journal }}</em>. <a href="https://doi.org/{{ $f.doi }}">doi:{{ $f.doi }}</a></p>
-              <p class="paper-fig__licence">Licence: <a href="{{ $f.license_url }}">{{ $f.license }}</a>.{{ if ne (lower $f.modification) "none" }} Changed from the original: {{ $f.modification }}.{{ end }} The original file: <a href="{{ $orig }}">{{ upper (strings.TrimPrefix "." (path.Ext $f.file)) }}, {{ $src.Width }} × {{ $src.Height }} pixels</a>.</p>
-            </details>
-          </div>
-        </li>
-        {{ end }}
-        {{ end }}
-      </ol>
-      {{ else }}
-      <p class="gallery-empty">{{ $.RenderString $p.papers_empty }}</p>
-      {{ end }}
-    </section>
-
-    <section class="gallery-section" aria-labelledby="renders-h">
-      <h2 id="renders-h">{{ partial "nobreak.html" $p.renders_title }}</h2>
-      <p class="lead">{{ $p.renders_text }}</p>
-      <div class="render-grid">
-        {{ range $p.renders }}
-        <div class="render-item">
-          {{ partial "render.html" (dict "file" .file "alt" .alt "class" "render-fig" "sizes" "(min-width: 1280px) 30vw, (min-width: 640px) 46vw, calc(100vw - 48px)") }}
-          {{ with .caption }}<p class="caption render-item__caption">{{ . }}</p>{{ end }}
-        </div>
-        {{ end }}
+    <div class="g-bar">
+      <div class="g-pills" role="group" aria-label="Show" hidden>
+        <button type="button" aria-pressed="true" data-show="all">All</button>
+        <button type="button" aria-pressed="false" data-show="render">Renders</button>
+        <button type="button" aria-pressed="false" data-show="figure">Published figures</button>
+        <button type="button" aria-pressed="false" data-show="cover">Journal covers</button>
       </div>
+    </div>
+    <section class="g-sec" data-kind="render" id="renders" aria-labelledby="g-renders-h">
+      <h2 id="g-renders-h">Renders</h2>
+      <ul class="g-wall g-wall--renders" data-gallery>
+      {{- range $n, $r := $p.renders }}
+      {{ with resources.Get (printf "images/renders/%s" $r.file) }}{{ $src := . }}
+      {{ $t := $src.Resize (cond (eq $n 0) "1400x webp q80" "720x webp q80") }}{{ $full := $src.Resize (printf "%dx webp q85" (int (math.Min $src.Width 1920))) }}
+      <li class="g-item" data-kind="render">
+        <a class="g-item__img" href="{{ $full.RelPermalink }}"><img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="{{ $r.alt }}" loading="lazy" decoding="async"></a>
+        <div class="g-item__info">
+          <div class="g-info__main">
+            <p class="g-info__title">{{ $r.caption | default $r.alt }}</p>
+          </div>
+        </div>
+      </li>
+      {{ else }}{{ errorf "gallery: no render %q (content/gallery/_index.md)" $r.file }}{{ end }}
+      {{- end }}
+      </ul>
     </section>
+    <section class="g-sec" data-kind="figure" aria-labelledby="g-figures-h">
+      <h2 id="g-figures-h">Published figures</h2>
+      <ul class="g-wall g-wall--figures" data-gallery>
+      {{- range $f := $figs }}
+      {{ range slice "authors" "title" "journal" "year" "figure" "doi" "license" "license_url" "modification" "shows" }}{{ if not (index $f .) }}{{ errorf "gallery: %s has no %q (data/gallery.yaml)" $f.file . }}{{ end }}{{ end }}
+      {{ with resources.Get (printf "gallery/%s" $f.file) }}{{ $src := . }}
+      {{ $t := $src.Resize (printf "%dx webp q78" (int (math.Min $src.Width 720))) }}
+      {{ $full := $src.Resize (printf "%dx webp q85" (int (math.Min $src.Width 1750))) }}
+      {{ $first := index (split $f.authors " ") 0 }}
+      <li class="g-item" data-kind="figure" id="fig-{{ path.BaseName $f.file }}">
+        <a class="g-item__img g-item__img--light" href="{{ $full.RelPermalink }}" aria-label="{{ $f.figure }} of {{ $first }} et al. {{ $f.year }}, larger"><img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="{{ $f.shows }}" loading="lazy" decoding="async"></a>
+        {{ $credit := printf `%s et al. %d, <em>%s</em> · <a href="%s">%s</a>` $first (int $f.year) $f.journal $f.license_url $f.license | safeHTML }}
+        <p class="g-item__src">{{ $credit }}</p>
+        <div class="g-item__info">
+          <div class="g-info__main">
+            <p class="g-info__title">{{ $f.shows }}</p>
+            <p class="g-info__meta">{{ $credit }}{{ with $f.tool }} · made with {{ . }}{{ end }}</p>
+            <details class="g-info__cite"><summary>Full citation</summary><p>{{ $f.figure }} from {{ $f.authors }} ({{ $f.year }}). {{ $f.title }}. <em>{{ $f.journal }}</em>.{{ if ne (lower $f.modification) "none" }} Changed from the original: {{ $f.modification }}.{{ end }}</p></details>
+          </div>
+          <div class="g-info__side">
+            <a class="btn btn--primary btn--on-dark" href="https://doi.org/{{ $f.doi }}">Read the paper<span aria-hidden="true">↗</span></a>
+            <p class="g-info__licence"><a href="{{ printf "gallery/%s" $f.file | relURL }}">Original file</a></p>
+          </div>
+        </div>
+      </li>
+      {{ else }}{{ errorf "gallery: no file static/gallery/%s (data/gallery.yaml)" $f.file }}{{ end }}
+      {{- end }}
+      </ul>
+    </section>
+    <section class="g-sec" data-kind="cover" id="covers" aria-labelledby="g-covers-h">
+      <h2 id="g-covers-h">Journal covers</h2>
+      <ul class="g-wall g-wall--covers" data-gallery>
+      {{- range $covers }}{{ $t := .small.Resize "480x webp q80" }}
+      <li class="g-item" data-kind="cover">
+        <a class="g-item__img g-item__img--light" href="{{ .large.RelPermalink }}"><img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="{{ .alt }}" loading="lazy" decoding="async"></a>
+        <div class="g-item__info">
+          <div class="g-info__main">
+            <p class="g-info__title">{{ .journal }}</p>
+            <p class="g-info__meta">Journal cover · {{ .issue }}{{ with .date }} · {{ . }}{{ end }}</p>
+          </div>
+          <div class="g-info__side"><a class="btn btn--primary btn--on-dark" href="{{ .large.RelPermalink }}">Full-size image<span aria-hidden="true">↗</span></a></div>
+        </div>
+      </li>
+      {{- end }}
+      </ul>
+    </section>
+    <dialog class="g-box" aria-label="Picture">
+      <form method="dialog"><button class="g-box__close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></form>
+      <button type="button" class="g-box__nav g-box__nav--prev" aria-label="Previous picture"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button type="button" class="g-box__nav g-box__nav--next" aria-label="Next picture"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      <div class="g-box__stage"><img class="g-box__img" src="" alt=""></div>
+      <div class="g-box__info"></div>
+    </dialog>
     {{ partial "next-steps.html" . }}
   </div>
 </main>

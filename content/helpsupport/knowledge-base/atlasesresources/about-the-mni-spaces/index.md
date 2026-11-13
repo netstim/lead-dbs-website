@@ -5,19 +5,13 @@ lastmod: "2022-02-04T19:48:23"
 # A background article, first published as a news post; it keeps its address.
 url: "/about-the-mni-spaces/"
 description: "The versions of the “MNI space” since MNI305 and Colin27, how they differ, and why the difference matters for DBS imaging."
-showDate: true
 keywords: ["MNI", "MNI space", "MNI152", "ICBM 2009b", "template", "coordinates", "normalization"]
 # the picture shown when the page is shared (head.html)
 share: "MNI6thgenvs2009-poster.jpg"
-# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
-related:
-  - "/helpsupport/knowledge-base/lead-dbs-methods/acpc-to-mni-conversion-2/"
-  - {name: "Registration and normalization", url: "/helpsupport/knowledge-base/lead-dbs-methods/#normalization"}
-  - "/helpsupport/knowledge-base/atlasesresources/distal-atlas/"
-# the cards at the end of the page (layouts/_partials/next-steps.html)
+# "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
-  - {page: "/helpsupport/knowledge-base/atlasesresources/atlases-2/", text: "The atlases that work with Lead-DBS"}
-  - {page: "/helpsupport/knowledge-base/atlasesresources/", text: "Parcellations, connectomes and more"}
+  - {page: "/helpsupport/knowledge-base/atlasesresources/atlases-2/"}
+  - {page: "/helpsupport/knowledge-base/atlasesresources/"}
 ---
 
 There is no single “MNI space”: there are several MNI templates, and they differ slightly. In fMRI or
@@ -29,9 +23,9 @@ results. Lead-DBS uses the ICBM 2009b nonlinear asymmetric template.
 | MNI152 NLIN 6th generation | 152 brains, nonlinearly registered into MNI305 space | T1 | SPM and FSL (FSL in an asymmetric version) |
 | MNI152 NLIN 2009b | The same 152 brains registered again in 2009, at 0.5 mm: the most detailed | T1, T2, PD | Lead-DBS (asymmetric version) |
 | Colin27 | One brain, scanned 27 times; a high-resolution version followed in 2008 | T1 (2008: T1 and T2) | SPM96 |
-{.table--stack caption="Three MNI templates in short"}
+{.table--stack .table--templates caption="Three MNI templates in short"}
 
-{{< notice >}}The [BIDS appendix on coordinate systems](https://bids-specification.readthedocs.io/en/latest/99-appendices/08-coordinate-systems.html), published after this article, is a more complete reference, including which spaces SPM and FSL use.{{< /notice >}}
+The [BIDS appendix on coordinate systems](https://bids-specification.readthedocs.io/en/latest/99-appendices/08-coordinate-systems.html), published after this page was first written, is a more complete reference, including which spaces SPM and FSL use.
 
 ## Why the template matters {#space-or-template-what-is-the-difference}
 

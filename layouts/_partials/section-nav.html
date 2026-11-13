@@ -1,0 +1,16 @@
+{{- /* The pages of the page's menu group (partial nav-place.html, so it agrees with the header and the
+       breadcrumb), the current one marked. In the sidebar of a doc page; at the end of a showcase or hub
+       page, and below 1024px at the end of a doc page (variant "end"). Argument: dict "page" "variant". */ -}}
+{{ $page := .page }}
+{{ $place := partial "nav-place.html" $page }}
+{{ with $place.group }}{{ $group := . }}{{ if .HasChildren }}
+{{ $branch := slice }}{{ range $place.items }}{{ $branch = $branch | append . }}{{ end }}
+<nav class="section-nav section-nav--{{ $.variant | default "side" }}" aria-label="{{ $group.Name }}">
+  <p class="section-nav__h"><a href="{{ $group.URL }}"{{ if eq $group.Page $page }} aria-current="page"{{ end }}>{{ if eq $.variant "end" }}More in {{ end }}{{ $group.Name }}</a></p>
+  <ul>
+    {{- range $group.Children }}{{ if and (not .Params.panelOnly) (or (ne $.variant "end") (not (and .Page (eq .Page $page)))) }}
+    <li><a href="{{ .URL }}"{{ if and .Page (eq .Page $page) }} aria-current="page"{{ else if in $branch . }} aria-current="true"{{ end }}>{{ partial "menu-label.html" . }}</a></li>
+    {{- end }}{{ end }}
+  </ul>
+</nav>
+{{ end }}{{ end }}

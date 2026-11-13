@@ -39,6 +39,8 @@ jobs:
           curl -fsSL -O "$base/$deb" -O "$base/hugo_${HUGO_VERSION}_checksums.txt"
           grep " $deb\$" "hugo_${HUGO_VERSION}_checksums.txt" | sha256sum -c -
           sudo dpkg -i "$deb"
+      - name: Design tokens
+        run: python3 .github/scripts/check-design.py
       - id: pages
         uses: actions/configure-pages@v6
       - name: Build
@@ -54,6 +56,10 @@ jobs:
         run: |
           hugo --gc --minify --destination "$RUNNER_TEMP/production"
           python3 .github/scripts/check-site.py "$RUNNER_TEMP/production" https://www.lead-dbs.org/
+      - name: Copy
+        run: python3 .github/scripts/check-copy.py public
+      - name: Unused CSS
+        run: python3 .github/scripts/check-css-used.py public "$RUNNER_TEMP/production"
       - uses: actions/upload-pages-artifact@v5
         with:
           path: public

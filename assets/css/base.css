@@ -4,19 +4,16 @@
    The palette and fonts are set at the top of site.css. */
 
 /* ---------------------------------------------------------------- tokens
-   Sizes step up at 640px (tablet) and 1024px (desktop). The type scale at 1440 (site.css has the
-   display size and the labels): 80 the hero, 48 (--t-h2) a home section and a page's title, 32 (--t-h3)
-   a page's sections, the smaller home sections and the 4.0 statements, 23 (--t-sub) subsections and the
-   titles of the Features cards, 20 (--t-card) cards, news and events and the lead, 18 the documentation
-   text, 16 the text elsewhere, 15 captions and notes (--t-note), 14 short small print, 13 the labels.
-   Every heading is at least 1.25 times the text under it and 1.25 times the next heading level down, so
-   a heading never reads as bold text. */
+   Every size, radius and spacing of the site comes from here (enforced by .github/scripts/check-design.py).
+   Sizes step up at 640px and 1024px. */
 :root {
   --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px;
-  --t-body: 16px; --t-small: 14px; --t-note: 15px; --t-label: 14px; --t-lead: 18px; --t-card: 18px; --t-sub: 22px; --t-h3: 26px;
+  --t-logo: 22px; --t-xs: 12px; --t-label: 13px; --t-small: 14px; --t-note: 15px; --t-body: 16px; --t-doc: 17px; --t-lead: 18px; --t-card: 18px; --t-sub: 22px; --t-h3: 26px;
+  --t-display: clamp(44px, 3.429vw + 30.63px, 80px);
   --t-h1: clamp(38px, 3.24vw + 25.4px, 72px);
   --t-h2: clamp(30px, 1.72vw + 23.3px, 48px);
-  --r-sm: 8px; --r-md: 12px; --r-lg: 20px; --r-btn: 8px;
+  --t-statement: var(--t-h3);   /* the one-sentence lead under a page head */
+  --r-xs: 4px; --r-sm: 8px; --r-md: 12px; --r-lg: 20px; --r-pill: 999px;
   --container: 1280px;      /* the widest a page's content gets */
   --gut: 24px;              /* the margin between the content and the window's edge */
   --gutter: 12px;           /* between grid columns */
@@ -31,11 +28,12 @@
   --t-in: 150ms;            /* hover feedback comes in */
   --t-out: 120ms;           /* and goes out a little faster */
 }
+@media (max-width: 639px) { :root { --t-label: 14px; --t-logo: 19px; } }
 @media (min-width: 640px) {
   :root { --gut: 48px; --gutter: 24px; --row-gap: 16px; --nav: 72px; --head-gap: 48px; --band: 72px; --t-h3: 28px; }
 }
 @media (min-width: 1024px) {
-  :root { --gut: 80px; --row-gap: 24px; --band: 96px; --t-lead: 20px; --t-card: 20px; --t-sub: 23px; --t-h3: 32px; }
+  :root { --gut: 80px; --row-gap: 24px; --band: 96px; --t-doc: 18px; --t-lead: 20px; --t-card: 20px; --t-sub: 23px; --t-h3: 32px; }
 }
 
 /* colours: the page ground; .ground-surface (a grey band) and .ground-inverse (the dark footer) swap them */
@@ -43,19 +41,16 @@
   --bg: var(--p-bg); --surface: var(--p-surface); --ink: var(--p-ink); --muted: var(--p-muted);
   --accent: var(--p-accent); --action: var(--p-action); --action-ink: var(--p-action-ink); --card: var(--p-surface);
 }
-.ground-surface {
-  --bg: var(--p-surface); --surface: var(--p-bg); --card: var(--p-bg);
-}
 .ground-inverse {
   --bg: var(--p-inv-bg); --surface: var(--p-inv-surface); --ink: var(--p-inv-ink); --muted: var(--p-inv-muted);
   --accent: var(--p-inv-accent); --action: var(--p-inv-action); --action-ink: var(--p-inv-action-ink); --card: var(--p-inv-surface);
 }
 /* hairlines follow the ink of their ground, so they are set again wherever the ink changes */
-:root, .ground-surface, .ground-inverse {
+:root, .ground-inverse {
   --line: color-mix(in oklab, var(--ink) 11%, transparent);
   --line-strong: color-mix(in oklab, var(--ink) 20%, transparent);
 }
-.ground-surface, .ground-inverse { background: var(--bg); color: var(--ink); }
+.ground-inverse { background: var(--bg); color: var(--ink); }
 
 /* ---------------------------------------------------------------- elements */
 *, ::before, ::after { box-sizing: border-box; }
@@ -76,7 +71,7 @@ button { font: inherit; color: inherit; }
 
 h1, h2, h3, h4 {
   font-family: var(--font-display); font-weight: var(--display-weight); letter-spacing: var(--display-tracking);
-  text-wrap: balance; overflow-wrap: break-word; hyphens: auto; hyphenate-limit-chars: 10 4 4;
+  text-wrap: balance; overflow-wrap: break-word; hyphens: manual;
 }
 h1 { font-size: var(--t-h1); line-height: 1.04; }
 h2 { font-size: var(--t-h2); line-height: 1.1; }
@@ -85,15 +80,12 @@ h4 { font: 500 var(--t-card)/1.3 var(--font-text); letter-spacing: -0.01em; }
 p { text-wrap: pretty; }
 
 /* text sizes and helpers used in the templates */
-.t-lead { font-size: var(--t-lead); line-height: 1.5; }
-.t-small { font-size: var(--t-small); line-height: 1.5; }
-.t-label { font-size: var(--t-label); font-weight: 500; line-height: 1.4; letter-spacing: .01em; }
+.t-lead { font-size: var(--t-lead); line-height: 1.5; }.t-label { font-size: var(--t-label); font-weight: 500; line-height: 1.4; letter-spacing: .01em; }
 .muted { color: var(--muted); }
-.stack-4 > * + * { margin-top: var(--s-4); }
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 /* keyboard focus: one ring in the accent everywhere */
-:focus-visible { outline: 2px solid var(--action); outline-offset: 2px; border-radius: 2px; }
+:focus-visible { outline: 2px solid var(--action); outline-offset: 2px; border-radius: var(--r-xs); }
 
 /* ---------------------------------------------------------------- layout */
 .wrap { width: min(100% - 2 * var(--gut), var(--container)); margin-inline: auto; }
@@ -101,38 +93,31 @@ p { text-wrap: pretty; }
 .grid > * { min-width: 0; grid-column: 1 / -1; }
 /* below 1024px every column is full width; the spans and starts take effect on a desktop */
 @media (min-width: 1024px) {
-  .span-2 { grid-column: auto / span 2; }
-  .span-3 { grid-column: auto / span 3; }
-  .span-4 { grid-column: auto / span 4; }
   .span-5 { grid-column: auto / span 5; }
-  .span-6 { grid-column: auto / span 6; }
   .span-7 { grid-column: auto / span 7; }
-  .span-8 { grid-column: auto / span 8; }
   .start-6 { grid-column-start: 6; }
-  .start-7 { grid-column-start: 7; }
-  .start-8 { grid-column-start: 8; }
-  .start-9 { grid-column-start: 9; }
-  .start-10 { grid-column-start: 10; }
-  .grid--top { align-items: start; }
 }
 
 /* ---------------------------------------------------------------- buttons
-   Two looks: .btn--primary, filled in the accent (one main action per view), and .btn--secondary, an
-   underlined word with an arrow (every second choice; content.css draws .btn--outline, the download shortcodes' name for it, the same way). The
-   icon buttons of the header and the hero's pause button are the third, square or round, 44px.
-   A button that carries its own arrow (svg.m-arrow) gets no drawn one. */
+   One primary button, an ink pill (the main action of a view), and .btn--secondary, the plain underlined
+   link beside it. Components restyle neither; on the black renders the home hero inverts the pill. */
 .btn {
   position: relative; display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2);
-  height: var(--btn-h); padding: 0 var(--s-5); border: 1px solid transparent; border-radius: var(--r-btn);
-  font: 600 var(--t-body)/1 var(--font-text); white-space: nowrap; cursor: pointer;
+  height: var(--btn-h); padding: 0 var(--s-5); border: 1px solid transparent; border-radius: var(--r-pill);
+  font: 500 var(--t-note)/1 var(--font-text); white-space: nowrap; cursor: pointer;
   transition: background-color var(--t-out) var(--ease), color var(--t-out) var(--ease), border-color var(--t-out) var(--ease),
     text-decoration-color var(--t-out) var(--ease), transform 90ms var(--ease);
 }
 .btn:hover { transition-duration: var(--t-in), var(--t-in), var(--t-in), var(--t-in), 90ms; }
-.btn--primary { background: var(--action); color: var(--action-ink); }
-.btn--primary:hover { background: color-mix(in oklab, var(--action) 84%, var(--bg)); }
+.btn--primary { background: var(--ink); color: var(--bg); }
+.btn--primary:hover { background: color-mix(in oklab, var(--ink) 84%, var(--bg)); }
+.btn--primary::after { content: none; }
+.btn[disabled] { opacity: .45; cursor: not-allowed; transform: none; }
+/* the same pill on the black of the renders (the download head, the gallery, the home page's black bands) */
+.btn--on-dark { background: var(--on-render); color: var(--render); }
+.btn--on-dark:hover { background: color-mix(in oklab, var(--on-render) 84%, var(--render)); }
 .btn--secondary {
-  background: none; color: var(--ink); padding-inline: var(--s-2);
+  background: none; color: var(--ink); padding-inline: 0;
   text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--line-strong);
 }
 .btn--secondary:hover { text-decoration-color: currentColor; }
@@ -206,34 +191,20 @@ p a:not([class]) { --rest: color-mix(in oklab, currentColor 45%, transparent); }
    - .card: an outlined link card (a door to a page: help, resources, child pages, the 404 page).
      The border takes the accent on hover; nothing moves.
    - .panel: a filled content card on the surface colour (events, quotes, the citation, sidebar cards).
-   - a media card: a picture with its words under it, no box (the home page's features, news). */
-.card {
-  position: relative; display: flex; flex-direction: column; gap: var(--s-1); min-width: 0;
-  padding: var(--s-5); border: 1px solid var(--line-strong); border-radius: var(--r-lg);
-  background: transparent; color: var(--ink);
-  transition: border-color var(--t-out) var(--ease), background-color var(--t-out) var(--ease);
-}
-.card:hover { border-color: color-mix(in oklab, var(--action) 55%, transparent); background: color-mix(in oklab, var(--action) 4%, var(--bg)); transition-duration: var(--t-in); }
-.card__title { font: var(--title-weight) var(--t-card)/1.3 var(--font-display); letter-spacing: -0.01em; color: var(--ink); }
-.card:hover .card__title { color: var(--action); }
-.card__text { color: var(--muted); font-size: var(--t-note); line-height: 1.5; }
-.panel { padding: var(--s-5); border-radius: var(--r-lg); background: var(--card); color: var(--ink); }
+   - a media card: a picture with its words under it, no box (the home page's features, news). */.panel { padding: var(--s-5); border-radius: var(--r-lg); background: var(--card); color: var(--ink); }
 @media (min-width: 1024px) { .panel { padding: var(--s-6); } }
 
 /* a picture that zooms a little under the pointer (news thumbnails) */
-.m-zoom { overflow: clip; }
-.m-zoom img { transition: transform 400ms var(--ease); }
-@media (hover: hover) and (pointer: fine) {
-  .m-zoom:hover img { transform: scale(1.03); transition-duration: 600ms; }
-}
 
 /* ---------------------------------------------------------------- forms */
-.form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
+.form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); max-width: var(--measure); margin: 0 0 1.5em; }
 .form > :is(.field--full, .btn-row, p), .form > .field:has(textarea) { grid-column: 1 / -1; }
 @media (max-width: 639px) { .form { grid-template-columns: minmax(0, 1fr); } }
 .field { display: grid; gap: var(--s-2); font-size: var(--t-small); font-weight: 500; }
+.field label { font-size: var(--t-small); font-weight: 500; color: var(--ink); }
+.field__opt { font-weight: 400; color: var(--muted); }
 .field :is(input, select, textarea) {
-  width: 100%; height: var(--btn-h); padding: 0 var(--s-3); border: 1px solid var(--line-strong); border-radius: var(--r-sm);
+  width: 100%; height: 48px; min-height: 48px; padding: 12px 14px; border: 1px solid var(--line-strong); border-radius: var(--r-sm);
   background: var(--bg); color: var(--ink); font: 400 var(--t-body)/1.4 var(--font-text);
   transition: border-color var(--t-out) var(--ease), box-shadow var(--t-out) var(--ease), background-color var(--t-out) var(--ease);
 }
@@ -248,7 +219,6 @@ p a:not([class]) { --rest: color-mix(in oklab, currentColor 45%, transparent); }
 /* ---------------------------------------------------------------- reduced motion: nothing slides, fades stay instant */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after { transition-duration: .001ms !important; animation-duration: .001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
-  .btn:is(:hover, :active), .m-zoom:hover img,
-  :is(a, button):hover > .m-arrow :is(.m-arrow__head, .m-arrow__stem) { transform: none !important; }
+  .btn:is(:hover, :active), :is(a, button):hover > .m-arrow :is(.m-arrow__head, .m-arrow__stem) { transform: none !important; }
   .m-arrow__stem { opacity: 1; transform: none; }
 }

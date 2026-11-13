@@ -5,10 +5,9 @@
   <div class="wrap doc-layout doc-layout--single">
     <div class="prose search-page">
       {{ partial "search-form.html" (dict "id" "page") }}
-      {{- /* before a query: the 404 page's cards to start from (search.js hides them while a query is
-             typed); without script the search does not run, so a line says so and the cards stay */}}
-      <noscript><p class="notice">The search needs JavaScript. Without it, start from one of these pages; the menu at the top lists every page of each, and the <a href="{{ "sitemap.xml" | relURL }}">sitemap</a> lists them all.</p></noscript>
-      <p class="search-page__start" data-search-doors>Or start from one of these pages:</p>
+      {{- /* before a query: the 404 page's pages to start from (search.js hides them while a query is
+             typed); without script the search does not run, so a line says so and the list stays */}}
+      <noscript><p class="notice">The search needs JavaScript. The <a href="{{ "sitemap.xml" | relURL }}">sitemap</a> lists every page.</p></noscript>
       {{ partial "search-doors.html" (dict "attrs" (safeHTMLAttr "data-search-doors")) }}
     </div>
   </div>

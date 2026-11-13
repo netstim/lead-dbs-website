@@ -45,15 +45,16 @@
   {{- range $a.get }}{{ $get = $get | append . }}{{ end -}}
   {{- $getHTML := "" }}{{ range $get }}{{ $getHTML = printf "%s<li>%s</li>" $getHTML ($p.RenderString .) }}{{ end -}}
   {{- $citeHTML := "" }}{{ range $a.cite }}{{ $citeHTML = printf "%s<li>%s</li>" $citeHTML ($p.RenderString .) }}{{ end -}}
+  {{- range $a.papers }}{{ $pp := index hugo.Data.papers.papers . }}{{ if not $pp }}{{ errorf "atlas-group: %s: no paper %q in data/papers.yaml" $p.File.Path . }}{{ end }}{{ $citeHTML = printf "%s<li>%s</li>" $citeHTML (partial "paper/full.html" $pp) }}{{ end -}}
   {{- $list := cond (isset $a "cite_numbered") "ol" "ul" -}}
   {{- $more := "" }}{{ with $a.page }}{{ with site.GetPage . }}{{ $more = printf `<p class="atlas__more"><a href="%s">%s: the full description</a></p>` .RelPermalink .LinkTitle }}{{ end }}{{ end -}}
-  {{- $html = printf `%s<section class="atlas" aria-labelledby="%s" data-atlas-entry>%s<div class="atlas__head">%s<div class="atlas__title"><h3 id="%s">%s <span class="atlas__ref">(%s)</span><a class="heading-anchor" href="#%s" aria-label="Link to this atlas">#</a></h3><p class="atlas__meta"><span>%s</span>%s</p></div></div><details class="atlas__details"><summary>About, get it, cite<span class="sr-only">: %s</span></summary><div class="atlas__body%s"><div class="atlas__about">%s%s</div><div class="atlas__refs"><h4 class="atlas__label">Get it</h4><ul>%s</ul>%s</div>%s</div></details></section>`
-      $html $a.id $also $thumb $a.id $a.name $a.ref $a.id $a.covers
+  {{- $html = printf `%s<section class="atlas" aria-labelledby="%s" data-atlas-entry>%s<div class="atlas__head">%s<div class="atlas__title"><h3 id="%s">%s%s<a class="heading-anchor" href="#%s" aria-label="Link to this atlas">#</a></h3><p class="atlas__meta"><span>%s</span>%s</p></div></div><details class="atlas__details"><summary>Details<span class="sr-only">: %s</span></summary><div class="atlas__body%s"><div class="atlas__about">%s%s</div><div class="atlas__refs">%s%s</div>%s</div></details></section>`
+      $html $a.id $also $thumb $a.id $a.name (cond (isset $a "ref") (printf ` <span class="atlas__ref">(%s)</span>` $a.ref) "") $a.id $a.covers
       (cond $a.preinstalled `<span class="atlas__tag">Preinstalled</span>` "")
       $a.name
       (cond (gt (len $fig) 0) " atlas__body--fig" "")
       (cond (isset $a "about") ($p.RenderString (dict "display" "block") (default "" $a.about)) "") $more
-      $getHTML
+      (cond (gt (len $getHTML) 0) (printf `<h4 class="atlas__label">Get it</h4><ul>%s</ul>` $getHTML) "")
       (cond (gt (len $citeHTML) 0) (printf `<h4 class="atlas__label">Cite</h4><%s class="atlas__cite">%s</%s>` $list $citeHTML $list) "")
       $fig -}}
 {{- end }}
@@ -61,5 +62,5 @@
 
 {{ $g.intro }}
 
-<div class="atlas-list" data-atlas-group="{{ $id }}">{{ partial "nobreak-html.html" ($html | replaceRE `\n\s*\n` "\n") }}<p class="atlas-list__back"><a href="#atlas-index">Back to the filter and the groups</a></p></div>
+<div class="atlas-list" data-atlas-group="{{ $id }}">{{ partial "nobreak-html.html" ($html | replaceRE `\n\s*\n` "\n") }}</div>
 {{ if $p.Store.Get "atlas-clip" }}{{ partial "clip-script.html" $p }}{{ end }}

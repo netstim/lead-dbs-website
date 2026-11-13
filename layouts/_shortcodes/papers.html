@@ -1,4 +1,4 @@
-{{- /* Every paper of data/papers.yaml by group, newest first, as on Publications. Call it with % so its
+{{- /* Every paper of data/papers.yaml by group, newest first, as rows (partial paper/row.html), as on Publications. Call it with % so its
        headings are Markdown and appear in the page's contents list:
          {{% papers %}}
        Each group is an h3 with the anchor #papers-<group id>. */ -}}
@@ -14,9 +14,6 @@
 
 ### {{ $title }} {#papers-{{ $g }}}
 
-{{ range sort . "year" "desc" -}}
-- {{ partial "paper/full.html" . }}
-{{ end -}}
-{.paper-refs}
+<ol class="paper-rows">{{ range sort . "year" "desc" }}{{ partial "paper/row.html" . }}{{ end }}</ol>
 {{- end -}}
 {{- end -}}

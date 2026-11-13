@@ -38,7 +38,8 @@
     {{- range .Params.searchEntries -}}
       {{- $id := .id -}}
       {{- $found := false }}{{ range $pg.Fragments.HeadingsMap }}{{ if eq .ID $id }}{{ $found = true }}{{ end }}{{ end -}}
-      {{- if not $found }}{{ if not (strings.Contains $pg.Content (printf `id="%s"` $id)) }}{{ errorf "searchEntries: %s: no anchor %q" $pg.File.Path $id }}{{ end }}{{ end -}}
+      {{- /* a page drawn by its own template names that template's anchors in its front matter ("anchors") */ -}}
+      {{- if not $found }}{{ if not (or (in ($pg.Params.anchors | default slice) $id) (strings.Contains $pg.Content (printf `id="%s"` $id))) }}{{ errorf "searchEntries: %s: no anchor %q" $pg.File.Path $id }}{{ end }}{{ end -}}
       {{- $out = $out | append (dict "t" .title "u" (printf "%s#%s" $pg.RelPermalink $id) "s" $pg.LinkTitle "k" (.keywords | default "") "h" "" "d" (.description | default "") "x" "") -}}
     {{- end -}}
     {{- /* an atlas catalogue: each atlas is found by itself and opens at its entry */ -}}

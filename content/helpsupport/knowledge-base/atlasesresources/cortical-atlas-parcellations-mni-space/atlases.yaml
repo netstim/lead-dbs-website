@@ -43,11 +43,11 @@ atlases:
   alt: 'Mindboggle 101: labelled cortical regions on inflated surfaces, lateral and medial views'
 - id: miccai-2012-multi-atlas-labeling-workshop-and-challenge-neuromorphometrics
   group: anatomical
-  name: MICCAI 2012 multi-atlas labelling (Neuromorphometrics)
+  name: MICCAI 2012 multi-atlas labelling
   ref: Neuromorphometrics
   covers: Whole brain, manual labels
   preinstalled: true
-  about: The MICCAI 2012 Multi-Atlas Labeling Workshop and Challenge dataset is a manually segmented whole-brain parcellation (see refs).
+  about: The dataset of the MICCAI 2012 Multi-Atlas Labeling Workshop and Challenge.
   get:
   - 'Information: [Neuromorphometrics](http://www.neuromorphometrics.com/)'
   cite: []
@@ -297,7 +297,7 @@ atlases:
   ref: Yeo 2011
   covers: Cortical networks, surface-aligned
   preinstalled: true
-  about: An atlas based on same functional and structural sequences from 1000 young, healthy adults were registered using surface-based alignment.
+  about: Built from resting-state fMRI of 1000 young, healthy adults, registered with surface-based alignment.
   get:
   - Released in the [FreeSurfer wiki (Yeo 2011)](https://surfer.nmr.mgh.harvard.edu/fswiki/CorticalParcellation_Yeo2011)
   cite:
@@ -310,7 +310,7 @@ atlases:
   ref: Yeo 2011
   covers: Cortex, 7 networks
   preinstalled: true
-  about: An atlas based on same functional and structural sequences from 1000 young, healthy adults were registered using surface-based alignment.
+  about: Built from resting-state fMRI of 1000 young, healthy adults, registered with surface-based alignment.
   get:
   - Released in the [FreeSurfer wiki (Yeo 2011)](https://surfer.nmr.mgh.harvard.edu/fswiki/CorticalParcellation_Yeo2011)
   cite:
@@ -375,7 +375,7 @@ atlases:
   alt: 'Human Motor Area Template: motor areas in colour on a grey brain surface'
 - id: sensorimotor-area-tract-template-archer-2017
   group: motor-cerebellum
-  name: Sensorimotor Area Tract Template (S-MATT)
+  name: Sensorimotor Area Tract Template (S‑MATT)
   ref: Archer 2017
   covers: Corticospinal tract from sensorimotor areas
   preinstalled: true

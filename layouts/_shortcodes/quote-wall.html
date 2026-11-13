@@ -1,0 +1,18 @@
+{{- /* Every quote of data/quotes.yaml as a wall (Publications): two columns from 640px, three from 1200px,
+       each quote whole in a card, its key phrase in ink and the rest of it in grey; under it the
+       name and the role or journal, a paper's DOI. A quote with logo: (a file under assets/, such as
+       "images/logos/ucl.svg") shows that logo before the name; without one the name stands alone. */ -}}
+{{- /* in the order of their "wall" number (data/quotes.yaml), not of the file, which the home page's rows follow */ -}}
+{{- $qs := sort hugo.Data.quotes.quotes "wall" -}}
+<div class="qwall">
+  <div class="qwall__cols">
+    {{- range $qs }}
+    {{- if not (strings.Contains .text .phrase) }}{{ errorf "quotes: the phrase %q is not in the quote of %s" .phrase .name }}{{ end }}
+    {{- $marked := replace (.text | htmlEscape) (.phrase | htmlEscape) (printf `<strong>%s</strong>` (.phrase | htmlEscape)) 1 }}
+    <figure class="qcard" data-kind="{{ .kind }}">
+      <blockquote>“{{ $marked | safeHTML }}”</blockquote>
+      <figcaption>{{ $lh := .logoHeight }}{{ with .logo }}{{ $l := resources.Get . }}{{ if not $l }}{{ errorf "quotes: no logo %q" . }}{{ end }}<img class="qcard__logo" src="{{ $l.RelPermalink }}" alt=""{{ with $lh }} style="height: {{ . }}px"{{ end }} loading="lazy" decoding="async">{{ end }}<span class="qcard__who"><b>{{ index (split .name ", ") 0 }}</b><span>{{ if eq .kind "paper" }}<em>{{ .role }}</em>{{ else }}{{ .role }}{{ end }}{{ with .doi }} · <a href="https://doi.org/{{ . }}">doi<span class="ext-mark" aria-hidden="true">↗</span></a>{{ end }}{{ with .url }} · <a href="{{ . }}">paper<span class="ext-mark" aria-hidden="true">↗</span></a>{{ end }}</span></span></figcaption>
+    </figure>
+    {{- end }}
+  </div>
+</div>

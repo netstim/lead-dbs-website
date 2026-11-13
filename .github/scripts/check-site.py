@@ -16,6 +16,8 @@ The second argument is the baseURL the site was built with. Checked:
   build every page says so, and the check is skipped);
 - no page shows front matter as text (a "keywords:" or "title:" line, or a "---" fence) in its main
   content, which happens when a Markdown file's front matter is broken;
+- no page has an empty sidebar, the production build has no form that cannot be sent, and no page shows
+  escaped HTML as text (a Markdown indent turned a template line into a code block once);
 - a page has one name: its browser title is its h1, or its h1 followed by " – Lead-DBS" (a later page of
   the news list adds ", page 2" and so on).
 
@@ -151,6 +153,7 @@ def page_url(fp):
     return BASE_PATH + rel
 
 
+IS_PREVIEW = BASE_HOST != "www.lead-dbs.org"
 LEAK = re.compile(r"(?m)^\s*(?:---\s*$|(?:keywords|aliases|menuParent|linkTitle|lastmod|htmlTitle|description|title|date|weight|slug):\s)")
 absolute_live = None
 checked = 0
@@ -191,6 +194,14 @@ for fp, p in sorted(pages.items()):
         title, h1 = re.sub(r", page \d+(?= – |$)", "", name(p.title)), name(p.h1).rstrip("#").strip()
         if title not in (h1, f"{h1} – Lead-DBS"):
             err(f"{url}: the browser title {name(p.title)!r} is not the h1 {h1!r}")
+    raw = open(fp, encoding="utf-8", errors="ignore").read()
+    if re.search(r'<aside class="?sidebar"?[^>]*>\s*</aside>', raw):
+        err(f"{url}: an empty sidebar (a page with nothing to put in it has none)")
+    if not IS_PREVIEW and ("form-note" in raw or re.search(r"<form[^>]*>(?:(?!</form>).)*<button[^>]*\bdisabled", raw, re.S)):
+        err(f"{url}: a form that cannot be sent on the production site")
+    m = re.search(r"&lt;/?(span|a|div|p|svg|img|br)\b", raw)
+    if m:
+        err(f"{url}: escaped HTML shown as text: {raw[m.start():m.start() + 60]!r}")
     text = "".join(p.text)
     m = LEAK.search(text)
     if m:

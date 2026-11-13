@@ -82,4 +82,4 @@ Other additions in this release; the biggest thanks again go to Ningfei Li for o
 
 All changes since 3.0.1 are in the [full list of changes on GitHub](https://github.com/netstim/leaddbs/compare/v3.0.1...v3.1).
 
-Read the original announcement [in our newsletter](https://www.lead-dbs.org/?na=view&id=29). As always, feel free to connect with us via the [user Slack](/helpsupport/slack-user-channel/), or fork us on [GitHub](https://github.com/netstim/leaddbs) to contribute directly.
+Read the original announcement [in our newsletter](https://www.lead-dbs.org/?na=view&id=29).

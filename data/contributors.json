@@ -1,0 +1,237 @@
+{
+  "core": [
+    {
+      "name": "Ningfei Li",
+      "url": "https://www.netstim.org/about-us/about-us/",
+      "affiliation": "Charité, Berlin"
+    },
+    {
+      "name": "Simón Oxenford",
+      "url": "https://www.netstim.org/about-us/about-us/",
+      "affiliation": "Charité, Berlin"
+    },
+    {
+      "name": "Till Dembek",
+      "affiliation": "University of Cologne"
+    },
+    {
+      "name": "Nanditha Rajamani",
+      "affiliation": "Charité, Berlin"
+    },
+    {
+      "name": "Konstantin Butenko",
+      "affiliation": "Harvard Medical School, Boston"
+    },
+    {
+      "name": "Garance Meyer",
+      "affiliation": "Harvard Medical School, Boston"
+    },
+    {
+      "name": "Enrico Opri",
+      "affiliation": "Emory University, Atlanta"
+    },
+    {
+      "name": "Johannes Achtzehn",
+      "affiliation": "Charité, Berlin"
+    },
+    {
+      "name": "Andreas Husch",
+      "affiliation": "University of Luxembourg"
+    },
+    {
+      "name": "Lauren Hart",
+      "affiliation": "Harvard Medical School, Boston"
+    },
+    {
+      "name": "Khoa Nguyen",
+      "affiliation": "University of Bern"
+    },
+    {
+      "name": "Kavisha Fernando",
+      "affiliation": "University of Melbourne"
+    },
+    {
+      "name": "Andreas Horn",
+      "url": "https://www.netstim.org/about-us/about-us/andreashorn/",
+      "affiliation": "Institute for Network Stimulation, Cologne"
+    }
+  ],
+  "features": [
+    {
+      "name": "Andrea Kühn",
+      "affiliation": "Charité, Berlin"
+    },
+    {
+      "name": "Harald Treuer",
+      "affiliation": "University of Cologne"
+    },
+    {
+      "name": "Veerle Visser-Vandewalle",
+      "affiliation": "University of Cologne"
+    },
+    {
+      "name": "Todd Herrington, Mark Richardson",
+      "affiliation": "Massachusetts General Hospital, Boston"
+    },
+    {
+      "name": "Frank Hertel",
+      "affiliation": "Centre Hospitalier de Luxembourg, Luxembourg"
+    },
+    {
+      "name": "Adriana Arrais",
+      "affiliation": "Institute for Network Stimulation, Cologne"
+    },
+    {
+      "name": "Richard Demann",
+      "affiliation": "Institute for Network Stimulation, Cologne"
+    }
+  ],
+  "code": [
+    {
+      "name": "Wolf-Julian Neumann",
+      "affiliation": "Charité, Berlin"
+    },
+    {
+      "name": "Jan Roediger",
+      "affiliation": "Charité, Berlin"
+    },
+    {
+      "name": "Johannes Vorwerk",
+      "affiliation": "University of Münster"
+    },
+    {
+      "name": "Ari Kappel",
+      "affiliation": "University of Pittsburgh"
+    },
+    {
+      "name": "Chadwick Boulay",
+      "affiliation": "University of Ottawa"
+    },
+    {
+      "name": "Qianqian Fang",
+      "affiliation": "Northeastern University, Boston"
+    }
+  ],
+  "recent": [
+    {
+      "name": "Ankang Hu"
+    },
+    {
+      "name": "Min Jae Kim"
+    },
+    {
+      "name": "Savir Madan",
+      "affiliation": "Harvard Medical School, Boston"
+    },
+    {
+      "name": "Maike Mustin",
+      "affiliation": "Institute for Network Stimulation, Cologne"
+    },
+    {
+      "name": "Muthukumar Pandaram"
+    },
+    {
+      "name": "Jan Philipp Payonk",
+      "affiliation": "Institute for Network Stimulation, Cologne"
+    },
+    {
+      "name": "Daniele Proverbio"
+    },
+    {
+      "name": "Aysu Sahin",
+      "affiliation": "Institute for Network Stimulation, Cologne"
+    },
+    {
+      "name": "Jordy Tasserie",
+      "affiliation": "Harvard Medical School, Boston"
+    },
+    {
+      "name": "Patricia Zvarova",
+      "affiliation": "Institute for Network Stimulation, Cologne"
+    }
+  ],
+  "data": [
+    {
+      "name": "Siobhán Ewert",
+      "affiliation": "Charité, Berlin"
+    },
+    {
+      "name": "Ettore Accolla",
+      "affiliation": "University of Fribourg"
+    },
+    {
+      "name": "Erik Middlebrooks",
+      "affiliation": "Mayo Clinic, Jacksonville"
+    },
+    {
+      "name": "Bogdan Draganski",
+      "affiliation": "University of Lausanne"
+    },
+    {
+      "name": "Brian Edlow",
+      "affiliation": "Massachusetts General Hospital, Boston"
+    },
+    {
+      "name": "Lingzhong Fan",
+      "affiliation": "Chinese Academy of Sciences, Beijing"
+    },
+    {
+      "name": "Birte Forstmann / Max Keuken",
+      "affiliation": "University of Amsterdam"
+    },
+    {
+      "name": "Alexander Hammers",
+      "affiliation": "Imperial College London"
+    },
+    {
+      "name": "Marc Joliot / Natalie Tzourio-Mazoyer",
+      "affiliation": "University of Bordeaux"
+    },
+    {
+      "name": "Antonio Meola",
+      "affiliation": "Brigham and Women’s Hospital, Boston"
+    },
+    {
+      "name": "Janey Prodoehl",
+      "affiliation": "Midwestern University"
+    },
+    {
+      "name": "Anqi Qiu",
+      "affiliation": "National University of Singapore"
+    },
+    {
+      "name": "Verena Rozanski",
+      "affiliation": "University of Munich"
+    },
+    {
+      "name": "Thomas Yeo",
+      "affiliation": "National University of Singapore"
+    },
+    {
+      "name": "Dongyang Zhang",
+      "affiliation": "Washington University, St. Louis"
+    },
+    {
+      "name": "Eduardo Alho",
+      "affiliation": "University of São Paulo"
+    }
+  ],
+  "testing": [
+    {
+      "name": "Pierre Deman, Astrid Kibleur",
+      "affiliation": "Grenoble Institut des Neurosciences"
+    },
+    {
+      "name": "Juan Carlos Baldermann",
+      "affiliation": "University Hospital Cologne"
+    },
+    {
+      "name": "Kristen Kanoff",
+      "affiliation": "Massachusetts General Hospital, Boston"
+    },
+    {
+      "name": "Konrad Schumacher",
+      "affiliation": "University Hospital Freiburg"
+    }
+  ]
+}

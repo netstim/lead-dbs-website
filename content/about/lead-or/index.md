@@ -6,58 +6,63 @@ lastmod: "2026-11-11"
 weight: 4
 # the old site's page on 3D Slicer, which Lead-OR extends
 aliases: ["/portfolio-item/3d-slicer/"]
-# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
-related:
-  - {name: "Lead-OR figures", url: "/gallery/#fig-oxenford2022_fig1"}
-  - "/about/publications/"
-  - "/helpsupport/slack-user-channel/"
 # the picture shown when the page is shared (head.html)
 share: "gallery/oxenford2022_fig1.jpg"
-# the cards at the end of the page (layouts/_partials/next-steps.html)
+# "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
-  - {page: "/helpsupport/first-steps/", text: "Install Lead-DBS and prepare your first patient"}
-  - {page: "/helpsupport/knowledge-base/lead-dbs-methods/#tools", name: "Tools and modules", text: "Lead Group, Lead Connectome, OSS-DBS, Lead Tutor"}
-  - {page: "/gallery/", text: "Figures from papers, those made with Lead-OR marked"}
+  - {page: "/helpsupport/first-steps/"}
+  - {page: "/helpsupport/knowledge-base/lead-dbs-methods/#tools", name: "Tools and modules"}
+  - {page: "/gallery/"}
+# Lead-OR at a glance (layouts/_shortcodes/cells.html)
+glance:
+  - {label: "Runs in", value: "3D Slicer"}
+  - {label: "Extension", value: "SlicerNetstim"}
+  - {label: "Licence", value: "Open source"}
+  - {label: "Released", value: "August 2021"}
+layout: "showcase"
 ---
 
-Lead-OR brings Lead-DBS into the operating theatre: a sister tool of Lead-DBS for research during DBS
-surgery.
+<div class="page-intro"><div class="page-intro__text">
 
-{{< summary >}}
-What
-: Invasive recordings (microelectrode recordings and local field potentials) shown on the patient's images in real time, and the effect of test stimulation on fibre tracts modelled
+**Lead-DBS in the operating theatre:** research during DBS surgery.
 
-Runs in
-: [3D Slicer](https://www.slicer.org/), as part of the SlicerNetstim extension, with the coregistrations and segmentations made in Lead-DBS
+</div>
+<p class="page-intro__actions"><a class="btn btn--primary btn--ext" href="https://netstim.gitbook.io/leaddbs/lead-or/imaging-setup">Get started<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></a><a class="btn btn--secondary btn--ext" href="https://github.com/netstim/SlicerNetstim">SlicerNetstim on GitHub<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></a></p>
+</div>
 
-Get it
-: Free and open source: [SlicerNetstim on GitHub](https://github.com/netstim/SlicerNetstim); setup in the manual ([imaging setup](https://netstim.gitbook.io/leaddbs/lead-or/imaging-setup))
+{{< cells key="glance" label="Lead-OR at a glance" >}}
 
-Cite
-: Oxenford et al. 2022, *eLife* 11: e72929, [doi:10.7554/eLife.72929](https://doi.org/10.7554/eLife.72929) ([full citation](#what-to-cite))
-{{< /summary >}}
+{{% hub-section %}}
+## What it is
 
-![A 3D scene of a patient's skull in the stereotactic frame during surgery, with the planned electrode paths leading to small target structures deep in the brain](gallery/oxenford2022_fig1.jpg "Lead-OR during surgery: the stereotactic frame, the planned trajectories and their targets. Figure 1 of Oxenford et al., eLife 2022 (CC BY 4.0).")
+**Recordings and test stimulation on the patient's images,** in real time.
 
-## Use it in 3D Slicer
+Lead-OR shows invasive recordings (microelectrode recordings and local field potentials) on the patient's
+images as they are made, and models the effect of test stimulation on fibre tracts.
 
-Lead-OR runs in [3D Slicer](https://www.slicer.org/), as part of the
-[SlicerNetstim](https://github.com/netstim/SlicerNetstim) extension. Prepare the patient's images in
-Lead-DBS first; the manual's chapter on the imaging setup takes you from there.
+![A 3D scene of a patient's skull in the stereotactic frame during surgery, with the planned electrode paths leading to small target structures deep in the brain](gallery/oxenford2022_fig1.jpg "The stereotactic frame, the planned trajectories and their targets. Figure 1 of Oxenford et al., eLife 2022 (CC BY 4.0).")
+{{% /hub-section %}}
 
-{{< button href="https://netstim.gitbook.io/leaddbs/lead-or/imaging-setup" >}}Get started with Lead-OR{{< /button >}}
+{{% hub-section %}}
+## How to get it {#download}
 
-{{< button href="https://github.com/netstim/SlicerNetstim" >}}Lead-OR on GitHub{{< /button >}}
+**Prepare the images in Lead-DBS first.**
 
+Lead-OR works on the coregistrations and segmentations made in Lead-DBS. The manual's chapter on the
+[imaging setup](https://netstim.gitbook.io/leaddbs/lead-or/imaging-setup) takes you from there.
+{{% /hub-section %}}
+
+{{% hub-section %}}
 ## What to cite
+
+**Oxenford et al. 2022,** eLife.
 
 {{% copybox label="Copy the citation" %}}
 {{< paper oxenford2022 "full" >}}
 {{% /copybox %}}
 
-Lead-OR was released as open source in August 2021, with a
-[preprint on medRxiv](https://www.medrxiv.org/content/10.1101/2021.08.09.21261792v1); the paper appeared
-in eLife in 2022.
+The preprint is on [medRxiv](https://www.medrxiv.org/content/10.1101/2021.08.09.21261792v1).
+{{% /hub-section %}}
 
 ## See it in action {#videos}
 

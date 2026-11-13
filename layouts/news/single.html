@@ -1,8 +1,10 @@
 {{ define "main" }}
-<main id="top" class="page">
+{{ $toc := partial "has-toc.html" . }}
+<main id="top" class="page page--doc{{ if $toc }} page--side{{ end }}">
   {{ partial "page-head.html" . }}
-  <div class="wrap doc-layout">
+  <div class="wrap doc-layout{{ if $toc }} doc-layout--side{{ end }}">
     <article class="prose post">
+      {{ if $toc }}{{ partial "toc.html" (dict "page" . "variant" "top") }}{{ end }}
       {{- /* the teaser on top of the post (front matter image, with image_alt), as resized WebP copies;
              left out when the post's text shows the same picture already, or with image_in_post: false */}}
       {{ with and (ne .Params.image_in_post false) (.Resources.GetMatch (.Params.image | default "__none__")) }}
@@ -17,7 +19,7 @@
       {{ end }}
       {{- /* a post older than three years says so above its text, so nobody mistakes it for current advice */}}
       {{ if gt (now.Sub .Date).Hours (mul 24 365 3) }}{{ with hugo.Data.release }}
-      <p class="notice post-archive" role="note">From the archive: this post is from {{ $.Date.Format "2006" }}, and Lead-DBS has changed since. The current version is <a href="{{ with site.GetPage "/download" }}{{ .RelPermalink }}{{ end }}">Lead-DBS&nbsp;{{ .version }}</a>.</p>
+      <p class="fine-print post-archive">The current version is <a href="{{ with site.GetPage "/download" }}{{ .RelPermalink }}{{ end }}">Lead-DBS&nbsp;{{ .version }}</a>.</p>
       {{ end }}{{ end }}
       {{ partial "nobreak-html.html" .Content }}
       {{- /* onward, as on every page (partial next-steps.html): the next newer and older post (by date),
@@ -28,7 +30,7 @@
       {{ with .Parent }}{{ $items = $items | append (dict "href" .RelPermalink "name" "All news" "text" "Releases, workshops and announcements") }}{{ end }}
       {{ partial "next-steps.html" (dict "page" . "items" $items) }}
     </article>
-    <aside class="sidebar" aria-label="In this section">{{ partial "sidebar.html" . }}</aside>
+    {{ if $toc }}<aside class="sidebar" aria-label="Section">{{ partial "sidebar.html" (dict "page" . "toc" $toc) }}</aside>{{ end }}
   </div>
 </main>
 {{ end }}

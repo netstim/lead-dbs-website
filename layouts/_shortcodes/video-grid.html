@@ -1,0 +1,16 @@
+{{- /* A grid of video cards (Walkthrough videos). cols="3": three across on a desktop (default two).
+       Written with %, so the cards' headings stay part of the page's Markdown (search, anchors):
+         {{% video-grid %}}
+         {{% video-card tag="March 2022" lead="true" %}}
+         ## Refresher course {#lead-dbs-refresher}
+
+         One sentence.
+
+         {{< youtube id="…" title="…" >}}
+         {{% /video-card %}}
+         {{% /video-grid %}} */ -}}
+<div class="video-grid{{ with .Get "cols" }} video-grid--{{ . }}{{ end }}">
+
+{{ .Inner }}
+
+</div>

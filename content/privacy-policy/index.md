@@ -3,15 +3,11 @@ title: "Privacy Policy"
 description: "The privacy policy of lead-dbs.org: what personal data the site collects, from cookies to embedded content, how long it is kept and what rights you have."
 date: "2022-04-18T14:13:06"
 lastmod: "2022-04-18T14:29:09"
-# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
-related:
-  - "/impressum-datenschutzerklarung/"
-  - "/contact/"
-# the cards at the end of the page (layouts/_partials/next-steps.html)
+# "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
-  - {page: "/impressum-datenschutzerklarung/", text: "Who is responsible for this website"}
-  - {page: "/contact/", text: "Questions about your data"}
-  - {page: "/about/", text: "Who develops Lead-DBS"}
+  - {page: "/impressum-datenschutzerklarung/"}
+  - {page: "/contact/"}
+  - {page: "/about/"}
 ---
 
 ## Who we are

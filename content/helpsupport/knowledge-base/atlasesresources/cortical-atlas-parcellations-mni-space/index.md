@@ -8,22 +8,15 @@ date: "2016-05-29T15:28:14"
 lastmod: "2026-11-11"
 # the picture shown when the page is shared (head.html)
 share: "CAREN-1-1030x761.png"
-# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
-related:
-  - {name: "Connectivity in Lead-DBS", url: "/helpsupport/knowledge-base/lead-dbs-methods/#connectivity"}
-  - "/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping/"
-  - "/helpsupport/knowledge-base/atlasesresources/about-the-mni-spaces/"
-# the cards at the end of the page (layouts/_partials/next-steps.html)
+# "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
-  - {page: "/helpsupport/knowledge-base/atlasesresources/normative-connectomes/", text: "Used together with these parcellations"}
+  - {page: "/helpsupport/knowledge-base/atlasesresources/normative-connectomes/"}
 ---
-For connectivity analyses. Most come with Lead-DBS (nothing to download); the others are a download
-away. Open an entry for how to get it and which paper to cite.
+Parcellations for connectivity analyses: most come with Lead-DBS, the others are a download away.
 
 {{< atlas-index noun="parcellations" >}}
 
 Looking for atlases of the deep nuclei? See [Subcortical atlases](/helpsupport/knowledge-base/atlasesresources/atlases-2/).
-Tips on [choosing and using an atlas](/helpsupport/knowledge-base/atlasesresources/#choosing); to add your own, see [Add your atlas or dataset](/develop/#add-your-atlas-or-dataset).
 
 {{% atlas-group "anatomical" %}}
 

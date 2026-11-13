@@ -1,0 +1,26 @@
+{{- /* One form of data/forms.yaml. Arguments: dict "id" (the form's key), "n" (a number that keeps field ids
+       unique on the page), "anchor" (optional id of the form). No backend yet (params.formsEnabled = false): the production site shows
+       the form's `offline` line instead; the GitHub preview shows the form disabled, with a note. */ -}}
+{{ $id := .id }}{{ $n := .n | default 0 }}
+{{ with index hugo.Data.forms $id }}
+{{ if and (not site.Params.formsEnabled) (not site.Params.preview) }}
+{{- /* no backend yet: the page offers the way that works instead of a dead form */ -}}
+<p class="form-offline"{{ with $.anchor }} id="{{ . }}"{{ end }}>{{ .offline | default "" | markdownify }}</p>
+{{ if not .offline }}{{ errorf "form %q: no offline text in data/forms.yaml" $id }}{{ end }}
+{{ else }}
+{{- /* the rarer kind is marked: "(optional)" where most fields are required, "(required)" where most are optional */ -}}
+{{ $req := len (where .fields "required" true) }}{{ $markReq := lt (mul $req 2) (len .fields) }}
+<form class="form"{{ with $.anchor }} id="{{ . }}"{{ end }}{{ with .action }} action="{{ . }}"{{ end }} method="post"{{ if not site.Params.formsEnabled }} onsubmit="return false"{{ if site.Params.preview }} aria-describedby="f-{{ $id }}-{{ $n }}-note"{{ end }}{{ end }}>
+  {{ range .fields }}
+  {{ $fid := printf "f-%s-%d-%s" $id $n .name }}
+  <div class="field{{ if not .half }} field--full{{ end }}">
+    <label for="{{ $fid }}">{{ .label }}{{ if and $markReq .required }} <span class="field__opt">(required)</span>{{ else if and (not $markReq) (not .required) }} <span class="field__opt">(optional)</span>{{ end }}</label>
+    {{ if eq .type "textarea" }}<textarea id="{{ $fid }}" name="{{ .name }}" rows="6"{{ if .required }} required{{ end }}></textarea>
+    {{ else }}<input id="{{ $fid }}" type="{{ .type | default "text" }}" name="{{ .name }}"{{ if .required }} required{{ end }}{{ with .autocomplete }} autocomplete="{{ . }}"{{ end }}>{{ end }}
+  </div>
+  {{ end }}
+  <div class="btn-row"><button type="submit" class="btn btn--primary"{{ if not site.Params.formsEnabled }} disabled{{ end }}>{{ .submit }}</button></div>
+  {{ if and (not site.Params.formsEnabled) site.Params.preview }}<p class="form-note" id="f-{{ $id }}-{{ $n }}-note">This preview is not connected yet.</p>{{ end }}
+</form>
+{{ end }}
+{{ else }}{{ errorf "form: no form %q in data/forms.yaml" $id }}{{ end }}

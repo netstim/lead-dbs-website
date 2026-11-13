@@ -8,46 +8,48 @@ aliases: ["/walkthrough-videos-online/", "/helpsupport/knowledge-base/videos/"]
 keywords: ["video", "videos", "tutorial", "screencast"]
 # the picture shown when the page is shared (head.html)
 share: "video-CYCodpND7TE.jpg"
-# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
-related:
-  - "/helpsupport/learn-lead-dbs-yourself/"
-  - "/helpsupport/knowledge-base/lead-dbs-methods/"
-  - "/helpsupport/slack-user-channel/"
-# the cards at the end of the page (layouts/_partials/next-steps.html)
+# "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
-  - {page: "/helpsupport/learn-lead-dbs-yourself/", text: "Practise on real patients"}
-  - {url: "https://netstim.gitbook.io/leaddbs", name: "Manual", text: "Look up a step"}
-  - {page: "/helpsupport/slack-user-channel/", text: "Questions are answered there"}
+  - {page: "/helpsupport/learn-lead-dbs-yourself/"}
+  - {url: "https://netstim.gitbook.io/leaddbs", name: "Manual"}
+  - {page: "/helpsupport/slack-user-channel/"}
+layout: "showcase"
 ---
 
-New to Lead-DBS? Start with [First steps](/helpsupport/first-steps/) and practise with [Lead Tutor](/helpsupport/learn-lead-dbs-yourself/); the [manual](https://netstim.gitbook.io/leaddbs) has the current version of every step.
+New here? Start with [First steps](/helpsupport/first-steps/). The [manual](https://netstim.gitbook.io/leaddbs) always has the current steps.
+{.video-intro}
 
-## Lead-DBS refresher course (2022) {#lead-dbs-refresher}
+{{% video-grid %}}
+{{% video-card tag="March 2022 · for experienced users" lead="true" %}}
+## Refresher course {#lead-dbs-refresher}
 
-Recorded on 18 March 2022 (Harvard and Charité), for users who already know Lead-DBS: how to keep control of your data and make sure your results are meaningful.
+Keeping control of your data, and making sure your results mean something.
 
 {{< youtube id="pHKlTbkxz3o" title="Lead-DBS refresher course (March 2022)" >}}
+{{% /video-card %}}
+{{% video-card tag="March 2022" %}}
+## BIDS walkthrough {#bids-walkthrough}
 
-## BIDS walkthrough
-
-How to convert your data to the BIDS format and work with the new file layout.
+Converting your data to BIDS, and working with the new file layout.
 
 {{< youtube id="oTOhDrLvYaM" title="BIDS walkthrough: converting to the BIDS format" >}}
+{{% /video-card %}}
+{{% video-card tag="January 2021" %}}
+## Lead Group explorers {#sweetspot-fibre-filtering--network-mapping-explorer-walkthroughs}
 
-## Sweetspot, fibre filtering and network mapping explorers {#sweetspot-fiber-filtering--network-mapping-explorer-walkthroughs}
+Sweet spots, fibre filtering and [network mapping](/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping/).
 
-How to use the three explorers of Lead Group: sweet spots, fibre filtering and [DBS network mapping](/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping/).
+{{< youtube id="xobhQDgtVfs" title="Sweetspot, fibre filtering and network mapping explorers" >}}
+{{% /video-card %}}
+{{% /video-grid %}}
 
+## Older recordings {#older-recordings}
 
-{{< youtube id="xobhQDgtVfs" title="Sweetspot, fiber filtering and network mapping explorers" >}}
+{{% video-grid cols="3" %}}
+{{% video-card tag="January 2018 · Lead-DBS v2" %}}
+### General walkthrough {#general-walkthrough-video}
 
-## Older recordings
-
-These show Lead-DBS as it was in 2018. The ideas hold, but menus and some steps have changed since.
-
-### General walkthrough (Lead-DBS v2, 2018) {#general-walkthrough-video}
-
-*Published in January 2018, for Lead-DBS v2.* The full processing of a patient, from raw files to group analysis. For the current steps, follow the [manual](https://netstim.gitbook.io/leaddbs).
+One patient, from raw files to group analysis.
 
 {{< vimeo id="253289453" title="General walkthrough of Lead-DBS v2 (January 2018)" >}}
 
@@ -79,16 +81,19 @@ Predicting Patient Outcome using Lead Predict: 01:13:01
 Group Analyses in Lead Group: 01:16:03
 Further Resources and Support on Lead-DBS.org: 01:32:37
 {{< /chapters >}}
-
+{{% /video-card %}}
+{{% video-card tag="January 2019 · replaced by WarpDrive" %}}
 ### Refine atlas fit {#refine-atlas-fit-walkthrough-video}
 
-*Replaced by WarpDrive.* The refine atlas fit feature is still available, but WarpDrive now does its job.
-
+Fitting the atlas to one patient by hand, as it was done before WarpDrive.
 
 {{< youtube id="CYCodpND7TE" title="Refine atlas fit (replaced by WarpDrive)" >}}
+{{% /video-card %}}
+{{% video-card tag="September 2018 · Shanghai" %}}
+### Workshop recordings {#workshop-recordings}
 
-### Workshop recordings (Shanghai 2018) {#workshop-recordings}
-
-*Recorded in September 2018*, at the [2nd International Lead-DBS Workshop](/helpsupport/workshops/#shanghai-2018) at Fudan University, Shanghai. We would like to thank Prof. Shouyan Wang and Dr. Xinyi Geng for organizing the workshop and recording and providing the videos.
+Talks from the [2nd International Lead-DBS Workshop](/helpsupport/workshops/#shanghai-2018) at Fudan University. Recorded thanks to Prof. Shouyan Wang and Dr. Xinyi Geng.
 
 {{< youtube id="q0lsu4VMH0E" title="Electrode localizations with Lead-DBS (workshop talk, Shanghai 2018)" >}}
+{{% /video-card %}}
+{{% /video-grid %}}

@@ -1,13 +1,26 @@
 {{- /* The search box and its results, in the dialog and on /search/ (argument: dict "id"). */ -}}
 <div class="search" data-search>
   <form class="search__form" role="search" action="{{ with site.GetPage "/search" }}{{ .RelPermalink }}{{ end }}" method="get">
-    <label class="search__label" id="site-search-h{{ if ne .id "dlg" }}-{{ .id }}{{ end }}" for="q-{{ .id }}">Search lead-dbs.org</label>
+    <label class="search__label sr-only" id="site-search-h{{ if ne .id "dlg" }}-{{ .id }}{{ end }}" for="q-{{ .id }}">Search lead-dbs.org</label>
     <div class="search__row">
       <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4.2-4.2"/></svg>
-      <input class="search__input" id="q-{{ .id }}" type="search" name="q" autocomplete="off" spellcheck="false" placeholder="Atlases, installation, citing …" aria-describedby="q-{{ .id }}-status" aria-controls="q-{{ .id }}-results">
+      <input class="search__input" id="q-{{ .id }}" type="search" name="q" autocomplete="off" spellcheck="false" placeholder="Search documentation, atlases, news…" aria-describedby="q-{{ .id }}-status" aria-controls="q-{{ .id }}-results">
     </div>
   </form>
+  {{ if eq .id "dlg" }}<div class="search__content">{{ end }}
   <p class="search__status" id="q-{{ .id }}-status" role="status" aria-live="polite"></p>
+  {{ if eq .id "dlg" }}
+  <div class="search__start">
+    <p class="search__group-label">Quick links</p>
+    <ul>
+      {{ range slice "/helpsupport/first-steps/" "/download/" "/helpsupport/knowledge-base/atlasesresources/" "/about/citing_leaddbs/" }}
+      {{ with site.GetPage . }}<li><a href="{{ .RelPermalink }}"><span>{{ .LinkTitle }}</span><span class="search__quick-arrow" aria-hidden="true">→</span></a></li>{{ end }}
+      {{ end }}
+    </ul>
+  </div>
+  {{ end }}
   <ol class="search__results" id="q-{{ .id }}-results"></ol>
-  <p class="search__hint">Arrow keys move through the results, Enter opens one, Escape closes.</p>
+  {{ if eq .id "dlg" }}</div>
+  <p class="search__hint"><span><kbd>↑</kbd><kbd>↓</kbd> Navigate</span><span><kbd>↵</kbd> Open</span><span><kbd>esc</kbd> Close</span></p>
+  {{ end }}
 </div>

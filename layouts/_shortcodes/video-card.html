@@ -1,0 +1,9 @@
+{{- /* One video of a video-grid: the video on top, then a small tag (tag="…", its date or state), the
+       heading and a sentence written inside, and its chapters if it has any. lead="true": the card
+       spans the grid, the video large on the left, the words beside it. */ -}}
+<div class="video-card{{ if .Get "lead" }} video-card--lead{{ end }}">
+{{ with .Get "tag" }}<p class="video-card__tag">{{ . }}</p>{{ end }}
+
+{{ .Inner }}
+
+</div>

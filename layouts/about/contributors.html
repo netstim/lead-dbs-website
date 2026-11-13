@@ -1,0 +1,19 @@
+{{ define "main" }}
+{{- $_ := partial "page-type.html" . -}}
+<main id="top" class="page page--doc page--side contributors-page">
+  {{ partial "page-head.html" . }}
+  <div class="wrap doc-layout doc-layout--side contributors-layout">
+    <article class="prose contributors">
+      {{ partial "toc.html" (dict "page" . "variant" "top") }}
+      <div class="contributors-intro">
+        <p class="t-lead">The people who build Lead-DBS, coordinated by the <a href="https://www.netstim.org">Institute for Network Stimulation</a> in Cologne.</p>
+        <p class="contributors-links"><a class="link link--ext" href="https://www.netstim.org/about-us/about-us/">Institute team <span class="ext-mark" aria-hidden="true">↗</span></a><a class="link link--ext" href="https://github.com/netstim/leaddbs/graphs/contributors">GitHub contributors <span class="ext-mark" aria-hidden="true">↗</span></a></p>
+      </div>
+      <div class="contributors-body">{{ partial "nobreak-html.html" .Content }}</div>
+      {{ partial "section-nav.html" (dict "page" . "variant" "end") }}
+      {{ partial "next-steps.html" . }}
+    </article>
+    <aside class="sidebar" aria-label="Section">{{ partial "sidebar.html" (dict "page" . "toc" true) }}</aside>
+  </div>
+</main>
+{{ end }}

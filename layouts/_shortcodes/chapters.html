@@ -1,19 +1,26 @@
-{{- /* The chapters of a video as a list: the time on the left in figures of equal width, the title beside it.
-       One chapter per line, "Title: hh:mm:ss" (or mm:ss):
+{{- /* The chapters of a video: the first six shown, the rest folded behind "All n chapters" (a details
+       element, no script), the time in a small pill, the title beside it. One chapter per line,
+       "Title: hh:mm:ss" (or mm:ss):
          {{< chapters >}}
          Organizing patient raw files: 00:00:37
          Starting Lead-DBS: 00:01:28
          {{< /chapters >}} */ -}}
-<div class="chapters">
-<p class="chapters__h">Chapters</p>
-<ol class="chapters__list">
+{{- $rows := slice -}}
 {{- range split (strings.TrimSpace .Inner) "\n" }}{{ $l := strings.TrimSpace . }}{{ with $l }}
   {{- $m := findRESubmatch `^(.*?):?\s+((?:\d+:)?\d+:\d\d)$` . 1 }}
   {{- if not $m }}{{ errorf "chapters: %s: %q is not \"Title: hh:mm:ss\"" $.Page.File.Path . }}{{ end }}
-  {{- $title := index (index $m 0) 1 }}{{ $t := index (index $m 0) 2 }}
   {{- /* 00:01:28 is shown as 1:28, 01:05:30 as 1:05:30 */}}
-  {{- $show := replaceRE `^00:` "" $t | replaceRE `^0(\d)` "$1" }}
-  <li><time class="chapters__t">{{ $show }}</time><span>{{ $title }}</span></li>
-{{- end }}{{ end }}
-</ol>
+  {{- $rows = $rows | append (dict "title" (index (index $m 0) 1) "t" (replaceRE `^00:` "" (index (index $m 0) 2) | replaceRE `^0(\d)` "$1")) }}
+{{- end }}{{ end -}}
+{{- $show := 6 -}}
+{{- define "_partials/chapter-row.html" }}<li><time class="chapters__t">{{ .t }}</time><span>{{ .title }}</span></li>{{ end -}}
+<div class="chapters">
+<p class="chapters__h">Chapters</p>
+<ol class="chapters__list chapters__list--first">{{ range first $show $rows }}{{ partial "chapter-row.html" . }}{{ end }}</ol>
+{{- if gt (len $rows) $show }}
+<details class="chapters__more">
+<summary>{{ sub (len $rows) $show }} more chapters</summary>
+<ol class="chapters__list" start="{{ add $show 1 }}">{{ range after $show $rows }}{{ partial "chapter-row.html" . }}{{ end }}</ol>
+</details>
+{{- end }}
 </div>

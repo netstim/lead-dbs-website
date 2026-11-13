@@ -1,0 +1,115 @@
+# What others say about Lead-DBS, in one place: researchers (their words, from the old site) and papers
+# (sentences as printed; mark left-out words with "…"). Used by the drifting rows on the home page (row: 1
+# or 2) and the wall on Publications (layouts/_shortcodes/quote-wall.html), which marks phrase in the text.
+# phrase: a few words of text, exactly as they stand there (the build stops otherwise).
+# logo (researchers): the institution's logo, a file under assets/images/logos/, shown over the name on the wall;
+# logoHeight: its height in px when the usual 34 is too small (a stacked or round logo).
+# wall: its place on the wall of Publications (1 first). The wall has three columns of four, filled
+# downwards: 1, 5 and 9 open the columns, so give those to short lines by researchers and put the papers
+# between.
+# kind: researcher or paper; a paper has its journal and year (role) and a doi or url; source is its full
+# reference.
+quotes:
+  - kind: researcher
+    name: "Andreas Nowacki"
+    role: "Associate Professor and Senior Attending of Neurosurgery, Inselspital Bern"
+    logo: "images/logos/inselspital.png"
+    phrase: "one of the most important developments in the field of DBS research"
+    text: "For me, Lead-DBS is one of the most important developments in the field of DBS research in recent years"
+    row: 1
+    wall: 1
+  - kind: researcher
+    name: "Simon Little, MBBS MRCP PhD"
+    role: "Assistant Professor of Neurology, UCSF"
+    logo: "images/logos/ucsf.svg"
+    phrase: "really accelerated the field"
+    text: "The spatial mapping approaches of Lead DBS have really accelerated the field."
+    row: 2
+    wall: 5
+  - kind: researcher
+    name: "Fiona Permezel, MD, MBBS, BSc(Hons)(Psych), BSc(ScSchProg), FRACP"
+    role: "Neurologist, Mayo Clinic"
+    logo: "images/logos/mayo.svg"
+    logoHeight: 54
+    phrase: "We use Lead-DBS daily at Mayo Clinic"
+    text: "We use Lead-DBS daily at Mayo Clinic. I also am using it for my PhD based at Monash University. The software capabilities are very broad. Group analysis with dependent variables has streamlined the process of addressing my research questions significantly."
+    row: 1
+    wall: 3
+  - kind: researcher
+    name: "Vladimir Litvak"
+    role: "Professor of Translational Neurophysiology, UCL London"
+    logo: "images/logos/ucl.svg"
+    phrase: "this brilliant toolbox"
+    text: "I really appreciate this brilliant toolbox and the support from Andreas Horn, Ningfei Li and colleagues that comes with it."
+    row: 2
+    wall: 9
+  - kind: researcher
+    name: "Wolf-Julian Neumann, MD, PhD"
+    role: "Associate Professor of Neurology, Charité Berlin"
+    logo: "images/logos/charite.svg"
+    phrase: "continuously opens new horizons for brain research"
+    text: "Lead-DBS is a clinical research platform that continuously opens new horizons for brain research. It is critical for my ERC project that integrates invasive neurophysiology, brain stimulation and connectomics with Lead-DBS for BCI and neuroprosthetics in Parkinson’s."
+    row: 1
+    wall: 7
+  - kind: researcher
+    name: "Josue Avecillas-Chasin, MD, PhD"
+    role: "Assistant Professor of Neurosurgery, University of Nebraska Medical Center"
+    logo: "images/logos/unmc.svg"
+    phrase: "a game changer in DBS research"
+    text: "Lead DBS is a game changer in DBS research, this tool is allowing major steps in moving the DBS field forward …"
+    row: 2
+    wall: 11
+  - kind: researcher
+    name: "Luigi Gianmaria Remore, MD"
+    role: "Neurosurgeon, University of Milan"
+    logo: "images/logos/milan.png"
+    logoHeight: 48
+    phrase: "a sine qua non for DBS studies"
+    text: "Lead-DBS is an amazing tool and managed to popularize neuro-imaging studies and break the barriers of research community. I often use Lead-DBS for my research and I think that it has become a sine qua non for DBS studies. Looking for forward to future collaborations!"
+    row: 1
+    wall: 12
+  - kind: paper
+    name: "Husch et al."
+    role: "NeuroImage: Clinical 2018"
+    phrase: "arguably the most established toolbox"
+    text: "The MATLAB™-based LeadDBS is arguably the most established toolbox providing a semi-automatic framework for electrode localization based on automatic pre-processing and a manual refinement step."
+    source: "Husch, Petersen, Gemmar, Goncalves & Hertel (2018), PaCER – A fully automated method for electrode trajectory and contact reconstruction in deep brain stimulation. *NeuroImage: Clinical* 17, 80–89"
+    doi: "10.1016/j.nicl.2017.10.004"
+    row: 2
+    wall: 6
+  - kind: paper
+    name: "Nowacki et al."
+    role: "NeuroImage: Clinical 2018"
+    phrase: "the most accurate display"
+    text: "Lead reconstruction after normalisation into the MNI template space and application of four different atlases led to different results in terms of the DBS lead position relative to the STN. Based on electrophysiological and imaging data, the DISTAL atlas led to the most accurate display of the reconstructed DBS lead relative to the DISTAL-based STN."
+    source: "Nowacki, Nguyen, Tinkhauser, Petermann, Debove, Wiest & Pollo (2018), Accuracy of different three-dimensional subcortical human brain atlases for DBS-lead localisation. *NeuroImage: Clinical* 20, 868–874"
+    doi: "10.1016/j.nicl.2018.09.030"
+    row: 1
+    wall: 2
+  - kind: paper
+    name: "Alkemade et al."
+    role: "Frontiers in Neuroanatomy 2018"
+    phrase: "Two elegant examples"
+    text: "Two elegant examples were published by Horn et al. (2017) in which a method was described to warp DBS electrode coordinates, and histological data to MNI-space (Ewert et al., 2017)."
+    source: "Alkemade, Groot & Forstmann (2018), Do We Need a Human post mortem Whole-Brain Anatomical Ground Truth in in vivo Magnetic Resonance Imaging? *Frontiers in Neuroanatomy* 12, 110"
+    doi: "10.3389/fnana.2018.00110"
+    row: 2
+    wall: 8
+  - kind: paper
+    name: "Latorre et al."
+    role: "Frontiers in Neurology 2021"
+    phrase: "democratize and increase the speed of advances"
+    text: "A commitment of the community to open science will also democratize and increase the speed of advances with high uptake of currently available initiatives such as LEAD-DBS (61). This freely available toolbox can be downloaded to allow electrode reconstructions and computer simulations based on post-operative MRI and CT imaging."
+    source: "Latorre, Rocchi & Sadnicka (2021), The Expanding Horizon of Neural Stimulation for Hyperkinetic Movement Disorders. *Frontiers in Neurology*"
+    url: "https://www.researchgate.net/publication/351579677_The_Expanding_Horizon_of_Neural_Stimulation_for_Hyperkinetic_Movement_Disorders"
+    row: 1
+    wall: 10
+  - kind: paper
+    name: "Milchenko et al."
+    role: "Journal of Neuroscience Methods 2018"
+    phrase: "which is widely used"
+    text: "… (method 2) available via the LEAD-DBS MATLAB package, which is widely used"
+    source: "Milchenko, Snyder, Campbell, Dowling, Rich, Brier, et al. (2018), ESM-CT: a precise method for localization of DBS electrodes in CT images. *Journal of Neuroscience Methods*"
+    doi: "10.1016/j.jneumeth.2018.09.009"
+    row: 2
+    wall: 4

@@ -4,63 +4,79 @@ description: "The open training dataset of ten DBS patients with expert electrod
 weight: 1
 linkTitle: "Practice dataset (Lead Tutor)"
 date: "2025-02-28T17:20:40"
-lastmod: "2026-11-11"
+lastmod: "2026-11-12"
 keywords: ["Lead Tutor", "Lead-Tutor", "tutorial", "training", "training dataset", "practise", "practice", "dataset", "exercise", "OSF", "ground truth", "expert localizations"]
 # the picture shown when the page is shared (head.html)
 share: "Screenshot-2025-02-28-at-11.18.44-AM-1030x1005.png"
-# pages related to this one, in the sidebar (layouts/_partials/sidebar.html)
-related:
-  - {name: "Install Lead-DBS", url: "/download/#install"}
-  - "/helpsupport/knowledge-base/walkthrough-videos/"
-  - "/events/"
-# the cards at the end of the page (layouts/_partials/next-steps.html)
+# "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
-  - {page: "/helpsupport/knowledge-base/walkthrough-videos/", text: "Whole analyses on screen"}
-  - {page: "/helpsupport/knowledge-base/lead-dbs-methods/", text: "Every method and tool, with its manual chapter"}
+  - {page: "/helpsupport/knowledge-base/walkthrough-videos/"}
+  - {page: "/helpsupport/knowledge-base/lead-dbs-methods/"}
+# the dataset at a glance (layouts/_shortcodes/cells.html; text: Markdown)
+glance:
+  - {label: "Patients", value: "Ten, both sides", text: "Eight with Parkinson's disease, one with dystonia, one with epilepsy."}
+  - {label: "Imaging", value: "MRI and CT", text: "Preoperative T1, T2 and in some FLAIR; postoperative CT. Defaced, as NIfTI in BIDS."}
+  - {label: "Electrodes", value: "Directional in nine", text: "Boston Scientific Vercise Cartesia (6), Medtronic SenSight (2) and 3387 (1), Abbott Infinity (1)."}
+  - {label: "Benchmark", value: "Two experts", text: "And ten trained non-experts, for the range of usual results."}
+layout: "showcase"
 ---
 
 <span id="learn-lead-dbs-yourself"></span>
 
-Lead Tutor is the first open training dataset for DBS electrode localization, with a tool built into
-Lead-DBS that scores your localizations against those of experts. The exercise is step 2 of
-[First steps](/helpsupport/first-steps/#lead-tutor).
+**Practise on ten real patients.** Localize their electrodes, then compare yours with two experts'.
+{.dataset-intro}
 
-{{< summary >}}
-Patients
-: Ten, implanted on both sides: eight with Parkinson's disease, one with dystonia, one with epilepsy
+<div class="resource-actions">
 
-Imaging
-: Preoperative MRI (T1- and T2-weighted, in some patients FLAIR) and postoperative CT, defaced and anonymized, as NIfTI files in BIDS
+{{< button href="https://osf.io/jxecg/?view_only=f2765a6aa3604dea8afa14365b70381c" variant="primary" external="true" >}}Download the dataset{{< /button >}}
 
-Electrodes
-: Boston Scientific Vercise Cartesia (six patients), Medtronic SenSight (two) and 3387 (one), Abbott Infinity (one); directional in nine patients
+<a class="link link--ext" href="https://netstim.gitbook.io/leaddbs/lead-dbs/self-tutoring-with-lead-tutor">Guide in the manual <span class="ext-mark" aria-hidden="true">↗</span></a>
 
-Benchmark
-: Localizations by two experts, and those of ten trained non-experts for the range of usual results
+</div>
 
-Get it
-: Free download from OSF; shared openly with the approval of the institutional review board of Brigham and Women's Hospital, Boston, where the images were acquired
+{{< cells key="glance" label="Lead Tutor at a glance" >}}
 
-Cite
-: Madan et al. 2025, *Aperture Neuro* 5, [doi:10.52294/001c.129658](https://doi.org/10.52294/001c.129658) ([full citation](#what-to-cite))
-{{< /summary >}}
+{{% hub-section %}}
+## Your report {#your-report}
 
-{{< button href="https://osf.io/jxecg/?view_only=f2765a6aa3604dea8afa14365b70381c" >}}Download the Lead Tutor dataset{{< /button >}}
+**How close you came:** distance and rotation from the experts, patient by patient, from easy to hard.
 
-## Your report
+<div class="report-shot">
 
-After *Submit Results…*, Lead Tutor shows for each patient how far your electrodes lie from the experts'
-in distance and rotation, colour-coded by how non-experts usually do. The patients are ordered from
-easiest to hardest; a few were included on purpose because their images are hard to read.
+![Lead Tutor report comparing a user's localizations with those of experts, per patient](Screenshot-2025-02-28-at-11.18.44-AM-1030x1005.png)
 
-![Lead Tutor report comparing a user's localizations with those of experts, per patient](Screenshot-2025-02-28-at-11.18.44-AM-1030x1005.png "Lead Tutor's feedback: the Euclidean and rotational distances of your electrode placements from the expert benchmark, per patient. Colours mark standard deviations, calculated from the performance of non-experts relative to experts, so you see whether a localization falls within or outside the optimal range.")
+</div>
 
-The manual explains each step: [Self-tutoring with Lead Tutor](https://netstim.gitbook.io/leaddbs/lead-dbs/self-tutoring-with-lead-tutor).
+The colours show the usual range of non-experts.
+{.fine-print}
+{{% /hub-section %}}
 
-## What to cite
+{{% hub-section %}}
+## The dataset {#dataset}
+
+**Open data,** free to download from OSF.
+
+Shared openly with the approval of the institutional review board of Brigham and Women's Hospital, Boston,
+where the images were acquired.
+{{% /hub-section %}}
+
+{{% hub-section %}}
+## What to cite {#what-to-cite}
+
+**Madan et al. 2025,** Aperture Neuro.
+
+<div class="cite-row">
+<div class="cite-row__paper">
+
+[![First page of the Lead-Tutor paper in Aperture Neuro](Screenshot-2025-02-28-at-11.14.43-AM.png)](https://doi.org/10.52294/001c.129658)
+
+</div>
+<div class="cite-row__text">
 
 {{% copybox label="Copy the citation" %}}
 {{< paper madan2025 "full" >}}
 {{% /copybox %}}
 
-![First page of the Lead-Tutor paper in Aperture Neuro](Screenshot-2025-02-28-at-11.14.43-AM.png)
+</div>
+</div>
+{{% /hub-section %}}

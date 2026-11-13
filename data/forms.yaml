@@ -1,24 +1,29 @@
-# Forms carried over from the WordPress site (Ninja Forms). Rendered by the `form` shortcode.
-download:
-  submit: Download
+# Every form of the site, drawn by layouts/_partials/form.html (shortcodes `form` and `newsletter`).
+# A field: name, label (sentence case), type (text, email, textarea), required, autocomplete,
+# half (two half fields share a row). Fields are optional unless marked required; the label of an
+# optional field says so. No placeholders: the label is the only text of a field.
+# offline: what the page shows instead while the site has no form backend (params.formsEnabled = false;
+# the GitHub preview shows the form, disabled, with a note). Markdown.
+newsletter:
+  submit: Subscribe
+  offline: "Until sign-up opens here, release news is posted under [News](/news/) and in its [feed](/news/index.xml)."
   fields:
-    - {name: first_name, label: First Name, autocomplete: given-name}
-    - {name: last_name, label: Last Name, autocomplete: family-name}
-    - {name: institution, label: Institution, autocomplete: organization}
-    - {name: referral, label: Where did you hear about Lead-DBS?}
+    - {name: first_name, label: First name, autocomplete: given-name, half: true}
+    - {name: last_name, label: Last name, autocomplete: family-name, half: true}
     - {name: email, label: Email, type: email, required: true, autocomplete: email}
 downloadfocus:
-  # /helpsupport/knowledge-base/atlasesresources/focus-atlas/#download: the FOCUS atlas (academic research
-  # only); downloading also subscribes to the newsletter
+  offline: "To get FOCUS, write to [mail@andreas-horn.de](mailto:mail@andreas-horn.de) with your name and institution."
+  # the FOCUS atlas (academic research only); downloading also subscribes to the newsletter
   submit: Download FOCUS
   fields:
-    - {name: first_name, label: First Name, autocomplete: given-name}
-    - {name: last_name, label: Last Name, autocomplete: family-name}
+    - {name: first_name, label: First name, autocomplete: given-name, half: true}
+    - {name: last_name, label: Last name, autocomplete: family-name, half: true}
     - {name: institution, label: Institution, autocomplete: organization}
     - {name: email, label: Email, type: email, required: true, autocomplete: email}
 contact:
-  submit: Submit
+  submit: Send message
+  offline: "Write to [mail@andreas-horn.de](mailto:mail@andreas-horn.de)."
   fields:
-    - {name: name, label: Name, required: true, autocomplete: name}
-    - {name: email, label: Email, type: email, required: true, autocomplete: email}
+    - {name: name, label: Name, required: true, autocomplete: name, half: true}
+    - {name: email, label: Email, type: email, required: true, autocomplete: email, half: true}
     - {name: message, label: Message, type: textarea, required: true}
