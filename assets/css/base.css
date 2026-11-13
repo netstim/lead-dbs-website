@@ -141,6 +141,8 @@ p { text-wrap: pretty; }
 @media (max-width: 639px) {
   .btn-row { flex-direction: column; align-items: stretch; width: 100%; }
 }
+/* the narrowest phones: a little less air either side, so a four-word label stays on one line */
+@media (max-width: 359px) { .btn:not(.btn--secondary) { padding-inline: var(--s-4); } }
 /* a mouse lifts a button a pixel; a press pushes it in */
 @media (hover: hover) and (pointer: fine) {
   .btn:hover { transform: translateY(-1px); }

@@ -287,16 +287,12 @@ html:not(.js) .nav__link .chev { display: none; }
   .nav.is-open .menu-col > p.t-label a { color: var(--muted); }
   body.nav-locked { overflow: hidden; }
 }
-/* a phone: the name stays, the search and menu buttons; GitHub and Download are in the sheet, in a bar
-   along its bottom edge */
+/* a phone: the name stays, the search and menu buttons; GitHub and Download are in the sheet, Download
+   in a bar along its bottom edge, so the open sheet's bar keeps only the logo and the close button */
 @media (max-width: 639px) {
   .nav__bar { gap: var(--s-2); }
   .nav__logo { min-height: 44px; gap: 6px; white-space: nowrap; }
   .nav:not(.is-open) .nav__actions > .nav__download { display: none; }
-}
-/* the narrowest phones (320px): the theme toggle joins them in the sheet's bar, so the menu button fits */
-@media (max-width: 359px) {
-  .nav:not(.is-open) .nav__actions > .nav__theme { display: none; }
   .nav.is-open .nav__links { padding-bottom: calc(48px + 2 * var(--s-4) + var(--s-6)); }
   .nav.is-open .nav__actions { position: fixed; inset: auto 0 0; z-index: 51; display: grid; grid-template-columns: 1fr; gap: var(--s-2);
     padding: var(--s-4) var(--gut) calc(var(--s-4) + env(safe-area-inset-bottom)); background: var(--bg); border-top: 1px solid var(--line); }
@@ -304,6 +300,10 @@ html:not(.js) .nav__link .chev { display: none; }
   .nav.is-open .nav__toggle { margin-left: auto; }
   .nav.is-open .nav__actions .nav__download { width: 100%; height: 48px; margin: 0; font-size: var(--t-body); }
   .nav.is-open .nav__actions .nav__dl-more { position: static; width: auto; height: auto; clip-path: none; }
+}
+/* the narrowest phones (320px): the theme toggle moves out of the bar, so the menu button fits */
+@media (max-width: 359px) {
+  .nav:not(.is-open) .nav__actions > .nav__theme { display: none; }
 }
 
 /* ---------------------------------------------------------------- home: the hero
@@ -340,9 +340,11 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .home-hero .hero__manual::after { content: none; }
 .home-hero .hero__manual .ext-mark { margin-left: 2px; opacity: .7; font-weight: 400; }
 @media (max-width: 639px) {
-  .home-hero .btn-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); }
+  .home-hero .btn-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-2); }
   .home-hero .btn-row > .btn--primary { grid-column: 1 / -1; }
 }
+/* the narrowest phones: the three actions stack, the pills full width */
+@media (max-width: 359px) { .home-hero .btn-row { grid-template-columns: minmax(0, 1fr); } }
 /* the announcement chip above the title (events/next.html, "chip"): an outlined pill, "Next" in the
    signal coral, the event and its date, an arrow */
 .hero__chip { margin: 0 0 var(--s-5); }
@@ -489,7 +491,9 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
   .data-band { display: block; padding: var(--s-4) var(--s-4) var(--s-2); }
   .data-band__img { display: none; }
   .data-band__text { padding: 0; }
-  .data-band__counts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3); margin-top: var(--s-1); }
+  .data-band__counts { display: flex; flex-wrap: wrap; gap: 0 var(--s-5); margin-top: var(--s-1); }
+  .data-band__counts a { padding-block: var(--s-3); }
+  .data-band__title a { display: inline-flex; align-items: center; min-height: var(--btn-h); }
 }
 @media (max-width: 1023px) { .feature-row { grid-template-columns: minmax(0, 1fr); gap: var(--s-5); } .feature { grid-template-columns: minmax(120px, 34%) minmax(0, 1fr); align-items: center; gap: var(--s-5); } }
 @media (max-width: 639px) { .feature { grid-template-columns: 112px minmax(0, 1fr); gap: var(--s-4); } .feature__img { aspect-ratio: 1; } .feature__text p { font-size: var(--t-note); line-height: 1.5; } }
@@ -512,6 +516,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .next-band__point .link { margin-top: var(--s-4); }
 @media (max-width: 767px) {
   .next-band__inner { border-radius: var(--r-md); }
+  .home .next-band__title { font-size: var(--t-display); }
   .next-band__points { grid-template-columns: minmax(0, 1fr); gap: var(--s-5); }
 }
 
@@ -597,8 +602,9 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .link--ext::after { content: none; }
 .link--ext .ext-mark { margin-left: .2em; color: var(--muted); }
 /* a button that leaves the site (the Zoom registration): the ↗ in place of the chevron */
-.btn--ext::after { content: none; }
-.btn--ext .ext-mark { margin-left: var(--s-2); color: inherit; opacity: .8; font-size: .9em; }
+/* (also a black pill whose label ends in the ↗ of the Markdown links, which would otherwise show both marks) */
+:is(.btn--ext, .btn--primary:has(> .ext-mark))::after { content: none; }
+:is(.btn--ext, .btn--primary:has(> .ext-mark)) .ext-mark { margin-left: var(--s-2); color: inherit; opacity: .8; font-size: .9em; }
 .closing__cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-7) var(--gutter); align-items: stretch; }
 .closing__col { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-4); }
 .home .closing__h { margin: 0; font-size: var(--t-h3); line-height: 1.15; max-width: none; }
@@ -636,7 +642,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .funders img { display: block; width: auto; max-width: 190px; object-fit: contain; filter: grayscale(1) brightness(.6) contrast(6); opacity: .45; mix-blend-mode: multiply;
   transition: opacity var(--t-out) var(--ease), filter var(--t-out) var(--ease); }
 .funders li:hover img { filter: none; opacity: 1; }
-@media (max-width: 639px) { .funders { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4) var(--gutter); } .funders img { max-width: 140px; }
+@media (max-width: 639px) { .funders { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4) var(--gutter); } .funders a { max-width: 100%; } .funders img { max-width: min(140px, 100%); }
   .funders > li:last-child:nth-child(odd) { grid-column: 1 / -1; } }
 .forum-note { position: relative; z-index: 5; margin: calc(var(--nav) + var(--s-4)) auto 0; width: min(100% - 2 * var(--gut), var(--container)); }
 
@@ -1328,7 +1334,7 @@ html:not(.js) .g-item__info { display: block; padding: var(--s-2) 0 var(--s-3); 
 .flow-diagram .pele-node[data-id="C"] :is(rect, path, polygon) { fill: color-mix(in oklab, var(--p-tint-1) 55%, var(--p-bg)); stroke: color-mix(in oklab, var(--p-tint-1) 80%, var(--ink) 10%); }
 .flow-diagram .pele-node[data-id="C"] text { font-weight: 600; }
 .flow-diagram__tb { display: none; }
-@media (max-width: 479px) { .flow-diagram__lr { display: none; } .flow-diagram__tb { display: block; } .flow-diagram__tb svg { width: 176px; } }
+@media (max-width: 479px) { .flow-diagram__lr { display: none; } .flow-diagram__tb { display: block; } .flow-diagram__tb svg { width: 128px; } }
 #localize .home-split { align-items: center; }
 
 /* Atlas hub: primary catalogues, then individual atlases and the coordinate-space guide. */
@@ -1345,6 +1351,7 @@ html:not(.js) .g-item__info { display: block; padding: var(--s-2) 0 var(--s-3); 
 .pulse__links a::after { content: none !important; }
 .pulse__links a:hover { color: var(--action); }
 .pulse__links .m-arrow { width: 10px; height: 10px; margin-left: 4px; }
+@media (max-width: 639px) { .pulse__links a { min-height: var(--btn-h); } }
 .pulse__row { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-6) var(--s-4); margin: 0; padding: 0; }
 @media (min-width: 1024px) { .pulse__row { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (max-width: 639px) {
@@ -1485,6 +1492,13 @@ html:not(.js) .g-item__info { display: block; padding: var(--s-2) 0 var(--s-3); 
   --pele-series-1: var(--p-action); --pele-series-2: var(--p-tint-1); --pele-series-3: var(--p-accent); --pele-series-4: var(--p-tint-2); }
 .usage__chart svg { display: block; width: 100%; height: auto; max-width: none !important; }
 .usage__chart text { font-variant-numeric: tabular-nums; }
+/* the three numbers: side by side from 640px; on a phone each is a row, its label left and the
+   number right, so the three take one short block instead of a screen */
+@media (min-width: 640px) and (max-width: 1023px) { .usage > .dl-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 639px) {
+  .usage > .dl-grid--3 .dl-cell { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-4); }
+  .usage > .dl-grid--3 .dl-cell dd.dl-cell__v { margin: 0; }
+}
 /* a phone keeps the charts at a readable size and scrolls them sideways */
 @media (max-width: 639px) {
   :is(.usage__chart--months, .usage__chart--countries) { overflow-x: auto; overscroll-behavior-x: contain; }
