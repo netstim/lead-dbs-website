@@ -75,7 +75,5 @@ resources, including histology and fibre dissections, and will be refined versio
 
 **Friedrich et al. 2026,** a preprint on bioRxiv.
 
-{{% copybox label="Copy the citation" %}}
-Friedrich, H., Sahin, I. A., Rajamani, N., Alho, E. J. L., Milanese Holanda, V., Oxenford, S., et al. (2026). A precise atlas of the human subcortex. *bioRxiv* (preprint). https://doi.org/10.64898/2026.02.13.705755
-{{% /copybox %}}
+{{< paper friedrich2026 "full" >}}
 {{% /hub-section %}}

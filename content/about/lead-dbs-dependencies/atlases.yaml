@@ -19,9 +19,10 @@ atlases:
   ref: Ashburner 2007
   get:
   - '[fil.ion.ucl.ac.uk](http://www.fil.ion.ucl.ac.uk/spm/software/spm12/)'
+  cite_note: "Several papers, for example:"
   cite:
-  - Several papers, for example Ashburner, J. (2007). A fast diffeomorphic image registration algorithm, 38(1), 95–113. [doi:10.1016/j.neuroimage.2007.07.007](https://doi.org/10.1016/j.neuroimage.2007.07.007)
-  - 'Ashburner, J. (2012). SPM: a history.'
+  - ashburner2007
+  - ashburner2012
 - id: ants-syn-registration
   group: registration
   name: ANTs (SyN registration)
@@ -30,12 +31,9 @@ atlases:
   get:
   - '[stnava.github.io](http://stnava.github.io/ANTs/)'
   cite:
-  - 'Avants, B. B., Epstein, C. L., Grossman, M., & Gee, J. C. (2008). Symmetric diffeomorphic image registration with cross-correlation: evaluating automated labeling of elderly and neurodegenerative brain.
-    Medical Image Analysis, 12(1), 26–41. [doi:10.1016/j.media.2007.06.004](https://doi.org/10.1016/j.media.2007.06.004)'
-  - Avants, B. B., Tustison, N. J., Song, G., Cook, P. A., Klein, A., & Gee, J. C. (2011). A reproducible evaluation of ANTs similarity metric performance in brain image registration. NeuroImage, 54(3),
-    2033–2044. [doi:10.1016/j.neuroimage.2010.09.025](https://doi.org/10.1016/j.neuroimage.2010.09.025)
-  - 'Zhang, H., Avants, B. B., Yushkevich, P. A., Woo, J. H., Wang, S., McCluskey, L. F., et al. (2007). High-dimensional spatial normalization of diffusion tensor images improves the detection of white
-    matter differences: an example study using amyotrophic lateral sclerosis. IEEE Transactions on Medical Imaging, 26(11), 1585–1597. [doi:10.1109/TMI.2007.906784](https://doi.org/10.1109/TMI.2007.906784)'
+  - avants2008
+  - avants2011
+  - zhang2007
 - id: brainsfit-registration
   group: registration
   name: BRAINSFit registration
@@ -60,7 +58,7 @@ atlases:
   covers: Electric fields and pathway activation, from Lead-DBS 3.1
   get:
   - '[github.com/SFB-ELAINE/OSS-DBSv2](https://github.com/SFB-ELAINE/OSS-DBSv2)'
-  papers:
+  cite:
   - zimmermann2026
   ref: Zimmermann 2026
 - id: oss-dbs-v1
@@ -69,7 +67,7 @@ atlases:
   covers: Electric fields and pathway activation, the original version
   get:
   - '[github.com/SFB-ELAINE/OSS-DBS](https://github.com/SFB-ELAINE/OSS-DBS)'
-  papers:
+  cite:
   - butenko2020
   ref: Butenko 2020
 - id: simbio-and-fieldtrip
@@ -81,9 +79,8 @@ atlases:
   - '[fieldtriptoolbox.org](http://fieldtriptoolbox.org/)'
   - '[mrt.uni-jena.de](https://www.mrt.uni-jena.de/simbio/index.php/Main_Page)'
   cite:
-  - 'Oostenveld, R., Fries, P., Maris, E., & Schoffelen, J.-M. (2010). FieldTrip: Open Source Software for Advanced Analysis of MEG, EEG, and Invasive Electrophysiological Data. Computational Intelligence
-    and Neuroscience, 2011(1), 1–9. [doi:10.1155/2011/156869](https://doi.org/10.1155/2011/156869)'
-  - Wolters, C. H., Anwander, A., & Tricoche, X. (2005). Influence of local and remote white matter conductivity anisotropy for a thalamic source on EEG/MEG field and return current computation.
+  - oostenveld2010
+  - wolters2005
 - id: fast-range-search-through-jit-ver-2
   group: stimulation
   name: Fast Range Search through JIT (ver 2)
@@ -113,7 +110,7 @@ atlases:
   - '[bitbucket.org](https://bitbucket.org/reisert/unring)'
   ref: Kellner 2016
   cite:
-  - 'Kellner, E., Dhital, B., Kiselev, V. G., & Reisert, M. (2016). Gibbs-ringing artifact removal based on local subvoxel-shifts. Magnetic Resonance in Medicine, 76(5), 1574–1581. [doi:10.1002/mrm.26054](https://doi.org/10.1002/mrm.26054)'
+  - kellner2016
 - id: gibbs-tracker-dti-fibertools
   group: connectivity
   name: Gibbs tracker (DTI & Fibertools)
@@ -122,7 +119,7 @@ atlases:
   get:
   - '[uniklinik-freiburg.de](https://www.uniklinik-freiburg.de/mr-en/research-groups/diffperf/fibertools.html)'
   cite:
-  - Reisert, M., Mader, I., Anastasopoulos, C., Weigel, M., Schnell, S., & Kiselev, V. (2011). Global fiber reconstruction becomes practical., 54(2), 955–962. [doi:10.1016/j.neuroimage.2010.09.016](https://doi.org/10.1016/j.neuroimage.2010.09.016)
+  - reisert2011
 - id: mesotracker-mesoft
   group: connectivity
   name: Mesotracker / MesoFT
@@ -131,8 +128,7 @@ atlases:
   get:
   - '[bitbucket.org](https://bitbucket.org/reisert/mesoft_v1)'
   cite:
-  - 'Reisert, M., Kiselev, V. G., Dihtal, B., Kellner, E., & Novikov, D. S. (2014). MesoFT: Unifying Diffusion Modelling and Fiber Tracking. In Medical Image Computing and Computer-Assisted Intervention
-    – MICCAI 2014 (Vol. 8675, pp. 201–208). Cham: Springer International Publishing. [doi:10.1007/978-3-319-10443-0_26](https://doi.org/10.1007/978-3-319-10443-0_26)'
+  - reisert2014
 - id: dsi-studio-generalized-q-ball-imaging-gqi
   group: connectivity
   name: DSI Studio / Generalized Q-Ball Imaging (GQI)
@@ -141,7 +137,7 @@ atlases:
   get:
   - '[dsi-studio.labsolver.org](http://dsi-studio.labsolver.org/)'
   cite:
-  - Yeh, F.-C., Wedeen, V. J., & Tseng, W.-Y. I. (2010). Generalized q-Sampling Imaging. IEEE Transactions on Medical Imaging, 29(9), 1626–1635. [doi:10.1109/TMI.2010.2045126](https://doi.org/10.1109/TMI.2010.2045126)
+  - yeh2010
 - id: tensor-based-dti-tractography
   group: connectivity
   name: Tensor-based DTI tractography
@@ -164,8 +160,7 @@ atlases:
   get:
   - '[restfmri.net](http://restfmri.net/forum/index.php?q=rest)'
   cite:
-  - 'Song, X.-W., Dong, Z.-Y., Long, X.-Y., Li, S.-F., Zuo, X.-N., Zhu, C.-Z., et al. (2011). REST: A Toolkit for Resting-State Functional Magnetic Resonance Imaging Data Processing. PLoS ONE, 6(9), e25031.
-    [doi:10.1371/journal.pone.0025031](https://doi.org/10.1371/journal.pone.0025031)'
+  - song2011
 - id: network-based-statistics-nbs
   group: statistics
   name: Network based statistics (NBS)
@@ -175,7 +170,7 @@ atlases:
   - '[sites.google.com](https://sites.google.com/site/bctnet/comparison/nbs)'
   - '[nitrc.org](https://www.nitrc.org/projects/nbs/)'
   cite:
-  - 'Zalesky, A., Fornito, A., & Bullmore, E. T. (2010). Network-based statistic: identifying differences in brain networks., 53(4), 1197–1207. [doi:10.1016/j.neuroimage.2010.06.041](https://doi.org/10.1016/j.neuroimage.2010.06.041)'
+  - zalesky2010
 - id: normal-m
   group: statistics
   name: normal.m
@@ -184,8 +179,7 @@ atlases:
   get:
   - '[scholar.google.com](https://scholar.google.com/citations?user=pdpt9EMAAAAJ)'
   cite:
-  - van Albada, S. J., & Robinson, P. A. (2007). Transformation of arbitrary distributions to the normal distribution with application to EEG test-retest reliability. Journal of Neuroscience Methods, 161(2),
-    205–211. [doi:10.1016/j.jneumeth.2006.11.004](https://doi.org/10.1016/j.jneumeth.2006.11.004)
+  - vanalbada2007
 - id: tools-for-nifti-and-analyze-image
   group: files
   name: Tools for NIfTI and ANALYZE image
@@ -199,8 +193,7 @@ atlases:
   covers: STL export
   get:
   - '[mathworks.com](https://www.mathworks.com/matlabcentral/fileexchange/20922-stlwrite-filename--varargin-)'
-  cite:
-  - Sven (ML Fileexchange user)
+  cite_note: "Sven (MATLAB File Exchange user)."
 - id: patch2ply
   group: files
   name: patch2ply
@@ -208,7 +201,7 @@ atlases:
   get:
   - '[robots.princeton.edu](http://robots.princeton.edu/code.html)'
   cite:
-  - 'J. Xiao, 2013. Princeton Vision and Robotics Toolkit. Available from: [robots.princeton.edu](http://robots.princeton.edu/code.html)'
+  - xiao2013
 - id: myaa
   group: files
   name: Myaa

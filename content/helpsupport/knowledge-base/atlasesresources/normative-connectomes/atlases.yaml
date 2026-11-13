@@ -17,7 +17,7 @@ atlases:
   get:
   - '[Version 1.0 from lead-dbs.org](https://www.lead-dbs.org/release/download.php?id=group2013)'
   cite:
-  - '[Horn 2013](https://www.ncbi.nlm.nih.gov/pubmed/24099851)'
+  - horn2014
 - id: nki-rs-group-connectome
   group: structural
   name: NKI-RS group connectome
@@ -28,7 +28,7 @@ atlases:
   - '[Version 1.0 from lead-dbs.org](https://www.lead-dbs.org/release/download.php?id=group2016)'
   - '[Gibbs connectome on NITRC](https://www.nitrc.org/projects/gibbsconnectome/)'
   cite:
-  - '[Horn 2016](https://www.ncbi.nlm.nih.gov/pubmed/26327244)'
+  - horn2016
 - id: hcp-mgh-usc-group-connectome
   group: structural
   name: HCP MGH-USC group connectome
@@ -39,7 +39,7 @@ atlases:
   - '[Version 1.2 from lead-dbs.org](https://www.lead-dbs.org/release/download.php?id=group2017)'
   - 'Older versions: [1.1](https://filedn.com/lsPIJ4ragTWjjmV6PvlDQLu/data/older_versions/groupconnectome_HCP_MGH_32fold_horn_2017_v1.1.zip), [1.0](https://filedn.com/lsPIJ4ragTWjjmV6PvlDQLu/data/older_versions/groupconnectome_HCP_MGH_30fold_horn_2017_v1.0.zip)'
   cite:
-  - '[Horn 2017](https://www.ncbi.nlm.nih.gov/pubmed/28163141)'
+  - horn2017acpc
 - id: ppmi-group-connectome
   group: structural
   name: PPMI group connectome
@@ -50,7 +50,7 @@ atlases:
   - '[Version 1.1 from lead-dbs.org](https://www.lead-dbs.org/release/download.php?id=group2017_ppmi)'
   - 'Older version: [1.0](https://filedn.com/lsPIJ4ragTWjjmV6PvlDQLu/data/older_versions/groupconnectome_ppmi_90_ewert_2017_v1.0.zip)'
   cite:
-  - '[Ewert 2017](https://www.ncbi.nlm.nih.gov/pubmed/28536045)'
+  - ewert2018
 - id: dtor-985
   group: structural
   name: dTOR-985
@@ -61,7 +61,7 @@ atlases:
   - 'From lead-dbs.org: [quarter](https://www.lead-dbs.org/release/download.php?id=dTOR985_Quarter), [half](https://www.lead-dbs.org/release/download.php?id=dTOR985_Half) or [full](https://www.lead-dbs.org/release/download.php?id=dTOR985_Full) version'
   - '[Scripts and data on FigShare](https://doi.org/10.6084/m9.figshare.c.6844890.v1)'
   cite:
-  - '[Elias 2024](https://doi.org/10.1038/s41597-024-03197-0)'
+  - elias2024
 - id: gsp-1000
   group: functional
   name: GSP 1000 v2
@@ -74,7 +74,7 @@ atlases:
   get:
   - '[Harvard Dataverse](https://doi.org/10.7910/DVN/KKTJQC)'
   cite:
-  - '[Cohen 2023](https://doi.org/10.7910/DVN/KKTJQC)'
+  - cohen2023
 - id: ppmi-functional-connectome
   group: functional
   name: PPMI functional connectome
@@ -84,7 +84,7 @@ atlases:
   get:
   - '[Version 1.0 from lead-dbs.org](https://www.lead-dbs.org/release/download.php?id=fgroup2017_ppmi)'
   cite:
-  - '[Horn 2017](https://doi.org/10.1002/ana.24974)'
+  - horn2017ana
 - id: toronto-pd-connectome
   group: functional
   name: Toronto PD connectome
@@ -94,7 +94,7 @@ atlases:
   get:
   - '[Version 1.0 from lead-dbs.org](https://www.lead-dbs.org/release/download.php?id=TorPD)'
   cite:
-  - '[Horn 2017](https://doi.org/10.1002/ana.24974)'
+  - horn2017ana
 - id: paediatric-connectome
   group: functional
   name: Paediatric connectome
@@ -104,4 +104,4 @@ atlases:
   get:
   - '[Download from lead-dbs.org](https://www.lead-dbs.org/release/download.php?id=PedrsfMRI)'
   cite:
-  - '[Al-Fatly 2023](https://doi.org/10.1016/j.nicl.2023.103449)'
+  - alfatly2023

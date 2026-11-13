@@ -94,9 +94,10 @@
   .atlas__body--fig .atlas__fig { grid-area: fig; align-self: start; }
 }
 .prose .atlas__label { margin: var(--s-4) 0 var(--s-1); font-size: var(--t-small); font-weight: 500; color: var(--muted); }
-.prose .atlas__cite { font-size: var(--t-note); line-height: 1.55; color: var(--muted); }
-.prose .atlas__cite li { overflow-wrap: break-word; }
-.prose .atlas__cite li + li { margin-top: var(--s-2); }
+/* Cite: a stack of compact citation boxes (site.css, .cite-snip), a line of text before them if needed */
+.prose .atlas__cite > .cite-snip { margin: 0; max-width: none; }
+.prose .atlas__cite > .cite-snip + .cite-snip { margin-top: var(--s-4); }
+.prose .atlas__cite-note { margin: 0 0 var(--s-3); font-size: var(--t-note); line-height: 1.55; }
 .prose .atlas__fig { margin: 0; max-width: none; }
 .atlas__mat { display: grid; place-items: center; aspect-ratio: 4 / 3; padding: var(--s-3); border: 1px solid var(--line); border-radius: var(--r-md); background: var(--on-render); }
 .atlas__mat :is(img, video) { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }

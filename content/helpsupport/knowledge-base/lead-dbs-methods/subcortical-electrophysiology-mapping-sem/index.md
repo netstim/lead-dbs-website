@@ -29,11 +29,9 @@ SEM runs in Lead Group, the group-analysis module of Lead-DBS: see the manual's 
 
 The method was first applied to beta power recorded in the subthalamic nucleus:
 
-{{% copybox label="Copy the citations" %}}
 {{< paper horn2017hbm "full" >}}
 
-Accolla, E. A., Horn, A., Herrojo Ruiz, M., Neumann, W.-J., & Kühn, A. A. (2017). Reply: Oscillatory coupling of the subthalamic nucleus in obsessive compulsive disorder. *Brain*, *140*(9), e57. [doi:10.1093/brain/awx165](https://doi.org/10.1093/brain/awx165)
-{{% /copybox %}}
+{{< paper accolla2017 "full" >}}
 
 ## Studies that used it
 
