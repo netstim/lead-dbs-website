@@ -3,6 +3,9 @@
 # it is over: it moves to "Past events" on its own.
 #
 # Fields
+#   id            a short name that never changes ("developer-meeting"): the address of the event on
+#                 /events/ (#id) and what an event page names in its front matter (event: id). Keep it
+#                 when the date moves; a new event gets a new id.
 #   title         name of the event
 #   start         a date (2027-02-11) or a date and time in the event's time zone (2026-11-18T15:00)
 #   end           optional: last day (2027-02-12), or the end time (2026-11-18T16:30)
@@ -27,7 +30,8 @@
 # How "upcoming" works: the site is rebuilt every night (.github/workflows/pages.yml), and a few
 # lines of script in the page also hide events that are over by the visitor's clock.
 events:
-  - title: "Lead-DBS Developer Meeting"
+  - id: "developer-meeting"
+    title: "Lead-DBS Developer Meeting"
     start: "2026-11-18T15:00"
     timezone: "Europe/Berlin"
     also_in: "America/New_York"
@@ -39,7 +43,8 @@ events:
     links:
       - {label: "Flyer and details", url: "/events/developer-meeting/"}
 
-  - title: "Hands-on Lead-DBS Workshop"
+  - id: "hands-on-workshop-2027"
+    title: "Hands-on Lead-DBS Workshop"
     start: "2027-02-11T09:00"
     end: "2027-02-12"
     timezone: "Europe/Berlin"

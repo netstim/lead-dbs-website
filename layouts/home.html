@@ -30,7 +30,7 @@
                  1280 px clip for the windows from 640 px (and, in H.264, for the desktops too), a square
                  crop of the render for phones (docs/home-and-media.md, "hero clip").
                  The poster is the first picture: the sources carry their address in data-src, and
-                 assets/js/main.js gives it to them once the page has loaded and the browser is idle (on a
+                 assets/js/main/home.js gives it to them once the page has loaded and the browser is idle (on a
                  phone, and under reduced motion or Save-Data, only when the visitor presses play). Without
                  script the poster stays. */}}
           <video class="hero__bg" muted loop playsinline preload="none" poster="{{ $pd.RelPermalink }}" width="1600" height="1000" aria-hidden="true" data-hero-video>
@@ -199,7 +199,7 @@
   {{/* 5. Made with Lead-DBS, on the black of the voices band above (the two read as one dark stretch): a strip of figures from papers (data/gallery.yaml, the files named in
        research.figures), each whole at its own shape with a hairline edge, all one height on a desktop,
        each linking to its entry on /gallery/. Below 1024px the strip scrolls sideways: it is then a
-       labelled list the keyboard can reach and scroll (assets/js/main.js gives it its tab stop). */}}
+       labelled list the keyboard can reach and scroll (assets/js/main/home.js gives it its tab stop). */}}
   {{ with $p.research }}
   {{ $gallery := site.GetPage "/gallery" }}
   {{ $byFile := dict }}{{ range hugo.Data.gallery.figures }}{{ $byFile = merge $byFile (dict .file .) }}{{ end }}
@@ -289,7 +289,7 @@
   {{ end }}
 
   {{/* 8. What is coming up and what is new, as on x.ai's news: one row of picture cards, the upcoming
-       events first (their flyer; the meta line ends in a countdown from assets/js/main.js), then the newest posts (their
+       events first (their flyer; the meta line ends in a countdown from assets/js/main/events.js), then the newest posts (their
        picture; a release post shows its version number large instead), four in all. An event's tile carries
        its day as a small calendar leaf. A post that
        only repeats an event's flyer is left out. Each card: a short line (Event or News, the date) and
@@ -348,7 +348,7 @@
         {{ with $p.cite }}{{ $pp := index hugo.Data.papers.papers .paper }}
         {{- if not $pp }}{{ errorf "home: cite.paper %q is not in data/papers.yaml" .paper }}{{ end }}
         {{- /* the citation as a snippet to copy: the reference (as on the citing page, data/papers.yaml) and the
-               same paper as BibTeX, tabs in main.js and shared copying in clipboard.js. Without
+               same paper as BibTeX, tabs in main/page.js and shared copying in clipboard.js. Without
                script the bar stays hidden and the reference shows, to select by hand. */}}
         {{- $names := findRE `[^,]+, (?:[A-Z][a-z]?\. ?)+` (replace $pp.authors ", et al." "") }}
         {{- $bibAuthors := delimit (apply $names "strings.TrimSpace" ".") " and " }}{{ if strings.Contains $pp.authors "et al." }}{{ $bibAuthors = printf "%s and others" $bibAuthors }}{{ end }}

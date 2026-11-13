@@ -4,7 +4,7 @@ linkTitle: "Hands-on Lead-DBS Workshop 2027"
 description: "Hands-on Lead-DBS Workshop, 11–12 February 2027 in Cologne: two days of hands-on work, and among the first to try Lead-DBS 4.0. Registration is not open yet."
 # an event page (layouts/event.html): the facts and registration come from data/events.yaml
 layout: "event"
-event: "hands-on-lead-dbs-workshop-2027-02-11"
+event: "hands-on-workshop-2027"
 host: {name: "Institute for Network Stimulation and Uniklinik Köln", url: "https://www.netstim.org/"}
 flyer:
   file: "workshop-2027-flyer.png"

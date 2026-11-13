@@ -62,7 +62,7 @@
 {{ $css := slice (resources.Get "css/base.css") $site (resources.Get "css/content.css") | resources.Concat "css/style.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 {{- /* "js": script runs, so the phone menu is a button (without it, a link that opens the menu as a target,
-     assets/css/content.css). The home hero's entrance waits for assets/js/main.js; after 700ms the style
+     assets/css/content.css). The home hero's entrance waits for assets/js/main/home.js; after 700ms the style
      sheet shows the hero without it. */}}
 <script>try{var t=localStorage.getItem('theme')}catch(e){}document.documentElement.dataset.theme=t==='dark'||t==='light'?t:matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.classList.add('js','hero-wait');setTimeout(()=>document.documentElement.classList.add('hero-late'),700)</script>
 {{- /* without script a <video> shows its own controls: the hero clip is a still picture then */}}
