@@ -711,14 +711,15 @@ main.page { padding-top: var(--nav); }
 }
 
 /* the head of a content page (page-head.html), after openai.com: the white page, the breadcrumb, a large
-   title in medium weight, then the group's render in a wide rounded black panel. The Download page and
-   404 keep the black band above. */
-.page-head.page-head--open { overflow: visible; padding: var(--s-8) 0 0; background: var(--bg); color: var(--ink);
+   title in medium weight, then the group's render in a wide rounded black panel (4:1). The Download page and
+   404 keep the black band above; the gallery's words stand on its black page. */
+.page-head.page-head--open { overflow: visible; padding: var(--s-7) 0 0; background: var(--bg); color: var(--ink);
   --ink: inherit; --muted: inherit; --line: inherit; }
 .page-head--open h1 { max-width: 20ch; margin-top: var(--s-4); color: var(--ink); font-size: var(--t-h1); font-weight: 500; line-height: var(--lh-h1); text-wrap: balance; }
 .page-head--open .breadcrumb a:hover { color: var(--ink); }
 .page-head--open .page-head__meta { margin-top: var(--s-4); }
-.page-head__panel { margin-top: var(--s-7); overflow: hidden; border-radius: var(--r-lg); background: var(--render); aspect-ratio: 16 / 5; }
+.page-head__panel { margin-top: var(--s-7); overflow: hidden; border-radius: var(--r-lg); background: var(--render); aspect-ratio: 4 / 1; }
+.gallery-page-dark .page-head.page-head--open { background: none; }
 .page-head--open .page-head__render { position: static; display: block; width: 100%; height: 100%; opacity: 1; object-fit: cover; -webkit-mask-image: none; mask-image: none; }
 
 /* The article keeps its readable measure; navigation is a compact rail with a generous gutter.

@@ -32,7 +32,8 @@
     {{- end }}{{ end }}{{ end }}
     {{- /* a phone: an event page's flyer, countdown and host (events/head.html) */}}
     {{ if eq .Layout "event" }}{{ partial "events/head.html" . }}{{ end }}
-    {{- /* the group's render in a wide rounded black panel under the words (none on a task page) */}}
-    {{ with partial "page-head-render.html" . }}<div class="page-head__panel">{{ . }}</div>{{ end }}
+    {{- /* the group's render in a wide rounded black panel under the words (none on a task page, and none on
+           the gallery, whose black page is all renders: there the words stand on the black) */}}
+    {{ if ne .Section "gallery" }}{{ with partial "page-head-render.html" . }}<div class="page-head__panel">{{ . }}</div>{{ end }}{{ end }}
   </div>
 </header>
