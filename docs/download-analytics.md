@@ -22,7 +22,7 @@ reconciles parsed/malformed/after-cutoff/collapsed/included records.
    and miss automation. Unknown geography is excluded from the map. Each
    exclusion count is published in `selection`; it reconciles with candidates.
 2. **All-request series:** `all_requests` contains all categories before these
-   exclusions, with unknown geography included in totals. `/usage/` shows yearly
+   exclusions, with unknown geography included in totals. The data holds yearly
    program, updates, other artifacts and total counts. Repeated raw records
    within an address/artifact/day group are counted as a quality diagnostic.
    A group with at least 100 raw rows is flagged, not silently removed. Backup

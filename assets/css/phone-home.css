@@ -161,16 +161,14 @@
   .research-band__actions { margin-top: var(--s-6); }
 
   /* -------------------------------------------------------------- 5. the globe
-     centred: the heading, the line, the globe at 310px, its clock line, the link */
+     centred: the heading, the line, the globe at 310px, its clock line */
   .worldwide .home-split { display: flex; flex-direction: column; align-items: center; gap: 0; text-align: center; }
   .worldwide__text h2 { margin-inline: auto; }
   .home .worldwide .t-lead { max-width: 300px; margin-inline: auto; margin-top: var(--s-4); }
-  .worldwide__links { display: none; }
   .worldwide__fig { width: min(310px, 100%); margin-top: var(--s-6); }
   .worldwide__foot { margin-top: var(--s-3); min-height: 0; }
   .worldwide__foot .caption { font-size: var(--t-label); }
   .worldwide__pause { width: 32px; height: 32px; border-color: var(--line); }
-  .worldwide__more { margin: var(--s-2) 0 0; }
 
   /* -------------------------------------------------------------- 6. Lead-DBS 4.0
      the page's one tinted panel, inside the margins: the badge, the name 44/44, the points as rows with a

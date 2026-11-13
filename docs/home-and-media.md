@@ -153,8 +153,10 @@ minimum threshold. Keep its `countries`, `months`, `total`, `from` and `to` fiel
 compatible with `assets/js/globe.js`. The animation represents monthly country
 aggregates, not individual people or precise locations.
 
-`/usage/` shows schema-2 **access request aggregates**, counting each address
-once per recorded clock hour, plus the combined Every country table with
+The `/usage/` page is taken off the site for now (it forwards to the home page; restore
+`content/usage/index.md`, `layouts/usage.html` and `layouts/_partials/usage-schema.html` from git history to bring it
+back). `data/usage.json` still holds schema-2 **access request aggregates**, counting each address
+once per recorded clock hour, and the page showed them with a combined Every country table of
 program download requests. These metrics are separate. Access data never
 contains individual event timestamps or a replay.
 

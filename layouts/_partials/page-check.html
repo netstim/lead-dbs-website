@@ -1,5 +1,5 @@
 {{- /* Every page made from a content file (called in baseof.html), so the rules of page-type.html hold on
        every kind of page, news posts and section lists included: its layout is a page type, or one of the
        templates of a page of its own below, and it sets none of the retired per-page switches. */ -}}
-{{- $own := slice "community" "contribute" "download" "first-steps" "usage" "redirect" -}}
+{{- $own := slice "community" "contribute" "download" "first-steps" "redirect" -}}
 {{- if not (in $own .Layout) }}{{ $_ := partial "page-type.html" . }}{{ end -}}

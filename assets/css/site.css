@@ -1481,10 +1481,8 @@ html:not(.js) .g-item__info { display: block; padding: var(--s-2) 0 var(--s-3); 
 
 /* ---------- home: Lead-DBS around the world ----------
    The localization section mirrored: a wireframe globe left, drawn in the page's own ink straight on
-   the white ground (assets/js/globe.js), the words right: the heading, one line, a pill to /usage/.
+   the white ground (assets/js/globe.js), the words right: the heading, one line.
    The figure shows once the map has loaded (.is-drawn); without the script the words stand alone. */
-/* the pill to /usage/ and, beside it, the link to its table of every country (side by side on a phone too) */
-.worldwide__links { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); }
 .worldwide__fig { margin: 0; display: none; }
 .worldwide.is-drawn .worldwide__fig { display: block; }
 .worldwide__stage { position: relative; aspect-ratio: 1; max-width: 600px; margin-inline: auto; }
@@ -1503,70 +1501,6 @@ html:not(.js) .g-item__info { display: block; padding: var(--s-2) 0 var(--s-3); 
   .worldwide.is-drawn .home-split > .worldwide__fig { grid-column: 1; grid-row: 1; }
   .worldwide.is-drawn .home-split > .worldwide__text { grid-column: 2; grid-row: 1; }
   .worldwide:not(.is-drawn) .home-split > .worldwide__text { grid-column: 1 / -1; }
-}
-
-/* ---------- usage ----------
-   /usage/ (layouts/usage.html): three large numbers, then the charts and the table of every country in a
-   grid of hairlines. The charts
-   are Pele SVG (scripts/usage.mjs), coloured here: ink lines, the action blue for the one series,
-   periwinkle for the rest. */
-.usage { padding-block: var(--s-8) var(--s-9); }
-.usage__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; }
-.usage__cell { grid-column: 1 / -1; min-width: 0; background: var(--bg); padding: clamp(20px, 2.8vw, 40px); }
-.usage__cell h2 { margin: 0; font-size: var(--t-sub); font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
-.usage__cell h2 + p { margin: 6px 0 0; color: var(--muted); font-size: var(--t-note); line-height: 1.45; max-width: 46ch; }
-.usage__note { margin: var(--s-4) 0 0; color: var(--muted); font-size: var(--t-small); text-align: center; }
-.usage__chart { margin: var(--s-6) 0 0; --pele-font: var(--font-text); --pele-bg: var(--bg); --pele-fg: var(--ink); --pele-muted: var(--muted); --pele-line: var(--line-strong);
-  --pele-surface: var(--bg); --pele-surface-alt: var(--line); --pele-border: var(--line-strong); --pele-accent: var(--p-action); --pele-radius: 6px;
-  --pele-series-1: var(--p-action); --pele-series-2: var(--p-tint-1); --pele-series-3: var(--p-accent); --pele-series-4: var(--p-tint-2); }
-.usage__chart svg { display: block; width: 100%; height: auto; max-width: none !important; }
-.usage__chart text { font-variant-numeric: tabular-nums; }
-/* a phone keeps the charts at a readable size and scrolls them sideways */
-@media (max-width: 639px) {
-  :is(.usage__chart--months, .usage__chart--countries) { overflow-x: auto; overscroll-behavior-x: contain; }
-  :is(.usage__chart--months, .usage__chart--countries) svg { min-width: 600px; }
-}
-.usage__chart--months .pele-line { stroke-width: 1.5; }
-/* the months: a periwinkle area under the blue line, the busiest month marked in coral */
-.usage__chart--months .pele-area { fill: color-mix(in oklab, var(--p-tint-1) 55%, var(--bg)); }
-.usage__chart--months .pele-line { stroke-width: 2; }
-.usage__chart--months .pele-peak circle { fill: var(--p-accent); stroke: var(--bg); stroke-width: 2; }
-.usage__chart--months .pele-peak text { fill: var(--ink); font-weight: 500; }
-/* the tiles take the colour of their part of the world: the palette's four */
-.usage__chart--countries .pele-leaves { fill: var(--p-ink); }
-.usage__chart--countries .pele-leaf rect { fill: var(--surface); }
-.usage__chart--countries [data-region="americas"] rect { fill: var(--p-action); }
-.usage__chart--countries [data-region="asia"] rect { fill: var(--p-accent); }
-.usage__chart--countries [data-region="europe"] rect { fill: var(--p-tint-1); }
-.usage__chart--countries [data-region="oceania"] rect { fill: var(--p-tint-2); }
-.usage__chart--countries :is([data-region="americas"], [data-region="asia"]) text { fill: var(--p-action-ink); }
-.usage__chart--countries :is([data-region="europe"], [data-region="oceania"]) text { fill: var(--p-tint-ink); }
-.usage__legend { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); list-style: none; margin: var(--s-4) 0 0; padding: 0; font-size: var(--t-small); color: var(--muted); }
-.usage__legend li, .usage__list li span:first-child { display: flex; align-items: center; gap: var(--s-2); }
-.usage__legend li::before, .usage__list li span:first-child::before { content: ""; flex: none; width: 10px; height: 10px; border-radius: var(--r-xs); background: var(--sw, var(--line-strong)); }
-/* the clock in coral on rose; the tools in the palette's four */
-.usage__chart--hours .pele-curve { fill: var(--p-tint-2); fill-opacity: .7; stroke: var(--p-accent); stroke-width: 2; }
-.usage__chart--tools { --pele-series-1: var(--p-ink); --pele-series-2: var(--p-muted); --pele-series-3: var(--line-strong); --pele-series-4: var(--line); --pele-series-5: var(--p-accent); }
-.usage__chart--tools .pele-slice-labels text { fill: var(--bg) !important; font-weight: 500; }
-/* the three figures as tiles in the palette */
-.usage__chart--hours { max-width: 440px; margin-inline: auto; }
-.usage__chart--tools { max-width: 300px; margin-inline: auto; }
-.usage__list { list-style: none; margin: var(--s-5) 0 0; padding: 0; max-width: 360px; }
-.usage__list li { display: flex; justify-content: space-between; gap: var(--s-4); padding: var(--s-3) 0; border-top: 1px solid var(--line); }
-.usage__list li span:last-child { color: var(--muted); }
-/* every country as a table, folded (the fold is the download page's .dl-more): the name, its launches */
-.usage__all { max-width: 480px; margin-top: var(--s-5); }
-.usage__table { width: 100%; border-collapse: collapse; font-size: var(--t-note); }
-.usage__table :is(th, td) { padding: var(--s-2) 0; border-bottom: 1px solid var(--line); text-align: left; font-weight: 400; }
-.usage__table thead th { padding-top: var(--s-4); color: var(--muted); font-weight: 500; }
-.usage__table :is(td, thead th:last-child) { text-align: right; }
-.usage__table td { color: var(--muted); font-variant-numeric: tabular-nums; }
-.usage__method { margin: var(--s-5) 0 0; max-width: 80ch; color: var(--muted); font-size: var(--t-small); line-height: 1.6; }
-@media (min-width: 1000px) {
-  .usage__cell--wide { grid-column: span 7; }
-  .usage__cell--side { grid-column: span 5; }
-  .usage__cell--row { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gutter); align-items: center; }
-  .usage__cell--row .usage__chart { margin-top: 0; }
 }
 
 .g-item__src a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgb(255 255 255 / .35); }

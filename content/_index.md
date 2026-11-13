@@ -1,4 +1,6 @@
 ---
+# /usage/ (the usage statistics) was taken off the site for now; it forwards here.
+aliases: ["/usage/"]
 # The home page. Every text and list on it is set here; the layout is layouts/home.html.
 # Version, date, requirements and licence come from data/release.yaml, events from data/events.yaml.
 # Pictures are file names in assets/images/renders/ (replace a file there, or change a name here).
@@ -88,9 +90,6 @@ features:
 worldwide:
   title: "Download requests from {countries} countries"
   text: "{downloads} Lead-DBS download requests recorded since {year}."
-  link_label: "Usage statistics"
-  # the link to the table of every country on /usage/ (the globe itself can only be read with a mouse)
-  table_label: "All countries"
 
 # The forthcoming release: three points, with the workshop as the next step.
 next:
