@@ -39,13 +39,13 @@ The reference pages were inspected in a browser at 1280 × 800. xAI's article us
 starting at x=328. Vercel used Geist, 14px navigation, and 16px article text. The manual
 combines Geist with a lighter 48px / 450 chapter heading, 15px body text, a single 72px
 header and an open three-column layout. At that viewport the reading column starts
-at x=328 and is 688px wide. These are intentional choices between the references,
+at x=328 and is 688px wide before any native scrollbar gutter. These are intentional choices between the references,
 not a claim that the pages are identical.
 
 `assets/css/manual.css` owns the layout. Size tokens live in `base.css`; font faces and
 palette tokens live in `site.css`. The docs font preload is conditional in `head.html`.
 Keep the header to one row; resource links hide below 1024px, the local outline moves
-above the article below 1200px, and chapters open in a modal drawer below 768px.
+above the article below 1200px, and chapters open in a modal drawer below 768px. On wide displays, the chapter rail stays 24px from the viewport edge and the header spans the viewport; the article retains its bounded reading width. The root and chapter rail reserve scrollbar space, and navigation preserves the rail scroll position instead of recentering visible chapters.
 
 ## Article components
 
@@ -108,6 +108,7 @@ Docs interaction tests live in `.github/scripts/check-browser.mjs`; there is no 
 `check-interactions` command. Its normal run checks every page at desktop and phone sizes
 in both themes, then exercises quick-start command tabs and keyboard selection, search result counts, code expansion, wrapping and complete copying, narrow-screen
 copy feedback, chapter-drawer focus and dismissal, sticky page navigation, and search.
+It also checks long-to-short page transitions at 1280, 1440, 1920 and 3000px with visible scrollbars, asserting stable header, chapter-rail and article geometry and retained rail scroll position. Headless Chromium normally hides scrollbars, so this check explicitly enables them.
 Run it with the production build as documented in the script header.
 
 The introduction keeps a concise research-use restriction above the first action, with
