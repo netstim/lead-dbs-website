@@ -8,7 +8,9 @@
   --line: color-mix(in oklab, var(--ink) 9%, transparent); --line-strong: color-mix(in oklab, var(--ink) 18%, transparent);
   font-family: var(--font-text); font-size: var(--t-manual-body); font-weight: 400; }
 .is-preview .section-manual { --docs-top: 6.5rem; }
-.docs-header { position: fixed; inset: 0 0 auto; z-index: 50; background: var(--bg); }
+/* Use the document's reserved gutter: older Chromium changes a fixed header's
+   containing width between long and short pages even with scrollbar-gutter: stable. */
+.docs-header { position: sticky; top: 0; margin-bottom: calc(-1 * var(--docs-top)); z-index: 50; background: var(--bg); }
 .docs-header__bar { height: 4.5rem; display: flex; align-items: center; gap: var(--s-6); padding-inline: var(--s-5); }
 .docs-brand { display: flex; align-items: center; gap: var(--s-3); flex: 1; }
 .docs-brand > a { display: flex; align-items: center; gap: var(--s-2); white-space: nowrap; font-size: var(--t-card); font-weight: 500; }
