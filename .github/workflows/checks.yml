@@ -106,3 +106,5 @@ jobs:
           python3 -m unittest discover -s tests -p 'test_*ops.py' -v
           python3 -m unittest discover -s tests -p 'test_collector_http.py' -v
           python3 -m unittest discover -s tests -p 'test_download_hook.py' -v
+      - name: Contact and FOCUS form handler on a loopback PHP server (tests/test_forms_http.py)
+        run: python3 -m unittest discover -s tests -p 'test_forms_http.py' -v

@@ -51,8 +51,9 @@ registration to MNI space allows it to be transformed into an individual brain.
 
 **For academic research only,** not for commercial applications.
 
-Downloading also subscribes you to the Lead-DBS [newsletter](/subscribe-to-our-newsletter/),
-which is sent rarely; you can opt out with one click, and your details are not shared with anyone else.
+The team sends the download link by email. Your details are used only for that and are not shared with
+anyone else. The Lead-DBS [newsletter](/subscribe-to-our-newsletter/) is a separate choice; you don't need it
+to get FOCUS.
 
 {{% /hub-section %}}
 

@@ -34,8 +34,10 @@ enableGitInfo = true
 
 [params]
   description = "Lead-DBS: an open-source toolbox for deep brain stimulation electrode localization, stimulation modelling and connectomic imaging from postoperative MRI and CT."
-  # Forms have no backend yet: production shows each form's offline line (data/forms.yaml),
-  # the preview the form disabled with a note. Set true once the forms have an action.
+  # Forms are switched off: production shows each form's offline line (data/forms.yaml), the
+  # preview the form disabled with a note. With true, the forms that have an action (contact and
+  # FOCUS, sent by server/forms/send.php) go live. Set it only at the switch, once send.php is on
+  # the server and checked (server/forms/README.md).
   formsEnabled = false
   # Preview deployments (GitHub Pages) set this to true: shows an "under construction"
   # banner, adds noindex, and points canonical URLs at the live site.
