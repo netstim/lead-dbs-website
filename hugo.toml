@@ -86,7 +86,7 @@ enableGitInfo = true
     identifier = "features"
     weight = 1
   [[menus.main]]
-    name = "Docs and help"
+    name = "Docs"
     pageRef = "/helpsupport"
     identifier = "docs"
     weight = 2
@@ -194,7 +194,7 @@ enableGitInfo = true
       # a line above the entry, without a caption
       divider = true
 
-  # Docs and help: the documentation (the manual is integrated at /manual/) and the one list of where to ask
+  # Docs: the documentation (the manual is integrated at /manual/) and the one list of where to ask
   # (/helpsupport/#get-help; the contact page sits under it through its front matter menuParent)
   [[menus.main]]
     parent = "docs"

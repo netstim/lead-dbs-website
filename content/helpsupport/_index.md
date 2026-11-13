@@ -1,7 +1,7 @@
 ---
-title: "Docs and help"
+title: "Docs"
 description: "The Lead-DBS documentation and where to get help: first steps, the manual, Lead Tutor, walkthrough videos, the user Slack and bug reports."
-linkTitle: "Docs and help"
+linkTitle: "Docs"
 date: "2017-01-04T21:27:30"
 lastmod: "2026-11-12"
 weight: 1
@@ -10,7 +10,7 @@ keywords: ["help", "support", "documentation", "docs", "manual", "faq", "tutoria
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-about.jpg"
 # a hub page: its sections use the full width, no sidebar
-# the rows of each section (layouts/_shortcodes/link-rows.html); "Learn" leaves out the manual, which has its own section
+# the rows of each section (layouts/_shortcodes/link-rows.html); "Start here" leaves out the manual, which has its own section
 learn:
   - {name: "First steps", text: "Installation and electrode localization", url: "/helpsupport/first-steps/"}
   - {name: "Lead Tutor", text: "10 patients with expert localizations", url: "/helpsupport/learn-lead-dbs-yourself/"}
@@ -34,8 +34,16 @@ next:
 layout: "hub"
 ---
 
+<div class="page-intro"><div class="page-intro__text">
+
+**The manual** covers every step, from installation to group analyses.
+
+</div>
+<p class="page-intro__actions"><a class="btn btn--primary" href="{{< relref "/manual/" >}}">Open the manual</a><a class="btn btn--secondary" href="{{< relref "/helpsupport/first-steps/" >}}">First steps</a></p>
+</div>
+
 {{% hub-section %}}
-## Learn {#learn}
+## Start here {#learn}
 
 **New to Lead-DBS?** Start with First steps, then practise on the Lead Tutor data.
 

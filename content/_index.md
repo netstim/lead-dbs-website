@@ -128,7 +128,7 @@ voices:
 
 
 # The closing band, two halves built alike: where to get help (a heading, one line, a button to the Get
-# help section of Docs and help) and how to cite Lead-DBS (cite); the funders in one row under both.
+# help section of Docs) and how to cite Lead-DBS (cite); the funders in one row under both.
 help:
   title: "Need help?"
   text: "Ask in the user Slack, look it up in the manual or report a bug."

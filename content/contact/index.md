@@ -5,7 +5,7 @@ date: "2014-06-24T16:48:44"
 lastmod: "2022-03-15T20:30:21"
 weight: 10
 keywords: ["contact", "email", "email"]
-# In the menu hierarchy the contact page is the last step of "Get help" (breadcrumb Docs and help / Contact).
+# In the menu hierarchy the contact page is the last step of "Get help" (breadcrumb Docs / Contact).
 # the faster ways, as rows (layouts/_shortcodes/link-rows.html)
 faster:
   - {name: "Questions: the user Slack", url: "/helpsupport/slack-user-channel/"}
