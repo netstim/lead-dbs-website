@@ -1,6 +1,5 @@
 /* Geist typography and an open reading layout, measured against the reference docs.
    Lead-DBS retains its logo, blue links, content and shared search/theme behaviour. */
-:where(html:has(> body.section-manual)) { overflow-y: scroll; scrollbar-gutter: stable; }
 .section-manual { --docs-top: 4.5rem; --docs-leading: 1.7; --docs-tight: 1.1; --docs-heading-weight: 450; --docs-tracking: -.025em; --docs-nav-leading: 1.5; --nav: var(--docs-top);
   --font-text: "Geist", Arial, sans-serif; --font-display: var(--font-text); --font-mono: "Geist Mono", ui-monospace, monospace;
   --font-label: var(--font-text); --font-meta: var(--font-text);
@@ -9,7 +8,7 @@
   font-family: var(--font-text); font-size: var(--t-manual-body); font-weight: 400; }
 .is-preview .section-manual { --docs-top: 6.5rem; }
 .docs-header { position: fixed; inset: 0 0 auto; z-index: 50; background: var(--bg); }
-.docs-header__bar { height: 4.5rem; display: flex; align-items: center; gap: var(--s-6); padding-inline: var(--s-5); }
+.docs-header__bar { height: 4.5rem; display: flex; align-items: center; gap: var(--s-6); padding-inline: var(--s-5); max-width: 100rem; margin: auto; }
 .docs-brand { display: flex; align-items: center; gap: var(--s-3); flex: 1; }
 .docs-brand > a { display: flex; align-items: center; gap: var(--s-2); white-space: nowrap; font-size: var(--t-card); font-weight: 500; }
 .docs-brand__slash { color: var(--line-strong); font-size: var(--t-sub); font-weight: 400; }
@@ -26,7 +25,7 @@
 .docs-links a { color: var(--muted); white-space: nowrap; }
 .docs-links a:hover, .docs-links a[aria-current] { color: var(--ink); }
 .manual { display: grid; grid-template-columns: 16rem minmax(0, 46rem) 12rem; column-gap: var(--s-7); max-width: 85rem; margin: auto; padding: var(--docs-top) var(--s-5) 0; align-items: start; min-height: 100dvh; }
-.manual-nav { position: sticky; top: var(--docs-top); height: calc(100dvh - var(--docs-top)); padding: var(--s-5) 0 var(--s-5); overflow-y: scroll; scrollbar-gutter: stable; scrollbar-width: thin; scrollbar-color: transparent transparent; }
+.manual-nav { position: sticky; top: var(--docs-top); height: calc(100dvh - var(--docs-top)); padding: var(--s-5) 0 var(--s-5); overflow-y: auto; scrollbar-width: thin; scrollbar-color: transparent transparent; }
 .manual-nav:hover { scrollbar-color: var(--line-strong) transparent; }
 .manual-nav__fold > summary { display: none; }
 .manual-nav__group + .manual-nav__group { margin-top: var(--s-6); }
@@ -108,16 +107,6 @@
 .manual-workflows span span { color: var(--muted); font-size: var(--t-small); }
 .manual-workflows a:hover { background: var(--surface); border-color: var(--line-strong); }
 .manual--home .manual-prose { margin-top: var(--s-7); }
-/* The chapter rail belongs to the viewport; the article keeps its reading measure.
-   At 85rem the centered grid meets the rail, so this transition has no position jump. */
-@media (min-width: 1360px) {
-  .manual-nav { position: fixed; left: var(--s-5); width: 16rem; }
-  .manual-body { grid-column: 2; }
-  .manual-outline { grid-column: 3; }
-}
-@media (min-width: 1200px) {
-  .docs-header__bar { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(max-content, 1fr); }
-}
 @media (max-width: 1199px) {
   .manual { grid-template-columns: 14rem minmax(0, 1fr); column-gap: var(--s-7); }
   .manual-outline { display: none; }

@@ -16,30 +16,8 @@
   const pairs = [[drawer, trigger], ...(contents ? [[contents, sections]] : [])];
   const reveal = (box) => {
     const current = tree.querySelector('[aria-current="page"]');
-    if (!current) return;
-    const item = current.getBoundingClientRect();
-    const bounds = box.getBoundingClientRect();
-    // Do not recenter a chapter that is already visible: that moves the whole rail
-    // when navigating between nearby pages. Scroll only enough to reveal it.
-    if (item.top < bounds.top) box.scrollTop += item.top - bounds.top;
-    else if (item.bottom > bounds.bottom) box.scrollTop += item.bottom - bounds.bottom;
+    if (current) box.scrollTop += current.getBoundingClientRect().top - box.getBoundingClientRect().top - box.clientHeight / 3;
   };
-  const navigationKey = 'lead-manual-navigation';
-  let previousNavigation;
-  try {
-    previousNavigation = JSON.parse(sessionStorage.getItem(navigationKey));
-    sessionStorage.removeItem(navigationKey);
-  } catch { /* Navigation works when browser storage is unavailable. */ }
-  tree.addEventListener('click', (event) => {
-    const link = event.target.closest('a');
-    if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    const target = new URL(link.href);
-    if (target.origin !== location.origin) return;
-    const box = mobile.matches ? body : rail;
-    try {
-      sessionStorage.setItem(navigationKey, JSON.stringify({ path: target.pathname, scrollTop: box.scrollTop }));
-    } catch { /* Storage is optional. */ }
-  });
   const close = () => pairs.forEach(([dialog]) => { if (dialog.open) dialog.close(); });
   pairs.forEach(([dialog, button]) => {
     dialog.addEventListener('close', () => {
@@ -79,11 +57,7 @@
     fold.hidden = mobile.matches;
     fold.open = true;
     (mobile.matches ? body : fold).append(tree);
-    if (!mobile.matches) {
-      if (previousNavigation?.path === location.pathname && Number.isFinite(previousNavigation.scrollTop)) rail.scrollTop = previousNavigation.scrollTop;
-      previousNavigation = null;
-      reveal(rail);
-    }
+    if (!mobile.matches) reveal(rail);
   };
   update();
   mobile.addEventListener('change', update);
