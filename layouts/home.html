@@ -219,15 +219,15 @@
   {{ end }}
 
   {{/* 5. Made with Lead-DBS, on the black of the voices band above (the two read as one dark stretch): the
-       heading and a pill to /gallery/, under them two halves. Left (7 of 12 columns) an endless grid of the
-       figures from papers (data/gallery.yaml) in a rounded frame whose edges fade: masonry columns that wrap
+       heading and a pill to /gallery/, under them two equal halves. Left an endless grid of the figures
+       from papers (data/gallery.yaml) in a window with rounded corners: masonry columns that wrap
        in every direction, dragged with the mouse or a finger, drifting slowly until they are (assets/js/main/home.js
        builds the tiles from the list in [data-made-figs], and only once the section comes near the screen).
        A click on a figure opens it on /gallery/. Right seven journal covers (data/covers.yaml) fanned out like
        a hand of cards about a point far below them; one lifts after another, slowly, its journal and date
        under the fan (a pointer on a card lifts it and holds the fan). The fan is one link to the covers on Publications.
-       Under reduced motion nothing moves by itself; the grid can still be dragged. On a phone the grid runs
-       the full width, 360px tall, and the fan sits under it, smaller (assets/css/phone-home.css). */}}
+       Under reduced motion nothing moves by itself; the grid can still be dragged. On a phone the grid is
+       360px tall and the fan sits under it, smaller (assets/css/phone-home.css). */}}
   {{ with $p.research }}
   {{ $gallery := site.GetPage "/gallery" }}
   {{ $pubs := site.GetPage "/about/publications" }}

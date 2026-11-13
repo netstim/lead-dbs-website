@@ -1438,23 +1438,19 @@ html:not(.js) .g-item__info { display: block; padding: var(--s-2) 0 var(--s-3); 
 .prose .cm-sections .hub-section:first-child, .prose .cm-sections .hub-section { margin-top: clamp(56px, 6vw, 96px); }
 
 /* Made with Lead-DBS on black, right under the voices (layouts/home.html): the heading and its pill, under
-   them the endless grid of figures (7 of 12 columns) and the fan of journal covers. The grid is a rounded
-   frame a shade lighter than the band; the tiles inside fade out towards its edges (the one gradient here),
-   so they seem to run on beyond it. assets/js/main/home.js places the tiles (.made-tile) with transforms
-   and lifts the fan's cards in turn (.is-up). On a phone: assets/css/phone-home.css. */
+   them two equal halves a wide gap apart: the endless grid of figures, its left edge under the heading's,
+   and the fan of journal covers, centred in its half at the grid's mid-height. The grid is a plain window
+   with rounded corners: no frame, no ground and no fade, the tiles are simply cropped by it.
+   assets/js/main/home.js places the tiles (.made-tile) with transforms and lifts the fan's cards in turn
+   (.is-up). On a phone: assets/css/phone-home.css. */
 .home > .research-band { background: var(--render); color: var(--on-render); padding-top: 0; --ink: var(--on-render); --muted: color-mix(in oklab, var(--on-render) 60%, transparent); --line: color-mix(in oklab, var(--on-render) 16%, transparent); }
 .home > .research-band .section-head { align-items: center; }
 .home > .research-band .section-head h2 { color: var(--on-render); }
-.made { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gutter); --made-h: clamp(460px, 40vw, 580px); }
-.made-grid { position: relative; height: var(--made-h); border-radius: var(--r-lg); overflow: hidden; isolation: isolate;
-  background: color-mix(in oklab, var(--on-render) 5%, var(--render)); cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
-.made-grid::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 1px var(--line); }
+.made { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-8); --made-h: clamp(440px, 37vw, 540px); }
+.made-grid { position: relative; height: var(--made-h); border-radius: var(--r-lg); overflow: hidden; isolation: isolate; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
 .made-grid.is-dragging { cursor: grabbing; }
 .made-grid:focus-visible { outline-offset: 4px; border-radius: var(--r-lg); }
-.made-grid__plane { position: absolute; inset: 0; --fade: 72px;
-  -webkit-mask-image: linear-gradient(90deg, transparent, var(--render) var(--fade), var(--render) calc(100% - var(--fade)), transparent), linear-gradient(transparent, var(--render) var(--fade), var(--render) calc(100% - var(--fade)), transparent);
-  -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent, var(--render) var(--fade), var(--render) calc(100% - var(--fade)), transparent), linear-gradient(transparent, var(--render) var(--fade), var(--render) calc(100% - var(--fade)), transparent);
-  mask-composite: intersect; }
+.made-grid__plane { position: absolute; inset: 0; }
 .made-tile { position: absolute; top: 0; left: 0; display: block; border-radius: var(--r-md); overflow: hidden; background: color-mix(in oklab, var(--on-render) 10%, var(--render)); will-change: transform; -webkit-user-drag: none; }
 .made-tile img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transition: transform 600ms var(--ease); }
 .made-tile:hover img { transform: scale(1.04); }
@@ -1464,14 +1460,14 @@ html:not(.js) .g-item__info { display: block; padding: var(--s-2) 0 var(--s-3); 
 .made-fan { position: relative; display: block; height: var(--made-h); color: var(--on-render); }
 .made-fan:focus-visible { outline-offset: 4px; border-radius: var(--r-lg); }
 .made-fan__deck { position: absolute; inset: 0; }
-.made-fan__card { --spread: 7.5deg; --w: clamp(124px, 12.6vw, 190px); position: absolute; left: 50%; bottom: calc(var(--made-h) * .27); width: var(--w); aspect-ratio: 230 / 300; margin-left: calc(var(--w) / -2);
+.made-fan__card { --spread: 7.5deg; --w: clamp(124px, 12.2vw, 176px); position: absolute; left: 50%; bottom: calc(var(--made-h) * .34); width: var(--w); aspect-ratio: 230 / 300; margin-left: calc(var(--w) / -2);
   border-radius: var(--r-xs); overflow: hidden; background: color-mix(in oklab, var(--on-render) 12%, var(--render));
   box-shadow: 0 0 0 1px color-mix(in oklab, var(--on-render) 10%, transparent), -10px 14px 36px -10px color-mix(in oklab, var(--render) 80%, transparent);
   transform-origin: 50% 210%; transform: rotate(calc(var(--k) * var(--spread))); transition: transform 900ms var(--ease-out); }
 .made-fan__card.is-up { transform: rotate(calc(var(--k) * var(--spread))) translateY(var(--lift, -56px)); }
 .made-fan__card.is-top { --lift: -20px; }
 .made-fan__card img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.made-fan__cap { position: absolute; left: 0; right: 0; bottom: calc(var(--made-h) * .1); display: grid; justify-items: center; font-size: var(--t-small); line-height: 1.45; text-align: center; color: var(--muted); transition: opacity 300ms var(--ease); }
+.made-fan__cap { position: absolute; left: 0; right: 0; bottom: calc(var(--made-h) * .17); display: grid; justify-items: center; font-size: var(--t-small); line-height: 1.45; text-align: center; color: var(--muted); transition: opacity 300ms var(--ease); }
 .made-fan__cap b { font-weight: 500; color: var(--on-render); }
 .made-fan__cap.is-changing { opacity: 0; }
 .made-fan:hover .made-fan__cap b { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }

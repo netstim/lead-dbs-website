@@ -148,12 +148,10 @@
   .research-band > .wrap { padding-top: var(--s-8); border-top: 1px solid color-mix(in srgb, var(--on-render) 10%, transparent); }
   .research-band .section-head { display: block; margin-bottom: var(--s-6); }
   .research-band .section-head__more { display: none; }
-  /* the grid of figures from edge to edge, 360px tall, its sides fading into the band; a finger drags it
-     sideways and the page still scrolls up and down through it; the fan under it, smaller (Fable's phone deck) */
+  /* the grid of figures 360px tall; a finger drags it sideways and the page still scrolls up and down
+     through it; the fan under it, smaller (Fable's phone deck) */
   .made { gap: var(--s-5); --made-h: 360px; }
-  .made-grid { margin-inline: calc(-1 * var(--gut)); border-radius: 0; background: none; touch-action: pan-y; }
-  .made-grid::after { content: none; }
-  .made-grid__plane { --fade: 40px; }
+  .made-grid { touch-action: pan-y; }
   .made-fan { height: 300px; }
   .made-fan__card { --spread: 5.5deg; --w: 124px; bottom: 66px; transform-origin: 50% 240%; --lift: -40px; }
   .made-fan__card.is-top { --lift: -16px; }
