@@ -63,7 +63,7 @@ document.querySelectorAll('.paper-rows').forEach((list) => {
 });
 
 // ------------------------------------------------------------------ the citation snippet
-// The home page citation tabs select a format and update the shared clipboard controller's target.
+// Every citation box (partial cite-box.html): its tabs select a format and point its Copy button at it.
 document.querySelectorAll('.cite-snip').forEach((box) => {
   const bar = box.querySelector('.cite-snip__bar');
   if (!bar) return;

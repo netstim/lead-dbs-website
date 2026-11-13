@@ -58,8 +58,8 @@ drawn as `h2`).
   Get notified with "Add to calendar", and the flyer named in front matter `flyer:` (see [Events](#events)).
 - **First steps** has its own template, `layouts/first-steps.html` (front matter `layout: first-steps`): its steps
   (title, text, picture, actions) and its fixes are lists in the page's front matter.
-- **What to cite**: the paper in a `copybox` with "Copy the citation", written with `{{< paper id "full" >}}`
-  where the paper is in `data/papers.yaml` (atlas pages, method articles, Lead-OR, Lead Tutor, Cite Lead-DBS).
+- **What to cite**: the paper's citation box, written with `{{< paper id "full" >}}` on a line of its own, where
+  the paper is in `data/papers.yaml` (atlas pages, method articles, Lead-OR, Lead Tutor, Cite Lead-DBS).
 - **"Lead-DBS" never breaks at its hyphen**: the templates wrap it in a no-wrap span
   (`layouts/_partials/nobreak-html.html`; headings, links, tables, menus, cards, news and atlas entries).
   Write the ordinary hyphen.
@@ -206,11 +206,15 @@ Text on the left …
 ```
 
 - `chapters` lists a video's chapters, one `Title: hh:mm:ss` per line, the time on the left.
-- **Citations** in lists are plain text with only the DOI linked: `Author, A. (2020). Title. *Journal*, 1, 2–3. [doi:10.1000/xyz](https://doi.org/10.1000/xyz)`.
+- **Citations** are never written as text: every paper to cite is an entry of `data/papers.yaml` and is shown with
+  one component, the citation box (`layouts/_partials/cite-box.html`): the reference with its DOI linked once,
+  Reference and BibTeX tabs and a Copy button that copies the format shown. It is used on the home page, by
+  `{{< paper id "full" >}}` and by the Cite lists of the atlas catalogues.
 - **Papers about Lead-DBS, its methods and tools** are written once, in `data/papers.yaml`: `{{< paper ewert2019 >}}`
   links one by its short name ("Ewert 2019", as in the tools table on Features), `{{< paper ewert2019 "full" >}}`
-  prints the full reference (Cite, Lead-OR, Lead Tutor, dependencies), and `{{% papers %}}` lists them all by group
-  (Publications). A paper added there appears on Publications by itself.
+  prints its citation box (Cite, Lead-OR, Lead Tutor, method articles), and `{{% papers %}}` lists them all by group
+  (Publications). A paper added there appears on Publications by itself, unless its group is `cited` (the
+  papers the atlas, connectome and dependency pages ask you to cite, `listed: false`).
 - The download page has its own template, `layouts/download.html` (front matter `layout: download`): what Lead-DBS
   needs and how to install it come from `data/release.yaml` and `data/install.yaml`, the servers and the standalone
   builds from the page's front matter (First steps links to `/download/#install`).
@@ -230,7 +234,7 @@ Text on the left …
   around the chapter's `##` heading and a one-line lede; from 1024px the render is a low band beside them,
   below that it follows them, and a phone leaves it out. Its number has the style of the numbers of `jumps`
   and of the steps of First steps: a label.
-- `copybox` holds a text to copy as a whole (the methods paragraph on `/about/citing_leaddbs/` and every "What to cite"); the button
+- `copybox` holds a text to copy as a whole (the methods paragraph on `/about/citing_leaddbs/`; a paper to cite uses its citation box instead); the button
   copies it as plain text and is hidden where the browser cannot copy. All copy buttons use
   `assets/js/clipboard.js`: `data-copy` names an element ID; `data-copy-text` holds a literal command.
   Citation tabs update the target ID. Success and failure are announced through a status element;

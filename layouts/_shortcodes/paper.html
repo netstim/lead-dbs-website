@@ -1,11 +1,12 @@
 {{- /* A paper from data/papers.yaml, so each paper is written once.
          {{< paper ewert2019 >}}         a link with its short name: "Ewert 2019"
-         {{< paper ewert2019 "full" >}}  the full reference with its DOI link */ -}}
+         {{< paper ewert2019 "full" >}}  the citation box (partial cite-box.html): the reference, its BibTeX and
+                                         a Copy button; on a line of its own, e.g. under "What to cite" */ -}}
 {{- $id := .Get 0 -}}
 {{- $p := index (partialCached "paper/data.html" "papers").papers $id -}}
 {{- if not $p }}{{ errorf "paper shortcode: no paper %q in data/papers.yaml (%s)" $id .Page.File.Path }}{{ end -}}
 {{- if eq (.Get 1) "full" -}}
-{{- partial "paper/full.html" $p -}}
+{{- partial "cite-box.html" (dict "id" $id "uid" (printf "p%d" .Ordinal)) -}}
 {{- else -}}
-<a href="https://doi.org/{{ $p.doi }}">{{ $p.short }}</a>{{ with $p.note }} ({{ . }}){{ end }}
+<a href="{{ with $p.doi }}https://doi.org/{{ . }}{{ else }}{{ $p.url }}{{ end }}">{{ $p.short }}</a>{{ with $p.note }} ({{ . }}){{ end }}
 {{- end -}}

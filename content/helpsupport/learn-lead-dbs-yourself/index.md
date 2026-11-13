@@ -73,9 +73,7 @@ where the images were acquired.
 </div>
 <div class="cite-row__text">
 
-{{% copybox label="Copy the citation" %}}
 {{< paper madan2025 "full" >}}
-{{% /copybox %}}
 
 </div>
 </div>

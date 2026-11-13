@@ -1,0 +1,29 @@
+{{- /* One paper of data/papers.yaml as a BibTeX entry, its key the paper's id:
+         {{ partial "paper/bibtex.html" (dict "id" "neudorfer2023" "paper" $p) }}
+       The entry type follows the paper's type: @article (the default), @inproceedings, @book, or @misc for
+       datasets, software and pages. Authors become "Last, F. and Last, F."; "et al." or "…" ends them with
+       "and others". Page ranges get BibTeX's "--". A field the paper does not have is left out. */ -}}
+{{- $p := .paper -}}
+{{- $type := $p.type | default "article" -}}
+{{- $names := findRE `[^,]+,[^,]+` (replace (replace (replace $p.authors ", et al." "") "…," "") "& " "") -}}
+{{- $authors := delimit (apply $names "strings.TrimSpace" ".") " and " -}}
+{{- if or (strings.Contains $p.authors "et al.") (strings.Contains $p.authors "…") }}{{ $authors = printf "%s and others" $authors }}{{ end -}}
+{{- $container := dict "article" "journal" "inproceedings" "booktitle" "book" "series" "misc" "howpublished" -}}
+{{- $f := slice (dict "k" "author" "v" $authors) (dict "k" "title" "v" $p.title) -}}
+{{- with $p.journal }}{{ $f = $f | append (dict "k" (index $container $type) "v" .) }}{{ end -}}
+{{- with $p.edition }}{{ $f = $f | append (dict "k" "edition" "v" .) }}{{ end -}}
+{{- with $p.volume }}{{ $f = $f | append (dict "k" "volume" "v" .) }}{{ end -}}
+{{- with $p.issue }}{{ $f = $f | append (dict "k" "number" "v" (replace . "–" "-")) }}{{ end -}}
+{{- with $p.pages }}{{ $f = $f | append (dict "k" "pages" "v" (replace . "–" "--")) }}{{ end -}}
+{{- with $p.year }}{{ $f = $f | append (dict "k" "year" "v" (string .)) }}{{ end -}}
+{{- with $p.publisher }}{{ $f = $f | append (dict "k" "publisher" "v" .) }}{{ end -}}
+{{- with $p.address }}{{ $f = $f | append (dict "k" "address" "v" .) }}{{ end -}}
+{{- with $p.note }}{{ $f = $f | append (dict "k" "note" "v" .) }}{{ end -}}
+{{- with $p.doi }}{{ $f = $f | append (dict "k" "doi" "v" .) }}{{ end -}}
+{{- with $p.url }}{{ if not $p.doi }}{{ $f = $f | append (dict "k" "url" "v" .) }}{{ end }}{{ end -}}
+{{- $w := 0 }}{{ range $f }}{{ $w = math.Max $w (len .k) }}{{ end -}}
+@{{ $type }}{ {{- .id -}},
+{{ range $i, $x := $f }}{{ if $i }},
+{{ end }}  {{ printf "%-*s" (int $w) $x.k }} = { {{- $x.v -}} }{{ end }}
+}
+{{- /**/ -}}

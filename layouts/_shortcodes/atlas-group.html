@@ -1,8 +1,8 @@
 {{- /* One group of an atlas catalogue: its heading (in the page's table of contents), a line on what
        the group holds, then every atlas of the group in one fixed pattern: a small thumbnail, name and
        paper, what it covers, whether it comes with Lead-DBS; then, folded away in a <details> so the page
-       stays short, a few lines on what it is (55 to 70 characters per line), "Get it" and "Cite" beside
-       the picture. A link to an entry's anchor opens it (assets/js/atlas-filter.js); the browser's
+       stays short, a few lines on what it is (55 to 70 characters per line), "Get it" and "Cite" (a
+       citation box per paper, partial cite-box.html) beside the picture. A link to an entry's anchor opens it (assets/js/atlas-filter.js); the browser's
        find-in-page opens it too. Data: the page's atlases.yaml (partial atlas/data.html). Use the % form,
        so the heading takes part in the table of contents:
          {{% atlas-group "thalamus" %}} */ -}}
@@ -48,9 +48,16 @@
   {{- $get := slice }}{{ if $a.preinstalled }}{{ $get = $get | append "Comes with Lead-DBS." }}{{ end -}}
   {{- range $a.get }}{{ $get = $get | append . }}{{ end -}}
   {{- $getHTML := "" }}{{ range $get }}{{ $getHTML = printf "%s<li>%s</li>" $getHTML ($p.RenderString .) }}{{ end -}}
-  {{- $citeHTML := "" }}{{ range $a.cite }}{{ $citeHTML = printf "%s<li>%s</li>" $citeHTML ($p.RenderString .) }}{{ end -}}
-  {{- range $a.papers }}{{ $pp := index hugo.Data.papers.papers . }}{{ if not $pp }}{{ errorf "atlas-group: %s: no paper %q in data/papers.yaml" $p.File.Path . }}{{ end }}{{ $citeHTML = printf "%s<li>%s</li>" $citeHTML (partial "paper/full.html" $pp) }}{{ end -}}
-  {{- $list := cond (isset $a "cite_numbered") "ol" "ul" -}}
+  {{- /* Cite: each paper (an id of data/papers.yaml, or {paper, label}) as a citation box (partial cite-box.html),
+         numbered when the text refers to them by number (cite_numbered); cite_note a line before them */ -}}
+  {{- $citeHTML := "" }}{{ with $a.cite_note }}{{ $citeHTML = printf `<p class="atlas__cite-note">%s</p>` ($p.RenderString .) }}{{ end -}}
+  {{- range $i, $c := $a.cite -}}
+    {{- $c = cond (reflect.IsMap $c) $c (dict "paper" $c) -}}
+    {{- if not (index hugo.Data.papers.papers $c.paper) }}{{ errorf "atlas-group: %s: atlas %q cites %q, which is not in data/papers.yaml" $p.File.Path $a.id $c.paper }}{{ end -}}
+    {{- $label := $c.label | default "" -}}
+    {{- if $a.cite_numbered }}{{ $label = printf "[%d]%s" (add $i 1) (cond (eq $label "") "" (printf " %s" $label)) }}{{ end -}}
+    {{- $citeHTML = printf "%s%s" $citeHTML (partial "cite-box.html" (dict "id" $c.paper "uid" $a.id "label" $label "compact" true)) -}}
+  {{- end -}}
   {{- $more := "" }}{{ with $a.page }}{{ with site.GetPage . }}{{ $more = printf `<p class="atlas__more"><a href="%s">%s: the full description</a></p>` .RelPermalink .LinkTitle }}{{ end }}{{ end -}}
   {{- $html = printf `%s<section class="atlas" aria-labelledby="%s" data-atlas-entry>%s<div class="atlas__head">%s<div class="atlas__title"><h3 id="%s">%s%s<a class="heading-anchor" href="#%s" aria-label="Link to this atlas">#</a></h3><p class="atlas__meta"><span>%s</span>%s</p></div></div><details class="atlas__details"><summary>Details<span class="sr-only">: %s</span></summary><div class="atlas__body%s"><div class="atlas__about">%s%s</div><div class="atlas__refs">%s%s</div>%s</div></details></section>`
       $html $a.id $also $thumb $a.id $a.name (cond (isset $a "ref") (printf ` <span class="atlas__ref">(%s)</span>` $a.ref) "") $a.id $a.covers
@@ -59,7 +66,7 @@
       (cond (gt (len $fig) 0) " atlas__body--fig" "")
       (cond (isset $a "about") ($p.RenderString (dict "display" "block") (default "" $a.about)) "") $more
       (cond (gt (len $getHTML) 0) (printf `<h4 class="atlas__label">Get it</h4><ul>%s</ul>` $getHTML) "")
-      (cond (gt (len $citeHTML) 0) (printf `<h4 class="atlas__label">Cite</h4><%s class="atlas__cite">%s</%s>` $list $citeHTML $list) "")
+      (cond (gt (len $citeHTML) 0) (printf `<h4 class="atlas__label">Cite</h4><div class="atlas__cite">%s</div>` $citeHTML) "")
       $fig -}}
 {{- end }}
 ## {{ $g.title }} {#{{ $id }}}

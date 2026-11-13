@@ -223,9 +223,7 @@ The video below shows these features (recorded in 2017):
 
 **Ewert et al. 2018,** NeuroImage.
 
-{{% copybox label="Copy the citation" %}}
 {{< paper ewert2018 "full" >}}
-{{% /copybox %}}
 {{% /hub-section %}}
 
 {{% hub-section %}}

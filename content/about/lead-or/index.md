@@ -55,9 +55,7 @@ Lead-OR uses coregistrations and segmentations prepared in Lead-DBS. Follow the
 
 **Oxenford et al. 2022,** eLife.
 
-{{% copybox label="Copy the citation" %}}
 {{< paper oxenford2022 "full" >}}
-{{% /copybox %}}
 
 The preprint is on [medRxiv](https://www.medrxiv.org/content/10.1101/2021.08.09.21261792v1).
 {{% /hub-section %}}
