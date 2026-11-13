@@ -326,7 +326,7 @@ async function checkManualLayout() {
       gutter: innerWidth - document.documentElement.clientWidth,
       viewport: document.documentElement.clientWidth,
       brand: rect('.docs-brand > a'), links: rect('.docs-links'),
-      download: rect('.docs-download'), rail: rect('.manual-nav'), article: rect('.manual-body'), bar: rect('.docs-header__bar'),
+      download: rect('.docs-download'), rail: rect('.manual-nav'), article: rect('.manual-body'),
     };
   });
   try {
@@ -340,8 +340,7 @@ async function checkManualLayout() {
         require(box.gutter >= 12, `Scrollbar space is not reserved on ${chapter} at ${width}px`);
         require(Math.abs(box.rail.x - 24) <= 1, `Chapter rail drifts away from the viewport edge at ${width}px`);
         require(Math.abs(box.brand.x - 24) <= 1, `Docs brand drifts away from the viewport edge at ${width}px`);
-        // measured against the header bar itself: a fixed header's width next to a forced scrollbar differs between Chrome builds
-        require(Math.abs(box.download.right - (box.bar.right - 24)) <= 1, `Header actions are inset at ${width}px`);
+        require(Math.abs(box.download.right - (box.viewport - 24)) <= 1, `Header actions are inset at ${width}px`);
         require(box.article.width <= 737 && box.article.x >= box.rail.right + 47, `Article overlaps navigation or exceeds its reading width at ${width}px`);
         if (baseline) {
           for (const part of ['brand', 'links', 'download', 'rail', 'article']) {
