@@ -1,0 +1,29 @@
+/* ---------------------------------------------------------------- footer
+   (layouts/_partials/footer.html) On the dark ground, short: the logo and four links on one row, a
+   hairline, the legal line in the label size (the manual's one-line footer uses the same). Links muted,
+   white under the pointer. A phone: the logo, the links two across in 44px rows, the legal line. */
+.footer { padding: var(--s-7) 0 var(--s-6); font-size: var(--t-small); }
+.footer .wrap { min-width: 0; }
+.footer__main { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-4) var(--s-7); }
+.footer .footer__logo { gap: var(--s-2); font-size: var(--t-card); }
+.footer__logo img { height: 32px; }
+.footer ul { list-style: none; margin: 0; padding: 0; }
+.footer__links { display: flex; flex-wrap: wrap; gap: 0 var(--s-6); }
+.footer :is(.footer__links, .footer__legal) a { display: inline-flex; align-items: center; min-height: 32px; color: var(--muted); transition: color var(--t-out) var(--ease); }
+.footer :is(.footer__links, .footer__legal) a:hover { color: var(--ink); transition-duration: var(--t-in); }
+.footer .ext-mark { margin-left: .2em; font-size: .85em; }
+.footer__legal { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 var(--s-5); margin-top: var(--s-5); padding-top: var(--s-3);
+  border-top: 1px solid var(--line); font-size: var(--t-label); color: var(--muted); }
+.footer__legal p { margin: 0; }
+.footer .footer__legal-links { display: flex; flex-wrap: wrap; gap: 0 var(--s-5); }
+@media (max-width: 1023px) { .footer :is(.footer__links, .footer__legal) a { min-height: 44px; } }
+@media (max-width: 639px) {
+  .footer { padding: var(--s-6) 0 calc(var(--s-4) + env(safe-area-inset-bottom)); }
+  .footer__main { display: grid; gap: var(--s-3); }
+  .footer__links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--s-5); }
+  .footer__links a { width: 100%; font-size: var(--t-note); }
+  .footer__legal { display: grid; margin-top: var(--s-3); padding-top: var(--s-4); }
+  .footer__sep { display: none; }
+  .footer__ruo { display: block; }
+  .footer__legal .footer__inst { min-height: 0; }
+}

@@ -111,7 +111,7 @@ Give it a `title`, a `description` (at most 155 characters) and, if it belongs i
 | A page's closing cards | its front matter `next:` (see [Page types](#page-types)) |
 | Main menu, legal links, the GitHub link | `hugo.toml` → `[menus]` (the entry with `params.role = "action"`, identifier `download`, is drawn as the header's button) and `[params] github`; see [Site structure](docs/structure.md) |
 | Download / contact / developer-meeting form fields | `data/forms.yaml` |
-| Colours, fonts, page styles | `assets/css/site.css` (tokens, buttons, grid: `assets/css/base.css`; phones, below 640px: `assets/css/phone.css` and the pages' `phone-*.css`) |
+| Colours, fonts, page styles | `assets/css/site.css` (palette, fonts); tokens, buttons, grid: `assets/css/base.css`; one file per component or page family, phone rules included (see [Design](docs/design.md)) |
 | Templates | `layouts/` |
 
 ## Checks
@@ -211,4 +211,5 @@ since, `content/news/_index.md` included.
   `dict "page" "body" "class"` with their own body. Change the common page structure there.
 - `layouts/_partials/page-type.html` holds each type's policy (width, sidebar); `has-toc.html`, `sidebar.html`,
   `section-nav.html` and `next-steps.html` apply it.
-- `assets/css/base.css` owns form layout and field defaults; `site.css` holds the variations of single components.
+- `assets/css/base.css` owns form layout and field defaults; a component's variations live in its own file
+  (`components.css` for shared ones, else its family's sheet, docs/design.md).

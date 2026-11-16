@@ -35,7 +35,7 @@
   // A word with pages gets a chevron button beside it (the disclosure pattern with top-level links): the
   // word stays a link to its group's page, the button opens and closes the word's panel and says
   // whether it is open (aria-expanded). In the sheet it opens the pages under the word. On a desktop the
-  // panel also opens on hover (assets/css/site.css); from the keyboard, Tab goes from word to word, Enter
+  // panel also opens on hover (assets/css/header.css); from the keyboard, Tab goes from word to word, Enter
   // or Space on the chevron opens the panel and the next Tab enters it, Arrow Down on the word or the
   // chevron opens it and moves to its first link, Arrow Up and Down, Home and End move inside it, and
   // Escape (or the focus leaving the word) closes it, the focus back on the chevron.
@@ -43,7 +43,7 @@
   const close = (item, updateBand = true) => { item.classList.remove('is-expanded'); item.sync(updateBand); };
   // One frame holds the desktop panels, as tall as the open one (a closed panel is display: none and
   // measures 0). Commit all disclosure states before measuring it, so switching groups never briefly
-  // closes the band; its height then eases to the new panel's (assets/css/site.css).
+  // closes the band; its height then eases to the new panel's (assets/css/header.css).
   const band = document.createElement('div');
   band.className = 'nav__band';
   band.setAttribute('aria-hidden', 'true');
@@ -188,7 +188,7 @@
 
 // ------------------------------------------------------------------ the header over a dark ground
 // While a black ground ([data-nav-dark]: the home page's black bands and the Download page's head)
-// lies under the header, the header takes the black too (.nav.is-dark, assets/css/site.css);
+// lies under the header, the header takes the black too (.nav.is-dark, assets/css/header.css);
 // once the ground has scrolled past, the light bar returns.
 // Until this has run, a page that starts on a black ground (body.top-dark) shows the dark header from
 // the first paint; html.nav-ready hands the state to this script, and only then do the colours fade.

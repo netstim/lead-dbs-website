@@ -1,0 +1,16 @@
+{{- /* The page's family: the names of the style sheets (assets/css/<name>.css) and scripts
+       (assets/js/bundles/<name>.js, where there is one) it loads after the shared ones, in that order
+       (head.html, baseof.html; docs/design.md). The home page, the manual and the gallery have their own;
+       every other page takes "content" (the content building blocks), and the events pages, the download
+       family (Download, First steps, Contribute) and a page with the showcase shortcodes add theirs. */ -}}
+{{- $family := slice -}}
+{{- if .IsHome }}{{ $family = slice "home" -}}
+{{- else if eq .Layout "manual" }}{{ $family = slice "manual" -}}
+{{- else if and (eq .Section "gallery") (eq .Kind "section") }}{{ $family = slice "gallery" -}}
+{{- else -}}
+  {{- $family = slice "content" -}}
+  {{- if eq .Section "events" }}{{ $family = $family | append "events" }}{{ end -}}
+  {{- if in (slice "download" "first-steps" "contribute") .Layout }}{{ $family = $family | append "download" }}{{ end -}}
+  {{- if or (.HasShortcode "capabilities") (.HasShortcode "tools") (.HasShortcode "chapter") (.HasShortcode "jumps") }}{{ $family = $family | append "features" }}{{ end -}}
+{{- end -}}
+{{- return $family -}}

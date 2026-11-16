@@ -5,7 +5,7 @@
      full-screen sheet that the menu button opens (assets/js/main/header.js); below 640px GitHub and the
      Download button live in that sheet too, so nothing in the bar is pushed off a phone's screen.
      Without script (no "js" class on <html>, head.html) the menu button is a link to #site-menu, which
-     opens the same sheet with every group's pages listed (assets/css/content.css). */ -}}
+     opens the same sheet with every group's pages listed (assets/css/header.css). */ -}}
 {{ $page := . }}
 {{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Identifier "download" }}{{ $dl = .URL }}{{ end }}{{ end }}
 {{ $search := "" }}{{ with site.GetPage "/search" }}{{ $search = .RelPermalink }}{{ end }}

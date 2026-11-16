@@ -42,7 +42,6 @@
            width and height stay the original's, which give the box its proportions */ -}}
     {{- $pw := $po.Resize (printf "%dx webp q78" (math.Min $po.Width 640 | int)) -}}
     {{- $fig = printf `<figure class="atlas__fig clip"><div class="atlas__mat"><video src="%s" poster="%s" width="%d" height="%d" muted loop playsinline preload="none" controls aria-label="%s" data-clip></video></div></figure>` $v.RelPermalink $pw.RelPermalink $po.Width $po.Height ($a.alt | htmlEscape) -}}
-    {{- $p.Store.Set "atlas-clip" true -}}
   {{- end -}}
   {{- $also := "" }}{{ range $a.also }}{{ $also = printf `%s<span id="%s"></span>` $also . }}{{ end -}}
   {{- $get := slice }}{{ if $a.preinstalled }}{{ $get = $get | append "Comes with Lead-DBS." }}{{ end -}}
@@ -74,4 +73,3 @@
 {{ $g.intro }}
 
 <div class="atlas-list" data-atlas-group="{{ $id }}">{{ partial "nobreak-html.html" ($html | replaceRE `\n\s*\n` "\n") }}</div>
-{{ if $p.Store.Get "atlas-clip" }}{{ partial "clip-script.html" $p }}{{ end }}

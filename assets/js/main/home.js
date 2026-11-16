@@ -1,3 +1,5 @@
+import { showPlayState } from '../lib/play-state.js';
+
 // ------------------------------------------------------------------ the home page's endless grid of figures
 // Made with Lead-DBS (layouts/home.html): every figure of data/gallery.yaml in masonry columns that repeat
 // in both directions, so the grid never ends. Five columns make one period across, each column its own
@@ -74,15 +76,9 @@
 
   let raf = 0, last = 0, near = false, built = false, dragging = false, drifting = !still.matches, held = false;
   const pause = document.querySelector('[data-made-pause]');
-  const icons = {
-    pause: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
-    play: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6L12.6 8z" fill="currentColor"/></svg>',
-  };
   const stop = (on) => {
     drifting = on;
-    if (!pause) return;
-    pause.innerHTML = on ? icons.pause : icons.play;
-    pause.setAttribute('aria-label', on ? 'Pause the figures' : 'Play the figures');
+    if (pause) showPlayState(pause, on, 'the figures');
   };
   if (pause && !still.matches) {
     pause.hidden = false;
@@ -216,7 +212,7 @@
 
 // ------------------------------------------------------------------ the home page's hero: its entrance
 // The page head sets html.hero-wait, which keeps the hero's title hidden and its clip a little larger
-// (assets/css/site.css); the lead and the buttons stand from the first paint, so the main action never
+// (assets/css/home.css); the lead and the buttons stand from the first paint, so the main action never
 // looks unavailable. Here the title's words rise out of their own lines (under 400ms, line after line)
 // while the clip settles. The hero simply shows under reduced motion and when the page opens scrolled
 // past it; if this runs late (html.hero-late, set 700ms after the head), the style sheet has already
@@ -308,14 +304,9 @@
   const video = document.querySelector('[data-hero-video]');
   const btn = document.querySelector('[data-hero-pause]');
   if (!video || !btn) return;
-  const icons = {
-    pause: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
-    play: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6L12.6 8z" fill="currentColor"/></svg>',
-  };
   const show = (playing) => {
     btn.hidden = false;
-    btn.setAttribute('aria-label', playing ? 'Pause the video' : 'Play the video');
-    btn.innerHTML = playing ? icons.pause : icons.play;
+    showPlayState(btn, playing, 'the video');
   };
   let attached = false;
   const attach = () => {
@@ -355,7 +346,7 @@
 
 // ------------------------------------------------------------------ the quotes on a phone
 // There the two rows stand still and the quotes are one row of cards that scrolls sideways
-// (assets/css/phone-home.css): while it scrolls it is a tab stop of its own, so the arrow keys move it.
+// (assets/css/home.css): while it scrolls it is a tab stop of its own, so the arrow keys move it.
 (() => {
   const drift = document.querySelector('.drift');
   if (!drift) return;
@@ -373,16 +364,8 @@
   const btn = document.querySelector('[data-drift-pause]');
   const drift = document.querySelector('.drift');
   if (!btn || !drift || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const icons = {
-    pause: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
-    play: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6L12.6 8z" fill="currentColor"/></svg>',
-  };
   btn.hidden = false;
-  btn.addEventListener('click', () => {
-    const held = drift.classList.toggle('is-held');
-    btn.innerHTML = held ? icons.play : icons.pause;
-    btn.setAttribute('aria-label', held ? 'Play the quotes' : 'Pause the quotes');
-  });
+  btn.addEventListener('click', () => showPlayState(btn, !drift.classList.toggle('is-held'), 'the quotes'));
 })();
 
 // ------------------------------------------------------------------ the home page's globe: its script

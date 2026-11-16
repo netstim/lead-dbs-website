@@ -1,7 +1,7 @@
 {{ define "main" }}
 {{- /* The home page. Texts and lists: content/_index.md (front matter). Release facts: data/release.yaml.
      Events: data/events.yaml. Pictures: assets/images/renders/<file> (Hugo makes the WebP sizes).
-     Sections take the height of their content, on one vertical rhythm (assets/css/site.css, "home").
+     Sections take the height of their content, on one vertical rhythm (assets/css/home.css).
      The one scroll-linked motion of the site is the electrode insertion in #localize (assets/js/insertion.js). */ -}}
 {{ $p := .Params }}
 {{ $r := hugo.Data.release }}
@@ -18,7 +18,7 @@
   {{ $pd := $poster.Resize "1600x webp q78" }}
   {{- /* the hero: one rounded black panel on the white page, under the light header. In it the clip, the
          words over its black left half, and the facts line and the pause button along its lower edge
-         (assets/css/site.css, "home: the hero") */}}
+         (assets/css/home.css, "home: the hero") */}}
   <section class="hero home-hero" data-enter aria-labelledby="hero-h">
     {{- /* a phone: the hero's black runs up under the header, so the header turns black over it (header.js
            reads [data-nav-dark]; this ground is not drawn from 640px, so it counts there as nothing) */}}
@@ -227,7 +227,7 @@
        a hand of cards about a point far below them; one lifts after another, slowly, its journal and date
        under the fan (a pointer on a card lifts it and holds the fan). The fan is one link to the covers on Publications.
        Under reduced motion nothing moves by itself; the grid can still be dragged. On a phone the grid is
-       360px tall and the fan sits under it, smaller (assets/css/phone-home.css). */}}
+       360px tall and the fan sits under it, smaller (assets/css/home.css). */}}
   {{ with $p.research }}
   {{ $gallery := site.GetPage "/gallery" }}
   {{ $pubs := site.GetPage "/about/publications" }}
@@ -291,7 +291,7 @@
   {{ $figures := dict "countries" $d.countries "months" $d.months | jsonify | resources.FromString "data/downloads.json" | fingerprint }}
   {{- /* the globe's script (about 70 KB with d3 and topojson), the map and the figures are fetched only when
          the section comes near the screen: main/home.js adds the script, which then fetches the rest */}}
-  {{ $globe := slice (resources.Get "js/vendor/d3-array.min.js") (resources.Get "js/vendor/d3-geo.min.js") (resources.Get "js/vendor/topojson-client.min.js") (resources.Get "js/globe.js" | minify) | resources.Concat "js/globe.bundle.js" | fingerprint }}
+  {{ $globe := slice (resources.Get "js/vendor/d3-array.min.js") (resources.Get "js/vendor/d3-geo.min.js") (resources.Get "js/vendor/topojson-client.min.js") (resources.Get "js/globe.js" | js.Build (dict "targetPath" "js/globe.js") | minify) | resources.Concat "js/globe.bundle.js" | fingerprint }}
   <section class="section home-sec worldwide" id="worldwide" aria-labelledby="worldwide-h" data-map="{{ $map.RelPermalink }}" data-downloads="{{ $figures.RelPermalink }}" data-globe-src="{{ $globe.RelPermalink }}" data-globe-integrity="{{ $globe.Data.Integrity }}">
     <div class="wrap">
       <div class="grid split home-split">

@@ -1,0 +1,220 @@
+/* The events pages (layouts/events/list.html, layouts/event.html, layouts/_partials/events/), loaded on
+   them alone. On a phone, after lu.ma: /events/ is a rail of days with one card per event, then the past
+   workshops as a grid of pictures (an event's own page is one layout for every width). Where the phone
+   needs other markup than the desktop, it is a .phone-only copy beside the desktop's (events/card.html,
+   m-card.html), and the desktop's is hidden there; assets/js/main/events.js updates both. */
+/* ---------------------------------------------------------------- events (data/events.yaml) */
+.event-list { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--s-4); }
+.prose .event-list { list-style: none; padding: 0; margin: 0 0 var(--s-6); }
+.event-list > li, .prose .event-list > li { margin: 0; max-width: none; }
+.event { scroll-margin-top: calc(var(--nav) + var(--s-4)); }
+.event[hidden] { display: none; }
+.event > *, .prose .event > * { margin: 0; max-width: none; }
+.event > * + *, .prose .event > * + * { margin-top: var(--s-4); }
+.event > .event__title, .prose .event > .event__title { margin-top: var(--s-1); }
+.event__date { font-size: var(--t-small); font-weight: 500; color: var(--action); }
+.event .event__title, .prose .event__title { font: var(--title-weight) var(--t-card)/1.3 var(--font-display); letter-spacing: -0.01em; }
+.event__title a { color: var(--ink); text-decoration: none; }
+.event__title a:hover { color: var(--action); }
+.event__local { display: block; color: var(--muted); font-size: var(--t-note); }
+.event .event__text, .prose .event .event__text { max-width: 62ch; }
+.event .event__note, .prose .event .event__note { color: var(--ink); font-size: var(--t-note); line-height: 1.55; max-width: 62ch; margin: 0; }
+.event__upcoming-only > p, .prose .event__upcoming-only > p { margin: 0; }
+/* the note's links in the card's own link style (ink, underlined), like its other links */
+.event__note a, .prose .event__note a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
+.event__note a:hover, .prose .event__note a:hover { color: var(--action); text-decoration-color: currentColor; }
+@media (max-width: 639px) { .event .event__note, .prose .event .event__note { font-size: var(--t-note); } }
+.prose .event__register .btn { text-decoration: none; }
+.event-list--past:not(:has(> li)) { display: none; }
+.event-list--past .event { background: transparent; border: 1px solid var(--line); }
+.event-list--past .event__date { color: var(--muted); }
+.event-list--past .event__upcoming-only { display: none; }
+.event-empty { color: var(--muted); }
+.event-empty a { color: var(--action); text-decoration: underline; text-underline-offset: 3px; }
+/* The events page: each upcoming event a card led by its flyer, as on x.ai's news: the flyer whole on the
+   light surface, a countdown chip on it, then one line of date, time and place, the title and the one
+   action. Two to a row from 768px. */
+.event-list:has(> .event--listing) { grid-template-columns: minmax(0, 1fr); gap: var(--s-7) var(--gutter); }
+@media (min-width: 768px) { .event-list:has(> .event--listing) { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.event.event--listing { display: flex; flex-direction: column; gap: var(--s-4); margin: 0; padding: 0; border: 0; background: none; }
+.event.event--listing > *, .prose .event.event--listing > * { margin: 0; }
+.event__poster { position: relative; display: grid; place-items: center; aspect-ratio: 4 / 3; padding: var(--s-5); border-radius: var(--r-lg); background: var(--surface); overflow: hidden; text-decoration: none !important; }
+.event__poster::after { content: none; }
+.event__poster img { position: absolute; inset: 0; margin: auto; display: block; max-width: calc(100% - 2 * var(--s-5)); max-height: calc(100% - 2 * var(--s-5)); width: auto; height: auto; border-radius: var(--r-xs); box-shadow: var(--shadow-2); transition: transform 400ms var(--ease); }
+.event__poster:hover img { transform: translateY(-3px); }
+.event--listing .event__body { display: grid; gap: var(--s-1); }
+.prose .event--listing .event__meta { display: flex; flex-wrap: wrap; gap: 0 var(--s-2); margin: 0; color: var(--muted); font-size: var(--t-small); line-height: 1.5; font-variant-numeric: tabular-nums; }
+.prose .event--listing .event__title { margin: 0 0 var(--s-1); font-size: var(--t-card); line-height: 1.2; letter-spacing: -.02em; }
+.prose .event--listing .event__title-link { color: var(--ink); text-decoration: none; }
+.prose .event--listing .event__title-link:hover { color: var(--action); }
+.event--listing .event__upcoming-only { margin-top: var(--s-3); }
+.event__upcoming-only > .event__note + .event__register { margin-top: var(--s-4); }
+/* the facts of an event card (events page): date (with its countdown), time and place, a line each with a
+   small icon */
+.prose .event__facts-list { list-style: none; display: grid; gap: 6px; margin: var(--s-2) 0 0; padding: 0; max-width: none; font-size: var(--t-small); line-height: 1.4; color: var(--ink); }
+.prose .event__facts-list li { display: flex; align-items: center; gap: var(--s-2); margin: 0; }
+.event__ic { width: 16px; height: 16px; flex: none; fill: none; stroke: var(--muted); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.event__facts-list .ev-countdown { color: var(--action); }
+/* ---------------------------------------------------------------- Events (full width)
+   The upcoming events as a schedule in one hairline frame: a row per event, its day set large on the
+   left, the title, a sentence, time and place and the actions in the middle, the flyer small on the
+   right. The button is the black pill of the download page. */
+html .event-list:has(> .event--listing) { grid-template-columns: minmax(0, 1fr); gap: 0; border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden; }
+html .prose .event.event--listing { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); align-items: start; padding: var(--s-5); border: 0; border-radius: 0; background: var(--bg); }
+html .prose .event.event--listing + .event--listing { border-top: 1px solid var(--line); }
+@media (min-width: 768px) { html .prose .event.event--listing { grid-template-columns: 9.5rem minmax(0, 1fr) auto; gap: var(--s-6); padding: var(--s-6); } }
+.event__day { display: grid; gap: var(--s-2); justify-items: start; }
+.event__day time { display: grid; gap: 2px; }
+.event__day b { font-size: var(--t-h3); font-weight: 600; line-height: 1; letter-spacing: -.04em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.event__day time span { color: var(--muted); font-size: var(--t-small); }
+.event__day .ev-countdown { padding: 3px 9px; border-radius: var(--r-pill); background: var(--ink); color: var(--bg); font-size: var(--t-xs); font-weight: 500; line-height: 1.3; }
+.event__day .ev-countdown::before { content: none; }
+html .prose .event--listing .event__body { display: grid; gap: var(--s-3); }
+html .prose .event--listing .event__title { margin: 0; font-size: var(--t-sub); }
+html .prose .event--listing .event__text { max-width: 58ch; margin: 0; color: var(--muted); font-size: var(--t-note); line-height: 1.55; }
+html .prose .event--listing .event__facts-list { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-5); margin: 0; padding: 0; list-style: none; max-width: none; font-size: var(--t-small); }
+html .prose .event--listing .event__facts-list li { display: flex; align-items: center; gap: var(--s-2); margin: 0; }
+.event__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); margin-top: var(--s-2); }
+html .prose .event--listing .event__actions .event__upcoming-only { margin: 0; }
+html .prose a.event__more { color: var(--ink); font-size: var(--t-note); font-weight: 500; text-decoration: none; background-image: none; }
+html .prose a.event__more:hover { text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 639px) { html .prose a.event__more { display: inline-flex; align-items: center; min-height: var(--btn-h); } }
+html .event--listing .event__poster { display: block; aspect-ratio: auto; width: 132px; padding: 0; border-radius: var(--r-xs); background: none; overflow: hidden; box-shadow: 0 0 0 1px var(--line), 0 10px 24px -14px rgb(0 0 0 / .35); }
+html .event--listing .event__poster img { position: static; max-width: none; max-height: none; width: 100%; height: auto; border-radius: 0; box-shadow: none; }
+@media (max-width: 767px) { html .event--listing .event__poster { display: none; } }
+.event-list--past .event__upcoming-only { display: none !important; }
+@media (max-width: 639px) {
+  /* -------------------------------------------------------------- /events/: "Upcoming" and the rail
+     "Upcoming" a small muted label. Per event a rail item: an 8px dot, a dashed line down to the next
+     event, the day as a small heading (the countdown at its right, in coral), the card 12px under it */
+  .prose.events-page > #upcoming { margin: 0 0 var(--s-4); color: var(--muted); font: 500 var(--t-label)/1.5 var(--font-text); letter-spacing: 0; }
+  .prose.events-page > .event-list:not(:has(> li)) { display: none; }
+  html .event-list:has(> .event--listing) { display: block; margin: 0; border: 0; border-radius: 0; overflow: visible; }
+  html .prose .event.event--listing { position: relative; display: block; margin: 0; padding: 0 0 var(--s-6) var(--s-5); border: 0; background: none; }
+  html .prose .event.event--listing + .event--listing { border-top: 0; }
+  html .prose .event.event--listing:last-child { padding-bottom: var(--s-5); }
+  html .prose .event--listing > :is(.event__day, .event__body, .event__poster) { display: none; }
+  .event--listing::before { content: ""; position: absolute; top: 7px; left: 0; width: 8px; height: 8px; border-radius: 50%;
+    background: color-mix(in oklab, var(--ink) 25%, transparent); }
+  .event--listing:not(:last-child)::after { content: ""; position: absolute; top: 24px; bottom: 2px; left: 3.5px; border-left: 1px dashed var(--line-strong); }
+  html .prose .event--listing > .ev-day { display: flex; align-items: baseline; gap: var(--s-3); max-width: none; margin: 0 0 var(--s-3);
+    font: 400 var(--t-body)/1.375 var(--font-text); }
+  .ev-day time { display: flex; gap: var(--s-2); font-variant-numeric: tabular-nums; }
+  .ev-day b { font-weight: 500; }
+  .ev-day time span { color: var(--muted); }
+  .ev-day__soon { display: inline-block; margin-left: auto; color: var(--p-accent-text); font-size: var(--t-label); font-weight: 500; }
+  .ev-day__soon::first-letter { text-transform: uppercase; }
+  /* -------------------------------------------------------------- the event card (events/m-card.html)
+     a 12px frame with a 1px ring; the body one link (time, title and place left, the flyer as a 3:4
+     poster right); a strip at its foot with the state of registration and one small pill */
+  .ev-card { border-radius: var(--r-md); background: var(--bg); box-shadow: 0 0 0 1px var(--line); overflow: hidden; }
+  .prose .ev-card__body { display: flex; align-items: flex-start; gap: var(--s-3); padding: var(--s-4); color: var(--ink);
+    text-decoration: none; background: none; }
+  .ev-card__text { flex: 1; min-width: 0; }
+  .prose .ev-card__line { display: flex; align-items: center; gap: var(--s-2); max-width: none; margin: 0; color: var(--muted); font: 400 var(--t-small)/1.43 var(--font-text); }
+  .prose .ev-card__line time { white-space: nowrap; }
+  .prose .ev-card__line .ev-card__date { color: var(--ink); font-weight: 500; }
+  .prose .ev-card__line:first-child { display: block; }
+  .prose .ev-card__title { margin: var(--s-1) 0 0; color: var(--ink); font: 600 var(--t-card)/1.26 var(--font-display); letter-spacing: var(--display-tracking); }
+  .prose .ev-card__place { margin-top: var(--s-2); }
+  .ev-ic { flex: none; width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .prose img.ev-card__poster { flex: none; width: 78px; height: 104px; object-fit: cover; border-radius: var(--r-sm); box-shadow: 0 0 0 1px var(--line); }
+  .ev-card__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); min-height: 52px; padding: var(--s-2) var(--s-2) var(--s-2) var(--s-4);
+    border-top: 1px solid var(--line); background: color-mix(in oklab, var(--surface) 50%, var(--bg)); }
+  .prose .ev-card__status { max-width: none; margin: 0; color: var(--muted); font: 400 var(--t-label)/1.5 var(--font-text); }
+  .prose .ev-card__foot .btn { flex: none; text-decoration: none; }
+  .ev-card__foot .ext-mark { margin-left: 0; }
+  .event-list--past .ev-card__foot { display: none; }
+  /* -------------------------------------------------------------- the line for no dates: one quiet tinted row */
+  .prose .event-empty { max-width: none; margin: 0; padding: var(--s-3) var(--s-4); border-radius: var(--r-md);
+    background: color-mix(in oklab, var(--surface) 50%, var(--bg)); font: 400 var(--t-small)/1.5 var(--font-text); }
+}
+/* Past workshops on a dotted world map: the land in faint dots, a marker per city with its name and
+   years beside it (the side from data/places.yaml); the next workshop's city in coral */
+.prose .past-workshops__h { margin: var(--s-6) 0 var(--s-4); font-size: var(--t-card); }
+.prose .workshop-archive__more { margin: var(--s-5) 0 0; font-size: var(--t-small); }
+/* Past workshops (events page): a mosaic, as on x.ai: the newest large (two columns, two rows), the
+   others small; city and date over the picture's foot on a soft shade; a text-only banner gives way to
+   the city's name on a tint. Hover lifts the picture a little. */
+.prose ol.ws-mosaic { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: clamp(140px, 16vw, 200px); grid-auto-flow: dense; gap: var(--s-3); margin: var(--s-2) 0 0; padding: 0; max-width: none; }
+@media (min-width: 768px) { .prose ol.ws-mosaic { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.prose .ws-tile { position: relative; margin: 0; max-width: none; border-radius: var(--r-lg); overflow: hidden; background: var(--render); }
+.prose .ws-tile + .ws-tile { margin: 0; }
+.ws-tile--lead { grid-column: span 2; grid-row: span 2; }
+.prose .ws-tile a { position: absolute; inset: 0; display: block; color: var(--on-render); text-decoration: none; background-image: none; }
+.ws-tile img { width: 100%; height: 100%; object-fit: cover; transition: transform 600ms var(--ease); }
+.ws-tile a:hover img { transform: scale(1.03); }
+.ws-tile a::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgb(0 0 0 / .62), transparent 48%); pointer-events: none; }
+.ws-tile__cap { position: absolute; left: var(--s-4); right: var(--s-4); bottom: var(--s-3); z-index: 1; font-size: var(--t-small); color: rgb(255 255 255 / .8); }
+.ws-tile__cap b { display: block; font-size: var(--t-card); font-weight: 600; letter-spacing: -.01em; color: var(--on-render); }
+.ws-tile--lead .ws-tile__cap { left: var(--s-5); bottom: var(--s-5); }
+.ws-tile--lead .ws-tile__cap b { font-size: var(--t-h3); letter-spacing: -.02em; }
+.prose .ws-tile--type { background: var(--surface); }
+.ws-tile--type a::after { content: none; }
+.ws-tile__word { position: absolute; inset: 0; display: grid; place-items: center; font: 600 var(--t-h3)/1 var(--font-display); letter-spacing: -.04em; color: var(--muted); }
+.prose .ws-tile--type .ws-tile__cap { color: var(--muted); }
+.ws-tile--type .ws-tile__cap b { display: none; }
+/* five tiles in three columns: the fourth (the last row's first) takes two columns, so the rows end flush */
+@media (min-width: 768px) { .ws-tile:nth-child(4):nth-last-child(2) { grid-column: span 2; } }
+@media (max-width: 767px) { .ws-tile:last-child:nth-child(even) { grid-column: span 2; } }
+@media (max-width: 639px) {
+  /* -------------------------------------------------------------- past events and past workshops
+     "Past events" only while the list under it has an event; the workshops a grid of 4:3 pictures, two
+     across, the city and the date under each picture */
+  .events-page:not(:has(.event-list--past > li)) > #past,
+  .prose .past-workshops__h { display: none; }
+  .prose.events-page > #past, .prose .ev-past-h { margin: var(--s-8) 0 var(--s-6); font: 500 var(--t-h2)/1.125 var(--font-display); letter-spacing: var(--display-tracking-xl); }
+  .prose ol.ws-mosaic { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; gap: calc(var(--s-6) - var(--s-1)) var(--s-3); margin: 0; }
+  .prose .ws-tile { grid-column: auto; grid-row: auto; border-radius: 0; background: none; overflow: visible; }
+  .prose .ws-tile a { position: static; color: var(--ink); }
+  .ws-tile a::after { content: none; }
+  .ws-tile img { aspect-ratio: 4 / 3; height: auto; border-radius: var(--r-md); box-shadow: 0 0 0 1px var(--line); background: var(--surface); }
+  .ws-tile a:hover img { transform: none; }
+  .ws-tile__cap { position: static; display: block; margin-top: var(--s-3); color: var(--muted); font: 400 var(--t-label)/1.5 var(--font-text); }
+  .ws-tile__cap b { color: var(--ink); font: 500 var(--t-note)/1.4 var(--font-text); letter-spacing: 0; }
+  .ws-tile--lead .ws-tile__cap b { font-size: var(--t-note); letter-spacing: 0; }
+  .ws-tile:last-child:nth-child(even) { grid-column: auto; }
+  .prose .workshop-archive__more { margin-top: var(--s-3); }
+  .prose .workshop-archive__more .link { min-height: 44px; padding: 0; background: none; color: var(--ink); font-size: var(--t-note); font-weight: 500; text-decoration: none; }
+  .prose .workshop-archive__more .link::after { width: 14px; height: 14px; margin: 0; background: var(--muted); }
+}
+/* /events/: where new dates are announced (partial updates.html), one hairline row under the list */
+.prose a.ev-news { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); max-width: 640px; min-height: 56px; margin: var(--s-5) 0 0;
+  padding: var(--s-3) 0; border-bottom: 1px solid var(--line); background: none; color: var(--ink); font-size: var(--t-body); font-weight: 500; text-decoration: none; }
+.ev-news__go { display: inline-flex; align-items: center; gap: var(--s-1); color: var(--muted); font-weight: 400; transition: color var(--t-out) var(--ease); }
+.ev-news__go::after { content: ""; width: 14px; height: 14px; background: currentColor; -webkit-mask: var(--arrow) center / 12px no-repeat; mask: var(--arrow) center / 12px no-repeat; }
+.prose a.ev-news:hover .ev-news__go { color: var(--action); }
+/* ---------------------------------------------------------------- an event's page (layouts/event.html)
+   One opening at every width: the title, the page's line, the facts as hairline rows (a label column and
+   the value), the actions; the real flyer beside them from 640px (a 7:5 split, the flyer at most 440px
+   wide), under them on a phone, so the date and Register come first. The flyer keeps its own colours,
+   framed by a hairline. */
+.ev-head__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
+.ev-head__main > h1 { margin-top: var(--s-4); }
+.ev-head__text { max-width: 52ch; margin-top: var(--s-5); font-size: var(--t-lead); line-height: 1.5; }
+.ev-head__text > * { margin: 0; }
+.ev-head__text > * + * { margin-top: .6em; }
+.ev-facts { margin: var(--s-6) 0 0; border-top: 1px solid var(--line); max-width: 640px; }
+.ev-facts__row { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: var(--s-4); padding: var(--s-3) 0; border-bottom: 1px solid var(--line); }
+.ev-facts__row[hidden] { display: none; }
+.ev-facts dt { padding-top: 2px; color: var(--muted); font-size: var(--t-small); }
+.ev-facts dd { margin: 0; font-size: var(--t-body); }
+.ev-facts dd a { color: inherit; text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+.ev-facts dd a:hover { text-decoration-color: currentColor; }
+.ev-facts__local { display: block; color: var(--muted); font-size: var(--t-small); }
+.ev-head__actions { margin-top: var(--s-6); }
+.ev-head__over { margin-top: var(--s-6); color: var(--muted); }
+.ev-head__over a { color: var(--ink); }
+.ev-head__flyer { margin: 0; }
+.ev-head__flyer a { display: block; border-radius: var(--r-md); overflow: hidden; box-shadow: 0 0 0 1px var(--line); }
+.ev-head__flyer img { display: block; width: 100%; height: auto; }
+@media (min-width: 640px) {
+  .ev-head__grid--flyer { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: clamp(32px, 5vw, 96px); align-items: start; }
+  .ev-head__flyer { justify-self: end; width: 100%; max-width: 440px; margin-top: var(--s-5); }
+}
+@media (max-width: 639px) {
+  .ev-head__flyer { width: min(100%, 340px); margin-top: var(--s-4); }
+  .ev-facts__row { grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--s-3); }
+}
+.ev-page__end { padding: var(--s-4) 0 var(--s-9); }
+.ev-page__end .next-steps { margin-top: var(--s-7); }

@@ -1,7 +1,7 @@
 // Renders the Mermaid-style diagrams in assets/diagrams/*.mmd to SVG with Pele (https://pele.run, MIT),
 // once, so the site ships plain SVG and no diagram script. Each .mmd gives <name>.svg (left to right) and
 // <name>-tb.svg (top to bottom, for phones); layouts inline them and theme them with the --pele-* custom
-// properties (assets/css/site.css). Run after editing a .mmd:
+// properties (assets/css/home.css, .flow-diagram). Run after editing a .mmd:
 //   npm ci && node scripts/diagrams.mjs        (Pele at the version locked in package-lock.json)
 import { render } from 'pele';
 import fs from 'node:fs';

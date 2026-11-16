@@ -2,7 +2,7 @@
        with its first frame as the poster picture.
          {{< clip src="melbourne.mp4" poster="melbourne-poster.jpg" alt="What it shows" caption="Optional caption" >}}
        Nothing is loaded until the clip comes near the screen; it plays while it is in view and stops
-       outside it. For visitors who ask for reduced motion, and without script, it shows the poster
+       outside it (assets/js/main/clips.js). For visitors who ask for reduced motion, and without script, it shows the poster
        with the player's controls instead. Make the MP4 from a GIF with ffmpeg (see docs/editing.md, Pictures in pages). */ -}}
 {{- $src := .Page.Resources.Get (.Get "src") -}}
 {{- if not $src }}{{ errorf "clip: no file %q next to %s" (.Get "src") .Page.File.Path }}{{ end -}}
@@ -14,4 +14,3 @@
   <video src="{{ $src.RelPermalink }}" poster="{{ $poster.RelPermalink }}" width="{{ $poster.Width }}" height="{{ $poster.Height }}" muted loop playsinline preload="none" controls aria-label="{{ $alt }}" data-clip></video>
   {{ with .Get "caption" }}<figcaption>{{ . | $.Page.RenderString }}</figcaption>{{ end }}
 </figure>
-{{- partial "clip-script.html" .Page }}

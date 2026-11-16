@@ -1,6 +1,4 @@
-// A fragment as an id (shared with manual.js, later in the same bundle). A malformed one ("#%") is used
-// as it is: decodeURIComponent would throw and stop every script after this one in the bundle.
-const leadFragment = (hash) => { try { return decodeURIComponent(hash); } catch { return hash; } };
+import { leadFragment } from '../lib/fragment.js';
 
 // ------------------------------------------------------------------ table of contents
 // The sticky contents on a desktop mark the section being read (the last heading above the top third).

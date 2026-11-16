@@ -44,8 +44,8 @@ EXEMPT_MAX = 6
 # line-by-line reading missed them): "file: selector property". Each is allowed until it is fixed, and then
 # has to go from this list, like a budget.
 KNOWN = {
-    "site.css: .btn height",          # the phone's wrapping button (@media (max-width: 639px))
-    "site.css: .btn padding-block",
+    "components.css: .btn height",    # the phone's wrapping button (@media (max-width: 639px))
+    "components.css: .btn padding-block",
 }
 
 CSS = sorted(pathlib.Path("assets/css").glob("*.css"))

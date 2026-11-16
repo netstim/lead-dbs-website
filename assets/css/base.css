@@ -1,7 +1,6 @@
 /* Lead-DBS base styles: design tokens, element defaults, the 12-column grid, buttons, links, cards,
-   form fields, focus rings and hover/press feedback. assets/css/site.css builds the header, the pages
-   and the footer on these; layouts/_partials/head.html bundles both files into one stylesheet.
-   The palette and fonts are set at the top of site.css. */
+   form fields, focus rings and hover/press feedback: the first file of the shell, which every page loads
+   (layouts/_partials/head.html, docs/design.md). The palette and fonts are set in site.css. */
 
 /* ---------------------------------------------------------------- tokens
    Every size, radius and spacing of the site comes from here (enforced by .github/scripts/check-design.py).
@@ -198,7 +197,7 @@ p { text-wrap: pretty; }
 
 /* ---------------------------------------------------------------- links
    .link: a word with an arrow after it. It and the links in a paragraph outside a page's text (.prose has
-   its own, site.css) draw their underline as a 1px background line, which on hover and focus fills in
+   its own, page.css) draw their underline as a 1px background line, which on hover and focus fills in
    from the left in the text's colour. */
 .link { display: inline-flex; align-items: center; gap: var(--s-2); min-height: 24px; font-weight: 500; color: var(--ink); }  /* a 24px target at least (44px on a phone) */
 
@@ -224,7 +223,8 @@ p:not(:where(.prose *)) a:not([class]) { --rest: color-mix(in oklab, currentColo
    - .card: an outlined link card (a door to a page: help, resources, child pages, the 404 page).
      The border takes the accent on hover; nothing moves.
    - .panel: a filled content card on the surface colour (events, quotes, the citation, sidebar cards).
-   - a media card: a picture with its words under it, no box (the home page's features, news). */.panel { padding: var(--s-5); border-radius: var(--r-lg); background: var(--card); color: var(--ink); }
+   - a media card: a picture with its words under it, no box (the home page's features, news). */
+.panel { padding: var(--s-5); border-radius: var(--r-lg); background: var(--card); color: var(--ink); }
 @media (min-width: 1024px) { .panel { padding: var(--s-6); } }
 
 /* a picture that zooms a little under the pointer (news thumbnails) */

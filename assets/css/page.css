@@ -1,0 +1,254 @@
+/* An inner page (shell): its head (title, breadcrumb, render panel), the documentation text and its
+   tables and pictures, the sidebar and the table of contents. The manual shares the text rules. */
+/* ---------------------------------------------------------------- inner pages: the head
+   (layouts/_partials/page-head.html) On the page's own ground: the breadcrumb, the title in medium weight,
+   under a news post its date. A page that carries its group's render (hubs, showcases, First steps:
+   page-head-render.html) shows it in a wide rounded black panel under the words, 4:1 (4:3 on a phone).
+   The Download page's head is the one black band (.page-head--render), its render on the right. */
+main.page { padding-top: var(--nav); }
+.page-head { padding: var(--s-7) 0 0; }
+.page-head h1 { max-width: 20ch; margin-top: var(--s-4); font-size: var(--t-h1); font-weight: 500; line-height: var(--lh-h1); text-wrap: balance; overflow-wrap: break-word; }
+.page-head__meta { margin-top: var(--s-4); color: var(--muted); }
+.page-head__kicker { margin: 0; color: var(--muted); font-size: var(--t-small); font-weight: 500; }
+.page-head__kicker + h1 { margin-top: var(--s-3); }
+.page-head__panel { margin-top: var(--s-7); overflow: hidden; border-radius: var(--r-lg); background: var(--render); aspect-ratio: 4 / 1; }
+.page-head__panel > .page-head__render { display: block; width: 100%; height: 100%; object-fit: cover; object-position: var(--focus, 50% 70%); }
+.breadcrumb ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1) var(--s-2); font-size: var(--t-small); color: var(--muted); }
+.breadcrumb li + li::before { content: "/"; margin-right: var(--s-2); opacity: .6; }
+/* each crumb a target at least 24px tall (44px below 1024px, where it is tapped) */
+.breadcrumb a { display: inline-block; padding-block: 4px; color: var(--muted); }
+.breadcrumb a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 1023px) {
+  .breadcrumb a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding-block: 0; }
+  .breadcrumb ol { row-gap: 0; }
+  .page-head h1 { margin-top: var(--s-1); }
+}
+/* a phone: the breadcrumb on one line, Home and the nearest linked ancestor (.breadcrumb__parent, set by
+   breadcrumb.html), "Home / … / Parent" when that is not the second crumb; the current page is the title
+   right under it. A long parent name ends in an ellipsis rather than wrapping. */
+@media (max-width: 639px) {
+  .breadcrumb ol { flex-wrap: nowrap; min-width: 0; }
+  .breadcrumb li { flex: none; white-space: nowrap; }
+  .breadcrumb li:not(:first-child, .breadcrumb__parent) { display: none; }
+  .breadcrumb .breadcrumb__parent:not(:first-child) { display: flex; align-items: center; flex: 0 1 auto; min-width: 0; overflow: hidden; }
+  .breadcrumb .breadcrumb__parent a { display: block; overflow: hidden; text-overflow: ellipsis; line-height: 44px; }
+}
+/* a phone: the title 44/46 on the page, a render panel 4:3 under it, the breadcrumb a size smaller */
+@media (max-width: 639px) {
+  .page-head { padding-top: var(--s-6); }
+  .page-head h1 { max-width: none; font-size: var(--t-h1); line-height: var(--lh-h1); }
+  .page-head__panel { margin-top: var(--s-5); aspect-ratio: 4 / 3; }
+  .breadcrumb ol { font-size: var(--t-label); }
+  .breadcrumb li + li::before { content: "\203A"; }
+  .breadcrumb .breadcrumb__parent--far::before { content: "\203A  \2026  \203A"; white-space: pre; }
+}
+/* The article keeps its readable measure; navigation is a compact rail with a generous gutter.
+   Below 1024px the rail follows the article. */
+:root { --col: 740px; --text: 612px; }
+@media (min-width: 1024px) { :root { --text: 648px; } }
+.doc-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-7); padding: var(--s-6) 0 var(--s-9); align-items: start; }
+/* under a render panel a little more air than under a title */
+.page-head:has(.page-head__panel) + .doc-layout { padding-top: var(--s-7); }
+.doc-layout > :not(.sidebar) { max-width: var(--col); --measure: 100%; }
+/* a wide page (page types showcase and hub): the container's full width; running text keeps its measure */
+.doc-layout.doc-layout--wide { grid-template-columns: minmax(0, 1fr); }
+.doc-layout--wide > .prose { grid-column: 1 / -1; max-width: none; --measure: min(100%, var(--text)); }
+.doc-layout--wide .toc--top { display: block; max-width: var(--col); }
+
+/* ---------------------------------------------------------------- documentation text
+   17px on phones and tablets, 18px on a desktop, line height 1.7; lines of about 70 characters (--text).
+   Inner pages use the home page's steps (base.css): the title --t-h2 (48), sections --t-h3 (32),
+   subsections --t-sub (23), the lead --t-lead (20), the text 18, small print --t-small (14) and
+   labels 13; below 1024px each step is a little smaller. */
+.prose { min-width: 0; font-size: var(--t-doc); line-height: 1.7; color: var(--ink); }
+.prose > :first-child { margin-top: 0; }
+/* the first paragraph under the title is the page's lead: larger, so the eye has a way in */
+.prose:where(:not(.manual-prose)) > p:first-child:not([class]):not(:has(> img, > picture, > .img-zoom, > .btn, > iframe, > video)),
+.prose:where(:not(.manual-prose)) > .toc--top:first-child + p:not([class]):not(:has(> img, > picture, > .img-zoom, > .btn, > iframe, > video)) {
+  font-size: var(--t-lead); line-height: 1.55; max-width: var(--measure); margin-bottom: 1.3em; }
+@media (min-width: 1024px) { .prose > .toc--top:first-child + * { margin-top: 0; } }
+.prose :is(p, ul, ol, dl, blockquote, figure, pre, .table-scroll, table, iframe) { margin: 0 0 1.1em; }
+.prose :is(p, li, dd, blockquote) { max-width: var(--measure); }
+/* the text keeps its measure; a paragraph that holds only a picture, a captioned picture, a video, a table
+   and the grids use the whole main column, so a wide figure is not squeezed to the line length */
+.prose > p:has(> .img-zoom:only-child, > img:only-child, > picture:only-child),
+.prose > :is(.img-figure, .video-embed, .table-scroll, .row, .gallery, .slideshow, .logos, .testimonials, figure) { max-width: none; }
+/* a tall picture is held to the window's height, shrinking inside its own box (no "width: auto": a
+   picture that waits for lazy loading would then be 0px wide and push the text down when it comes) */
+.prose > p:has(> .img-zoom:only-child, > img:only-child) img { max-height: 80svh; object-fit: contain; object-position: left center; }
+.prose :is(h1, h2, h3, h4, h5, h6) { position: relative; font-family: var(--font-display); font-weight: var(--display-weight); color: var(--ink); line-height: 1.25; letter-spacing: -0.015em; text-wrap: balance; text-transform: none; scroll-margin-top: calc(var(--nav) + var(--s-4)); }
+/* one weight per size: a page's sections (32) and subsections (23) are 600, as every title of the site
+   below 48; 700 is kept for the two large steps (48, 80) */
+.prose h2 { font-size: var(--t-h3); font-weight: var(--title-weight); line-height: 1.2; margin: 1.7em 0 .5em; }
+.prose h3 { font-size: var(--t-sub); line-height: 1.25; margin: 1.5em 0 .4em; }
+.prose :is(h3, h4, h5, h6) { font-weight: var(--title-weight); }
+.prose :is(h4, h5, h6) { font-size: 1em; margin: 1.4em 0 .4em; }
+.prose :is(h1, h2, h3, h4) + :is(h1, h2, h3, h4) { margin-top: .4em; }
+.heading-anchor { margin-left: .35em; padding: 0 .15em; color: var(--muted); font-weight: 400; text-decoration: none; opacity: 0; transition: opacity var(--dur) var(--ease); }
+.prose :is(h2, h3, h4, h5, h6):hover .heading-anchor, .heading-anchor:focus-visible { opacity: 1; }
+@media (hover: none) { .heading-anchor { display: none; } }
+.prose ul, .prose ol { padding-left: 1.4em; }
+.prose ul { list-style: disc; } .prose ol { list-style: decimal; }
+.prose li::marker { color: var(--muted); }
+.prose li + li { margin-top: .35em; }
+.prose li > :is(ul, ol) { margin: .35em 0 0; }
+/* links in text (the ones Markdown writes: no class): one underline, in the accent. A component's link has
+   a class and its own style, so nothing here has to be undone; :where() keeps this at one class and one
+   element, so a component's rule inside a page's text wins by its own specificity. */
+:where(.prose) a:not([class]) { color: var(--action); background-image: none; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: color-mix(in oklab, var(--action) 45%, transparent); }
+/* a long address breaks anywhere rather than run out of its column; in a table a link's words stay whole
+   (the column takes their width; a long address still breaks), so no cell splits a word such as
+   "Connectomics" to save width */
+.prose a:not([class]) { overflow-wrap: break-word; }
+.prose :is(td, th) :is(a, code) { overflow-wrap: break-word; }
+:where(.prose) a:not([class]):hover { text-decoration-color: currentColor; }
+.prose strong, .prose b { font-weight: 600; color: inherit; }
+.prose em { font-style: italic; }
+.prose img { max-width: 100%; height: auto; border-radius: var(--r-sm); }
+.prose picture { display: contents; }
+.prose hr { border: 0; border-top: 1px solid var(--line); margin: 2.5em 0; }
+.prose code { font-family: var(--font-mono); font-size: .88em; background: var(--surface); padding: .1em .35em; border-radius: var(--r-xs); overflow-wrap: anywhere; }
+.prose pre { font-family: var(--font-mono); font-size: var(--t-small); background: var(--surface); padding: var(--s-4); border-radius: var(--r-md); overflow-x: auto; }
+.prose pre code { background: none; padding: 0; }
+.prose blockquote { padding: var(--s-4) var(--s-5); border-left: 3px solid var(--accent); background: var(--surface); border-radius: 0 var(--r-md) var(--r-md) 0; }
+.prose blockquote > :last-child { margin-bottom: 0; }
+.prose blockquote a:not([class]) { color: var(--ink); background-image: none; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: var(--line-strong); overflow-wrap: break-word; }
+.prose blockquote a:not([class]):hover { color: var(--action); }
+.prose iframe { max-width: 100%; border: 0; }
+.prose video { max-width: 100%; height: auto; }
+/* Tables use open rows and typographic hierarchy; wide content scrolls within its region. */
+.table-scroll { overflow-x: auto; max-width: 100%; }
+.table-scroll:focus-visible { outline: 2px solid var(--action); outline-offset: 2px; }
+.prose table { border-collapse: collapse; width: 100%; font-size: var(--t-note); line-height: 1.5; }
+.prose > table, .prose .col > table, .prose div:not(.table-scroll) > table { display: block; overflow-x: auto; max-width: 100%; }
+.prose .table-scroll table { margin: 0; }
+.prose th, .prose td { border-bottom: 1px solid var(--line); padding: var(--s-4) var(--s-4) var(--s-4) 0; text-align: left; vertical-align: top; }
+.prose th:last-child, .prose td:last-child { padding-right: 0; }
+.prose thead th { padding-top: 0; padding-bottom: var(--s-3); border-bottom-color: var(--line-strong); background: none; color: var(--muted); font-weight: 500; }
+.prose tbody td { color: var(--muted); }
+.prose tbody td:first-child, .prose tbody th { color: var(--ink); font-weight: 500; background: none; }
+@media (min-width: 640px) {
+.prose .table--templates :is(th, td):nth-child(1) { width: 23%; }
+.prose .table--templates :is(th, td):nth-child(2) { width: 37%; }
+.prose .table--templates :is(th, td):nth-child(3) { width: 14%; }
+.prose .table--templates :is(th, td):nth-child(4) { width: 26%; }
+}
+@media (max-width: 639px) {
+  .prose .table--stack td { color: var(--ink); }
+  .prose .table--stack :is(th, td) { width: auto; }
+}
+/* a scrolling table holds its screen-reader-only labels (absolutely positioned) inside its own box,
+   so they cannot widen the page on a phone */
+.table-scroll { position: relative; }
+/* a Markdown table marked {.table--stack}: on a phone each row is a block, each cell under its column's
+   name, so nothing scrolls sideways (the normative connectomes, the release history) */
+@media (max-width: 639px) {
+  .table-scroll:has(> .table--stack) { overflow: visible; border: 0; }
+  .prose .table--stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .prose .table--stack, .prose .table--stack tbody, .prose .table--stack tr, .prose .table--stack td { display: block; }
+  .prose .table--stack tr { padding: var(--s-3) 0; border-top: 1px solid var(--line); }
+  .prose .table--stack td { padding: 2px 0; border: 0; }
+  .prose .table--stack td:first-child { font-weight: 600; }
+  /* an empty cell (a row that continues the group above, a tool without a link) takes no line */
+  .prose .table--stack td:empty { display: none; }
+  .prose .table--stack td:not(:first-child)::before { content: attr(data-label) ": "; color: var(--muted); font-size: var(--t-small); }
+  /* a row heading (the release history's version) is the block's first line */
+  .prose .table--stack th[scope="row"] { display: block; padding: 0; border: 0; }
+}
+/* a row of a table that a link points to (by an empty span with the id in its first cell): it lands
+   below the header, its cells tinted */
+.prose td > span[id]:empty { scroll-margin-top: calc(var(--nav) + var(--s-8)); }
+.prose tr:has(> td > span[id]:target) > td { background: color-mix(in oklab, var(--action) 8%, transparent); }
+/* pictures in text open large: a link to the full file */
+.img-zoom { display: inline-block; max-width: 100%; position: relative; cursor: zoom-in; border-radius: var(--r-sm); vertical-align: top; }
+.img-zoom img { display: block; }
+.img-zoom:focus-visible { outline: 2px solid var(--action); outline-offset: 3px; }
+.img-zoom::after { content: ""; position: absolute; right: 8px; bottom: 8px; width: 28px; height: 28px; border-radius: 50%; opacity: 0; transition: opacity var(--dur) var(--ease);
+  background: rgb(31 48 56 / .72) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7'/%3E%3C/svg%3E") center / 14px no-repeat; }
+.img-zoom:is(:hover, :focus-visible)::after { opacity: 1; }
+/* a Markdown image with a title: the picture and its caption under it, upright */
+.img-figure { display: block; margin: 0 0 .6em; }
+.img-figure > :is(img, a, picture) { display: block; }
+.img-figure__caption { display: block; margin-top: var(--s-2); font-size: var(--t-note); font-style: normal; line-height: 1.5; color: var(--muted); max-width: var(--measure); }
+/* one caption style on every page (the one above: 14px, muted, upright, right under the picture): a
+   paragraph set wholly in italics right after a picture (the old pages' captions) is drawn the same */
+.prose > p:has(> .img-zoom, > picture, > img) + p:has(> em:only-child) { margin-top: calc(var(--s-2) - .6em); font-size: var(--t-note); line-height: 1.5; color: var(--muted); }
+.prose > p:has(> .img-zoom, > picture, > img) + p > em:only-child { font-style: normal; }
+.prose > p:has(> .img-zoom:only-child, > picture:only-child, > img:only-child) { margin-bottom: .6em; }
+
+/* row / col (the old page builder): equal columns fit as many as the width allows (stacking on a phone);
+   rows that mix widths (1/3 + 2/3) keep their proportions and wrap when a column gets too narrow */
+.prose .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: var(--s-5) var(--s-6); margin: 0 0 1.1em; }
+.prose .row:has(> .col-2-3, > .col-3-4, > .col-2-5, > .col-3-5, > .col-4-5) { display: flex; flex-wrap: wrap; }
+.prose .row:has(> .col-2-3, > .col-3-4, > .col-2-5, > .col-3-5, > .col-4-5) > .col { flex: 1 1 calc(var(--w, .5) * 100% - var(--s-6)); min-width: min(100%, 220px); }
+.prose .col-1-2 { --w: .5; } .prose .col-1-3 { --w: .3333; } .prose .col-2-3 { --w: .6667; } .prose .col-1-4 { --w: .25; } .prose .col-3-4 { --w: .75; }
+.prose .col-1-5 { --w: .2; } .prose .col-2-5 { --w: .4; } .prose .col-3-5 { --w: .6; } .prose .col-4-5 { --w: .8; }
+.prose .col { min-width: 0; }
+.prose .col > :first-child { margin-top: 0; }
+.prose .col > :last-child { margin-bottom: 0; }
+.prose .col img { display: block; }
+/* a caption beside a picture in a narrow column: under it, upright, smaller */
+.prose .col em:only-child, .prose .col p > em:only-child { font-style: normal; font-size: var(--t-note); line-height: 1.5; color: var(--muted); }
+img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md); max-width: 100%; height: auto; }
+/* a news post's pictures all take the text column's width, so one post shows one picture width (the
+   column is the measure, 740px at most; a smaller picture is drawn a little larger), and a caption
+   starts at the picture's left edge. Pictures inside a row of columns keep their column. */
+.section-news .prose > p > :is(.img-zoom, .img-figure, img):only-child,
+.section-news .prose > p > .img-figure > :is(a, img) { display: block; width: 100%; }
+.section-news .prose > p img, .section-news .prose > picture > img.featured { display: block; width: auto; max-width: 100%; height: auto; max-height: 80svh; }
+.pagination { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); margin-top: var(--s-7); }
+.pagination__count { font-size: var(--t-small); color: var(--muted); }
+/* ---------------------------------------------------------------- sidebar
+   a doc page with "On this page" (sidebar.html): from 1024px the outline sits right of the article, a
+   fixed gap from it (not pushed to the window's edge), and stays in view while reading; below 1024px it
+   folds under the title (.toc--top) */
+.sidebar { display: grid; gap: var(--s-6); font-size: var(--t-small); line-height: 1.5; position: static; align-content: start; }
+.sidebar .t-label { margin: 0 0 var(--s-3); }
+.doc-layout--side > .sidebar { display: none; }
+@media (min-width: 1024px) {
+  .doc-layout.doc-layout--side { grid-template-columns: minmax(0, var(--col)) 220px; column-gap: clamp(48px, 5vw, 96px); justify-content: start; }
+  .doc-layout--side > .sidebar { display: block; align-self: stretch; }
+  .doc-layout--side .sidebar .toc--side { scrollbar-width: thin; }
+}
+/* below 1024px every row of the sidebar and of the table of contents is a 44px target */
+@media (max-width: 1023px) {
+  :is(.side-block li, .toc li, .sidebar .t-label, .next-event__title) > a, .sidebar .link { min-height: 44px; }
+}
+
+/* below 1024px a link that stands on its own (in a list item, a table cell or a definition, a news or
+   event title, "Back to the filter") is a 44px target: vertical padding on the inline link widens the
+   area a finger hits without moving a line of text. Text links in a paragraph keep their size. */
+@media (max-width: 1023px) {
+  .prose :is(ul, ol):not([class]) > li > a:not([class]), .prose :is(ul, ol):not([class]) > li > :is(strong, b) > a:not([class]), .prose :is(td, dd) > a:not([class]), .prose .atlas__more a, :is(.event__title, .news-item__title) > a { padding-block: calc(23px - .68em); }
+}
+
+/* the table of contents: sticky in the sidebar on a desktop, a collapsible list on top below 1024 */
+.toc ol { list-style: none; margin: 0; padding: 0; }
+.toc li { margin: 0; max-width: none; }
+.toc a { display: block; padding: 5px 0 5px var(--s-3); border-left: 2px solid transparent; color: var(--ink); line-height: 1.35; text-decoration: none; }
+.toc a:hover { color: var(--action); }
+.toc a[aria-current] { color: var(--action); border-left-color: var(--action); font-weight: 500; }
+.toc ol ol a { padding-left: var(--s-5); color: var(--muted); }
+.toc--side { display: none; }
+@media (min-width: 1024px) {
+  .toc--side { display: block; position: sticky; top: calc(var(--nav) + var(--s-5)); max-height: calc(100svh - var(--nav) - 2 * var(--s-5)); overflow-y: auto;
+    font-size: var(--t-xs); padding: var(--s-1) 0; overscroll-behavior: contain; }
+  .toc--side .t-label { margin-bottom: var(--s-4); padding: 0; font-size: var(--t-xs); font-weight: 400; }
+  .toc--side ol { display: grid; gap: var(--s-4); }
+  .toc--side ol ol { margin-top: var(--s-3); padding-left: 14px; gap: var(--s-3); }
+  .toc--side a { padding: 0; border: 0; color: var(--muted); line-height: 1.35; font-weight: 400; }
+  .toc--side ol ol a { padding: 0; }
+  .toc--side a:hover { color: var(--ink); }
+  .toc--side a[aria-current] { color: var(--ink); font-weight: 400; }
+  .toc--side a:focus-visible { outline: 2px solid var(--action); outline-offset: 4px; border-radius: var(--r-xs); }
+  .toc--side .toc__top { display: inline-block; margin: var(--s-5) 0 0; padding: 0; font-size: var(--t-xs); color: var(--muted); }
+  .toc--side .toc__top:hover { color: var(--action); }
+  .toc--top { display: none; }
+}
+.toc--top { margin: 0 0 var(--s-6); border-block: 1px solid var(--line); font-size: var(--t-body); }
+.toc--top summary { cursor: pointer; padding: var(--s-3) 0; font-weight: 500; min-height: 44px; display: flex; align-items: center; justify-content: space-between; list-style: none; }
+.toc--top summary::-webkit-details-marker { display: none; }
+.toc--top summary::after { content: ""; width: 10px; height: 10px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); rotate: 45deg; translate: 0 -3px; transition: rotate var(--dur) var(--ease); }
+.toc--top[open] summary::after { rotate: 225deg; translate: 0 3px; }
+.toc--top nav { padding: 0 0 var(--s-3); }
+.prose .toc--top ol { padding: 0; list-style: none; }

@@ -12,7 +12,7 @@ pull request by `.github/workflows/checks.yml` and before every deploy):
 - radius: `--r-xs` 4, `--r-sm` 8, `--r-md` 12, `--r-lg` 20, `--r-pill`; every `border-radius` is one of them (or 0, 50%);
 - weights 400, 500 and 600, or a named weight token;
 - tokens are defined in `assets/css/base.css`, the palette (and `--render`/`--on-render`, the renders' black
-  and the white on it) at the top of `assets/css/site.css`;
+  and the white on it) in `assets/css/site.css`;
 - literal colours, `!important`, px spacing, literal line-heights and letter-spacings have budgets that may
   only go down.
 
@@ -20,37 +20,58 @@ A value that has to break a rule says why on its line: `/* design-exempt: <reaso
 `.github/scripts/check-copy.py` reads the built pages' text and fails on template leftovers, text that
 describes the interface, and spelling outside the house style (fibre, colour, modelling, centre, email).
 
-The styles are the site's own, in the files that `layouts/_partials/head.html` bundles into one
-fingerprinted stylesheet:
+The styles are the site's own, one file per component in `assets/css/`, each with its tablet and phone
+rules next to it (there are no separate phone sheets). `layouts/_partials/head.html` serves them as a few
+minified, fingerprinted, render-blocking sheets (with SRI): the **shell** on every page, then the sheets of
+the page's **family** (`layouts/_partials/page-family.html` decides which):
 
-- `assets/css/base.css`: the tokens (spacing `--s-1`…`--s-9`, type sizes `--t-*`, radii `--r-*`, the page
-  margin `--gut`, the header height `--nav`), element defaults, the 12-column grid (`.grid`, `.span-*`,
-  `.start-*`, from 1024 px), buttons (`.btn--primary`, `.btn--secondary`), links with an arrow (`.link`, the
-  `svg.m-arrow` in the templates), the elevation scale (`--shadow-1` a small thing lifted off its ground,
-  `--shadow-2` a printed sheet such as a flyer, `--shadow-3` what floats over the page: the menu band and
-  dialogs; nothing else casts a shadow), form fields, the focus ring, hover and press feedback, the scroll
-  lock under a modal dialog (`html:has(dialog:modal)`), and the reduced-motion rules.
-- `assets/css/site.css`: the palette and fonts (change colours and fonts here only), the header, the home
-  page, the documentation pages, the gallery, events, search and the footer.
-- `assets/css/content.css`: the content building blocks that come after those: hub cards with a line of
-  text, the copy box, clips, the newer/older links under news posts, and the Features chapters and cards.
-- `assets/css/manual.css`: the manual's three-column reading layout, responsive chapter tree, callouts and previous/next navigation. It shares the existing palette and type tokens.
-- `assets/css/phone.css`: the phone layout (below 640px only, every rule in one `@media (max-width: 639px)`
-  block) of what several pages share: the header, the inner page head, buttons in heroes, the "Related"
-  and "More in …" rows, open frames, chip rows and the download page's small rules.
-- `assets/css/phone-home.css`, `assets/css/phone-events.css`, `assets/css/phone-features.css`: the phone
-  layout of the home page, the events pages and the Features page, loaded after `phone.css`, below 640px
-  only as well.
+- the shell, one sheet, in this order:
+  - `base.css`: the tokens (spacing `--s-1`…`--s-9`, type sizes `--t-*`, radii `--r-*`, the page margin
+    `--gut`, the header height `--nav`), element defaults, the 12-column grid (`.grid`, `.span-*`, `.start-*`,
+    from 1024 px), buttons (`.btn--primary`, `.btn--secondary`), links with an arrow (`.link`, the
+    `svg.m-arrow` in the templates), the elevation scale (`--shadow-1` a small thing lifted off its ground,
+    `--shadow-2` a printed sheet such as a flyer, `--shadow-3` what floats over the page: the menu band and
+    dialogs; nothing else casts a shadow), form fields, the focus ring, hover and press feedback, the scroll
+    lock under a modal dialog (`html:has(dialog:modal)`), and the reduced-motion rules;
+  - `site.css`: the fonts and the palette (change colours and fonts here only; run as a Hugo template), the
+    labels and figures every page shares, the preview banner;
+  - `header.css`: the header, its menu band and sheet, and the menu without script;
+  - `page.css`: an inner page's head and breadcrumb, the documentation text (also the manual's), its tables
+    and pictures, the sidebar and the table of contents;
+  - `components.css`: what several families share: captions, the citation box, buttons in text, videos and
+    the video popup, form notes, the notice, "Related" and "More in …", a clip's pause button;
+  - `search.css` (the dialog, /search/, the 404 page's doors) and `footer.css`;
+- the families, loaded after the shell:
+  - `home.css`: the home page alone, its sections in the order of the page;
+  - `manual.css`: the manual (three-column reading layout, chapter tree, callouts, previous/next);
+  - `gallery.css`: the gallery alone;
+  - `content.css`: every other page: the content building blocks (catalogues, cells, hub sections, papers,
+    quotes, video cards…) and the pages built from them (news, contributors, community); after it
+    `events.css` on the events pages, `download.css` on Download, First steps and Contribute, and
+    `features.css` on a page with the showcase shortcodes (`jumps`, `chapter`, `capabilities`, `tools`).
 
-The site's own script is one file per concern in `assets/js/main/`, which `layouts/baseof.html` bundles into
-one `main.js`: `header.js` (the menu sheet, the panels, the header over black), `theme.js` (light and dark),
-`page.js` (the table of contents, links into folds, paper rows, citation tabs, the old forum's addresses),
-`home.js` (the hero's entrance and clip, the figure strip), `events.js` (events by the visitor's clock, the
-countdown), `videos.js`, `news.js`, `features.js` (the capabilities), `gallery.js`, `forms.js`, and `manual.js` (the chapter drawer, long code examples and the command tabs; page-link copying is `clipboard.js`). Each block does
-nothing on a page without its markup, and each keeps its names to itself (an arrow-function scope), so
-they cannot collide in the one bundle. Beside them, every page loads `search.js` and `clipboard.js`; the
-home page `insertion.js` (the electrode insertion) and, once its section is near, `globe.js`; an atlas
-catalogue `atlas-filter.js`. (Splitting the stylesheet and the bundle by page family is a later step.)
+A rule for a component goes in its file, never in another family's; a rule a second family starts to need
+moves down to `components.css` (or the shell file it belongs to). Sheets load in the order above, so a
+family's rules come after the shell's at equal specificity.
+
+The site's own script is one file per concern in `assets/js/main/`, with the helpers they share in
+`assets/js/lib/` (`fragment.js`, a fragment as an id; `play-state.js`, the pause/play button of what moves by
+itself). Hugo (`js.Build`, no npm) bundles them from the entries in `assets/js/bundles/`, which mirror the
+style families; `layouts/baseof.html` loads `main.js` on every page and the family's bundle where there is one,
+minified, fingerprinted and deferred:
+
+- `main.js`: `header.js` (the menu sheet, the panels, the header over black), `theme.js` (light and dark),
+  `page.js` (the table of contents, links into folds, paper rows, citation tabs, the old forum's addresses),
+  `search.js` and `clipboard.js` (copy buttons and page-link copying);
+- `home.js`: `home.js` (the hero's entrance and clip, the figure grid, the quotes, the globe's loader),
+  `events.js` and `insertion.js` (the electrode insertion); once its section is near, home.js adds the
+  globe (`globe.js` after its libraries, built in `layouts/home.html`);
+- `content.js`: `videos.js`, `forms.js` and `clips.js` (silent clips);
+- `events.js` (events by the visitor's clock, the countdown), `features.js` (the capabilities), `gallery.js`,
+  `manual.js` (the chapter drawer, long code examples and the command tabs).
+
+Each concern does nothing on a page without its markup and is a module, so its names stay its own. An atlas
+catalogue also loads `atlas-filter.js`.
 
 - **Sections take the height of their content.** The hero is the window's height less about 90 px (so the
   row of figures under it shows on the first screen; at least 540, at most 860 px) and grows with its

@@ -1,7 +1,7 @@
 {{- /* The visible breadcrumb of an inner page (partial crumbs.html: Home / menu group / menu entry / page).
        It ends with the page's own name, except on a news post, whose title follows right under "News".
        The nearest linked ancestor is marked (.breadcrumb__parent): a phone shows only Home and it
-       ("Home / … / Parent" when it is not the second crumb; assets/css/site.css). Argument: the page. */ -}}
+       ("Home / … / Parent" when it is not the second crumb; assets/css/page.css). Argument: the page. */ -}}
 {{- $crumbs := partial "crumbs.html" . -}}
 {{- $post := and (eq .Section "news") .IsPage -}}
 {{- $n := len $crumbs -}}

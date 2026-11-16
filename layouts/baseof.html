@@ -1,8 +1,8 @@
 <!doctype html>
-{{- /* Styles: the files of assets/css/, concatenated into one sheet in head.html (docs/design.md). Font: Inter,
+{{- /* Styles: the files of assets/css/, the shell and the page family's sheets (head.html, docs/design.md). Font: Inter,
      self-hosted. The research-use statement is a short line (hero facts, footer, about, download).
      body.top-dark: a page that starts on a black ground (Download; the other pages start on their own ground), so
-     the header is dark from the first paint (see "header" in site.css). */}}
+     the header is dark from the first paint (see header.css). */}}
 <html lang="{{ site.Language.Locale }}"{{ if site.Params.preview }} class="is-preview"{{ end }}>
 <head>
   {{ partial "head.html" . }}
@@ -13,15 +13,17 @@
   {{ block "main" . }}{{ end }}
   {{ if ne .Layout "manual" }}{{ partial "footer.html" . }}{{ end }}
   {{ partial "search-dialog.html" . }}
-  {{- /* The site's own script, one file per concern in assets/js/main/, bundled into one. Each block stands alone and
-         does nothing on a page without its markup; without script every page still works (the menu button is a
-         link that opens the menu sheet, videos are links, events show what the build chose). */}}
-  {{ $main := slice }}{{ range slice "header" "theme" "page" "home" "events" "videos" "news" "features" "gallery" "manual" "forms" }}{{ $main = $main | append (resources.Get (printf "js/main/%s.js" .)) }}{{ end -}}
-  {{ with $main | resources.Concat "js/main.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}
-  {{ with resources.Get "js/clipboard.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}
-  {{ with resources.Get "js/search.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}
+  {{- /* The site's own script: one file per concern in assets/js/main/ (shared helpers in assets/js/lib/),
+         bundled by Hugo (js.Build) from the entries in assets/js/bundles/: main.js on every page, then the
+         bundle of the page's family where it has one (partial page-family.html), each minified,
+         fingerprinted and deferred. Each concern does nothing on a page without its markup; without script
+         every page still works (the menu button is a link that opens the menu sheet, videos are links,
+         events show what the build chose). */}}
+  {{- $scripts := slice "main" }}{{ range partial "page-family.html" . }}{{ if resources.Get (printf "js/bundles/%s.js" .) }}{{ $scripts = $scripts | append . }}{{ end }}{{ end }}
+  {{- range $scripts }}
+  {{ with resources.Get (printf "js/bundles/%s.js" .) | js.Build (dict "targetPath" (printf "js/%s.js" .)) | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}
+  {{- end }}
   {{ if .HasShortcode "atlas-index" }}{{ with resources.Get "js/atlas-filter.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}{{ end }}
-  {{ if .IsHome }}{{ with resources.Get "js/insertion.js" | minify | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}{{ end }}
   {{- /* the home page's globe (assets/js/globe.js and its libraries) is not loaded here: main/home.js adds its
          script when the section comes near the screen (layouts/home.html, data-globe-src) */}}
 </body>

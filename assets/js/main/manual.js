@@ -1,3 +1,5 @@
+import { leadFragment } from '../lib/fragment.js';
+
 // Reuse the chapter tree in a modal drawer; keep chapter and section controls
 // available throughout long mobile articles. Native dialogs contain keyboard focus.
 (() => {

@@ -56,10 +56,10 @@ for visitors who ask for reduced motion or to save data, and on slow connections
 play button and the clip loads only when it is pressed (`assets/js/main/home.js`). It plays only while the hero
 is on screen, and a button pauses it; the poster (`assets/images/renders/hero-lead-stn-poster.jpg`, the clip's first
 frame) shows instead. The home page's hero is one rounded black panel on the white page, under the light header
-(`.home-hero__panel` in `site.css`): the clip fills it and the words stand over its black left half. The
+(`.home-hero__panel` in `home.css`): the clip fills it and the words stand over its black left half. The
 render sits on the right of a black 16:10 canvas for that reason; the canvas is true black (#000) on its left side and along every edge, so no grey
 border shows where the clip meets the page. Below 1024 px the clip is a box at the panel's top (square on
-phones, with the square encode) and the words follow under it on the same black (`.home-hero__media` in `site.css`).
+phones, with the square encode) and the words follow under it on the same black (`.home-hero__media` in `home.css`).
 
 It was rendered with BrainDeer as 385 frames of half a sway (1600×1000, 2×2 supersampled), each composed on
 the canvas, and is played forward then backward. The loop is frames 192…384, 383…1, 0…191: 768 frames,

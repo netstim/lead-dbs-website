@@ -18,7 +18,7 @@
   {{- $watch = printf "https://vimeo.com/%s" $id }}{{ $name = "Vimeo" -}}
 {{- end -}}
 {{- /* the poster: a still of the video saved next to the page as video-<id>.jpg, shown as resized WebP
-       (never enlarged: the player is at most as wide as its still, --poster-w, assets/css/site.css);
+       (never enlarged: the player is at most as wide as its still, --poster-w, assets/css/components.css);
        nothing is loaded from the video site before the visitor presses play */ -}}
 {{- $poster := "" }}{{ $posterW := 0 -}}
 {{- with $c.Page.Resources.Get (printf "video-%s.jpg" $id) -}}

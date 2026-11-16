@@ -9,7 +9,9 @@
 // fetched with the map. This file, with d3-array, d3-geo and topojson-client (assets/js/vendor/, ISC)
 // bundled before it, is loaded by assets/js/main/home.js when the section comes near the screen; the map
 // (assets/data/world-110m.json, Natural Earth via world-atlas) and the figures are fetched then, at the
-// same distance.
+// same distance. It is built by Hugo (js.Build) for its import, then joined after the libraries.
+import { showPlayState } from './lib/play-state.js';
+
 (() => {
   const sec = document.getElementById('worldwide');
   if (!sec || !sec.dataset.map || !sec.dataset.downloads || !window.d3 || !window.topojson || !('IntersectionObserver' in window)) return;
@@ -141,12 +143,8 @@
       requestAnimationFrame(frame);
     }
 
-    // the pause button: the same two icons as the hero's
-    const icons = {
-      pause: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
-      play: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6L12.6 8z" fill="currentColor"/></svg>',
-    };
-    const show = () => { btn.hidden = false; btn.setAttribute('aria-label', playing ? 'Pause the globe' : 'Play the globe'); btn.innerHTML = playing ? icons.pause : icons.play; };
+    // the pause button, as the hero's
+    const show = () => { btn.hidden = false; showPlayState(btn, playing, 'the globe'); };
     btn.addEventListener('click', () => { playing = !playing; if (playing && clock >= M) restart(); show(); });
     show();
 

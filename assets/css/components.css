@@ -1,0 +1,164 @@
+/* Pieces several page families share (shell): captions, links that leave the site, the citation box,
+   buttons in text, videos and the video popup, form notes, the notice, the "Related" rows and the pause
+   button of a clip. */
+/* one caption style for the pictures of the gallery and the home page: --t-note, muted, at a readable
+   measure; a figure from a paper adds its short citation as the caption's second line */
+.caption { margin: 0; font-size: var(--t-note); line-height: 1.5; color: var(--muted); max-width: 60ch; }
+.link--ext::after { content: none; }
+.link--ext .ext-mark { margin-left: .2em; color: var(--muted); }
+/* a button that leaves the site (the Zoom registration): the ↗ in place of the chevron */
+.btn--ext::after { content: none; }
+.btn--ext .ext-mark { margin-left: var(--s-2); color: inherit; opacity: .8; font-size: .9em; }
+/* a link to another site in the menus and the sidebar: a small arrow after the label */
+.ext-mark { display: inline-block; margin-left: 0.25em; font-size: 0.8em; color: var(--muted); }
+/* the citation box (partial cite-box.html), the same wherever a paper is to be cited: a white box with a
+   hairline, its bar (format tabs, copy) over the reference or its BibTeX, the paper's further links under it;
+   an optional label above. Compact: the stacked boxes of an atlas entry's Cite list. */
+.cite-snip { align-self: stretch; }
+.cite-snip__label { margin: 0 0 var(--s-2); font-size: var(--t-small); font-weight: 500; color: var(--muted); }
+.cite-snip__box { border: 1px solid var(--line-strong); border-radius: var(--r-md); background: var(--bg); overflow: hidden; }
+.cite-snip__bar { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding: var(--s-2) var(--s-2) var(--s-2) var(--s-3); border-bottom: 1px solid var(--line); }
+.cite-snip__bar[hidden] { display: none; }
+.cite-snip__tabs { display: flex; gap: var(--s-1); }
+.cite-snip__tab, .cite-snip__copy { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 var(--s-3); border: 0; border-radius: var(--r-pill);
+  background: none; font: 500 var(--t-small)/1 var(--font-text); color: var(--muted); cursor: pointer; }
+.cite-snip__tab:hover, .cite-snip__copy:hover { color: var(--ink); background: var(--surface); }
+.cite-snip__tab[aria-pressed="true"] { background: var(--surface); color: var(--ink); }
+.cite-snip__copy svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.cite-snip__text { margin: 0; padding: var(--s-4); font-family: var(--font-text); font-size: var(--t-note); line-height: 1.6; color: var(--ink); overflow-wrap: anywhere; }
+.cite-snip__text a, .cite-snip__links a { color: var(--action); }
+.cite-snip__bib { font: var(--t-label)/1.6 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.cite-snip__links { margin: 0; padding: 0 var(--s-4) var(--s-4); font-size: var(--t-small); color: var(--muted); }
+.cite-snip--compact .cite-snip__text { padding: var(--s-3); }
+.cite-snip--compact .cite-snip__links { padding: 0 var(--s-3) var(--s-3); }
+/* in an article: the box keeps to the text's measure; the article's paragraph and code styles stay out */
+.prose .cite-snip { max-width: var(--measure); margin: 0 0 1.4em; }
+.prose .cite-snip :is(.cite-snip__text, .cite-snip__label, .cite-snip__links) { max-width: none; margin: 0; }
+.prose .cite-snip .cite-snip__bib { padding: var(--s-4); border-radius: 0; background: none; font-size: var(--t-label); overflow-x: visible; }
+.prose .cite-snip--compact .cite-snip__bib.cite-snip__text { padding: var(--s-3); }
+.prose .cite-snip .cite-snip__label { margin-bottom: var(--s-2); }
+/* button shortcode: long labels wrap, so no page is wider than a phone */
+.button-wrap { margin: 0 0 1.1em; }
+/* a secondary button (a word and an arrow) starts on the text's edge */
+.btn { max-width: 100%; }
+@media (max-width: 639px) { .btn { white-space: normal; height: auto; min-height: var(--btn-h); padding-block: 10px; line-height: 1.3; text-align: center; } }
+/* videos (youtube / vimeo shortcodes): a button until the visitor starts one */
+.video-embed { position: relative; aspect-ratio: 16 / 9; margin: 0 0 1.4em; border-radius: var(--r-md); overflow: hidden; background: var(--render); max-width: 100%; }
+/* a video with a still is never wider than the still itself (640px at least), so a small imported frame
+   is not blown up across a wide page */
+.prose > .video-embed--poster { max-width: min(100%, max(var(--poster-w, 100%), 640px)); }
+/* a picture's enlarge mark stays in view where there is no hover (touch screens) */
+@media (hover: none) { .img-zoom::after { opacity: .9; } }
+.video-embed > iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; margin: 0; }
+.video-embed__start { position: absolute; inset: 0; display: flex; align-items: center; gap: var(--s-4); padding: var(--s-5) var(--s-6); color: var(--on-render); text-decoration: none;
+  background: radial-gradient(120% 90% at 85% 20%, #1c2124 0%, var(--render) 62%); }
+.video-embed__play { flex: none; display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: var(--p-action); color: var(--on-render); transition: transform var(--dur) var(--ease); }
+.video-embed__play svg { width: 26px; height: 26px; margin-left: 3px; }
+.video-embed__start:hover .video-embed__play { transform: scale(1.06); }
+.video-embed__start:focus-visible { outline: 3px solid #b4bff6; outline-offset: -3px; }
+.video-embed__text { display: grid; gap: var(--s-1); }
+.video-embed__title { font: var(--title-weight) var(--t-card)/1.3 var(--font-display); }
+/* over a poster the title and the note sit on a dark band along the bottom edge, so they read on any
+   still */
+html .video-embed--poster .video-embed__start { background: linear-gradient(to top, rgb(0 0 0 / .86) 0, rgb(0 0 0 / .72) 30%, rgb(0 0 0 / .2) 58%, rgb(0 0 0 / 0) 75%); }
+@media (max-width: 639px) { .video-embed__start { padding: var(--s-4); } .video-embed__play { width: 48px; height: 48px; } .video-embed__title { font-size: var(--t-body); } }
+/* before it plays, the box is 16:9 at least and grows with its title and note (a long title on a narrow
+   phone would otherwise be cut off at the top): the button is in the flow, the box no longer clips, and
+   the poster and the button round their own corners. The player (.is-playing) is 16:9 again. */
+.video-embed:not(.is-playing) > .video-embed__start { position: relative; min-height: 100%; border-radius: inherit; }
+.video-embed:not(.is-playing) > .video-embed__poster { border-radius: inherit; }
+/* a phone: the title and note fill most of the frame, so the shade covers all of it */
+@media (max-width: 639px) { html .video-embed--poster .video-embed__start { background: linear-gradient(to top, rgb(0 0 0 / .88) 0, rgb(0 0 0 / .74) 55%, rgb(0 0 0 / .5) 100%); } }
+/* a video before it is started: the still saved next to the page (video-<id>.jpg) under the play button,
+   darkened at the bottom left so the title stays readable */
+.video-embed > .video-embed__poster, .prose .video-embed > .video-embed__poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; margin: 0; border-radius: 0; }
+.video-embed--poster .video-embed__start { align-items: flex-end; background: linear-gradient(to top, rgb(0 0 0 / .78), rgb(0 0 0 / .25) 55%, rgb(0 0 0 / .05)); }
+.form-note { margin: 0; font-size: var(--t-label); color: var(--muted); }
+/* what happened to a live form (assets/js/main/forms.js) */
+.form-status { margin: 0; font-size: var(--t-small); color: var(--ink); }
+.form-status:empty { display: none; }
+/* ---------------------------------------------------------------- notice shortcode: a quiet callout */
+.notice { margin: 0 0 1.4em; padding: var(--s-4) var(--s-5); font-size: var(--t-body); line-height: 1.6; background: var(--surface); border-left: 3px solid var(--line-strong); border-radius: 0 var(--r-md) var(--r-md) 0; color: var(--ink); scroll-margin-top: calc(var(--nav) + var(--s-4)); }
+.notice[hidden] { display: none; }
+.prose .notice { max-width: var(--measure); }
+.prose .notice > * { margin: 0; max-width: none; }
+.prose .notice > * + * { margin-top: .6em; }
+/* the research-use statement: present where it matters, never prominent. A short line in small print
+   (About), and on the download page the full statement as plain small text, not a callout */
+.prose .fine-print, .prose .notice#research-use { margin: 1.4em 0 0; padding: 0; background: none; border: 0; border-radius: 0;
+  font-size: var(--t-note); line-height: 1.6; color: var(--muted); max-width: var(--measure); }
+.prose .notice#research-use { margin: 0 0 1.4em; }
+/* the countdown after an event's date (assets/js/main/events.js): on the home page and the events pages */
+.ev-countdown::before { content: " · "; }
+.ev-countdown { color: var(--action); font-weight: 500; }
+/* the end of a page: "Related" or "More in …" (next-steps.html, section-nav.html), a small label over
+   hairline rows, the title and one trailing arrow */
+.next-steps { max-width: none; margin: var(--s-8) 0 0; padding-top: var(--s-5); border-top: 1px solid var(--line); }
+.prose > .next-steps { max-width: none; }
+.next-steps__h, .prose .next-steps__h { margin: 0 0 var(--s-2); color: var(--muted); font-family: var(--font-label); font-size: var(--t-xs); font-weight: 400; line-height: 1.4; }
+.next-steps__h a, .prose .next-steps__h a { color: inherit; text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+.next-steps__h a:hover, .prose .next-steps__h a:hover { color: var(--ink); }
+.next-steps__list, .prose .next-steps__list { list-style: none; padding: 0; margin: 0; max-width: none; display: grid; gap: 0; grid-template-columns: minmax(0, 1fr); }
+.next-steps__list > li, .prose .next-steps__list > li { margin: 0; max-width: none; }
+.next-step { display: grid; grid-template-columns: minmax(0, 1fr) 12px; align-items: center; gap: var(--s-1) var(--s-5); min-height: 56px; padding: var(--s-4) 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+.prose a.next-step { padding: var(--s-4) 0; color: var(--ink); background: none; text-decoration: none; }
+.next-step::after { content: none; }
+.next-step__title { grid-column: 1; grid-row: 1; font: 500 var(--t-body)/1.4 var(--font-text); text-wrap: pretty; }
+.next-step .next-step__arrow { grid-column: 2; grid-row: 1; align-self: center; width: 12px; height: 12px; margin: 0; color: var(--muted); }
+.next-step .ext-mark { font-size: var(--t-body); line-height: 1; }
+.next-step:hover .next-step__title { color: var(--action); }
+.post .next-steps { margin-top: var(--s-7); }
+/* a phone: "Related" a small muted label, then rows 58px high, the title 17px medium, a chevron in
+   muted, hairlines between */
+@media (max-width: 639px) {
+  :is(.next-steps__h, .prose .next-steps__h) { margin-bottom: var(--s-1); color: var(--muted); font-family: var(--font-text); font-size: var(--t-label); font-weight: 500; }
+  .next-step .m-arrow__stem { display: none; }
+  :is(.next-step, .prose a.next-step) { min-height: 58px; padding-block: var(--s-3); }
+  .next-step__title { font-size: var(--t-doc); }
+  .next-step .next-step__arrow { width: 16px; height: 16px; }
+}
+/* the round button that pauses a clip that plays by itself (layouts/_partials/clip-script.html), in the
+   manner of the hero's: on the clip's top right corner, a 44px target */
+.has-media-pause { position: relative; }
+.media-pause { position: absolute; top: var(--s-3); right: var(--s-3); width: 44px; height: 44px; display: grid; place-items: center; padding: 0;
+  border: 1px solid color-mix(in oklab, var(--on-render) 25%, transparent); border-radius: 50%; cursor: pointer;
+  background: color-mix(in oklab, var(--render) 55%, transparent); color: var(--on-render); transition: background-color var(--t-out) var(--ease); }
+.media-pause:hover { background: color-mix(in oklab, var(--render) 75%, transparent); }
+.media-pause svg { width: 14px; height: 14px; }
+/* the video popup (assets/js/main/videos.js): the player large on black, the card's words under it, and its
+   chapters beside it (under it on a phone) as buttons that start the video at that time */
+.v-box { width: min(1240px, calc(100vw - 32px)); max-height: calc(100vh - 32px); padding: 0; border: 0; border-radius: var(--r-lg); background: #0b0b0c; color: var(--on-render); overflow: auto; }
+.v-box::backdrop { background: rgb(0 0 0 / .82); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.v-box[open] { display: grid; grid-template-columns: minmax(0, 1fr); animation: v-box-in 260ms var(--ease); }
+@keyframes v-box-in { from { opacity: 0; transform: translateY(8px); } }
+.v-box__main { padding: var(--s-3); }
+.v-box__player { aspect-ratio: 16 / 9; border-radius: var(--r-md); overflow: hidden; background: var(--render); }
+.v-box__player iframe { display: block; width: 100%; height: 100%; border: 0; }
+.v-box__info { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: var(--s-4); padding: var(--s-5) var(--s-4) var(--s-4); }
+.v-box__info p { margin: 0; }
+.v-box__tag { font-size: var(--t-label); color: rgb(255 255 255 / .55); }
+.v-box__title { margin: var(--s-1) 0 var(--s-2); font-size: var(--t-sub); font-weight: 600; line-height: 1.15; letter-spacing: -.025em; color: var(--on-render); }
+.v-box__text { max-width: 60ch; text-wrap: pretty; font-size: var(--t-note); line-height: 1.55; color: rgb(255 255 255 / .7); }
+.v-box__text a { color: var(--on-render); }
+.v-box__chapters { padding: 0 var(--s-3) var(--s-4); }
+.v-box__chapters[hidden] { display: none; }
+.v-box__chapters-h { margin: 0 0 var(--s-2); padding: 0 var(--s-2); font-size: var(--t-label); font-weight: 500; color: rgb(255 255 255 / .55); }
+.v-box__chapters ol { list-style: none; margin: 0; padding: 0; }
+.v-box__chapter { display: grid; grid-template-columns: 4.4em minmax(0, 1fr); align-items: baseline; gap: var(--s-2); width: 100%; padding: 8px var(--s-2); border: 0; border-radius: var(--r-sm); background: none; color: rgb(255 255 255 / .82); font: 400 var(--t-small)/1.4 var(--font-text); text-align: left; cursor: pointer; }
+.v-box__chapter:hover { background: rgb(255 255 255 / .07); color: var(--on-render); }
+.v-box__chapter[aria-current="true"] { background: rgb(255 255 255 / .12); color: var(--on-render); }
+.v-box__chapter time { justify-self: start; padding: 1px 7px; border-radius: var(--r-pill); background: rgb(255 255 255 / .1); font-size: var(--t-xs); font-variant-numeric: tabular-nums; color: rgb(255 255 255 / .7); }
+.v-box__close { display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 50%; background: rgb(255 255 255 / .1); color: var(--on-render); cursor: pointer; }
+.v-box__close:hover { background: rgb(255 255 255 / .2); }
+.v-box__close svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+@media (min-width: 1024px) {
+  /* the chapters column as tall as the player and its words (contain: size keeps the list from
+     stretching the row), the list scrolling inside it */
+  .v-box--chapters[open] { grid-template-columns: minmax(0, 1fr) 340px; }
+  .v-box--chapters .v-box__chapters { contain: size; display: flex; flex-direction: column; padding: var(--s-4) var(--s-3) var(--s-3) 0; }
+  .v-box--chapters .v-box__chapters ol { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: rgb(255 255 255 / .2) transparent; }
+  /* the close button at the top of the chapters column, beside "n chapters" */
+  .v-box--chapters .v-box__info form { position: absolute; top: var(--s-3); right: var(--s-3); }
+  .v-box--chapters .v-box__chapters-h { padding-right: 56px; min-height: 40px; display: flex; align-items: center; }
+  .v-box--chapters .v-box__chapters { padding-top: var(--s-3); }
+}

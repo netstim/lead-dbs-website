@@ -1,7 +1,7 @@
 // {{< capabilities >}} (Features): a click on a capability's name chooses it: its sentence and links
 // open under the name and its picture shows on the stage. The address takes its id, so the chosen one can
 // be linked; a link to a capability (from the home page, the search) chooses it too.
-// On a phone (below 640px, assets/css/phone-features.css) the stage is a row of square pictures that
+// On a phone (below 640px, assets/css/features.css) the stage is a row of square pictures that
 // scrolls sideways, one per name, above the names: swiping it chooses the name, a tap on a name turns it
 // to that name's picture, and a row of segments follows. {{< tools >}} becomes the same module there.
 // From 640px up nothing of that runs; a phone that turns into a wider window hands its state back.
