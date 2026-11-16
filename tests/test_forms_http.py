@@ -176,7 +176,7 @@ class FormHandlerHTTPTests(unittest.TestCase):
     def test_methods_types_sizes_and_origins(self):
         self.assertEqual(self.post({}, method='GET', body='')[0], 405)
         self.assertEqual(self.post({}, headers={'Content-Type': 'application/json'}, body='{}')[0], 415)
-        self.assertEqual(self.post({**self.contact, 'message': 'x' * 20000})[0], 413)
+        self.assertEqual(self.post({**self.contact, 'message': 'x' * 140000})[0], 413)
         self.assertEqual(self.post(self.contact, headers={'Origin': 'https://evil.example'})[0], 403)
         self.assertEqual(self.outbox(), [])
 
@@ -187,6 +187,36 @@ class FormHandlerHTTPTests(unittest.TestCase):
         for f in (self.root / 'rate').iterdir():
             self.assertRegex(f.name, r'^[0-9a-f]{64}$')
             self.assertNotIn('127.0.0.1', f.read_text())
+
+    def test_long_messages_in_any_script_fit_without_script(self):
+        # 5000 four-byte characters, percent-encoded as a form without script sends them: 60 000 bytes
+        status, _ = self.post({**self.contact, 'message': '\U0001F9E0' * 5000})
+        self.assertEqual(status, 200)
+        status, _ = self.post({**self.contact, 'message': '界' * 5000}, json_reply=False)
+        self.assertEqual(status, 200)
+
+    def php(self, code, ulimit_zero=False):
+        script = f'require "{FORMS}/FormHandler.php"; use LeadForms\\FormHandler; ' + code
+        cmd = ['php', '-d', 'display_errors=stderr', '-r', script]
+        if ulimit_zero:  # every write fails, as on a full disk or quota
+            cmd = ['bash', '-c', "trap '' XFSZ; ulimit -f 0; exec \"$@\"", 'php'] + cmd
+        return subprocess.run(cmd, capture_output=True, text=True)
+
+    def test_rate_limit_counts_across_midnight(self):
+        d = tempfile.mkdtemp(dir=self.root)
+        out = self.php(f'$m = gmmktime(0, 0, 0, 1, 2, 2027); foreach ([$m - 2, $m - 1, $m + 1, $m + 2] as $t) '
+                       f'echo FormHandler::overLimit("{d}", "k", "1.2.3.4", 2, 600, $t) ? "blocked " : "allowed ";').stdout
+        self.assertEqual(out.split(), ['allowed', 'allowed', 'blocked', 'blocked'])
+        # and outside the window it starts again
+        out = self.php(f'echo FormHandler::overLimit("{d}", "k", "1.2.3.4", 2, 600, gmmktime(0, 11, 0, 1, 2, 2027)) ? "blocked" : "allowed";').stdout
+        self.assertEqual(out, 'allowed')
+
+    @unittest.skipUnless(shutil.which('bash'), 'bash required')
+    def test_rate_limit_refuses_when_its_storage_cannot_be_written(self):
+        d = tempfile.mkdtemp(dir=self.root)
+        r = self.php(f'try {{ FormHandler::overLimit("{d}", "k", "1.2.3.4", 2, 600); echo "allowed"; }} '
+                     f'catch (RuntimeException $e) {{ echo "refused"; }}', ulimit_zero=True)
+        self.assertEqual(r.stdout, 'refused', r.stderr)
 
     def test_delivery_failure_is_reported_and_logged_without_contents(self):
         self.write_config(outbox=str(self.root / 'outbox' / 'missing'))

@@ -10,7 +10,7 @@ The newsletter form is not handled here. It keeps its News/RSS line until the ne
 
 ## What it does
 
-- Accepts only `POST` form submissions of at most 16 KB, from the origins listed in the config, for the
+- Accepts only `POST` form submissions of at most 128 KB, from the origins listed in the config, for the
   forms `contact` and `downloadfocus`. Only the fields in `FormHandler::FORMS` are accepted (these must match
   `data/forms.yaml`, which `tests/test_forms_http.py` checks), with length limits and email-address checks.
 - Sends a plain-text email to the address in the config, never to an address from the form. The sender's
@@ -35,7 +35,8 @@ The newsletter form is not handled here. It keeps its News/RSS line until the ne
 3. Outside the web root, create a private folder with `config.json` (shaped like `config.example.json`) and a
    writable `rate/` folder. Set `LEAD_FORMS_CONFIG` to the config's absolute path. If the package can't set
    environment variables, `send.php` looks for `lead-forms/config.json` in the folder above the web root.
-   It refuses to run if the config or the rate folder is inside the web root. Make `rate_key` a long random
+   It refuses to run if the config or the rate folder is inside the web root (it can't see other domains: make sure no other
+   domain or subdomain of the package serves that folder). Make `rate_key` a long random
    string generated on the server.
 4. Before switching the site over, run the checks with a test recipient address in the config:
    - submit both forms; the emails arrive, `Reply-To` works, umlauts are right, they aren't marked as spam

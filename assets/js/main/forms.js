@@ -22,8 +22,10 @@ document.querySelectorAll('form[data-form-live]').forEach((form) => {
     button.textContent = 'Sending…';
     say('', 'busy');
     try {
+      // a server that never answers must not leave the button on "Sending…": give up after 30 seconds
       const response = await fetch(form.action, {
         method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' }, credentials: 'same-origin',
+        signal: AbortSignal.timeout(30000),
       });
       const data = await response.json().catch(() => ({}));
       if (response.ok && data.ok) {
@@ -33,7 +35,8 @@ document.querySelectorAll('form[data-form-live]').forEach((form) => {
         say(data.message || 'Sending didn’t work.', 'error');
       }
     } catch {
-      say('Sending didn’t work: the connection failed.', 'error');
+      // no answer, or no answer in time: the message may or may not have arrived
+      say('Sending didn’t work: no answer from the server.', 'error');
     } finally {
       busy = false;
       button.disabled = false;

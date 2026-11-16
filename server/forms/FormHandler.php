@@ -42,8 +42,8 @@ final class FormHandler
     public const TRAP = 'website';
     /** the hidden field that names the form */
     public const FORM_FIELD = 'form';
-    /** largest request body accepted, in bytes */
-    public const MAX_BODY = 16384;
+    /** largest request body accepted, in bytes: room for every field at its longest in 4-byte characters, percent-encoded (no-script forms) */
+    public const MAX_BODY = 131072;
 
     /**
      * The checked values of a submission, in the form's field order.
@@ -135,24 +135,38 @@ final class FormHandler
 
     /**
      * Counts a submission from an address and says whether it is over the limit. The address is kept only as a
-     * keyed hash that changes every day; nothing else of the sender is stored.
+     * keyed hash that changes every day (UTC); nothing else of the sender is stored. Submissions of the day before
+     * count too while they are inside the window, so the limit does not start afresh at midnight. When the count
+     * cannot be read or written it throws: the form then answers 503 rather than sending without a limit.
      */
     public static function overLimit(string $dir, string $key, string $address, int $limit, int $window, ?int $now = null): bool
     {
         $now ??= time();
-        $id = hash_hmac('sha256', gmdate('Y-m-d', $now) . '|' . $address, $key);
-        $path = rtrim($dir, '/') . '/' . $id;
-        $handle = @fopen($path, 'c+');
+        $file = static fn(int $day) => rtrim($dir, '/') . '/' . hash_hmac('sha256', gmdate('Y-m-d', $day) . '|' . $address, $key);
+        $recent = static fn(string $text) => array_values(array_filter(array_map('intval', preg_split('/\n/', $text, -1, PREG_SPLIT_NO_EMPTY)),
+            static fn(int $t) => $t > $now - $window && $t <= $now));
+        $earlier = 0;
+        if (gmdate('Y-m-d', $now - $window) !== gmdate('Y-m-d', $now)) {
+            $yesterday = $file($now - 86400);
+            if (is_file($yesterday)) {
+                $text = @file_get_contents($yesterday);
+                if ($text === false) throw new RuntimeException('Rate limit storage unreadable.');
+                $earlier = count($recent($text));
+            }
+        }
+        $handle = @fopen($file($now), 'c+');
         if ($handle === false) throw new RuntimeException('Rate limit storage unavailable.');
         try {
-            flock($handle, LOCK_EX);
-            $times = array_filter(array_map('intval', explode("\n", stream_get_contents($handle) ?: '')),
-                static fn(int $t) => $t > $now - $window);
-            $over = count($times) >= $limit;
+            if (!flock($handle, LOCK_EX)) throw new RuntimeException('Rate limit storage cannot be locked.');
+            $text = stream_get_contents($handle);
+            if ($text === false) throw new RuntimeException('Rate limit storage unreadable.');
+            $times = $recent($text);
+            $over = count($times) + $earlier >= $limit;
             if (!$over) $times[] = $now;
-            ftruncate($handle, 0);
-            rewind($handle);
-            fwrite($handle, implode("\n", $times));
+            $data = implode("\n", $times) . "\n";
+            if (!ftruncate($handle, 0) || !rewind($handle) || fwrite($handle, $data) !== strlen($data) || !fflush($handle)) {
+                throw new RuntimeException('Rate limit storage cannot be written.');
+            }
             return $over;
         } finally {
             flock($handle, LOCK_UN);
