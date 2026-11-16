@@ -262,9 +262,8 @@ p:not(:where(.prose *)) a:not([class]) { --rest: color-mix(in oklab, currentColo
 /* ---------------------------------------------------------------- reduced motion: nothing slides, fades stay instant */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after { transition-duration: .001ms !important; animation-duration: .001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
-@media (hover: hover) { .btn:is(:hover, :active), :is(a, button):hover > .m-arrow :is(.m-arrow__head, .m-arrow__stem) { transform: none; } }
-
-  .btn:is(:not(*), :active), :is(a, button):not(*) > .m-arrow :is(.m-arrow__head, .m-arrow__stem)  { transform: none !important; }
+  @media (hover: hover) { .btn:hover { transform: none; } }
+  .btn:active { transform: none !important; }
   .m-arrow__stem { opacity: 1; transform: none; }
 }
 

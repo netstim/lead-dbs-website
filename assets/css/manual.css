@@ -330,8 +330,9 @@ html:not(.js) .manual-launch-tabs { display: none; }
 .manual-research-note { padding-inline: 0; border-inline: 0; border-radius: 0; }
 @media (max-width: 639px) {
   .manual-crumbs > :not(:last-child) { display: none; }
+  .manual-crumbs a { display: inline-flex; align-items: center; min-height: 2.75rem; }
   .manual-head h1, .manual--home .manual-head h1 { font-size: var(--t-h1); font-weight: 500; line-height: var(--lh-h1); }
-  .manual-head p { font-size: var(--t-doc); margin-top: var(--s-5); }
+  .manual-head p { font-size: var(--t-doc); margin-top: var(--s-6); }
 }
 
 @media (max-width: 767px) { .manual-prose :is(h2, h3, h4) { scroll-margin-top: calc(var(--nav) + 2.75rem + var(--s-4)); } }

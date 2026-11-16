@@ -1,6 +1,6 @@
 // ------------------------------------------------------------------ header
 // Below 1200px the menu words live in a sheet the menu button opens; a panel's links open with the
-// chevron beside its word. Opening the sheet moves the focus to its first word; Tab and Shift+Tab then
+// chevron beside its word. Opening the sheet focuses its container; Tab enters the links, and Tab and Shift+Tab then
 // stay inside the sheet, its bar along the bottom (a phone) and the menu button, which now closes it.
 // Escape closes the sheet and leaves the focus on the menu button; a tap on any link in the sheet
 // closes it. From 1200px the words are in the bar, each panel under its word (below).
