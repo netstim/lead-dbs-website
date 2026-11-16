@@ -1,14 +1,11 @@
+{{- /* One level of the chapter tree. A chapter with sub-pages has its own link and a separate
+   toggle; only the branch holding the current page starts open. */ -}}
 {{ $p := .page }}
 {{ range .entries }}
-{{ $entry := . }}{{ $target := site.GetPage .page }}
-<li>
-  {{ if .children }}
-  <details{{ if or (eq $p $target) ($target.IsAncestor $p) }} open{{ end }}>
-    <summary><a href="{{ $target.RelPermalink }}"{{ if eq $p $target }} aria-current="page"{{ end }}>{{ .label | default .title }}</a></summary>
-    <ul>{{ partial "manual-tree.html" (dict "entries" .children "page" $p) }}</ul>
-  </details>
-  {{ else }}
-  <a href="{{ $target.RelPermalink }}"{{ if eq $p $target }} aria-current="page"{{ end }}>{{ .label | default .title }}</a>
-  {{ end }}
+{{ $target := site.GetPage .page }}
+{{ $open := and .children (or (eq $p $target) ($target.IsAncestor $p)) }}
+<li{{ if .children }} class="manual-nav__branch{{ if $open }} is-open{{ end }}"{{ end }}>
+  <div class="manual-nav__row"><a href="{{ $target.RelPermalink }}"{{ if eq $p $target }} aria-current="page"{{ end }}>{{ $target.LinkTitle }}</a>{{ if .children }}<button class="manual-nav__toggle" aria-expanded="{{ if $open }}true{{ else }}false{{ end }}" aria-label="{{ $target.LinkTitle }}: show pages" hidden>{{ partial "manual-icon.html" "chevron" }}</button>{{ end }}</div>
+  {{ with .children }}<ul>{{ partial "manual-tree.html" (dict "entries" . "page" $p) }}</ul>{{ end }}
 </li>
 {{ end }}

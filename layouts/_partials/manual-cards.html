@@ -1,0 +1,4 @@
+{{- /* Cards for a list of sidebar entries: a section's overview and a chapter's sub-pages. */ -}}
+<div class="manual-cards">
+{{ range . }}{{ with site.GetPage .page }}<a href="{{ .RelPermalink }}"><strong>{{ .LinkTitle }}</strong>{{ with .Params.manual_lead | default .Description }}<span>{{ . }}</span>{{ end }}</a>{{ end }}{{ end }}
+</div>

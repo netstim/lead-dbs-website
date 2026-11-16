@@ -3,29 +3,27 @@
   "title": "Imaging setup",
   "linkTitle": "Imaging setup",
   "layout": "manual",
-  "weight": 45,
   "manual_group": "lead-or",
   "description": "Prepare imaging data for use with Lead-OR.",
   "source_url": "https://netstim.gitbook.io/leaddbs/lead-or/imaging-setup",
-  "manual_title": "Imaging setup",
   "manual_lead": "Prepare imaging data for use with Lead-OR."
 }
 ---
 
-Imaging setup to use the Lead-OR platform
+Set up imaging to use the Lead-OR platform.
 
 ## Requirements
 
 1. **3D Slicer:** [3D Slicer](https://download.slicer.org/) (v >= 5.2.2) together with the SlicerNetstim, SlicerOpenIGTLink and SlicerIGT extensions should be installed.
-2. **ORScene:** An *ORScene* is a file that includes subject images, planning information and atlas-based segmentations ready to loaded into Slicer. It can be created from Lead-DBS and an example dataset is already included in the SlicerNetstim extension.
+2. **ORScene:** An *ORScene* is a file that includes subject images, planning information and atlas-based segmentations ready to be loaded into Slicer. It can be created from Lead-DBS and an example dataset is already included in the SlicerNetstim extension.
 
 ## Loading sample ORScene
 
-A sample ORScene is included to test the platform. To load it follow the next steps:
+A sample ORScene is included to test the platform. To load it, follow these steps:
 
 1. Open Slicer.
-2. Switch to Sample Data module.
-3. Scroll down and select STN Planning.
+2. Switch to the **Sample Data** module.
+3. Scroll down and select **STN Planning**.
 
 See the following screenshots as reference:
 
@@ -35,11 +33,11 @@ See the following screenshots as reference:
 
 ## Creating new ORScene
 
-In order to create an ORScene follow the next steps:
+To create an ORScene, follow these steps:
 
 1. Process a subject in Lead-DBS with the **co-registration** and **normalization** steps.
 2. Place the surgical planning files under a `leador` subfolder within the subject folder.
-3. Load the subject in Lead-DBS and select `Tools > Lead-OR > Create ORScene`. Note that the selected atlas will be put into the scene as well.
+3. Load the subject in Lead-DBS and select **Tools** > **Lead-OR** > **Create ORScene**. The selected atlas will be put into the scene as well.
 4. Drag and drop the `ORScene.mrb` file into Slicer.
 
 See the following screenshots as reference.

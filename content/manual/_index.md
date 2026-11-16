@@ -3,11 +3,9 @@
   "title": "Documentation",
   "linkTitle": "Introduction",
   "layout": "manual",
-  "weight": 1,
   "manual_group": "getting-started",
   "description": "Get started with Lead-DBS. Installation, electrode reconstruction, group analysis, connectomics and MATLAB reference.",
   "source_url": "https://netstim.gitbook.io/leaddbs/readme",
-  "manual_title": "Introduction",
   "manual_lead": "Guides and reference for localizing electrodes, modelling stimulation and exploring brain networks."
 }
 ---
@@ -33,4 +31,4 @@ Find the project on [GitHub](https://github.com/netstim/leaddbs) and [Bluesky](h
 
 ## Dependencies
 
-Lead-DBS integrates open-source neuroimaging tools alongside code developed by the team. When using Lead-DBS for research, **please cite the underlying tools and dependencies that your analysis uses**, as well as Lead-DBS itself. See the [software dependencies and references](/about/lead-dbs-dependencies/).
+Lead-DBS integrates open-source neuroimaging tools alongside code developed by the team. When using Lead-DBS for research, **cite the underlying tools and dependencies that your analysis uses**, as well as Lead-DBS itself. See the [software dependencies and references](/about/lead-dbs-dependencies/).

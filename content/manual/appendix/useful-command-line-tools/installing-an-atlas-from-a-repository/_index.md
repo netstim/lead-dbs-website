@@ -1,18 +1,16 @@
 ---
 {
   "title": "Installing an atlas from an online repository",
-  "linkTitle": "Installing an atlas from an online repository",
+  "linkTitle": "Atlas from a repository",
   "layout": "manual",
-  "weight": 57,
   "manual_group": "appendix",
   "description": "Install the Melbourne Subcortex Atlas with MATLAB, combine its four scales, and customize labels and selection presets.",
   "source_url": "https://netstim.gitbook.io/leaddbs/appendix/useful-command-line-tools/installing-an-atlas-from-a-repository",
-  "manual_title": "Installing an atlas from an online repository",
   "manual_lead": "Install the Melbourne Subcortex Atlas with MATLAB, combine its four scales, and customize labels and selection presets."
 }
 ---
 
-Follow the examples below, or [open the complete installation script on GitHub](https://github.com/netstim/leaddbs/blob/develop/support_scripts/ressources/install_melbourne_atlas.m). The script is included in Lead-DBS under **support_scripts → ressources**.
+Follow the examples below, or [open the complete installation script on GitHub](https://github.com/netstim/leaddbs/blob/develop/support_scripts/ressources/install_melbourne_atlas.m). The script is included in Lead-DBS under {{< manual-path "support_scripts/ressources" >}}.
 
 ## Download the atlas
 
@@ -111,11 +109,11 @@ The next line will call a subfunction of a script that will simply run Lead-DBS 
 visualize_melbourne_atlas;
 ```
 
-Note that this function was simply created by clicking on `Export Code` from the Lead-DBS main GUI (after selecting the Melbourne atlas and checking "Render 3D" as the only checkbox in the GUI):
+This function was simply created by selecting **Export Code** in the Lead-DBS main GUI (after selecting the Melbourne atlas and checking **Render 3D** as the only checkbox in the GUI):
 
-![The subfunction "visualize_melbourne_atlas" was created by a simple click on "Export Code" in the Lead-DBS main GUI.](manual/f6cc42431f7e2f7f.png)
+![The subfunction visualize_melbourne_atlas was created by selecting Export Code in the Lead-DBS main GUI.](manual/f6cc42431f7e2f7f.png)
 
-…this will take a while. Note that upon the first run of visualizing a new atlas, Lead-DBS will aggregate all nifti files and store them in the file `atlas_index.mat`. It will also create a `gm_mask.nii.gz` that is used for VTA calculations.
+This will take a while. Upon the first run of visualizing a new atlas, Lead-DBS will aggregate all NIfTI files and store them in the file `atlas_index.mat`. It will also create a `gm_mask.nii.gz` that is used for VTA calculations.
 
 ## Customize the atlas
 
@@ -138,7 +136,7 @@ reorder=[1,40,41,... % Amy
     39,46,23,24,25,26,27,28,29,30,31,32,33,34]; % Thal
 ```
 
-Here, we load in the `atlas_index.mat` file. We also define a reordering vector to make the order of the atlas entries a bit more logical. Lead-DBS adds atlas structures alphabetically. In this case, we would instead like to group entries by their anatomical structures. For instance, the parcels defining the Amygdala entries 1, 40 and 41. We now want to move them together (to form 1, 2 and 3). We will use the `reorder` variable throughout the script to do so.
+Here, we load in the `atlas_index.mat` file. We also define a reordering vector to make the order of the atlas entries a bit more logical. Lead-DBS adds atlas structures alphabetically. In this case, we would instead like to group entries by their anatomical structures. For instance, the parcels defining the amygdala are entries 1, 40 and 41. We now want to move them together (to form 1, 2 and 3). We will use the `reorder` variable throughout the script to do so.
 
 ## Add selection presets
 
@@ -153,7 +151,7 @@ for s=1:4
 end
 ```
 
-For all four scales, a preset will be added to account for this. Note that entries in the `Sstruc` variable had been collected above (while joining the atlases of the four scales into a joint atlas).
+For all four scales, a preset will be added to account for this. The entries in the `Sstruc` variable had been collected above (while joining the atlases of the four scales into a joint atlas).
 
 ## Set colors and labels
 
@@ -165,7 +163,7 @@ atlases.defaultset=1;
 atlases.tissuetypes;
 ```
 
-These lines add a colormap and define that the default set will be scale number one (i.e. `atlases.presets(1)`). `atlases.tissuetypes` could be used in case the atlas contained white-matter structures. These should be assigned with a `2` (instead of a `1` which is gray matter) and will then be ignored upon VTA generation. In our case, the atlas doesn't define white matter structures, so we'll leave the entry as is.
+These lines add a colormap and define that the default set will be scale number one (that is, `atlases.presets(1)`). `atlases.tissuetypes` could be used in case the atlas contained white-matter structures. These should be assigned with a `2` (instead of a `1` which is gray matter) and will then be ignored upon VTA generation. In our case, the atlas doesn't define white matter structures, so we'll leave the entry as is.
 
 ```matlab
 atlases.labelnames{1}='Labels';
@@ -176,7 +174,7 @@ for structure=1:length(atlases.names)
 end
 ```
 
-These next lines (above) add different entries for how to call the structures. By default, Lead-DBS will show the filename of each structure. But structures can be labeled by different sets of labels. For instance, in the DISTAL atlas, labels for thalamic structures in Jones vs. Hassler nomenclature and their abbreviations are given. The code will assign the labelset {2} by their filenames without extension. You can see this result in the screenshot below:
+These next lines (above) add different entries for how to call the structures. By default, Lead-DBS will show the filename of each structure. But structures can be labeled by different sets of labels. For instance, in the DISTAL atlas, labels for thalamic structures in Jones vs. Hassler nomenclature and their abbreviations are given. The code will assign the label set `{2}` by their filenames without extension. You can see this result in the screenshot below:
 
 ![Different sets of labeling can define each atlas structure](manual/54cd0baef54707e4.png)
 
@@ -208,7 +206,6 @@ Finally, let's save changes and re-visualize results:
 
 ```matlab
 save([outdir,filesep,'atlas_index.mat'],'atlases');
-
 
 %% show final result:
 visualize_melbourne_atlas;
