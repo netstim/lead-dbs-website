@@ -57,7 +57,7 @@ In our example, let's see the use of the **Coarse Mask**. This will produce the 
 
 ### Output
 
-- A pop-up window with information about methods and references. If this information is not needed, the window can be closed.
+- A pop-up window with information about methods and references.
 - New normalization data will appear in the selected folder, under {{< manual-path "derivatives/leaddbs/patient_name/brainshift/" >}}. The `anat` folder contains results, the `checkreg` folder stores the images as `.png` files.
 
 {{% manual-note "info" %}}

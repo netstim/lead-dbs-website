@@ -206,8 +206,6 @@ enableGitInfo = true
     name = "First steps"
     pageRef = "/helpsupport/first-steps"
     weight = 1
-    [menus.main.params]
-      card = "Installation and electrode localization"
   [[menus.main]]
     parent = "docs"
     name = "Manual"
@@ -234,9 +232,6 @@ enableGitInfo = true
     name = "Walkthrough videos"
     pageRef = "/helpsupport/knowledge-base/walkthrough-videos"
     weight = 4
-    [menus.main.params]
-      card = "Tutorials and recorded workshops"
-      bandLine = false
   [[menus.main]]
     parent = "docs"
     name = "Get help"
@@ -333,39 +328,28 @@ enableGitInfo = true
       card = "Release and workshop announcements"
       bandLine = false
 
-  # About: who makes Lead-DBS, how to cite it, its papers, the software it builds on
+  # About: who makes Lead-DBS, how to cite it, its papers, the software it builds on. The names explain
+  # themselves: no card, so the About hub and the band show the name alone.
   [[menus.main]]
     parent = "about"
     name = "Cite Lead-DBS"
     pageRef = "/about/citing_leaddbs"
     weight = 1
-    [menus.main.params]
-      card = "Citations and methods text"
-      bandLine = false
   [[menus.main]]
     parent = "about"
     name = "Publications"
     pageRef = "/about/publications"
     weight = 2
-    [menus.main.params]
-      card = "Papers about Lead-DBS and studies that used it"
-      bandLine = false
   [[menus.main]]
     parent = "about"
     name = "Contributors"
     pageRef = "/about/team"
     weight = 3
-    [menus.main.params]
-      card = "Core team and project contributors"
-      bandLine = false
   [[menus.main]]
     parent = "about"
     name = "Dependencies"
     pageRef = "/about/lead-dbs-dependencies"
     weight = 4
-    [menus.main.params]
-      card = "Software libraries and citations"
-      bandLine = false
 
   # The footer's legal line (Contact is in the footer's "Help" column and under "Get help")
   [[menus.footer]]

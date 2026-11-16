@@ -76,7 +76,7 @@ If applicable, Lead-DBS also gives you the option to normalize fibre tracking im
 
 ### Output
 
-- A pop-up window with information about methods and references. If this information is not needed, the window can be closed.
+- A pop-up window with information about methods and references.
 - New normalization data will appear in the selected folder, under {{< manual-path "derivatives/leaddbs/patient_name/normalization" >}}.
 
 {{% manual-note "info" %}}

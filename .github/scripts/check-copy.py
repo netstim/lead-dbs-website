@@ -18,14 +18,18 @@ Failures, for copy that is objectively wrong:
     form to subscribe with.
 Warnings, for tone:
   - hype words and stock phrases (HYPE);
-  - a sentence of eight words or more that stands on several pages;
+  - a sentence of eight words or more that stands on several pages, unless REPEATS approves it on exactly
+    those pages (an approved entry that no longer matches is reported too, so the list stays true);
   - a first heading after the h1 that repeats the h1;
   - a paragraph with more than one pair of spaced dashes;
   - a header menu entry whose name differs from the h1 of its page (SHORT_LABELS lists the deliberate ones).
-Left as published: paper titles and citations (.paper, .cite, blockquote), news posts and texts kept for
-the record (spelling, names and warnings). Literal software labels, sequence names and the like that keep
-their own spelling are listed in EXEMPT. The manual's text is checked like every other page's; its GUI
-labels are in EXEMPT too.
+Keep spelling and names as published in dated news posts. Run tone warnings unless a page is explicitly
+marked as an immutable archive (front matter archived: true, which the page head shows as "kept for the
+record"). Never alter paper titles, quotations, literal UI labels or code: paper titles and citations
+(.paper, .cite) and quotations (blockquote) are not checked, and literal software labels, sequence names
+and the like that keep their own spelling are listed in EXEMPT. The manual's text is checked like every
+other page's; its bold interface labels keep the software's spelling but stay in the sentences that warnings
+quote.
 
 Only the Python standard library is used.
 """
@@ -98,6 +102,70 @@ INLINE = {"a", "abbr", "b", "bdi", "bdo", "cite", "data", "dfn", "em", "i", "kbd
           "small", "span", "strong", "sub", "sup", "time", "u", "var"}
 BREAK = "\x00"   # \s does not match it, so a repeat never spans a break
 SURFACE_ATTRS = ("alt", "placeholder", "aria-label")
+# the end of a sentence, for the repeated-sentence warning; not after an abbreviation inside one
+SENTENCE_END = r"(?<!\bvs\.)(?<!\bal\.)(?<!\bFig\.)(?<!\be\.g\.)(?<!\bi\.e\.)(?<=[.!?])\s+|" + BREAK
+# Repetition that is right where it stands: a sentence (as the warning quotes it, the manual's bold
+# interface labels included) and the exact set of pages (site paths) it may stand on. A sentence that
+# spreads to another page warns again. Approve a sentence only when each page needs it to stand alone;
+# never reword a safety notice, a prerequisite or an interface label to silence the warning.
+CA = "/manual/connectomics/connectomic-analyses/"
+DFA, FFE, NME = CA + "discriminative-fibertracts-analysis/", CA + "fiber-filtering-explorer/", CA + "network-mapping-explorer/"
+SSE = "/manual/lead-group/sweetspot-explorer/"
+REG = "/manual/lead-dbs/step3-volume-registrations/"
+NORM, REFINE = REG + "normalization-of-images/", REG + "subcortical-refine-post-to-pre-transforms/"
+REPEATS = {
+    # the research-use notice, word for word on Download and at the start of the manual
+    "It is not intended for diagnosis, treatment planning, surgical targeting, DBS programming, patient management, or any other clinical decision concerning an individual patient.":
+        {"/download/", "/manual/"},
+    "Lead-DBS is research software intended for retrospective scientific analysis of neuroimaging data, electrode locations and group-level associations in research studies.":
+        {"/download/", "/manual/"},
+    "Outputs must not be used as a basis for clinical care.":
+        {"/download/", "/manual/"},
+    # the next version, on the home page and on Download
+    "We’re rebuilding Lead-DBS in Python, without a MATLAB requirement.":
+        {"/download/", "/"},
+    # the catalogues' shared opening
+    "Each entry lists access details and the paper to cite.":
+        {"/helpsupport/knowledge-base/atlasesresources/atlases-2/", "/helpsupport/knowledge-base/atlasesresources/cortical-atlas-parcellations-mni-space/"},
+    # the methods pop-up of both registration steps
+    "A pop-up window with information about methods and references.":
+        {NORM, REFINE},
+    # the connectomic explorers share their method, prerequisites and steps; each page stands alone
+    "After this calculation, you can explore the results interactively.":
+        {DFA, FFE, NME},
+    "Alternatively, you can simply use the peak value (more conforming to the “all or nothing” principle of action potentials) or the 5% peak values.":
+        {DFA, FFE},
+    "Current validation strategies include permutation (Leave-Nothing-Out) based approaches, as well as Leave-One-Patient-Out, Leave-One-Cohort-Out, and k-fold (randomized) cross-validations (Image 4, arrow 1).":
+        {FFE, NME},
+    "Depending on the analysis, average or sum these values.":
+        {DFA, FFE},
+    "Each tract in the normative connectome is analysed separately.":
+        {DFA, FFE},
+    "For each E-field, sample its values at the points along the tract, whether the field is shown in yellow or blue in panel A.":
+        {DFA, FFE},
+    "For this step, all the VTAs/E-fields have to be calculated (select the Calculate stats & VTA button in the Lead Group interface).":
+        {FFE, NME},
+    "In this method, the same is done for binary VTAs (which in the case of Lead-DBS are thresholded E-Fields).":
+        {DFA, FFE},
+    "Parts of this tract pass through some of the E-fields shown in yellow.":
+        {DFA, FFE},
+    "Subcohorts can be created by selecting patients in the bottom window.":
+        {FFE, SSE},
+    "The final step across frameworks is Crossvalidation & Prediction (Image 1, red arrow 3).":
+        {FFE, NME, SSE},
+    "They traverse less closely to the ones shown in blue but will still traverse through areas of those E-Fields that have a lower magnitude sum (remember that the E-Field is the estimated vector field denoting changes in voltage induced by the stimulation; its magnitude would be the absolute difference of voltage between two points).":
+        {DFA, FFE},
+    "This effect could be clinical (for example, %-UPDRS-III improvement following STN-DBS) or behavioural (for example, change in risk-taking behaviour or movement speed in a motor task).":
+        {DFA, NME},
+    "Thus, each single tract splits the group of VTAs (in template space) into two sets.":
+        {DFA, FFE},
+    "Use this step to assess model validity within cohorts and generalization across cohorts.":
+        {FFE, NME, SSE},
+    "Variable of interest (VOI) is the dependent variable, such as clinical score (Image 2, arrow 2).":
+        {FFE, NME},
+    "You can also generate predictions for individual patients, predefined subcohorts, cohorts and sets (Image 4, arrow 2).":
+        {FFE, NME, SSE},
+}
 
 
 class Text(html.parser.HTMLParser):
@@ -111,7 +179,8 @@ class Text(html.parser.HTMLParser):
         self.main_at = None     # depth of <main>
         self.skip_at = None     # depth of the element whose subtree is skipped
         self.quote_at = None    # depth of a quotation or citation (its alt texts are left as published)
-        self.out = []
+        self.out = []           # visible text of <main>, the manual's bold interface labels blanked
+        self.full = []          # the same with those labels kept: the sentences that warnings compare
         self.body_class = ""
         self.surface = []       # strings of the editorial surface
         self.chrome_at = None   # depth of the <header>/<footer> outside <main>, or of a <label>/<title>
@@ -129,6 +198,7 @@ class Text(html.parser.HTMLParser):
     def handle_starttag(self, tag, attrs):
         if tag not in INLINE:
             self.out.append(BREAK)
+            self.full.append(BREAK)
         a = dict(attrs)
         if tag == "meta" and a.get("name") == "description":
             self.surface.append(a.get("content") or "")
@@ -161,6 +231,7 @@ class Text(html.parser.HTMLParser):
     def handle_endtag(self, tag):
         if tag not in INLINE:
             self.out.append(BREAK)
+            self.full.append(BREAK)
         if tag in VOID:
             return
         if self.block and self.block[1] == self.depth:
@@ -191,7 +262,9 @@ class Text(html.parser.HTMLParser):
         if self.in_main() and self.skip_at is None:
             # a line break alone between two elements is a template's markup between parts that CSS sets
             # apart (a tile's title and its text), not a space inside a sentence
-            self.out.append(BREAK if not data.strip() and "\n" in data else " " * len(data) if self.literal_at else data)
+            gap = not data.strip() and "\n" in data
+            self.out.append(BREAK if gap else " " * len(data) if self.literal_at else data)
+            self.full.append(BREAK if gap else data)
             if self.block:
                 self.block[2].append(data)
             if self.link_at is not None:
@@ -251,9 +324,11 @@ for f in sorted(ROOT.rglob("index.html")) + [ROOT / "404.html"]:
     p = Text()
     p.feed(raw)
     text = re.sub(r"\s+", " ", "".join(p.out).replace(BREAK, " "))
-    # news posts and texts kept for the record stay as they were published
-    as_published = "section-news" in p.body_class.split() or "kept for the record" in raw.lower()
-    for ctx in [] if as_published else p.repeats():
+    # a dated news post keeps its spelling and names; an archived page (front matter archived: true, which
+    # its head shows as "kept for the record") stays entirely as published, without repeats or warnings
+    archived = bool(re.search(r'\bpage-head__meta\b[^>]*>(?:(?!</p>).)*kept for the record', raw, re.S))
+    as_published = archived or "section-news" in p.body_class.split()
+    for ctx in [] if archived else p.repeats():
         errors.append(f"{rel}: repeated word: …{ctx}…")
     for why, ctx in matches(text, as_published):
         if "struck" in why and rel.startswith("helpsupport/forum/"):
@@ -276,11 +351,11 @@ for f in sorted(ROOT.rglob("index.html")) + [ROOT / "404.html"]:
                 errors.append(f"{rel}: “{label}” leads to the newsletter, which has no sign-up form: name an "
                               f"action that exists (News, RSS, Slack) until it has one")
 
-    if as_published:
+    if archived:
         continue
     for m in re.finditer(HYPE, blank_exempt(text), re.I):
         warnings.append(f"{rel}: hype or stock phrase: …{text[max(0, m.start() - 50): m.end() + 50]}…")
-    for sentence in re.split(r"(?<=[.!?])\s+|" + BREAK, "".join(p.out)):
+    for sentence in re.split(SENTENCE_END, "".join(p.full)):
         sentence = re.sub(r"\s+", " ", sentence).strip()
         # a sentence inside a link is a card quoting the lead of the page it leads to
         if len(sentence.split()) >= 8 and sentence.endswith((".", "!", "?")) and not any(sentence in re.sub(r"\s+", " ", t) for t in p.linked):
@@ -293,10 +368,18 @@ for f in sorted(ROOT.rglob("index.html")) + [ROOT / "404.html"]:
         if len(re.findall(r"\s[–—]\s", para)) > 2:
             warnings.append(f"{rel}: more than one pair of dashes in a paragraph: {para[:120]}…")
 
+seen = set()   # approved sentences that still repeat (on their pages or not)
 for sentence, where in sorted(sentences.items()):
     if len(where) > 1:
+        if sentence in REPEATS:
+            seen.add(sentence)
+            if REPEATS[sentence] == {"/" + w.removesuffix("index.html") for w in where}:
+                continue
         shown = ", ".join(sorted(where)[:3]) + (f" and {len(where) - 3} more" if len(where) > 3 else "")
         warnings.append(f"the same sentence on {len(where)} pages ({shown}): {sentence[:140]}")
+
+for sentence in sorted(set(REPEATS) - seen):
+    warnings.append(f"REPEATS approves a sentence that no longer repeats; remove it: {sentence[:140]}")
 
 home = ROOT / "index.html"
 if home.is_file():

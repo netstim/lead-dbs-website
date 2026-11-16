@@ -10,11 +10,12 @@ keywords: ["help", "support", "documentation", "docs", "manual", "faq", "tutoria
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-about.jpg"
 # a hub page: its sections use the full width, no sidebar
-# the rows of each section (layouts/_shortcodes/link-rows.html); "Start here" leaves out the manual, which has its own section
+# the rows of each section (layouts/_shortcodes/link-rows.html); "Start here" leaves out the manual, which has its own section.
+# A row's text only where it tells the rows apart (Lead Tutor's ten patients); a name that explains itself stands alone.
 learn:
-  - {name: "First steps", text: "Installation and electrode localization", url: "/helpsupport/first-steps/"}
+  - {name: "First steps", url: "/helpsupport/first-steps/"}
   - {name: "Lead Tutor", text: "10 patients with expert localizations", url: "/helpsupport/learn-lead-dbs-yourself/"}
-  - {name: "Walkthrough videos", text: "Tutorials and recorded workshops", url: "/helpsupport/knowledge-base/walkthrough-videos/"}
+  - {name: "Walkthrough videos", url: "/helpsupport/knowledge-base/walkthrough-videos/"}
 manual:
   - {name: "Installation", url: "/manual/installation/"}
   - {name: "One patient, step by step", url: "/manual/lead-dbs/step0-overview/"}

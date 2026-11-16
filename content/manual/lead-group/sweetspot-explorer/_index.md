@@ -152,7 +152,7 @@ N-Image represents the number of times the voxel was covered by VTAs from the da
 
 ![Image 4. Network Mapping Explorer Crossvalidation & Prediction window.](manual/7ee0820a343e27ce.png "Image 4. Network Mapping Explorer Crossvalidation & Prediction window.")
 
-* The final step across frameworks is **Crossvalidation & Prediction** (Image 1, red arrow 3). This step is crucial in establishing the validity of generated models within and generalizability across cohorts. Current validation strategies include permutation (Leave-Nothing-Out) approaches, as well as Leave-One-Patient-Out, Leave-One-Cohort-Out, and k-fold (randomized) cross-validations (Image 4, arrow 1). In addition, it is possible to customize this process and generate predictions for individual patients, as well as predefined subcohorts, cohorts, and sets (Image 4, arrow 2).
+* The final step across frameworks is **Crossvalidation & Prediction** (Image 1, red arrow 3). Use this step to assess model validity within cohorts and generalization across cohorts. Current validation strategies include permutation (Leave-Nothing-Out) approaches, as well as Leave-One-Patient-Out, Leave-One-Cohort-Out, and k-fold (randomized) cross-validations (Image 4, arrow 1). You can also generate predictions for individual patients, predefined subcohorts, cohorts and sets (Image 4, arrow 2).
 * The drop-down window allows users to select a strategy, based on which predictions will be made. The current selection uses the mean of scores, the sum of scores, the peak of scores, and the peak of 5% of scores (Image 4, arrow 3).
 * If that option is selected, the results can also be post-hoc corrected for the group (Image 4, arrow 4).
 

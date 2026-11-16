@@ -30,14 +30,14 @@ Network Mapping Explorer builds upon [Lead Group](/manual/lead-group/group-analy
 
 ![Network Mapping Explorer icon.](manual/8c6f121e204fc170.png "Network Mapping Explorer icon.")
 
-A new window with Network Mapping Explorer user interface pops up. Connectivity fingerprints have to be calculated in the first step. Select the Connectome of your choice from the drop-down selection and select **Calculate** (Image 1). Once it is done, you will be able to continue with your analysis.
+A new window with Network Mapping Explorer user interface pops up. Connectivity fingerprints have to be calculated in the first step. Select the Connectome of your choice from the drop-down selection and select **Calculate** (Image 1).
 
 {{% manual-note "info" %}}
 The time it takes to calculate connectivity fingerprints depends on your sample size, normative connectome, or your computer. This step, therefore, may take a few minutes, but also days.
 {{% /manual-note %}}
 
 {{% manual-note "info" %}}
-In this analysis stream, you have to once calculate connectivity fingerprints for any combination of normative connectomes and statistical metric. Once this is done, you can explore the results more or less "live".
+In this analysis stream, you have to once calculate connectivity fingerprints for any combination of normative connectomes and statistical metric. After this calculation, you can explore the results interactively.
 {{% /manual-note %}}
 
 The resulting connectivity fingerprints can be seen as estimates of how the DBS electrodes are connected to other areas of the brain. However, the noninvasive methods used to derive them have strong limitations and a multitude of inherent problems and therefore, results should be interpreted with caution.
@@ -122,7 +122,7 @@ Two sample t-test is used to compare results between two groups. Lead-DBS allows
 
 ![Image 4. Network Mapping Explorer Crossvalidation & Prediction window.](manual/728e34e4abe9b400.png "Image 4. Network Mapping Explorer Crossvalidation & Prediction window.")
 
-* The final step across frameworks is **Crossvalidation & Prediction** (Image 1, red arrow 3). This step is crucial in establishing the validity of generated models within and generalizability across cohorts. Current validation strategies include permutation (Leave-Nothing-Out) based approaches, as well as Leave-One-Patient-Out, Leave-One-Cohort-Out, and k-fold (randomized) cross-validations (Image 4, arrow 1). In addition, it is possible to customize this process and generate predictions for individual patients, as well as predefined subcohorts, cohorts, and sets (Image 4, arrow 2).
+* The final step across frameworks is **Crossvalidation & Prediction** (Image 1, red arrow 3). Use this step to assess model validity within cohorts and generalization across cohorts. Current validation strategies include permutation (Leave-Nothing-Out) based approaches, as well as Leave-One-Patient-Out, Leave-One-Cohort-Out, and k-fold (randomized) cross-validations (Image 4, arrow 1). You can also generate predictions for individual patients, predefined subcohorts, cohorts and sets (Image 4, arrow 2).
 * The drop-down window allows you to select the type of spatial correlation on which to select similarity between training and test datasets (Spearman, Pearson, Bend) (Image 2, arrow 3). Mask can be applied, by selecting one of the predefined masks (Grey Matter, Brain, Cortex & Cerebellum, Cortex, Cerebellum, Custom Image, Custom Equation, Grey Matter) (Image 4, arrow 4). Applying the mask during cross-validation means that only voxels located within that brain structure will be considered for crossvalidations. For example, using Cerebellum as a mask will keep voxel correlation values associated with cerebellum unchanged, but other voxels, such as voxels in cortex, or striatum will be set to NaN. If **Custom Image** is selected, the UI accepts data in `.nii` format and in the same space dimensions as the connectivity fingerprints.
 * Individual fingerprints can also be exported by ticking the box **Export Models as NIfTI** (Image 4, arrow 5).
 * After selecting **Run**, cross-validations will run automatically and return a graph with the clinical improvement on the x-axis and the network score on the y-axis.

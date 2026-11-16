@@ -83,7 +83,7 @@ One limitation of most available atlases (when used in Lead-DBS) is shown in thi
 
 {{% /col %}}
 {{% col "1/3" %}}
-*The upper left panel shows the hypointense region of the subthalamic nucleus as defined by the [ICBM 2009b MNI template](/about-the-mni-spaces/). The region of the STN is further magnified in the next panel. Subsequent panels overlay available atlases of the STN to this region. None of them precisely matches the STN of the template. The reasons are many, but in DBS imaging millimetres matter, so the discrepancy matters.*
+*The upper left panel shows the hypointense region of the subthalamic nucleus as defined by the [ICBM 2009b MNI template](/about-the-mni-spaces/). The region of the STN is further magnified in the next panel. Subsequent panels overlay available atlases of the STN to this region. None of them precisely matches the STN of the template. In DBS imaging, a discrepancy of millimetres can change the anatomical interpretation.*
 
 {{% /col %}}
 {{% /row %}}
@@ -145,7 +145,7 @@ To “fill the gaps” between the regions defined on the template itself, a pre
 {{% /col %}}
 {{% /row %}}
 ### Stage 3: Further parcellation of core DBS targets by means of structural connectivity
-The final stage was to further subdivide the primary DBS targets, namely the STN and the GPi by means of structural connectivity. This has been done in multiple studies for the STN, subdividing it into sensorimotor, associative and limbic subregions. It has not been done for the GPi, potentially given its closeness to efferent and afferent structures. We used the efferent connectivity of the GPi that projects to thalamic functional zones as they were defined in the famous [Behrens 2003](https://www.ncbi.nlm.nih.gov/pubmed/12808459) study.
+The final stage was to further subdivide the primary DBS targets, namely the STN and the GPi by means of structural connectivity. This has been done in multiple studies for the STN, subdividing it into sensorimotor, associative and limbic subregions. At the time of this study, the approach had not been applied to the GPi, potentially because of its proximity to efferent and afferent structures. We used the efferent connectivity of the GPi that projects to thalamic functional zones as they were defined in the [Behrens 2003](https://www.ncbi.nlm.nih.gov/pubmed/12808459) study.
 
 {{% row %}}
 {{% col "2/3" %}}

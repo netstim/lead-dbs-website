@@ -95,7 +95,7 @@ matched the brains completely** to the Talairach brain. As a result the MNI brai
 
 Conversions between Talairach and MNI space have been studied in depth (for example in the
 [work of Lancaster and colleagues](https://www.brainmap.org/icbm2tal/)). The term "MNI space" itself
-covers several templates: see [About the MNI space(s)](/about-the-mni-spaces/).
+covers several templates: see [About the MNI spaces](/about-the-mni-spaces/).
 
 ### Surgical coordinates are not Talairach coordinates
 

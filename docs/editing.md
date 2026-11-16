@@ -71,7 +71,11 @@ drawn as `h2`).
   checker leaves them alone; elsewhere add a literal to `EXEMPT` in the checker. FOCUS is *requested*, not
   downloaded. The checker also prints warnings that never fail: hype words, a sentence repeated on several
   pages, a paragraph with several dash pairs, a menu name that differs from its page's title. Read them
-  before a release.
+  before a release. A repetition that each page needs (the research-use notice, a prerequisite shared by
+  the connectomic explorers) goes into `REPEATS` in the checker, with the exact sentence and the exact pages it
+  stands on; fix a repetition that is only padding. Dated news posts keep their published spelling and
+  names but get the tone warnings; only a page marked `archived: true` in its front matter (its head says
+  "kept for the record") is left entirely as published.
 - **Claims carry their source**: an accuracy or clinical claim names the study it comes from ("The study
   proposed…", "The paper compares…"), not a universal "outperforms" or "perfectly".
 - **The quotes on Publications**: `{{< quote-wall limit="1" >}}` shows the first quote of `data/quotes.yaml`

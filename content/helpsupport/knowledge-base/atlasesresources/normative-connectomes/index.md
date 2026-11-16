@@ -27,7 +27,7 @@ for when a patient's own diffusion or fMRI data are missing.
 <span id="background"></span>
 
 <details class="more">
-<summary>From the first connectome in 2014 to the clinical uses</summary>
+<summary>From the first connectome in 2014 to studies of stimulation and lesions</summary>
 
 Since 2014, structural and functional connectomes of large cohorts have been warped into standard space
 and averaged across the group.

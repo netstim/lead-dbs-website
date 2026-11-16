@@ -11,6 +11,10 @@ next:
 # Every section below describes what the code does (layouts/_partials/form.html, assets/js/main/videos.js,
 # assets/js/main/theme.js, server/forms/). Retention periods, legal bases and the controller are still open:
 # see docs/launch/privacy-draft.md. Don't add a claim here that the code or the lab hasn't confirmed.
+# Before params.formsEnabled is set to true, append to "Contact and FOCUS requests": "For submissions through
+# this website, the server also stores a daily keyed hash derived from your IP address and submission timestamps
+# to limit repeated requests." (server/forms/FormHandler.php). Replace "may contain" under "Visiting the site"
+# with the exact fields once STRATO confirms its log configuration.
 ---
 
 ## Who we are
@@ -19,13 +23,13 @@ Our website address is: https://www.lead-dbs.org. Contact mail [at] andreas-horn
 
 ## Visiting the site
 
-The site is hosted by STRATO AG. Like every web server, it records each request in its access log: your IP address, the time, the page requested, the referring page and your browser's identification.
+The site is hosted by STRATO AG. Its server access logs may contain: your IP address, the time, the page requested, the referring page and your browser's identification.
 
-The site sets no cookies, runs no analytics or tracking in your browser and loads its fonts and scripts from lead-dbs.org only. If you choose a light or dark theme, your browser keeps that choice on your device (`localStorage`); the manual keeps its sidebar position for the open tab (`sessionStorage`). Neither is sent to us.
+Before you load an external video, the site sets no cookies, runs no analytics or tracking in your browser, and loads its fonts and scripts from lead-dbs.org only. If you choose a light or dark theme, your browser keeps that choice on your device (`localStorage`); the manual keeps its sidebar position for the open tab (`sessionStorage`). Neither is sent to us.
 
 ## Downloads
 
-Download links go through lead-dbs.org/release/download.php, which records the IP address, the time and the file of each download. We use these records to count downloads and to show by country where Lead-DBS is used. The published figures contain no IP addresses.
+Lead-DBS release downloads use lead-dbs.org/release/download.php. The release logs record the IP address, time and requested file. We use these records to count download requests and group them by country; requests do not establish that the software was used. The published figures contain no IP addresses. Other downloads may link directly to external hosts, which have their own privacy policies.
 
 ## Videos
 
@@ -37,7 +41,7 @@ When you write to the team or request the FOCUS atlas, we receive what you send,
 
 ## Links to other sites
 
-GitHub, Slack, Zoom, publishers and the other sites we link to have their own privacy policies. Nothing is sent to them until you follow a link.
+GitHub, Slack, Zoom, publishers and the other sites we link to have their own privacy policies. Following a link sends a request to that site.
 
 ## Your data
 

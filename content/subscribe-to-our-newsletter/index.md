@@ -11,9 +11,10 @@ share: "images/renders/head-community.jpg"
 next:
   - {page: "/news/"}
   - {page: "/helpsupport/slack-user-channel/"}
+# The lead says that sign-up is unavailable: change it when the newsletter form gets an action (data/forms.yaml).
 ---
 
-Releases, important fixes and workshops, a few times a year.
+Newsletter sign-up is unavailable here. Past issues are below.
 
 {{< newsletter >}}
 

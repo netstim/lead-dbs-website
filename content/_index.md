@@ -91,13 +91,13 @@ worldwide:
   title: "Download requests from {countries} countries"
   text: "{downloads} Lead-DBS download requests recorded since {year}."
 
-# The forthcoming release: one point (title and sentence), with the workshop as the next step. Promise
-# no release date and no access beyond the workshop.
+# The forthcoming release: one point, a sentence with an empty title (the template draws no heading for
+# an empty title), with the workshop as the next step. Promise no release date and no access beyond the workshop.
 next:
   label: "Coming next"
   title: "Lead-DBS 4.0"
   points:
-    - {title: "Rebuilt in Python", text: "Version 4.0 will run without a MATLAB licence."}
+    - {title: "", text: "We’re rebuilding Lead-DBS in Python, without a MATLAB requirement."}
   link: {label: "Preview it at the workshop", url: "/events/hands-on-workshop-2027/"}
 
 # Events: the upcoming entries of data/events.yaml, in one band with the latest news.

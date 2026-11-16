@@ -23,7 +23,7 @@ Subcortical electrophysiology mapping (SEM) pools signals recorded from DBS elec
 ## Use it in Lead-DBS
 
 SEM runs in Lead Group, the group-analysis module of Lead-DBS: see the manual's chapter
-[Group analyses with Lead-DBS](/manual/lead-group/group-analyses-with-lead-dbs/).
+[Lead Group](/manual/lead-group/group-analyses-with-lead-dbs/).
 
 ## What to cite
 
@@ -95,15 +95,15 @@ However, it would be great to be able to cover larger areas of the subcortex to 
 
 ### The question
 
-After developing Lead-DBS, at Charité in Berlin, we wondered whether the precision of DBS reconstructions (which are based on MR/CT imaging) could be precise enough to do this.
+At Charité in Berlin, we tested whether MR/CT-based electrode localizations were precise enough to pool electrophysiological recordings across patients.
 
 > Could we record an electrophysiological signature in multiple patients, map the recording sites onto (standardized) anatomical space and map out a spatial profile of an electrophysiological signal?
 
-Already, we have done so using multiple signals that were acquired at rest or during tasks. The first study that uses this technique [has now been published](https://onlinelibrary.wiley.com/doi/10.1002/hbm.23594/full).
+The method has been applied to signals recorded at rest and during tasks. The [first study was published in 2017](https://onlinelibrary.wiley.com/doi/10.1002/hbm.23594/full).
 
 ### Methods
 
-- Local field potential (LFP) recordings were recorded in 54 PD patients from six channels each. From each signal, alpha and beta power were calculated.
+- Local field potentials (LFPs) were recorded from six channels in each of 54 patients with Parkinson’s disease. Alpha and beta power were calculated from each signal.
 - This leads to 324 alpha and 324 beta power estimates for 324 channels.
 - Electrodes were localized in each patient and localizations were warped into standard space.
 - This leads to a 3D point-cloud in subcortical anatomical space.
@@ -144,7 +144,7 @@ We tested whether a standardized structural connectome could distinguish cortica
 
 For this analysis – which could only be performed on group level – a standardized high precision structural connectome [[Horn 2017](https://www.sciencedirect.com/science/article/pii/S1053811917301088)] was used to select fibre-tracts connected to the alpha and beta peaks, respectively.
 
-However, the two regions exhibited a (slightly) different connectivity profile that was largely consistent with data presented in [[Acolla 2015](https://academic.oup.com/brain/article-abstract/139/9/2503/1744844/Brain-networks-modulated-by-subthalamic-nucleus?redirectedFrom=fulltext)], before (see below).
+The two regions had slightly different connectivity profiles, largely consistent with [[Accolla et al.](https://academic.oup.com/brain/article-abstract/139/9/2503/1744844/Brain-networks-modulated-by-subthalamic-nucleus?redirectedFrom=fulltext)].
 
 ![Structural connectivity from alpha and beta seeds to the cortex](fibertracts-1030x841.png "Fig. 5: Contrasting fibre tract maps seeding either from the “alpha-hotspot” or “beta-hotspot”. Panel B shows a contrast map between the two seeds. Given their proximity, the overall connectivity profiles of both seeds are similar.")
 

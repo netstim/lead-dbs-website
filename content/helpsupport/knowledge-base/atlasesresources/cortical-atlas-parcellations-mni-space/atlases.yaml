@@ -150,7 +150,7 @@ atlases:
   ref: Eickhoff 2005
   covers: Cyto- and myeloarchitectonic areas
   preinstalled: true
-  about: A probabilistic atlas averaged from cyto- and myeloarchitectonic segmentations of ten post-mortem brains, by the teams of Karl Zilles and Katrin Amunts in Jülich and Düsseldorf. Area borders are defined by image analysis and statistical criteria. The published maps are freely available.
+  about: A probabilistic atlas averaged from multi-subject post-mortem cyto- and myeloarchitectonic segmentations, by the teams of Karl Zilles and Katrin Amunts in Jülich and Düsseldorf. Cytoarchitectonic areas were analysed in sections of ten brains. Area borders are defined by image analysis and statistical criteria. Published maps are available to the scientific community.
   get:
   - 'Information: [JuBrain at Forschungszentrum Jülich](http://www.fz-juelich.de/inm/inm-1/EN/Forschung/JuBrain/Jubrain_Webtools/Jubrain_Webtools_node.html)'
   cite:
@@ -180,7 +180,7 @@ atlases:
   ref: Amunts 2020
   covers: Cytoarchitectonic areas
   preinstalled: true
-  about: Cytoarchitectonic probability maps of cortical and subcortical regions from ten post-mortem brains, in MNI Colin27, MNI152 and FreeSurfer space. For a whole-brain parcellation, the maps are combined into a maximum probability map. The atlas is updated with new areas; the *siibra* tools give programmatic access to it.
+  about: Cytoarchitectonic probability maps of cortical and subcortical regions from ten post-mortem brains, in MNI Colin27, MNI152 and FreeSurfer space. For a whole-brain parcellation, each voxel is assigned to the cytoarchitectonic region with the highest probability, producing a maximum probability map. The atlas is updated with new areas; it served as a reference atlas for the Human Brain Project and is part of EBRAINS. The *siibra* tools give programmatic access to it.
   get:
   - Download most recent version at [EBRAINS Knowledge Graph](https://search.kg.ebrains.eu/?category=Dataset&q=julich%20brain%20brain).
   cite:
@@ -341,7 +341,7 @@ atlases:
   ref: Lead-DBS
   covers: Three voxelwise schemes for connectivity matrices
   preinstalled: true
-  about: Three voxelwise parcellations (35,000, 15,000 and 8,000 nodes) come with Lead-DBS. They give standardized connectivity matrices in which connections between homologous regions of the two hemispheres appear as lines parallel to the main diagonal, so that connectomic analyses are comparable across studies.
+  about: Three voxelwise parcellations (35,000, 15,000 and 8,000 nodes) come with Lead-DBS. They give standardized connectivity matrices in which connections between homologous regions of the two hemispheres appear as lines parallel to the main diagonal. Combined with normalization methods such as multimodal ANTs or DARTEL, these schemes support connectomic analyses comparable across studies.
   get: []
   cite_note: "Parcellation schemes are not described in a separate publication. Please cite Lead-DBS software including version and webpage to describe the data used in a reproducible fashion."
   cite:
@@ -354,7 +354,7 @@ atlases:
   ref: Shen 2013
   covers: 268 regions, spectral clustering
   preinstalled: true
-  about: "Shen268: 268 functionally coherent nodes from group-wise spectral clustering of resting-state fMRI in 45 subjects (Yale MRRC), grouped into eight resting-state networks.\n\nShen368: 327 cortical nodes from the same clustering, 14 anatomically defined subcortical nodes, 26 cerebellar nodes from Yeo’s 17 networks and one brainstem node."
+  about: "Shen268: 268 functionally coherent nodes from group-wise spectral clustering of resting-state fMRI in 45 subjects (Yale MRRC), grouped into eight resting-state networks.\n\nShen368: 327 cortical nodes constructed with a group-wise spectral clustering algorithm, 14 anatomically defined subcortical nodes, 26 cerebellar nodes from Yeo’s 17 networks and one brainstem node."
   get:
   - Released on [NITRC](https://www.nitrc.org/frs/?group_id=51)
   cite:

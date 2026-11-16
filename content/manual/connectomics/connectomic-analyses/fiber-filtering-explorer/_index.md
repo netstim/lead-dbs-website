@@ -36,10 +36,10 @@ Fiber Filtering Explorer builds upon [Lead Group](/manual/lead-group/group-analy
 
 {{< manual-toolbar-icon src="manual/2409508a5131f058.png" width="56" alt="The toolbar button that adds a fibre filtering analysis" >}}
 
-A new window with Fiber Filtering Explorer user interface pops up. In the first step, you can choose the connectome of your choice from the drop-down selection and select **Calculate** (Image 1). Once it is done, you will be able to continue with your analysis. To ensure that the Fiber Filtering Explorer detects your connectome of choice, place it inside a folder called `connectomes` within the leaddbs package.
+A new window with Fiber Filtering Explorer user interface pops up. In the first step, you can choose the connectome of your choice from the drop-down selection and select **Calculate** (Image 1). To ensure that the Fiber Filtering Explorer detects your connectome of choice, place it inside a folder called `connectomes` within the leaddbs package.
 
 {{% manual-note "info" %}}
-In this analysis stream, you have to first calculate tract metrics for the normative connectome. Once this is done, you can explore the results more or less "live".
+In this analysis stream, you have to first calculate tract metrics for the normative connectome. After this calculation, you can explore the results interactively.
 {{% /manual-note %}}
 
 {{% manual-note "info" %}}
@@ -79,8 +79,8 @@ The time it takes to calculate connected fibre tracts depends on your sample siz
 
 ![Figure 2.2 Spearman's Correlations / E-Fields method](manual/c46612ee05533c0d.png "Figure 2.2 Spearman's Correlations / E-Fields method")
 
-* In this method, each single tract is selected from the normative connectome. The statistics are calculated for each tract separately. In the figure above, one example tract can be seen (A). Note how parts of this tract traverse "through" some of the E-Fields estimated in your Lead Group analysis (shown in yellow). They traverse less closely to the ones shown in blue but will still traverse through areas of those E-Fields that have a lower magnitude sum (remember that the E-Field is the estimated vector field denoting changes in voltage induced by the stimulation. Its magnitude would be the absolute difference of voltage between two points).
-* Fig. 2.2 A: Each tract is represented as discrete points in space (N x 3 vector if N is the length of the tract; red dots in (A)). The average values at these points for each E-Field (regardless as yellow or blue in A) will be sampled. Depending on your strategy / concept (see below), these values can now be averaged or summed up. Alternatively, you can simply use the peak value (more conforming to the "all or nothing" principle of action potentials) or the 5% peak values. This strategy will lead to one value for each pair of tract and E-Field (N x M if N is number of tracts and M is number of E-Fields; represented as `fibsval` for each hemisphere in the code).
+* Each tract in the normative connectome is analysed separately. Panel A shows one example tract. Parts of this tract pass through some of the E-fields shown in yellow. They traverse less closely to the ones shown in blue but will still traverse through areas of those E-Fields that have a lower magnitude sum (remember that the E-Field is the estimated vector field denoting changes in voltage induced by the stimulation; its magnitude would be the absolute difference of voltage between two points).
+* Fig. 2.2 A: Each tract is represented as discrete points in space (N x 3 vector if N is the length of the tract; red dots in (A)). For each E-field, sample its values at the points along the tract, whether the field is shown in yellow or blue in panel A. Depending on the analysis, average or sum these values. Alternatively, you can simply use the peak value (more conforming to the "all or nothing" principle of action potentials) or the 5% peak values. This strategy will lead to one value for each pair of tract and E-Field (N x M if N is number of tracts and M is number of E-Fields; represented as `fibsval` for each hemisphere in the code).
 * Fig. 2.2 B: When calculating Spearman's correlations between this structure and a clinical/behavioural variable (for example, %-UPDRS-III improvement), we will get one Spearman's correlation coefficient for each tract.
 * Fig. 2.2 C: We can now use these coefficients (R) to colour-code and select tracts for visualization.
 
@@ -138,7 +138,7 @@ After you select all the settings, select **Refresh View** or alternatively, tic
 
 ![Image 4. Fiber Filtering Explorer Crossvalidation & Prediction window.](manual/627562c0dec25797.png "Image 4. Fiber Filtering Explorer Crossvalidation & Prediction window.")
 
-The final step across frameworks is **Crossvalidation & Prediction** (Image 1, red arrow 3). This step is crucial to establish the validity of generated models within and generalizability across cohorts. Current validation strategies include permutation (Leave-Nothing-Out) based approaches, as well as Leave-One-Patient-Out, Leave-One-Cohort-Out, and k-fold (randomized) cross-validations (Image 4, arrow 1). In addition, it is possible to customize this process and generate predictions for individual patients, as well as predefined subcohorts, cohorts, and sets (Image 4, arrow 2).
+The final step across frameworks is **Crossvalidation & Prediction** (Image 1, red arrow 3). Use this step to assess model validity within cohorts and generalization across cohorts. Current validation strategies include permutation (Leave-Nothing-Out) based approaches, as well as Leave-One-Patient-Out, Leave-One-Cohort-Out, and k-fold (randomized) cross-validations (Image 4, arrow 1). You can also generate predictions for individual patients, predefined subcohorts, cohorts and sets (Image 4, arrow 2).
 
 **Model Normalization** allows you to select a z-score method or von Albada 2007 method (Figure 4, arrow 3).
 

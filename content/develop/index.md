@@ -64,4 +64,4 @@ next:
   - {page: "/about/lead-dbs-dependencies/"}
 ---
 
-**Lead-DBS is built in the open.** Add to it, or tell us what is broken.
+Contribute code, share an atlas or report a bug.

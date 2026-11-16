@@ -47,6 +47,8 @@ networks relate to stimulation effects.
 
 <span id="recognition-and-funding"></span>
 
+Lead-DBS was first developed at the [Movement Disorders Unit of Andrea Kühn](https://neurologie.charite.de/forschung/arbeitsgruppen/bewegungsstoerungen_andrea_kuehn), Department of Neurology, Charité – University Medicine, Berlin. Since 2019, the [Network Stimulation Laboratory of Andreas Horn](https://www.netstim.org) has coordinated development.
+
 {{< milestones key="history" >}}
 
 Lead-DBS has been funded by a [six-year grant of the German Research Foundation (DFG)](https://gepris.dfg.de/gepris/projekt/410169619?context=projekt&task=showDetail&id=410169619&)

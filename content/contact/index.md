@@ -14,9 +14,8 @@ faster:
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-docs.jpg"
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
+# (only About: the rows above already lead to the Slack and the manual)
 next:
-  - {page: "/manual/", name: "Manual"}
-  - {page: "/helpsupport/slack-user-channel/"}
   - {page: "/about/"}
 ---
 

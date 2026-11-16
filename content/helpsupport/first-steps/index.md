@@ -13,8 +13,9 @@ layout: "first-steps"
 # the sections that template draws, for the search entries below (the build checks them against this list)
 anchors: ["install", "lead-tutor", "compare", "troubleshooting"]
 # The steps: a title, one or two sentences (Markdown) and up to two actions (page: a site path, or url:
-# another site; the first is drawn as the button). show: the small picture of the step:
-#   release   the current release as a file (data/release.yaml, the size from the download page)
+# another site; the first is drawn as the step's file, its text read out to screen readers). show: the small
+# picture of the step:
+#   release   the current release (data/release.yaml), which leads to the download page, not to a file
 #   dataset   the practice dataset as a file ("name", "facts")
 #   report    a small drawing of the Lead Tutor report: distance from the experts, patient by patient
 steps:
@@ -23,7 +24,7 @@ steps:
     text: "You need MATLAB {matlab} or later with SPM12. The [standalone build](/download/#standalone-version) runs without MATLAB."
     show: release
     actions:
-      - {text: "Download Lead-DBS", page: "/download/"}
+      - {text: "Open the download page", page: "/download/"}
       - {text: "Installation instructions", page: "/download/#install"}
   - id: "lead-tutor"
     title: "Get the practice data"

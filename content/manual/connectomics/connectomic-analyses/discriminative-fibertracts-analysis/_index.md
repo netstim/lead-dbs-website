@@ -21,7 +21,7 @@ In the 3D viewer, select the **Add discriminative fibertract** button:
 ![Select this button to open up the Discriminative Fibertracts explorer](manual/b1f7ba12c84604d9.png)
 
 {{% manual-note "info" %}}
-In this analysis stream, you have to once calculate tract metrics for any combination of normative connectomes and statistical metric. Once this is done, you can explore the results more or less "live".
+In this analysis stream, you have to once calculate tract metrics for any combination of normative connectomes and statistical metric. After this calculation, you can explore the results interactively.
 {{% /manual-note %}}
 
 In the 3D fibres viewer, choose your metric of choice. The following metrics have been implemented:
@@ -30,9 +30,9 @@ In the 3D fibres viewer, choose your metric of choice. The following metrics hav
 
 ![Fig. 1: Spearman's Correlations / E-Fields method](manual/5ae23e8f6d38a908.png)
 
-In this method, each single tract is selected from the normative connectome. The statistics are calculated for each tract *separately*. In the figure above, one *example tract* can be seen (A). Note how parts of this tract traverse "through" some of the E-Fields estimated in your Lead Group analysis (shown in yellow). They traverse less closely to the ones shown in blue but will still traverse through areas of those E-Fields that have a lower magnitude sum (remember that the E-Field is the estimated vector field denoting changes in voltage induced by the stimulation. Its magnitude would be the absolute difference of voltage between two points).
+Each tract in the normative connectome is analysed separately. Panel A shows one example tract. Parts of this tract pass through some of the E-fields shown in yellow. They traverse less closely to the ones shown in blue but will still traverse through areas of those E-Fields that have a lower magnitude sum (remember that the E-Field is the estimated vector field denoting changes in voltage induced by the stimulation; its magnitude would be the absolute difference of voltage between two points).
 
-**Fig. 1 A:** Each tract is represented as discrete points in space (N x 3 vector if N is the length of the tract; red dots in (A)). The average values at these points for each E-Field (regardless as yellow or blue in A) will be sampled. Depending on your strategy / concept (see below), these values can now be averaged or summed up. Alternatively, you can simply use the peak value (more conforming to the "all or nothing" principle of action potentials) or the 5% peak values. This strategy will lead to one value for each pair of tract and E-Field (N x M if N is number of tracts and M is number of E-Fields; represented as `fibsval` for each hemisphere in the code).
+**Fig. 1 A:** Each tract is represented as discrete points in space (N x 3 vector if N is the length of the tract; red dots in (A)). For each E-field, sample its values at the points along the tract, whether the field is shown in yellow or blue in panel A. Depending on the analysis, average or sum these values. Alternatively, you can simply use the peak value (more conforming to the "all or nothing" principle of action potentials) or the 5% peak values. This strategy will lead to one value for each pair of tract and E-Field (N x M if N is number of tracts and M is number of E-Fields; represented as `fibsval` for each hemisphere in the code).
 
 **Fig. 1 B:** When calculating Spearman's correlations between this structure and a clinical/behavioural variable (for example, %-UPDRS-III improvement), we will get one Spearman's correlation coefficient for each tract.
 

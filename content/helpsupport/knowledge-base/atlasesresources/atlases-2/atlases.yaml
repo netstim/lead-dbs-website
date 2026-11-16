@@ -62,7 +62,7 @@ atlases:
   page: /helpsupport/knowledge-base/atlasesresources/focus-atlas
   about: Made by the Lead-DBS team. A 100-micron atlas of the human subcortex from 7T ex vivo MRI, with 95 manually segmented grey and white matter structures and 82 curated fibre pathways, registered to MNI space.
   get:
-  - 'Request it with [the form on the FOCUS atlas page](/helpsupport/knowledge-base/atlasesresources/focus-atlas/#download), for academic research only'
+  - '[Request FOCUS](/helpsupport/knowledge-base/atlasesresources/focus-atlas/#download), for academic research only'
   cite:
   - friedrich2026
   image: focus-atlas-stn-tracts.jpg
@@ -87,7 +87,7 @@ atlases:
   ref: Alkemade 2020
   covers: Basal ganglia from 7T MRI
   preinstalled: true
-  about: AHEAD provides multimodal 7 T MRI and submillimetre subcortical atlases. Its basal ganglia probability maps are based on more than 1,000 manual delineations.
+  about: AHEAD provides freely available multimodal 7 T MRI data and submillimetre subcortical atlases. Subcortical resolution was obtained with a multi-echo extension of the second gradient echo imaging of MPRAGE sequences. Its basal ganglia probability maps are based on more than 1,000 manual delineations; the imaging data are also available for further analysis.
   get:
   - 'Information: [the AHEAD paper in NeuroImage](https://www.sciencedirect.com/science/article/pii/S1053811920306868)'
   cite:
@@ -149,7 +149,7 @@ atlases:
   ref: Lorio 2016
   covers: Tissue priors for subcortical segmentation
   preinstalled: true
-  about: Grey matter, white matter and CSF priors for segmenting subcortical structures with SPM, from manual labels on iron- and myelin-sensitive parameter maps of nearly 100 people aged 25 to 75. They are not an atlas with strict borders for each nucleus, but they improve patient-specific segmentation and normalization of the subcortex. Lead-DBS builds a TPM for each space you use from them (for the default ICBM 2009b NLIN Asym space, for example).
+  about: Grey matter, white matter and CSF priors for segmenting subcortical structures with SPM, from manual labels on iron- and myelin-sensitive parameter maps of nearly 100 people aged 25 to 75. They are not an atlas with strict borders for each nucleus; they provide priors for patient-specific segmentation and normalization of the subcortex. Lead-DBS builds a TPM for each space you use from them (for the default ICBM 2009b NLIN Asym space, for example).
   get:
   - 'Information and download: [enhanced TPMs at LREN, Lausanne](https://www.unil.ch/lren/home/menuinst/teaching--utilities/data--utilities.html)'
   cite:
@@ -686,7 +686,7 @@ atlases:
   ref: Boutet 2021
   covers: PD symptom-specific sweet and cold spots
   preinstalled: true
-  about: Symptom-specific sweet and cold spots in Parkinson’s disease for bradykinesia, tremor, rigidity and axial symptoms.
+  about: Symptom-specific probabilistic maps of sweet and cold spots in Parkinson’s disease for bradykinesia, tremor, rigidity and axial symptoms.
   get:
   - 'Information: [TOR-signPD on Zenodo](https://doi.org/10.5281/zenodo.4425256)'
   cite:
@@ -802,7 +802,7 @@ atlases:
   ref: Hollunder 2024
   covers: Sweet streamlines and spots for four disorders
   preinstalled: true
-  about: Sweet streamlines and sweet spots from 197 DBS patients with dystonia (n = 70), Tourette’s syndrome (n = 14), Parkinson’s disease (n = 94) and obsessive-compulsive disorder (n = 19).
+  about: Sweet streamlines and sweet spots from 197 STN-DBS patients with dystonia (n = 70), Tourette’s syndrome (n = 14), Parkinson’s disease (n = 94) and obsessive-compulsive disorder (n = 19).
   get: []
   cite:
   - hollunder2024

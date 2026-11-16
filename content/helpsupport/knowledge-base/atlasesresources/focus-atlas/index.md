@@ -51,7 +51,7 @@ registration to MNI space allows it to be transformed into an individual brain.
 
 **For academic research only,** not for commercial applications.
 
-The team will email you a download link. Newsletter subscription is optional.
+The team will email you a download link.
 
 {{% /hub-section %}}
 
