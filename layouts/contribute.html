@@ -1,10 +1,10 @@
 {{ define "main" }}
 {{- /* Contribute (content/develop/index.md, front matter layout: contribute), drawn in the manner of the
        download page and First steps (their .dl- and .fs- styles): the page's text as one opening line
-       with its buttons, the three ways to contribute in one frame of cells (a small picture, a title, a
-       sentence, the actions), the set-up for development as rows with commands to copy, what an atlas
-       needs, and the facts as link cells. All of it comes from the
-       page's front matter: actions, ways, setup, setup_note, atlas, facts.
+       with its buttons, the three ways to contribute as plain rows (a title, a sentence, its links), the
+       set-up for development as rows with commands to copy, what an atlas needs, and the facts as link
+       cells. All of it comes from the page's front matter: actions, ways (id, title, text, actions),
+       setup, setup_note, atlas, facts.
        The ids #how-to-contribute and #add-your-atlas-or-dataset are linked from other pages: keep them. */ -}}
 {{- $page := . -}}
 <main id="top" class="page dl fs">
@@ -15,27 +15,20 @@
       {{ .Content }}
       {{ with .Params.actions }}<p class="dl-step__actions co-actions">{{ range $k, $a := . }}{{ partial "contribute-link.html" (dict "a" $a "page" $page "class" (cond (eq $k 0) "btn btn--primary" "dl-more-link")) }}{{ end }}</p>{{ end }}
     </div>
-    <ol class="dl-grid dl-grid--3">
-      {{- range $n, $w := .Params.ways }}
-      <li class="dl-step" id="{{ $w.id }}">
-        <div class="vg vg--{{ $w.show }}" aria-hidden="true">
-          {{- if eq $w.show "terminal" }}
-          <div class="vg-term"><span></span>{{ range $w.lines }}<code><i>$</i> {{ . }}</code>{{ end }}</div>
-          {{- else if eq $w.show "chips" }}
-          <div class="vg-chips">{{ range $w.chips }}<span>{{ . }}</span>{{ end }}</div>
-          {{- else if eq $w.show "issue" }}
-          <div class="vg-issue"><b>New issue</b>{{ range $w.fields }}<span>{{ . }}</span>{{ end }}</div>
-          {{- else }}{{ errorf "%s: way %q: show must be terminal, chips or issue" $page.File.Path $w.title }}
-          {{- end }}
+    {{- /* the three ways: plain rows between hairlines, the title and its sentence, its links at the right */}}
+    <ul class="co-ways">
+      {{- range $w := .Params.ways }}
+      <li class="co-way" id="{{ $w.id }}">
+        <div class="co-way__t">
+          <h2>{{ partial "nobreak.html" $w.title }}</h2>
+          <p>{{ $w.text | $page.RenderString }}</p>
         </div>
-        <h2><span>{{ partial "nobreak.html" $w.title }}</span></h2>
-        <p>{{ $w.text | $page.RenderString }}</p>
         {{- with $w.actions }}
-        <p class="dl-step__actions">{{ range $k, $a := . }}{{ partial "contribute-link.html" (dict "a" $a "page" $page "class" (cond (eq $k 0) "btn btn--primary" "dl-more-link")) }}{{ end }}</p>
+        <p class="co-way__act">{{ range . }}{{ partial "contribute-link.html" (dict "a" . "page" $page "class" "link") }}{{ end }}</p>
         {{- end }}
       </li>
       {{- end }}
-    </ol>
+    </ul>
   </section>
 
   {{- with .Params.setup }}

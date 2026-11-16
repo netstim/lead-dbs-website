@@ -5,8 +5,8 @@
 // [data-ev-next-list] (home page): hide every ended event, add the line for no dates when none is left.
 // /events/: move ended events from the upcoming list to the past list (latest first), and add the same
 // line when the upcoming list is empty. The line is not in the page while events are listed.
-// [data-ev-live] / [data-ev-over-note] (an event's page): swap the actions for the "took place" line.
-// [data-ev-hide-over] / [data-ev-show-over] (an event's page on a phone): the same swap, for that copy.
+// [data-ev-live] / [data-ev-over-note] (an event's page): swap the registration and the actions for the
+// "took place" line.
 // [data-ev-local]: add the start time in the visitor's own time zone when it differs.
 (() => {
   const now = Date.now();
@@ -16,10 +16,11 @@
     const p = document.createElement('p');
     p.className = 'event-empty';
     p.dataset.evEmpty = '';
-    p.append('No dates are set right now. New ones are announced in the ');
+    // where new dates are announced (partial updates.html): the list carries its address and name
+    p.append('No dates are set right now. New ones are announced in ');
     const a = document.createElement('a');
-    a.href = list.dataset.evNewsletter || '';
-    a.textContent = 'newsletter';
+    a.href = list.dataset.evUpdates || '';
+    a.textContent = list.dataset.evUpdatesName || 'the user Slack';
     p.append(a, '.');
     list.after(p);
   };
@@ -46,20 +47,15 @@
       if (!up.children.length) noDates(up);
     }
   }
-  // an event's own page (events/page-body.html): once the event is over, Register and Add to calendar
+  // an event's own page (layouts/event.html): once the event is over, the registration and the actions
   // give way to the line that says when it took place, which then also carries the #register anchor
-  const live = document.querySelector('[data-ev-live]');
+  const live = [...document.querySelectorAll('[data-ev-live]')];
   const note = document.querySelector('[data-ev-over-note]');
-  if (live && note && over(live)) {
-    live.hidden = true;
-    live.removeAttribute('id');
+  if (live.length && note && over(live[0])) {
+    live.forEach((el) => { el.hidden = true; el.removeAttribute('id'); });
     note.id = 'register';
     note.hidden = false;
   }
-  // the phone's copy of an event page (events/page-body.html): the registration card and "Add to
-  // calendar" carry data-ev-hide-over, the "took place" line data-ev-show-over
-  document.querySelectorAll('[data-ev-hide-over]').forEach((el) => { if (over(el)) el.hidden = true; });
-  document.querySelectorAll('[data-ev-show-over]').forEach((el) => { if (over(el)) el.hidden = false; });
   document.querySelectorAll('[data-ev-local]').forEach((el) => {
     try {
       const t = new Date(el.dataset.evLocal);
@@ -78,7 +74,7 @@ document.querySelectorAll('[data-ev-countdown]').forEach((chip) => {
   const day = (t) => { const d = new Date(t); d.setHours(0, 0, 0, 0); return d.getTime(); };
   const days = Math.round((day(start) - day(Date.now())) / 864e5);
   if (start <= Date.now() && days < 0) return;
-  // [data-ev-near] (the phone's rail and event head): only while the event is days away, not months
+  // [data-ev-near] (the phone's rail of /events/): only while the event is days away, not months
   if (chip.hasAttribute('data-ev-near') && days >= 45) return;
   chip.textContent = days <= 0 ? 'today' : days === 1 ? 'tomorrow' : days < 45 ? `in ${days} days` : `in ${Math.round(days / 30.4)} months`;
   chip.hidden = false;

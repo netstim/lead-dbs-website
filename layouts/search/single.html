@@ -7,7 +7,7 @@
       {{ partial "search-form.html" (dict "id" "page") }}
       {{- /* before a query: the 404 page's pages to start from (search.js hides them while a query is
              typed); without script the search does not run, so a line says so and the list stays */}}
-      <noscript><p class="notice">The search needs JavaScript. The <a href="{{ "sitemap.xml" | relURL }}">sitemap</a> lists every page.</p></noscript>
+      <noscript><p class="notice">Enable JavaScript to search, or browse the links below.</p></noscript>
       {{ partial "search-doors.html" (dict "attrs" (safeHTMLAttr "data-search-doors")) }}
     </div>
   </div>

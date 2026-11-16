@@ -3,3 +3,4 @@
        templates of a page of its own below, and it sets none of the retired per-page switches. */ -}}
 {{- $own := slice "community" "contribute" "download" "first-steps" "redirect" -}}
 {{- if not (in $own .Layout) }}{{ $_ := partial "page-type.html" . }}{{ end -}}
+{{- if isset .Params "headrender" }}{{ if ne (printf "%T" .Params.headRender) "bool" }}{{ errorf "%s: headRender is %q; write true or false, without quotes" .File.Path .Params.headRender }}{{ end }}{{ end -}}

@@ -1,19 +1,27 @@
-{{- /* Structured data (JSON-LD) for search engines: the software on the home and download pages, the
-       upcoming events (data/events.yaml) on /events/ and each on its own page, an article for each news post, and on every inner
-       page its breadcrumb trail. */ -}}
+{{- /* Structured data (JSON-LD) for search engines: the software and its source code on the home and
+       download pages, each upcoming event (data/events.yaml) on its own page and a list of those pages on
+       /events/, an article for each news post, and on every inner page its breadcrumb trail.
+       Entities that recur have one stable @id (the home page's address and a fragment), so the blocks of
+       every page describe the same publisher and the same software. Only facts the site states: no
+       ratings, addresses or offers beyond the free download. */ -}}
 {{- $r := hugo.Data.release -}}
-{{- $org := dict "@type" "Organization" "name" "Institute for Network Stimulation, University Hospital Cologne" "url" "https://www.netstim.org" -}}
+{{- $home := site.Home.Permalink -}}
+{{- $org := dict "@type" "Organization" "@id" (printf "%s#organization" $home) "name" "Institute for Network Stimulation, University Hospital Cologne" "url" "https://www.netstim.org" -}}
 {{- $logo := "" }}{{ with resources.Get "logo/logo.png" }}{{ $logo = .Permalink }}{{ end -}}
 {{- $dl := "" }}{{ with site.GetPage "/download" }}{{ $dl = .Permalink }}{{ end -}}
+{{- $softwareId := printf "%s#software" $home -}}
 {{- $out := slice -}}
 
 {{- if or .IsHome (eq .RelPermalink (site.GetPage "/download").RelPermalink) -}}
+  {{- /* the installable software; its repository is a SoftwareSourceCode of its own (codeRepository
+         belongs to that type), linked to it as its target product */ -}}
   {{- $out = $out | append (dict
       "@context" "https://schema.org"
       "@type" "SoftwareApplication"
+      "@id" $softwareId
       "name" "Lead-DBS"
       "description" (site.Home.Description | default site.Params.description)
-      "url" site.Home.Permalink
+      "url" $home
       "applicationCategory" "Scientific research software"
       "operatingSystem" "Windows, macOS, Linux"
       "softwareVersion" $r.version
@@ -21,44 +29,61 @@
       "softwareRequirements" (printf "MATLAB %s or later, %s" $r.matlab $r.needs)
       "license" $r.licence_url
       "downloadUrl" $dl
-      "codeRepository" site.Params.github
       "isAccessibleForFree" true
       "offers" (dict "@type" "Offer" "price" "0" "priceCurrency" "EUR")
       "publisher" $org) -}}
+  {{- with site.Params.github -}}
+  {{- $out = $out | append (dict
+      "@context" "https://schema.org"
+      "@type" "SoftwareSourceCode"
+      "@id" (printf "%s#source-code" $home)
+      "name" "Lead-DBS source code"
+      "codeRepository" .
+      "programmingLanguage" "MATLAB"
+      "license" $r.licence_url
+      "targetProduct" (dict "@id" $softwareId)
+      "publisher" $org) -}}
+  {{- end -}}
 {{- end -}}
 
-{{- /* events: on /events/ every upcoming one, on an event's own page (the page its entry links to) that
-       event, with the facts of data/events.yaml only: name, dates, place or online, host, its text */ -}}
+{{- /* events: an upcoming one on its own page (the page its entry links to), with the facts of
+       data/events.yaml only: name, dates, place or online, host, its text. Its @id and url are that page.
+       An online meeting's VirtualLocation has no url: the site never shows a meeting's join link, and the
+       page itself is not where one attends. /events/ lists those pages (ItemList), it does not repeat them. */ -}}
 {{- if eq .Section "events" -}}
   {{- $page := . -}}
+  {{- $listed := slice -}}
   {{- range where (partial "events/list.html" .) "over" false -}}
     {{- $x := . }}{{ $e := .e -}}
-    {{- $url := "" -}}
-    {{- if $page.IsSection -}}
-      {{- $url = printf "%s#%s" $page.Permalink $x.id -}}
-    {{- else -}}
-      {{- range $e.links }}{{ if hasPrefix .url "/" }}{{ if eq (site.GetPage (strings.TrimSuffix "/" (urls.Parse .url).Path)) $page }}{{ $url = $page.Permalink }}{{ end }}{{ end }}{{ end -}}
-    {{- end -}}
-    {{- if $url -}}
+    {{- $detail := false -}}
+    {{- range $e.links }}{{ if hasPrefix .url "/" }}{{ with site.GetPage (strings.TrimSuffix "/" (urls.Parse .url).Path) }}{{ if and (eq .Section "events") .IsPage }}{{ $detail = . }}{{ end }}{{ end }}{{ end }}{{ end -}}
+    {{- with $detail }}{{ $listed = $listed | append .Permalink }}{{ end -}}
+    {{- if and $detail (eq $detail $page) -}}
       {{- $ev := dict
           "@context" "https://schema.org"
           "@type" "Event"
+          "@id" (printf "%s#event" $page.Permalink)
           "name" $e.title
           "startDate" (cond $x.timed $x.iso_start $x.date_only)
           "eventStatus" "https://schema.org/EventScheduled"
-          "url" $url
+          "url" $page.Permalink
           "organizer" $org -}}
       {{- /* each date in its own precision: a day as 2027-02-12, a time with its zone's offset
              (2026-11-18T16:30:00+01:00), so a search engine neither guesses the zone nor reads a day as midnight */ -}}
       {{- with $e.end }}{{ $ev = merge $ev (dict "endDate" (cond (gt (len (string .)) 10) $x.iso_ends (string .))) }}{{ end -}}
       {{- with $e.text }}{{ $ev = merge $ev (dict "description" .) }}{{ end -}}
+      {{- with $page.Params.flyer }}{{ with $page.Resources.Get .file }}{{ $ev = merge $ev (dict "image" (.Resize "1200x jpg q82").Permalink) }}{{ end }}{{ end -}}
       {{- if $e.online -}}
-        {{- $ev = merge $ev (dict "eventAttendanceMode" "https://schema.org/OnlineEventAttendanceMode" "location" (dict "@type" "VirtualLocation" "url" $url)) -}}
+        {{- $ev = merge $ev (dict "eventAttendanceMode" "https://schema.org/OnlineEventAttendanceMode" "location" (dict "@type" "VirtualLocation" "name" $e.where)) -}}
       {{- else -}}
         {{- $ev = merge $ev (dict "eventAttendanceMode" "https://schema.org/OfflineEventAttendanceMode" "location" (dict "@type" "Place" "name" ($e.host | default $e.where) "address" $e.where)) -}}
       {{- end -}}
       {{- $out = $out | append $ev -}}
     {{- end -}}
+  {{- end -}}
+  {{- if and $page.IsSection $listed -}}
+    {{- $items := slice }}{{ range $i, $u := $listed }}{{ $items = $items | append (dict "@type" "ListItem" "position" (add $i 1) "url" $u) }}{{ end -}}
+    {{- $out = $out | append (dict "@context" "https://schema.org" "@type" "ItemList" "name" "Upcoming Lead-DBS events" "itemListElement" $items) -}}
   {{- end -}}
 {{- end -}}
 

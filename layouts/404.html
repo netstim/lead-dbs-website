@@ -1,20 +1,25 @@
 {{ define "main" }}
 {{- /* /404.html: what a visitor sees for an address the site does not have (GitHub Pages serves it for
-     every miss). Links are site-relative, so it works under the preview's sub-path as well. A few lines
-     of script name the cause for the old forum's addresses. */ -}}
+     every miss). The same open head as a task page (Contact, Search): a quiet "Error 404" over the title;
+     then the search box and three likely ways on. Links are site-relative, so it works under the
+     preview's sub-path as well. A few lines of script name the cause for the old forum's addresses. */ -}}
+{{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Identifier "download" }}{{ $dl = .URL }}{{ end }}{{ end -}}
 <main id="top" class="page">
-  <header class="page-head page-head--render">
-    {{ partial "page-head-render.html" . }}
+  <header class="page-head">
     <div class="wrap">
       <p class="page-head__kicker">Error 404</p>
       <h1>Page not found</h1>
     </div>
   </header>
-  <div class="wrap doc-layout doc-layout--single">
-    <div class="prose">
+  <div class="wrap doc-layout">
+    <div class="prose notfound">
       <p class="notfound__forum notice" hidden data-forum-note>The Lead-DBS forum has closed, and its threads were not moved to this site. Questions are answered on the <a href="{{ with site.GetPage "/helpsupport/slack-user-channel" }}{{ .RelPermalink }}{{ end }}">user Slack</a>.</p>
       {{ partial "search-form.html" (dict "id" "nf") }}
-      {{ partial "search-doors.html" (dict "attrs" "") }}
+      <ul class="next-steps__list notfound__ways">
+        {{ partial "link-row.html" (dict "kind" "next" "href" site.Home.RelPermalink "title" "Home") }}
+        {{ with site.GetPage "/manual" }}{{ partial "link-row.html" (dict "kind" "next" "href" .RelPermalink "title" .LinkTitle) }}{{ end }}
+        {{ with $dl }}{{ partial "link-row.html" (dict "kind" "next" "href" . "title" "Download Lead-DBS") }}{{ end }}
+      </ul>
     </div>
   </div>
   <script>

@@ -1,0 +1,15 @@
+{{- /* Where to follow what is coming (events, releases): the one switch behind every "stay up to date"
+       action of the site (event pages, /events/, the home page's events). While the newsletter has no
+       live form (data/forms.yaml newsletter: no action, or params.formsEnabled false) it is the user
+       Slack; once the newsletter's form is live, its sign-up. Returns dict "href", "label" (a button:
+       "Join Slack for updates" / "Subscribe for updates"), "name" (in a sentence: "the user Slack" /
+       "the newsletter"), "short" (a row's action: "Join Slack" / "Subscribe"). */ -}}
+{{- $nl := hugo.Data.forms.newsletter -}}
+{{- $out := dict -}}
+{{- if and site.Params.formsEnabled $nl $nl.action -}}
+  {{- with site.GetPage "/subscribe-to-our-newsletter" }}{{ $out = dict "href" (printf "%s#subscribe" .RelPermalink) "label" "Subscribe for updates" "name" "the newsletter" "short" "Subscribe" }}{{ end -}}
+{{- end -}}
+{{- if not $out.href -}}
+  {{- with site.GetPage "/helpsupport/slack-user-channel" }}{{ $out = dict "href" .RelPermalink "label" "Join Slack for updates" "name" "the user Slack" "short" "Join Slack" }}{{ else }}{{ errorf "updates.html: no page /helpsupport/slack-user-channel" }}{{ end -}}
+{{- end -}}
+{{- return $out -}}

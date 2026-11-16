@@ -42,7 +42,9 @@ document.querySelectorAll('[data-atlas-index]').forEach((box) => {
 // Every atlas entry folds its text away in a <details>; a link to the entry (from a paper or another
 // page, including its older anchors) opens it.
 const openAtlasFromHash = () => {
-  const id = decodeURIComponent(location.hash.slice(1));
+  // a malformed fragment (#%) is taken as it is rather than stopping the filter (see main/page.js)
+  let id = location.hash.slice(1);
+  try { id = decodeURIComponent(id); } catch { /* keep the raw fragment */ }
   if (!id) return;
   const target = document.getElementById(id);
   const entry = target && target.closest('[data-atlas-entry]');

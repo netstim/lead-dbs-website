@@ -246,10 +246,16 @@
         {{ $figs = $figs | append (dict "src" $s.RelPermalink "srcset" (printf "%s 240w, %s 480w" $s.RelPermalink $m.RelPermalink) "ar" (div (math.Round (mul 1000 (div (float .Width) .Height))) 1000) "alt" $f.shows "href" (printf "%s#fig-%s" (cond (ne $gallery nil) $gallery.RelPermalink "/gallery/") (path.BaseName $f.file))) }}
         {{ else }}{{ errorf "home: no file static/gallery/%s (data/gallery.yaml)" $f.file }}{{ end }}
         {{ end }}
-        <div class="made-grid" role="region" tabindex="0" aria-label="{{ .label }}" aria-describedby="made-grid-how" data-made-grid>
-          <p class="sr-only" id="made-grid-how">Drag, or use the arrow keys, to look around. Every figure is also on the gallery page.</p>
-          <div class="made-grid__plane" aria-hidden="true"></div>
-          <script type="application/json" data-made-figs>{{ $figs | jsonify | safeJS }}</script>
+        <div class="made-grid-box has-media-pause">
+          <div class="made-grid" role="region" tabindex="0" aria-label="{{ .label }}" aria-describedby="made-grid-how" data-made-grid>
+            <p class="sr-only" id="made-grid-how">Drag, or use the arrow keys, to look around; either stops the drift. Every figure is also on the gallery page.</p>
+            <div class="made-grid__plane" aria-hidden="true"></div>
+            <script type="application/json" data-made-figs>{{ $figs | jsonify | safeJS }}</script>
+          </div>
+          {{- /* stops the drift for good (WCAG 2.2.2); assets/js/main/home.js shows it, not under reduced motion */}}
+          <button class="media-pause made-grid__pause" type="button" aria-label="Pause the figures" hidden data-made-pause>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
         </div>
         {{ with $pubs }}
         {{- /* seven covers, mixed journals, the newest on top at the right (the deck Fable drew for the home
@@ -347,14 +353,14 @@
   {{ range first (sub 4 (len $cards)) $posts }}
     {{ $cards = $cards | append (dict "kind" "News" "title" .Title "url" .RelPermalink "img" (.Resources.GetMatch (.Params.image | default "__none__")) "date" (.Date.Format "2 Jan 2006") "version" (index (findRE `\d+\.\d+(\.\d+)?` .Title 1) 0)) }}
   {{ end }}
-  {{ $nl := "" }}{{ with site.GetPage "/subscribe-to-our-newsletter" }}{{ $nl = .RelPermalink }}{{ end }}
+  {{ $up := partial "updates.html" . }}
   <section class="section home-sec pulse" id="events" aria-labelledby="events-h">
     <div class="wrap">
       <div class="pulse__head">
         <h2 id="events-h" class="pulse__h">{{ partial "nobreak.html" .title }}</h2>
         <p class="pulse__links"><a href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a><a href="{{ partial "resolve-url.html" (dict "url" $p.news.link.url "page" $) }}">{{ $p.news.link.label }}{{ $arrow }}</a></p>
       </div>
-      <ol class="pulse__row" data-ev-next-list data-ev-newsletter="{{ $nl }}">
+      <ol class="pulse__row" data-ev-next-list data-ev-updates="{{ $up.href }}" data-ev-updates-name="{{ $up.name }}">
         {{ range $cards }}{{ $c := . }}
         <li class="pulse-card{{ if eq .kind "Event" }} pulse-card--event{{ end }}"{{ with .ev }} data-ev data-ev-ends="{{ .iso_ends }}"{{ end }}>
           <a class="pulse-card__link" href="{{ .url }}">

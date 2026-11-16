@@ -19,7 +19,11 @@
     {{- range .Fragments.HeadingsMap }}{{ $heads = $heads | append .Title }}{{ end -}}
     {{- $section := "" -}}
     {{- if and (eq .Section "news") .IsPage }}{{ $section = printf "News, %s" (.Date.Format "2006") -}}
-    {{- else if eq .Section "manual" }}{{ $section = "Manual" }}
+    {{- /* a manual page: "Manual / " and the chapter it sits in, or its group (data/manual.json) */ -}}
+    {{- else if eq .Section "manual" }}{{ $section = "Manual" }}{{ $pg := . -}}
+      {{- $in := "" }}{{ range hugo.Data.manual.groups }}{{ if eq .id $pg.Params.manual_group }}{{ $in = .title }}{{ end }}{{ end -}}
+      {{- with .Parent }}{{ if and (eq .Section "manual") (ne .RelPermalink (site.GetPage "/manual").RelPermalink) (ne .LinkTitle $in) (not (strings.HasSuffix .RelPermalink (printf "/%s/" $pg.Params.manual_group))) }}{{ $in = .LinkTitle }}{{ end }}{{ end -}}
+      {{- if and $in (ne .Title $in) }}{{ $section = printf "Manual / %s" $in }}{{ end }}
     {{- else -}}
       {{- /* the last step of the breadcrumb above the page */ -}}
       {{- $pg := . }}{{ $place := partial "nav-place.html" . -}}

@@ -14,7 +14,7 @@
         {{ range slice 480 800 1200 }}{{ if lt . $src.Width }}{{ $r := $src.Resize (printf "%dx webp q82" .) }}{{ $set = $set | append (printf "%s %dw" $r.RelPermalink $r.Width) }}{{ end }}{{ end }}
         {{ $top := $src.Resize (printf "%dx webp q82" (math.Min $src.Width 1400 | int)) }}{{ $set = $set | append (printf "%s %dw" $top.RelPermalink $top.Width) }}
         {{ $fb := $src }}{{ if gt $src.Width 1200 }}{{ $fb = $src.Resize "1200x" }}{{ end }}
-        <picture><source type="image/webp" srcset="{{ delimit $set ", " }}" sizes="(min-width: 1280px) 760px, (min-width: 1024px) 60vw, 100vw"><img class="featured" src="{{ $fb.RelPermalink }}" width="{{ $fb.Width }}" height="{{ $fb.Height }}" alt="{{ $.Params.image_alt }}" decoding="async"></picture>
+        <picture><source type="image/webp" srcset="{{ delimit $set ", " }}" sizes="(min-width: 1280px) 760px, (min-width: 1024px) 60vw, 100vw"><img class="featured" src="{{ $fb.RelPermalink }}" width="{{ $fb.Width }}" height="{{ $fb.Height }}" alt="{{ $.Params.image_alt }}" fetchpriority="high" decoding="async"></picture>
         {{ end }}
       {{ end }}
       {{- /* a post older than three years says so above its text, so nobody mistakes it for current advice */}}
@@ -30,7 +30,7 @@
       {{ with .Parent }}{{ $items = $items | append (dict "href" .RelPermalink "name" "All news" "text" "Releases, workshops and announcements") }}{{ end }}
       {{ partial "next-steps.html" (dict "page" . "items" $items) }}
     </article>
-    {{ if $toc }}<aside class="sidebar" aria-label="Section">{{ partial "sidebar.html" (dict "page" . "toc" $toc) }}</aside>{{ end }}
+    {{ if $toc }}<aside class="sidebar" aria-label="Page contents">{{ partial "sidebar.html" (dict "page" . "toc" $toc) }}</aside>{{ end }}
   </div>
 </main>
 {{ end }}

@@ -12,7 +12,7 @@
 {{ $home := eq .RelPermalink (site.GetPage "/manual").RelPermalink }}
 <main id="top" class="manual{{ if $home }} manual--home{{ end }}">
   <aside class="manual-nav" aria-label="Manual chapters">
-    <div class="manual-mobile-bar" hidden><button class="manual-menu" aria-controls="manual-drawer" aria-expanded="false" hidden>{{ partial "manual-icon.html" "menu" }}<span>Chapters</span></button>{{ if $tocItems }}<button class="manual-sections" aria-controls="manual-contents" aria-expanded="false" hidden>On this page {{ partial "manual-icon.html" "chevron" }}</button>{{ end }}</div>
+    <div class="manual-mobile-bar"><button class="manual-menu" aria-controls="manual-drawer" aria-expanded="false">{{ partial "manual-icon.html" "menu" }}<span>Chapters</span></button>{{ if $tocItems }}<button class="manual-sections" aria-controls="manual-contents" aria-expanded="false">On this page {{ partial "manual-icon.html" "chevron" }}</button>{{ end }}</div>
     <div class="manual-nav__fold">
       <nav class="manual-nav__tree" aria-label="Chapters">
         {{ range $groups }}
@@ -28,13 +28,13 @@
   <div class="manual-page">
   <div class="manual-body">
     {{ if not $home }}<nav class="manual-crumbs" aria-label="Breadcrumb">
-      {{ if and $groupPage (not $isGroupPage) }}<a href="{{ $groupPage.RelPermalink }}">{{ $group.title }}</a>{{ else }}<span>{{ $group.title | default "Documentation" }}</span>{{ end }}
+      {{ if and $groupPage (not $isGroupPage) }}<a href="{{ $groupPage.RelPermalink }}">{{ $group.title }}</a>{{ else }}<span>{{ $group.title | default "Manual" }}</span>{{ end }}
       {{ with .Parent }}{{ if and (ne . $groupPage) (ne . (site.GetPage "/manual")) (eq .Section "manual") }}{{ partial "manual-icon.html" "chevron" }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}{{ end }}
     </nav>{{ end }}
     <header class="manual-head">
       <h1>{{ .Title }}</h1>
       {{ with .Params.manual_lead }}<p>{{ . }}</p>{{ end }}
-      {{ if not (or $home $isGroupPage) }}<div class="manual-actions"><button class="manual-copy" data-copy-link aria-label="Copy page link">{{ partial "manual-icon.html" "link" }}<span data-copy-label>Copy link</span></button><a href="https://github.com/netstim/lead-dbs-website/edit/main/content/{{ .File.Path }}">{{ partial "manual-icon.html" "edit" }}Edit on GitHub</a></div>{{ end }}
+      {{ if not (or $home $isGroupPage) }}<div class="manual-actions"><button class="manual-copy" data-copy-url aria-label="Copy page link">{{ partial "manual-icon.html" "link" }}<span data-copy-label>Copy link</span></button><a href="https://github.com/netstim/lead-dbs-website/edit/main/content/{{ .File.Path }}">{{ partial "manual-icon.html" "edit" }}Edit on GitHub</a></div>{{ end }}
     </header>
     {{ if and (not $home) $tocItems }}{{ partial "manual-toc.html" (dict "page" . "variant" "top") }}{{ end }}
     {{ if $home }}{{ partial "manual-start.html" . }}{{ end }}
@@ -46,7 +46,7 @@
       {{ with index $order (sub $index 1) }}{{ if ge $index 1 }}{{ with site.GetPage . }}<a class="manual-pagination__prev" href="{{ .RelPermalink }}"><span>Previous</span><strong>{{ .LinkTitle }}</strong></a>{{ end }}{{ end }}{{ end }}
       {{ if lt (add $index 1) (len $order) }}{{ with site.GetPage (index $order (add $index 1)) }}<a class="manual-pagination__next" href="{{ .RelPermalink }}"><span>Next</span><strong>{{ .LinkTitle }}</strong></a>{{ end }}{{ end }}
     </nav>{{ end }}
-    <footer class="manual-footer"><a href="{{ site.Home.RelPermalink }}">Lead-DBS</a><span>For research use only.</span><a href="https://github.com/netstim/leaddbs">GitHub</a><a href="https://github.com/netstim/lead-dbs-website/edit/main/content/{{ .File.Path }}">Suggest an edit</a></footer>
+    <footer class="manual-footer"><div><a href="{{ site.Home.RelPermalink }}">Lead-DBS</a><span>For research use only, not for clinical use</span></div><div><a href="https://github.com/netstim/leaddbs">GitHub</a><a href="https://github.com/netstim/lead-dbs-website/edit/main/content/{{ .File.Path }}">Suggest an edit</a></div></footer>
   </div>
   <aside class="manual-outline" aria-label="Page contents">
     {{ if $tocItems }}{{ partial "manual-toc.html" (dict "page" . "variant" "side") }}{{ end }}
@@ -54,6 +54,6 @@
   </aside>
   </div>
 </main>
-<dialog class="manual-drawer" id="manual-drawer" aria-labelledby="manual-drawer-title"><div class="manual-drawer__head"><span id="manual-drawer-title">Documentation</span><button class="docs-icon-button" data-manual-close aria-label="Close chapters">{{ partial "manual-icon.html" "close" }}</button></div><div class="manual-drawer__body"></div><div class="manual-drawer__footer"><a href="{{ (site.GetPage "/download").RelPermalink }}">Download Lead-DBS {{ partial "manual-icon.html" "arrow" }}</a><a href="{{ (site.GetPage "/community").RelPermalink }}">Community {{ partial "manual-icon.html" "arrow" }}</a></div></dialog>
+<dialog class="manual-drawer" id="manual-drawer" aria-labelledby="manual-drawer-title"><div class="manual-drawer__head"><span id="manual-drawer-title">Chapters</span><button class="docs-icon-button" data-manual-close aria-label="Close chapters">{{ partial "manual-icon.html" "close" }}</button></div><div class="manual-drawer__body"></div><div class="manual-drawer__footer"><a href="{{ (site.GetPage "/download").RelPermalink }}">Download Lead-DBS {{ partial "manual-icon.html" "arrow" }}</a><a href="{{ (site.GetPage "/community").RelPermalink }}">Community {{ partial "manual-icon.html" "arrow" }}</a></div></dialog>
 {{ if $tocItems }}<dialog class="manual-contents" id="manual-contents" aria-labelledby="manual-contents-title"><div class="manual-drawer__head"><span id="manual-contents-title">On this page</span><button class="docs-icon-button" data-manual-close aria-label="Close page contents">{{ partial "manual-icon.html" "close" }}</button></div><nav class="toc manual-contents__list" aria-label="Page sections"><ol>{{ range $tocItems }}<li{{ if eq .Level 3 }} class="manual-toc__sub"{{ end }}><a href="#{{ .ID }}">{{ .Title | plainify | htmlUnescape }}</a></li>{{ end }}</ol></nav></dialog>{{ end }}
 {{ end }}

@@ -30,13 +30,16 @@ document.querySelectorAll('form[data-form-live]').forEach((form) => {
       const data = await response.json().catch(() => ({}));
       if (response.ok && data.ok) {
         form.reset();
-        say(data.message || 'Thanks, it’s sent.', 'sent');
+        say(data.message || 'Message sent.', 'sent');
       } else {
-        say(data.message || 'Sending didn’t work.', 'error');
+        say(data.message || 'Check the required fields and email address, then send again.', 'error');
+        // send.php names the field it refused (data.field); take the visitor straight to it
+        const field = data.field && form.elements.namedItem(data.field);
+        if (field && typeof field.focus === 'function') field.focus();
       }
     } catch {
       // no answer, or no answer in time: the message may or may not have arrived
-      say('Sending didn’t work: no answer from the server.', 'error');
+      say('We couldn’t confirm whether your message was sent. You can contact us by email.', 'error');
     } finally {
       busy = false;
       button.disabled = false;

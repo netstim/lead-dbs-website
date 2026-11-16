@@ -40,22 +40,35 @@
 <meta property="og:site_name" content="{{ site.Title }}">
 <meta property="og:title" content="{{ $title }}">
 <meta property="og:description" content="{{ $desc }}">
-{{- /* the share picture: the page's own (front matter share: a file next to the page, or a path under
-       assets/ such as "images/renders/cohort-top.jpg"), else a news post's teaser (image), else the site's */ -}}
-{{- $share := resources.Get "images/share.jpg" -}}
-{{- $own := false -}}
-{{- with .Params.share }}{{ $own = or ($.Resources.GetMatch .) (resources.Get .) }}{{ if not $own }}{{ errorf "%s: share picture %q is neither next to the page nor under assets/" $.File.Path . }}{{ end }}
-{{- else }}{{ with .Params.image }}{{ $own = $.Resources.GetMatch . }}{{ end }}{{ end -}}
-{{- with $own }}{{ if and (eq .ResourceType "image") (in (slice "jpeg" "png" "webp") .MediaType.SubType) }}{{ $share = cond (gt .Width 1200) (.Resize "1200x jpg q82") (.Process "jpg q82") }}{{ end }}{{ end }}
-{{ with $share }}<meta property="og:image" content="{{ .Permalink }}">{{ end }}
+{{- /* the share picture (1200 × 630, partial share-image.html): the page's own (front matter share: a file
+       next to the page, or a path under assets/ such as "images/renders/cohort-top.jpg"), else a news post's
+       teaser (image), else for a manual page a card with its title, else the site's */ -}}
+{{- $share := partial "share-image.html" . -}}
+{{ with $share }}
+<meta property="og:image" content="{{ .img.Permalink }}">
+<meta property="og:image:width" content="{{ .img.Width }}">
+<meta property="og:image:height" content="{{ .img.Height }}">
+<meta property="og:image:alt" content="{{ .alt }}">
+{{- end }}
 {{ partial "head-jsonld.html" . }}
 <meta name="twitter:card" content="summary_large_image">
+{{- with $share }}
+<meta name="twitter:image" content="{{ .img.Permalink }}">
+<meta name="twitter:image:alt" content="{{ .alt }}">
+{{- end }}
+{{- /* the browser's chrome takes the page's ground: by the system's setting without script; the script
+       below and assets/js/main/theme.js set both to the theme in use, so a reader's choice wins */}}
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#161819" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="{{ "images/favicon-32x32.png" | relURL }}" sizes="32x32">
 <link rel="icon" href="{{ "images/favicon-192x192.png" | relURL }}" sizes="192x192">
 <link rel="apple-touch-icon" href="{{ "images/favicon-180x180.png" | relURL }}">
-<link rel="preload" href="{{ (cond (eq .Layout "manual") "fonts/geist-latin-var.woff2" "fonts/inter-latin-var.woff2") | relURL }}" as="font" type="font/woff2" crossorigin>
+<link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
+<link rel="preload" href="{{ "fonts/inter-latin-var.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+{{- /* the home page's first picture, the hero's poster (layouts/home.html makes the same copy) */}}
+{{- if .IsHome }}{{ with .Params.hero }}{{ with resources.Get (printf "images/renders/%s" .poster) }}{{ $pd := .Resize "1600x webp q78" }}
+<link rel="preload" href="{{ $pd.RelPermalink }}" as="image" type="image/webp" fetchpriority="high">
+{{- end }}{{ end }}{{ end }}
 {{- /* one stylesheet: assets/css/base.css (tokens, grid, buttons, links, forms), then assets/css/site.css
      (palette, fonts, header, pages, footer), then assets/css/content.css (content building blocks), then assets/css/manual.css (the manual), then assets/css/phone.css (the phone layout below 640px: the shared pieces), then the phone
      layouts of single pages, assets/css/phone-home.css, phone-events.css and phone-features.css; see docs/design.md */}}
@@ -65,6 +78,6 @@
 {{- /* "js": script runs, so the phone menu is a button (without it, a link that opens the menu as a target,
      assets/css/content.css). The home hero's entrance waits for assets/js/main/home.js; after 700ms the style
      sheet shows the hero without it. */}}
-<script>try{var t=localStorage.getItem('theme')}catch(e){}document.documentElement.dataset.theme=t==='dark'||t==='light'?t:matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.classList.add('js','hero-wait');setTimeout(()=>document.documentElement.classList.add('hero-late'),700)</script>
+<script>try{var t=localStorage.getItem('theme')}catch(e){}t=t==='dark'||t==='light'?t:matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;document.querySelectorAll('meta[name=theme-color]').forEach(m=>m.content=t==='dark'?'#161819':'#ffffff');document.documentElement.classList.add('js','hero-wait');setTimeout(()=>document.documentElement.classList.add('hero-late'),700)</script>
 {{- /* without script a <video> shows its own controls: the hero clip is a still picture then */}}
 <noscript><style>.hero__bg{pointer-events:none}.hero__bg::-webkit-media-controls{display:none!important}</style></noscript>

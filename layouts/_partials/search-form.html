@@ -4,7 +4,7 @@
     <label class="search__label sr-only" id="site-search-h{{ if ne .id "dlg" }}-{{ .id }}{{ end }}" for="q-{{ .id }}">Search lead-dbs.org</label>
     <div class="search__row">
       <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4.2-4.2"/></svg>
-      <input class="search__input" id="q-{{ .id }}" type="search" name="q" autocomplete="off" spellcheck="false" placeholder="Search documentation, atlases, news…" aria-describedby="q-{{ .id }}-status" aria-controls="q-{{ .id }}-results">
+      <input class="search__input" id="q-{{ .id }}" type="search" name="q" autocomplete="off" spellcheck="false" placeholder="Search Lead-DBS…" aria-describedby="q-{{ .id }}-status" aria-controls="q-{{ .id }}-results">
     </div>
   </form>
   {{ if eq .id "dlg" }}<div class="search__content">{{ end }}

@@ -1,40 +1,17 @@
-{{- /* The head of every inner page, after openai.com: on the white page the breadcrumb, a large title in
-       medium weight and, under them, the menu group's render in a wide rounded black panel the date under a news post's title. The breadcrumb follows
-       the main menu (partial crumbs.html, which nav-place.html feeds), not the folders: Home / menu group /
-       menu entry / page; it ends with the page's own name, except on a news post, where the title follows
-       right under "News" (the BreadcrumbList for search engines still ends with the post). A background
-       article that began as a post (front matter showDate: true) shows when it was written and last
-       changed; with archived: true it adds that it is kept for the record and no longer kept up to date. */ -}}
-{{ $crumbs := partial "crumbs.html" . }}
+{{- /* The head of an inner page, on the page's own ground: the breadcrumb (breadcrumb.html), the title,
+       under a news post its date, under a background article (front matter showDate: true) when it was
+       written and last changed (archived: true adds that it is kept for the record). A page whose head
+       carries a render (page-head-render.html decides: hubs, showcases and First steps, or front matter
+       headRender) shows it in a wide rounded black panel under the words. The gallery (its black page is
+       all renders) and Community (its workshop photo) never do. */ -}}
 {{ $post := and (eq .Section "news") .IsPage }}
-<header class="page-head page-head--open">
+<header class="page-head">
   <div class="wrap">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <ol>
-        {{- range $i, $c := $crumbs }}
-        {{- if lt (add $i 1) (len $crumbs) }}<li><a href="{{ $c.url }}">{{ partial "nobreak-html.html" ($c.name | htmlEscape) }}</a></li>
-        {{- else if not $post }}<li aria-current="page">{{ partial "nobreak-html.html" ($c.name | htmlEscape) }}</li>{{ end }}
-        {{- end }}
-      </ol>
-    </nav>
+    {{ partial "breadcrumb.html" . }}
     <h1>{{ partial "nobreak.html" .Title }}</h1>
     {{- /* a release's announcement that came later than the release itself says both (data/releases.yaml) */}}
     {{ if $post }}<p class="page-head__meta">{{ with partial "release-of.html" . }}{{ if ne (time.Format "2006-01-02" .date) ($.Date.Format "2006-01-02") }}Released <time datetime="{{ time.Format "2006-01-02" .date }}">{{ time.Format "2 January 2006" .date }}</time> · announced {{ end }}{{ end }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time></p>
     {{ else if .Params.showDate }}<p class="page-head__meta">Written <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2006" }}</time>{{ if gt (.Lastmod.Sub .Date).Hours 720.0 }}, updated <time datetime="{{ .Lastmod.Format "2006-01-02" }}">{{ .Lastmod.Format "January 2006" }}</time>{{ end }}{{ if .Params.archived }}, kept for the record{{ end }}</p>{{ end }}
-    {{- /* a phone: the page's one-line lead in the band, under the title. It is the content's first paragraph
-           (or the statement of a page-intro), when that is one short line (at most 100 characters) followed by
-           something other than another paragraph; the copy in the text is hidden on a phone
-           (assets/css/phone.css), this one from 640px up, so a desktop is unchanged. */}}
-    {{ if not $post }}{{ with findRESubmatch `^\s*(?:<div class="page-intro"><div class="page-intro__text">)?<p>((?s:.*?))</p>\s*(?:</div>\s*)?(<[a-z]+[^>]*>)?` .Content 1 }}
-    {{- $m := index . 0 }}{{ $text := index $m 1 }}{{ $plain := plainify $text | htmlUnescape | strings.TrimSpace }}
-    {{- if and $plain (le (len $plain) 100) (ne (index $m 2) "<p>") (not (findRE `<img|\sid=` $text 1)) }}
-    <p class="page-head__lead phone-only">{{ $text | safeHTML }}</p>
-    {{- end }}{{ end }}{{ end }}
-    {{- /* a phone: an event page's flyer, countdown and host (events/head.html) */}}
-    {{ if eq .Layout "event" }}{{ partial "events/head.html" . }}{{ end }}
-    {{- /* the group's render in a wide rounded black panel under the words (none on a task page, and none on
-           the gallery, whose black page is all renders: there the words stand on the black; nor on Community, which
-           opens with its workshop photo) */}}
     {{ if and (ne .Section "gallery") (ne .Layout "community") }}{{ with partial "page-head-render.html" . }}<div class="page-head__panel">{{ . }}</div>{{ end }}{{ end }}
   </div>
 </header>

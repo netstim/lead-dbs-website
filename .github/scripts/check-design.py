@@ -38,7 +38,7 @@ import pathlib
 import re
 import sys
 
-BUDGET = {"colour": 146, "important": 35, "spacing": 177, "line-height": 131, "letter-spacing": 42}
+BUDGET = {"colour": 119, "important": 19, "spacing": 152, "line-height": 127, "letter-spacing": 42}
 EXEMPT_MAX = 6
 # hard-rule violations the stylesheets already had when this script began to read whole declarations (the
 # line-by-line reading missed them): "file: selector property". Each is allowed until it is fixed, and then

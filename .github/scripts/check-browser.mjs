@@ -7,6 +7,8 @@
 //     scroll: the reader just never sees it), and text cut off inside its own box (a line that may not
 //     wrap and is wider than its box);
 //   - a request to another server (nothing loads from elsewhere until a visitor starts a video).
+// Geometry is measured once the page's fonts are in (document.fonts.ready). The sweep runs with reduced motion;
+// check-interactions.mjs covers the pages with motion, without script and in WebKit.
 // With a third argument it saves a full-page screenshot of every page and view there, for review.
 //
 //     npm ci && npx playwright install chromium        (the versions locked in package-lock.json)
@@ -196,6 +198,8 @@ async function check(view, scheme) {
       const waiting = () => [...document.querySelectorAll('img[loading]')].filter((i) => !i.complete && i.checkVisibility()).map((i) => (i.currentSrc || i.src).replace(location.origin, ''));
       await page.waitForFunction(() => ![...document.querySelectorAll('img[loading]')].some((i) => !i.complete && i.checkVisibility()),
         null, { timeout: 5000, polling: 100 }).catch(() => {});   // what is still loading then is reported below
+      // text is measured in its own face: a line set in the fallback font wraps and overflows differently
+      await page.evaluate(() => document.fonts.ready.then(() => null));
       const r = await page.evaluate(measure, OVERFLOW_OK);
       const slow = await page.evaluate(waiting);
       const broken = await page.evaluate(() => [...document.images].filter((i) => i.complete && i.currentSrc && i.naturalWidth === 0).map((i) => i.currentSrc.replace(location.origin, '')));
@@ -276,7 +280,7 @@ async function checkManualInteractions() {
     require(await page.locator('#manual-contents').getAttribute('open') === null, 'Section navigation stayed open after choosing a heading');
     const target = await page.locator('#save-and-view-the-result').boundingBox();
     require(target.y >= toolbar.y + toolbar.height, 'Section heading is hidden beneath sticky navigation');
-    await page.getByRole('link', { name: 'Search documentation', exact: true }).click();
+    await page.locator('.docs-search').click();   // the header's search (it searches the whole site)
     await page.locator('#site-search[open]').waitFor();
     await page.locator('#site-search .search__input').fill('coregistration');
     await page.locator('#site-search .search__hit').first().waitFor();

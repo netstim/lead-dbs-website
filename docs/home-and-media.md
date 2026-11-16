@@ -12,6 +12,13 @@ connectomes, counted at build time from each page's `atlases.yaml`; `features.da
 `content/_index.md` names the page, text, image, crop and counts), a full-width render
 with the quotes, and figures from the gallery. Each picture shows a different scene; keep it that way when swapping one.
 
+What moves by itself on the home page, and how a visitor stops it (WCAG 2.2.2): the hero clip (its round
+button), the two rows of quotes (the round button beside "All quotes"; hover holds them), the grid of
+figures (the round button on its top right corner, a drag or an arrow key; hover and keyboard focus hold
+it), the fan of covers (holds on hover and focus) and the globe (its button). Under reduced motion none of
+them moves. The hero's lead and buttons stand from the first paint; only the title rises in, under 400 ms.
+Nothing is added to a picture on any screen size: no glow, light or gradient behind a render or a flyer.
+
 Every still is a file in `assets/images/renders/`, named in `content/_index.md` (`image:`).
 **To swap one**, replace the file with a new one of the same name (any size, JPG or PNG; Hugo makes the
 WebP sizes the page needs), or put a new file next to it and change the name in `content/_index.md`.

@@ -1,9 +1,13 @@
+// A fragment as an id (shared with manual.js, later in the same bundle). A malformed one ("#%") is used
+// as it is: decodeURIComponent would throw and stop every script after this one in the bundle.
+const leadFragment = (hash) => { try { return decodeURIComponent(hash); } catch { return hash; } };
+
 // ------------------------------------------------------------------ table of contents
 // The sticky contents on a desktop mark the section being read (the last heading above the top third).
 (() => {
   const toc = document.querySelector('[data-toc]');
   if (!toc) return;
-  const links = new Map([...toc.querySelectorAll('a[href^="#"]')].filter((a) => a.hash.length > 1).map((a) => [decodeURIComponent(a.hash.slice(1)), a]));
+  const links = new Map([...toc.querySelectorAll('a[href^="#"]')].filter((a) => a.hash.length > 1).map((a) => [leadFragment(a.hash.slice(1)), a]));
   const heads = [...links.keys()].map((id) => document.getElementById(id)).filter(Boolean);
   if (!heads.length) return;
   let current = null, queued = false;
@@ -40,7 +44,7 @@
 // right after the heading it names.
 (() => {
   const open = () => {
-    const id = decodeURIComponent(location.hash.slice(1));
+    const id = leadFragment(location.hash.slice(1));
     const target = id && document.getElementById(id);
     if (!target) return;
     let fold = target.closest('details');

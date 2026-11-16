@@ -1,0 +1,51 @@
+{{- /* The picture a link preview shows (head.html: og:image, twitter:image), always 1200 × 630, and its alt.
+       In order:
+         front matter share     a file next to the page, or a path under assets/ ("images/renders/x.jpg")
+         a news post's image    its teaser (front matter image)
+         a manual page          a card made at build time: the page's title, its chapter group, the logo
+         otherwise              the site's picture, assets/images/share.jpg
+       A wide picture (1.5:1 or wider) is cut to 1200 × 630 around its centre. A taller one (a flyer, a square
+       figure) is not cut: it stands whole on the right of a white card, the page's title on the left, the
+       same card as the manual's. The alt: front matter shareAlt, else a flyer's alt, else the page's title.
+       The card's type is Inter (assets/fonts/inter-share-*.ttf: static instances of the site's Inter, made
+       for images.Text, which reads TrueType only; licence static/fonts/OFL-inter.txt).
+       Returns dict "img" (the resource) "alt". */ -}}
+{{- $p := . -}}
+{{- $own := false -}}
+{{- with .Params.share }}{{ $own = or ($p.Resources.GetMatch .) (resources.Get .) }}{{ if not $own }}{{ errorf "%s: share picture %q is neither next to the page nor under assets/" $p.File.Path . }}{{ end }}
+{{- else }}{{ with .Params.image }}{{ $own = $p.Resources.GetMatch . }}{{ end }}{{ end -}}
+{{- if $own }}{{ if not (and (eq $own.ResourceType "image") (in (slice "jpeg" "png" "webp") $own.MediaType.SubType)) }}{{ $own = false }}{{ end }}{{ end -}}
+{{- $alt := .Params.shareAlt | default (and .Params.flyer .Params.flyer.alt) | default .Title -}}
+{{- $manual := eq .Section "manual" -}}
+{{- $img := false -}}
+{{- if and $own (ge (div (float $own.Width) $own.Height) 1.5) -}}
+  {{- $img = $own.Fill "1200x630 jpg q82 Center" -}}
+{{- else if or $own $manual -}}
+  {{- /* the card: the words on the left 640px, a picture (if any) fitted into the right part */ -}}
+  {{- $base := resources.Get "images/share-base.png" -}}
+  {{- $f6 := resources.Get "fonts/inter-share-600.ttf" }}{{ $f5 := resources.Get "fonts/inter-share-500.ttf" -}}
+  {{- $logo := (resources.Get "logo/logo.png").Resize "x56 png" -}}
+  {{- $kicker := "Lead-DBS" -}}
+  {{- if $manual -}}
+    {{- $kicker = "Lead-DBS manual" -}}
+    {{- range hugo.Data.manual.groups }}{{ if eq .id $p.Params.manual_group }}{{ $kicker = printf "Lead-DBS manual · %s" .title }}{{ end }}{{ end -}}
+  {{- end -}}
+  {{- $title := .Title | plainify | htmlUnescape -}}
+  {{- $w := cond $own 600 1008 -}}
+  {{- $size := cond (gt (len $title) 44) 56 (cond (gt (len $title) 24) 64 76) -}}
+  {{- if not $own }}{{ $size = cond (gt (len $title) 44) 64 80 }}{{ end -}}
+  {{- $words := ($base.Crop (printf "%dx630 TopLeft" (add $w 96))).Filter
+      (images.Text $title (dict "font" $f6 "size" $size "linespacing" (div $size 5) "color" "#2f3437" "x" 96 "y" 196))
+      (images.Text $kicker (dict "font" $f5 "size" 26 "color" "#6a6f74" "x" 96 "y" 532)) -}}
+  {{- $img = $base.Filter (images.Overlay $words 0 0) (images.Overlay $logo 96 72) -}}
+  {{- with $own -}}
+    {{- $pic := .Fit "448x534" -}}
+    {{- $img = $img.Filter (images.Overlay $pic (sub 1152 $pic.Width) (div (sub 630 $pic.Height) 2)) -}}
+  {{- end -}}
+  {{- $img = $img.Process "jpg q86" -}}
+  {{- if not $own }}{{ $alt = printf "%s, %s" $title $kicker }}{{ end -}}
+{{- else -}}
+  {{- $img = resources.Get "images/share.jpg" -}}
+  {{- $alt = "An electrode cohort rendered with Lead-DBS: electrodes and subthalamic nuclei over a brain slice" -}}
+{{- end -}}
+{{- return dict "img" $img "alt" $alt -}}

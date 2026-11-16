@@ -1,76 +1,37 @@
-{{- /* The footer of every page, on the dark ground. It carries only what the header's menu does not, plus
-     what a visitor looks for at the end of a page, so it stays short: the logo, four columns of at most five
-     links, and one legal line. (The version is not repeated here: the hero, the download page and the
-     sidebar have it.)
-     - Lead-DBS: download, release history, how to cite it, the source code and the bug reports.
-     - Help: first steps, the manual, the user Slack, contact.
-     - Stay in touch: events, the newsletter, the news and its feed, Lead-DBS on Bluesky.
-     - Institute: the institute's own sites (data/links.yaml).
-     The legal line: the year and the institute, the research-use statement, the legal pages
-     ([menus.footer]). Every other
-     page is one hover away in the header. A site path (optionally with #section) that names no page stops
-     the build. On a phone the four columns are a 2 × 2 grid, all open. */ -}}
+{{- /* The footer of every page but the manual's (which has its own one line, manual.html), on the dark ground.
+     Short on purpose: the header carries the site's navigation, so the footer does not repeat it. One row:
+     the logo, then the few links a visitor looks for at the end of a page (Contact, the source code, and
+     the updates: News and its RSS feed); under a hairline the legal line: the year and the institute
+     (data/links.yaml institute), the research-use statement, the legal pages
+     ([menus.footer] in hugo.toml). A site path that names no page stops the build. */ -}}
 {{ $gh := site.Params.github }}
-{{ $cols := slice
-  (dict "h" "Lead-DBS" "links" (slice
-    (dict "l" "Download" "u" "/download")
-    (dict "l" "Release history" "u" "/download/#releases")
-    (dict "l" "Cite Lead-DBS" "u" "/about/citing_leaddbs")
-    (dict "l" "Source code" "u" $gh)
-    (dict "l" "Bug reports" "u" (cond (ne $gh nil) (printf "%s/issues" $gh) ""))))
-  (dict "h" "Help" "links" (slice
-    (dict "l" "First steps" "u" "/helpsupport/first-steps")
-    (dict "l" "Manual" "u" "/manual/")
-    (dict "l" "User Slack" "u" "/helpsupport/slack-user-channel")
-    (dict "l" "Contact" "u" "/contact")))
-  (dict "h" "Stay in touch" "links" (slice
-    (dict "l" "Events" "u" "/events")
-    (dict "l" "Newsletter" "u" "/subscribe-to-our-newsletter")
-    (dict "l" "News" "u" "/news")
-    (dict "l" "RSS feed" "u" "rss")
-    (dict "l" "Bluesky" "u" "https://bsky.app/profile/lead-dbs.org")))
+{{ $links := slice
+  (dict "l" "Contact" "u" "/contact")
+  (dict "l" "Source code" "u" $gh)
+  (dict "l" "News" "u" "/news")
+  (dict "l" "RSS feed" "u" "rss")
 -}}
-{{ $lab := index (hugo.Data.links.footer | default slice) 0 }}
-<footer class="footer footer--dark ground-inverse" id="site-footer">
+{{ $inst := hugo.Data.links.institute }}
+<footer class="footer ground-inverse" id="site-footer">
   <div class="wrap">
     <div class="footer__main">
-      <div class="footer__brand">
-        <a class="nav__logo" href="{{ site.Home.RelPermalink }}">{{ partial "logo.html" (dict "h" 40 "lazy" true) }}Lead-DBS</a>
-      </div>
-      <div class="footer__cols">
-        {{ range $cols }}
-        <nav class="footer__col" aria-label="{{ .h }}">
-          <h2 class="footer__h">{{ .h }}</h2>
-          <ul>
-            {{ range .links }}{{ $u := .u }}{{ $label := .l }}{{ $href := "" }}{{ $ext := false }}
-            {{ if eq $u "rss" }}{{ with site.GetPage "/news" }}{{ with .OutputFormats.Get "rss" }}{{ $href = .RelPermalink }}{{ end }}{{ end }}
-            {{ else if strings.HasPrefix $u "http" }}{{ $href = $u }}{{ $ext = true }}
-            {{ else if $u }}{{ $pu := urls.Parse $u }}{{ $path := strings.TrimSuffix "/" $pu.Path }}{{ with or (site.GetPage $path) (site.GetPage (printf "/news%s" $path)) }}{{ $href = printf "%s%s" .RelPermalink (cond (ne $pu.Fragment "") (printf "#%s" $pu.Fragment) "") }}{{ else }}{{ errorf "footer: no page at %q" $u }}{{ end }}{{ end }}
-            {{ with $href }}<li><a href="{{ . }}">{{ if $ext }}{{ partial "footer-ext-label.html" $label }}{{ else }}{{ partial "nobreak-html.html" ($label | htmlEscape) }}{{ end }}</a></li>{{ end }}
-            {{ end }}
-          </ul>
-        </nav>
-        {{ end }}
-        {{ with $lab }}
-        <nav class="footer__col" aria-label="Institute">
-          <h2 class="footer__h">Institute</h2>
-          <ul>{{ range .links }}{{ $ext := strings.HasPrefix .url "http" }}<li><a href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ if $ext }}{{ partial "footer-ext-label.html" .name }}{{ else }}{{ .name }}{{ end }}</a></li>{{ end }}</ul>
-        </nav>
-        {{ end }}
-      </div>
+      <a class="nav__logo footer__logo" href="{{ site.Home.RelPermalink }}">{{ partial "logo.html" (dict "h" 32 "lazy" true) }}Lead-DBS</a>
+      <nav class="footer__nav" aria-label="Footer">
+        <ul class="footer__links">
+          {{ range $links }}{{ $u := .u }}{{ $label := .l }}{{ $href := "" }}{{ $ext := false }}
+          {{ if eq $u "rss" }}{{ with site.GetPage "/news" }}{{ with .OutputFormats.Get "rss" }}{{ $href = .RelPermalink }}{{ end }}{{ end }}
+          {{ else if strings.HasPrefix $u "http" }}{{ $href = $u }}{{ $ext = true }}
+          {{ else if $u }}{{ $pu := urls.Parse $u }}{{ $path := strings.TrimSuffix "/" $pu.Path }}{{ with site.GetPage $path }}{{ $href = printf "%s%s" .RelPermalink (cond (ne $pu.Fragment "") (printf "#%s" $pu.Fragment) "") }}{{ else }}{{ errorf "footer: no page at %q" $u }}{{ end }}{{ end }}
+          {{ with $href }}<li><a href="{{ . }}">{{ $label }}{{ if $ext }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ end }}</a></li>{{ end }}
+          {{ end }}
+        </ul>
+      </nav>
     </div>
     <div class="footer__legal">
-      <p>&copy; {{ now.Year }} Institute for Network Stimulation · For research use only, not for clinical use</p>
+      <p>&copy; {{ now.Year }} <a class="footer__inst" href="{{ $inst.url }}">{{ $inst.name }}</a><span class="footer__sep" aria-hidden="true"> · </span><span class="footer__ruo">For research use only, not for clinical use</span></p>
       <ul class="footer__legal-links">
         {{ range site.Menus.footer }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}
       </ul>
     </div>
   </div>
 </footer>
-
-{{- /* A link to another site: its label with the ↗ kept on the line of its last word. */ -}}
-{{- define "_partials/footer-ext-label.html" -}}
-{{- $w := split . " " -}}{{- $n := len $w -}}
-{{- with first (sub $n 1) $w }}{{ delimit . " " }} {{ end -}}
-<span class="nowrap">{{ index $w (sub $n 1) }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></span>
-{{- end -}}

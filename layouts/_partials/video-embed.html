@@ -17,16 +17,17 @@
   {{- $embed = printf "https://player.vimeo.com/video/%s?dnt=1&autoplay=1" $id -}}
   {{- $watch = printf "https://vimeo.com/%s" $id }}{{ $name = "Vimeo" -}}
 {{- end -}}
-{{- /* the poster: a still of the video saved next to the page as video-<id>.jpg, shown as resized WebP;
+{{- /* the poster: a still of the video saved next to the page as video-<id>.jpg, shown as resized WebP
+       (never enlarged: the player is at most as wide as its still, --poster-w, assets/css/site.css);
        nothing is loaded from the video site before the visitor presses play */ -}}
-{{- $poster := "" -}}
+{{- $poster := "" }}{{ $posterW := 0 -}}
 {{- with $c.Page.Resources.Get (printf "video-%s.jpg" $id) -}}
   {{- $set := slice -}}
-  {{- $p := . }}{{ range slice 480 800 1280 }}{{ if le . $p.Width }}{{ $r := $p.Resize (printf "%dx webp q78" .) }}{{ $set = $set | append (printf "%s %dw" $r.RelPermalink $r.Width) }}{{ end }}{{ end -}}
-  {{- $fb := $p.Resize "800x" -}}
+  {{- $p := . }}{{ $posterW = $p.Width }}{{ range slice 480 800 1280 }}{{ if le . $p.Width }}{{ $r := $p.Resize (printf "%dx webp q78" .) }}{{ $set = $set | append (printf "%s %dw" $r.RelPermalink $r.Width) }}{{ end }}{{ end -}}
+  {{- $fb := $p.Resize (printf "%dx" (math.Min $p.Width 800 | int)) -}}
   {{- $poster = printf `<img class="video-embed__poster" src="%s" srcset="%s" sizes="(min-width: 1024px) 760px, 100vw" width="%d" height="%d" alt="" loading="lazy" decoding="async">` $fb.RelPermalink (delimit $set ", ") $fb.Width $fb.Height -}}
 {{- end -}}
-<div class="video-embed{{ if $poster }} video-embed--poster{{ end }}" data-embed="{{ $embed }}" data-embed-title="{{ $label }}">
+<div class="video-embed{{ if $poster }} video-embed--poster{{ end }}"{{ with $posterW }} style="--poster-w: {{ . }}px"{{ end }} data-embed="{{ $embed }}" data-embed-title="{{ $label }}">
   {{ $poster | safeHTML }}
   <a class="video-embed__start" href="{{ $watch }}" aria-label="Play: {{ $label }} (loads the player from {{ $name }})">
     <span class="video-embed__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>

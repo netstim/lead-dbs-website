@@ -1,5 +1,4 @@
-{{- /* The sidebar of a doc page, on the right: the section's pages, then "On this page" on a long page.
-       A news post has no section block (posts are not a section). Argument: dict "page" "toc" (bool). */ -}}
-{{ $post := and (eq .page.Section "news") .page.IsPage }}
-{{ if not $post }}{{ partial "section-nav.html" (dict "page" .page "variant" "side") }}{{ end }}
+{{- /* The sidebar of a doc page, on the right from 1024px: "On this page", sticky while the page is read
+       (the menu group's other pages are at the end of the article, section-nav.html). Argument: dict
+       "page" "toc" (bool). */ -}}
 {{ if .toc }}{{ partial "toc.html" (dict "page" .page "variant" "side") }}{{ end }}

@@ -1,3 +1,4 @@
 {{- /* A link or button of the Contribute page. Argument: dict "a" ({text, page | url}) "page" "class". */ -}}
+{{- $class := .class }}{{ if and .a.url (eq .class "link") }}{{ $class = "link link--ext" }}{{ end -}}
 {{- $href := .a.url }}{{ with .a.page }}{{ $href = partial "resolve-url.html" (dict "url" . "page" $.page) }}{{ end -}}
-<a class="{{ .class }}" href="{{ $href }}">{{ .a.text }}{{ if .a.url }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ end }}</a>
+<a class="{{ $class }}" href="{{ $href }}">{{ .a.text }}{{ if .a.url }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ end }}</a>

@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
-"""Fails on CSS selectors that style nothing: a selector (one item of a rule's comma list) is unused
-when one of its classes, outside :is()/:where()/:not()/:has(), is used nowhere: not in a built page's class
+"""Fails on unused CSS class references: a selector (one item of a rule's comma list) is reported when one
+of its classes, outside :is()/:where()/:not()/:has(), is used nowhere: not in a built page's class
 attribute (arguments: the build folders, production and preview), a template's class attribute, or a
 script (inline in a template, or in assets/js) that sets or looks for it: classList.add/remove/toggle/
 contains/replace, className or setAttribute('class', …), class="…" in markup the script builds, and
 querySelector(All)/closest/matches selectors. Any other string in a script does not count, so a log
 message or a key that happens to spell a class name does not keep a dead rule alive.
+
+What it does not check: it looks at class names one by one, not at how a selector combines them. A rule
+whose classes all exist can still match nothing (".a > .b" where .b is never a child of .a, or
+".a:has(> .b)" where .b sits deeper), and one rule can be wholly overridden by a later one. A pass
+means "every class a selector names is used somewhere", not "no dead CSS": structure is covered by
+the browser checks (check-browser.mjs, check-interactions.mjs) and by review.
 
     python3 .github/scripts/check-css-used.py public preview
 
@@ -133,7 +139,7 @@ for css in sorted((root / "assets/css").glob("*.css")):
                     dead = [c for c in re.findall(r"\.([A-Za-z][\w-]*)", outside_parens(sel)) if not live(c)]
                     if dead:
                         problems += 1
-                        print(f"{css}:{start}: nothing uses .{dead[0]} ({sel[:100]})")
+                        print(f"{css}:{start}: unused CSS class reference: nothing uses .{dead[0]} ({sel[:100]})")
             prelude = ""
         elif ch in "};":
             prelude = ""
@@ -144,5 +150,5 @@ for css in sorted((root / "assets/css").glob("*.css")):
         line += ch == "\n"
         i += 1
 
-print(f"{problems} unused selectors")
+print(f"{problems} unused CSS class references")
 sys.exit(1 if problems else 0)

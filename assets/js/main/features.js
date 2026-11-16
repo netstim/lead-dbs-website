@@ -5,6 +5,7 @@
 // scrolls sideways, one per name, above the names: swiping it chooses the name, a tap on a name turns it
 // to that name's picture, and a row of segments follows. {{< tools >}} becomes the same module there.
 // From 640px up nothing of that runs; a phone that turns into a wider window hands its state back.
+(() => {
 const phone = matchMedia('(max-width: 639px)');
 const still = matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -152,3 +153,4 @@ document.querySelectorAll('.tool-cells').forEach((cells) => {
   addEventListener('hashchange', fromHash);
   fromHash();
 });
+})();

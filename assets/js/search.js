@@ -21,7 +21,7 @@
   const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   const rank = (rows, q) => {
-    const words = fold(q).split(/[\s,;]+/).filter((w) => w.length > 1 || /\d/.test(w));
+    const words = terms(q);
     if (!words.length) return [];
     const phrase = words.join(' ');
     const out = [];
@@ -45,17 +45,35 @@
     }
     return out.sort((a, b) => b[0] - a[0]).map(([, r]) => r);
   };
-  const snippet = (r, q) => {
-    const w = fold(q).split(/\s+/).find((x) => x.length > 1 && r.lx.includes(x));
+  const terms = (q) => fold(q).split(/[\s,;]+/).filter((w) => w.length > 1 || /\d/.test(w));
+  // the text, escaped, with the searched words marked (<mark>); the words are found case- and
+  // accent-blind in a folded copy of the same length, so the marks fall on the original letters
+  const mark = (text, words) => {
+    const folded = fold(text);
+    if (!words.length || folded.length !== text.length) return esc(text);
+    const hits = [];
+    words.forEach((w) => { for (let i = folded.indexOf(w); i >= 0; i = folded.indexOf(w, i + w.length)) hits.push([i, i + w.length]); });
+    hits.sort((a, b) => a[0] - b[0]);
+    let out = '', at = 0;
+    hits.forEach(([a, b]) => { if (a < at) return; out += esc(text.slice(at, a)) + `<mark>${esc(text.slice(a, b))}</mark>`; at = b; });
+    return out + esc(text.slice(at));
+  };
+  // the page's description when it holds a searched word (or there is no passage that does), else the
+  // passage of its text around the first word found
+  const snippet = (r, words) => {
     const generic = r.d.startsWith('Lead-DBS user guide:');
-    const src = generic ? r.x : (r.d || r.x);
-    if (!w || (r.d && !generic)) return esc(src.slice(0, 160)) + (src.length > 160 ? '…' : '');
+    const inDesc = r.d && !generic && words.some((w) => r.ld.includes(w));
+    const w = words.find((x) => r.lx.includes(x));
+    if (inDesc || !w) {
+      const src = generic || !r.d ? r.x : r.d;
+      return mark(src.slice(0, 160), words) + (src.length > 160 ? '…' : '');
+    }
     const at = r.lx.indexOf(w);
     let from = Math.max(0, at - 60);
     if (from) from = r.x.indexOf(' ', from) + 1;
     let end = Math.min(r.x.length, from + 170);
     if (end < r.x.length) end = r.x.lastIndexOf(' ', end);
-    return (from ? '…' : '') + esc(r.x.slice(from, end)) + (end < r.x.length ? '…' : '');
+    return (from ? '…' : '') + mark(r.x.slice(from, end), words) + (end < r.x.length ? '…' : '');
   };
 
   const wire = (box) => {
@@ -81,15 +99,16 @@
       if (!q) { list.replaceChildren(); status.textContent = ''; return; }
       status.textContent = 'Searching…';
       let rows;
-      try { rows = await load(); } catch { if (request === generation) status.textContent = 'Search is unavailable. Please try again.'; return; }
+      try { rows = await load(); } catch { if (request === generation) { status.textContent = 'Search is unavailable. Try again or browse the manual.'; fallback.hidden = false; } return; }
       if (request !== generation || input.value.trim() !== q) return;
       const all = rank(rows, q);
       const hits = all.slice(0, SHOWN);
-      status.textContent = !all.length ? 'No results found on this website. Try fewer or different words.'
+      status.textContent = !all.length ? 'No results. Try a shorter search.'
         : all.length > SHOWN ? `The best ${SHOWN} of ${all.length} results` : `${all.length} result${all.length === 1 ? '' : 's'}`;
+      const words = terms(q);
       list.innerHTML = hits.map((r) => {
         const section = r.s ? `<span class="search__section">${esc(r.s)}</span>` : '';
-        return `<li><a class="search__hit" href="${esc(r.u)}"><span class="search__title">${esc(r.t)}</span>${section}<span class="search__snippet">${snippet(r, q)}</span></a></li>`;
+        return `<li><a class="search__hit" href="${esc(r.u)}"><span class="search__title">${mark(r.t, words)}</span>${section}<span class="search__snippet">${snippet(r, words)}</span></a></li>`;
       }).join('');
       fallback.hidden = false;
       return true;

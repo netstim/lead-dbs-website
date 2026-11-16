@@ -4,7 +4,7 @@
      to "Past events", so a page built some days ago still reads right. Under "Past events" also the
      workshops of the archive page /helpsupport/workshops/, one link to each of its sections. */ -}}
 {{ $all := partial "events/list.html" . }}
-{{ $up := where $all "over" false }}
+{{ $upcoming := where $all "over" false }}
 {{ $past := sort (where $all "over" true) "start_unix" "desc" }}
 {{/* These sections come from the template rather than Markdown fragments. */}}
 {{ $archive := site.GetPage "/helpsupport/workshops" }}
@@ -24,13 +24,13 @@
       <h2 id="upcoming">Upcoming</h2>
       {{- /* the line for no dates is in the page only when nothing was upcoming at build time;
              assets/js/main/events.js adds it when the listed events are over by the visitor's clock */}}
-      {{ $nl := relref $ "/subscribe-to-our-newsletter" }}
-      <ol class="event-list" data-ev-upcoming data-ev-newsletter="{{ $nl }}">
-        {{ range $up }}{{ partial "events/card.html" (dict "ev" . "page" $) }}{{ end }}
+      {{ $up := partial "updates.html" . }}
+      <ol class="event-list" data-ev-upcoming data-ev-updates="{{ $up.href }}" data-ev-updates-name="{{ $up.name }}">
+        {{ range $upcoming }}{{ partial "events/card.html" (dict "ev" . "page" $) }}{{ end }}
       </ol>
-      {{ if not $up }}<p class="event-empty" data-ev-empty>No dates are set right now. New ones are announced in the <a href="{{ $nl }}">newsletter</a>.</p>{{ end }}
-      {{- /* a phone: one quiet row under the list that leads to the newsletter */}}
-      <a class="ev-news phone-only" href="{{ $nl }}"><svg class="ev-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></svg><span class="ev-news__t">New events by email</span><span class="ev-news__go">Newsletter</span></a>
+      {{ if not $upcoming }}<p class="event-empty" data-ev-empty>No dates are set right now. New ones are announced in <a href="{{ $up.href }}">{{ $up.name }}</a>.</p>{{ end }}
+      {{- /* one quiet row under the list: where new dates are announced (partial updates.html) */}}
+      <a class="ev-news" href="{{ $up.href }}"><span class="ev-news__t">Event updates</span><span class="ev-news__go">{{ $up.short }}</span></a>
       {{- /* the past workshops: one link per workshop section of the archive page (its h2 headings that
              name a year), newest first, as they stand on that page */}}
       <h2 id="past"{{ if not (or $past $workshops) }} hidden{{ end }} data-ev-past-h>Past events</h2>

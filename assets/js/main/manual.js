@@ -5,8 +5,6 @@
   if (!fold) return;
   const tree = fold.querySelector('.manual-nav__tree');
   const rail = document.querySelector('.manual-nav');
-  const main = document.querySelector('.manual');
-  const bar = document.querySelector('.manual-mobile-bar');
   const drawer = document.querySelector('#manual-drawer');
   const trigger = document.querySelector('.manual-menu');
   const body = drawer.querySelector('.manual-drawer__body');
@@ -68,7 +66,7 @@
         let current = links[0];
         links.forEach((a) => {
           a.removeAttribute('aria-current');
-          const heading = document.getElementById(decodeURIComponent(a.hash.slice(1)));
+          const heading = document.getElementById(leadFragment(a.hash.slice(1)));
           if (heading?.getBoundingClientRect().top <= innerHeight / 3) current = a;
         });
         current?.setAttribute('aria-current', 'location');
@@ -79,12 +77,10 @@
       }
     });
   });
+  // The phone layout (the bar, the folded rail) is drawn by CSS from the first paint (html.js, manual.css);
+  // the script only moves the tree between the rail and the drawer, so the article never moves.
   const update = () => {
     close();
-    main.classList.toggle('manual--mobile-ready', mobile.matches);
-    bar.hidden = !mobile.matches;
-    pairs.forEach(([, button]) => { button.hidden = !mobile.matches; });
-    fold.hidden = mobile.matches;
     (mobile.matches ? body : fold).append(tree);
     if (!mobile.matches) {
       if (previousNavigation?.path === location.pathname && Number.isFinite(previousNavigation.scrollTop)) rail.scrollTop = previousNavigation.scrollTop;
@@ -98,29 +94,6 @@
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') close();
   }, true);
 })();
-// Use the shared clipboard feedback for page URLs, including a copied section hash.
-document.querySelector('[data-copy-link]')?.addEventListener('click', async (event) => {
-  const button = event.currentTarget;
-  const label = button.querySelector('[data-copy-label]');
-  let status = button.querySelector('[role="status"]');
-  if (!status) {
-    status = document.createElement('span');
-    status.className = 'sr-only';
-    status.setAttribute('role', 'status');
-    button.append(status);
-  }
-  clearTimeout(button.copyTimer);
-  try {
-    await navigator.clipboard.writeText(location.href);
-    label.textContent = 'Link copied';
-    status.textContent = 'Page link copied.';
-  } catch {
-    label.textContent = 'Copy failed';
-    status.textContent = 'Copy the address from your browser.';
-  }
-  button.copyTimer = setTimeout(() => { label.textContent = 'Copy link'; status.textContent = ''; }, 2000);
-});
-
 // Preview long examples without hiding their full source from the copy control.
 // No-JavaScript readers get the complete code. Overflow cues reflect the actual viewport.
 (() => {
@@ -211,5 +184,4 @@ document.querySelector('[data-copy-link]')?.addEventListener('click', async (eve
     });
   });
   select(buttons[0]);
-  tabs.hidden = false;
 })();

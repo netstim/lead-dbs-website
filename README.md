@@ -52,21 +52,24 @@ stops the build on `sidebar:`, `related:` and `toc:`, and on an unknown type).
 | Type | For | Width | Sidebar |
 |---|---|---|---|
 | `manual` | the user guide at `/manual/` | reading column | chapters left, local outline right |
-| `doc` (default) | Cite, Publications, Slack, Contact, past workshops, the method articles, About the MNI spaces, the atlas catalogues, legal pages, news posts | the text column | right |
-| `contributors` | Contributors (`layouts/about/contributors.html`): who coordinates Lead-DBS, then the people | the text column | right |
-| `event` | an event page (`layouts/event.html`): facts and registration from `data/events.yaml` | the text column | right |
-| `showcase` | one tool or atlas (DISTAL, FOCUS, Lead-OR, Lead Tutor, Walkthrough videos) and the Features overview | full | none; its section's pages at the end |
+| `doc` (default) | Cite, Publications, Slack, Contact, past workshops, the method articles, About the MNI spaces, the atlas catalogues, legal pages, news posts | the text column | "On this page" on a long page |
+| `contributors` | Contributors (`layouts/about/contributors.html`): who coordinates Lead-DBS, then the people | the text column | "On this page" |
+| `event` | an event page (`layouts/event.html`): title, facts and registration from `data/events.yaml`, the flyer beside them | full | none |
+| `showcase` | one tool or atlas (DISTAL, FOCUS, Lead-OR, Lead Tutor, Walkthrough videos) and the Features overview | full | none |
 | `hub` | a menu group's page (Docs and help, Atlases and data, About) | full | none; its body is the section's list |
 | own template | Home, Download, First steps, Contribute, Events, Gallery, Community, Usage, News | full | none |
 
-For ordinary pages, the sidebar rule is **one sidebar, on the right**, with the same two blocks on every sibling page: the
-section's pages (the current one marked), then "On this page" when the page has three or more `##`
-sections (`site.Params.tocMinHeadings`). A news post has only the second block, and no sidebar at all when
-it is short. Below 1024px the sidebar gives way: "On this page" folds under the title and the section's
-pages follow the text. `check-site.py` fails on an empty sidebar.
+The right rail holds only **"On this page"**, when the page has three or more `##` sections
+(`site.Params.tocMinHeadings`), sticky while the page is read; a shorter page has no rail. Below 1024px it
+folds under the title. `check-site.py` fails on an empty sidebar.
 
-Every page ends with **"Related"** (`layouts/_partials/next-steps.html`): up to three `next:` links to pages
-outside its own section, one hairline row each, title only.
+Hubs, showcases and First steps open with their menu group's render under the title; every other page
+opens with its title and its task. Front matter `headRender: true` or `false` overrides that for one page
+(`layouts/_partials/page-head-render.html`).
+
+Every page ends with **one** group of links: its **"Related"** (`layouts/_partials/next-steps.html`) when it
+has up to three `next:` links to pages outside its own section, else **"More in …"**, the other pages of
+its menu group (`section-nav.html`); one hairline row each, title only.
 
 ```yaml
 next:
@@ -78,7 +81,7 @@ next:
 Point to the related page, the next tutorial step or the section's hub; write no "Next" section in the text.
 The build stops on a path that is not a page or is the page itself, on an entry that has neither `page` nor
 `url` and `name`, and on more than three entries; links to pages of the page's own section are left out
-(the sidebar lists them). News posts link their newer and older post and "All news" by themselves.
+(the header's menu lists them). News posts link their newer and older post and "All news" by themselves.
 
 ### Add a page
 
@@ -104,7 +107,7 @@ Give it a `title`, a `description` (at most 155 characters) and, if it belongs i
 | **Events** (developer meetings, workshops) | `data/events.yaml` (see [Events](docs/editing.md#events)) |
 | Home page pictures | `assets/images/renders/` (see [Pictures on the home page](docs/home-and-media.md#pictures-on-the-home-page)) |
 | Gallery ("Made with Lead-DBS", `/gallery/`) | Figures from papers: `data/gallery.yaml` + image files in `static/gallery/`. Lab renders: their alt text and captions in `data/renders.yaml` (also read by Features), the ones the gallery shows and their order in `content/gallery/_index.md` (see [Gallery](docs/home-and-media.md#the-gallery-of-published-figures)) |
-| The footer's "Institute" column | `data/links.yaml` |
+| The footer's link to the institute | the first link of `data/links.yaml` `footer` |
 | A page's closing cards | its front matter `next:` (see [Page types](#page-types)) |
 | Main menu, legal links, the GitHub link | `hugo.toml` → `[menus]` (the entry with `params.role = "action"`, identifier `download`, is drawn as the header's button) and `[params] github`; see [Site structure](docs/structure.md) |
 | Download / contact / developer-meeting form fields | `data/forms.yaml` |
@@ -113,7 +116,7 @@ Give it a `title`, a `description` (at most 155 characters) and, if it belongs i
 
 ## Checks
 
-Every pull request runs `.github/workflows/checks.yml`, and every deploy runs the same scripts
+Every pull request runs `.github/workflows/checks.yml` (and `backend.yml` for the server side), and every deploy runs the same scripts
 (`.github/scripts/`, Python standard library only). Run them before you push:
 
 ```bash
@@ -121,8 +124,8 @@ hugo --gc -d /tmp/site && HUGO_PARAMS_PREVIEW=true hugo --gc -d /tmp/preview --b
 python3 .github/scripts/check-site.py /tmp/site https://www.lead-dbs.org/   # links, anchors, redirects, canonicals, sidebars, forms
 python3 .github/scripts/check-site.py /tmp/preview https://netstim.github.io/lead-dbs-website/   # the same, and noindex on every page
 python3 .github/scripts/check-design.py                                     # tokens, radii, type, budgets
-python3 .github/scripts/check-copy.py /tmp/site                             # leftovers, repeated words, house spelling, struck phrases
-python3 .github/scripts/check-css-used.py /tmp/site /tmp/preview            # selectors that style nothing
+python3 .github/scripts/check-copy.py /tmp/site                             # leftovers, house spelling and names, editorial surface; prints tone warnings
+python3 .github/scripts/check-css-used.py /tmp/site /tmp/preview            # unused CSS class references (not selector structure)
 ```
 
 A build is the production build when its baseURL is `https://www.lead-dbs.org/`, and a preview otherwise.
@@ -130,16 +133,26 @@ A build is the production build when its baseURL is `https://www.lead-dbs.org/`,
 A second job opens every page of the build (every `index.html` that is not a redirect, and the 404 page) in
 Chromium on a desktop and a phone, light and dark, and fails on script errors, missing files or pictures,
 pictures that do not finish loading, anything drawn past the screen's edge, text cut off in its box and
-requests to other servers; its screenshots are kept with the run (Summary → Artifacts). Then
-`check-interactions.mjs` uses the phone menu, the search (with "/" and the button), the atlas filter and the
-download page's terms dialog with the mouse and the keyboard, and fails when one stops opening, closing or
-giving the focus back. The Pages workflow runs both on the production build before it deploys. They need Node:
+requests to other servers (it measures once the fonts are in, with reduced motion); its screenshots are kept
+with the run (Summary → Artifacts). Then `check-interactions.mjs` uses the phone menu (also by Tab and
+Shift+Tab, at 820 and 390 px), the search (with "/" and the button), the atlas filter, the download page's terms
+dialog and the gallery's lightbox with the mouse and the keyboard, and fails when one stops opening, closing or
+giving the focus back, or lets the page scroll behind it. It also opens the home page with motion (the hero's
+words and actions show at once; the video, quotes and figure grid can be paused, and the quotes' button is not
+covered), the manual at a malformed address fragment (`#%`), the phone menu, the manual's chapters and the videos
+without script, and a short WebKit run (menu, manual drawer, search), skipped with a note when WebKit is not
+installed. The Pages workflow runs both on the production build before it deploys. They need Node:
 
 ```bash
-npm ci && npx playwright install chromium   # the versions locked in package-lock.json
+npm ci && npx playwright install chromium webkit   # the versions locked in package-lock.json
 node .github/scripts/check-browser.mjs /tmp/site https://www.lead-dbs.org/ /tmp/screenshots   # about a minute
 node .github/scripts/check-interactions.mjs /tmp/site https://www.lead-dbs.org/                 # a few seconds
 ```
+
+The server side (`server/`, `tools/deploy.py`, the importers) is tested by `.github/workflows/backend.yml`,
+which runs every test in `tests/` with none skipped. Locally, `python3 -m unittest discover -s tests` skips
+what needs PHP, Composer's packages (`composer install` in `server/analytics/`), Apache or Hugo when they are
+missing; `LEAD_REQUIRE_INTEGRATION=1` makes those fail instead.
 
 `check-design.py` keeps budgets for literal colours (named colours too), `!important`, px spacing, literal
 line-heights and letter-spacings that may only go down;
@@ -174,17 +187,22 @@ checks and the rollback) is described in [docs/launch.md](docs/launch.md).
 
 The contact and FOCUS forms send to `forms/send.php`, a small PHP script in `server/forms/` that is not on
 the server yet; [its README](server/forms/README.md) says how to put it there and check it before
-`formsEnabled` is set to true. The newsletter form keeps its News/RSS line until the newsletter service is
+`formsEnabled` is set to true. The newsletter form keeps its News/RSS/Slack line until the newsletter service is
 decided.
 
 ## Re-importing from WordPress
 
-`tools/import_wordpress.py` converted the WordPress pages to Markdown. It was meant to run once;
-running it again with `--force` overwrites any edits made since:
+`tools/import_wordpress.py` converted the WordPress pages to Markdown. It was meant to run once. To look
+again, report what it would do, or import into a separate folder and copy what you want by hand
+(`--snapshot` keeps WordPress's answers, so a second run asks it for nothing):
 
 ```bash
-uv run tools/import_wordpress.py --force
+uv run tools/import_wordpress.py --plan --out /tmp/wp-import --snapshot /tmp/wp-snapshot   # report only
+uv run tools/import_wordpress.py --out /tmp/wp-import --snapshot /tmp/wp-snapshot          # a new, empty folder
 ```
+
+Writing straight into `content/` takes `--out content --in-place`; adding `--force` overwrites any edits made
+since, `content/news/_index.md` included.
 
 ## Templates
 

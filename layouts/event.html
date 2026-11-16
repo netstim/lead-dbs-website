@@ -1,18 +1,72 @@
 {{ define "main" }}
-{{- /* Every event page (front matter layout: event, event: an id of data/events.yaml): a doc page (the
-       standard head, the sidebar on the right) whose text opens with one line, then the event's facts as
-       cells, its action (Register, or Subscribe to our newsletter while registration is closed) with "Add to calendar"
-       beside it, and the flyer if there is one (an image next to the page named in front matter flyer).
-       Once the event is over, a line that says when it took place replaces the action (events/page-body.html).
-       The id #register is linked from other pages: keep it (the action or that line carries it). */ -}}
+{{- /* Every event page (front matter layout: event, event: an id of data/events.yaml; flyer: a file next to
+       the page and its alt; host: {name, url}). One opening for every width: the breadcrumb, then the
+       title, the page's text (one or two lines), the facts as hairline rows (date with its countdown,
+       time, place, host, registration) and the actions; the real flyer beside them from 768px, above
+       them on a narrower screen. The actions: Register (or, while registration is closed, the site's one
+       way to follow updates, partial updates.html) and Add to calendar. Once the event is over, a line
+       that says when it took place replaces them; the build decides by its own time, and between two
+       builds assets/js/main/events.js swaps the two by the visitor's clock ([data-ev-live] hidden,
+       [data-ev-over-note] shown). The id #register is linked from other pages: the actions or that line
+       carry it. The page ends with "Related" (front matter next) or, by default, All events and the
+       other upcoming events. */ -}}
 {{- $page := . -}}
 {{- $ev := false -}}
-{{- range partial "events/list.html" . }}{{ if eq .id $page.Params.event }}{{ $ev = . }}{{ end }}{{ end -}}
+{{- $all := partial "events/list.html" . -}}
+{{- range $all }}{{ if eq .id $page.Params.event }}{{ $ev = . }}{{ end }}{{ end -}}
 {{- if not $ev }}{{ errorf "%s: unknown event %q (data/events.yaml)" .File.Path .Params.event }}{{ end -}}
 {{- $e := $ev.e -}}
-{{- $date := $ev.start.Format "2 Jan 2006" -}}
-{{- with $e.end }}{{ if and (eq (len (string .)) 10) (ne (string .) $ev.date_only) }}{{ $date = printf "%s %s" $ev.when_short ($ev.start.Format "2006") }}{{ end }}{{ end -}}
 {{- $flyer := false }}{{ with .Params.flyer }}{{ $flyer = $page.Resources.Get .file }}{{ if not $flyer }}{{ errorf "%s: no flyer %q next to the page" $page.File.Path .file }}{{ end }}{{ end -}}
-{{ $body := partial "events/page-body.html" (dict "page" . "ev" $ev "date" $date "flyer" $flyer) }}
-{{ partial "content-page.html" (dict "page" . "body" $body "class" "ev-page") }}
+{{- $up := partial "updates.html" . -}}
+{{- $events := site.GetPage "/events" -}}
+{{- $ext := strings.HasPrefix ($e.register_url | default "") "http" -}}
+<main id="top" class="page ev-page">
+  <header class="page-head ev-head">
+    <div class="wrap">
+      {{ partial "breadcrumb.html" . }}
+      <div class="ev-head__grid{{ if $flyer }} ev-head__grid--flyer{{ end }}">
+        <div class="ev-head__main">
+          <h1>{{ partial "nobreak.html" .Title }}</h1>
+          <div class="ev-head__text">{{ partial "nobreak-html.html" .Content }}</div>
+          <dl class="ev-facts">
+            <div class="ev-facts__row"><dt>Date</dt><dd><time datetime="{{ $ev.iso_start }}">{{ $ev.when }}</time>{{ if not $ev.over }}<span class="ev-countdown" data-ev-countdown="{{ $ev.start_unix }}" hidden></span>{{ end }}</dd></div>
+            {{- with $ev.time_short }}
+            <div class="ev-facts__row"><dt>Time</dt><dd>{{ if strings.Contains $ev.when_short "–" }}From {{ end }}<time datetime="{{ $ev.iso_start }}">{{ . }}</time>{{ with $ev.also_in }} <span class="muted">({{ (time.In . $ev.start).Format "15:04 MST" }})</span>{{ end }}<span class="ev-facts__local" data-ev-local="{{ $ev.iso_start }}" data-ev-tz="{{ $ev.tz }}" hidden></span></dd></div>
+            {{- end }}
+            <div class="ev-facts__row"><dt>Where</dt><dd>{{ $e.where }}</dd></div>
+            {{- with .Params.host }}
+            <div class="ev-facts__row"><dt>Host</dt><dd>{{ if .url }}<a href="{{ .url }}">{{ .name }}</a>{{ else }}{{ .name }}{{ end }}</dd></div>
+            {{- end }}
+            {{- if not $ev.over }}
+            <div class="ev-facts__row" data-ev-live data-ev-ends="{{ $ev.iso_ends }}"><dt>Registration</dt><dd>{{ if $e.register_url }}Open{{ if $e.online }}: the {{ if strings.Contains (lower $e.where) "zoom" }}Zoom {{ end }}link comes by email{{ end }}{{ else if $e.online }}Opens soon; until then the link is shared in <a href="{{ (site.GetPage "/helpsupport/slack-user-channel").RelPermalink }}">the user Slack</a>{{ else }}Not open yet{{ end }}</dd></div>
+            {{- end }}
+          </dl>
+          <p class="ev-head__over"{{ if $ev.over }} id="register"{{ else }} hidden{{ end }} data-ev-over-note data-ev-ends="{{ $ev.iso_ends }}">This event took place on <time datetime="{{ $ev.iso_start }}">{{ $ev.when }}</time>.{{ with $events }} The next dates are on <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>.{{ end }}</p>
+          {{- if not $ev.over }}
+          <p class="btn-row ev-head__actions" id="register" data-ev-live data-ev-ends="{{ $ev.iso_ends }}">
+            {{- with $e.register_url }}
+            <a class="btn btn--primary{{ if $ext }} btn--ext{{ end }}" href="{{ partial "resolve-url.html" (dict "url" . "page" $page) }}">Register{{ if $ext }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ end }}</a>
+            {{- else }}
+            <a class="btn btn--primary" href="{{ $up.href }}">{{ $up.label }}</a>
+            {{- end }}
+            <a class="btn btn--secondary" download="{{ urlize $e.title }}.ics" href="{{ partial "events/ics.html" (dict "ev" $ev "details" .RelPermalink) | safeURL }}">Add to calendar</a>
+          </p>
+          {{- end }}
+        </div>
+        {{- with $flyer }}{{ $s := .Resize "480x webp q84" }}{{ $m := .Resize (printf "%dx webp q84" (math.Min .Width 960 | int)) }}
+        <figure class="ev-head__flyer"><a href="{{ .RelPermalink }}"><img src="{{ $m.RelPermalink }}" srcset="{{ $s.RelPermalink }} 480w, {{ $m.RelPermalink }} {{ $m.Width }}w" sizes="(min-width: 1024px) 440px, (min-width: 768px) 40vw, 100vw" width="{{ $m.Width }}" height="{{ $m.Height }}" alt="{{ $page.Params.flyer.alt }}" fetchpriority="high"><span class="sr-only"> (open the full-size flyer)</span></a></figure>
+        {{- end }}
+      </div>
+    </div>
+  </header>
+  {{- /* "Related": the page's own (front matter next), else All events and the other upcoming events */}}
+  {{- $items := slice }}
+  {{- if not .Params.next }}
+    {{- with $events }}{{ $items = $items | append (dict "href" .RelPermalink "name" "All events") }}{{ end }}
+    {{- range $all }}{{ if and (not .over) (ne .id $ev.id) (lt (len $items) 3) }}{{ $u := "" }}{{ with .e.links }}{{ $u = partial "resolve-url.html" (dict "url" (index . 0).url "page" $page) }}{{ end }}{{ $items = $items | append (dict "href" ($u | default (printf "%s#%s" $events.RelPermalink .id)) "name" .e.title) }}{{ end }}{{ end }}
+  {{- end }}
+  <div class="wrap ev-page__end">
+    <div class="prose">{{ if .Params.next }}{{ partial "next-steps.html" . }}{{ else }}{{ partial "next-steps.html" (dict "page" . "items" $items) }}{{ end }}</div>
+  </div>
+</main>
 {{ end }}

@@ -15,9 +15,10 @@
   };
   const menu = nav.querySelector('#site-menu');
   // what Tab may reach while the sheet is open: the sheet's links and buttons, the header's own actions
-  // (in the sheet's bottom bar on a phone, in the bar above it on a tablet) and the menu button
-  const inSheet = () => [...nav.querySelectorAll('#site-menu a[href], #site-menu button, .nav__actions a[href], .nav__toggle')]
-    .filter((el) => el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden');
+  // (in the sheet's bottom bar on a phone, in the bar above it on a tablet)
+  // (search, the theme button, Download) and the menu button, in the order of the page
+  const inSheet = () => [...nav.querySelectorAll('#site-menu a[href], #site-menu button, .nav__actions a[href], .nav__actions button, .nav__toggle')]
+    .filter((el) => !el.disabled && !el.closest('[inert]') && el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden');
   const setOpen = (open, focus = false) => {
     nav.classList.toggle('is-open', open);
     document.body.classList.toggle('nav-locked', open);
@@ -40,16 +41,18 @@
   // Escape (or the focus leaving the word) closes it, the focus back on the chevron.
   const items = [];
   const close = (item, updateBand = true) => { item.classList.remove('is-expanded'); item.sync(updateBand); };
-  // A stable frame holds every desktop panel. Commit all disclosure states before measuring
-  // it, so switching groups never briefly closes the band or animates its height.
+  // One frame holds the desktop panels, as tall as the open one (a closed panel is display: none and
+  // measures 0). Commit all disclosure states before measuring it, so switching groups never briefly
+  // closes the band; its height then eases to the new panel's (assets/css/site.css).
   const band = document.createElement('div');
   band.className = 'nav__band';
   band.setAttribute('aria-hidden', 'true');
   nav.append(band);
   band.sync = () => {
     const shown = wide.matches && items.some((i) => i.querySelector('.nav__expand')?.getAttribute('aria-expanded') === 'true');
-    if (wide.matches) {
-      const panels = [...nav.querySelectorAll('.nav__menu')];
+    if (wide.matches && shown) {
+      // the open panel only: a closing one may still be fading out at its own height
+      const panels = items.filter((i) => i.querySelector('.nav__expand')?.getAttribute('aria-expanded') === 'true').map((i) => i.querySelector('.nav__menu'));
       band.style.height = `${Math.ceil(Math.max(0, ...panels.map(p => p.offsetHeight)))}px`;
     }
     nav.classList.toggle('band-open', !!shown);
@@ -184,8 +187,8 @@
 })();
 
 // ------------------------------------------------------------------ the header over a dark ground
-// While a black ground ([data-nav-dark]: the home page's hero and its voices; the black
-// .page-head of Download and 404) lies under the header, the header takes the black too (.nav.is-dark, assets/css/site.css);
+// While a black ground ([data-nav-dark]: the home page's black bands and the Download page's head)
+// lies under the header, the header takes the black too (.nav.is-dark, assets/css/site.css);
 // once the ground has scrolled past, the light bar returns.
 // Until this has run, a page that starts on a black ground (body.top-dark) shows the dark header from
 // the first paint; html.nav-ready hands the state to this script, and only then do the colours fade.
@@ -194,9 +197,7 @@
 (() => {
   const nav = document.querySelector('.nav');
   if (!nav) return;
-  // an event page's head stays black on a phone (assets/css/phone-events.css)
-  const evDark = matchMedia('(max-width: 639px)').matches ? ', .page-head:has(.ev-head__flyer)' : '';
-  const grounds = [...document.querySelectorAll(`[data-nav-dark], .page-head:not(.page-head--open)${evDark}`)];
+  const grounds = [...document.querySelectorAll('[data-nav-dark]')];
   let queued = false;
   const update = () => {
     queued = false;

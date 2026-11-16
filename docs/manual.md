@@ -32,15 +32,18 @@ full text, not just its opening paragraphs. It requires no new runtime or build 
 
 ## Visual system
 
-The documentation follows vercel.com/docs: one 64px header row (brand, Tutorials, Community, GitHub,
-search, theme, Download), a chapter rail fixed to the window's left edge with a hairline border, and the
-article (at most 736px) with its outline centred in the remaining width. No breakpoint moves the rail, so
-nothing jumps between long and short pages. Below 1280px the outline moves above the article; below
-1024px the resource links hide; below 768px the chapters open in a modal drawer.
+The documentation borrows vercel.com/docs's layout, not its typeface: one 64px header row (brand, First
+steps, Community, GitHub, site search, theme, the Download pill), a chapter rail fixed to the window's
+left edge with a hairline border, and the article (at most 736px) with its outline centred in the
+remaining width. No breakpoint moves the rail, so nothing jumps between long and short pages. Below
+1280px the outline moves above the article; below 1024px the resource links hide; below 768px the
+chapters open in a modal drawer.
 
-It uses self-hosted **Geist** (Fontsource variable package 5.3.0, SIL OFL; `static/fonts/OFL-geist.txt`)
-with Geist Mono for code; the main website keeps Inter. Body text is 16px, headings are semibold, and
-the sidebar is 14px. Top-level ordered lists are procedures, drawn as numbered steps joined by a line.
+It uses the site's own type and colours: Inter for text and headings, the system monospace
+(`--font-mono`) for code, and the Blend palette tokens of `site.css` (only the code-highlight colours,
+`--docs-code-*`, are the manual's). Its type scale is compact: body text 16px, the sidebar 14px,
+semibold headings. Actions are the site's: the ink pill with a plain link beside it. Top-level ordered
+lists are procedures, drawn as numbered steps joined by a line. The footer is one quiet 13px line.
 
 `assets/css/manual.css` owns the layout, in one pass from tokens to phones. Size tokens live in
 `base.css`; font faces and palette tokens live in `site.css`.
@@ -62,14 +65,21 @@ the code needs horizontal scrolling. A wrapping toggle changes presentation only
 code keeps its original line breaks. Long examples have collapse controls at both ends. Without JavaScript, the complete example is visible.
 
 Mobile navigation reuses the desktop tree in a native modal dialog, preserving the
-active branch. Escape, backdrop and close control dismiss it; the article does not shift. A compact
-sticky toolbar keeps chapters and a page-contents dialog available during deep reading.
+active branch; its rows and chevrons are 44px targets. Escape, backdrop and close control dismiss it.
+A compact sticky toolbar keeps chapters and a page-contents dialog available during deep reading. CSS
+draws that phone layout from the first paint whenever script runs (`html.js`, set in the head), so the
+article never moves when the script arrives (layout shift 0); the script only moves the tree into the
+drawer. Without script the tree and the page outline stay in the page.
+
+A two-column table whose first cells are code names (the command-line options) reads as a list on a
+phone, each name unbroken over its description; code names in table cells never break inside.
 Figures above 400 pixels wide link to their full-size originals on manual pages.
 
 ## Migration boundaries
 
-`tools/import_manual.py` records the one-time import process and refuses to overwrite an
-existing manual. Subsequent edits include repaired source anchors, a curated documentation landing page, a compact installation requirements table, and editorial corrections;
+`tools/import_manual.py` records the one-time import process. It refuses to run while `content/manual`
+or `data/manual.json` exists, builds the import in a temporary folder and moves it into place only after
+every download succeeded, and has a report-only `--plan`. Subsequent edits include repaired source anchors, a curated documentation landing page, a compact installation requirements table, and editorial corrections;
 do not re-import over those edits. The source cache is optional and kept outside the repository.
 
 Existing website links now point to local chapters. The old GitBook remains available:

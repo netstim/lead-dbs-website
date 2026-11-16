@@ -30,9 +30,11 @@
       {{- range $n, $file := $p.renders }}
       {{ $r := index hugo.Data.renders.renders $file }}{{ if not $r }}{{ errorf "gallery: the render %q (content/gallery/_index.md) is not in data/renders.yaml" $file }}{{ end }}
       {{ with resources.Get (printf "images/renders/%s" $file) }}{{ $src := . }}
-      {{ $t := $src.Resize (cond (eq $n 0) "1400x webp q80" "720x webp q80") }}{{ $full := $src.Resize (printf "%dx webp q85" (int (math.Min $src.Width 1920))) }}
+      {{- /* the first render is the page's largest picture (its LCP): loaded at once, at high priority; the
+             others lazily. Each offers the widths its cell needs at 1x and 2x (partial gallery-srcset) */}}
+      {{ $set := partial "gallery-srcset.html" (dict "src" $src "widths" (cond (eq $n 0) (slice 480 720 1000 1400) (slice 360 480 720 1000))) }}{{ $t := $set.fallback }}{{ $full := $src.Resize (printf "%dx webp q85" (int (math.Min $src.Width 1920))) }}
       <li class="g-item" data-kind="render">
-        <a class="g-item__img" href="{{ $full.RelPermalink }}"><img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="{{ $r.alt }}" loading="lazy" decoding="async"></a>
+        <a class="g-item__img" href="{{ $full.RelPermalink }}"><img src="{{ $t.RelPermalink }}" srcset="{{ $set.srcset }}" sizes="{{ cond (eq $n 0) "(min-width: 1360px) 850px, (min-width: 900px) 63vw, 92vw" "(min-width: 1360px) 420px, (min-width: 900px) 31vw, 46vw" }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="{{ $r.alt }}"{{ if eq $n 0 }} fetchpriority="high"{{ else }} loading="lazy"{{ end }} decoding="async"></a>
         <div class="g-item__info">
           <div class="g-info__main">
             <p class="g-info__title">{{ $r.caption | default $r.alt }}</p>
@@ -49,11 +51,11 @@
       {{- range $f := $figs }}
       {{ range slice "authors" "title" "journal" "year" "figure" "doi" "license" "license_url" "modification" "shows" }}{{ if not (index $f .) }}{{ errorf "gallery: %s has no %q (data/gallery.yaml)" $f.file . }}{{ end }}{{ end }}
       {{ with resources.Get (printf "gallery/%s" $f.file) }}{{ $src := . }}
-      {{ $t := $src.Resize (printf "%dx webp q78" (int (math.Min $src.Width 720))) }}
+      {{ $set := partial "gallery-srcset.html" (dict "src" $src "widths" (slice 360 480 720 1000) "q" 78) }}{{ $t := $set.fallback }}
       {{ $full := $src.Resize (printf "%dx webp q85" (int (math.Min $src.Width 1750))) }}
       {{ $first := index (split $f.authors " ") 0 }}
       <li class="g-item" data-kind="figure" id="fig-{{ path.BaseName $f.file }}">
-        <a class="g-item__img g-item__img--light" href="{{ $full.RelPermalink }}" aria-label="{{ $f.figure }} of {{ $first }} et al. {{ $f.year }}, larger"><img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="{{ $f.shows }}" loading="lazy" decoding="async"></a>
+        <a class="g-item__img g-item__img--light" href="{{ $full.RelPermalink }}" aria-label="{{ $f.figure }} of {{ $first }} et al. {{ $f.year }}, larger"><img src="{{ $t.RelPermalink }}" srcset="{{ $set.srcset }}" sizes="(min-width: 1360px) 410px, (min-width: 1024px) 31vw, (min-width: 560px) 46vw, 92vw" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="{{ $f.shows }}" loading="lazy" decoding="async"></a>
         {{ $credit := printf `%s et al. %d, <em>%s</em> · <a href="%s">%s</a>` $first (int $f.year) $f.journal $f.license_url $f.license | safeHTML }}
         <p class="g-item__src">{{ $credit }}</p>
         <div class="g-item__info">
@@ -75,9 +77,9 @@
     <section class="g-sec" data-kind="cover" id="covers" aria-labelledby="g-covers-h">
       <h2 id="g-covers-h">Journal covers</h2>
       <ul class="g-wall g-wall--covers" data-gallery>
-      {{- range $covers }}{{ $t := .small.Resize "480x webp q80" }}
+      {{- range $covers }}{{ $set := partial "gallery-srcset.html" (dict "src" .small "widths" (slice 240 360 480)) }}{{ $t := $set.fallback }}
       <li class="g-item" data-kind="cover">
-        <a class="g-item__img g-item__img--light" href="{{ .large.RelPermalink }}"><img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="{{ .alt }}" loading="lazy" decoding="async"></a>
+        <a class="g-item__img g-item__img--light" href="{{ .large.RelPermalink }}"><img src="{{ $t.RelPermalink }}" srcset="{{ $set.srcset }}" sizes="(min-width: 1360px) 200px, (min-width: 1024px) 15vw, 180px" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="{{ .alt }}" loading="lazy" decoding="async"></a>
         <div class="g-item__info">
           <div class="g-info__main">
             <p class="g-info__title">{{ .journal }}</p>
@@ -100,3 +102,16 @@
   </div>
 </main>
 {{ end }}
+
+{{- /* WebP copies of a gallery picture at the given widths it can supply (never upscaled; a source
+       narrower than all of them gives one copy at its own width). Argument: dict "src" "widths" "q"
+       (quality, default 80). Returns dict "srcset" (the attribute) and "fallback" (the middle copy, the
+       src and the width/height of the img). */ -}}
+{{- define "_partials/gallery-srcset.html" -}}
+{{- $src := .src }}{{ $q := .q | default 80 -}}
+{{- $set := slice }}{{ $copies := slice -}}
+{{- range .widths }}{{ if le . $src.Width }}{{ $i := $src.Resize (printf "%dx webp q%d" . $q) }}{{ $copies = $copies | append $i }}{{ $set = $set | append (printf "%s %dw" $i.RelPermalink $i.Width) }}{{ end }}{{ end -}}
+{{- if not $copies }}{{ $i := $src.Resize (printf "%dx webp q%d" $src.Width $q) }}{{ $copies = slice $i }}{{ $set = slice (printf "%s %dw" $i.RelPermalink $i.Width) }}{{ end -}}
+{{- $mid := index $copies (div (len $copies) 2) -}}
+{{- return dict "srcset" (delimit $set ", ") "fallback" $mid -}}
+{{- end -}}

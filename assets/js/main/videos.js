@@ -5,6 +5,7 @@
 // large on black, the card's tag, title and sentence under it, its chapters beside it as buttons that
 // start the video at that time. In the card the chapters fold to one "n chapters" button. Closing the
 // popup removes the player, which stops the video.
+(() => {
 const vbox = (() => {
   const cards = document.querySelectorAll('.video-card');
   if (!cards.length || !window.HTMLDialogElement) return null;
@@ -28,7 +29,7 @@ const vbox = (() => {
     f.referrerPolicy = 'strict-origin-when-cross-origin';
     player.replaceChildren(f);
   };
-  d.addEventListener('close', () => { player.replaceChildren(); document.documentElement.classList.remove('v-box-open'); });
+  d.addEventListener('close', () => { player.replaceChildren(); });
   d.addEventListener('click', (e) => {
     if (e.target === d) { d.close(); return; }
     const c = e.target.closest('.v-box__chapter');
@@ -63,7 +64,6 @@ const vbox = (() => {
     }
     d.classList.toggle('v-box--chapters', rows.length > 0);
     play(start);
-    document.documentElement.classList.add('v-box-open');
     d.showModal();
     d.querySelector('.v-box__close').focus();
   };
@@ -98,3 +98,4 @@ document.addEventListener('click', (e) => {
   box.classList.add('is-playing');
   f.focus();
 });
+})();

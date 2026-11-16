@@ -8,12 +8,10 @@
 :where(html:has(> body.section-manual)) { overflow-y: scroll; scrollbar-gutter: stable; }
 .section-manual {
   --docs-top: 4rem; --docs-rail: 17rem; --docs-measure: 46rem; --docs-outline: 13rem;
-  --docs-one: 1; --docs-leading: 1.7; --docs-tight: 1.15; --docs-nav-leading: 1.4; --docs-tracking: -.02em; --docs-title-tracking: -.035em;
+  --docs-one: 1; --docs-leading: 1.7; --docs-tight: 1.15; --docs-nav-leading: 1.4; --docs-tracking: -.015em; --docs-title-tracking: var(--display-tracking);
   --nav: var(--docs-top);
-  --font-text: "Geist", Arial, sans-serif; --font-display: var(--font-text); --font-mono: "Geist Mono", ui-monospace, monospace;
-  --font-label: var(--font-text); --font-meta: var(--font-text);
-  --bg: var(--docs-bg); --ink: var(--docs-ink); --muted: var(--docs-muted); --surface: var(--docs-surface);
-  --line: color-mix(in oklab, var(--ink) 9%, transparent); --line-strong: color-mix(in oklab, var(--ink) 18%, transparent);
+  /* the site's own fonts and palette (site.css): only the shell and the type scale are the manual's */
+  --docs-nav-ink: color-mix(in oklab, var(--ink) 80%, var(--bg));
   --hover: color-mix(in oklab, var(--ink) 5%, transparent);
   font-family: var(--font-text); font-size: var(--t-manual-body); font-weight: 400;
 }
@@ -23,9 +21,9 @@
 .docs-header { position: sticky; top: 0; margin-bottom: calc(-1 * var(--docs-top)); z-index: 50; background: var(--bg); }
 .docs-header__bar { height: 4rem; display: flex; align-items: center; gap: var(--s-6); padding-inline: var(--s-5); border-bottom: 1px solid var(--line); }
 .docs-brand { display: flex; align-items: center; gap: var(--s-3); }
-.docs-brand > a { display: flex; align-items: center; gap: var(--s-2); white-space: nowrap; font-size: var(--t-body); font-weight: 600; }
-.docs-brand__slash { color: var(--line-strong); font-size: var(--t-sub); }
-.docs-brand > .docs-brand__label { font-size: var(--t-body); font-weight: 500; }
+.docs-brand > a { display: flex; align-items: center; gap: var(--s-2); white-space: nowrap; font: var(--title-weight) var(--t-card)/1 var(--font-display); letter-spacing: var(--display-tracking); }
+.docs-brand__slash { color: var(--line-strong); font-size: var(--t-card); font-weight: 400; }
+.docs-brand > .docs-brand__label { font-weight: 500; }
 .docs-links { display: flex; align-items: center; gap: var(--s-5); font-size: var(--t-small); }
 .docs-links a { color: var(--muted); white-space: nowrap; }
 .docs-links a:hover { color: var(--ink); }
@@ -36,7 +34,7 @@
 .docs-search kbd { margin-left: auto; padding: 0 var(--s-1); border: 1px solid var(--line); border-radius: var(--r-xs); background: var(--bg); font-family: inherit; font-size: var(--t-xs); white-space: nowrap; }
 .docs-icon-button { display: inline-flex; align-items: center; justify-content: center; width: 2.25rem; height: 2.25rem; background: none; border: 1px solid transparent; border-radius: var(--r-sm); color: var(--muted); cursor: pointer; }
 .docs-icon-button:hover { background: var(--hover); color: var(--ink); }
-.docs-download { display: inline-flex; align-items: center; height: 2.25rem; padding-inline: var(--s-4); border-radius: var(--r-sm); background: var(--ink); color: var(--bg); font-weight: 500; }
+.docs-download { display: inline-flex; align-items: center; height: 2.5rem; margin-left: var(--s-2); padding-inline: var(--s-4); border-radius: var(--r-pill); background: var(--ink); color: var(--bg); font-size: var(--t-note); font-weight: 500; }
 .docs-download:hover { background: color-mix(in oklab, var(--ink) 85%, var(--bg)); }
 .docs-theme-sun, [data-theme="dark"] .docs-theme-moon { display: none; }
 [data-theme="dark"] .docs-theme-sun, .docs-theme-moon { display: inline-flex; }
@@ -116,7 +114,7 @@
 .manual-code__copy :is([data-icon="check"], [data-icon="close"]) { display: none; }
 .manual-code__copy[data-copy-state] [data-icon="copy"] { display: none; }
 .manual-code__copy[data-copy-state="copied"] [data-icon="check"] { display: block; color: var(--action); }
-.manual-code__copy[data-copy-state="error"] [data-icon="close"] { display: block; color: var(--accent-text); }
+.manual-code__copy[data-copy-state="error"] [data-icon="close"] { display: block; color: var(--p-accent-text); }
 .manual-code__wrap { padding: var(--s-1) 0; border: 0; background: none; color: var(--muted); font: inherit; cursor: pointer; }
 .manual-code__overflow { margin-left: var(--s-2); }
 .manual-code .highlight { margin: 0; }
@@ -146,7 +144,7 @@
 .manual-note > div { min-width: 0; }
 .manual-note > div > :last-child { margin-bottom: 0; }
 .manual-note--warning { border-color: color-mix(in oklab, var(--accent) 35%, transparent); background: color-mix(in oklab, var(--accent) 6%, var(--bg)); }
-.manual-note--warning > svg { color: var(--accent-text); }
+.manual-note--warning > svg { color: var(--p-accent-text); }
 
 /* ---------------------------------------------------------------- figures, tables, folds */
 .manual-prose img { border: 1px solid var(--line); border-radius: var(--r-sm); }
@@ -156,6 +154,19 @@
 .manual-prose table { display: table; width: 100%; font-size: var(--t-small); overflow-wrap: normal; border-collapse: collapse; }
 .manual-prose th { color: var(--muted); font-weight: 500; text-align: left; }
 .manual-prose :is(th, td) { padding: var(--s-2) var(--s-3); border-bottom: 1px solid var(--line); vertical-align: top; }
+/* a code name in a table (an option, a flag) is one token: it never breaks; a long one widens its column
+   and the table scrolls sideways in its box (render-table.html) */
+.manual-prose :is(td, th) > code { white-space: nowrap; overflow-wrap: normal; }
+/* a phone: a two-column reference of code names (command-line options) reads as a list, each name over
+   what it does; the column heads stay for screen readers */
+@media (max-width: 639px) {
+  .manual-prose table:has(> tbody > tr > td:first-child > code:only-child):not(:has(> tbody > tr > td:nth-child(3))) :is(thead) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .manual-prose table:has(> tbody > tr > td:first-child > code:only-child):not(:has(> tbody > tr > td:nth-child(3))) :is(tbody, tr, td) { display: block; }
+  .manual-prose table:has(> tbody > tr > td:first-child > code:only-child):not(:has(> tbody > tr > td:nth-child(3))) > tbody { border-top: 1px solid var(--line); }
+  .manual-prose table:has(> tbody > tr > td:first-child > code:only-child):not(:has(> tbody > tr > td:nth-child(3))) tr { padding: var(--s-3) 0; border-bottom: 1px solid var(--line); }
+  .manual-prose table:has(> tbody > tr > td:first-child > code:only-child):not(:has(> tbody > tr > td:nth-child(3))) td { padding: 0; border: 0; }
+  .manual-prose table:has(> tbody > tr > td:first-child > code:only-child):not(:has(> tbody > tr > td:nth-child(3))) td + td { margin-top: var(--s-1); }
+}
 .manual-prose details { margin-block: var(--s-4); border: 1px solid var(--line); border-radius: var(--r-sm); }
 .manual-prose details > summary { padding: var(--s-3) var(--s-4); cursor: pointer; font-weight: 500; }
 .manual-prose details > summary:hover { background: var(--hover); }
@@ -194,17 +205,20 @@
 .manual-pagination span { color: var(--muted); font-size: var(--t-label); }
 .manual-pagination strong { font-weight: 500; }
 .manual-pagination__next { grid-column: 2; text-align: right; }
-.manual-footer { display: flex; flex-wrap: wrap; gap: var(--s-4); margin-top: var(--s-7); padding: var(--s-5) 0 var(--s-6); border-top: 1px solid var(--line); color: var(--muted); font-size: var(--t-label); }
-.manual-footer > a:hover { color: var(--ink); }
-.manual-footer > :nth-child(3) { margin-left: auto; }
+/* the footer: one quiet line, the site and its research-use line at the left, the source at the right */
+.manual-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-2) var(--s-5); margin-top: var(--s-7); padding: var(--s-5) 0 var(--s-6); border-top: 1px solid var(--line); color: var(--muted); font-size: var(--t-label); }
+.manual-footer > div { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--s-4); margin: 0; }
+.manual-footer a:hover { color: var(--ink); }
 
 /* ---------------------------------------------------------------- the start page (/manual/) */
 .manual--home .manual-head h1 { font-size: var(--t-manual-home); }
-.manual-start__actions { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-6); }
-.manual-start__actions a { display: inline-flex; align-items: center; gap: var(--s-2); height: 2.5rem; padding-inline: var(--s-4); border: 1px solid var(--line-strong); border-radius: var(--r-sm); font-size: var(--t-small); font-weight: 500; }
-.manual-start__actions a:first-child { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.manual-start__actions a:hover { background: var(--hover); }
+/* the site's two actions: the ink pill and a plain link beside it */
+.manual-start__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-5); margin-bottom: var(--s-6); }
+.manual-start__actions a { display: inline-flex; align-items: center; gap: var(--s-2); height: var(--btn-h); font-size: var(--t-note); font-weight: 500; }
+.manual-start__actions a:first-child { padding-inline: var(--s-5); border-radius: var(--r-pill); background: var(--ink); color: var(--bg); }
 .manual-start__actions a:first-child:hover { background: color-mix(in oklab, var(--ink) 85%, var(--bg)); }
+.manual-start__actions a + a { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--line-strong); }
+.manual-start__actions a + a:hover { text-decoration-color: currentColor; }
 .manual-start__actions svg { width: 1rem; height: 1rem; }
 .manual-research-note { margin-bottom: var(--s-5); padding: var(--s-3) var(--s-4); border: 1px solid var(--line); border-radius: var(--r-sm); font-size: var(--t-small); line-height: var(--docs-leading); color: var(--muted); }
 .manual-research-note strong { color: var(--ink); font-weight: 500; }
@@ -222,35 +236,39 @@
 .manual-terminal__comment { color: var(--muted); }
 .manual-terminal__prompt { color: var(--action); }
 .manual-start > h2 { margin-bottom: var(--s-1); font-size: var(--t-manual-section); font-weight: 600; letter-spacing: var(--docs-tracking); scroll-margin-top: calc(var(--docs-top) + var(--s-5)); }
-.manual-start > p { color: var(--muted); font-size: var(--t-small); margin-bottom: var(--s-4); }
-.manual-workflows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
-.manual-workflows > a { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-3); border: 1px solid var(--line); border-radius: var(--r-md); padding: var(--s-4); }
-.manual-workflows > a > svg { flex: none; color: var(--muted); }
-.manual-workflows > a > svg:last-child { position: absolute; right: var(--s-4); top: var(--s-4); }
-.manual-workflows > a > span { display: grid; gap: var(--s-1); }
-.manual-workflows strong { font-weight: 500; }
-.manual-workflows span span { color: var(--muted); font-size: var(--t-small); }
-.manual-workflows a:hover { background: var(--hover); border-color: var(--line-strong); }
+/* the workflows: plain rows under hairlines, a chevron at the right */
+.manual-workflows { list-style: none; margin: var(--s-3) 0 0; padding: 0; border-top: 1px solid var(--line); }
+.manual-workflows a { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); min-height: 3rem; border-bottom: 1px solid var(--line); font-weight: 500; }
+.manual-workflows svg { flex: none; width: 1rem; height: 1rem; color: var(--muted); transition: transform var(--t-out) var(--ease); }
+.manual-workflows a:hover { color: var(--action); }
+.manual-workflows a:hover svg { color: currentColor; transform: translateX(2px); }
 .manual--home .manual-prose { margin-top: var(--s-7); }
 
 /* ---------------------------------------------------------------- drawers (phones) */
-.manual-mobile-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--s-5); }
+/* the phone bar (Chapters, On this page) and the command tabs work with script only: without it the
+   rail's tree and the outline stay in the page */
+.manual-mobile-bar { display: none; align-items: center; justify-content: space-between; gap: var(--s-5); }
+html:not(.js) .manual-launch-tabs { display: none; }
 .manual-menu, .manual-sections { display: flex; align-items: center; gap: var(--s-2); min-height: 2.75rem; padding: 0; border: 0; background: none; color: var(--ink); font: inherit; font-size: var(--t-small); cursor: pointer; }
 .manual-sections { color: var(--muted); }
 .manual-menu svg, .manual-sections svg { width: 1rem; height: 1rem; }
 .manual-sections svg { transform: rotate(90deg); }
 .manual-drawer { position: fixed; inset: 0 auto 0 0; width: min(22rem, 88vw); height: 100dvh; max-height: none; max-width: none; margin: 0; padding: 0; border: 0; border-right: 1px solid var(--line); color: var(--ink); background: var(--bg); font-family: var(--font-text); }
 .manual-drawer[open] { display: flex; flex-direction: column; }
-.manual-drawer::backdrop { background: color-mix(in oklab, var(--docs-backdrop) 40%, transparent); backdrop-filter: blur(3px); }
+.manual-drawer::backdrop { background: color-mix(in oklab, var(--render) 40%, transparent); backdrop-filter: blur(3px); }
 .manual-drawer__head { display: flex; align-items: center; justify-content: space-between; padding: var(--s-2) var(--s-4); border-bottom: 1px solid var(--line); font-size: var(--t-small); font-weight: 500; }
 .manual-drawer__body { overflow-y: auto; overscroll-behavior: contain; flex: 1; padding: var(--s-4) var(--s-3); }
-.manual-drawer__body .manual-nav__row > a { padding-block: var(--s-2); }
+/* a finger's targets in the drawer: rows and chevrons 44px; the chevron's mark stays small */
+.manual-drawer__body .manual-nav__row { min-height: 2.75rem; }
+.manual-drawer__body .manual-nav__row > a { display: flex; align-items: center; min-height: 2.75rem; padding-block: var(--s-2); }
+.manual-drawer__body .manual-nav__toggle { width: 2.75rem; height: 2.75rem; margin-right: 0; }
+.manual-drawer__body .manual-nav__group h2 { display: flex; align-items: center; min-height: 2.75rem; margin: 0; }
 .manual-drawer__footer { display: grid; gap: var(--s-2); border-top: 1px solid var(--line); padding: var(--s-3) var(--s-4) max(var(--s-4), env(safe-area-inset-bottom)); font-size: var(--t-small); }
 .manual-drawer__footer a { display: flex; justify-content: space-between; align-items: center; min-height: 2.75rem; }
 .manual-drawer-open { overflow: hidden; }
 .manual-contents { position: fixed; inset: calc(var(--docs-top) + 3.25rem) var(--s-4) auto; width: auto; max-width: none; max-height: 70dvh; padding: 0; margin: 0; border: 1px solid var(--line); border-radius: var(--r-md); color: var(--ink); background: var(--bg); }
 .manual-contents[open] { display: flex; flex-direction: column; }
-.manual-contents::backdrop { background: color-mix(in oklab, var(--docs-backdrop) 30%, transparent); }
+.manual-contents::backdrop { background: color-mix(in oklab, var(--render) 30%, transparent); }
 .manual-contents__list { overflow-y: auto; padding: var(--s-2) var(--s-4); font-size: var(--t-small); }
 .manual-contents__list a { min-height: 2.75rem; display: flex; align-items: center; }
 
@@ -275,21 +293,24 @@
   .docs-header__actions { gap: 0; }
   .manual { display: block; padding-top: var(--docs-top); }
   .manual-nav { position: relative; top: auto; height: auto; padding: 0 var(--s-4); border-right: 0; border-bottom: 1px solid var(--line); overflow: visible; }
-  .manual--mobile-ready .manual-nav { position: sticky; top: var(--docs-top); z-index: 40; background: var(--bg); }
-  .manual--mobile-ready .toc--top { display: none; }
+  /* with script the rail is the sticky bar from the first paint; the tree waits in the drawer */
+  html.js .manual-nav { position: sticky; top: var(--docs-top); z-index: 40; background: var(--bg); }
+  html.js .manual-mobile-bar { display: flex; }
+  html.js .manual-nav__fold, html.js .manual .toc--top { display: none; }
   .manual-nav__tree { max-height: 55dvh; overflow: auto; }
   .manual-drawer__body .manual-nav__tree { max-height: none; overflow: visible; }
   .manual-page { padding: 0 var(--s-4); }
   .manual-body { padding-top: var(--s-5); }
   .manual-head p { font-size: var(--t-manual-body); }
   .manual-actions :is(button, a) { height: 2.75rem; }
-  .manual-cards, .manual-workflows { grid-template-columns: 1fr; }
+  .manual-cards { grid-template-columns: 1fr; }
   .manual-code, .manual-start > h2 { scroll-margin-top: calc(var(--nav) + var(--s-4)); }
   .manual-code__copy, .manual-code__wrap, .manual-code__expand { min-height: 2.75rem; }
   .manual-code--collapsed .manual-code__source { max-height: 18rem; }
   .manual-research-note summary { min-height: 2.75rem; align-content: center; }
   .manual .toc--top > summary { min-height: 2.75rem; display: flex; align-items: center; }
-  .manual-footer > :nth-child(3) { margin-left: 0; }
+  .manual-footer > div { flex-basis: 100%; }
+  .manual-footer a { display: inline-flex; align-items: center; min-height: 2.75rem; }
 }
 @media (max-width: 359px) {
   .manual-code__head [data-copy-label] { display: none; }

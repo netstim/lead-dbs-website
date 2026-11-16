@@ -6,7 +6,9 @@
 // (no picture fetched) until the section comes near the screen. It drifts slowly until it is dragged
 // (mouse: both ways; a finger: sideways, so the page still scrolls), keeps its momentum after a throw,
 // and the arrow keys move it while it has focus. A click that did not drag opens the figure on /gallery/.
-// Under reduced motion it does not drift or glide, but can still be dragged.
+// The drift holds while the pointer or the focus is on the grid; the round button beside it (and a drag
+// or an arrow key) stops it until the button is pressed again. Under reduced motion it does not drift
+// or glide (and the button stays hidden), but can still be dragged.
 (() => {
   const grid = document.querySelector('[data-made-grid]');
   const plane = grid?.querySelector('.made-grid__plane');
@@ -70,7 +72,24 @@
     live.forEach((el, key) => { if (!seen.has(key)) { el.remove(); live.delete(key); pool.push(el); } });
   };
 
-  let raf = 0, last = 0, near = false, built = false, dragging = false, drifting = !still.matches;
+  let raf = 0, last = 0, near = false, built = false, dragging = false, drifting = !still.matches, held = false;
+  const pause = document.querySelector('[data-made-pause]');
+  const icons = {
+    pause: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+    play: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6L12.6 8z" fill="currentColor"/></svg>',
+  };
+  const stop = (on) => {
+    drifting = on;
+    if (!pause) return;
+    pause.innerHTML = on ? icons.pause : icons.play;
+    pause.setAttribute('aria-label', on ? 'Pause the figures' : 'Play the figures');
+  };
+  if (pause && !still.matches) {
+    pause.hidden = false;
+    pause.addEventListener('click', () => { stop(!drifting); kick(); });
+  }
+  const hold = () => { held = grid.matches(':hover, :focus-within'); kick(); };
+  ['pointerenter', 'pointerleave', 'focusin', 'focusout'].forEach((t) => grid.addEventListener(t, () => requestAnimationFrame(hold)));
   const frame = (t) => {
     raf = 0;
     const dt = last ? Math.min(48, t - last) : 16;
@@ -82,11 +101,11 @@
         vx *= k; vy *= k;
       } else {
         vx = vy = 0;
-        if (drifting) { ox -= 0.012 * dt; oy -= 0.007 * dt; }
+        if (drifting && !held) { ox -= 0.012 * dt; oy -= 0.007 * dt; }
       }
     }
     draw();
-    if (near && !document.hidden && (dragging || drifting || vx || vy)) raf = requestAnimationFrame(frame);
+    if (near && !document.hidden && (dragging || (drifting && !held) || vx || vy)) raf = requestAnimationFrame(frame);
     else last = 0;
   };
   const kick = () => { if (built && !raf) raf = requestAnimationFrame(frame); };
@@ -116,7 +135,7 @@
     moved = Math.max(moved, Math.hypot(e.clientX - start.x, start.finger ? 0 : e.clientY - start.y));
     if (!dragging) {
       if (moved < DRAG) return;
-      dragging = true; drifting = false;
+      dragging = true; stop(false);
       grid.classList.add('is-dragging');
       grid.setPointerCapture(e.pointerId);
     }
@@ -137,12 +156,12 @@
     const d = { ArrowLeft: [1, 0], ArrowRight: [-1, 0], ArrowUp: [0, 1], ArrowDown: [0, -1] }[e.key];
     if (!d || !built) return;
     e.preventDefault();
-    drifting = false;
+    stop(false);
     if (still.matches) { ox += d[0] * 160; oy += d[1] * 160; draw(); return; }
     vx = d[0] * 1.1; vy = d[1] * 1.1;
     kick();
   });
-  still.addEventListener('change', () => { if (still.matches) { drifting = false; vx = vy = 0; } });
+  still.addEventListener('change', () => { if (still.matches) { stop(false); vx = vy = 0; if (pause) pause.hidden = true; } });
   let resized = 0;
   addEventListener('resize', () => {
     if (!built) return;
@@ -196,11 +215,12 @@
 })();
 
 // ------------------------------------------------------------------ the home page's hero: its entrance
-// The page head sets html.hero-wait, which keeps the hero's words hidden and its clip a little larger
-// (assets/css/site.css). Here the title's words rise line by line out of their own lines, then the lead,
-// the buttons, the proof line and the facts fade up one after another while the clip settles. The hero simply shows under
-// reduced motion and when the page opens scrolled past it; if this runs late (html.hero-late, set 700ms
-// after the head), the style sheet has already faded it in.
+// The page head sets html.hero-wait, which keeps the hero's title hidden and its clip a little larger
+// (assets/css/site.css); the lead and the buttons stand from the first paint, so the main action never
+// looks unavailable. Here the title's words rise out of their own lines (under 400ms, line after line)
+// while the clip settles. The hero simply shows under reduced motion and when the page opens scrolled
+// past it; if this runs late (html.hero-late, set 700ms after the head), the style sheet has already
+// faded the title in.
 (() => {
   const hero = document.querySelector('.home-hero');
   const h1 = hero?.querySelector('h1');
@@ -213,7 +233,7 @@
   };
   if (!h1 || !root.classList.contains('hero-wait') || matchMedia('(prefers-reduced-motion: reduce)').matches
     || hero.getBoundingClientRect().bottom < 0) { shown(true); return; }
-  if (root.classList.contains('hero-late')) { setTimeout(shown, 1150); return; }
+  if (root.classList.contains('hero-late')) { setTimeout(shown, 400); return; }
 
   const ease = 'cubic-bezier(.22, 1, .36, 1)';
   const anims = [];
@@ -263,22 +283,17 @@
   const fontsIn = Promise.race([document.fonts ? document.fonts.ready : Promise.resolve(), new Promise((r) => setTimeout(r, 250))]);
   fontsIn.then(() => {
     if (over) return;
-    if (root.classList.contains('hero-late')) { over = true; setTimeout(shown, 1150); return; }
+    if (root.classList.contains('hero-late')) { over = true; setTimeout(shown, 400); return; }
     words = splitWords();
     hero.classList.add('is-entering');
     const { lines } = words;
-    const step = Math.min(80, 240 / Math.max(1, lines.length - 1));
+    const step = Math.min(50, 100 / Math.max(1, lines.length - 1));
     lines.forEach((line, i) => line.forEach((w) => anims.push(w.animate(
       [{ transform: 'translateY(calc(100% + .2em))' }, { transform: 'none' }],
-      { duration: 700, delay: 80 + i * step, easing: ease, fill: 'both' }))));
-    const after = 80 + (lines.length - 1) * step + 220;
-    const rest = [hero.querySelector('.hero__chip'), hero.querySelector('.home-chip'), hero.querySelector('.hero__lead'), ...hero.querySelectorAll('.btn-row > *'), hero.querySelector('.hero__proof'), hero.querySelector('.home-hero__facts')];
-    rest.filter(Boolean).forEach((el, k) => anims.push(el.animate(
-      [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }],
-      { duration: 520, delay: after + Math.min(k, 6) * 60, easing: ease, fill: 'both' })));
-    Promise.all([...anims.map((a) => a.finished), new Promise((r) => setTimeout(r, 1150))]).then(finish, finish);
+      { duration: 380, delay: i * step, easing: ease, fill: 'both' }))));
+    Promise.all(anims.map((a) => a.finished)).then(finish, finish);
   }).catch(finish);
-  setTimeout(finish, 2400);
+  setTimeout(finish, 1200);
 })();
 
 // ------------------------------------------------------------------ the home page's render clip

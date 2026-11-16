@@ -1,17 +1,16 @@
-{{- /* The render behind an inner page's title: black ground like the home page's hero, on the right. Each
-       group of the main menu has its own scene, chosen by the group the page belongs to (partial
-       nav-place.html, the same place the breadcrumb shows), not by its folder, and no scene is used by two
-       groups. Every scene fills the band the way the Download page's cohort does: a render whose subject
-       spans its frame, or a render cut to its subject (crop: the rectangle x0, y0, x1, y1 in the file's
-       pixels); focus is the object-position kept in the band, chosen so the band never cuts the subject
-       where it matters (an electrode keeps its tip and contacts; it may leave through the top edge, as it
-       enters the brain from above). fit "contain" shows the whole render at the band's height on the
-       right, for a subject that a wide band would cut (the fibre bundles of About). The key is the group's menu identifier, or
-       its name where it has none. Pages of no group and the pages one visits for a task rather than to
-       read (News, Contact, Search, the legal pages, 404) get no render: their head is a lower, text-only
-       band (assets/css/site.css, "inner pages: the head"). Decorative (alt=""); WebP copies made by Hugo,
-       640, 1200 and 1800 px wide: the band is up to 1100 px wide, so a crop is at least 1800 px wide to
-       stay sharp on a retina screen. */ -}}
+{{- /* The render of an inner page's head: the scene of the menu group the page belongs to (partial
+       nav-place.html, the place the breadcrumb shows), not of its folder; no scene is used by two groups.
+       Which pages carry one: the pages one comes to look around (page types hub and showcase, First steps,
+       Download); a doc, event or task page opens with its title and its task instead. Front matter
+       headRender: true or false overrides that for one page.
+       Each scene fills its band: a render whose subject spans its frame, or a render cut to its subject
+       (crop: the rectangle x0, y0, x1, y1 in the file's pixels); focus is the object-position kept in the
+       band (an electrode keeps its tip and contacts); fit "contain" shows the whole render at the band's
+       height, for a subject a wide band would cut (the fibre bundles of About). The key is the group's
+       menu identifier, or its name where it has none. Decorative (alt=""); WebP copies 640, 1200 and
+       1800 px wide. The one picture at the top of the page, so it is fetched first (fetchpriority). */ -}}
+{{- $on := in (slice "hub" "showcase" "first-steps" "download") (.Layout | default "doc") -}}
+{{- if isset .Params "headrender" }}{{ $on = .Params.headRender }}{{ end -}}
 {{- $scenes := dict
     "features"  (dict "file" "head-features.jpg" "crop" (slice 1300 240 3100 1440) "focus" "50% 38%")
     "docs"      (dict "file" "lead-closeup.jpg" "crop" (slice 0 640 2200 1330) "focus" "50% 100%")
@@ -23,7 +22,7 @@
 {{- $group := (partial "nav-place.html" .).group -}}
 {{- $scene := "" -}}
 {{- with $group }}{{ $scene = index $scenes (.Identifier | default .Name) }}{{ end -}}
-{{- if or (eq .Kind "404") (in (slice "/contact" "/search") .Path) }}{{ $scene = "" }}{{ end -}}
+{{- if or (not $on) (eq .Kind "404") }}{{ $scene = "" }}{{ end -}}
 {{- with $scene -}}
 {{- with resources.Get (printf "images/renders/%s" $scene.file) -}}
 {{- $img := . -}}
@@ -33,7 +32,7 @@
 {{- $s := $img.Resize "640x webp q70" }}{{ $m := $img.Resize (printf "%dx webp q70" (math.Min $img.Width 1200 | int)) -}}
 {{- $set := printf "%s 640w, %s %dw" $s.RelPermalink $m.RelPermalink $m.Width -}}
 {{- if ge $img.Width 1800 }}{{ $l := $img.Resize "1800x webp q66" }}{{ $set = printf "%s, %s 1800w" $set $l.RelPermalink }}{{ end -}}
-<img class="page-head__render" src="{{ $s.RelPermalink }}" srcset="{{ $set }}" sizes="(min-width: 1360px) 1280px, 100vw" width="{{ $m.Width }}" height="{{ $m.Height }}" style="--focus: {{ $scene.focus }}{{ with $scene.fit }}; --fit: {{ . }}{{ end }}" alt="" decoding="async">
+<img class="page-head__render" src="{{ $s.RelPermalink }}" srcset="{{ $set }}" sizes="(min-width: 1360px) 1280px, 100vw" width="{{ $m.Width }}" height="{{ $m.Height }}" style="--focus: {{ $scene.focus }}{{ with $scene.fit }}; --fit: {{ . }}{{ end }}" alt="" fetchpriority="high" decoding="async">
 {{- else -}}
 {{- errorf "page-head-render: no file images/renders/%s" $scene.file -}}
 {{- end -}}

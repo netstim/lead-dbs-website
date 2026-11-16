@@ -6,20 +6,24 @@ How the menu, search, metadata and old addresses work. Start with the [README](.
 
 ## Site structure
 
-The main menu is grouped by what visitors come for and lists every page of its groups; the footer does not repeat it. The footer carries only what the menu lacks, so it stays short: the logo, four columns (Lead-DBS: download, "Release history" → `/download/#releases`, Cite Lead-DBS, source code, bug reports; Help: first steps, the manual, the user Slack, contact; Stay in touch: events, the newsletter, the news, its feed, Bluesky; Institute: the lab's sites), then one legal line with the research-use statement, and the legal pages (`layouts/_partials/footer.html`). The site's source ("Edit this site") is this repository, linked from the README, not the footer.
+The main menu is grouped by what visitors come for and lists every page of its groups; the footer does not repeat it. The footer is short: the logo and four links (Contact, the source code on GitHub, News and its RSS feed), then one legal line with the institute (linked to its site, the first link of `data/links.yaml` `footer`), the research-use statement and the legal pages (`layouts/_partials/footer.html`). The site's source ("Edit this site") is this repository, linked from the README, not the footer.
 
 | Menu | Page | Holds |
 |---|---|---|
 | Methods | `/helpsupport/knowledge-base/lead-dbs-methods/` ("Methods": what Lead-DBS does in four numbered chapters, listed 01–04 beside the intro (`{{< jumps >}}`): "Single patients" `#single-patients`, "Groups of patients" `#groups-of-patients`, "In the operating theatre" `#operating-theatre` and "Tools and modules" `#tools`. Each chapter (`{{% chapter %}}`) has a short heading and a one-line lede, then its capabilities as cards (`{{< capabilities >}}`), each with its name, a picture, its manual chapter and papers: renders three to a row, figures from papers two, each opening at full size; a chapter's last figure, and Lead-OR, is a wide row; the tools a table (Lead Group, Lead Connectome, OSS-DBS, Lead Tutor). The renders are credited once, at the end; figures from papers carry their licence under the text; full width, no sidebar) | The page's chapters: the anchors Single patients and Groups of patients, Lead-OR (the page `/about/lead-or/`, the one tool of chapter 03 "In the operating theatre"; the anchor `#operating-theatre` stays on Features) and the anchor Tools and modules; the anchors are listed in the header's panel only, not in the sidebar of the articles (`params.panelOnly`). Under the caption "In depth", the articles: DBS network mapping, subcortical electrophysiology mapping, AC/PC to MNI conversion (with the former article "DBS targets in MNI space" as its background section); then, after a line, Made with Lead-DBS (`/gallery/`). Each article has the same sections: what it does (with a figure), how to use it, what to cite; longer material is folded. The overview is the word "Features" itself, as every group's hub is its word; the tools are its chapter 04 (`#tools`), and the former "Lead tools" page `/about/tools/` forwards there |
 | Docs and help | `/helpsupport/` | First steps (step 1 links to the install steps on the download page), the manual (`/manual/`; on a phone a first-level word of the menu instead), Practice dataset (Lead Tutor) (the dataset's reference page; the exercise itself is step 2 of First steps), walkthrough videos (current recordings first, then "Older recordings"), get help (`/helpsupport/#get-help`, the one list of where to ask; the contact page sits under it) |
 | Atlases and data | `/helpsupport/knowledge-base/atlasesresources/` | Three catalogues built alike (subcortical atlases with the macaque atlas, DISTAL and FOCUS; cortical parcellations; normative connectomes), then under the caption "By the Lead-DBS team" in the menu the two atlases by the Lead-DBS team, DISTAL and FOCUS (both with What it is, How to get it `#download`, What to cite and How it was built; DISTAL has the newer layout); "Choosing and using an atlas or connectome" (`#choosing` on the hub); under the caption "Background", the article "About the MNI spaces" (`/about-the-mni-spaces/`) |
-| Community | `/community/` | Events (with a page for each upcoming event that needs one, both with a summary box (when, where, hosted by, registration): the developer meeting `/events/developer-meeting/` (who it is for, how to register, the flyer), the Hands-on Lead-DBS Workshop 2027 `/events/hands-on-workshop-2027/` (its "Get notified" button leads straight to the newsletter form, `/subscribe-to-our-newsletter/#subscribe`), the one place where the workshop's details grow; its news post only points there; and the past workshops), user Slack, Contribute (`/develop/`: code, atlases and datasets, bug reports; `/about/data-code-inclusion-philosophy/` forwards to its section `#add-your-atlas-or-dataset`), newsletter (with links to recent issues) |
+| Community | `/community/` | Events (with a page for each upcoming event that needs one, both with a summary box (when, where, hosted by, registration): the developer meeting `/events/developer-meeting/` (who it is for, how to register, the flyer), the Hands-on Lead-DBS Workshop 2027 `/events/hands-on-workshop-2027/` (while registration is closed its button is the site's one way to follow updates, `layouts/_partials/updates.html`: "Join Slack for updates" until the newsletter's form is live, then "Subscribe for updates"), the one place where the workshop's details grow; its news post only points there; and the past workshops), user Slack, Contribute (`/develop/`: code, atlases and datasets, bug reports; `/about/data-code-inclusion-philosophy/` forwards to its section `#add-your-atlas-or-dataset`), newsletter (with links to recent issues) |
 | News | `/news/` | Releases and announcements (each post at `/<slug>/`); posts more than three calendar years older than the newest are listed under "Archive"; the RSS feed `/news/index.xml` |
 | About | `/about/` (a paragraph, cards for its pages, then deep brain stimulation, and history with recognition and funding; the history links the 2017 essay "Commercial vs. academic software", which keeps its address `/commercial-vs-academic-software/`, is kept for the record and is left out of the site search) | Cite Lead-DBS, publications (every paper of `data/papers.yaml`, the library of studies that used Lead-DBS, cover art, what other researchers write), contributors (who coordinates Lead-DBS today and who built it), dependencies (the software Lead-DBS builds on, OSS-DBS among them, with what to cite) |
 | Download | `/download/` (the header's button) | The current release, requirements and the install steps (`#install`, the only place they are written), standalone builds, licence (one line; the full terms with the research-use statement `#research-use` folded), release history (folded; versions before 3.0 folded again inside) |
 
-The footer's legal line lists Imprint and Privacy Policy (`[menus.footer]`); Contact is in its Help column. The two legal pages end with
-"Next" cards to each other, Contact and About like every other page.
+The footer's legal line lists Imprint and Privacy Policy (`[menus.footer]`); Contact is among its links.
+
+**One group of links ends a page.** A page with front matter `next` ends with that "Related" list (at most
+three); a page without it ends with "More in …", the other pages of its menu group
+(`layouts/_partials/content-page.html`, `section-nav.html`); a hub ends with neither, its body is the list. An
+event page without `next` ends with All events and the other upcoming events.
 
 **The menu is the ordinary site pages' hierarchy.** The manual uses its own chapter tree in `data/manual.json`; see [manual.md](manual.md). Addresses stay those of the old site, so the folders in
 `content/` follow the old addresses, not the menu (the atlases live under
@@ -36,7 +40,9 @@ title (the h1) and its browser title are the same words ("Contributors", "DISTAL
 page, change all of them; the address stays.
 
 **Hub pages** (Docs and help, Atlases and data, Community, About) list the pages of their menu group, in
-menu order, with the entry's `params.card` line from `hugo.toml`. Docs, Atlases and About are of the type
+menu order, with the entry's `params.card` line from `hugo.toml`. The header's band shows that line too,
+unless the entry has `params.bandLine = false` (a name that explains itself: Contact, Events, Newsletter,
+the About pages); the hub keeps it. Docs, Atlases and About are of the type
 `hub` (full width, no sidebar) and place the list with a shortcode: Docs with `hub-section` and `link-rows`,
 Atlases with `atlas-hub` (picture tiles with counts), About with `resource-index`; Community has its own
 template (`layouts/community.html`). A page's `description` is the text search engines show; keep it to 155
@@ -73,17 +79,26 @@ forum's addresses it says that the forum has closed.
 
 ## Metadata
 
-`layouts/_partials/head.html` writes the title, description, canonical address, Open Graph tags and the
-news feed link. The share picture is the page's `share:` (a file next to the page, or a path under `assets/`
-such as `images/renders/cohort-top.jpg`), else a news post's teaser (`image:`), else `assets/images/share.jpg`.
+`layouts/_partials/head.html` writes the title, description, canonical address, Open Graph and Twitter tags,
+the news feed link, the web manifest (`static/site.webmanifest`: name, icons 192 and 512 px, `display:
+browser`; no service worker) and the theme colour of the browser's chrome (the page's ground; the head script
+and `assets/js/main/theme.js` follow the reader's theme toggle). The share picture
+(`layouts/_partials/share-image.html`) is always 1200 × 630 with its width, height and alt in the tags: the page's
+`share:` (a file next to the page, or a path under `assets/` such as `images/renders/cohort-top.jpg`), else a news
+post's teaser (`image:`), else, on a manual page, a card made at build time (its title, its chapter group, the
+logo, in Inter: `assets/fonts/inter-share-*.ttf`, static instances of the site's Inter for Hugo's `images.Text`),
+else `assets/images/share.jpg`. A wide picture is cut to 1200 × 630 around its centre; a taller one (a flyer, a
+square figure) stands whole on the right of that card. Its alt is front matter `shareAlt`, else a flyer's alt,
+else the page's title.
 A page without a `description` gets the start of its text, cut at 155 characters. The news list's later pages
 (`/news/page/2/`), the closed forum's page and the 2017 essay are `noindex` and not in the sitemap (a page with
 `search: false` also needs `sitemap: {disable: true}`; `check-site.py` stops on a noindex page in the sitemap); `static/favicon.ico` is
 there for browsers that ask for it. `head-jsonld.html` adds structured data:
-the software (`SoftwareApplication`) on the home and download pages, the upcoming events (`Event`) on
-`/events/` and each on its own page (the page its entry in `data/events.yaml` links to; only the facts of that
-entry), `NewsArticle` on every post, and on every inner page a `BreadcrumbList` from the same trail as the
-visible breadcrumb (`layouts/_partials/crumbs.html`). A later page of the news list is its own canonical address. A page's last-modified date (sitemap, `dateModified`) is its
+the software (`SoftwareApplication`) and its repository (`SoftwareSourceCode`, its `targetProduct`) on the
+home and download pages, each upcoming event (`Event`) on its own page (the page its entry in `data/events.yaml`
+links to; only the facts of that entry; an online meeting's location has no address, as the site never shows a
+join link) and on `/events/` a list of those pages (`ItemList`), `NewsArticle` on every post, and on every inner page a `BreadcrumbList` from the same trail as the
+visible breadcrumb (`layouts/_partials/crumbs.html`). The publisher, the software and each event have one stable `@id` (`https://www.lead-dbs.org/#organization`, `#software`, an event page's address `#event`), so every block names the same things. A later page of the news list is its own canonical address. A page's last-modified date (sitemap, `dateModified`) is its
 front matter `lastmod`, else the date of the last commit that changed its file (`enableGitInfo`; the Pages
 workflow checks out the full history), never the build day. A page has one name: its `title` is its h1, its browser
 title and, for a page in the menu, the menu entry's `name` and its `linkTitle` (breadcrumb, closing cards, footer). The browser

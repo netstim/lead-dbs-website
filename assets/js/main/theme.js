@@ -9,7 +9,11 @@
     const words = root.dataset.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
     buttons.forEach((b) => { b.setAttribute('aria-label', words); b.title = words; });
   };
-  const set = (t) => { root.dataset.theme = t; label(); };
+  // the browser's chrome (theme-color, head.html) takes the ground of the theme in use
+  const chrome = () => document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {
+    m.content = root.dataset.theme === 'dark' ? '#161819' : '#ffffff';
+  });
+  const set = (t) => { root.dataset.theme = t; label(); chrome(); };
   buttons.forEach((b) => b.addEventListener('click', () => {
     const t = root.dataset.theme === 'dark' ? 'light' : 'dark';
     try { localStorage.setItem('theme', t); } catch (e) { /* private mode: the choice lasts this page */ }
@@ -21,4 +25,5 @@
     if (!saved) set(e.matches ? 'dark' : 'light');
   });
   label();
+  chrome();
 })();

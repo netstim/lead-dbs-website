@@ -2,7 +2,7 @@
    layouts/home.html. Loaded after assets/css/phone.css (the shared phone chrome), so these rules win over
    it at equal specificity. Nothing here applies from 640px up.
    One idea per screen, after vercel.com and x.ai on a phone: big calm headings (32/36), 96px above each
-   section's heading, pictures at full width, black bands from edge to edge with one soft light, rows that
+   section's heading, pictures at full width, black bands from edge to edge, rows that
    scroll sideways with snap instead of grids, text links (a word and a small muted arrow) instead of
    pills inside a section, full-width pills only where a block closes. */
 @media (max-width: 639px) {
@@ -26,7 +26,7 @@
   /* -------------------------------------------------------------- 1. hero
      one black band from the window's top (the header turns black over it: .home-hero__ground), the words
      centred: the release chip, the title, the lead, two stacked pills; under them the render, its electrode
-     and nucleus in the middle of a 380px box, one soft light behind it, fading into the black at its foot.
+     and nucleus in the middle of a 380px box, fading into the black at its foot (no light is added).
      The facts line is not shown; the play button sits at the render's lower right. */
   .home > .home-hero { position: relative; background: var(--render); }
   .home-hero__ground { position: absolute; inset: 0; pointer-events: none; }
@@ -53,8 +53,7 @@
   .home-chip__go { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: color-mix(in srgb, var(--on-render) 10%, transparent); }
   .home-chip__go .m-arrow { width: 10px; height: 10px; margin: 0; }
 
-  .home-hero__media { position: relative; height: 380px; aspect-ratio: auto; margin-top: var(--s-2); overflow: hidden;
-    background: radial-gradient(50% 44% at 50% 52%, color-mix(in srgb, var(--on-render) 9%, transparent), transparent); }
+  .home-hero__media { position: relative; height: 380px; aspect-ratio: auto; margin-top: var(--s-2); overflow: hidden; }
   /* the poster (16:10) and the phone clip (square) framed alike: a square box, the poster's part from
      canvas x 520 to 1520 (object-position), its electrode and nucleus moved into the box's middle */
   .home-hero__media > video { inset: 0 auto auto 50%; width: 140%; height: auto; aspect-ratio: 1; translate: -64% 0;
@@ -64,10 +63,6 @@
   .hero__proof { display: none; }
   .hero__pause { position: static; width: 40px; height: 40px; border-color: color-mix(in srgb, var(--on-render) 15%, transparent);
     background: color-mix(in srgb, var(--render) 40%, transparent); }
-  @media (prefers-reduced-motion: no-preference) {
-    html.hero-wait:not(.hero-late) .home-hero:not(.is-entering, .is-entered) .home-chip { opacity: 0; }
-    html.hero-late .home-hero:not(.is-entering, .is-entered) .home-chip { transition: opacity 400ms var(--ease); }
-  }
 
   /* -------------------------------------------------------------- 2. localization
      the heading, the picture (5:4), the text as a statement (its first words in ink), the steps as a plain
@@ -121,10 +116,9 @@
 
   /* -------------------------------------------------------------- 4. one black stretch
      the voices: cards in one row that scrolls sideways with snap, each quote once, standing still; the
-     wide render is not shown, one soft light at the band's top. A hairline, then the figures from papers in
+     wide render is not shown. A hairline, then the figures from papers in
      one row at one height, their journal and year under each, and an outline pill to the gallery. */
-  .home > .render-band { padding-block: var(--s-9) 0;
-    background: radial-gradient(70% 252px at 50% 0, color-mix(in srgb, var(--on-render) 7%, transparent), transparent), var(--render); }
+  .home > .render-band { padding-block: var(--s-9) 0; background: var(--render); }
   .render-band__img, .render-band__actions { display: none; }
   .drift { display: flex; gap: var(--s-3); margin-top: var(--s-6); padding: 0 var(--gut); overflow-x: auto; overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory; scroll-padding-inline: var(--gut); scrollbar-width: none; -webkit-mask-image: none; mask-image: none; }
@@ -151,7 +145,6 @@
   /* the grid of figures 360px tall; a finger drags it sideways and the page still scrolls up and down
      through it; the fan under it, smaller (Fable's phone deck) */
   .made { gap: var(--s-5); --made-h: 360px; }
-  .made-grid { touch-action: pan-y; }
   .made-fan { height: 300px; }
   .made-fan__card { --spread: 5.5deg; --w: 124px; bottom: 66px; transform-origin: 50% 240%; --lift: -40px; }
   .made-fan__card.is-top { --lift: -16px; }
@@ -179,7 +172,8 @@
   .next-band__points { gap: 0; }
   .next-band__point { padding-block: var(--s-3); border-top-color: color-mix(in srgb, var(--ink) 10%, transparent); }
   .home .next-band__point h3 { margin: 0; font: 500 var(--t-doc)/1.42 var(--font-text); letter-spacing: 0; }
-  .next-band__point p { max-width: none; color: color-mix(in srgb, var(--ink) 60%, transparent); font: 400 var(--t-small)/1.43 var(--font-text); }
+  /* 72% of the ink on the tint: 4.8:1 light, 5.3:1 dark (WCAG 1.4.3 at 14px) */
+  .next-band__point p { max-width: none; color: color-mix(in oklab, var(--ink) 72%, transparent); font: 400 var(--t-small)/1.43 var(--font-text); }
   .next-band__point:has(> .link) { padding-bottom: 0; }
   .next-band__point:has(> .link) p { padding-bottom: var(--s-3); }
   .home .next-band__point .link { display: flex; width: 100%; border-top: 1px solid color-mix(in srgb, var(--ink) 10%, transparent); }

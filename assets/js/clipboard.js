@@ -1,8 +1,9 @@
-// Shared clipboard behavior. data-copy names an element ID; data-copy-text holds a literal command.
+// Shared clipboard behavior. data-copy names an element ID; data-copy-text holds a literal command;
+// data-copy-url copies the page's address (with the section it is at).
 // Read the target on each click so citation tabs can change it. Buttons stay hidden without the API.
 (() => {
   if (!navigator.clipboard?.writeText) return;
-  document.querySelectorAll('[data-copy], [data-copy-text]').forEach((button) => {
+  document.querySelectorAll('[data-copy], [data-copy-text], [data-copy-url]').forEach((button) => {
     const label = button.querySelector('[data-copy-label]') || [...button.childNodes].find((node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
     const original = label?.textContent;
     let status = button.parentElement.querySelector('[data-copy-status]');
@@ -20,8 +21,8 @@
       status.textContent = '';
       try {
         const target = document.getElementById(button.dataset.copy);
-        const text = button.hasAttribute('data-copy-text')
-          ? button.dataset.copyText
+        const text = button.hasAttribute('data-copy-url') ? location.href
+          : button.hasAttribute('data-copy-text') ? button.dataset.copyText
           : (target?.hasAttribute('data-copy-verbatim') ? target.textContent : target?.innerText)?.trim();
         if (text == null) throw new Error('Missing copy target');
         await navigator.clipboard.writeText(text);
