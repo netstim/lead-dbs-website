@@ -25,7 +25,11 @@ history:
   - {year: 2025, title: "The lab becomes the Institute for Network Stimulation", text: "University Hospital Cologne"}
 layout: "hub"
 ---
+<div class="page-intro"><div class="page-intro__text">
+
 Lead-DBS is a free, open-source MATLAB toolbox for deep brain stimulation (DBS) imaging.
+
+</div></div>
 
 {{< resource-index menu="about" >}}
 

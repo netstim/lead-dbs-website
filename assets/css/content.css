@@ -547,3 +547,6 @@ html .prose .cells a { color: var(--ink); text-decoration-color: var(--line-stro
 }
 
 .prose.page-opening .page-intro { margin: 0; }
+
+.atlas-index { margin-bottom: var(--s-4); }
+.prose .atlas-filter__count:empty { min-height: 0; }
