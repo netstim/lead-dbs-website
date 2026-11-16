@@ -11,14 +11,17 @@ This is a local copy, not a live synchronization with GitBook.
 - Images are shared Hugo resources in `assets/manual/`. Markdown references them as
   `![Description](manual/filename.png "Optional caption")`; the existing image hook
   makes responsive versions and links large images to their originals. Tall screenshots are displayed at no more than 512px high; their source files remain unchanged. Small toolbar icons use the `manual-toolbar-icon` shortcode with the source display width.
-- `data/manual.json` supplies the ordered reading sequence (`pages`) and the expandable
-  sidebar (`groups[].chapters`, with nested `children`). Optional `label` values shorten sidebar wording without changing chapter titles. Update both when adding or moving
-  chapters. Previous/next links derive directly from `pages`; chapter front matter does not duplicate the reading order.
-- The `manual` layout is a deliberate exception to ordinary pages' single right sidebar.
-  It has chapter navigation on the left and a local outline on the right; below 1200px
-  the outline moves below the page summary, and below 768px chapters open in a modal drawer.
-- GitBook hints use `{{% manual-note "info" %}}` or `"warning"`, closed by
-  `{{% /manual-note %}}`. Existing expandable explanations remain native HTML details.
+- `data/manual.json` is the only place that orders the manual: groups, and in each group the chapters
+  with their nested `children`. The sidebar, the previous/next links (the sidebar read top to bottom) and
+  each section's overview cards all come from it. A chapter's sidebar label is its `linkTitle`; its page
+  heading is `title`. Keep sidebar labels unique.
+- A group whose folder has an `_index.md` (`/manual/lead-dbs/` and the others) gets an overview page of
+  cards built from the sidebar; its body is not shown. A chapter with sub-pages lists them under
+  "In this section" at its end.
+- In the sidebar, a chapter with sub-pages has a link and a separate chevron. Only the branch holding the
+  current page starts open; the chevron opens others without leaving the page.
+- Notes use `{{% manual-note "info" %}}` or `"warning"`, closed by `{{% /manual-note %}}`. They
+  carry an icon and no "Note" heading, so do not start them with "Note that". Existing expandable explanations remain native HTML details.
 - `source_url` preserves provenance and links to the original chapter. The edit link
   goes to this repository. Published scientific terminology and GUI labels retain their
   original spelling, so the house-spelling copy rule excludes manual pages. Other copy,
@@ -29,23 +32,18 @@ full text, not just its opening paragraphs. It requires no new runtime or build 
 
 ## Visual system
 
-The documentation uses self-hosted **Geist** (Fontsource variable package 5.3.0, SIL OFL;
-`static/fonts/OFL-geist.txt`). The main website continues to use Inter. Geist Mono is
-used for code. Only manual pages override the font and neutral surface/ink tokens.
-The Lead-DBS logo and blue action colour are retained.
+The documentation follows vercel.com/docs: one 64px header row (brand, Tutorials, Community, GitHub,
+search, theme, Download), a chapter rail fixed to the window's left edge with a hairline border, and the
+article (at most 736px) with its outline centred in the remaining width. No breakpoint moves the rail, so
+nothing jumps between long and short pages. Below 1280px the outline moves above the article; below
+1024px the resource links hide; below 768px the chapters open in a modal drawer.
 
-The reference pages were inspected in a browser at 1280 × 800. xAI's article used its
-`xVf` font, a 48px / 450 heading, 14px body text with 24px leading, and a reading column
-starting at x=328. Vercel used Geist, 14px navigation, and 16px article text. The manual
-combines Geist with a lighter 48px / 450 chapter heading, 15px body text, a single 72px
-header and an open three-column layout. At that viewport the reading column starts
-at x=328 and is 688px wide before any native scrollbar gutter. These are intentional choices between the references,
-not a claim that the pages are identical.
+It uses self-hosted **Geist** (Fontsource variable package 5.3.0, SIL OFL; `static/fonts/OFL-geist.txt`)
+with Geist Mono for code; the main website keeps Inter. Body text is 16px, headings are semibold, and
+the sidebar is 14px. Top-level ordered lists are procedures, drawn as numbered steps joined by a line.
 
-`assets/css/manual.css` owns the layout. Size tokens live in `base.css`; font faces and
-palette tokens live in `site.css`. The docs font preload is conditional in `head.html`.
-Keep the header to one row; resource links hide below 1024px, the local outline moves
-above the article below 1200px, and chapters open in a modal drawer below 768px. On wide displays, the chapter rail stays 24px from the viewport edge and the header spans the viewport; the article retains its bounded reading width. The root and chapter rail reserve scrollbar space, and navigation preserves the rail scroll position instead of recentering visible chapters.
+`assets/css/manual.css` owns the layout, in one pass from tokens to phones. Size tokens live in
+`base.css`; font faces and palette tokens live in `site.css`.
 
 ## Article components
 
@@ -108,7 +106,7 @@ Docs interaction tests live in `.github/scripts/check-browser.mjs`; there is no 
 `check-interactions` command. Its normal run checks every page at desktop and phone sizes
 in both themes, then exercises quick-start command tabs and keyboard selection, search result counts, code expansion, wrapping and complete copying, narrow-screen
 copy feedback, chapter-drawer focus and dismissal, sticky page navigation, and search.
-It also checks long-to-short page transitions at 1280, 1440, 1920 and 3000px with visible scrollbars, asserting stable header, chapter-rail and article geometry and retained rail scroll position. Headless Chromium normally hides scrollbars, so this check explicitly enables them.
+It also checks that a chapter's chevron opens its pages without navigating, that previous/next follow the sidebar, and long-to-short page transitions at 1280, 1440, 1920 and 3000px with visible scrollbars, asserting stable header, chapter-rail and article geometry and retained rail scroll position. Headless Chromium normally hides scrollbars, so this check explicitly enables them.
 Run it with the production build as documented in the script header.
 
 The introduction keeps a concise research-use restriction above the first action, with

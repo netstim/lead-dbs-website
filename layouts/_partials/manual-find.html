@@ -1,0 +1,12 @@
+{{- /* The sidebar entry for a page (with its children), or false. */ -}}
+{{- $found := false -}}
+{{- range .entries -}}
+  {{- if not $found -}}
+    {{- if eq (site.GetPage .page) $.page -}}
+      {{- $found = . -}}
+    {{- else if .children -}}
+      {{- $found = partial "manual-find.html" (dict "entries" .children "page" $.page) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $found -}}

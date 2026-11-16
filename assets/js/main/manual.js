@@ -40,6 +40,14 @@
       sessionStorage.setItem(navigationKey, JSON.stringify({ path: target.pathname, scrollTop: box.scrollTop }));
     } catch { /* Storage is optional. */ }
   });
+  // A chapter with sub-pages: the link opens the chapter, the chevron beside it shows or hides its pages.
+  tree.querySelectorAll('.manual-nav__toggle').forEach((toggle) => {
+    toggle.hidden = false;
+    toggle.addEventListener('click', () => {
+      const open = toggle.closest('.manual-nav__branch').classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+  });
   const close = () => pairs.forEach(([dialog]) => { if (dialog.open) dialog.close(); });
   pairs.forEach(([dialog, button]) => {
     dialog.addEventListener('close', () => {
@@ -77,7 +85,6 @@
     bar.hidden = !mobile.matches;
     pairs.forEach(([, button]) => { button.hidden = !mobile.matches; });
     fold.hidden = mobile.matches;
-    fold.open = true;
     (mobile.matches ? body : fold).append(tree);
     if (!mobile.matches) {
       if (previousNavigation?.path === location.pathname && Number.isFinite(previousNavigation.scrollTop)) rail.scrollTop = previousNavigation.scrollTop;

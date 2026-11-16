@@ -6,5 +6,5 @@
 <details class="toc toc--top"><summary>On this page</summary><nav aria-label="On this page">
 {{ end }}
 <ol>{{ range $items }}<li{{ if eq .Level 3 }} class="manual-toc__sub"{{ end }}><a href="#{{ .ID }}">{{ .Title | plainify | htmlUnescape }}</a></li>{{ end }}</ol>
-{{ if eq .variant "side" }}<a class="toc__top" href="#top">Back to the top</a></nav>{{ else }}</nav></details>{{ end }}
+{{ if eq .variant "side" }}</nav>{{ else }}</nav></details>{{ end }}
 {{ end }}

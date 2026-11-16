@@ -1,0 +1,8 @@
+{{- /* The reading order: every chapter of data/manual.json, depth first, in sidebar order.
+   Previous/next links follow it, so they can never disagree with the sidebar. */ -}}
+{{- $out := slice -}}
+{{- range . -}}
+  {{- $out = $out | append .page -}}
+  {{- with .children }}{{ $out = $out | append (partial "manual-order.html" .) }}{{ end -}}
+{{- end -}}
+{{- return $out -}}

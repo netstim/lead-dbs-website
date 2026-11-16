@@ -221,6 +221,16 @@ async function checkManualInteractions() {
     await page.goto(manual);
     const next = await page.locator('.manual-pagination__next').getAttribute('href');
     require(next && new URL(next, manual).href !== manual, 'Introduction next link points to itself');
+    // A chapter's chevron shows its pages without leaving the page; its link still opens the chapter.
+    const branchLink = await page.locator('.manual-nav__branch:not(.is-open) > .manual-nav__row > a').first().getAttribute('href');
+    const branchSel = `.manual-nav__branch:has(> .manual-nav__row > a[href="${branchLink}"])`;
+    const toggle = page.locator(`${branchSel} > .manual-nav__row > .manual-nav__toggle`);
+    await toggle.click();
+    require(page.url() === manual, 'The chapter toggle navigated away');
+    require(await toggle.getAttribute('aria-expanded') === 'true' && await page.locator(`${branchSel} > ul`).isVisible(), 'The chapter toggle did not show its pages');
+    // previous/next follow the sidebar: every rail link in order, each page's next is the following one
+    const rail = await page.$$eval('.manual-nav__tree .manual-nav__row > a', (as) => as.map((a) => a.href));
+    require(new URL(next, manual).href === rail[1], 'Introduction next link does not follow the sidebar order');
     await page.goto(manual + 'appendix/useful-command-line-tools/installing-an-atlas-from-a-repository/');
     const example = page.locator('.manual-code[data-code-lines]').first();
     const expand = example.getByRole('button', { name: /^Show all/ });
@@ -289,7 +299,7 @@ async function checkManualInteractions() {
     require(await page.getByRole('tab', { name: 'Lead-DBS', exact: true }).getAttribute('aria-selected') === 'true', 'Keyboard cannot switch the command tab');
     require(await page.locator('.manual-launch__command').textContent() === 'lead dbs', 'Keyboard tab selection did not update the command');
   } catch (e) {
-    problems.push(`manual interactions: ${e.message.split('\n')[0]}`);
+    problems.push(`manual interactions: ${e.message.split("\n").slice(0, 4).join(" | ")}`);
   } finally {
     await context.close();
   }
@@ -338,13 +348,12 @@ async function checkManualLayout() {
         await ready();
         const box = await geometry();
         require(box.gutter >= 12, `Scrollbar space is not reserved on ${chapter} at ${width}px`);
-        require(Math.abs(box.rail.x - 24) <= 1, `Chapter rail drifts away from the viewport edge at ${width}px`);
+        require(Math.abs(box.rail.x) <= 1, `Chapter rail drifts away from the viewport edge at ${width}px`);
         require(Math.abs(box.brand.x - 24) <= 1, `Docs brand drifts away from the viewport edge at ${width}px`);
         // Measure the action inset against the header's own content width.
         require(Math.abs(box.download.right - (box.bar.right - 24)) <= 1, `Header actions are inset at ${width}px`);
-        require(Math.abs((box.links.x + box.links.right) / 2 - (box.bar.x + box.bar.right) / 2) <= 1,
-          `Resource links are not centred within the header at ${width}px`);
-        require(box.article.width <= 737 && box.article.x >= box.rail.right + 47, `Article overlaps navigation or exceeds its reading width at ${width}px`);
+        require(box.links.x > box.brand.right, `Resource links overlap the brand at ${width}px`);
+        require(box.article.width <= 737 && box.article.x >= box.rail.right + 31, `Article overlaps navigation or exceeds its reading width at ${width}px`);
         if (baseline) {
           for (const part of ['bar', 'brand', 'links', 'download', 'rail', 'article']) {
             for (const dimension of ['x', 'y', 'width']) {
