@@ -414,6 +414,22 @@ if (wk) {
     await page.keyboard.type('atlas');
     if (!(await until(page, () => document.querySelectorAll('#site-search .search__results a.search__hit').length > 0))) fail('"atlas" lists no results');
   }, { engine: wk });
+  await journey('WebKit: narrow phone actions and root menu lock', { width: 320, height: 667, mobile: true }, async (page, fail) => {
+    for (const path of ['', DOWNLOAD, MANUAL, 'contact/', GALLERY]) {
+      await page.goto(url(path), { waitUntil: 'load' });
+      if (await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1)) fail(`${path}: horizontal page overflow`);
+      const tiny = await page.locator('input:not([type="hidden"]), textarea, select').evaluateAll(els => els.filter(el => el.getClientRects().length && parseFloat(getComputedStyle(el).fontSize) < 16).length);
+      if (tiny) fail(`${path}: input triggers iOS text zoom`);
+    }
+    await page.goto(url(''), { waitUntil: 'load' });
+    const pause = await page.locator('.hero__pause').boundingBox();
+    if (!pause || pause.width < 44 || pause.height < 44) fail('hero pause target below 44px');
+    await page.locator('.nav__toggle').click();
+    const locked = await page.evaluate(() => getComputedStyle(document.documentElement).overflowY === 'hidden' && getComputedStyle(document.querySelector('#site-menu')).overscrollBehaviorY === 'contain');
+    if (!locked) fail('root scroller or sheet overscroll is unlocked');
+    await page.keyboard.press('Escape');
+    if (await page.evaluate(() => getComputedStyle(document.documentElement).overflowY === 'hidden')) fail('root remains locked after Escape');
+  }, { engine: wk });
   await wk.close();
 }
 
