@@ -1,34 +1,32 @@
 ---
 {
-  "title": "Code Backbone",
+  "title": "Code backbone",
   "linkTitle": "Code structure",
   "layout": "manual",
-  "weight": 48,
   "manual_group": "appendix",
   "description": "Find the main functions and data structures in the Lead-DBS codebase.",
   "source_url": "https://netstim.gitbook.io/leaddbs/appendix/code-backbone",
-  "manual_title": "Code Backbone",
   "manual_lead": "Find the main functions and data structures in the Lead-DBS codebase."
 }
 ---
 
-```text
+```matlab
 lead.m
 ```
 
-`lead.m` is the main function that calls the apps `lead_dbs.m`, `lead_connectome.m`, `lead_mapper.m`, `lead_group.m`. Thus, by calling `lead dbs`the function calls lead\_dbs.m
+`lead.m` is the main function that calls the apps `lead_dbs.m`, `lead_connectome.m`, `lead_mapper.m`, `lead_group.m`. Thus, by calling `lead dbs` the function calls `lead_dbs.m`.
 
 ```matlab
 ea_run.m
 ```
 
-…is the high-level "submit" function for any job submitted by lead DBS, lead connectome, lead mapper, lead anatomy etc (anything except `lead group` and `lead groupconnectome`). The function is also called when exporting code instead of actually running code and when using a "submit" function to submit code from the cluster. So basically, anything related to single-patient/subject analyses will pass through `ea_run`.
+…is the high-level "submit" function for any job submitted by Lead-DBS, Lead Connectome, Lead Mapper, Lead Anatomy and so on (anything except `lead group` and `lead groupconnectome`). The function is also called when exporting code instead of actually running code and when using a "submit" function to submit code from the cluster. So basically, anything related to single-patient/subject analyses will pass through `ea_run`.
 
 ```matlab
 ea_autocoord.m
 ```
 
-…is the main backbone of the pipeline that is then sometimes completed by `ea_write.m`. All functions that process data on a single level (i.e. do not stem from `lead group` or `lead groupconnectome`) branch off from `ea_autocoord`. As a side note, the name stems from the very early days in which lead dbs was still called "eAuto" for electrode autolocalization. The same is true for the prefix (`ea_*`) that we use in almost all functions.
+…is the main backbone of the pipeline that is then sometimes completed by `ea_write.m`. All functions that process data on a single level (that is, do not stem from `lead group` or `lead groupconnectome`) branch off from `ea_autocoord`. As a side note, the name stems from the very early days in which Lead-DBS was still called "eAuto" for electrode autolocalization. The same is true for the prefix (`ea_*`) that we use in almost all functions.
 
 ```matlab
 ea_write.m
@@ -40,15 +38,15 @@ ea_write.m
 ea_elvis.m
 ```
 
-…is the 3D viewer of Lead-DBS. You can e.g. call it directly by running `ea_mnifigure.m`.
+…is the 3D viewer of Lead-DBS. You can, for example, call it directly by running `ea_mnifigure.m`.
 
 ```matlab
 ea_handles2options.m
 ```
 
-This is the function that converts handles (Matlab GUIDE handles to GUI elements) to the ubiquitous `options` struct that Lead-DBS uses to run jobs.
+This is the function that converts handles (MATLAB GUIDE handles to GUI elements) to the ubiquitous `options` struct that Lead-DBS uses to run jobs.
 
-For example the struct may contain `options.dicomimp.do == 1;` to let `ea_autocoord` know to run the DICOM import module.
+For example, the struct may contain `options.dicomimp.do == 1;` to let `ea_autocoord` know to run the DICOM import module.
 
 ## Other important main functions in Lead-DBS
 
@@ -64,13 +62,13 @@ ea_dicom_import
 ea_imageclassifier
 ```
 
-…opens the image classifier to rename Niftis that have been converted from DICOMs.
+…opens the image classifier to rename NIfTIs that have been converted from DICOMs.
 
 ```matlab
 ea_lcm
 ```
 
-…is the main subroutine to run everything related to `lead connectome mapper`.
+…is the main subroutine to run everything related to Lead Connectome Mapper.
 
 ```matlab
 ea_checkcoregallmri
@@ -88,13 +86,13 @@ ea_coregmr
 ea_coregctmri_*
 ```
 
-…all functions in this pattern will generate a CT to MRI coregistration entry in the main GUIs and will be called to perform the coregistration. They need to reside in the main lead-DBS code directory to be captured by the GUIs. If you want to create a new method to register CT to MRI, just duplicate one that is close and go from there. However, there are various things to consider, so maybe speak with us before/while you do.
+…all functions in this pattern will generate a CT to MRI coregistration entry in the main GUIs and will be called to perform the coregistration. They need to reside in the main Lead-DBS code directory to be captured by the GUIs. If you want to create a new method to register CT to MRI, just duplicate one that is close and go from there. However, there are various things to consider, so maybe speak with us before/while you do.
 
 ```matlab
 ea_normalize_*
 ```
 
-…similar with normalization methods: all files that match the above pattern found in the main code directory will create an entry for a normalization method in the GUIs. If you want to add such a method, duplicate on that is close and go from there. However, there are various things to consider, so maybe speak with us before/while you do.
+…similar with normalization methods: all files that match the above pattern found in the main code directory will create an entry for a normalization method in the GUIs. If you want to add such a method, duplicate one that is close and go from there. However, there are various things to consider, so maybe speak with us before/while you do.
 
 ```matlab
 ea_subcorticalrefine
@@ -106,13 +104,13 @@ ea_subcorticalrefine
 ea_checkcoreg
 ```
 
-…is the function used when calling "Check Results" from the main GUIs.
+…is the function used when calling **Check Results** from the main GUIs.
 
 ```matlab
 ea_checkstructures
 ```
 
-…is the function to open the "Refine atlas fit" function (which shows agreement between normalized patient images and specific atlas nuclei). This function can also be used to refine normalizations.
+…is the function to open the **Refine Atlas Fit** function (which shows agreement between normalized patient images and specific atlas nuclei). This function can also be used to refine normalizations.
 
 ```matlab
 ea_runtraccore
@@ -130,19 +128,19 @@ ea_runpacer
 ea_runmanual
 ```
 
-…runs the "Manual" preregistration module using SPM orthviews.
+…runs the **Manual** preregistration module using SPM orthviews.
 
 ```matlab
 ea_runmanualslicer
 ```
 
-…runs the "Manual" preregistration module using 3DSlicer.
+…runs the **Manual** preregistration module using 3D Slicer.
 
 ```matlab
 ea_manualreconstruction
 ```
 
-…main function of the manual reconstruction ("Localize DBS electrodes") view.
+…main function of the manual reconstruction (**Localize DBS electrodes**) view.
 
 ```matlab
 ea_orient_main
@@ -154,27 +152,27 @@ ea_orient_main
 ea_writeplanes
 ```
 
-Main 2D visualization output function ("Write out 2D") – while `ea_elvis` is the main 3D output function (see above).
+Main 2D visualization output function (**Write out 2D**) – while `ea_elvis` is the main 3D output function (see above).
 
-## Preferences and Options
+## Preferences and options
 
 ```matlab
 ea_prefs
 ```
 
-Main function to get the prefs struct that is usually present as options.prefs. Prefs are defined by the function `.ea_prefs.m` in the user's home directory that is derived from `ea_prefs_default.m` in the lead-DBS code directory. You can open the user's prefs directory by hitting command/strg+P from a main GUI. If you need to add a prefs entry, make sure to add it to both `ea_prefs_default` and if needed to your own user prefs. `ea_prefs.m` will always combine entries from the two (if they are present in the user file, it will prefer these over the default prefs).
+Main function to get the prefs struct that is usually present as `options.prefs`. Prefs are defined by the function `.ea_prefs.m` in the user's home directory that is derived from `ea_prefs_default.m` in the Lead-DBS code directory. You can open the user's prefs directory by pressing Cmd/Ctrl+P from a main GUI. If you need to add a prefs entry, make sure to add it to both `ea_prefs_default` and if needed to your own user prefs. `ea_prefs.m` will always combine entries from the two (if they are present in the user file, it will prefer these over the default prefs).
 
 ```matlab
 ea_prefs.mat
 ```
 
-…along with the file `ea_prefs_default.mat` are analogous to the prefs text files (entry above) but more machine readable. That's why their content is stored in prefs.machine when calling `ea_prefs.m` (or in `options.prefs.machine` when in the main code somewhere).
+…along with the file `ea_prefs_default.mat` are analogous to the prefs text files (entry above) but more machine readable. That's why their content is stored in `prefs.machine` when calling `ea_prefs.m` (or in `options.prefs.machine` when in the main code somewhere).
 
 ```matlab
 options=ea_getptopts(directory,options)
 ```
 
-…function to complete the `options` struct for patient-specific entries. For many things, you need only this limited `options` struct together with `options.prefs=ea_prefs;`
+…function to complete the `options` struct for patient-specific entries. For many things, you need only this limited `options` struct together with `options.prefs=ea_prefs;`.
 
 ## Other functions that are often used and helpful to know
 
@@ -182,19 +180,19 @@ options=ea_getptopts(directory,options)
 ea_assignpretra  || [options,presentfiles]=ea_assignpretra(options);
 ```
 
-…is a function to assign the preoperative images of a patient folder (e.g. used for normalization).
+…is a function to assign the preoperative images of a patient folder (for example, used for normalization).
 
 ```matlab
 ea_save_reconstruction(coords_mm,trajectory,markers,elmodel,0,options);
 ```
 
-…is the function to properly save electrode localizations
+…is the function to properly save electrode localizations.
 
-```text
+```matlab
 [coords_mm,trajectory,markers,elmodel,manually_corrected,coords_acpc]=ea_load_reconstruction(varargin)
 ```
 
-…is the function to properly load electrode localizations
+…is the function to properly load electrode localizations.
 
 ```matlab
 ea_view
@@ -206,7 +204,7 @@ ea_view
 ea_chirp
 ```
 
-…plays the "done" sound if the user has activated it in her/his prefs.
+…plays the "done" sound if the user has activated it in their prefs.
 
 ```matlab
 ea_busyaction
@@ -218,13 +216,13 @@ ea_busyaction
 ea_dispercent
 ```
 
-…used to show progress of a for-loop in the console output.e
+…used to show progress of a for-loop in the console output.
 
 ```matlab
 ea_dispt
 ```
 
-…function that will display a text string in the console but also protocol time (when calling the function on multiple occasions throughout laborious work.
+…function that will display a text string in the console but also protocol time (when calling the function on multiple occasions throughout laborious work).
 
 ## Important functions in LeGUI
 
@@ -234,7 +232,7 @@ ea_prepare_legui
 
 Prepares Lead-DBS patient data and reconstruction files for opening in LeGUI.
 
-```text
+```matlab
 Legui2reco.m
 ```
 
@@ -246,7 +244,7 @@ ea_trajectory_seeg.m
 
 Generates or processes SEEG electrode trajectories from reconstructed contact coordinates.
 
-```text
+```matlab
 LeG_autoElecs.m
 ```
 

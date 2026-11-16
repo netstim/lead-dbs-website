@@ -28,6 +28,8 @@ jobs:
         run: python3 -m unittest discover -s tests -v
       - name: Design tokens (.github/scripts/check-design.py)
         run: python3 .github/scripts/check-design.py
+      - name: Manual Markdown (.github/scripts/check-manual.py)
+        run: python3 .github/scripts/check-manual.py
       - name: Build
         run: hugo --gc --minify
       - name: Links, redirects and page names (.github/scripts/check-site.py)

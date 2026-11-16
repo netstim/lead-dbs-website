@@ -1,13 +1,11 @@
 ---
 {
-  "title": "Coregister Volumes",
+  "title": "Coregister volumes",
   "linkTitle": "Coregistration",
   "layout": "manual",
-  "weight": 12,
   "manual_group": "lead-dbs",
   "description": "Align pre-operative and post-operative images in the same space, then inspect the registration.",
   "source_url": "https://netstim.gitbook.io/leaddbs/lead-dbs/step3-volume-registrations/coregister-volumes",
-  "manual_title": "Coregister Volumes",
   "manual_lead": "Align pre-operative and post-operative images in the same space, then inspect the registration."
 }
 ---
@@ -16,10 +14,10 @@
 
 1. Load your patient folder in BIDS format into Lead as described in [Load a patient](/manual/lead-dbs/step1-load-patient-folder/).
 2. Select the patient you want to register in the window on the left (arrow 1).
-3. Select `Coregister Volumes` and `Check Results`, so you can see the output of coregistration (arrows 2 and 3).
-4. If coregistration has been run before, select `Retouch/overwrite approved results` (arrow 4) to get a new instance of coregistration results.
-5. Press `Run`. The processing power of your computer determines the duration of the coregistration step.
-6. To see how to check your results, consult [Checking the Coregistration and Normalization](/manual/lead-dbs/step3-volume-registrations/checking-the-coregistration/).
+3. Select **Coregister Volumes** and **Check Results**, so you can see the output of coregistration (arrows 2 and 3).
+4. If coregistration has been run before, select **Retouch/overwrite approved results** (arrow 4) to get a new instance of coregistration results.
+5. Select **Run**. The processing power of your computer determines the duration of the coregistration step.
+6. To see how to check your results, consult [Checking the coregistration and normalization](/manual/lead-dbs/step3-volume-registrations/checking-the-coregistration/).
 
 ![Annotated coregistration interface: arrow 1 selects the patient, arrows 2 and 3 enable Coregister Volumes and Check Results, and arrow 4 marks Retouch/overwrite approved results.](manual/16d44d8d6ed46fdd.png "Coregistration controls: patient selection (1), registration (2), result checking (3) and overwrite (4).")
 
@@ -50,22 +48,22 @@ Lead-DBS checks the reference image's resolution before registration. If a voxel
 
 ### Check the alignment
 
-Coregistration is crucial to electrode localization. Check that the images align throughout the volume using Lead-DBS or an additional viewer such as [3D Slicer](https://www.slicer.org/). See [Checking the Coregistration and Normalization](/manual/lead-dbs/step3-volume-registrations/checking-the-coregistration/) for the inspection workflow.
+Coregistration is crucial to electrode localization. Check that the images align throughout the volume using Lead-DBS or an additional viewer such as [3D Slicer](https://www.slicer.org/). See [Checking the coregistration and normalization](/manual/lead-dbs/step3-volume-registrations/checking-the-coregistration/) for the inspection workflow.
 
 ## Realign to AC-PC
 
-This option allows to realign the anchor image (i.e., preoperative T1w MRI) to the AC-PC plane. This pre-processing step is fully optional and has been implemented as a legacy function of LeGUI.
+This option allows you to realign the anchor image (the preoperative T1w MRI) to the AC-PC plane. This pre-processing step is fully optional and has been implemented as a legacy function of LeGUI.
 
 ### Select the landmarks
 
-1. Select `realign to AC-PC` and click `Run`.
+1. Select **realign to AC-PC** and select **Run**.
 2. A pop-up window will open. Scroll over the different slices to find the anatomical landmarks (AC, PC and midsaggital point).
 3. Use right click to mark **in order** the AC (green dot), PC (red dot), and a midsaggital point (blue dot). Use a midsaggital point close to the superior brain edge, anywhere between the AC and PC points on the antero-posterior axis. Typically, axial view works best to place the AC and PC, and coronal view works best to place the midsaggital point.
 4. If needed, adjust the cropping box to skin edge.
 5. Close window to save and indicate whether you wish to crop the image.
 
-![Coregister Volumes — screenshot](manual/7ce82ec22dc004fc.png)
+![AC-PC realignment window with the AC, PC and midsagittal landmarks marked](manual/7ce82ec22dc004fc.png)
 
 {{% manual-note "info" %}}
-Note that the realign to AC-PC step overwrites the corresponding image in the preprocessing > anat folder. For this reason, if used, it should be run before the image registration steps (coregistration, normalization).
+The realign to AC-PC step overwrites the corresponding image in the preprocessing > anat folder. For this reason, if used, it should be run before the image registration steps (coregistration, normalization).
 {{% /manual-note %}}

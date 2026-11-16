@@ -1,22 +1,18 @@
 ---
 {
   "title": "Warping a normative connectome to native subject space",
-  "linkTitle": "Warping a normative connectome to native subject space",
+  "linkTitle": "Connectome to native space",
   "layout": "manual",
-  "weight": 58,
   "manual_group": "appendix",
   "description": "Transform a reference connectome into an individual subject’s native space.",
   "source_url": "https://netstim.gitbook.io/leaddbs/appendix/useful-command-line-tools/warping-a-normative-connectome-to-native-subject-space",
-  "manual_title": "Warping a normative connectome to native subject space",
   "manual_lead": "Transform a reference connectome into an individual subject’s native space."
 }
 ---
 
-This example shows how to warp the fibertracts represented in a normative connectome to the space of the "anat\_t1.nii" (anchor space) of a subject and to convert the result to a .trk file.
+This example shows how to warp the fibertracts represented in a normative connectome to the space of the `anat_t1.nii` (anchor space) of a subject and to convert the result to a `.trk` file.
 
-This example shows how to warp the fibertracts represented in a normative connectome to the space of the "anat\_t1.nii" (anchor space) of a subject and to convert the result to a .trk file.
-
-The example is not a "typical use-case" but I wrote the code for a colleague and potentially, some bits and pieces could be helpful for others. It could also be helpful to do the reverse (warp subject specific fibers to template space), however, this functionality is supported within `lead connectome`anyways.
+The example is not a "typical use-case" but I wrote the code for a colleague and potentially, some bits and pieces could be helpful for others. It could also be helpful to do the reverse (warp subject specific fibers to template space), however, this functionality is supported within Lead Connectome anyway.
 
 ```matlab
 clear
