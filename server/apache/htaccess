@@ -1,0 +1,83 @@
+# The web root's .htaccess for the Hugo site on www.lead-dbs.org (Apache, STRATO). NOT DEPLOYED.
+# tools/deploy.py puts it in place at the switch and keeps the old one for a rollback (docs/launch.md).
+#
+# The Hugo site's files sit in the web root beside the WordPress installation, which stays for what only it
+# does: the newsletter (sign-up, confirmation, unsubscribe and archive links in sent emails are all
+# /?na=…), its admin, and its uploads (/wp-content/uploads/, linked from papers). Everything else is a
+# file of the Hugo build. /release/, /docs/ and /forms/ are folders of their own and are left alone.
+#
+# Any rule the old .htaccess had outside its "# BEGIN WordPress … # END WordPress" block (Andy knows) must be
+# copied in below before the switch. tests/test_launch_server.py runs this file on a local Apache.
+
+Options -Indexes -MultiViews
+DirectoryIndex index.html index.php
+ErrorDocument 404 /404.html
+AddDefaultCharset utf-8
+
+<IfModule mod_mime.c>
+  AddType application/rss+xml .xml
+  AddType application/json .json
+  AddType font/woff2 .woff2
+  AddType image/avif .avif
+  AddType image/webp .webp
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # The bare domain to www, http to https. Andy: drop these two if STRATO already does it in the domain
+  # settings (a double redirect is harmless but slow).
+  RewriteCond %{HTTP_HOST} ^lead-dbs\.org$ [NC]
+  RewriteRule ^ https://www.lead-dbs.org%{REQUEST_URI} [R=301,L,NE]
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteCond %{HTTP_HOST} ^www\.lead-dbs\.org$ [NC]
+  RewriteRule ^ https://www.lead-dbs.org%{REQUEST_URI} [R=301,L,NE]
+
+  # The folders that are not part of the build: as they are, before any rule below.
+  RewriteRule ^(release|docs|forms|wp-content)(/|$) - [L]
+
+  # WordPress keeps what only it can do. The newsletter plugin answers on the home page with ?na=…; old
+  # links ?p=, ?page_id=, ?cat=, ?author= are turned by WordPress into the post's address (a Hugo page or
+  # its redirect). The admin, login, REST API and cron stay WordPress's.
+  RewriteCond %{QUERY_STRING} (^|&)(na|p|page_id|cat|author|attachment_id)= [NC]
+  RewriteRule ^$ index.php [L]
+  RewriteRule ^(wp-admin|wp-includes)(/|$) - [L]
+  RewriteRule ^(wp-login|wp-cron|wp-comments-post|index)\.php$ - [L]
+  RewriteRule ^wp-json(/.*)?$ index.php [L]
+
+  # Never needed by the new site, a common attack target.
+  RewriteRule ^xmlrpc\.php$ - [G,L]
+
+  # The old search: /?s=word goes to the site search.
+  RewriteCond %{QUERY_STRING} (^|&)s=([^&]*) [NC]
+  RewriteRule ^$ /search/?q=%2 [R=301,L,NE]
+
+  # The old feeds go straight to the news feed (the build's /feed/ pages say the same for servers without this).
+  RewriteRule ^(news/)?feed/?$ /news/index.xml [R=301,L]
+  RewriteRule ^comments/feed/?$ /news/index.xml [R=301,L]
+
+  # Anything else that is not a file or folder of the build: the 404 page (ErrorDocument), not WordPress.
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  # Fingerprinted files (their name changes when they change) are kept for a year; pages are checked each time.
+  <FilesMatch "\.[0-9a-f]{64}\.(css|js)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(woff2|avif|webp|png|jpe?g|gif|svg|ico|mp4)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+  <FilesMatch "\.(html|xml|json|txt)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript text/javascript application/json application/rss+xml application/xml image/svg+xml
+</IfModule>

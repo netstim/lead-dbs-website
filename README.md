@@ -169,6 +169,9 @@ there. A static host serves none of these. So either deploy the new site **onto 
 `/release/` and `/docs/` (and their PHP) in place beside it, or give those files a new home first (for example a
 `files.lead-dbs.org`) and change the links. Test a download button after the switch.
 
+**The switch** itself (packaging, putting the site into the web root beside WordPress, the `.htaccess`, the
+checks and the rollback) is described in [docs/launch.md](docs/launch.md).
+
 The contact and FOCUS forms send to `forms/send.php`, a small PHP script in `server/forms/` that is not on
 the server yet; [its README](server/forms/README.md) says how to put it there and check it before
 `formsEnabled` is set to true. The newsletter form keeps its News/RSS line until the newsletter service is
