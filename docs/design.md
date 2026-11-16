@@ -226,3 +226,7 @@ any opening render. `content-page.html` extracts the existing introductory block
 rewriting its text; it is rendered once, not duplicated for breakpoints. Manual installation
 and workflow navigation precede the unchanged research notice. This intentionally changes
 page composition on desktop as well: the task is readable before the illustration.
+
+On short landscape screens (640–1023px wide, at most 500px high), Home places its
+purpose and primary action beside the render. The image must not consume the first screen
+before the visitor can read the page's title. Portrait and tablet compositions are unchanged.
