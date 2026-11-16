@@ -1,5 +1,9 @@
 {
   "database": "/private/lead-analytics/events.sqlite",
   "key_file": "/private/lead-analytics/hmac.key",
-  "country_database": "/private/lead-analytics/country.mmdb"
+  "country_database": "/private/lead-analytics/country.mmdb",
+  "max_database_bytes": 268435456,
+  "min_free_bytes": 536870912,
+  "collect_busy_timeout_ms": 1000,
+  "hook_busy_timeout_ms": 200
 }

@@ -6,6 +6,16 @@ namespace LeadForms;
 use InvalidArgumentException;
 use RuntimeException;
 
+/** A field of a submission that is missing or not valid: names the field, so the reply can say what to fix. */
+final class FieldError extends InvalidArgumentException
+{
+    /** @param string $problem 'missing' or 'invalid' */
+    public function __construct(public readonly string $field, public readonly string $problem)
+    {
+        parent::__construct("Field {$field} is {$problem}.");
+    }
+}
+
 /**
  * Checks one submission of the contact or FOCUS form and turns it into a plain-text email to a fixed
  * address. No other form is accepted; the newsletter is not handled here.
@@ -44,12 +54,17 @@ final class FormHandler
     public const FORM_FIELD = 'form';
     /** largest request body accepted, in bytes: room for every field at its longest in 4-byte characters, percent-encoded (no-script forms) */
     public const MAX_BODY = 131072;
+    /** config.example.json's rate_key, which must never be used as the real one */
+    public const EXAMPLE_KEY = 'replace with a long random string generated on the server';
+    /** the rate-limit files are deleted this long after their last change (they must outlive a day plus the window) */
+    public const RATE_FILE_AGE = 2 * 86400;
 
     /**
      * The checked values of a submission, in the form's field order.
      * @param array<string, mixed> $post
      * @return array<string, string>
-     * @throws InvalidArgumentException when the form or a field is missing, unknown or invalid
+     * @throws FieldError when a field of the form is missing or not valid
+     * @throws InvalidArgumentException when the form is unknown or the submission has fields it shouldn't
      */
     public static function validate(string $form, array $post): array
     {
@@ -62,21 +77,16 @@ final class FormHandler
         $clean = [];
         foreach ($spec['fields'] as $name => [$label, $required, $max, $kind]) {
             $value = $post[$name] ?? '';
-            if (!is_string($value)) throw new InvalidArgumentException('Invalid field.');
-            if (!mb_check_encoding($value, 'UTF-8')) throw new InvalidArgumentException('Invalid encoding.');
+            if (!is_string($value) || !mb_check_encoding($value, 'UTF-8')) throw new FieldError($name, 'invalid');
             $value = $kind === 'multiline'
                 ? trim(str_replace(["\r\n", "\r"], "\n", $value))
                 : trim(preg_replace('/\s+/u', ' ', $value) ?? '');
             // control characters other than line breaks in a message have no business in a form
             $value = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', $value) ?? '';
-            if (mb_strlen($value) > $max) throw new InvalidArgumentException('Field too long.');
-            if ($kind === 'check') {
-                if ($value !== '' && $value !== 'yes') throw new InvalidArgumentException('Invalid choice.');
-            }
-            if ($kind === 'email' && $value !== '' && !self::isEmail($value)) {
-                throw new InvalidArgumentException('Invalid email address.');
-            }
-            if ($required && $value === '') throw new InvalidArgumentException('Missing field.');
+            if (mb_strlen($value) > $max) throw new FieldError($name, 'invalid');
+            if ($kind === 'check' && $value !== '' && $value !== 'yes') throw new FieldError($name, 'invalid');
+            if ($kind === 'email' && $value !== '' && !self::isEmail($value)) throw new FieldError($name, 'invalid');
+            if ($required && $value === '') throw new FieldError($name, 'missing');
             $clean[$name] = $value;
         }
         return $clean;
@@ -154,7 +164,12 @@ final class FormHandler
                 $earlier = count($recent($text));
             }
         }
-        $handle = @fopen($file($now), 'c+');
+        $previousMask = umask(0077);     // a new file is the server's alone (0600)
+        try {
+            $handle = @fopen($file($now), 'c+');
+        } finally {
+            umask($previousMask);
+        }
         if ($handle === false) throw new RuntimeException('Rate limit storage unavailable.');
         try {
             if (!flock($handle, LOCK_EX)) throw new RuntimeException('Rate limit storage cannot be locked.');
@@ -174,12 +189,68 @@ final class FormHandler
         }
     }
 
-    /** removes the rate-limit files of earlier days */
-    public static function sweep(string $dir, int $maxAge = 2 * 86400, ?int $now = null): void
+    /**
+     * Removes the rate-limit files not changed for $maxAge seconds, and returns how many it removed.
+     * @throws RuntimeException when the folder can't be read or a file can't be removed
+     */
+    public static function sweep(string $dir, int $maxAge = self::RATE_FILE_AGE, ?int $now = null): int
     {
         $now ??= time();
-        foreach (glob(rtrim($dir, '/') . '/*') ?: [] as $file) {
-            if (preg_match('/\/[0-9a-f]{64}$/', $file) && @filemtime($file) < $now - $maxAge) @unlink($file);
+        $names = @scandir($dir);
+        if ($names === false) throw new RuntimeException('Rate limit storage unreadable.');
+        $removed = 0;
+        clearstatcache();
+        foreach ($names as $name) {
+            if (!preg_match('/^[0-9a-f]{64}$/D', $name)) continue;
+            $file = rtrim($dir, '/') . '/' . $name;
+            $changed = @filemtime($file);
+            if ($changed === false || $changed >= $now - $maxAge) continue;
+            if (!@unlink($file)) throw new RuntimeException('Rate limit file cannot be removed.');
+            $removed++;
         }
+        return $removed;
+    }
+
+    /**
+     * The private configuration (README.md describes its fields), checked.
+     * @param ?string $documentRoot the web root, when known: no private file may be inside it
+     * @throws RuntimeException naming what is wrong, never a value of it
+     */
+    public static function config(string $path, ?string $documentRoot): array
+    {
+        if (!is_readable($path)) throw new RuntimeException('Forms configuration unavailable.');
+        $config = json_decode((string) file_get_contents($path), true, 8, JSON_THROW_ON_ERROR);
+        if (!is_array($config)) throw new RuntimeException('Forms configuration is not an object.');
+        foreach (array_keys(self::FORMS) as $id) {
+            if (!self::isEmail($config['recipients'][$id] ?? '')) throw new RuntimeException('Forms recipient missing.');
+        }
+        if (!self::isEmail($config['from'] ?? '')) throw new RuntimeException('Forms sender missing.');
+        foreach (['rate_dir', 'rate_key', 'site'] as $key) {
+            if (!is_string($config[$key] ?? null) || $config[$key] === '') throw new RuntimeException('Forms configuration incomplete.');
+        }
+        if (strlen($config['rate_key']) < 32 || $config['rate_key'] === self::EXAMPLE_KEY) {
+            throw new RuntimeException('Forms rate_key must be a random string of at least 32 characters.');
+        }
+        $config['limit'] ??= 5;
+        $config['window'] ??= 600;
+        if (!is_int($config['limit']) || $config['limit'] < 1 || $config['limit'] > 100) {
+            throw new RuntimeException('Forms limit must be a whole number from 1 to 100.');
+        }
+        // a window longer than a day would need the files of more than one earlier day
+        if (!is_int($config['window']) || $config['window'] < 60 || $config['window'] > 86400) {
+            throw new RuntimeException('Forms window must be a whole number of seconds from 60 to 86400.');
+        }
+        $root = $documentRoot !== null ? (realpath($documentRoot) ?: null) : null;
+        $private = [$path, $config['rate_dir']];
+        if (($config['delivery'] ?? 'mail') === 'outbox') $private[] = $config['outbox'] ?? '';
+        foreach ($private as $p) {
+            $resolved = realpath($p) ?: '';
+            if ($resolved === '' || $resolved[0] !== '/') throw new RuntimeException('Forms private path missing.');
+            if ($root && ($resolved === $root || str_starts_with($resolved, $root . '/'))) {
+                throw new RuntimeException('Forms private files must be outside the document root.');
+            }
+        }
+        if (!is_dir($config['rate_dir'])) throw new RuntimeException('Forms rate_dir is not a folder.');
+        return $config;
     }
 }

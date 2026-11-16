@@ -1,20 +1,39 @@
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["beautifulsoup4>=4.12", "markdownify>=0.13"]
+# dependencies = ["beautifulsoup4==4.14.3", "markdownify==1.2.2"]  # tools/requirements-import.txt pins them with hashes
 # ///
 """One-off import of the WordPress site at lead-dbs.org into Hugo content.
 
 Reads pages and posts from the public WordPress REST API, converts the Enfold
 page-builder HTML to Markdown plus a few shortcodes (row/col, button, gallery,
 slideshow, form, newsletter, childpages), and downloads the images each page
-uses into its page bundle.
+uses into its page bundle. Images come only from https://www.lead-dbs.org, and
+every file it writes must lie inside the output folder.
 
 Usage (from the repository root):
 
-    uv run tools/import_wordpress.py            # writes content/
-    uv run tools/import_wordpress.py --force    # overwrite existing files
+    # Report what would be written or skipped; writes and downloads nothing.
+    uv run tools/import_wordpress.py --plan --out /tmp/wp-import --snapshot /tmp/wp-snapshot
 
-Re-running overwrites hand edits, so this is meant to be run once.
+    # Import into a new or empty folder outside the repository, then review it
+    # and copy what you want into content/.
+    uv run tools/import_wordpress.py --out /tmp/wp-import --snapshot /tmp/wp-snapshot
+
+    # Write straight into the editorial tree. Existing Markdown, including
+    # content/news/_index.md, is skipped unless --force is also given.
+    uv run tools/import_wordpress.py --out content --in-place [--force]
+
+--snapshot DIR saves every WordPress API response the import uses (page and
+post lists, featured media, download redirects) and reads them from there on
+the next run, so a re-run asks WordPress for nothing. Images are still
+downloaded.
+
+Without --in-place, the output folder must be new or empty and outside the
+repository; the import is assembled next to it and only renamed into place
+once it is complete, so a failed run leaves nothing behind.
+
+Re-running with --in-place --force overwrites hand edits, so this is meant to
+be run once.
 """
 
 from __future__ import annotations
@@ -23,18 +42,23 @@ import argparse
 import html
 import json
 import re
+import shutil
 import sys
+import tempfile
 import urllib.error
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Callable
 
 from bs4 import BeautifulSoup, Tag
 from markdownify import markdownify
 
+ROOT = Path(__file__).resolve().parents[1]
 SITE = "https://www.lead-dbs.org"
 API = f"{SITE}/wp-json/wp/v2"
+ASSET_HOSTS = {"www.lead-dbs.org", "lead-dbs.org"}  # downloads come only from these, over https
 UA = {"User-Agent": "Mozilla/5.0 (lead-dbs-website importer)"}
 MAX_DOWNLOAD = 20 * 1024 * 1024  # larger files keep pointing at the old server
 
@@ -53,6 +77,39 @@ COL_RE = re.compile(r"^av_(one|two|three|four)_(full|half|third|fourth|fifth)$")
 FRACTIONS = {"one_full": "1", "one_half": "1/2", "one_third": "1/3", "two_third": "2/3",
              "one_fourth": "1/4", "three_fourth": "3/4", "one_fifth": "1/5",
              "two_fifth": "2/5", "three_fifth": "3/5", "four_fifth": "4/5"}
+
+
+class UnsafeImport(Exception):
+    """A source outside lead-dbs.org, a path that would leave the output folder, or an output it must not use."""
+
+
+def check_asset_url(url: str) -> None:
+    parts = urllib.parse.urlsplit(url)
+    if parts.scheme != "https" or parts.hostname not in ASSET_HOSTS or parts.port or parts.username:
+        raise UnsafeImport(f"not downloading from outside https://www.lead-dbs.org: {url}")
+
+
+def safe_name(name: str) -> str:
+    """name, if it is a plain file or folder name: not empty, not hidden, '.' or '..', no separators."""
+    if not name or name.startswith(".") or "/" in name or "\\" in name:
+        raise UnsafeImport(f"unsafe file name: {name!r}")
+    return name
+
+
+def inside(root: Path, relative: str) -> Path:
+    """root/relative, refusing a path that would leave root."""
+    rel = Path(relative)
+    target = root / rel
+    if rel.is_absolute() or ".." in rel.parts or not target.resolve().is_relative_to(root.resolve()):
+        raise UnsafeImport(f"{relative!r} would leave the output folder {root}")
+    return target
+
+
+def site_path(link: str) -> str | None:
+    """The path of a link on this site, e.g. '/about/'; None for a link elsewhere."""
+    if link == SITE or link.startswith(SITE + "/"):
+        return link[len(SITE):] or "/"
+    return None
 
 
 def fetch(url: str) -> bytes:
@@ -100,16 +157,99 @@ def resolve_redirect(url: str) -> str:
     return url
 
 
+class Source:
+    """The WordPress API data the import uses.
+
+    With a snapshot folder, each answer is read from there when it was saved
+    before, and otherwise fetched and (if record) saved for the next run.
+    """
+
+    def __init__(self, snapshot: Path | None, record: bool):
+        self.snapshot = snapshot
+        self.record = record and snapshot is not None
+        self.targets: dict[str, str] | None = None  # download id -> redirect target, loaded on first use
+
+    def _load(self, name: str, fetch_data: Callable[[], object]):
+        saved = self.snapshot / name if self.snapshot else None
+        if saved and saved.exists():
+            return json.loads(saved.read_text())
+        data = fetch_data()
+        if self.record:
+            saved.parent.mkdir(parents=True, exist_ok=True)
+            saved.write_text(json.dumps(data, ensure_ascii=False, indent=1))
+        return data
+
+    def items(self, kind: str) -> list[dict]:
+        return self._load(f"{kind}.json", lambda: fetch_all(kind))
+
+    def media(self, media_id: int) -> dict | None:
+        """The media item, or None if WordPress answered with an HTTP error (also saved)."""
+        media_id = int(media_id)
+
+        def fetch_media():
+            try:
+                return fetch_json(f"{API}/media/{media_id}")
+            except urllib.error.HTTPError:
+                return None
+        return self._load(f"media/{media_id}.json", fetch_media)
+
+    def download_target(self, download_id: str) -> str:
+        """Where a Simple Download Monitor link (?sdm_process_download=1&download_id=…) redirects to."""
+        if self.targets is None:
+            saved = self.snapshot / "redirects.json" if self.snapshot else None
+            self.targets = json.loads(saved.read_text()) if saved and saved.exists() else {}
+        if download_id not in self.targets:
+            self.targets[download_id] = resolve_redirect(f"{SITE}/?sdm_process_download=1&download_id={download_id}")
+            if self.record:
+                self.snapshot.mkdir(parents=True, exist_ok=True)
+                (self.snapshot / "redirects.json").write_text(json.dumps(self.targets, indent=1, sort_keys=True))
+        return self.targets[download_id]
+
+
+class AssetRedirect(urllib.request.HTTPRedirectHandler):
+    """Follows a download's redirect only to another lead-dbs.org address."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        check_asset_url(newurl)
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def download(url: str) -> bytes | None:
+    """The file at url, or None if it is too large or the server answers with an error."""
+    try:
+        quoted = urllib.parse.quote(urllib.parse.unquote(url), safe=":/?&=#")
+        check_asset_url(quoted)
+        req = urllib.request.Request(quoted, headers=UA)
+        with urllib.request.build_opener(AssetRedirect).open(req, timeout=120) as r:
+            size = int(r.headers.get("Content-Length") or 0)
+            if size > MAX_DOWNLOAD:
+                return None
+            data = r.read(MAX_DOWNLOAD + 1)
+        if len(data) > MAX_DOWNLOAD:
+            return None
+    except urllib.error.HTTPError as e:
+        print(f"  ! {e.code} {url}", file=sys.stderr)
+        return None
+    return data
+
+
 @dataclass
 class Bundle:
-    """Collects the files a page needs next to its Markdown file."""
+    """Collects the files a page needs next to its Markdown file.
+
+    root is the output folder every file must stay inside. With plan, files
+    are named and checked but not downloaded.
+    """
 
     dir: Path
+    root: Path
+    plan: bool = False
     files: dict[str, str] = field(default_factory=dict)  # remote url -> local name
 
     def add(self, url: str) -> str | None:
         if url in self.files:
             return self.files[url]
+        check_asset_url(url)
         name = urllib.parse.unquote(url.rsplit("/", 1)[-1].split("?")[0])
         name = re.sub(r"[^\w.-]+", "-", name, flags=re.ASCII).strip("-")
         stem, dot, ext = name.rpartition(".")
@@ -117,20 +257,12 @@ class Bundle:
         while local in self.files.values():
             n += 1
             local = f"{stem}-{n}.{ext}" if dot else f"{name}-{n}"
-        target = self.dir / local
-        if not target.exists():
-            try:
-                quoted = urllib.parse.quote(urllib.parse.unquote(url), safe=":/?&=#")
-                req = urllib.request.Request(quoted, headers=UA)
-                with urllib.request.urlopen(req, timeout=120) as r:
-                    size = int(r.headers.get("Content-Length") or 0)
-                    if size > MAX_DOWNLOAD:
-                        return None
-                    data = r.read(MAX_DOWNLOAD + 1)
-                if len(data) > MAX_DOWNLOAD:
-                    return None
-            except urllib.error.HTTPError as e:
-                print(f"  ! {e.code} {url}", file=sys.stderr)
+        target = self.dir / safe_name(local)
+        if not target.resolve().is_relative_to(self.root.resolve()):
+            raise UnsafeImport(f"{target} would leave the output folder {self.root}")
+        if not target.exists() and not self.plan:
+            data = download(url)
+            if data is None:
                 return None
             self.dir.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
@@ -139,8 +271,8 @@ class Bundle:
 
 
 class Converter:
-    def __init__(self, sdm_targets: dict[str, str], page_paths: dict[str, str]):
-        self.sdm_targets = sdm_targets
+    def __init__(self, download_target: Callable[[str], str | None], page_paths: dict[str, str]):
+        self.download_target = download_target  # download id -> where its link redirects; None to keep the link
         self.page_paths = page_paths  # WordPress page/post id -> path
         self.tokens: dict[str, str] = {}
 
@@ -180,7 +312,8 @@ class Converter:
             path, query, frag = m.group(1) or "/", m.group(2) or "", m.group(3) or ""
             if "sdm_process_download" in query:
                 did = urllib.parse.parse_qs(query[1:]).get("download_id", [""])[0]
-                return self.sdm_targets.get(did, href)
+                target = self.download_target(did) if did.isdigit() else None
+                return target or href
             qs = urllib.parse.parse_qs(query[1:])
             ids = qs.get("page_id") or qs.get("p")
             if ids and ids[0] in self.page_paths:
@@ -418,67 +551,135 @@ def front_matter(fields: dict) -> str:
     return "\n".join(lines)
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--out", type=Path, default=Path("content"))
-    ap.add_argument("--force", action="store_true", help="overwrite existing Markdown files")
-    args = ap.parse_args()
+    ap.add_argument("--out", type=Path, required=True,
+                    help="output folder: new or empty and outside the repository, unless --in-place")
+    ap.add_argument("--in-place", action="store_true",
+                    help="write into an existing folder such as the repository's content/")
+    ap.add_argument("--force", action="store_true",
+                    help="overwrite existing Markdown files, including news/_index.md")
+    ap.add_argument("--snapshot", type=Path,
+                    help="folder that keeps the WordPress API responses; read from it when present")
+    ap.add_argument("--plan", action="store_true",
+                    help="report what would be written or skipped; write and download nothing")
+    args = ap.parse_args(argv)
+    try:
+        run(args.out, repo=ROOT, in_place=args.in_place, force=args.force, snapshot=args.snapshot, plan=args.plan)
+    except UnsafeImport as e:
+        raise SystemExit(f"refused: {e}")
 
+
+def check_out(out: Path, repo: Path, in_place: bool) -> None:
+    """Without --in-place, the output must be a new or empty folder outside the repository."""
+    if in_place:
+        return
+    if out.resolve().is_relative_to(repo.resolve()):
+        raise UnsafeImport(f"{out} is inside the repository: import elsewhere and copy what you want, or pass --in-place")
+    if out.exists() and (not out.is_dir() or any(out.iterdir())):
+        raise UnsafeImport(f"{out} is not a new or empty folder; pass --in-place to write into it")
+
+
+def run(out: Path, *, repo: Path, in_place: bool, force: bool, snapshot: Path | None, plan: bool) -> None:
+    check_out(out, repo, in_place)
+    source = Source(snapshot, record=not plan)
     print("fetching pages and posts …")
-    pages, posts = fetch_all("pages"), fetch_all("posts")
-    all_html = "".join(x["content"]["rendered"] for x in pages + posts)
-    sdm_ids = sorted(set(re.findall(r"sdm_process_download=1&(?:amp;|#038;)?download_id=(\d+)", all_html)))
-    sdm_targets = {i: resolve_redirect(f"{SITE}/?sdm_process_download=1&download_id={i}") for i in sdm_ids}
-    print(f"resolved {len(sdm_targets)} download links")
-    page_paths = {str(x["id"]): x["link"][len(SITE):] or "/" for x in pages + posts if x["link"].startswith(SITE)}
-    conv = Converter(sdm_targets, page_paths)
+    pages, posts = source.items("pages"), source.items("posts")
+    if plan or in_place:
+        import_items(pages, posts, source, out, force=force, plan=plan)
+        return
+    # Assemble the import next to out and rename it into place only once it is complete.
+    out.parent.mkdir(parents=True, exist_ok=True)
+    work = Path(tempfile.mkdtemp(prefix=f".{out.name}.partial-", dir=out.parent))
+    try:
+        import_items(pages, posts, source, work, force=force, plan=False)
+        if out.exists():
+            out.rmdir()
+        work.rename(out)
+    except BaseException:
+        shutil.rmtree(work, ignore_errors=True)
+        raise
+    print(f"imported into {out}")
+
+
+def import_items(pages: list[dict], posts: list[dict], source: Source, out: Path, *, force: bool, plan: bool) -> None:
+    page_paths = {}
+    for x in pages + posts:
+        path = site_path(x["link"])
+        if path is not None:
+            page_paths[str(x["id"])] = path
+    # Download links are resolved only when a page that is written uses one.
+    conv = Converter((lambda download_id: None) if plan else source.download_target, page_paths)
 
     parents = {p["parent"] for p in pages}
     for p in pages:
-        link = p["link"]
-        if not link.startswith(SITE):
+        path = site_path(p["link"])
+        if path is None:
             continue  # menu placeholders pointing elsewhere (GitBook, forum)
-        path = link[len(SITE):] or "/"
         if path in SKIP_LINKS:
             continue
         if path == "/":
-            target = args.out / "_index.md"
+            target = out / "_index.md"
         elif p["id"] in parents:
-            target = args.out / path.strip("/") / "_index.md"
+            target = inside(out, path.strip("/") + "/_index.md")
         else:
-            target = args.out / path.strip("/") / "index.md"
-        write(conv, p, target, args.force, form=FORM_FOR_PAGE.get(path),
+            target = inside(out, path.strip("/") + "/index.md")
+        if kept(target, force):
+            continue
+        write(conv, p, Bundle(target.parent, out, plan), target, form=FORM_FOR_PAGE.get(path),
               extra={"weight": p.get("menu_order") or None})
 
-    news = args.out / "news"
-    news.mkdir(parents=True, exist_ok=True)
-    (news / "_index.md").write_text(front_matter({"title": "News"}))
+    news = out / "news"
+    index = news / "_index.md"
+    if not kept(index, force):
+        if plan:
+            print(f"  would write {index}")
+        else:
+            news.mkdir(parents=True, exist_ok=True)
+            index.write_text(front_matter({"title": "News"}))
     for p in posts:
         path = p["link"][len(SITE):]
         if path in SKIP_LINKS:
             continue
-        target = news / p["slug"] / "index.md"
-        image = None
-        if p.get("featured_media"):
-            try:
-                media = fetch_json(f"{API}/media/{p['featured_media']}")
-                # WordPress's resized copies are always web formats; one original is a PSD.
-                sizes = media.get("media_details", {}).get("sizes", {})
-                src = (sizes.get("large") or sizes.get("full") or {}).get("source_url", media["source_url"])
-                image = Bundle(target.parent).add(src)
-                if image and not is_web_image(target.parent / image):
-                    (target.parent / image).unlink()  # e.g. a PSD uploaded as featured image
-                    image = None
-            except urllib.error.HTTPError:
-                pass
-        write(conv, p, target, args.force, form=None, extra={"slug": p["slug"], "image": image})
+        target = inside(news, safe_name(p["slug"]) + "/index.md")
+        # Checked before the featured image is fetched, so a kept post's bundle is not touched.
+        if kept(target, force):
+            continue
+        image = featured_image(source, p, Bundle(target.parent, out, plan))
+        write(conv, p, Bundle(target.parent, out, plan), target, form=None,
+              extra={"slug": p["slug"], "image": image})
 
 
-def write(conv: Converter, item: dict, target: Path, force: bool, form: str | None, extra: dict) -> None:
+def kept(target: Path, force: bool) -> bool:
+    """True (and says so) if target exists and is not to be overwritten."""
     if target.exists() and not force:
         print(f"  skip (exists) {target}")
-        return
-    bundle = Bundle(target.parent)
+        return True
+    return False
+
+
+def featured_image(source: Source, post: dict, bundle: Bundle) -> str | None:
+    """Downloads a post's featured image into its bundle; its file name, or None."""
+    media_id = post.get("featured_media")
+    if not media_id:
+        return None
+    if bundle.plan:
+        print(f"  would fetch featured media {media_id}")
+        return None
+    media = source.media(media_id)
+    if media is None:
+        return None
+    # WordPress's resized copies are always web formats; one original is a PSD.
+    sizes = media.get("media_details", {}).get("sizes", {})
+    src = (sizes.get("large") or sizes.get("full") or {}).get("source_url", media["source_url"])
+    image = bundle.add(src)
+    if image and not is_web_image(bundle.dir / image):
+        (bundle.dir / image).unlink()  # e.g. a PSD uploaded as featured image
+        image = None
+    return image
+
+
+def write(conv: Converter, item: dict, bundle: Bundle, target: Path, form: str | None, extra: dict) -> None:
     body = conv.convert(item["content"]["rendered"], bundle, form)
     fm = {
         "title": html.unescape(item["title"]["rendered"]),
@@ -486,6 +687,9 @@ def write(conv: Converter, item: dict, target: Path, force: bool, form: str | No
         "lastmod": item["modified"],
         **extra,
     }
+    if bundle.plan:
+        print(f"  would write {target} ({len(bundle.files)} files)")
+        return
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(front_matter(fm) + "\n" + body)
     print(f"  wrote {target} ({len(bundle.files)} files)")

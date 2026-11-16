@@ -1,0 +1,15 @@
+# The packages tools/import_wordpress.py needs, at the exact versions its tests (tests/test_importers.py) ran
+# with, each with the sha256 of its wheel. Install into a virtual environment with:
+#     python3 -m pip install --require-hashes --only-binary :all: -r tools/requirements-import.txt
+# To update: change a version, and replace its hash with the sha256 of that release's py3-none-any wheel on
+# PyPI (https://pypi.org/pypi/<name>/<version>/json, "urls"); keep the script header of the importer in step.
+beautifulsoup4==4.14.3 \
+    --hash=sha256:0918bfe44902e6ad8d57732ba310582e98da931428d231a5ecb9e7c703a735bb
+markdownify==1.2.2 \
+    --hash=sha256:3f02d3cc52714084d6e589f70397b6fc9f2f3a8531481bf35e8cc39f975e186a
+six==1.17.0 \
+    --hash=sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274
+soupsieve==2.8.3 \
+    --hash=sha256:ed64f2ba4eebeab06cc4962affce381647455978ffc1e36bb79a545b91f45a95
+typing-extensions==4.15.0 \
+    --hash=sha256:f0fa19c6845758ab08074a0cfa8b7aecb71c999ca73d62883bc25cc018c4e548

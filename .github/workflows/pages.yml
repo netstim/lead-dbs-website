@@ -1,5 +1,8 @@
 # Builds the site and publishes it as a preview on GitHub Pages
 # (https://netstim.github.io/lead-dbs-website/) with an "under construction" banner and noindex.
+# Its checks (also on the nightly run) cover the static site only. The server side (forms, analytics, the
+# deploy tool and the .htaccess) is tested by backend.yml, and its acceptance on STRATO is a separate, manual
+# step (docs/launch.md).
 name: Preview on GitHub Pages
 
 on:
@@ -69,11 +72,13 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - name: Install Playwright and Chromium
-        run: npm ci && npx playwright install --with-deps chromium
+        run: npm ci && npx playwright install --with-deps chromium webkit
       - name: Pages in the browser (.github/scripts/check-browser.mjs)
         run: node .github/scripts/check-browser.mjs "$RUNNER_TEMP/production" https://www.lead-dbs.org/
       - name: Interactions (.github/scripts/check-interactions.mjs)
         run: node .github/scripts/check-interactions.mjs "$RUNNER_TEMP/production" https://www.lead-dbs.org/
+      - name: Content Security Policy (tests/test_csp_browser.mjs)
+        run: node tests/test_csp_browser.mjs "$RUNNER_TEMP/production"
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: public

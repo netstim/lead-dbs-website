@@ -10,6 +10,7 @@ import os
 ROOT=Path(__file__).resolve().parents[1]
 FILES={
     'collector/Collector.php':'server/analytics/Collector.php',
+    'collector/Storage.php':'server/analytics/Storage.php',
     'collector/bootstrap.php':'server/analytics/bootstrap.php',
     'collector/collect.php':'server/analytics/collect.php',
     'collector/download-hook.php':'server/analytics/download-hook.php',
@@ -24,6 +25,7 @@ FILES={
     'tools/usage.py':'tools/usage.py',
     'tools/requirements.txt':'tools/requirements.txt',
     'tests/php/collector.php':'tests/php/collector.php',
+    'tests/prerequisites.py':'tests/prerequisites.py',
     'tests/test_analytics_ops.py':'tests/test_analytics_ops.py',
     'tests/test_collector_http.py':'tests/test_collector_http.py',
     'tests/test_download_hook.py':'tests/test_download_hook.py',
@@ -40,24 +42,33 @@ FILES={
 
 
 def package(output):
-    output=Path(output).resolve()
-    if output.is_relative_to(ROOT):raise ValueError('Bundle output must be outside the repository')
-    output.parent.mkdir(parents=True,exist_ok=True)
-    tmp=None
+    output = Path(output).resolve()
+    if output.is_relative_to(ROOT):
+        raise ValueError('Bundle output must be outside the repository')
+    output.parent.mkdir(parents=True, exist_ok=True)
+    tmp = None
     try:
-        with tempfile.NamedTemporaryFile(dir=output.parent,delete=False) as handle:
-            tmp=Path(handle.name)
-            with gzip.GzipFile(fileobj=handle,mode='wb',filename='',mtime=0) as gz, tarfile.open(fileobj=gz,mode='w') as tar:
-                for dest,source in sorted(FILES.items()):
-                    data=(ROOT/source).read_bytes()
-                    info=tarfile.TarInfo(dest);info.size=len(data);info.mode=0o644;info.mtime=0
-                    tar.addfile(info,io.BytesIO(data))
-        os.replace(tmp,output)
+        with tempfile.NamedTemporaryFile(dir=output.parent, delete=False) as handle:
+            tmp = Path(handle.name)
+            # fixed names, modes and times: the same sources always give the same bundle
+            with gzip.GzipFile(fileobj=handle, mode='wb', filename='', mtime=0) as gz, \
+                    tarfile.open(fileobj=gz, mode='w') as tar:
+                for dest, source in sorted(FILES.items()):
+                    data = (ROOT / source).read_bytes()
+                    info = tarfile.TarInfo(dest)
+                    info.size = len(data)
+                    info.mode = 0o644
+                    info.mtime = 0
+                    tar.addfile(info, io.BytesIO(data))
+        os.replace(tmp, output)
     finally:
-        if tmp and tmp.exists():tmp.unlink()
+        if tmp and tmp.exists():
+            tmp.unlink()
 
 
-if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',required=True,type=Path);args=p.parse_args()
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output', required=True, type=Path)
+    args = parser.parse_args()
     package(args.output)
     print('Lab handoff bundle created. Install locked Composer dependencies before activation; no deployment performed.')

@@ -79,8 +79,12 @@ none skipped. Verdict: code and local handoff ready, with no remaining code
 blockers. This document update records that verdict; it does not certify live
 activation.
 
-Optional follow-ups from the review: decouple retention from GeoIP database
-loading; reject operational output paths that collide with internal state files;
-expose hourly retention failures independently of daily status. These are
-hardening opportunities, not prerequisites for this reviewed handoff. The lab
-must still verify every pending production item in the table above.
+The three follow-ups that review suggested are now implemented: retention opens
+only the private database (no country database, key or Composer dependencies),
+report paths must sit in the private `reports/` folder and may not alias any
+internal state, and `tools/analytics_ops.py check` fails when the hourly
+retention job has not succeeded for two hours. The collector also sheds load
+before expensive work (early rate rejection, a storage ceiling, a short lock
+budget for the download hook); `server/analytics/README.md` describes each. The
+test counts above refer to the reviewed commit. The lab must still verify every
+pending production item in the table above.

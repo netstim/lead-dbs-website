@@ -1,11 +1,10 @@
 # Privacy policy and imprint: draft for the lab's review
 
-**Not published and not legal advice.** The live privacy page (`content/privacy-policy/index.md`) is
-WordPress's default text. It describes comments, Gravatar, user accounts and login cookies, none of which the
-new site has, and leaves out what it does have. Below is a description of what the new site actually does,
-checked against the code, written as a privacy policy so it can replace that page once the lab (and, if
-needed, the institution's data-protection office) has reviewed it. Square brackets mark facts only Andy or
-the lab can supply.
+**Not published and not legal advice.** The site's privacy page (`content/privacy-policy/index.md`) describes
+only what the repository can confirm. Below is the fuller notice the launch needs, checked against the code,
+written so it can replace that page once the lab and the institution's data-protection office have reviewed
+it and supplied the facts in square brackets. Publishing an approved notice is a launch gate
+(docs/launch.md, The lab).
 
 ## Questions to settle first
 
@@ -22,6 +21,12 @@ the lab can supply.
    the software makes. That belongs in the software's documentation or here; decide where. [the lab]
 5. **Newsletter.** Is double opt-in on in the WordPress Newsletter plugin? Who can see the list?
    [whoever has WordPress access]
+6. **Legal bases.** This draft assumes legitimate interests (Art. 6(1)(f) GDPR) for server and download
+   logs. If the controller is a public body, that basis may not be available for its tasks; the
+   data-protection officer decides the basis for logs, download statistics and the software's optional
+   usage statistics. [the institution]
+7. **Retention.** Raw server and download logs, the inbox that receives form emails, and backups each
+   need a stated period. [Andy, the lab]
 
 ## Draft
 
@@ -67,9 +72,10 @@ When you request the FOCUS atlas, we receive your name, institution and email ad
 confirmation that you will use it for academic research only. We use them to send you the download link
 and to keep a record of who received the atlas under these terms (Art. 6(1)(b) GDPR). [Retention.]
 
-To keep out spam, the server counts submissions per connection for ten minutes. It stores only a
-one-way coded form of the IP address that changes every day, never the address itself, and deletes
-the count after two days.
+To keep out spam, the server counts submissions per connection for ten minutes. It stores only the
+times of the submissions under a keyed one-way code of the IP address that changes every day, never the
+address itself. This is still personal data in coded form. An hourly job deletes it within three days
+and an hour of the submission.
 
 Until the forms are switched on, the pages give an email address instead.
 

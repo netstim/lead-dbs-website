@@ -17,9 +17,17 @@ try {
     // recorded by the server integration that actually selected the response.
     if (($event['kind'] ?? '') !== 'access') throw new InvalidArgumentException('Server-only event.');
     LeadAnalytics\Collector::validate($event);
-    $result = lead_analytics_collector()->record($event, $_SERVER['REMOTE_ADDR'] ?? '', $_SERVER['HTTP_USER_AGENT'] ?? '');
-    http_response_code($result === 'rate_limited' ? 429 : 204);
-    if ($result === 'rate_limited') header('Retry-After: 60');
+    $result = lead_analytics_collector('collect')->record($event, $_SERVER['REMOTE_ADDR'] ?? '', $_SERVER['HTTP_USER_AGENT'] ?? '');
+    if ($result === 'rate_limited') {
+        header('Retry-After: 60');
+        http_response_code(429);
+    } elseif ($result === 'over_capacity') {
+        // Shed analytics at the storage ceiling; not logged per request (the access log shows the 503s).
+        header('Retry-After: 3600');
+        http_response_code(503);
+    } else {
+        http_response_code(204);
+    }
 } catch (InvalidArgumentException | JsonException $e) {
     http_response_code(400);
 } catch (Throwable $e) {

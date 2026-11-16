@@ -2,38 +2,25 @@
 declare(strict_types=1);
 namespace LeadAnalytics;
 
+use Closure;
 use DateTimeImmutable;
-use DateTimeZone;
 use InvalidArgumentException;
-use PDO;
-use RuntimeException;
+
+require_once __DIR__ . '/Storage.php';
 
 /** Private state only: no raw address, user agent, path or patient field is stored. */
 final class Collector
 {
-    private PDO $db;
+    private Storage $storage;
     private string $key;
-    private $countryLookup;
+    private Closure $countryLookup;
 
-    public function __construct(string $database, string $key, callable $countryLookup)
+    public function __construct(Storage $storage, string $key, callable $countryLookup)
     {
         if (strlen($key) < 32) throw new InvalidArgumentException('Key must have at least 32 random bytes.');
-        if (!is_dir(dirname($database))) throw new RuntimeException('Private storage is missing.');
+        $this->storage = $storage;
         $this->key = $key;
-        $this->countryLookup = $countryLookup;
-        $previousMask = umask(0077);
-        try {
-        $this->db = new PDO('sqlite:' . $database, null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
-        $this->db->exec('PRAGMA busy_timeout=3000; PRAGMA secure_delete=ON;');
-        $this->db->exec('CREATE TABLE IF NOT EXISTS events (
-          event_id TEXT PRIMARY KEY, day TEXT NOT NULL, hour INTEGER NOT NULL,
-          subject TEXT NOT NULL, kind TEXT NOT NULL, item TEXT NOT NULL,
-          app_version TEXT NOT NULL, runtime_version TEXT NOT NULL,
-          country TEXT NOT NULL, outcome TEXT NOT NULL, traffic TEXT NOT NULL
-        ); CREATE INDEX IF NOT EXISTS events_day ON events(day);
-        CREATE TABLE IF NOT EXISTS buckets (bucket TEXT PRIMARY KEY, day TEXT NOT NULL, n INTEGER NOT NULL);
-        CREATE TABLE IF NOT EXISTS metrics (day TEXT NOT NULL, name TEXT NOT NULL, n INTEGER NOT NULL, PRIMARY KEY(day,name));');
-        } finally { umask($previousMask); }
+        $this->countryLookup = Closure::fromCallable($countryLookup);
     }
 
     public static function validate(array $event): array
@@ -58,88 +45,41 @@ final class Collector
         return $event;
     }
 
-    private function metric(string $day, string $name): void
-    {
-        $stmt = $this->db->prepare('INSERT INTO metrics(day,name,n) VALUES(?,?,1) ON CONFLICT(day,name) DO UPDATE SET n=n+1');
-        $stmt->execute([$day,$name]);
-    }
-
+    /**
+     * Returns accepted, duplicate, rate_limited or over_capacity. The two rejections that need no
+     * write are decided before the country lookup and without the SQLite write lock; they are not
+     * counted in the metrics table, which would otherwise grow under the load being shed.
+     */
     public function record(array $event, string $address, string $agent, ?DateTimeImmutable $now = null): string
     {
         $event = self::validate($event);
         if (filter_var($address, FILTER_VALIDATE_IP) === false) throw new InvalidArgumentException('Invalid remote address.');
-        $now = ($now ?? new DateTimeImmutable('now', new DateTimeZone('UTC')))->setTimezone(new DateTimeZone('UTC'));
+        if ($this->storage->overCapacity()) {
+            return 'over_capacity';
+        }
+        $now = Storage::utc($now);
         $day = $now->format('Y-m-d');
         $subject = hash_hmac('sha256', $day . ':' . bin2hex(inet_pton($address)), $this->key);
         $bucket = hash_hmac('sha256', $now->format('Y-m-d H:i') . ':' . $subject, $this->key);
+        if ($this->storage->requestsInBucket($bucket) >= Storage::RATE_LIMIT_PER_MINUTE) {
+            return 'rate_limited';
+        }
         // This is a user-agent declaration, not independently verified bot identity.
-        $traffic = preg_match('/bot|crawler|spider|headless/i', substr($agent,0,512)) ? 'declared_automation' : 'unclassified';
+        $traffic = preg_match('/bot|crawler|spider|headless/i', substr($agent, 0, 512)) ? 'declared_automation' : 'unclassified';
         $country = ($this->countryLookup)($address);
         if (!is_string($country) || !preg_match('/^[A-Z]{2}$/D', $country)) $country = 'ZZ';
-        $this->db->exec('BEGIN IMMEDIATE');
-        try {
-            $this->metric($day, 'received');
-            $stmt = $this->db->prepare('INSERT INTO buckets(bucket,day,n) VALUES(?,?,1) ON CONFLICT(bucket) DO UPDATE SET n=n+1 RETURNING n');
-            $stmt->execute([$bucket,$day]);
-            $requests = (int)$stmt->fetchColumn();
-            $stmt->closeCursor();
-            if ($requests > 60) {
-                $this->metric($day, 'rate_limited');
-                $this->db->exec('COMMIT');
-                return 'rate_limited';
-            }
-            $stmt = $this->db->prepare('INSERT OR IGNORE INTO events VALUES(?,?,?,?,?,?,?,?,?,?,?)');
-            $stmt->execute([$event['event_id'],$day,(int)$now->format('H'),$subject,$event['kind'],$event['item'],$event['app_version'],$event['runtime_version'],$country,$event['outcome'],$traffic]);
-            $result = $stmt->rowCount() ? 'accepted' : 'duplicate';
-            $this->metric($day, $result);
-            $this->db->exec('COMMIT');
-            return $result;
-        } catch (\Throwable $e) {
-            $this->db->exec('ROLLBACK');
-            throw $e;
-        }
-    }
-
-    /** Erases pseudonymous event state beyond retention; keep aggregate health counters for 90 days. */
-    public function retain(?DateTimeImmutable $now = null): array
-    {
-        $now = ($now ?? new DateTimeImmutable('now', new DateTimeZone('UTC')))->setTimezone(new DateTimeZone('UTC'));
-        $counts = [];
-        $this->db->beginTransaction();
-        try {
-            foreach (['events'=>31,'buckets'=>2,'metrics'=>90] as $table=>$days) {
-                $stmt = $this->db->prepare("DELETE FROM $table WHERE day < ?");
-                $stmt->execute([$now->modify("-$days days")->format('Y-m-d')]);
-                $counts[$table] = $stmt->rowCount();
-            }
-            $this->db->commit();
-        } catch (\Throwable $e) { $this->db->rollBack(); throw $e; }
-        return $counts;
-    }
-
-    /** Private operational summary: no tokens, addresses or event IDs. */
-    public function health(): array
-    {
-        return ['schema'=>1, 'last_event_day'=>$this->db->query('SELECT MAX(day) FROM events')->fetchColumn() ?: null,
-          'events_retained'=>(int)$this->db->query('SELECT COUNT(*) FROM events')->fetchColumn(),
-          'counters'=>$this->db->query('SELECT day,name,n FROM metrics ORDER BY day,name')->fetchAll(PDO::FETCH_ASSOC)];
-    }
-
-    /** Export closed UTC days only. Separate series from legacy server-clock data. */
-    public function aggregate(string $cutoff): array
-    {
-        $date = DateTimeImmutable::createFromFormat('!Y-m-d', $cutoff, new DateTimeZone('UTC'));
-        if (!$date || $date->format('Y-m-d') !== $cutoff || $cutoff >= gmdate('Y-m-d')) throw new InvalidArgumentException('Cutoff must be a completed UTC day.');
-        $queries = [
-          'access' => "SELECT day,country,COUNT(*) AS n FROM (SELECT day,hour,subject,MIN(country) AS country FROM events WHERE kind='access' AND day<=? GROUP BY day,hour,subject) GROUP BY day,country ORDER BY day,country",
-          'tools' => "SELECT day,item,COUNT(*) AS n FROM (SELECT DISTINCT day,hour,subject,item FROM events WHERE kind='access' AND day<=?) GROUP BY day,item ORDER BY day,item",
-          'download_requests' => "SELECT day,item,country,COUNT(*) AS n FROM (SELECT day,subject,item,MIN(country) AS country FROM events WHERE kind='download' AND outcome IN ('redirect','file_response') AND traffic='unclassified' AND day<=? GROUP BY day,subject,item) GROUP BY day,item,country ORDER BY day,item,country",
-          'outcomes' => "SELECT day,kind,outcome,traffic,COUNT(*) AS n FROM events WHERE day<=? GROUP BY day,kind,outcome,traffic ORDER BY day,kind,outcome,traffic"
-        ];
-        $out = ['schema'=>1,'timezone'=>'UTC','cutoff'=>$cutoff,'series'=>[]];
-        foreach ($queries as $name=>$query) {
-            $stmt=$this->db->prepare($query);$stmt->execute([$cutoff]);$out['series'][$name]=$stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
-        return $out;
+        return $this->storage->record([
+            'event_id' => $event['event_id'],
+            'day' => $day,
+            'hour' => (int) $now->format('H'),
+            'subject' => $subject,
+            'kind' => $event['kind'],
+            'item' => $event['item'],
+            'app_version' => $event['app_version'],
+            'runtime_version' => $event['runtime_version'],
+            'country' => $country,
+            'outcome' => $event['outcome'],
+            'traffic' => $traffic,
+        ], $bucket);
     }
 }

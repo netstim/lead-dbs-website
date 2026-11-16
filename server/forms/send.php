@@ -6,9 +6,11 @@ declare(strict_types=1);
 // page to a browser without script:
 //   200 sent, 400 a field is missing or wrong, 403 posted from another site, 405 not a POST,
 //   413 too large, 415 not a form, 429 too many from one address, 503 could not be passed on.
+// A 400 for one field names it in the JSON reply ("field") and says what to fix.
 ini_set('display_errors', '0');
 require_once __DIR__ . '/FormHandler.php';
 
+use LeadForms\FieldError;
 use LeadForms\FormHandler;
 
 header('Cache-Control: no-store');
@@ -19,15 +21,17 @@ $wantsJson = str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json');
 $config = null;
 $form = is_string($_POST[FormHandler::FORM_FIELD] ?? null) ? $_POST[FormHandler::FORM_FIELD] : '';
 
-/** ends the request with a status and the sentence the visitor reads */
-function lead_forms_reply(int $status, string $text): never
+/** ends the request with a status and the sentence the visitor reads (and, for a 400, the field to fix) */
+function lead_forms_reply(int $status, string $text, ?string $field = null): never
 {
     global $wantsJson, $config, $form;
     http_response_code($status);
-    if ($status === 429) header('Retry-After: 600');
+    if ($status === 429) header('Retry-After: ' . ($config['window'] ?? 600));
     if ($wantsJson) {
         header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode(['ok' => $status === 200, 'message' => $text], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $reply = ['ok' => $status === 200, 'message' => $text];
+        if ($field !== null) $reply['field'] = $field;
+        echo json_encode($reply, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         exit;
     }
     header('Content-Type: text/html; charset=UTF-8');
@@ -46,30 +50,25 @@ function lead_forms_reply(int $status, string $text): never
     exit;
 }
 
-/** the private configuration; README.md describes its fields */
+/** the private configuration (README.md): LEAD_FORMS_CONFIG, or lead-forms/config.json beside the web root */
 function lead_forms_config(): array
 {
-    $path = getenv('LEAD_FORMS_CONFIG') ?: dirname((string) realpath($_SERVER['DOCUMENT_ROOT'] ?? '')) . '/lead-forms/config.json';
-    if (!is_readable($path)) throw new RuntimeException('Forms configuration unavailable.');
-    $config = json_decode((string) file_get_contents($path), true, 8, JSON_THROW_ON_ERROR);
-    foreach (array_keys(FormHandler::FORMS) as $id) {
-        if (!FormHandler::isEmail($config['recipients'][$id] ?? '')) throw new RuntimeException('Forms recipient missing.');
-    }
-    if (!FormHandler::isEmail($config['from'] ?? '')) throw new RuntimeException('Forms sender missing.');
-    foreach (['rate_dir', 'rate_key', 'site'] as $key) {
-        if (!is_string($config[$key] ?? null) || $config[$key] === '') throw new RuntimeException('Forms configuration incomplete.');
-    }
-    $root = realpath($_SERVER['DOCUMENT_ROOT'] ?? '') ?: null;
-    $private = [$path, $config['rate_dir']];
-    if (($config['delivery'] ?? 'mail') === 'outbox') $private[] = $config['outbox'] ?? '';
-    foreach ($private as $p) {
-        $resolved = realpath($p) ?: '';
-        if ($resolved === '' || $resolved[0] !== '/') throw new RuntimeException('Forms private path missing.');
-        if ($root && ($resolved === $root || str_starts_with($resolved, $root . '/'))) {
-            throw new RuntimeException('Forms private files must be outside the document root.');
-        }
-    }
-    return $config;
+    $root = $_SERVER['DOCUMENT_ROOT'] ?? '';
+    $path = getenv('LEAD_FORMS_CONFIG') ?: dirname((string) realpath($root)) . '/lead-forms/config.json';
+    return FormHandler::config($path, $root !== '' ? $root : null);
+}
+
+/** what the visitor should fix, for the field a FieldError names */
+function lead_forms_field_message(FieldError $error): string
+{
+    return match ([$error->field, $error->problem]) {
+        ['name', 'missing'] => 'Enter your name.',
+        ['email', 'missing'] => 'Enter your email address.',
+        ['email', 'invalid'] => 'Enter a valid email address.',
+        ['message', 'missing'] => 'Enter your message.',
+        ['academic', 'missing'] => 'Confirm that FOCUS will be used for academic research only.',
+        default => 'Check the required fields and email address, then send again.',
+    };
 }
 
 /** hands the email over for delivery: to PHP's mail(), or (for tests) into a folder */
@@ -110,20 +109,37 @@ try {
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 if ($origin !== '' && !in_array($origin, $config['origins'] ?? [], true)) lead_forms_reply(403, $failed);
 
-// a bot filled the field people never see: answer as if sent, send nothing
-if (($_POST[FormHandler::TRAP] ?? '') !== '') lead_forms_reply(200, 'Thanks, it’s sent.');
+$sent = $form === 'downloadfocus'
+    ? 'Request sent. The team will email you the download link.'
+    : 'Message sent. We’ll reply by email.';
+
+// a bot filled the field people never see: answer exactly as if sent, send nothing
+if (($_POST[FormHandler::TRAP] ?? '') !== '') lead_forms_reply(200, $sent);
 
 try {
     $clean = FormHandler::validate($form, $_POST);
+} catch (FieldError $e) {
+    lead_forms_reply(400, lead_forms_field_message($e), $e->field);
 } catch (InvalidArgumentException $e) {
-    lead_forms_reply(400, 'Something in the form is missing or not valid. Please check it and send it again.');
+    lead_forms_reply(400, 'Check the required fields and email address, then send again.');
+}
+
+// the scheduled sweep (sweep.php) is what deletes old rate-limit files; this only helps it along
+if (random_int(1, 50) === 1) {
+    try {
+        FormHandler::sweep($config['rate_dir']);
+    } catch (RuntimeException $e) {
+        error_log('Lead forms: the rate-limit sweep failed.');
+    }
 }
 
 try {
-    if (random_int(1, 50) === 1) FormHandler::sweep($config['rate_dir']);
     if (FormHandler::overLimit($config['rate_dir'], $config['rate_key'], $_SERVER['REMOTE_ADDR'] ?? '',
-        (int) ($config['limit'] ?? 5), (int) ($config['window'] ?? 600))) {
-        lead_forms_reply(429, 'Too many messages from your connection. Please wait a few minutes and try again.');
+        $config['limit'], $config['window'])) {
+        $minutes = (int) ceil($config['window'] / 60);
+        lead_forms_reply(429, $minutes === 1
+            ? 'Too many requests. Try again in a minute.'
+            : "Too many requests. Try again in {$minutes} minutes.");
     }
     $mail = FormHandler::message($form, $clean, $config['recipients'][$form], $config['from'], $config['site']);
     if (!lead_forms_deliver($config, $mail)) throw new RuntimeException('Delivery refused.');
@@ -133,6 +149,4 @@ try {
     lead_forms_reply(503, $failed);
 }
 
-lead_forms_reply(200, $form === 'downloadfocus'
-    ? 'Thanks, your request is sent. The team will email you the download link.'
-    : 'Thanks, your message is sent. We’ll answer by email.');
+lead_forms_reply(200, $sent);

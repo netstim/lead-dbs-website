@@ -16,9 +16,10 @@ function lead_analytics_download(string $artifact, string $outcome, string $vers
         $bytes[8] = chr((ord($bytes[8]) & 0x3f) | 0x80);
         $hex = bin2hex($bytes);
         $id = substr($hex,0,8).'-'.substr($hex,8,4).'-'.substr($hex,12,4).'-'.substr($hex,16,4).'-'.substr($hex,20);
-        lead_analytics_collector()->record(['schema'=>1,'event_id'=>$id,'kind'=>'download','item'=>$artifact,
+        // The hook's short lock wait keeps a busy database from delaying the download.
+        $result = lead_analytics_collector('hook')->record(['schema'=>1,'event_id'=>$id,'kind'=>'download','item'=>$artifact,
           'app_version'=>$version,'outcome'=>$outcome], $_SERVER['REMOTE_ADDR'] ?? '', $_SERVER['HTTP_USER_AGENT'] ?? '');
-        return true;
+        return $result !== 'over_capacity'; // Shed at the storage ceiling, as collect.php does.
     } catch (Throwable $e) {
         error_log('Lead download analytics failed.');
         return false; // Analytics failure must not break a download or redirect.

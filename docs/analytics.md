@@ -100,6 +100,8 @@ retain it only in the restricted operational area under the same policy.
 Download aggregation is implemented in the existing importer: see
 [download-analytics.md](download-analytics.md). The collector/retention/maintenance
 package and opt-in MATLAB helpers are prepared for lab integration, not deployed.
+Its hourly retention job needs only PHP and the private event database, and an
+hourly check exits nonzero when retention lapses or storage nears its ceiling.
 See [server package](../server/analytics/README.md) and the honest whole-system
 status in [analytics-completion.md](analytics-completion.md). No persistent
 installation telemetry is added.

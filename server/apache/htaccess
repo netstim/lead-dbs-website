@@ -1,5 +1,6 @@
-# The web root's .htaccess for the Hugo site on www.lead-dbs.org (Apache, STRATO). NOT DEPLOYED.
-# tools/deploy.py puts it in place at the switch and keeps the old one for a rollback (docs/launch.md).
+# The web root's .htaccess for the Hugo site on www.lead-dbs.org (Apache 2.4, STRATO). NOT DEPLOYED.
+# tools/deploy.py package copies it into the package (filling in INLINE_SCRIPT_HASHES below), deploy puts it in
+# place at the switch and keeps the old one for a rollback (docs/launch.md).
 #
 # The Hugo site's files sit in the web root beside the WordPress installation, which stays for what only it
 # does: the newsletter (sign-up, confirmation, unsubscribe and archive links in sent emails are all
@@ -14,12 +15,39 @@ DirectoryIndex index.html index.php
 ErrorDocument 404 /404.html
 AddDefaultCharset utf-8
 
+# Private files are refused (403) in every folder, before any rule below: dot-files and dot-folders except
+# /.well-known/ (certificates, security.txt); Composer and npm metadata; config, environment and backup copies;
+# logs; the folders that hold dependencies, logs and backups; and PHP in WordPress's uploads. An <If> section is
+# applied after every other section, so a sub-folder's own .htaccess can't grant these again.
+<If "%{REQUEST_URI} =~ m#/\.(?!well-known/)# || %{REQUEST_URI} =~ m#/(vendor|node_modules|logs?|backups?)/#i || %{REQUEST_URI} =~ m#/(composer\.(json|lock)|auth\.json|package(-lock)?\.json|wp-config\.php.+|error_log|php_errorlog)$#i || %{REQUEST_URI} =~ m#(\.(bak|backup|old|orig|save|swp|swo|tmp|temp|dist|sql|sql\.gz|sqlite3?|db|log|ini|conf|cfg|inc|ya?ml)|~)$#i || %{REQUEST_URI} =~ m#^/wp-content/uploads/.*\.(php\d?|phtml|phar)$#i">
+  Require all denied
+</If>
+
 <IfModule mod_mime.c>
-  AddType application/rss+xml .xml
+  # every type the build serves, so nothing depends on the host's own list
+  AddType text/html .html
+  AddType text/css .css
+  AddType text/javascript .js
   AddType application/json .json
-  AddType font/woff2 .woff2
+  AddType application/manifest+json .webmanifest
+  AddType application/rss+xml .xml
+  AddType text/plain .txt
+  AddType image/svg+xml .svg
   AddType image/avif .avif
   AddType image/webp .webp
+  AddType image/png .png
+  AddType image/jpeg .jpg .jpeg
+  AddType image/gif .gif
+  AddType image/x-icon .ico
+  AddType font/woff2 .woff2
+  AddType video/mp4 .mp4
+  AddType video/webm .webm
+  AddType application/pdf .pdf
+  AddCharset utf-8 .css .js .json .webmanifest .xml .svg .txt
+  # the news feed is RSS; the sitemap is plain XML
+  <Files "sitemap.xml">
+    ForceType "application/xml; charset=utf-8"
+  </Files>
 </IfModule>
 
 <IfModule mod_rewrite.c>
@@ -27,13 +55,19 @@ AddDefaultCharset utf-8
   RewriteBase /
 
   # The bare domain to www, http to https. Andy: drop these two if STRATO already does it in the domain
-  # settings (a double redirect is harmless but slow).
+  # settings (a double redirect is harmless but slow). X-Forwarded-Proto only matters when STRATO ends TLS in a
+  # proxy in front of Apache; if it doesn't, delete that line (docs/launch.md, Server setup).
   RewriteCond %{HTTP_HOST} ^lead-dbs\.org$ [NC]
   RewriteRule ^ https://www.lead-dbs.org%{REQUEST_URI} [R=301,L,NE]
   RewriteCond %{HTTPS} !=on
   RewriteCond %{HTTP:X-Forwarded-Proto} !=https
   RewriteCond %{HTTP_HOST} ^www\.lead-dbs\.org$ [NC]
   RewriteRule ^ https://www.lead-dbs.org%{REQUEST_URI} [R=301,L,NE]
+
+  # The retired forum (bbPress) and author archives: one permanent redirect each, old query strings dropped.
+  # The build keeps redirect pages for the same addresses, for a server without these rules.
+  RewriteRule ^forums(/.*)?$ /helpsupport/forum/ [R=301,L,QSD]
+  RewriteRule ^author/[^/]+(/.*)?$ /about/team/ [R=301,L,QSD]
 
   # The folders that are not part of the build: as they are, before any rule below.
   RewriteRule ^(release|docs|forms|wp-content)(/|$) - [L]
@@ -66,18 +100,31 @@ AddDefaultCharset utf-8
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
-  # Fingerprinted files (their name changes when they change) are kept for a year; pages are checked each time.
-  <FilesMatch "\.[0-9a-f]{64}\.(css|js)$">
-    Header set Cache-Control "public, max-age=31536000, immutable"
-  </FilesMatch>
-  <FilesMatch "\.(woff2|avif|webp|png|jpe?g|gif|svg|ico|mp4)$">
+  # HTTPS only, and for a day at first: docs/launch.md says when to raise it. No includeSubDomains or preload
+  # until every subdomain of lead-dbs.org is known to answer on HTTPS. (Browsers ignore it over plain HTTP.)
+  Header always set Strict-Transport-Security "max-age=86400" "expr=%{HTTPS} == 'on' || %{HTTP:X-Forwarded-Proto} == 'https'"
+
+  # Pages are checked each time; other files are kept for 30 days.
+  <FilesMatch "\.(woff2|avif|webp|png|jpe?g|gif|svg|ico|mp4|webm|pdf)$">
     Header set Cache-Control "public, max-age=2592000"
   </FilesMatch>
-  <FilesMatch "\.(html|xml|json|txt)$">
+  <FilesMatch "\.(html|xml|json|txt|webmanifest)$">
     Header set Cache-Control "no-cache"
+  </FilesMatch>
+  # Files whose name changes when their content does (Hugo's fingerprints and processed images) are kept for a
+  # year. Last, so it wins over the two blocks above.
+  <FilesMatch "(\.[0-9a-f]{64}\.(css|js|json|woff2)|_hu_[0-9a-f]{8,}\.(webp|avif|png|jpe?g|gif))$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # The pages' Content Security Policy, reported and not yet enforced (docs/launch.md, Security headers). Only on
+  # the build's pages: WordPress and the PHP folders send their own. tools/deploy.py package puts the sha256 of
+  # each inline script of the build in place of INLINE_SCRIPT_HASHES.
+  <FilesMatch "\.html$">
+    Header set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' INLINE_SCRIPT_HASHES; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self'; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
   </FilesMatch>
 </IfModule>
 
 <IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript text/javascript application/json application/rss+xml application/xml image/svg+xml
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml text/javascript application/javascript application/json application/manifest+json application/rss+xml application/xml image/svg+xml
 </IfModule>
