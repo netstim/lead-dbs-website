@@ -8,7 +8,7 @@
 {{- if $e.register_url -}}
 {{- /* a registration page on another site (Zoom) ends in the site's ↗, as every link that leaves it */ -}}
 {{- $ext := strings.HasPrefix $e.register_url "http" }}
-<p class="event__register"><a class="{{ if .compact }}link{{ if $ext }} link--ext{{ end }}{{ else }}btn btn--primary{{ if $ext }} btn--ext{{ end }}{{ end }}" href="{{ partial "resolve-url.html" (dict "url" $e.register_url "page" .page) }}">Register{{ if and (not .terse) (strings.Contains (lower $e.where) "zoom") }} on Zoom{{ end }}{{ if $ext }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ end }}</a></p>
+<p class="event__register"><a class="{{ if .compact }}link{{ else }}btn btn--primary{{ end }}" href="{{ partial "resolve-url.html" (dict "url" $e.register_url "page" .page) }}">Register{{ if and (not .terse) (strings.Contains (lower $e.where) "zoom") }} on Zoom{{ end }}{{ if $ext }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ end }}</a></p>
 {{- else if and $e.online (not .terse) -}}
 <p class="event__note">Registration opens soon. The meeting link comes by email after registering; until then it is shared in the <a href="{{ $slack }}">user Slack</a>.</p>
 {{- else -}}

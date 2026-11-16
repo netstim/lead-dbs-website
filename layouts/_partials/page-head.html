@@ -1,11 +1,11 @@
 {{- /* The head of an inner page, on the page's own ground: the breadcrumb (breadcrumb.html), the title,
        under a news post its date, under a background article (front matter showDate: true) when it was
        written and last changed (archived: true adds that it is kept for the record). A page whose head
-       carries a render (page-head-render.html decides: hubs, showcases and First steps, or front matter
+       carries a render (page-head-render.html decides: hubs, showcases and Download, or front matter
        headRender) shows it in a wide rounded black panel under the words. The gallery (its black page is
        all renders) and Community (its workshop photo) never do. */ -}}
 {{ $post := and (eq .Section "news") .IsPage }}
-<header class="page-head">
+<header class="page-head{{ if or (eq .Layout "first-steps") (eq .RelPermalink ("helpsupport/" | relURL)) }} page-head--docs{{ end }}">
   <div class="wrap">
     {{ partial "breadcrumb.html" . }}
     <h1>{{ partial "nobreak.html" .Title }}</h1>

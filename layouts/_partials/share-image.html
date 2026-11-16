@@ -1,15 +1,4 @@
-{{- /* The picture a link preview shows (head.html: og:image, twitter:image), always 1200 × 630, and its alt.
-       In order:
-         front matter share     a file next to the page, or a path under assets/ ("images/renders/x.jpg")
-         a news post's image    its teaser (front matter image)
-         a manual page          a card made at build time: the page's title, its chapter group, the logo
-         otherwise              the site's picture, assets/images/share.jpg
-       A wide picture (1.5:1 or wider) is cut to 1200 × 630 around its centre. A taller one (a flyer, a square
-       figure) is not cut: it stands whole on the right of a white card, the page's title on the left, the
-       same card as the manual's. The alt: front matter shareAlt, else a flyer's alt, else the page's title.
-       The card's type is Inter (assets/fonts/inter-share-*.ttf: static instances of the site's Inter, made
-       for images.Text, which reads TrueType only; licence static/fonts/OFL-inter.txt).
-       Returns dict "img" (the resource) "alt". */ -}}
+{{- /* Returns {img, alt}, 1200×630. Explicit share, news image, generated manual/flyer card, then site fallback. images.Text requires TrueType; see docs/design.md for Inter provenance. */ -}}
 {{- $p := . -}}
 {{- $own := false -}}
 {{- with .Params.share }}{{ $own = or ($p.Resources.GetMatch .) (resources.Get .) }}{{ if not $own }}{{ errorf "%s: share picture %q is neither next to the page nor under assets/" $p.File.Path . }}{{ end }}

@@ -58,22 +58,14 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .home-hero h1 { font-size: var(--t-h1); font-weight: 400; line-height: 1.04; letter-spacing: -0.04em; }
 .home-hero .hero__lead { margin-top: var(--s-5); max-width: 40ch; font-size: var(--t-lead); line-height: 1.5; letter-spacing: -0.008em; color: rgb(255 255 255 / .72); }
 /* the actions */
-.home-hero .btn-row { margin-top: var(--s-6); gap: var(--s-2); }
+.home-hero .btn-row { margin-top: var(--s-6); }
 .home-hero .btn { border-radius: var(--r-pill); font-weight: 500; }
 .home-hero .btn--primary { padding-inline: 22px 18px; background: var(--on-render); color: #111315; }
 .home-hero .btn--primary:hover { background: rgb(255 255 255 / .86); }
-.home-hero .btn--secondary { padding-inline: 20px 16px; background: rgb(255 255 255 / .12); color: var(--on-render); text-decoration: none; }
-.home-hero .btn--secondary:hover { background: rgb(255 255 255 / .2); }
+/* the second action is the site's plain underlined link, in white on the black */
+.home-hero .btn--secondary { color: var(--on-render); }
 .home-hero .btn .m-arrow { transition: transform var(--t-in) var(--ease); }
 .home-hero .btn:hover .m-arrow { transform: translateX(2px); }
-.home-hero .btn--secondary.hero__manual { padding-inline: var(--s-4); background: none; color: rgb(255 255 255 / .7); }
-.home-hero .btn--secondary.hero__manual:hover { background: none; color: var(--on-render); }
-.home-hero .hero__manual::after { content: none; }
-.home-hero .hero__manual .ext-mark { margin-left: 2px; opacity: .7; font-weight: 400; }
-@media (max-width: 639px) {
-  .home-hero .btn-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); }
-  .home-hero .btn-row > .btn--primary { grid-column: 1 / -1; }
-}
 /* the facts: short parts on one line, each kept whole and parted by a dot. Every part starts with its
    dot, the list starts one dot to the left and clips that strip, so a line never starts with a dot. */
 .hero__proof { --dot: 1.3em; list-style: none; margin: 0 0 0 calc(-1 * var(--dot)); padding: 0; display: flex; flex-wrap: wrap; gap: 0;
@@ -145,10 +137,8 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
   .home-hero__text { order: -1; margin: 0; padding: calc(var(--s-6) + var(--s-2)) var(--gut) 0; text-align: center; }
   .home-hero h1 { font: 600 var(--t-h1)/1 var(--font-display); letter-spacing: var(--display-tracking-xl); text-wrap: balance; }
   .home-hero .hero__lead { max-width: 300px; margin: var(--s-5) auto 0; font: 400 var(--t-doc)/1.53 var(--font-text); letter-spacing: 0; text-wrap: balance; }
-  .home-hero .btn-row { grid-template-columns: minmax(0, 1fr); margin-top: var(--s-6); gap: calc(var(--s-1) * 2.5); }
-  .home-hero .btn-row > .btn { padding-inline: var(--s-5); }
-  .home-hero .btn-row > .btn--secondary { border-color: color-mix(in srgb, var(--on-render) 15%, transparent); background: color-mix(in srgb, var(--on-render) 4%, transparent); }
-  .home-hero .btn .m-arrow, .home-hero .hero__manual { display: none; }
+  .home-hero .btn-row { margin-top: var(--s-6); gap: var(--s-1); }
+  .home-hero .btn-row > .btn--primary { padding-inline: var(--s-5); }
 
   /* the release: a 32px chip (a 44px target), a coral dot, the version, "Release notes" muted, a round arrow */
   .home-chip { margin: 0 0 var(--s-5); }

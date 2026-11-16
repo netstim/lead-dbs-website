@@ -13,7 +13,7 @@
 <main id="top" class="manual{{ if $home }} manual--home{{ end }}">
   <aside class="manual-nav" aria-label="Manual chapters">
     <div class="manual-mobile-bar"><button class="manual-menu" aria-controls="manual-drawer" aria-expanded="false">{{ partial "manual-icon.html" "menu" }}<span>Chapters</span></button>{{ if $tocItems }}<button class="manual-sections" aria-controls="manual-contents" aria-expanded="false">On this page {{ partial "manual-icon.html" "chevron" }}</button>{{ end }}</div>
-    <div class="manual-nav__fold">
+    <details class="manual-nav__fold"><summary>Browse chapters</summary>
       <nav class="manual-nav__tree" aria-label="Chapters">
         {{ range $groups }}
         {{ $landing := site.GetPage (printf "/manual/%s" .id) }}
@@ -23,7 +23,7 @@
         </section>
         {{ end }}
       </nav>
-    </div>
+    </details>
   </aside>
   <div class="manual-page">
   <div class="manual-body">
@@ -34,12 +34,12 @@
     <header class="manual-head">
       <h1>{{ .Title }}</h1>
       {{ with .Params.manual_lead }}<p>{{ . }}</p>{{ end }}
-      {{ if not (or $home $isGroupPage) }}<div class="manual-actions"><button class="manual-copy" data-copy-url aria-label="Copy page link">{{ partial "manual-icon.html" "link" }}<span data-copy-label>Copy link</span></button><a href="https://github.com/netstim/lead-dbs-website/edit/main/content/{{ .File.Path }}">{{ partial "manual-icon.html" "edit" }}Edit on GitHub</a></div>{{ end }}
+      {{ if not (or $home $isGroupPage) }}<div class="manual-actions"><button class="manual-copy" data-copy-url hidden aria-label="Copy page link">{{ partial "manual-icon.html" "link" }}<span data-copy-label>Copy link</span></button><a href="https://github.com/netstim/lead-dbs-website/edit/main/content/{{ .File.Path }}">{{ partial "manual-icon.html" "edit" }}Edit on GitHub</a></div>{{ end }}
     </header>
     {{ if and (not $home) $tocItems }}{{ partial "manual-toc.html" (dict "page" . "variant" "top") }}{{ end }}
     {{ if $home }}{{ partial "manual-start.html" . }}{{ end }}
     {{ if $isGroupPage }}{{ partial "manual-cards.html" $group.chapters }}{{ else }}
-    <article class="prose manual-prose">{{ .Content }}</article>
+    {{ with .Content }}<article class="prose manual-prose">{{ . }}</article>{{ end }}
     {{ with $entry }}{{ with .children }}<section class="manual-section-pages" aria-labelledby="in-this-section"><h2 id="in-this-section">In this section</h2>{{ partial "manual-cards.html" . }}</section>{{ end }}{{ end }}
     {{ end }}
     {{ if ge $index 0 }}<nav class="manual-pagination" aria-label="Previous and next chapter">

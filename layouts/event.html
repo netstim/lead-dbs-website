@@ -1,15 +1,5 @@
 {{ define "main" }}
-{{- /* Every event page (front matter layout: event, event: an id of data/events.yaml; flyer: a file next to
-       the page and its alt; host: {name, url}). One opening for every width: the breadcrumb, then the
-       title, the page's text (one or two lines), the facts as hairline rows (date with its countdown,
-       time, place, host, registration) and the actions; the real flyer beside them from 768px, above
-       them on a narrower screen. The actions: Register (or, while registration is closed, the site's one
-       way to follow updates, partial updates.html) and Add to calendar. Once the event is over, a line
-       that says when it took place replaces them; the build decides by its own time, and between two
-       builds assets/js/main/events.js swaps the two by the visitor's clock ([data-ev-live] hidden,
-       [data-ev-over-note] shown). The id #register is linked from other pages: the actions or that line
-       carry it. The page ends with "Related" (front matter next) or, by default, All events and the
-       other upcoming events. */ -}}
+{{- /* Event detail. Keep #register stable; exclusive end times come from events/list.html. */ -}}
 {{- $page := . -}}
 {{- $ev := false -}}
 {{- $all := partial "events/list.html" . -}}
@@ -45,7 +35,7 @@
           {{- if not $ev.over }}
           <p class="btn-row ev-head__actions" id="register" data-ev-live data-ev-ends="{{ $ev.iso_ends }}">
             {{- with $e.register_url }}
-            <a class="btn btn--primary{{ if $ext }} btn--ext{{ end }}" href="{{ partial "resolve-url.html" (dict "url" . "page" $page) }}">Register{{ if $ext }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ end }}</a>
+            <a class="btn btn--primary" href="{{ partial "resolve-url.html" (dict "url" . "page" $page) }}">Register{{ if $ext }}<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span>{{ end }}</a>
             {{- else }}
             <a class="btn btn--primary" href="{{ $up.href }}">{{ $up.label }}</a>
             {{- end }}

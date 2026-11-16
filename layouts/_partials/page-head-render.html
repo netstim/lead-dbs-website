@@ -1,6 +1,6 @@
 {{- /* The render of an inner page's head: the scene of the menu group the page belongs to (partial
        nav-place.html, the place the breadcrumb shows), not of its folder; no scene is used by two groups.
-       Which pages carry one: the pages one comes to look around (page types hub and showcase, First steps,
+       Which pages carry one: the pages one comes to look around (page types hub and showcase, and
        Download); a doc, event or task page opens with its title and its task instead. Front matter
        headRender: true or false overrides that for one page.
        Each scene fills its band: a render whose subject spans its frame, or a render cut to its subject
@@ -9,7 +9,7 @@
        height, for a subject a wide band would cut (the fibre bundles of About). The key is the group's
        menu identifier, or its name where it has none. Decorative (alt=""); WebP copies 640, 1200 and
        1800 px wide. The one picture at the top of the page, so it is fetched first (fetchpriority). */ -}}
-{{- $on := in (slice "hub" "showcase" "first-steps" "download") (.Layout | default "doc") -}}
+{{- $on := in (slice "hub" "showcase" "download") (.Layout | default "doc") -}}
 {{- if isset .Params "headrender" }}{{ $on = .Params.headRender }}{{ end -}}
 {{- $scenes := dict
     "features"  (dict "file" "head-features.jpg" "crop" (slice 1300 240 3100 1440) "focus" "50% 38%")

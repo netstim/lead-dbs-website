@@ -157,3 +157,25 @@ excerpts. These tests run automatically in the existing pull-request and pre-dep
 workflows. They complement the full-site desktop/mobile light/dark layout and asset checks.
 Visual resemblance and editorial quality still require rendered review; passing lint is
 not a substitute for that judgment.
+
+Share cards use Inter 4.001 (`git-66647c0bb`, recorded in each TTF name table), instanced at
+weights 500 and 600 and `opsz=32` from the served Latin subset,
+`static/fonts/inter-latin-var.woff2` (`@fontsource-variable/inter` 5.2.5). The original notice from
+https://github.com/rsms/inter/blob/66647c0bb/LICENSE.txt accompanies both `assets/fonts/` and
+`static/fonts/`. Reproduce outside Hugo with FontTools and Brotli:
+
+```sh
+fonttools ttLib.woff2 decompress static/fonts/inter-latin-var.woff2 -o /tmp/Inter.ttf
+fonttools varLib.instancer /tmp/Inter.ttf wght=500 opsz=32 --output=assets/fonts/inter-share-500.ttf
+fonttools varLib.instancer /tmp/Inter.ttf wght=600 opsz=32 --output=assets/fonts/inter-share-600.ttf
+```
+
+The resulting glyph outlines and horizontal metrics match the checked-in instances. No font build
+runs in Hugo.
+
+Docs and First steps open with the title and the task, without a render: they are the
+documentation entry, and an image there only delays the choice.
+Secondary actions stay plain links in both themes and at every breakpoint. A row without a
+`text` value uses the title-only layout and never reserves a description track.
+Supported browsers are current Chromium, Firefox and Safari with `:has()`, `:modal` and native
+`dialog`. Manual chapter navigation remains a native disclosure if its external script fails.

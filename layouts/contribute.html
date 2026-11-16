@@ -10,10 +10,10 @@
 <main id="top" class="page dl fs">
   {{ partial "page-head.html" . }}
 
-  <section class="wrap dl-sec" aria-label="Ways to contribute">
-    <div class="fs-lead">
+  <section class="wrap dl-sec co-open" aria-label="Ways to contribute">
+    <div class="fs-lead co-lead">
       {{ .Content }}
-      {{ with .Params.actions }}<p class="dl-step__actions co-actions">{{ range $k, $a := . }}{{ partial "contribute-link.html" (dict "a" $a "page" $page "class" (cond (eq $k 0) "btn btn--primary" "dl-more-link")) }}{{ end }}</p>{{ end }}
+      {{ with .Params.actions }}<p class="dl-step__actions co-actions">{{ range $k, $a := . }}{{ partial "contribute-link.html" (dict "a" $a "page" $page "class" (cond (eq $k 0) "btn btn--primary" "btn btn--secondary")) }}{{ end }}</p>{{ end }}
     </div>
     {{- /* the three ways: plain rows between hairlines, the title and its sentence, its links at the right */}}
     <ul class="co-ways">
@@ -41,7 +41,7 @@
       {{- range $n, $s := . }}
       <li><span><i>{{ add $n 1 }}</i>{{ $s.text | $page.RenderString }}</span>
         {{- with $s.command }}<code>{{ replace (. | htmlEscape) "/" "/<wbr>" | safeHTML }}</code><button type="button" class="fs-copy" data-copy-text="{{ . }}" hidden>Copy<span class="sr-only"> {{ . }}</span></button>{{ end -}}
-        {{- with $s.link }}<span class="co-setup__link">{{ partial "contribute-link.html" (dict "a" . "page" $page "class" "dl-more-link") }}</span>{{ end -}}
+        {{- with $s.link }}<span class="co-setup__link">{{ partial "contribute-link.html" (dict "a" . "page" $page "class" "link") }}</span>{{ end -}}
       </li>
       {{- end }}
     </ol>

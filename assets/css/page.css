@@ -252,3 +252,9 @@ img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md
 .toc--top[open] summary::after { rotate: 225deg; translate: 0 3px; }
 .toc--top nav { padding: 0 0 var(--s-3); }
 .prose .toc--top ol { padding: 0; list-style: none; }
+
+/* The documentation entry (Docs, First steps) opens with its title and goes straight to the task. */
+.page-head--docs + .doc-layout { padding-top: var(--head-gap); }
+.page-head--docs + .doc-layout .page-intro { margin-top: 0; margin-bottom: var(--head-gap); }
+.page-head--docs + .doc-layout .page-intro + .hub-section { margin-top: var(--head-gap); }
+.page-head.page-head--docs + .dl-sec { padding-top: var(--head-gap); }

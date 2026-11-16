@@ -79,10 +79,10 @@ import { leadFragment } from '../lib/fragment.js';
       }
     });
   });
-  // The phone layout (the bar, the folded rail) is drawn by CSS from the first paint (html.js, manual.css);
-  // the script only moves the tree between the rail and the drawer, so the article never moves.
+  // Keep the native chapter disclosure until relocation and handlers are ready.
   const update = () => {
     close();
+    fold.open = !mobile.matches;
     (mobile.matches ? body : fold).append(tree);
     if (!mobile.matches) {
       if (previousNavigation?.path === location.pathname && Number.isFinite(previousNavigation.scrollTop)) rail.scrollTop = previousNavigation.scrollTop;
@@ -91,6 +91,7 @@ import { leadFragment } from '../lib/fragment.js';
     }
   };
   update();
+  document.documentElement.classList.add('manual-ready');
   mobile.addEventListener('change', update);
   document.addEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') close();

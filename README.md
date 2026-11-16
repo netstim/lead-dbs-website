@@ -63,7 +63,8 @@ The right rail holds only **"On this page"**, when the page has three or more `#
 (`site.Params.tocMinHeadings`), sticky while the page is read; a shorter page has no rail. Below 1024px it
 folds under the title. `check-site.py` fails on an empty sidebar.
 
-Hubs, showcases and First steps open with their menu group's render under the title; every other page
+Hubs, showcases and Download open with their menu group's render under the title (the Docs hub opts out);
+every other page
 opens with its title and its task. Front matter `headRender: true` or `false` overrides that for one page
 (`layouts/_partials/page-head-render.html`).
 

@@ -295,8 +295,8 @@ html:not(.js) .manual-launch-tabs { display: none; }
   .manual-nav { position: relative; top: auto; height: auto; padding: 0 var(--s-4); border-right: 0; border-bottom: 1px solid var(--line); overflow: visible; }
   /* with script the rail is the sticky bar from the first paint; the tree waits in the drawer */
   html.js .manual-nav { position: sticky; top: var(--docs-top); z-index: 40; background: var(--bg); }
-  html.js .manual-mobile-bar { display: flex; }
-  html.js .manual-nav__fold, html.js .manual .toc--top { display: none; }
+  html.manual-ready .manual-mobile-bar { display: flex; }
+  html.manual-ready .manual-nav__fold, html.manual-ready .manual .toc--top { display: none; }
   .manual-nav__tree { max-height: 55dvh; overflow: auto; }
   .manual-drawer__body .manual-nav__tree { max-height: none; overflow: visible; }
   .manual-page { padding: 0 var(--s-4); }
@@ -316,3 +316,8 @@ html:not(.js) .manual-launch-tabs { display: none; }
   .manual-code__head [data-copy-label] { display: none; }
   .manual-code__tools .manual-code__copy { min-width: 2rem; }
 }
+
+.manual-start__resources { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); margin-block: var(--s-5) var(--s-6); }
+.manual-start__resources a { display: inline-flex; align-items: center; min-height: 44px; }
+.manual-nav__fold > summary { min-height: 48px; align-content: center; cursor: pointer; }
+@media (min-width: 768px) { .manual-nav__fold > summary { display: none; } .manual-nav__fold::details-content { display: block; } }

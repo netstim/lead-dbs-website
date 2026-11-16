@@ -4,13 +4,11 @@
 /* one caption style for the pictures of the gallery and the home page: --t-note, muted, at a readable
    measure; a figure from a paper adds its short citation as the caption's second line */
 .caption { margin: 0; font-size: var(--t-note); line-height: 1.5; color: var(--muted); max-width: 60ch; }
-.link--ext::after { content: none; }
-.link--ext .ext-mark { margin-left: .2em; color: var(--muted); }
-/* a button that leaves the site (the Zoom registration): the ↗ in place of the chevron */
-.btn--ext::after { content: none; }
-.btn--ext .ext-mark { margin-left: var(--s-2); color: inherit; opacity: .8; font-size: .9em; }
-/* a link to another site in the menus and the sidebar: a small arrow after the label */
+/* a link to another site (menus, footer, rows, buttons): the ↗ after its label */
 .ext-mark { display: inline-block; margin-left: 0.25em; font-size: 0.8em; color: var(--muted); }
+/* on a button or a .link it stands in the chevron's place (base.css), the flex gap before it */
+.btn > .ext-mark { margin-left: 0; color: inherit; opacity: .8; font-size: .9em; }
+.link > .ext-mark { margin-left: 0; }
 /* the citation box (partial cite-box.html), the same wherever a paper is to be cited: a white box with a
    hairline, its bar (format tabs, copy) over the reference or its BibTeX, the paper's further links under it;
    an optional label above. Compact: the stacked boxes of an atlas entry's Cite list. */
@@ -46,7 +44,7 @@
 .video-embed { position: relative; aspect-ratio: 16 / 9; margin: 0 0 1.4em; border-radius: var(--r-md); overflow: hidden; background: var(--render); max-width: 100%; }
 /* a video with a still is never wider than the still itself (640px at least), so a small imported frame
    is not blown up across a wide page */
-.prose > .video-embed--poster { max-width: min(100%, max(var(--poster-w, 100%), 640px)); }
+html .prose > .video-embed--poster { max-width: min(100%, var(--poster-w, 100%), 760px); }
 /* a picture's enlarge mark stays in view where there is no hover (touch screens) */
 @media (hover: none) { .img-zoom::after { opacity: .9; } }
 .video-embed > iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; margin: 0; }

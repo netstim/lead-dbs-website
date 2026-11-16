@@ -122,3 +122,9 @@ Run it with the production build as documented in the script header.
 The introduction keeps a concise research-use restriction above the first action, with
 the complete original notice in the adjacent disclosure. Both command tabs copy only
 the selected MATLAB command; without JavaScript, the Lead-DBS example remains visible.
+
+The landing page lists four workflow categories linked to the section overview pages from
+`data/manual.json`, followed by User Slack, Dependencies and Source code, then the MATLAB
+launch terminal. It draws no empty article when the landing page body is absent. On phones,
+chapter navigation starts as a native disclosure; only a successfully initialized manual bundle
+replaces it with the drawer toolbar. Copy link stays hidden when the clipboard API is unavailable.

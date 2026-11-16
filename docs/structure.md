@@ -41,8 +41,9 @@ page, change all of them; the address stays.
 
 **Hub pages** (Docs and help, Atlases and data, Community, About) list the pages of their menu group, in
 menu order, with the entry's `params.card` line from `hugo.toml`. The header's band shows that line too,
-unless the entry has `params.bandLine = false` (a name that explains itself: Contact, Events, Newsletter,
-the About pages); the hub keeps it. Docs, Atlases and About are of the type
+when present. Self-explanatory entries (the About pages, First steps and Walkthrough videos) have no
+`params.card`: hubs and bands show the name alone. `params.bandLine = false` (Contact, Events,
+Newsletter, Made with Lead-DBS) hides the line in the band only; the hub keeps it. Docs, Atlases and About are of the type
 `hub` (full width, no sidebar) and place the list with a shortcode: Docs with `hub-section` and `link-rows`,
 Atlases with `atlas-hub` (picture tiles with counts), About with `resource-index`; Community has its own
 template (`layouts/community.html`). A page's `description` is the text search engines show; keep it to 155

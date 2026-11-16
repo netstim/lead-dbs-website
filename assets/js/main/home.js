@@ -1,16 +1,6 @@
 import { showPlayState } from '../lib/play-state.js';
 
-// ------------------------------------------------------------------ the home page's endless grid of figures
-// Made with Lead-DBS (layouts/home.html): every figure of data/gallery.yaml in masonry columns that repeat
-// in both directions, so the grid never ends. Five columns make one period across, each column its own
-// period down (the figures in it, a share of its height lower than its neighbour). Only the tiles in
-// the frame are in the page, placed with transforms; leaving tiles are kept for reuse. Nothing is built
-// (no picture fetched) until the section comes near the screen. It drifts slowly until it is dragged
-// (mouse: both ways; a finger: sideways, so the page still scrolls), keeps its momentum after a throw,
-// and the arrow keys move it while it has focus. A click that did not drag opens the figure on /gallery/.
-// The drift holds while the pointer or the focus is on the grid; the round button beside it (and a drag
-// or an arrow key) stops it until the button is pressed again. Under reduced motion it does not drift
-// or glide (and the button stays hidden), but can still be dragged.
+// Virtualized figure grid: native vertical touch scrolling, optional drift and inertia.
 (() => {
   const grid = document.querySelector('[data-made-grid]');
   const plane = grid?.querySelector('.made-grid__plane');
@@ -76,13 +66,14 @@ import { showPlayState } from '../lib/play-state.js';
 
   let raf = 0, last = 0, near = false, built = false, dragging = false, drifting = !still.matches, held = false;
   const pause = document.querySelector('[data-made-pause]');
-  const stop = (on) => {
+  const setDrifting = (on) => {
     drifting = on;
     if (pause) showPlayState(pause, on, 'the figures');
   };
-  if (pause && !still.matches) {
-    pause.hidden = false;
-    pause.addEventListener('click', () => { stop(!drifting); kick(); });
+  if (pause) {
+    pause.hidden = still.matches;
+    showPlayState(pause, drifting, 'the figures');
+    pause.addEventListener('click', () => { setDrifting(!drifting); kick(); });
   }
   const hold = () => { held = grid.matches(':hover, :focus-within'); kick(); };
   ['pointerenter', 'pointerleave', 'focusin', 'focusout'].forEach((t) => grid.addEventListener(t, () => requestAnimationFrame(hold)));
@@ -131,7 +122,7 @@ import { showPlayState } from '../lib/play-state.js';
     moved = Math.max(moved, Math.hypot(e.clientX - start.x, start.finger ? 0 : e.clientY - start.y));
     if (!dragging) {
       if (moved < DRAG) return;
-      dragging = true; stop(false);
+      dragging = true; setDrifting(false);
       grid.classList.add('is-dragging');
       grid.setPointerCapture(e.pointerId);
     }
@@ -152,12 +143,16 @@ import { showPlayState } from '../lib/play-state.js';
     const d = { ArrowLeft: [1, 0], ArrowRight: [-1, 0], ArrowUp: [0, 1], ArrowDown: [0, -1] }[e.key];
     if (!d || !built) return;
     e.preventDefault();
-    stop(false);
+    setDrifting(false);
     if (still.matches) { ox += d[0] * 160; oy += d[1] * 160; draw(); return; }
     vx = d[0] * 1.1; vy = d[1] * 1.1;
     kick();
   });
-  still.addEventListener('change', () => { if (still.matches) { stop(false); vx = vy = 0; if (pause) pause.hidden = true; } });
+  still.addEventListener('change', () => {
+    if (still.matches) { setDrifting(false); vx = vy = 0; }
+    if (pause) pause.hidden = still.matches;
+    kick();
+  });
   let resized = 0;
   addEventListener('resize', () => {
     if (!built) return;

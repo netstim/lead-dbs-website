@@ -1,36 +1,5 @@
-// Walks through the site's interactive parts the way a visitor does, with the mouse, the keyboard and a
-// finger, and fails when one of them no longer works (check-browser.mjs only looks at the rendered pages).
-// In Chromium, with reduced motion unless a journey says otherwise:
-//   - the phone menu: the menu button opens the sheet (aria-expanded, the focus on its first word), Escape
-//     closes it and leaves the focus on the button, and the button closes it again;
-//   - the menu sheet by keyboard (820 and 390 px): Tab runs through the words, GitHub, Search, the theme
-//     button, Download and the menu button, then back to the first word; Shift+Tab runs the same way back;
-//   - the search: "/" and the header's button open the dialog with the focus in its box, a query lists
-//     results, Escape closes the dialog (the first Escape empties a box with text in it, as browsers do in
-//     a search field) and gives the focus back to where it was;
-//   - a dialog holds the page: with the search or the gallery's lightbox open the wheel does not scroll the
-//     page behind it, and closing it leaves the page where it was;
-//   - the atlas filter: a word narrows the catalogue and says how many match, a word nothing holds says so,
-//     and an empty box shows every entry again;
-//   - a dialog by keyboard: the download page's "Terms of use" opens with Enter and closes with Escape, the
-//     focus back on its button;
-//   - the home page with motion (prefers-reduced-motion: no-preference): the hero's lead and actions are
-//     fully visible at once (no fade that makes the main button look disabled), the video's button pauses
-//     it (or, where the video cannot play, no button shows and the poster stays), the quotes' pause button
-//     is not covered by "All quotes" and pauses them, the figure grid has a pause button that stops it;
-//   - a malformed address fragment (/manual/#%, a broken UTF-8 escape) breaks no script: the manual's
-//     Chapters button still opens the chapters;
-//   - without script: the phone menu opens as a target (#site-menu), the manual's chapters are on the page,
-//     and the videos are plain links to their sites.
-// Then a short smoke run in WebKit (Safari's engine): the phone menu, the manual's chapters and the search.
-// It is skipped, with a note, when Playwright's WebKit is not installed (npx playwright install webkit).
-// A script error on any of these pages fails the check too. Text geometry is measured after the fonts are in.
-//
-//     npm ci && npx playwright install chromium webkit   (the versions locked in package-lock.json)
-//     node .github/scripts/check-interactions.mjs public https://www.lead-dbs.org/
-//
-// The build is served from its folder on a local port; the second argument is its baseURL. CHROME_PATH runs
-// an installed Chrome instead of Playwright's Chromium.
+// Interactive journeys. Usage: node check-interactions.mjs <build folder> <baseURL>.
+// CHROME_PATH selects a local Chromium; CI requires WebKit.
 import { createServer } from 'node:http';
 import { readFile, realpath } from 'node:fs/promises';
 import { extname, join, normalize, sep } from 'node:path';
@@ -323,7 +292,7 @@ for (const view of [desktop, { width: 820, height: 1180, mobile: false }]) {
     await page.waitForTimeout(200);
     if (page.url() !== before) fail(`pressing the quotes' pause button leaves the page (${page.url()})`);
     if (await btn.getAttribute('aria-label') === label && await btn.getAttribute('aria-pressed') === pressed) fail('the quotes\' pause button changes neither its name nor aria-pressed');
-    if (!(await page.evaluate(() => [...document.querySelectorAll('.drift__track')].every((t) => getComputedStyle(t).animationPlayState === 'paused')))) fail('the quotes still move after their pause button');
+    if (!(await page.evaluate(() => [...document.querySelectorAll('.drift__track')].length > 0 && [...document.querySelectorAll('.drift__track')].every((t) => getComputedStyle(t).animationPlayState === 'paused')))) fail('the quotes still move after their pause button');
   }, { motion: 'no-preference' });
 }
 await journey('home with motion: the figure grid has a pause button that stops it', desktop, async (page, fail) => {
@@ -333,13 +302,58 @@ await journey('home with motion: the figure grid has a pause button that stops i
   // the button: any visible button of the figures' section whose name says pause
   const find = () => [...document.querySelectorAll('.made button, button[data-made-pause]')].find((b) => /pause/i.test(b.getAttribute('aria-label') || b.textContent) && b.checkVisibility());
   if (!(await until(page, find))) { fail('no visible "Pause figures" button by the figure grid'); return; }
+  await page.mouse.move(0, 0);
+  await page.evaluate(() => document.activeElement?.blur());
+  if (!(await until(page, () => document.querySelectorAll('.made-tile').length > 0))) { fail('no figure tiles'); return; }
+  const transforms = () => page.evaluate(() => [...document.querySelectorAll('.made-tile')].slice(0, 4).map(t => t.style.transform).join('|'));
+  const moving = await transforms();
+  await page.waitForTimeout(700);
+  if (moving === await transforms()) fail('figures never moved before pause');
   await (await page.evaluateHandle(find)).asElement().click();
+  if (await page.locator('[data-made-pause]').getAttribute('aria-label') !== 'Play the figures') fail('pause label did not change');
   await page.waitForTimeout(300);
   const at = () => page.evaluate(() => [...document.querySelectorAll('.made-tile')].slice(0, 4).map((t) => t.style.transform).join('|'));
   const a = await at();
   await page.waitForTimeout(1200);
   if (a !== await at()) fail('the figures still drift after "Pause figures"');
+  await page.locator('[data-made-pause]').click();
+  await page.mouse.move(0, 0);
+  await page.locator('[data-made-pause]').evaluate(b => b.blur());
+  await page.waitForTimeout(700);
+  if (a === await at()) fail('figures did not resume');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  if (!(await until(page, () => document.querySelector('[data-made-pause]').hidden))) { fail('reduced motion leaves pause visible'); return; }
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  if (!(await until(page, () => !document.querySelector('[data-made-pause]').hidden))) fail('Play control does not return');
+  const stopped = await at();
+  await page.waitForTimeout(700);
+  if (stopped !== await at()) fail('preference change restarted drift');
 }, { motion: 'no-preference' });
+
+await journey('manual with blocked bundle: native chapters remain reachable', phone, async (page, fail) => {
+  await page.route('**/*.js', r => r.abort());
+  await page.goto(url(MANUAL), { waitUntil: 'load' });
+  await page.locator('.manual-nav__fold > summary').click();
+  if (!(await page.locator('.manual-nav__tree a').first().isVisible())) fail('fallback chapters are unavailable');
+});
+await journey('manual clipboard unavailable: no dead Copy link control', phone, async (page, fail) => {
+  await page.addInitScript(() => Object.defineProperty(navigator, 'clipboard', { value: undefined }));
+  await page.goto(url('manual/lead-dbs/step3-volume-registrations/checking-the-coregistration/'), { waitUntil: 'load' });
+  if (await page.locator('[data-copy-url]').isVisible()) fail('dead copy control is visible');
+});
+
+await journey('manual rejected clipboard: explicit failure feedback', phone, async (page, fail) => {
+  await page.addInitScript(() => Object.defineProperty(navigator, 'clipboard', { value: { writeText: () => Promise.reject(new Error('denied')) } }));
+  await page.goto(url('manual/lead-dbs/step3-volume-registrations/checking-the-coregistration/'), { waitUntil: 'load' });
+  await page.locator('[data-copy-url]').click();
+  if (!(await until(page, () => /could not|couldn.t|unable|failed/i.test(document.querySelector('[role="status"]')?.textContent || '')))) fail('copy rejection has no feedback');
+});
+
+await journey('home initially reduced: restoring motion exposes a stopped Play control', desktop, async (page, fail) => {
+  await page.goto(url(''), { waitUntil: 'load' });
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  if (!(await until(page, () => { const b = document.querySelector('[data-made-pause]'); return !b.hidden && b.getAttribute('aria-label') === 'Play the figures'; }))) fail('initially reduced grid has no stopped Play control');
+});
 
 // An address with a broken fragment must not stop the page's script.
 for (const hash of ['#%', '#%E0%A4%A']) {
@@ -363,6 +377,7 @@ await journey('without script: the phone menu opens as #site-menu', phone, async
 }, { script: false });
 await journey('without script: the manual\'s chapters are on the page', phone, async (page, fail) => {
   await page.goto(url(MANUAL), { waitUntil: 'load' });
+  await page.locator('.manual-nav__fold > summary').click();
   const n = await page.evaluate(() => [...document.querySelectorAll('.manual-nav a[href*="/manual/"], noscript ~ * a[href*="/manual/"]')].filter((a) => a.checkVisibility()).length);
   if (n < 10) fail(`only ${n} chapter links are visible without script`);
 }, { script: false });
@@ -374,7 +389,7 @@ await journey('without script: the videos are links to their sites', desktop, as
 
 // A short run in WebKit, Safari's engine: the parts most likely to differ between engines.
 let wk = null;
-try { wk = await webkit.launch(); } catch { console.log('skip WebKit smoke: Playwright\'s WebKit is not installed (npx playwright install webkit)'); }
+try { wk = await webkit.launch(); } catch (error) { if (process.env.CI || !/Executable doesn't exist/.test(error.message)) throw error; console.log('skip WebKit smoke: executable missing'); }
 if (wk) {
   await journey('WebKit: the phone menu opens and Escape closes it', phone, async (page, fail) => {
     await page.goto(url(''), { waitUntil: 'load' });

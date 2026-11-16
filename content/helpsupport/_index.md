@@ -33,6 +33,8 @@ next:
   - {page: "/events/"}
   - {page: "/develop/"}
 layout: "hub"
+# the documentation entry opens with its title and the task, without the group's render
+headRender: false
 ---
 
 <div class="page-intro"><div class="page-intro__text">
