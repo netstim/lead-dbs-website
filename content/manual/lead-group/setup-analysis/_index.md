@@ -1,6 +1,6 @@
 ---
 {
-  "title": "Setup analysis",
+  "title": "Set up an analysis",
   "linkTitle": "Set up an analysis",
   "layout": "manual",
   "manual_group": "lead-group",
@@ -46,7 +46,7 @@ After you open Lead Group by typing `lead group` in MATLAB, follow these steps t
 
    ![Fig. 5.5](manual/8066028089bc9021.png "Fig. 5.5")
 
-6. You can assign groups to patients. Select the patient and assign a group number by using the **+** and **-** buttons under the **Group** column (fig. 6.1). It is possible to select multiple patients at once and change the group at the same time. It is possible to assign colors to each group by selecting **Group Colors** (6.2). This will later be helpful for better visualization.
+6. You can assign groups to patients. Select the patient and assign a group number by using the **+** and **-** buttons under the **Group** column (fig. 6.1). It is possible to select multiple patients at once and change the group at the same time. It is possible to assign colours to each group by selecting **Group Colors** (6.2). This will later be helpful for better visualization.
 
    ![Group column and Group Colors button](manual/f9445bb18a01363b.png)
 

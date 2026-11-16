@@ -15,7 +15,7 @@
 
 ## Reconstruction methods {#context}
 
-You are almost done! Once volumes are coregistered and optionally normalized, you can run **Pre-reconstruct** of the electrode trajectories and **Localize DBS electrodes**, which is the actual electrode reconstruction step.
+After coregistration and optional normalization, run **Pre-reconstruct**, then inspect and refine the result with **Localize DBS electrodes**.
 
 ## Reconstruct electrode trajectories {#how-to}
 
@@ -46,7 +46,7 @@ You are almost done! Once volumes are coregistered and optionally normalized, yo
 2. For easier adjustment, specific contacts can be selected and their changes checked in their respective transversal views. Contacts are selected by clicking the little **0** or **3** icon in the menu bar or by pressing `0` or `3` on the keyboard.
    * Pressing `0` selects the lower contact (Image 2, arrow 5).
    * Pressing `3` selects the upper contact (Image 2, arrow 4).
-3. With a specific contact selected, the arrow keys up, down, left and right adjust the position within the axial and coronal planes. The goal is to center the trajectory on the artifact (white in the CT image above).
+3. With a specific contact selected, the arrow keys up, down, left and right adjust the position within the axial and coronal planes. The goal is to centre the trajectory on the artifact (white in the CT image above).
 4. In the upper left corner, you can see the buttons which work the same way as the arrows and the keyboard commands with some additional functions (Image 2, arrow 5). If you move the cursor around and point at one of them, a short text explaining their function will appear.
 5. To detect the orientation of directional leads such as Boston Vercise Directional, see [Orientation of directional leads](/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/determining-the-orientation-of-directional-leads/) by Till Dembek.
 6. To save the adjustments and move to the next electrode, press the Space bar. To read more about how these reconstructions are stored, see [Reconstruction file](/manual/lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/reconstruction-file/).

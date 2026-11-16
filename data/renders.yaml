@@ -25,7 +25,7 @@ renders:
     alt: "The nuclei floating on black, with the electrodes of the nine patients descending into the subthalamic nucleus on both sides"
     caption: "The nine patients' electrodes and the nuclei without the MRI behind them."
   pathway-activation.jpg:
-    alt: "Example analysis on the Lead Tutor dataset: two electrodes with their stimulation volumes in blue and the activated fibre pathways in red and white"
+    alt: "Example analysis on the Lead Tutor dataset: two electrodes with modelled stimulation volumes in blue and predicted fibre pathway activation in red and white"
     caption: "Example Lead Tutor analysis with illustrative stimulation settings: two electrodes, modelled stimulation volumes (blue) and predicted fibre pathway activation."
   pathway-activation-2.jpg:
     alt: "Close-up of predicted pathway activation in an example Lead Tutor analysis"

@@ -139,12 +139,12 @@ N-Image represents the number of times the voxel was covered by VTAs from the da
 * Subcohorts can be created by selecting patients in the bottom window. This selection can be saved by selecting **Subcohorts** (Image 2, arrow 10) and selecting one of the options: **Create Subcohort from Selection** or **Create Subcohort from Inverse Selection**.
 * If the **Mirror Data** box is selected (Image 2, arrow 11), VTAs/Efields from one hemisphere will also be used for the second hemisphere (mirroring the effect).
 
-### Visualisation and thresholding {#3-visualisation--thresholding}
+### Visualization and thresholding {#3-visualisation--thresholding}
 
 ![Image 3. Sweetspot Explorer Visualization & Thresholds window.](manual/ee672788ce6396cb.png "Image 3. Sweetspot Explorer Visualization & Thresholds window.")
 
 * The generated sweet and sour spots can be visualized and further adjusted during **Visualization & Thresholding** (Image 1, red arrow 2). Specifically, this step allows thresholding of the generated maps based on a predefined alpha level and correction for multiple comparisons (Image 3, arrows 1&2).
-* Users can select to visualize voxels positively or negatively correlated with your selected dependent variable (Image 3, arrow 3) and change their color (Image 3, arrow 4).
+* Users can select to visualize voxels positively or negatively correlated with your selected dependent variable (Image 3, arrow 3) and change their colour (Image 3, arrow 4).
 * For more advanced post-hoc analysis, the option to export the generated maps in the form of NIfTI files is also available, by selecting **Export as NIfTI** (Image 3, arrow 5). These NIfTI images can then be visualized and processed in Slicer. For further information, consult [Sweet-sour spot](/manual/appendix/using-slicer/sweet-sour-spot/).
 * After users finish the selection of all settings, selecting **Refresh View** or alternatively, ticking the **Auto-Refresh** box will refresh the view automatically (Image 3, arrow 7).
 

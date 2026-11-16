@@ -34,7 +34,7 @@ Go for the new and shiny tool, OSS-DBS v2. This is the future anyway, the model 
 
 1. First make sure that no other MATLAB code is on your path except the base folder of Lead-DBS and the base folder of SPM. Retry and see if it works. If it does, great.
 2. Make sure you have the toolboxes (statistics, image processing and signal processing) installed which Lead-DBS generally needs.
-3. Make sure the Fortran libraries are installed (see [Adding Fortran dependencies for VTA modeling](/manual/appendix/troubleshooting-specific-help/adding-fortran-dependencies-for-vta-modeling/)).
+3. Make sure the Fortran libraries are installed (see [Adding Fortran dependencies for VTA modelling](/manual/appendix/troubleshooting-specific-help/adding-fortran-dependencies-for-vta-modeling/)).
 4. Change the VTA settings to use no atlas or the DISTAL Nano atlas under the **Visualization** step (see below).
 
 ![VTA settings — screenshot 1](manual/c283889907f4b6c7.png) ![VTA settings — screenshot 2](manual/0dec33da212e79fe.png)
@@ -43,7 +43,7 @@ Go for the new and shiny tool, OSS-DBS v2. This is the future anyway, the model 
 
 1. Delete the `headmodel.mat` files (for example, `headmodel1.mat`) under the `headmodel` directory, and re-run VTA reconstruction.
 2. Retry calculating the VTAs several times, even if it failed the first time (there are some non-deterministic components in the pipeline).
-3. If all fails, slightly reposition the electrodes (by sub-millimeters that still make the reconstruction accurate) using the **Reconstruction of electrode trajectories (optional)** module.
+3. If all fails, slightly reposition the electrodes (by sub-millimetres that still make the reconstruction accurate) using the **Reconstruction of electrode trajectories (optional)** module.
 4. If none of that solves the issue, set a breakpoint on line 135 in the file `ea_genvat_horn.m`. Select the **Calculate** button again to calculate a VTA. The code will stop at that line. Select the following line, right-click it and choose **Evaluate Selection in Command Window**:
 
    ```matlab

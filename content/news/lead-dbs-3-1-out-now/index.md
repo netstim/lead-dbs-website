@@ -7,7 +7,7 @@ image: "oss-dbs-v2.png"
 image_alt: "OSS-DBS v2: the electric field around a DBS electrode (left), and fibre tracts in red and blue next to an electrode (right)"
 ---
 
-While 3.0 had not been around for long, we are excited to announce the release of Lead-DBS v3.1, which Ningfei Li just pushed to our servers. This version brings many updates; its key feature is the integration of OSS-DBS v2.0, which is much faster, more lightweight and more powerful than v1.0.
+Lead-DBS 3.1, released by Ningfei Li, integrates OSS-DBS v2.0, updates WarpDrive and adds a built-in Python environment.
 
 Since a lot has changed, it may make sense to [download Lead-DBS again](/download/), or, in case you use GitHub to maintain your installation, to [download the data files](https://www.lead-dbs.org/release/download.php?id=data_pcloud) again and merge them into your current installation.
 
@@ -17,15 +17,15 @@ Since a lot has changed, it may make sense to [download Lead-DBS again](/downloa
 
 OSS-DBS v2.0 has been developed around the team of Ursula van Rienen at the University of Rostock.
 
-OSS-DBS employs heterogeneous, anisotropic and dispersive volume conductor modeling for an accurate estimation of the electric field. In turn, the field can be used to conduct pathway activation modeling using biophysical axon models. Version 2 offers significantly higher efficiency, simpler installation and more transparent code.
+OSS-DBS employs heterogeneous, anisotropic and dispersive volume conductor modelling for an accurate estimation of the electric field. In turn, the field can be used to conduct pathway activation modelling using biophysical axon models. Version 2 offers significantly higher efficiency, simpler installation and more transparent code.
 
 We would like to highlight and thank the main developers, Julius Zimmermann, Jan Philipp Payonk and Konstantin Butenko, for this tremendous effort. Further contributors include Johannes Reding, Joachim Schöberl, Shruthi Chakravarthy, Michael Loftus and Till Dembek.
 
-OSS-DBS v2.0 installs automatically within Lead-DBS using pip in our new conda environment (see below). It integrates with the DBS fiber filtering explorer and hence brings more biophysically plausible modeling to Lead-DBS and DBS network mapping.
+OSS-DBS v2.0 installs automatically within Lead-DBS using pip in our new conda environment (see below). It integrates with the DBS fiber filtering explorer and hence brings more biophysically plausible modelling to Lead-DBS and DBS network mapping.
 
 For the basic methodology, please refer to the [OSS-DBS v1 paper](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1008023); for an [application in a clinical context, see here](https://www.sciencedirect.com/science/article/pii/S2213158222002509). The code is on [GitHub](https://github.com/SFB-ELAINE/OSS-DBSv2).
 
-Limitations: advanced modeling assumes an understanding of the underlying parameters. At the time of release, testing on non-UNIX systems was still in progress.
+Limitations: advanced modelling assumes an understanding of the underlying parameters. At the time of release, testing on non-UNIX systems was still in progress.
 
 ## WarpDrive updates
 
@@ -35,7 +35,7 @@ The WarpDrive tool received multiple updates and refinements. It now features a 
 
 ## Built-in conda environment (using miniforge)
 
-Lead-DBS now comes with a built-in conda environment that allows seamless integration of Python packages. This brings the following tools, which are now available from within Lead-DBS:
+The built-in conda environment installs the following Python tools:
 
 - DBSegment ([Baniasadi 2023](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9842883/))
 - EasyReg ([Iglesias 2023](https://www.nature.com/articles/s41598-023-33781-0))

@@ -4,9 +4,9 @@
   "linkTitle": "Fiber Filtering Explorer",
   "layout": "manual",
   "manual_group": "connectomics",
-  "description": "Explore and filter fiber pathways in relation to stimulation and outcomes.",
+  "description": "Explore and filter fibre pathways in relation to stimulation and outcomes.",
   "source_url": "https://netstim.gitbook.io/leaddbs/connectomics/connectomic-analyses/fiber-filtering-explorer",
-  "manual_lead": "Explore and filter fiber pathways in relation to stimulation and outcomes."
+  "manual_lead": "Explore and filter fibre pathways in relation to stimulation and outcomes."
 }
 ---
 
@@ -14,7 +14,7 @@
 This page is currently under construction.
 {{% /manual-note %}}
 
-## How fiber filtering works {#context}
+## How fibre filtering works {#context}
 
 * Fiber Filtering Explorer serves to identify tracts associated with observed changes in clinical outcomes. Currently, the tool derives tracts from a structural connectome or using a pathway model.
 * The tool currently allows for three model setups: Stimulation volume based calculations, Electrical field based calculations and, the OSS-DBS approach for obtaining a pathway activation model.
@@ -23,10 +23,10 @@ This page is currently under construction.
   * The OSS-DBS strategy also applies two-sample t-tests by calculating binary tract activation using OSS-DBS. Then, the streamlines are weighted by the clinical outcome of patients touching and not touching the streamline.
 
 {{% manual-note "info" %}}
-Fiber Filtering Explorer helps us understand which specific fiber tracts are associated with maximal clinical improvement.
+Fiber Filtering Explorer helps us understand which specific fibre tracts are associated with maximal clinical improvement.
 {{% /manual-note %}}
 
-## Set up a fiber-filtering analysis {#how-to}
+## Set up a fibre-filtering analysis {#how-to}
 
 ### User interface {#1-user-interface}
 
@@ -34,7 +34,7 @@ Fiber Filtering Explorer helps us understand which specific fiber tracts are ass
 
 Fiber Filtering Explorer builds upon [Lead Group](/manual/lead-group/group-analyses-with-lead-dbs/). For this step, all the VTAs/E-fields have to be calculated (select the **Calculate stats & VTA** button in the Lead Group interface). Select the **Visualize 3D** button inside Lead Group and in the 3D viewer window, select the **Add fiber filtering analysis** button.
 
-{{< manual-toolbar-icon src="manual/2409508a5131f058.png" width="56" alt="Add fiber filtering analysis toolbar button" >}}
+{{< manual-toolbar-icon src="manual/2409508a5131f058.png" width="56" alt="The toolbar button that adds a fibre filtering analysis" >}}
 
 A new window with Fiber Filtering Explorer user interface pops up. In the first step, you can choose the connectome of your choice from the drop-down selection and select **Calculate** (Image 1). Once it is done, you will be able to continue with your analysis. To ensure that the Fiber Filtering Explorer detects your connectome of choice, place it inside a folder called `connectomes` within the leaddbs package.
 
@@ -43,14 +43,14 @@ In this analysis stream, you have to first calculate tract metrics for the norma
 {{% /manual-note %}}
 
 {{% manual-note "info" %}}
-The time it takes to calculate connected fiber tracts depends on your sample size, normative connectome, and the available RAM on your computer.
+The time it takes to calculate connected fibre tracts depends on your sample size, normative connectome, and the available RAM on your computer.
 {{% /manual-note %}}
 
 ### Model setup {#2-model-setup}
 
 ![Image 2. Fiber Filtering Explorer Interactive Model Setup options window.](manual/270e40354d35232d.png "Image 2. Fiber Filtering Explorer Interactive Model Setup options window.")
 
-**Model Setup** (Image 2, arrow 1) allows you to define methods and parameters to generate the computational model. For example, you can choose the Correlations/E-field method of calculating tracts that correlate with the variable of interest (Image 2, arrow 2). The variable of interest must be defined in the Lead Group file previously. The rest of the arrows show the parameter space of the fiber filtering explorer. These are expanded below.
+**Model Setup** (Image 2, arrow 1) allows you to define methods and parameters to generate the computational model. For example, you can choose the Correlations/E-field method of calculating tracts that correlate with the variable of interest (Image 2, arrow 2). The variable of interest must be defined in the Lead Group file previously. The rest of the arrows show the parameter space of the fibre filtering explorer. These are expanded below.
 
 #### Model setup options {#21-model-setup-options}
 
@@ -62,8 +62,8 @@ The time it takes to calculate connected fiber tracts depends on your sample siz
 
 * In this method, the same is done for binary VTAs (which in the case of Lead-DBS are thresholded E-Fields).
 * Fig. 2.1 A: Each tract can either be connected or not connected to any VTA. Thus, each single tract splits the group of VTAs (in template space) into two sets.
-* Fig. 2.1 B: When calculating Two-sample T-tests between a clinical/behavioral variable (for example, %-UPDRS-III improvement) observed in the group of connected vs. unconnected VTAs, we will get a T-value for each tract.
-* Fig. 2.1 C: We can now use these values (T-scores) to color-code and select tracts for visualization.
+* Fig. 2.1 B: When calculating Two-sample T-tests between a clinical/behavioural variable (for example, %-UPDRS-III improvement) observed in the group of connected vs. unconnected VTAs, we will get a T-value for each tract.
+* Fig. 2.1 C: We can now use these values (T-scores) to colour-code and select tracts for visualization.
 
 </details>
 
@@ -81,8 +81,8 @@ The time it takes to calculate connected fiber tracts depends on your sample siz
 
 * In this method, each single tract is selected from the normative connectome. The statistics are calculated for each tract separately. In the figure above, one example tract can be seen (A). Note how parts of this tract traverse "through" some of the E-Fields estimated in your Lead Group analysis (shown in yellow). They traverse less closely to the ones shown in blue but will still traverse through areas of those E-Fields that have a lower magnitude sum (remember that the E-Field is the estimated vector field denoting changes in voltage induced by the stimulation. Its magnitude would be the absolute difference of voltage between two points).
 * Fig. 2.2 A: Each tract is represented as discrete points in space (N x 3 vector if N is the length of the tract; red dots in (A)). The average values at these points for each E-Field (regardless as yellow or blue in A) will be sampled. Depending on your strategy / concept (see below), these values can now be averaged or summed up. Alternatively, you can simply use the peak value (more conforming to the "all or nothing" principle of action potentials) or the 5% peak values. This strategy will lead to one value for each pair of tract and E-Field (N x M if N is number of tracts and M is number of E-Fields; represented as `fibsval` for each hemisphere in the code).
-* Fig. 2.2 B: When calculating Spearman's correlations between this structure and a clinical/behavioral variable (for example, %-UPDRS-III improvement), we will get one Spearman's correlation coefficient for each tract.
-* Fig. 2.2 C: We can now use these coefficients (R) to color-code and select tracts for visualization.
+* Fig. 2.2 B: When calculating Spearman's correlations between this structure and a clinical/behavioural variable (for example, %-UPDRS-III improvement), we will get one Spearman's correlation coefficient for each tract.
+* Fig. 2.2 C: We can now use these coefficients (R) to colour-code and select tracts for visualization.
 
 </details>
 
@@ -124,11 +124,11 @@ If the **Mirror VTAs/Efields** box is selected (Image 2, arrow 9), VTAs/Efields 
 
 **Connected Fibers Show** (Figure 2, arrow 7) ...
 
-### Visualisation and thresholding {#3-visualisation--thresholding}
+### Visualization and thresholding {#3-visualisation--thresholding}
 
 ![Image 3. Fiber Filtering Explorer Visualization & Thresholds window.](manual/6b28cf0727274a9c.png "Image 3. Fiber Filtering Explorer Visualization & Thresholds window.")
 
-The tool allows you to visualize the fibers, as it is essential to check whether they make sense anatomically. You can include only significant fibers in your analysis, by ticking **Consider Significant Fibers only** (Figure 3, arrow 1) and also the correction strategy (Figure 3, arrow 2). You can also select different types of thresholding for the fibers, set to **Show Negative Fibers** or **Show Positive Fibers** and also set **Fixed Amount** of positive and negative fibers (Figure 3, arrow 4).
+The tool allows you to visualize the fibres, as it is essential to check whether they make sense anatomically. You can include only significant fibres in your analysis, by ticking **Consider Significant Fibers only** (Figure 3, arrow 1) and also the correction strategy (Figure 3, arrow 2). You can also select different types of thresholding for the fibres, set to **Show Negative Fibers** or **Show Positive Fibers** and also set **Fixed Amount** of positive and negative fibres (Figure 3, arrow 4).
 
 The model you selected can also be exported: **Export as Atlas** or **Export Model** (Figure 3, arrow 6).
 

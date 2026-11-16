@@ -11,7 +11,7 @@ share: "gallery/oxenford2022_fig1.jpg"
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
   - {page: "/helpsupport/first-steps/"}
-  - {page: "/helpsupport/knowledge-base/lead-dbs-methods/#tools", name: "Tools and modules"}
+  - {page: "/helpsupport/knowledge-base/lead-dbs-methods/#tools", name: "Tools"}
   - {page: "/gallery/"}
 # Lead-OR at a glance (layouts/_shortcodes/cells.html)
 glance:

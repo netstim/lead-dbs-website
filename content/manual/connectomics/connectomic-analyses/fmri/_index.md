@@ -36,7 +36,7 @@ sessvec=[1 1 1 1 1 2 2 2 2 2 3 3 3 3 3];
 
 ## Estimation of connectivity matrices or graph theory metrics
 
-To begin the analysis, open the Lead-Connectome settings by selecting the **Settings** button next to the **Lead-Connectome** checkbox. A new window pops up.
+To begin the analysis, open the Lead Connectome settings by selecting the **Settings** button next to the **Lead-Connectome** checkbox. A new window pops up.
 
 * Choose a parcellation scheme from the popup menu on the top.
 
@@ -47,7 +47,7 @@ To begin the analysis, open the Lead-Connectome settings by selecting the **Sett
 * Check the **Normalize** checkbox if you haven't performed normalization on this subject before.
 * Select **Run**.
 
-![Lead-Connectome GUI with settings for fMRI-whole brain assessment & graph-theory metric calculation.](manual/dd07d0dd18658595.png "Lead-Connectome GUI with settings for fMRI-whole brain assessment & graph-theory metric calculation.")
+![Lead Connectome settings for whole-brain fMRI assessment and graph-theory metrics](manual/dd07d0dd18658595.png "Lead Connectome settings for whole-brain fMRI assessment and graph-theory metrics.")
 
 Lead-DBS Connectome will now calculate the connectivity matrix and export the grey-matter time series from your rs-fMRI acquisition. Files will be written into {{< manual-path "patient_folder/connectomics/Name_of_selected_parcellation/" >}}.
 

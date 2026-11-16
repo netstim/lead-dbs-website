@@ -32,7 +32,7 @@ To adjust the view in the left panel:
 
 * Move the slider at the bottom to adjust the CT-MRI overlay (that is, show the CT or MRI) **(1)**.
 * Under the **Image Display** toolbar **(2)**, use the **View** dropdown menu to select the axial, coronal, or sagittal view.
-* The **CLim** values control the color contrast in the CT and MRI.
+* The **CLim** values control the colour contrast in the CT and MRI.
 * The **Inline** option allows you to rotate the MRI and CT images so that the selected lead is effectively brought into the viewing plane, meaning that all contacts along the entire lead are displayed together on one 2D slice. This requires assigning electrodes first.
 * The **Label** option will show the assigned contact labels. This requires assigning electrodes first.
 

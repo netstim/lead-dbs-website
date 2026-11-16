@@ -48,7 +48,7 @@ These files can be either compressed (.nii.gz) or uncompressed (.nii). Usually, 
 
 NIfTI files can be either binary (0 vs. 1) or probabilistic. See [Customizing atlas visualization](/manual/appendix/acquiring-and-setting-atlases/customizing-atlas-visualization/) for more details on the latter.
 
-To finalize the atlas, open up Lead-DBS, select the atlas from the dropdown menu, check **Render 3D** and select **Run**. The first run takes long, be patient. The reason is that Lead-DBS needs to aggregate all information into a single file (`atlas_index.mat`) and creates a gray matter mask for VTA calculations (`gm_mask.nii.gz`).
+To finalize the atlas, open up Lead-DBS, select the atlas from the dropdown menu, check **Render 3D** and select **Run**. The first run takes long, be patient. The reason is that Lead-DBS needs to aggregate all information into a single file (`atlas_index.mat`) and creates a grey matter mask for VTA calculations (`gm_mask.nii.gz`).
 
 ### Atlases with one NIfTI file for all structures
 
@@ -95,7 +95,7 @@ This is why we use two different formats to store anatomical information. The "h
 
 ### Modifying atlases with MATLAB or code
 
-By now, you may have noticed that upon the first visualization, Lead-DBS creates two additional files, namely `ea_atlas.index` and `gm_mask.nii.gz`. The former can be modified (using MATLAB) to change colors of the atlas or to group entries to "presets" that can be easily toggled on or off. For instance, you may take a closer look at the **DISTAL (Ewert 2017)** atlas in the 3D viewer to understand what possibilities are there. In the atlas control figure, you can choose useful presets to visualize (such as **Primary DBS targets**). By choosing either **STN: Solid** or **STN: Subzones** the STN will be shown as a single structure or divided into motor, associative or limbic functional domains.
+By now, you may have noticed that upon the first visualization, Lead-DBS creates two additional files, namely `ea_atlas.index` and `gm_mask.nii.gz`. The former can be modified (using MATLAB) to change colours of the atlas or to group entries to "presets" that can be easily toggled on or off. For instance, you may take a closer look at the **DISTAL (Ewert 2017)** atlas in the 3D viewer to understand what possibilities are there. In the atlas control figure, you can choose useful presets to visualize (such as **Primary DBS targets**). By choosing either **STN: Solid** or **STN: Subzones** the STN will be shown as a single structure or divided into motor, associative or limbic functional domains.
 
 To see how this is stored, load in the `atlas_index.mat` file of the DISTAL atlas into MATLAB:
 
@@ -121,7 +121,7 @@ default: 'absolute'
 
 This is the first "preset", which is also the default preset (specified by `atlases.defaultset`). The "default" entry can be `absolute` (meaning the preset will only show structures defined in the `show` entry and hide structures defined in the `hide` field) or `relative` (in which case the currently visible set of structures will not be altered if not explicitly mentioned).
 
-You can change the color of atlases by changing the `atlases.colors` fields and the colormap to use by adding an `atlases.colormap` field (if not already present). For instance:
+You can change the colour of atlases by changing the `atlases.colors` fields and the colormap to use by adding an `atlases.colormap` field (if not already present). For instance:
 
 ```matlab
 atlases.colormap=ea_redblue;

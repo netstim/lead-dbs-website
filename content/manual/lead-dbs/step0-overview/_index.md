@@ -1,6 +1,6 @@
 ---
 {
-  "title": "Overview",
+  "title": "Data and interface",
   "linkTitle": "Data and interface",
   "layout": "manual",
   "manual_group": "lead-dbs",
@@ -38,7 +38,7 @@ The app Lead-DBS is the main application of the Lead suite. It allows the recons
 
 We explain steps 1 through 7 in more detail below, assuming a patient implanted bilaterally in the subthalamic nucleus. In brief:
 
-![Lead DBS Main Window](manual/afd466e6511205b8.png "Lead DBS Main Window")
+![Lead-DBS main window](manual/afd466e6511205b8.png "Lead-DBS main window")
 
 1. The user selects the patient folder and electrode type.
 2. Patient images can be converted from DICOM to NIfTI and renamed interactively to fit the Lead-DBS naming convention.
@@ -46,7 +46,7 @@ We explain steps 1 through 7 in more detail below, assuming a patient implanted 
 4. (optional) The surface is reconstructed.
 5. (optional) The electrode trajectories are pre-reconstructed. The user can choose between different methods, depending on the postoperative imaging modality. For instance, for postoperative CT, PaCER is an effective method. Afterwards, the user localizes the electrodes to refine the position and --- if applicable --- the orientation of the electrodes.
 6. (optional) The user can run connectivity analysis with Lead Connectome.
-7. The reconstructed electrodes can be visualized in 2D or 3D in template or patient space. The user can select from a comprehensive list of atlases.
+7. The reconstructed electrodes can be visualized in 2D or 3D in template or patient space. You can choose from a range of atlases.
 
 The **Run** button in the bottom right runs **all** processes that are checked within the main window. To run only one specific process, make sure that only the desired checkbox is selected. Checkboxes marked with a **bold** text-face address steps that actually perform an analysis themselves, other checkboxes (standard text-face) are used as options within certain processes.
 

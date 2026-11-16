@@ -15,10 +15,6 @@ flyer:
   alt: "Flyer of the 1st Lead-DBS open developer meeting, 18 November 2026, 3:00 PM CET / 9:00 AM EST, with a QR code to the registration"
 # the picture shown when the page is shared (head.html)
 share: "lead-dbs-developer-meeting-flyer.jpg"
-# "Related" at the end of the page (layouts/_partials/next-steps.html)
-next:
-  - {page: "/develop/"}
-  - {page: "/events/hands-on-workshop-2027/"}
 ---
 
 A monthly online meeting about the development of Lead-DBS, open to contributors and users alike.

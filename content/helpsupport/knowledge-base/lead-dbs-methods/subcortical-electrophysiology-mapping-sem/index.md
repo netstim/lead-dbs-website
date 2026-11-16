@@ -140,18 +140,18 @@ Three-dimensional ROIs mark the peaks of high beta and alpha activity (above).
 
 ### Connectivity of the two hot spots
 
-We tested whether a standardized structural connectome could distinguish cortical connectivity between these small, adjacent regions. Of note, the two regions are both very small and close to each other.
+We tested whether a standardized structural connectome could distinguish cortical connectivity between these two small, adjacent regions.
 
 For this analysis – which could only be performed on group level – a standardized high precision structural connectome [[Horn 2017](https://www.sciencedirect.com/science/article/pii/S1053811917301088)] was used to select fibre-tracts connected to the alpha and beta peaks, respectively.
 
 However, the two regions exhibited a (slightly) different connectivity profile that was largely consistent with data presented in [[Acolla 2015](https://academic.oup.com/brain/article-abstract/139/9/2503/1744844/Brain-networks-modulated-by-subthalamic-nucleus?redirectedFrom=fulltext)], before (see below).
 
-![Structural connectivity from alpha and beta seeds to the cortex](fibertracts-1030x841.png "Fig. 5: Contrasting fibre tract maps seeding either from the “alpha-hotspot” or “beta-hotspot”. Please note that panel B shows a contrast map between the two seeds. Given their spatial proximity, the overall connectivity profiles from both seeds is similar.")
+![Structural connectivity from alpha and beta seeds to the cortex](fibertracts-1030x841.png "Fig. 5: Contrasting fibre tract maps seeding either from the “alpha-hotspot” or “beta-hotspot”. Panel B shows a contrast map between the two seeds. Given their proximity, the overall connectivity profiles of both seeds are similar.")
 
-### A beta atlas for programming
+### The beta atlas
 
-Finally, given the importance of the beta rhythm in Parkinson’s Disease, the resulting beta-atlas could serve to guide DBS programming (and potentially targeting) once prospectively validated in follow up studies. The atlas is made publicly available within Lead-DBS software and on [Neurovault](https://neurovault.org/collections/2418/).
+Given the importance of the beta rhythm in Parkinson’s disease, the study proposed that the beta atlas could guide DBS programming (and potentially targeting), pending prospective validation in follow-up studies. The atlas is available in Lead-DBS and on [Neurovault](https://neurovault.org/collections/2418/).
 
-![DBS electrode in the STN with the beta peak and a volume of tissue activated](fig_7.png "Fig. 6: The peak of beta-activity (yellow) shown in synopsis with a hypothetical lead. Based on the reconstruction, the second most dorsal contact could represent a first choice in clinical programming.")
+![DBS electrode in the STN with the beta peak and a volume of tissue activated](fig_7.png "Fig. 6: The beta-power peak (yellow) relative to a hypothetical electrode and modelled stimulation volume.")
 
 </details>

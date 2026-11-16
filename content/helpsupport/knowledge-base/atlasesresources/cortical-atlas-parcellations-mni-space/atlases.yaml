@@ -36,7 +36,7 @@ atlases:
   ref: Klein 2012
   covers: Cortex, Desikan protocol
   preinstalled: true
-  about: The Mindboggle 101 dataset consists of 101 labeled brain images that have been manually labeled largely following the Desikan protocol. It also consists of a group-level parcellation atlas which has been included into Lead-DBS for connectomic analyses.
+  about: 101 brain images labelled by hand, largely following the Desikan protocol. Its group-level parcellation is included in Lead-DBS for connectomic analyses.
   get:
   - 'Information: [Mindboggle data](https://mindboggle.info/data.html)'
   cite:
@@ -61,7 +61,7 @@ atlases:
   ref: Tzourio-Mazoyer 2002
   covers: Whole brain; AAL2 update
   preinstalled: true
-  about: "The AAL atlas is probably the most widely used cortical parcellation map in connectomic literature.  \nOn 7th August 2015, an updated version (AAL2) has been released."
+  about: "One of the most widely used cortical parcellations in connectomics. The updated AAL2 was released on 7 August 2015."
   get:
   - 'Information: [AAL at GIN, CNRS](http://www.gin.cnrs.fr/AAL)'
   - 'The update: [AAL2 at GIN, CNRS](http://www.gin.cnrs.fr/AAL2)'
@@ -108,10 +108,10 @@ atlases:
   ref: Desikan 2006
   covers: Cortex by gyri (FreeSurfer)
   preinstalled: false
-  about: A parcellation scheme widely used in the freesurfer world subdividing the human cerebral cortex on MRI scans into gyral based regions of interest.
+  about: The FreeSurfer parcellation of the cerebral cortex into gyral regions of interest.
   get:
   - 'Information: [FreeSurfer cortical parcellation wiki](https://surfer.nmr.mgh.harvard.edu/fswiki/CorticalParcellation)'
-  - Please also cf the Mindboggle 101 parcellation listed on this page which follows an adapted Desikan protocol, is available in volumetric space and is being distributed within Lead-DBS.
+  - See also Mindboggle 101 on this page, which follows an adapted Desikan protocol, is volumetric and comes with Lead-DBS.
   cite:
   - desikan2006
   image: desikan.001.png
@@ -122,7 +122,7 @@ atlases:
   ref: Destrieux 2010
   covers: Cortex by gyri and sulci (FreeSurfer)
   preinstalled: false
-  about: A parcellation scheme widely used in the freesurfer world based on sulcal depth and yielding precise automated definition of cortical gyri and sulci.
+  about: The FreeSurfer parcellation of the cortex into gyri and sulci, based on sulcal depth.
   get:
   - 'Information: [FreeSurfer cortical parcellation wiki](https://surfer.nmr.mgh.harvard.edu/fswiki/CorticalParcellation)'
   cite:
@@ -150,7 +150,7 @@ atlases:
   ref: Eickhoff 2005
   covers: Cyto- and myeloarchitectonic areas
   preinstalled: true
-  about: A probabilistic atlas created by averaging multi-subject post-mortem cyto- and myelo-architectonic segmentations, performed by the team of Profs Zilles and Amunts in Jülich and Düsseldorf. Cytoarchitectonic areas were analyzed in histological sections of ten human postmortem brains. The maps are based on image analysis and statistical criteria for localizing areal borders. Cytoarchitectonic maps have been developed during the past 20 years as a joint effort of many doctoral students, post docs and guest scientists. Maps, which have been published, are available for the scientific community.
+  about: A probabilistic atlas averaged from cyto- and myeloarchitectonic segmentations of ten post-mortem brains, by the teams of Karl Zilles and Katrin Amunts in Jülich and Düsseldorf. Area borders are defined by image analysis and statistical criteria. The published maps are freely available.
   get:
   - 'Information: [JuBrain at Forschungszentrum Jülich](http://www.fz-juelich.de/inm/inm-1/EN/Forschung/JuBrain/Jubrain_Webtools/Jubrain_Webtools_node.html)'
   cite:
@@ -180,7 +180,7 @@ atlases:
   ref: Amunts 2020
   covers: Cytoarchitectonic areas
   preinstalled: true
-  about: The Julich-Brain Cytoarchitectonic Atlas presents cytoarchitectonic maps in several coordinate spaces, such as MNI colin27, MNI152, and freesurfer. These maps originate from peer-reviewed probability maps that define both cortical and subcortical brain regions. Notably, these probability maps account for the brain’s inter-individual variability by analyzing data from ten post-mortem samples. For a whole-brain parcellation, the available probability maps are combined into a maximum probability map by considering for each voxel the probability of all cytoarchitectonic brain regions, and determining the most probable assignment. Continuously evolving, the Atlas is regularly updated with new areas. Furthermore, it stands as a reference atlas for the Human Brain Project and is deeply embedded within the European research infrastructure platform, EBRAINS. The *siibra* toolsuite provides an automated access to the Atlas, to speed up your work.
+  about: Cytoarchitectonic probability maps of cortical and subcortical regions from ten post-mortem brains, in MNI Colin27, MNI152 and FreeSurfer space. For a whole-brain parcellation, the maps are combined into a maximum probability map. The atlas is updated with new areas; the *siibra* tools give programmatic access to it.
   get:
   - Download most recent version at [EBRAINS Knowledge Graph](https://search.kg.ebrains.eu/?category=Dataset&q=julich%20brain%20brain).
   cite:
@@ -206,7 +206,7 @@ atlases:
   ref: Doucet 2019
   covers: Five resting-state networks
   preinstalled: true
-  about: The Consensual Atlas of Resting-state Networks (CAREN) consists of 5 networks. It was constructed based on four reliable functional brain atlases, using a hierarchical clustering approach to iteratively link pairs of voxels with highest probability of belonging to the same network.
+  about: The Consensual Atlas of Resting-state Networks (CAREN) has five networks, built from four functional atlases by hierarchical clustering of voxels by their probability of belonging to the same network.
   get: []
   cite:
   - doucet2019
@@ -218,7 +218,7 @@ atlases:
   ref: Fan 2016
   covers: Whole brain, fMRI and dMRI
   preinstalled: true
-  about: The Brainnetome atlas is an in vivo map based on fMRI and dMRI, with more fine-grained functional brain subregions and detailed anatomical and functional connection patterns for each area. Currently, the Brainnetome atlas contains 246 subregions of the bilateral hemispheres.
+  about: An in vivo atlas from fMRI and dMRI with 246 subregions across both hemispheres, each with its anatomical and functional connection patterns.
   get:
   - 'Information: [Brainnetome atlas](http://atlas.brainnetome.org/)'
   cite:
@@ -231,7 +231,7 @@ atlases:
   ref: Schaefer 2018
   covers: Cortex; subdivisions of the Yeo networks
   preinstalled: true
-  about: Based on the influential brain networks published by Thomas Yeo (2011), these novel parcellations add further refinement by subparcellating the global networks based on a local gradient approach. Parcellations come in several version, breaking down the cortex into up to 1000 regions based on rs-fMRI.
+  about: Subdivides the Yeo 2011 networks with a local gradient approach, into up to 1,000 cortical regions from resting-state fMRI.
   get:
   - 'Information: [Schaefer 2018 parcellations on GitHub](https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal)'
   cite:
@@ -244,7 +244,7 @@ atlases:
   ref: Joliot 2015
   covers: Cortex by functional connectivity
   preinstalled: true
-  about: The AICHA atlas – a detailed cortical atlas based on functional connectivity in 281 subjects.
+  about: A cortical atlas based on functional connectivity in 281 subjects.
   get:
   - 'Information: [AICHA at GIN, CNRS](http://www.gin.cnrs.fr/AICHA-344)'
   cite:
@@ -257,7 +257,7 @@ atlases:
   ref: Yeo 2011
   covers: Cortex, 7 or 17 networks
   preinstalled: true
-  about: fMRI atlas based on 1000 subjects exhibiting co-activations of the brain. Two versions are available that include 7 vs. 17 neworks.
+  about: Resting-state fMRI networks from 1,000 subjects, in versions with 7 and 17 networks.
   get:
   - 'Information: [Yeo 2011 cortical parcellation in the FreeSurfer wiki](https://surfer.nmr.mgh.harvard.edu/fswiki/CorticalParcellation_Yeo2011)'
   cite:
@@ -270,7 +270,7 @@ atlases:
   ref: Glasser 2016
   covers: Cortex, multimodal, 180 areas per hemisphere
   preinstalled: false
-  about: Probably the most detailed cortical in-vivo parcellation yet, the HCP MMP 1.0 has been built using surface-based registrations of multimodal MR acquisitions from 210 HCP subjects. 180 areas per hemisphere have been identified. Please note that due to the nature of how this parcellation has been built, it may not be ideally suited for usage within Lead-DBS.
+  about: Built with surface-based registration of multimodal MRI from 210 HCP subjects, with 180 areas per hemisphere. Because it was built on the surface, it may not suit volumetric analyses in Lead-DBS.
   get:
   - 'Information: [HCP MMP 1.0 on BALSA](https://balsa.wustl.edu/WN56)'
   - 'FreeSurfer version: [HCP-MMP1.0 on fsaverage (figshare)](https://figshare.com/articles/HCP-MMP1_0_projected_on_fsaverage/3498446)'
@@ -285,7 +285,7 @@ atlases:
   ref: Huth 2016
   covers: Cortex by task fMRI
   preinstalled: false
-  about: Advanced and modern functional atlas based on task fMRI.
+  about: A functional atlas based on task fMRI.
   get:
   - 'Interactive version: [PrAGMATiC atlas at the Gallant lab](https://gallantlab.org/huth2016/)'
   cite:
@@ -341,7 +341,7 @@ atlases:
   ref: Lead-DBS
   covers: Three voxelwise schemes for connectivity matrices
   preinstalled: true
-  about: Three voxel-wise parcellations are supplied with Lead-DBS and have been built to create standardized connectivity matrices that exhibit off-diagonal elements that appear as parallel lines to the main diagonal (inter-hemispheric connections between homologous regions). Three versions (35 thousand, 15 thousand and 8 thousand nodes) are pre-installed within Lead-DBS. Together with advanced normalization algorithms (such as multimodal ANTs defaults and DARTEL pipelines), these connectivity matrices allow for high-definition connectomic analyses in parcellation schemes that are comparable across studies.
+  about: Three voxelwise parcellations (35,000, 15,000 and 8,000 nodes) come with Lead-DBS. They give standardized connectivity matrices in which connections between homologous regions of the two hemispheres appear as lines parallel to the main diagonal, so that connectomic analyses are comparable across studies.
   get: []
   cite_note: "Parcellation schemes are not described in a separate publication. Please cite Lead-DBS software including version and webpage to describe the data used in a reproducible fashion."
   cite:
@@ -354,7 +354,7 @@ atlases:
   ref: Shen 2013
   covers: 268 regions, spectral clustering
   preinstalled: true
-  about: "The Shen268 atlas was derived based on a group-wise spectral clustering algorithm using resting-state fMRI data from 45 subjects acquired at Yale MRRC. The atlas contains 268 functional coherent nodes, which are further grouped into eight resting state networks.\n\nThe Shen368 atlas has 327 cortical nodes that were constructed using the group-wise spectral clustering  \nalgorithm, 14 subcortical nodes that were defined using the anatomical definition, and 26 cerebellum  \nnodes that were derived based on Yeo’s 17 networks, and one brain stem node."
+  about: "Shen268: 268 functionally coherent nodes from group-wise spectral clustering of resting-state fMRI in 45 subjects (Yale MRRC), grouped into eight resting-state networks.\n\nShen368: 327 cortical nodes from the same clustering, 14 anatomically defined subcortical nodes, 26 cerebellar nodes from Yeo’s 17 networks and one brainstem node."
   get:
   - Released on [NITRC](https://www.nitrc.org/frs/?group_id=51)
   cite:
@@ -369,7 +369,7 @@ atlases:
   ref: Mayka 2006
   covers: (Pre-)motor cortex
   preinstalled: true
-  about: Not exactly a whole-brain parcellation but a parcellation of the human (pre-)motor cortex.
+  about: A parcellation of the human motor and premotor cortex, not of the whole brain.
   get:
   - 'Information: [lrnlab.org](https://lrnlab.org/)'
   cite:
@@ -382,7 +382,7 @@ atlases:
   ref: Archer 2017
   covers: Corticospinal tract from sensorimotor areas
   preinstalled: true
-  about: Not exactly a whole-brain parcellation but a template of the corticospinal tract originating from sensory & motor areas in MNI space.
+  about: A template of the corticospinal tract from sensory and motor areas in MNI space, not a whole-brain parcellation.
   get:
   - 'Information: [lrnlab.org](https://lrnlab.org/)'
   cite:
@@ -395,7 +395,7 @@ atlases:
   ref: Diedrichsen 2006
   covers: Cerebellum, anatomical
   preinstalled: true
-  about: Not a whole-brain parcellation but parcellating the cerebellum into anatomical regions. Useful to test structural/functional connectivity between DBS leads and cerebellar subregions.
+  about: A parcellation of the cerebellum into anatomical regions, for example to test connectivity between DBS leads and cerebellar subregions.
   get:
   - 'Information: [SUIT at the Diedrichsen lab](http://www.diedrichsenlab.org/imaging/suit.htm)'
   cite:
@@ -409,9 +409,9 @@ atlases:
   ref: Buckner 2011
   covers: Cerebellum, 7 or 17 functional zones
   preinstalled: true
-  about: Not a whole-brain parcellation but a parcellation of the cerebellum into seven (or seventeen) functional zones that correspond to the Yeo 2011 whole-brain parcellations based on 1000 healthy subjects.
+  about: A parcellation of the cerebellum into 7 or 17 functional zones that match the Yeo 2011 networks from 1,000 healthy subjects.
   get:
-  - '[The parcellation was released within the freesurfer software.](https://www.freesurfer.net/fswiki/CerebellumParcellation_Buckner2011)'
+  - 'Released with [FreeSurfer](https://www.freesurfer.net/fswiki/CerebellumParcellation_Buckner2011)'
   cite:
   - buckner2011
   - yeo2011

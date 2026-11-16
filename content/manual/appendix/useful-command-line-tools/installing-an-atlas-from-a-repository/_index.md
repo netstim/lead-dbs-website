@@ -117,7 +117,7 @@ This will take a while. Upon the first run of visualizing a new atlas, Lead-DBS 
 
 ## Customize the atlas
 
-After this process is done, it gets interesting. We now want to fine-tune the atlas to modify its colors and the selection presets.
+After this process is done, it gets interesting. We now want to fine-tune the atlas to modify its colours and the selection presets.
 
 ```matlab
 %% Fine-tune atlas
@@ -153,7 +153,7 @@ end
 
 For all four scales, a preset will be added to account for this. The entries in the `Sstruc` variable had been collected above (while joining the atlases of the four scales into a joint atlas).
 
-## Set colors and labels
+## Set colours and labels
 
 Let's do some more fine-tuning:
 
@@ -163,7 +163,7 @@ atlases.defaultset=1;
 atlases.tissuetypes;
 ```
 
-These lines add a colormap and define that the default set will be scale number one (that is, `atlases.presets(1)`). `atlases.tissuetypes` could be used in case the atlas contained white-matter structures. These should be assigned with a `2` (instead of a `1` which is gray matter) and will then be ignored upon VTA generation. In our case, the atlas doesn't define white matter structures, so we'll leave the entry as is.
+These lines add a colormap and define that the default set will be scale number one (that is, `atlases.presets(1)`). `atlases.tissuetypes` could be used in case the atlas contained white-matter structures. These should be assigned with a `2` (instead of a `1` which is grey matter) and will then be ignored upon VTA generation. In our case, the atlas doesn't define white matter structures, so we'll leave the entry as is.
 
 ```matlab
 atlases.labelnames{1}='Labels';

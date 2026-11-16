@@ -42,22 +42,22 @@ lead dbs
 
 ## Installation via GitHub
 
-For more experienced users or developers who'd also wish to modify the code and potentially improve Lead-DBS, there is an alternative way of installation:
+To work on the code or update with Git, install from GitHub:
 
 1. Clone (do not download) the Lead-DBS repository from [GitHub](https://github.com/netstim/leaddbs) and switch to `develop` branch.
 2. Download the necessary [data](https://www.lead-dbs.org/release/download.php?id=data_pcloud) and unzip it into the cloned git repository.
 3. **Add SPM12** to your MATLAB search path: right-click the SPM12 folder and choose **Add to Path** > **Selected Folders** (not **Selected Folders and Subfolders**).
 4. **Add Lead-DBS** to your MATLAB search path: right-click the Lead-DBS folder, choose **Add to Path** > **Selected Folders** (not **Selected Folders and Subfolders**) and then run `ea_setpath` in MATLAB Command Window to set the path.
 
-This alternative way of installation can also make it easy to receive quicker (most often daily) hotfixes or updates and helps us to assist you in a more flexible way.
+Use `git pull` to get updates.
 
-If you have the GitHub installation of Lead-DBS and need to switch between the `develop` branch and the `classic` branch, you must also download the [classic data](https://www.lead-dbs.org/release/download.php?id=data_classic_pcloud) and unzip it into the Lead-DBS installation folder. To switch branches, you can utilize the MATLAB helper functions `ea_switch2classic` and `ea_switch2dev` (ensure [Git](https://git-scm.com/downloads) is installed on your system. While it often comes preinstalled on Linux and macOS, Windows users typically need to install it manually). This will ensure that the prefs and recent histories for both branches are preserved correctly.
+If you have the GitHub installation of Lead-DBS and need to switch between the `develop` branch and the `classic` branch, you must also download the [classic data](https://www.lead-dbs.org/release/download.php?id=data_classic_pcloud) and unzip it into the Lead-DBS installation folder. To switch branches, use the MATLAB helper functions `ea_switch2classic` and `ea_switch2dev`; they keep the preferences and recent histories of both branches. They need [Git](https://git-scm.com/downloads), which usually comes with Linux and macOS; on Windows, install it first.
 
-We'd love to implement your improvements into Lead-DBS – feel free to submit pull requests or contact us for direct push access.
+To contribute your changes, open a pull request or ask us for push access.
 
 ## Installing OSS-DBS v2
 
-OSS-DBS v2 is an electric field and pathway activation modeling platform used by Lead-DBS. It is installed automatically in the background (via conda) the first time you select it in the Lead-DBS GUI. If the automatic installation succeeds, no further steps are needed.
+OSS-DBS v2 is an electric field and pathway activation modelling platform used by Lead-DBS. It is installed automatically in the background (via conda) the first time you select it in the Lead-DBS GUI. If the automatic installation succeeds, no further steps are needed.
 
 {{% manual-note "warning" %}}
 The automatic conda-based installation may fail in the following cases:

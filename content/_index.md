@@ -73,12 +73,12 @@ features:
       text: "Model electric fields, activated tissue and pathways."
       anchor: "stimulation"
       image: "pathway-activation.jpg"
-      alt: "Two electrodes with their stimulation volumes in blue and the fibre pathways they activate in red and white"
+      alt: "Example Lead Tutor analysis: modelled stimulation volumes in blue and predicted fibre pathway activation in red and white."
     - title: "Connectivity analysis"
       text: "Map connections from stimulation sites to other brain regions."
       anchor: "connectivity"
       image: "fiber-filtering.jpg"
-      alt: "Fibre tracts around the electrodes, coloured from red to yellow by their association with outcome, over a 7 tesla MRI slice"
+      alt: "Example Lead Tutor analysis: fibre tracts coloured by their association with simulated outcome scores, over a 7 T MRI slice."
     - title: "Group analysis"
       text: "Relate electrode placement to clinical outcomes across patients."
       anchor: "groups-of-patients"
@@ -91,15 +91,14 @@ worldwide:
   title: "Download requests from {countries} countries"
   text: "{downloads} Lead-DBS download requests recorded since {year}."
 
-# The forthcoming release: three points, with the workshop as the next step.
+# The forthcoming release: one point (title and sentence), with the workshop as the next step. Promise
+# no release date and no access beyond the workshop.
 next:
   label: "Coming next"
   title: "Lead-DBS 4.0"
   points:
-    - {title: "Lead-DBS 4.0", text: "We’re rewriting Lead-DBS in Python."}
-    - {title: "No MATLAB required", text: "Version 4.0 will run without a MATLAB licence."}
-    - {title: "First to try it", text: "Participants of the hands-on workshop will be among the first to try the pre-release."}
-  link: {label: "Hands-on workshop", url: "/events/hands-on-workshop-2027/"}
+    - {title: "Rebuilt in Python", text: "Version 4.0 will run without a MATLAB licence."}
+  link: {label: "Preview it at the workshop", url: "/events/hands-on-workshop-2027/"}
 
 # Events: the upcoming entries of data/events.yaml, in one band with the latest news.
 events:

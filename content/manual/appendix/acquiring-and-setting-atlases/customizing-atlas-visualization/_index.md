@@ -4,9 +4,9 @@
   "linkTitle": "Customizing atlas visualization",
   "layout": "manual",
   "manual_group": "appendix",
-  "description": "Adjust atlas colors, labels and structure selections for visualization.",
+  "description": "Adjust atlas colours, labels and structure selections for visualization.",
   "source_url": "https://netstim.gitbook.io/leaddbs/appendix/acquiring-and-setting-atlases/customizing-atlas-visualization",
-  "manual_lead": "Adjust atlas colors, labels and structure selections for visualization."
+  "manual_lead": "Adjust atlas colours, labels and structure selections for visualization."
 }
 ---
 
@@ -14,9 +14,9 @@ Atlases need to be installed inside the `lead_dbs/atlases` directory (to do so, 
 
 Once installed, Lead-DBS will create a small file called `atlas_index.mat` inside the atlas directory upon the first 3D-visualization of the atlas. Inside this file, all the tesselation info of the whole atlas-set is stored, allowing for a faster visualization the next time. In principle, only this file is needed for visualization. If you make changes to the actual atlas files, make sure to delete this file so that it will be rebuilt the next time.
 
-## Changing atlas colors
+## Changing atlas colours
 
-Inside the file, you can also change the color information of the atlas set by modifying the `atlases.color` field of the struct inside MATLAB. Choose color intensities from 1 to 64 which will be converted to a real color value based on the colormap you choose upon visualization. To change the colormap, you can press the colormap button before starting the 3D-visualization.
+Inside the file, you can also change the colour information of the atlas set by modifying the `atlases.color` field of the struct inside MATLAB. Choose colour intensities from 1 to 64 which will be converted to a real colour value based on the colormap you choose upon visualization. To change the colormap, you can press the colormap button before starting the 3D-visualization.
 
 ## Changing atlas thresholds
 

@@ -8,7 +8,7 @@ lastmod: "2026-11-11"
 aliases: ["/downloadfocus/"]
 # the picture shown when the page is shared (head.html)
 share: "STN_Forel_ZI_tracts_mediolateral-1030x1019.png"
-keywords: ["FOCUS", "atlas", "subcortex", "100 micron", "7T", "ex vivo", "tracts", "download FOCUS"]
+keywords: ["FOCUS", "atlas", "subcortex", "100 micron", "7T", "ex vivo", "tracts", "download FOCUS", "request FOCUS"]
 # the atlas at a glance (layouts/_shortcodes/cells.html)
 glance:
   - {label: "Structures", value: "95, grey and white matter"}
@@ -27,7 +27,7 @@ layout: "showcase"
 **A 100-micron atlas of the human subcortex,** from 7T ex vivo MRI, by the Lead-DBS team.
 
 </div>
-<p class="page-intro__actions"><a class="btn btn--primary" href="#download">Download FOCUS</a><a class="btn btn--secondary btn--ext" href="https://doi.org/10.64898/2026.02.13.705755">Read the preprint<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></a></p>
+<p class="page-intro__actions"><a class="btn btn--primary" href="#download">Request FOCUS</a><a class="btn btn--secondary btn--ext" href="https://doi.org/10.64898/2026.02.13.705755">Read the preprint<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></a></p>
 </div>
 
 ![FOCUS atlas: STN, fields of Forel, zona incerta and their tracts in 3D](STN_Forel_ZI_tracts_mediolateral-1030x1019.png)
@@ -47,13 +47,11 @@ registration to MNI space allows it to be transformed into an individual brain.
 {{% /hub-section %}}
 
 {{% hub-section %}}
-## Download FOCUS {#download}
+## Request FOCUS {#download}
 
 **For academic research only,** not for commercial applications.
 
-The team sends the download link by email. Your details are used only for that and are not shared with
-anyone else. The Lead-DBS [newsletter](/subscribe-to-our-newsletter/) is a separate choice; you don't need it
-to get FOCUS.
+The team will email you a download link. Newsletter subscription is optional.
 
 {{% /hub-section %}}
 

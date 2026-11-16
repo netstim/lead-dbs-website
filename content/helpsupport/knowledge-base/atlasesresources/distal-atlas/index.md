@@ -83,7 +83,7 @@ One limitation of most available atlases (when used in Lead-DBS) is shown in thi
 
 {{% /col %}}
 {{% col "1/3" %}}
-*In the left upper panel you see the hypointense region of the subthalamic nucleus as defined by the [most modern MNI template available](/about-the-mni-spaces/). The region of the STN is further magnified in the next panel. Subsequent panels overlay available atlases of the STN to this region. As you can see, neither of them precisely matches the STN of the template. The reasons for this are manifold but since in DBS imaging, millimeters matter, such discrepancy really does matter.*
+*The upper left panel shows the hypointense region of the subthalamic nucleus as defined by the [ICBM 2009b MNI template](/about-the-mni-spaces/). The region of the STN is further magnified in the next panel. Subsequent panels overlay available atlases of the STN to this region. None of them precisely matches the STN of the template. The reasons are many, but in DBS imaging millimetres matter, so the discrepancy matters.*
 
 {{% /col %}}
 {{% /row %}}
@@ -112,7 +112,7 @@ In this stage, the T1-, T2-, PD- and T2rlx weighted templates were segmented sim
 
 {{% row %}}
 {{% col "1/3" %}}
-*The final result of manual segmentations that were performed directly on the MNI template using its four spectra simultaneously. These four structures i) align perfectly with the template and ii) were used as anchorpoints to warp histology to the template.*
+*The final result of manual segmentations that were performed directly on the MNI template using its four spectra simultaneously. Because they were drawn on the template, these four structures match it, and they served as anchor points to warp histology to the template.*
 
 {{% /col %}}
 {{% col "2/3" %}}
@@ -129,7 +129,7 @@ To “fill the gaps” between the regions defined on the template itself, a pre
 
 {{% /col %}}
 {{% col "1/3" %}}
-*Conventional (left panel) and additional anchor point warp (right panel). Both warps apply multiple spectra to align histology to the template. The right warp includes an additional high signal-to-noise (binary) manual segmentation of the same structures (STN, RN, GPi/GPe) defined on histology and the template (manual anchorpoints). This leads to a very precise alignment of i) these structures and ii) structures ultimately neighboring them. Notably, these structures are the most important ones in DBS imaging.*
+*Conventional (left panel) and additional anchor point warp (right panel). Both warps apply multiple spectra to align histology to the template. The right warp includes an additional high signal-to-noise (binary) manual segmentation of the same structures (STN, RN, GPi/GPe) defined on histology and the template (manual anchorpoints). This leads to a very precise alignment of i) these structures and ii) neighbouring structures. These structures are the most important ones in DBS imaging.*
 
 {{% /col %}}
 {{% /row %}}
@@ -153,14 +153,14 @@ The final stage was to further subdivide the primary DBS targets, namely the STN
 
 {{% /col %}}
 {{% col "1/3" %}}
-*Afferent connectivity to different cortical regions defines a sensorimotor, associative prefrontal and limbic functional zone of the subthalamic nucleus. Of note, in our study, this was done with both connectivity data from healthy subjects and patients suffering from Parkinson’s disease. Results were highly similar and replicate findings published by [Accolla et al.](https://onlinelibrary.wiley.com/doi/10.1002/hbm.22533/full) and [Lambert et al.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3315017/) in humans and various studies published based on animal models (e.g. see this study by [Haynes & Haber](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3755746/))*
+*Afferent connectivity to different cortical regions defines a sensorimotor, associative prefrontal and limbic functional zone of the subthalamic nucleus. In our study, this was done with both connectivity data from healthy subjects and patients suffering from Parkinson’s disease. Results were highly similar and replicate findings published by [Accolla et al.](https://onlinelibrary.wiley.com/doi/10.1002/hbm.22533/full) and [Lambert et al.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3315017/) in humans and various studies published based on animal models (e.g. see this study by [Haynes & Haber](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3755746/))*
 
 {{% /col %}}
 {{% /row %}}
 
 {{% row %}}
 {{% col "1/3" %}}
-*A similar approach was used to parcellate the GPi into seven functional zones using the Oxford thalamic connectivity atlas as seed-regions. Of note, the postero-ventral third of the nucleus corresponds to its sensorimotor functional zone, as previously published (e.g. [Cif et al.](https://www.ncbi.nlm.nih.gov/pubmed/22339165), [Tisch et al.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2095629/))*
+*A similar approach was used to parcellate the GPi into seven functional zones using the Oxford thalamic connectivity atlas as seed-regions. The postero-ventral third of the nucleus corresponds to its sensorimotor functional zone, as previously published (e.g. [Cif et al.](https://www.ncbi.nlm.nih.gov/pubmed/22339165), [Tisch et al.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2095629/))*
 
 {{% /col %}}
 {{% col "2/3" %}}
@@ -206,7 +206,7 @@ The video below shows these features (recorded in 2017):
 
 {{% row %}}
 {{% col "2/3" %}}
-*The DISTAL atlas significantly outperforms other published atlases when performing atlas-based segmentation within Lead-DBS.*
+*The [paper](https://doi.org/10.1016/j.neuroimage.2017.05.015) compares DISTAL, BGHAT and ATAG segmentations with manual segmentations of the STN and GPi.*
 
 {{% /col %}}
 {{% col "1/3" %}}

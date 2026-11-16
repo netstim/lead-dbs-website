@@ -134,7 +134,7 @@ enableGitInfo = true
   # (params.divider) the articles that explain a method in depth, then the figures made with Lead-DBS.
   [[menus.main]]
     parent = "features"
-    name = "Single patients"
+    name = "Single-patient analysis"
     url = "/helpsupport/knowledge-base/lead-dbs-methods/#single-patients"
     weight = 1
     [menus.main.params]
@@ -142,7 +142,7 @@ enableGitInfo = true
       panelOnly = true
   [[menus.main]]
     parent = "features"
-    name = "Groups of patients"
+    name = "Group analysis"
     url = "/helpsupport/knowledge-base/lead-dbs-methods/#groups-of-patients"
     weight = 2
     [menus.main.params]
@@ -157,7 +157,7 @@ enableGitInfo = true
       card = "Recordings and stimulation during surgery"
   [[menus.main]]
     parent = "features"
-    name = "Tools and modules"
+    name = "Tools"
     url = "/helpsupport/knowledge-base/lead-dbs-methods/#tools"
     weight = 4
     [menus.main.params]
@@ -193,6 +193,9 @@ enableGitInfo = true
     weight = 9
     [menus.main.params]
       card = "3D renders and published figures"
+      # bandLine = false: the header band shows the name alone, where it explains itself
+      # (layouts/_partials/header.html); a hub still prints the card
+      bandLine = false
       # a line above the entry, without a caption
       divider = true
 
@@ -221,12 +224,11 @@ enableGitInfo = true
       keywords = "documentation docs manual handbook guide installation install how to"
   [[menus.main]]
     parent = "docs"
-    name = "Practice dataset (Lead Tutor)"
+    name = "Lead Tutor"
     pageRef = "/helpsupport/learn-lead-dbs-yourself"
     weight = 3
     [menus.main.params]
       card = "10 patients with expert localizations"
-      indexTitle = "Lead Tutor"
   [[menus.main]]
     parent = "docs"
     name = "Walkthrough videos"
@@ -234,6 +236,7 @@ enableGitInfo = true
     weight = 4
     [menus.main.params]
       card = "Tutorials and recorded workshops"
+      bandLine = false
   [[menus.main]]
     parent = "docs"
     name = "Get help"
@@ -249,6 +252,7 @@ enableGitInfo = true
     weight = 7
     [menus.main.params]
       card = "Write to the Lead-DBS team"
+      bandLine = false
 
   # Atlases and data: the three catalogues, then (after a captioned line: params.divider) the two
   # atlases the Lead-DBS team made, then the background article on the MNI spaces
@@ -287,7 +291,7 @@ enableGitInfo = true
     pageRef = "/helpsupport/knowledge-base/atlasesresources/focus-atlas"
     weight = 5
     [menus.main.params]
-      card = "7T MRI anatomy and fibre pathways"
+      card = "100 µm subcortical anatomy and fibre pathways"
   [[menus.main]]
     parent = "data"
     name = "About the MNI spaces"
@@ -305,6 +309,7 @@ enableGitInfo = true
     weight = 1
     [menus.main.params]
       card = "Workshops and developer meetings"
+      bandLine = false
   [[menus.main]]
     parent = "community"
     name = "User Slack"
@@ -326,6 +331,7 @@ enableGitInfo = true
     weight = 4
     [menus.main.params]
       card = "Release and workshop announcements"
+      bandLine = false
 
   # About: who makes Lead-DBS, how to cite it, its papers, the software it builds on
   [[menus.main]]
@@ -335,13 +341,15 @@ enableGitInfo = true
     weight = 1
     [menus.main.params]
       card = "Citations and methods text"
+      bandLine = false
   [[menus.main]]
     parent = "about"
     name = "Publications"
     pageRef = "/about/publications"
     weight = 2
     [menus.main.params]
-      card = "Methods papers and studies using Lead-DBS"
+      card = "Papers about Lead-DBS and studies that used it"
+      bandLine = false
   [[menus.main]]
     parent = "about"
     name = "Contributors"
@@ -349,6 +357,7 @@ enableGitInfo = true
     weight = 3
     [menus.main.params]
       card = "Core team and project contributors"
+      bandLine = false
   [[menus.main]]
     parent = "about"
     name = "Dependencies"
@@ -356,6 +365,7 @@ enableGitInfo = true
     weight = 4
     [menus.main.params]
       card = "Software libraries and citations"
+      bandLine = false
 
   # The footer's legal line (Contact is in the footer's "Help" column and under "Get help")
   [[menus.footer]]

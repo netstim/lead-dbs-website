@@ -62,7 +62,7 @@ atlases:
   page: /helpsupport/knowledge-base/atlasesresources/focus-atlas
   about: Made by the Lead-DBS team. A 100-micron atlas of the human subcortex from 7T ex vivo MRI, with 95 manually segmented grey and white matter structures and 82 curated fibre pathways, registered to MNI space.
   get:
-  - 'Download: [the form on the FOCUS atlas page](/helpsupport/knowledge-base/atlasesresources/focus-atlas/#download), for academic research only'
+  - 'Request it with [the form on the FOCUS atlas page](/helpsupport/knowledge-base/atlasesresources/focus-atlas/#download), for academic research only'
   cite:
   - friedrich2026
   image: focus-atlas-stn-tracts.jpg
@@ -73,7 +73,7 @@ atlases:
   ref: Ding 2020
   covers: Whole brain, 141 structures
   preinstalled: true
-  about: The Allen Human Reference Atlas is a parcellation of the adult human brain, labeling every voxel with a brain structure spanning 141 structures. The anatomic structure ontology adapted for use in the atlas was based on the 2016 version of the 2D atlas, published in final form in Ding et al, 2016 and available online in the [BrainSpan reference atlas](http://www.brainspan.org/static/atlas).
+  about: A parcellation of the adult human brain that labels every voxel with one of 141 structures. Its ontology follows the 2016 version of the 2D atlas (Ding et al. 2016), available in the [BrainSpan reference atlas](http://www.brainspan.org/static/atlas).
   get:
   - 'Information: [Allen Human Reference Atlas 3D on the Allen Brain Map community forum](https://community.brain-map.org/t/allen-human-reference-atlas-3d-2020-new/405)'
   cite:
@@ -87,7 +87,7 @@ atlases:
   ref: Alkemade 2020
   covers: Basal ganglia from 7T MRI
   preinstalled: true
-  about: The AHEAD atlas is a freely available multi-modal, 7 Tesla MRI database. Sub-millimeter resolutions for sub cortical structures were achieved by using multi-echo (ME) extension of the second gradient echo imaging of MPRAGE sequences. The probabilistic atlases of the basal ganglia is based on more than 1000 manual delineations. Data is also made available for further analysis.
+  about: AHEAD provides multimodal 7 T MRI and submillimetre subcortical atlases. Its basal ganglia probability maps are based on more than 1,000 manual delineations.
   get:
   - 'Information: [the AHEAD paper in NeuroImage](https://www.sciencedirect.com/science/article/pii/S1053811920306868)'
   cite:
@@ -100,11 +100,11 @@ atlases:
   ref: Pauli 2018
   covers: Main DBS targets and nearby nuclei
   preinstalled: true
-  about: Initially built to study structures involved in reinforcement learning processes, this atlas captures all primary DBS targets and structures of interest. Probabilistic atlas based on manual segmentations on HCP data.
+  about: A probabilistic atlas from manual segmentations on HCP data. Built to study reinforcement learning, it includes the main DBS targets and nearby nuclei.
   get:
   - 'Information and download: [CIT168 atlas on OSF](https://osf.io/jkzwp/)'
   - 'The nuclei in ICBM 2009c space: [CIT168 collection on NeuroVault](https://neurovault.org/collections/3145/)'
-  - 'The atlas was migrated from CIT168 space to ICBM 2009b space and comes preinstalled within Lead-DBS. A refined warp was created in 02/20 and resulted in current version v1.1 | older version: v1.0 (separate downloads of these versions are no longer available)'
+  - 'Comes with Lead-DBS, warped from CIT168 space to ICBM 2009b space. Current version: v1.1, with a refined warp from February 2020 (v1.0 can no longer be downloaded separately)'
   cite:
   - pauli2018
   image: bg-1030x592.png
@@ -115,7 +115,7 @@ atlases:
   ref: Xiao 2017
   covers: Basal ganglia on a Parkinson's disease template
   preinstalled: true
-  about: This atlas is defined on a specialized, Parkinson Disease specific template based on multispectral imaging that visualizes primary target regions such as the subthalamic nucleus. Key structures were defined on MRI, further structures were added using the same histological data introduced in the Chakravarty atlas (see above).
+  about: Defined on a multispectral template built from patients with Parkinson’s disease, on which DBS targets such as the subthalamic nucleus are visible. Key structures were defined on MRI; others were added from the histological data of the Chakravarty atlas (see above).
   get:
   - 'Information and download: [MNI PD25 templates at the McConnell Brain Imaging Centre](http://nist.mni.mcgill.ca/?p=1209)'
   cite:
@@ -131,7 +131,7 @@ atlases:
   ref: Pipitone 2014
   covers: Striatum, pallidum, thalamus, amygdala, hippocampus
   preinstalled: true
-  about: The CoBrALab produces manually segmented MNI-based atlases of brain anatomy on their 5 high-resolution (0.3 mm isotropic) T1 and T2 templates for use with their registration-based [segmentation pipeline MAGeTbrain](https://github.com/CoBrALab/MAGetBrain). In order to enable usage of their atlases for common-space localization in MNI space, they applied the MAGeTbrain pipeline to all publicly available MNI space templates in order to provide MNI space localization. These atlases contain the thamalus, globlus paladus, striatum, hippocampus with its subfields and whitematter, and the amydalaya.
+  about: Manual segmentations on the CoBrALab’s five high-resolution (0.3 mm isotropic) T1 and T2 templates, made for its [MAGeTbrain segmentation pipeline](https://github.com/CoBrALab/MAGetBrain) and carried to the public MNI templates with the same pipeline. They include the thalamus, globus pallidus, striatum, hippocampus with its subfields and white matter, and the amygdala.
   get:
   - 'Information and download: [CoBrALab MNI models on GitHub](https://github.com/CobraLab/atlases/tree/master/mni_models)'
   cite:
@@ -149,7 +149,7 @@ atlases:
   ref: Lorio 2016
   covers: Tissue priors for subcortical segmentation
   preinstalled: true
-  about: The enhanced Tissue Probability Maps are a set of gray-, white- and csf- priors for segmentation of subcortical structures using SPM based on manual labelling of iron and myelin specific parameter maps of nearly 100 individuals aged 25-75yo. Not specifically a subcortical atlas (with strict boundaries for each nucleus), they are still a highly valuable source for patient-specific segmentation and normalization with specific focus on the subcortex. Lead-DBS uses the TPMs to generate customized space-specific TPMs for each “space” that you use (for instance, a TPM for the default ICBM 2009b NLIN Asym space is generated based on the Lorio et al. enhances TPMs).
+  about: Grey matter, white matter and CSF priors for segmenting subcortical structures with SPM, from manual labels on iron- and myelin-sensitive parameter maps of nearly 100 people aged 25 to 75. They are not an atlas with strict borders for each nucleus, but they improve patient-specific segmentation and normalization of the subcortex. Lead-DBS builds a TPM for each space you use from them (for the default ICBM 2009b NLIN Asym space, for example).
   get:
   - 'Information and download: [enhanced TPMs at LREN, Lausanne](https://www.unil.ch/lren/home/menuinst/teaching--utilities/data--utilities.html)'
   cite:
@@ -162,10 +162,10 @@ atlases:
   ref: Wang 2016
   covers: STN, pallidum, red nucleus from 7T MRI
   preinstalled: true
-  about: Atlas including STN, pallidum and red nucleus made on 7T data from 12 healthy controls. The templates on which the atlas is defined is not in MNI space but can be used within Lead-DBS for normalizations, as well (instead of using an MNI template). Also, there is an MNI version ported from template to MNI space available within Lead-DBS.
+  about: STN, pallidum and red nucleus from 7T data of 12 healthy controls. Its templates are not in MNI space, but Lead-DBS can normalize to them instead of an MNI template; an MNI version of the atlas comes with Lead-DBS.
   get:
-  - An MNI version of the atlas comes preinstalled within Lead-DBS
-  - Original 7T template space atlases and templates can be downloaded via the Lead-DBS spaces menu, as well
+  - An MNI version comes with Lead-DBS
+  - 'The original templates and atlases in 7T template space: from the spaces menu in Lead-DBS'
   - 'Raw data: [deepbrain7t on NITRC](https://www.nitrc.org/projects/deepbrain7t/)'
   cite:
   - wang2016
@@ -177,7 +177,7 @@ atlases:
   ref: He 2020
   covers: Basal ganglia and thalamus, structural and functional
   preinstalled: true
-  about: This atlas was generated in a hybrid manner using both structural and functional information. Components of the basal ganglia were first defined structurally with the “[atlas of the basal ganglia](https://www.nitrc.org/projects/atag/)” ([ATAG](https://www.nitrc.org/projects/atag/); Keuken et al., 2014), including the striatum, globus pallidus externus (GPe) and internus (GPi), subthalamic nucleus (STN), and substantia nigra (SN). We also localized the spatial extent of the thalamus based on the Morel atlas (Morel et al., 1997; Krauth et al., 2010). Due to the relatively small size of the GPi, GPe, STN, and SN, these components were kept in consistent with ATAG without any additional processing. For the striatum and thalamus, we then performed a masked independent component analysis (ICA) based functional parcellation (Moher Alsady et al., 2016) to divide them into functionally distinctive subdivisions.
+  about: This atlas was generated in a hybrid manner using both structural and functional information. Components of the basal ganglia were first defined structurally with the “[atlas of the basal ganglia](https://www.nitrc.org/projects/atag/)” ([ATAG](https://www.nitrc.org/projects/atag/); Keuken et al., 2014), including the striatum, globus pallidus externus (GPe) and internus (GPi), subthalamic nucleus (STN), and substantia nigra (SN). We also localized the spatial extent of the thalamus based on the Morel atlas (Morel et al., 1997; Krauth et al., 2010). Due to the relatively small size of the GPi, GPe, STN, and SN, these components were kept consistent with ATAG without any additional processing. For the striatum and thalamus, we then performed a masked independent component analysis (ICA) based functional parcellation (Moher Alsady et al., 2016) to divide them into functionally distinctive subdivisions.
   get: []
   cite:
   - he2020
@@ -190,13 +190,13 @@ atlases:
   covers: Thalamus and basal ganglia from histology
   preinstalled: true
   about: |-
-    Histological atlas that has been normalized to MNI-Space.
+    A histological atlas normalized to MNI space.
 
-    Optimal for STN or thalamic targets. The ventral intermediate nucleus (VIM) is not represented separately: this atlas follows Jones / Hirai & Jones nomenclature rather than Walker or Hassler.
+    Suited to STN and thalamic targets. The ventral intermediate nucleus (VIM) is not represented separately: this atlas follows Jones / Hirai & Jones nomenclature rather than Walker or Hassler.
 
-    The VLpv is the nucleus of the atlas best corresponding to the VIM although it may not be exactly the same. For more information about conversions between thalamic nomenclatures e.g. see Paxinos, G. (2012). The Human Nervous System. Academic Press.
+    The VLpv is the nucleus of the atlas best corresponding to the VIM although it may not be exactly the same. On conversions between thalamic nomenclatures, see for example Paxinos, G. (2012). The Human Nervous System. Academic Press.
   get:
-  - The atlas comes pre-installed with Lead-DBS. It has been made [openly available by its authors](https://zenodo.org/records/13918589).
+  - Comes with Lead-DBS; its authors have also made it [openly available](https://zenodo.org/records/13918589)
   - 'A surface-based version: [Morel atlas surfaces in the ETH Research Collection](https://www.research-collection.ethz.ch/handle/20.500.11850/669887)'
   cite:
   - jakab2012
@@ -211,12 +211,12 @@ atlases:
   covers: Basal ganglia and thalamus from histology
   preinstalled: false
   about: |-
-    To the best of our knowledge, this atlas is the most detailed subcortical atlas available. Since its structural descriptions are in nomenclature of the Schaltenbrand-Wahren atlas, it also is very relevant to the field of DBS.
+    A histological subcortical atlas using Schaltenbrand-Wahren nomenclature.
 
-    Please note that the original version of this atlas was registered to the MNI colin space whereas Lead-DBS conventionally uses the MNI152 ICBM 2009 space. [These spaces are similar](/about-the-mni-spaces/), but a 2009b version of the same data exists in the DISTAL atlas (see above). Alternatively, the same data was used to create the MNI PD25 atlas – which again uses a slightly different template space based on patients suffering from Parkinson’s Disease (see below).
+    The original version was registered to the MNI Colin space, whereas Lead-DBS uses the MNI152 ICBM 2009b space. [These spaces are similar](/about-the-mni-spaces/), and a 2009b version of the same data is part of the DISTAL atlas (see above). The same data was also used for the MNI PD25 atlas, which uses a template space built from patients with Parkinson’s disease (see below).
   get:
-  - You can get information about this atlas by contacting the [author](http://cobralab.ca/members/commander/).
-  - The histological labels have made their way into both the DISTAL and MNI 25 PD atlases (and build the seminal groundwork for these two atlases)
+  - 'Information: from its [author](http://cobralab.ca/members/commander/)'
+  - The histological labels are the basis of both the DISTAL and MNI PD25 atlases.
   cite:
   - chakravarty2006
   image: Chakravarty_Atlas-300x300.png
@@ -228,7 +228,7 @@ atlases:
   ref: Keuken 2014
   covers: Basal ganglia from 7T MRI
   preinstalled: true
-  about: An atlas of the basal ganglia that is based on 7T MR imaging
+  about: An atlas of the basal ganglia from 7T MRI.
   get:
   - 'Download: [ATAG on NITRC](https://www.nitrc.org/projects/atag)'
   cite:
@@ -241,7 +241,7 @@ atlases:
   ref: Amunts 2013
   covers: Whole-brain histology
   preinstalled: false
-  about: Not in particular an atlas but rather a highly detailed whole-brain histological map available in MNI/ICBM 152 2009b nonlinear symmetric space.
+  about: A whole-brain histological map rather than an atlas, available in MNI/ICBM 152 2009b nonlinear symmetric space.
   get:
   - 'Information: [BigBrain project](http://bigbrain.loris.ca/main.php)'
   - 'In ICBM 2009b NLIN Asym space (the default space of Lead-DBS): [BigBrain in 2009b space at the McConnell Brain Imaging Centre](http://nist.mni.mcgill.ca/?p=1209)'
@@ -256,9 +256,9 @@ atlases:
   ref: Ahsan 2007
   covers: Basal ganglia and thalamus, without the STN
   preinstalled: false
-  about: An atlas of the basal ganglia based on MR-imaging data – including pallidum, substantia nigra, thalamus and more. The subthalamic nucleus is not included.
+  about: An atlas of the basal ganglia from MRI, including the pallidum, substantia nigra and thalamus, but not the subthalamic nucleus.
   get:
-  - The atlas may be obtained by contacting the author of the paper cited below.
+  - From the author of the paper cited below
   cite:
   - ahsan2007
   image: Screen-Shot-2020-06-27-at-11.01.42-AM-300x298.png
@@ -269,9 +269,9 @@ atlases:
   ref: Prodoehl 2008
   covers: Basal ganglia
   preinstalled: true
-  about: An atlas of the basal ganglia based on MR-imaging data
+  about: An atlas of the basal ganglia from MRI.
   get:
-  - The atlas can be obtained by contacting the author of the paper cited below.
+  - From the author of the paper cited below
   cite:
   - prodoehl2008
   image: BGHAT_Prodoehl-300x278.png
@@ -282,7 +282,7 @@ atlases:
   ref: Makris 2006
   covers: Common subcortical structures; no STN
   preinstalled: false
-  about: A widely used atlas of subcortical structures. Does not separate between subparts of the pallidum / thalamus and does not contain a volume for the subthalamic nucleus. In the context of DBS, this atlas can for example be used for whole pallidum, thalamus, nucleus accumbens, as well as subcortical subcallosal cortex visualization.
+  about: A widely used atlas of subcortical structures. It does not divide the pallidum or thalamus and has no subthalamic nucleus. For DBS, it can show the whole pallidum, thalamus, nucleus accumbens and subcallosal cortex.
   get:
   - 'Included as a whole-brain parcellation; see [Cortical parcellations](/helpsupport/knowledge-base/atlasesresources/cortical-atlas-parcellations-mni-space/#harvard-oxford-corticalsubcortical-atlases-makris-2006)'
   - 'Distributed with [FSL](http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/); description: [FSL atlases page](http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Atlases)'
@@ -300,7 +300,7 @@ atlases:
   ref: Iacono 2015
   covers: Whole head, for computational modelling
   preinstalled: false
-  about: "One of the most detailed image-based anatomical head models available for computational life sciences.  \nIf you are interested in whole-head anatomy, this is probably your atlas of choice. Regarding DBS, it contains interesting structures such as blood vessels, ventricles and subcortical structures such as thalamus and pallidum.\n\n**Please note that this atlas is not registered into MNI space which limits its use with Lead-DBS.**"
+  about: "A detailed image-based anatomical model of the whole head for computational modelling, including blood vessels, ventricles and subcortical structures such as the thalamus and pallidum.\n\n**It is not registered to MNI space, which limits its use with Lead-DBS.**"
   get:
   - 'Download: [MIDA model at the IT''IS Foundation](http://www.itis.ethz.ch/virtual-population/regional-human-models/mida-model/)'
   cite:
@@ -314,7 +314,7 @@ atlases:
   ref: Qiu 2010
   covers: Subcortical and ventricular structures
   preinstalled: false
-  about: An atlas based on MRI data
+  about: An atlas from MRI.
   get:
   - Information about this atlas used to be available on a website of the National University of Singapore (www.bioeng.nus.edu.sg), which can no longer be reached.
   cite:
@@ -327,9 +327,9 @@ atlases:
   ref: Yelnik 2007
   covers: Basal ganglia from histology
   preinstalled: false
-  about: An atlas of the basal ganglia based on histological data
+  about: An atlas of the basal ganglia from histology.
   get:
-  - to our knowledge, this atlas is not publicly available.
+  - Not publicly available, as far as we know
   cite:
   - yelnik2007
   image: Screen-Shot-2020-06-27-at-11.11.03-AM-287x300.png
@@ -340,7 +340,7 @@ atlases:
   ref: Yu 2021
   covers: Subcortical nuclei in Parkinson's disease, QSM and T1
   preinstalled: true
-  about: The HybraPD atlas is constructed by using fused quantitative susceptibility mapping (QSM) and T1w images from 87 patients with PD. It contains a parcellation map with 12 bilateral subcortical nuclei, which are highly related to PD pathology, such as sub-regions in globus pallidus, substantia nigra and subthalamic nucleus etc. Furthermore, a whole-brain parcellation map is achieved by combining existing cortical parcellation and white-matter segmentation with the proposed subcortical nuclei map.
+  about: Built from fused quantitative susceptibility mapping (QSM) and T1-weighted images of 87 patients with Parkinson’s disease. It parcellates 12 bilateral subcortical nuclei related to the disease, such as subregions of the globus pallidus, substantia nigra and subthalamic nucleus, and combines them with existing cortical and white-matter maps into a whole-brain parcellation.
   get: []
   cite:
   - yu2021
@@ -357,7 +357,7 @@ atlases:
 
     Continuous series of thalamic nuclear maps in three stereotactic planes obtained from a single brain plus the original series of sagittal histological sections and a set of sagittal MRIs from the same brain are available at the site humanmotorthalamus.com.
 
-    This is a unique set of images in that the motor related nuclei are outlined based on an immunocytochemical marker specific for terminal zone of each motor-related subcortical afferent system such as cerebellar, pallidal and nigral. These territories are shown within the Talairach coordinate system and their correspondence to Hassler’s parcellations of the motor related nuclei as well as Jones-Morel outlines is discussed in an accompanying manuscript Ilinsky et al., 2018, available at the site referenced below. Also comparison with some related DTI tractography data is given.
+    In this set of images, the motor-related nuclei are outlined based on an immunocytochemical marker specific for terminal zone of each motor-related subcortical afferent system such as cerebellar, pallidal and nigral. These territories are shown within the Talairach coordinate system and their correspondence to Hassler’s parcellations of the motor related nuclei as well as Jones-Morel outlines is discussed in an accompanying manuscript Ilinsky et al., 2018, available at the site referenced below. The manuscript also compares them with DTI tractography.
   get:
   - 'Information: [humanmotorthalamus.com](http://www.humanmotorthalamus.com/)'
   cite:
@@ -382,9 +382,9 @@ atlases:
   ref: Saranathan 2021
   covers: Thalamic nuclei from 7T MRI
   preinstalled: true
-  about: This atlas has been generated by label fusion of the 20 manually segmented WMn-MPRAGE datasets warped to MNI space via a local averaged template space. It can essentially be thought of a parcellation of the MNI T1 template using Thalamus optimized multi-atlas segmentation (THOMAS) algorithm.
+  about: 'Generated by label fusion of 20 manually segmented WMn-MPRAGE datasets, warped to MNI space through a locally averaged template: in effect, a parcellation of the MNI T1 template with the thalamus-optimized multi-atlas segmentation (THOMAS) algorithm.'
   get:
-  - You can also download it from [Zenodo](https://zenodo.org/doi/10.5281/zenodo.3952826).
+  - Also on [Zenodo](https://zenodo.org/doi/10.5281/zenodo.3952826)
   cite:
   - saranathan2021
   - su2019
@@ -397,9 +397,9 @@ atlases:
   covers: Thalamic nuclei in the patient's own space
   preinstalled: false
   included: Run from Lead-DBS
-  about: As opposed to the Saranathan THOMAS atlas in MNI space, this is a multi-atlas based parcellation in patient space using a variant of the THOMAS algorithm called Histogram-based polynomial synthesis (HIPS) THOMAS for handling standard T1 MRI data. HIPS algorithm synthesizes WM-nulled like images from T1 before running the standard THOMAS algorithm leveraging the high intrathalamic contrast of WM-nulled contrast. For WMn/FGATIR images, standard THOMAS is directly run.
+  about: Unlike the THOMAS atlas in MNI space, this is a multi-atlas parcellation in the patient’s own space. For standard T1 data, histogram-based polynomial synthesis (HIPS) first synthesizes WM-nulled-like images, whose intrathalamic contrast is high, and then runs THOMAS; WMn and FGATIR images go to THOMAS directly.
   get:
-  - The atlas will be generated in patient native space by clicking the menu *Tools* -> *Run THOMAS for T1w/WMn/FGATIR* in Lead-DBS.
+  - Generated in the patient’s native space with *Tools* → *Run THOMAS for T1w/WMn/FGATIR* in Lead-DBS
   cite:
   - vidal2024
   - su2019
@@ -436,7 +436,7 @@ atlases:
   ref: Horn 2016
   covers: Thalamus by structural connectivity, in ICBM 2009b
   preinstalled: true
-  about: A reproduction of the Oxford thalamic connectivity atlas – obtained on 169 subjects of the NKI-RS enhanced dataset and computed entirely within ICBM 2009b (MNI152) nonlinear space.
+  about: A reproduction of the Oxford thalamic connectivity atlas from 169 subjects of the enhanced NKI-RS dataset, computed entirely in ICBM 2009b (MNI152) nonlinear space.
   get: []
   cite:
   - horn2016
@@ -448,7 +448,7 @@ atlases:
   ref: Kumar 2017
   covers: Thalamus by resting-state fMRI
   preinstalled: true
-  about: This altas is based on resting state-fMRI to investigate the functional anatomy of the thalamus
+  about: The functional anatomy of the thalamus from resting-state fMRI.
   get: []
   cite:
   - kumar2017
@@ -461,7 +461,7 @@ atlases:
   ref: Accolla 2014
   covers: 'STN: sensorimotor, associative, limbic zones'
   preinstalled: true
-  about: Atlas with a parcellation of the BGHAT-volume (see above) of the STN into three functional zones (sensorimotor,associative, limbic) based on diffusion-based tractography.
+  about: Divides the BGHAT STN (see above) into sensorimotor, associative and limbic zones by diffusion tractography.
   get: []
   cite:
   - accolla2014
@@ -475,7 +475,7 @@ atlases:
   preinstalled: true
   about: An atlas displaying the anatomical and functional organization of the human substantia nigra (SN) using diffusion and functional MRI data from the Human Connectome Project.
   get:
-  - The atlas can be downloaded from [Neurovault](https://neurovault.org/collections/2860/).
+  - 'Download: [NeuroVault](https://neurovault.org/collections/2860/)'
   cite:
   - zhang2017
   image: nigral-1030x880.png
@@ -486,7 +486,7 @@ atlases:
   ref: Keuken 2013
   covers: STN in young, middle-aged and elderly adults
   preinstalled: true
-  about: An atlas of the STN based on 7T MR imaging
+  about: An atlas of the STN from 7T MRI.
   get:
   - 'Download: [ATAG on NITRC](https://www.nitrc.org/projects/atag)'
   cite:
@@ -499,7 +499,7 @@ atlases:
   ref: Alho 2017
   covers: Pedunculopontine nucleus from histology
   preinstalled: true
-  about: In this atlas, the pedunculopontine nucleus has been segmented based on postmortem MRI and histology.
+  about: The pedunculopontine nucleus, segmented on post-mortem MRI and histology.
   get: []
   cite:
   - alho2017
@@ -523,7 +523,7 @@ atlases:
   ref: Edlow 2012
   covers: Brainstem arousal nuclei, incl. the PPN
   preinstalled: true
-  about: An atlas focusing on the Ascending Arousal Network of the brainstem which also includes the pedunculo-pontine nucleus targeted for freezing of gait with DBS. Also, the ventral tegmental area is included.
+  about: The ascending arousal network of the brainstem, including the pedunculopontine nucleus (a DBS target for freezing of gait) and the ventral tegmental area.
   get:
   - 'Information: [Harvard AAN atlas version 2.0 on Dryad](https://datadryad.org/stash/dataset/doi:10.5061/dryad.zw3r228d2)'
   cite:
@@ -536,7 +536,7 @@ atlases:
   ref: Snijders 2016
   covers: Pedunculopontine nucleus (a coordinate)
   preinstalled: true
-  about: Not really an “atlas” but rather an MNI coordinate defining the position of the PPN within MNI space. Lined out by an experienced neuroanatomist using multiple MNI templates and the Bigbrain dataset.
+  about: An MNI coordinate for the PPN rather than an atlas, set by a neuroanatomist on several MNI templates and the BigBrain dataset.
   get: []
   cite:
   - snijders2016
@@ -548,7 +548,7 @@ atlases:
   ref: Cartmell 2019
   covers: Nucleus accumbens subregions
   preinstalled: true
-  about: Taking advantage of the distinct structural connectivity of nucleus accumbens subregions, this probabilistic atlas was generated using tractography-based segmentation results from 245 Human Connectome Project subjects. Segmentation results were corroborated using data from several modalities including MRI-based measures of function and microstructure and human post-mortem immunohistochemical staining. The atlas closely matches the traditional core and shell divisions based on cytoarchitecture.
+  about: A probabilistic atlas of nucleus accumbens subregions from tractography-based segmentation in 245 Human Connectome Project subjects, corroborated by MRI measures of function and microstructure and by post-mortem immunohistochemistry. It closely matches the cytoarchitectonic core and shell.
   get: []
   cite:
   - cartmell2019
@@ -560,7 +560,7 @@ atlases:
   ref: Lau 2020
   covers: Zona incerta and nearby structures
   preinstalled: true
-  about: This atlas shows direct visualization and characterization of the human zona incerta and surrounding structures.
+  about: The human zona incerta and surrounding structures, visualized directly.
   get: []
   cite:
   - lau2020
@@ -572,7 +572,7 @@ atlases:
   ref: Levinson 2022
   covers: Limbic brainstem nuclei
   preinstalled: true
-  about: 'This atlas of the human brain stem is based on 3T T1 and T2 data from approximately 200 Human Connectome subjects that were used to delineate five brainstem nuclei involved in limbic processing: the Locus Coeruleus, Nucleus Tractus Solitarius, Periaqueductal Grey, Ventral Tegmental Area and Dorsal Raphe Nucleus. Each structure was masked based on radiographic anatomic boundaries and then registered to MNI space using the 0.5mm 2009b nonlinear asymmetric MNI template.'
+  about: 'Five brainstem nuclei involved in limbic processing, delineated on 3T T1 and T2 data of about 200 Human Connectome Project subjects: the locus coeruleus, nucleus tractus solitarius, periaqueductal grey, ventral tegmental area and dorsal raphe nucleus. Each was masked by radiographic anatomical boundaries and registered to the 0.5 mm 2009b nonlinear asymmetric MNI template.'
   get: []
   cite:
   - levinson2023
@@ -585,13 +585,13 @@ atlases:
   covers: Thalamocortical, mesocorticolimbic, cerebellothalamic
   preinstalled: true
   about: |-
-    A set of tractograms generated by targeted tractography describing the main trajectories of some subcortical white matter pathways. These trajectories represent:
+    Tractograms from targeted tractography of the main trajectories of three subcortical white matter systems:
 
     1. The thalamocortical system from the associative (Brodmann areas 8, 9, 10, 46, and 47) and limbic cortical regions (Brodmann areas 11, 12, and 32, ventral part of areas 24 and 25) [1] to the thalamus [2–5].
-    2. The Mesocorticolimbic system. Connections of the associative (Brodmann areas 8, 9, 10, 46, and 47) and limbic cortical regions (Brodmann areas 11, 12, and 32, ventral part of areas 24 and 25) to the midbrain nuclei: substantia nigra compacta and reticulata and the ventral tegmental area [2–5].
+    2. The mesocorticolimbic system. Connections of the associative (Brodmann areas 8, 9, 10, 46, and 47) and limbic cortical regions (Brodmann areas 11, 12, and 32, ventral part of areas 24 and 25) to the midbrain nuclei: substantia nigra compacta and reticulata and the ventral tegmental area [2–5].
     3. The cerebellothalamic system concerning the motor circuit from the cerebellar nuclei to the ventral intermediate nucleus [7].
 
-    These tractograms were generated using the IT Human template [8]
+    The tractograms were generated on the IIT Human template [8].
   get: []
   cite:
   - fuster2008
@@ -611,7 +611,7 @@ atlases:
   ref: Meola 2016
   covers: Brainstem tracts, incl. the dentatorubrothalamic tract
   preinstalled: true
-  about: This set of canonical fibre tracts in MNI space have been defined using human connectome project data and include fibertracts that are relevant to DBS surgery such as the dentato-rubro-thalamic tracts, the corticospinal tract and many more. The set of fibres was kindly provided for distribution within Lead-DBS by Antonio Meola from Brigham’s and Womens Hospital in Boston. Read more about the fibre atlas in [the newsletter that introduced it](http://us8.campaign-archive1.com/?u=a5b93846a3a2a714edbcce8ef&id=aa1f8724d5). You may contact Antonio in case of questions using our [contact us](/contact/) webform.
+  about: Canonical fibre tracts in MNI space from Human Connectome Project data, including tracts relevant to DBS surgery such as the dentatorubrothalamic and corticospinal tracts. Antonio Meola (Brigham and Women’s Hospital, Boston) provided them for distribution with Lead-DBS. More in [the newsletter that introduced it](http://us8.campaign-archive1.com/?u=a5b93846a3a2a714edbcce8ef&id=aa1f8724d5); questions for Antonio go through our [contact page](/contact/).
   get: []
   cite:
   - meola2016
@@ -624,7 +624,7 @@ atlases:
   ref: Tang 2018
   covers: 23 brainstem bundles
   preinstalled: false
-  about: This is a probabilistic atlas of 23 brainstem bundles using high-quality connectome imaging data and advanced analysis techniques.  Rigorous quality control on connectome imaging data from the Human Connectome Project (HCP) were performed and only accepted high-quality imaging data with minimal residual distortions for atlas construction.
+  about: A probabilistic atlas of 23 brainstem bundles from Human Connectome Project data, built only from scans that passed quality control for residual distortion.
   get:
   - 'Information: [brainstem atlas on NITRC](https://www.nitrc.org/projects/brainstem_atlas/)'
   cite:
@@ -637,7 +637,7 @@ atlases:
   ref: Brown 2017
   covers: Fornix
   preinstalled: true
-  about: This atlas merged younger-older adult template of the fornix and demonstrated its utility for studies of aging and preclinical Alzheimer’s disease (AD).
+  about: A fornix template merged from younger and older adults, for studies of ageing and preclinical Alzheimer’s disease.
   get: []
   cite:
   - brown2017
@@ -661,7 +661,7 @@ atlases:
   ref: Dembek 2019
   covers: Parkinson's disease, STN
   preinstalled: true
-  about: A set of probabilistic sweetspots based on 449 DBS settings in 21 PD patients which showed utility to predict variance in clinical outcomes following STN-DBS in out-of-sample data.
+  about: Probabilistic sweet spots from 449 DBS settings in 21 patients with Parkinson’s disease, which explained variance in STN-DBS outcomes in out-of-sample data.
   get:
   - 'Information: [STN sweet spots on OSF](https://osf.io/ybdjf/)'
   cite:
@@ -674,7 +674,7 @@ atlases:
   ref: Elias 2020
   covers: 'Sweet and sour spots: PD, dystonia, tremor, psychiatry'
   preinstalled: true
-  about: An atlas of DBS sweet- & sourspots for PD (STN & GPi), Dystonia, Essential Tremor and psychiatric diseases.
+  about: DBS sweet and sour spots for Parkinson’s disease (STN and GPi), dystonia, essential tremor and psychiatric disorders.
   get: []
   cite:
   - elias2020
@@ -686,7 +686,7 @@ atlases:
   ref: Boutet 2021
   covers: PD symptom-specific sweet and cold spots
   preinstalled: true
-  about: A set of symptom-specific probabilistic mapping regions in PD accounting for sweet- & coldspots for bradykinesia, tremor, rigidity & axial symptoms.
+  about: Symptom-specific sweet and cold spots in Parkinson’s disease for bradykinesia, tremor, rigidity and axial symptoms.
   get:
   - 'Information: [TOR-signPD on Zenodo](https://doi.org/10.5281/zenodo.4425256)'
   cite:
@@ -699,7 +699,7 @@ atlases:
   ref: Li 2020
   covers: Obsessive-compulsive disorder, response tracts
   preinstalled: true
-  about: This atlas builds upon networks associated with optimal responses in patients with Obsessive Compulsive Disorder analysed with DBS fibre filtering (a.k.a. discriminative tractography) method as implemented within Lead-DBS. Building upon a large collective of N = 50 patients from four centers and a normative connectome calculated in 1,000 participants, this atlas differentiates specific bundles associated with optimal response across two different stimulation targets (subthalamic nucleus and anterior limb of the internal capsule). Relevance of the tract for two additional brain targets (bed nucleus of the stria terminalis and internal pallidum) have been indirectly shown, as well (see Baldermann et al., Biological Psychiatry 2022). Optimal fMRI response networks based on Li & Hollunder et al., Biological Psychiatry 2021) are also provided.
+  about: Tracts associated with optimal response to DBS in obsessive-compulsive disorder, found with fibre filtering (discriminative tractography) in Lead-DBS. From 50 patients at four centres and a normative connectome of 1,000 participants, it identifies the bundle associated with response at two targets (subthalamic nucleus and anterior limb of the internal capsule); its relevance at two more (bed nucleus of the stria terminalis and internal pallidum) was shown indirectly (Baldermann et al., Biological Psychiatry 2022). Optimal fMRI response networks (Li & Hollunder et al., Biological Psychiatry 2021) are included.
   get: []
   cite:
   - li2020
@@ -714,7 +714,7 @@ atlases:
   ref: Horn 2022
   covers: Dystonia, response tracts
   preinstalled: true
-  about: This atlas builds upon networks associated with optimal responses in patients with cervical vs. generalized dystonia analysed with DBS fibre filtering (a.k.a. discriminative tractography) method as implemented within Lead-DBS. Building upon a large collective of N = 80 patients from five centers and a precise definition of tracts within the subcortical area defined by the Basal Ganglia Pathway Atlas ([Petersen et al. 2019 Neuron](https://www.cell.com/neuron/pdf/S0896-6273(19)30832-3.pdf)), this atlas differentiates specific bundles associated with optimal responses in the two phenotypes of dystonia. A sweetspot model and optimal fMRI response networks are also provided.
+  about: Tracts associated with optimal response to DBS in cervical and generalized dystonia, found with fibre filtering (discriminative tractography) in Lead-DBS. From 80 patients at five centres and the tracts of the Basal Ganglia Pathway Atlas ([Petersen et al. 2019, Neuron](https://www.cell.com/neuron/pdf/S0896-6273(19)30832-3.pdf)), it separates the bundles associated with response in the two phenotypes. A sweet spot model and optimal fMRI response networks are included.
   get: []
   cite:
   - horn2022
@@ -726,7 +726,7 @@ atlases:
   ref: Neudorfer 2022
   covers: Essential tremor, imaging marker
   preinstalled: true
-  about: Using fast gray matter acquisition T1 inversion recovery (FGATIR) sequences, Neudorfer et al. identified an imaging-based hypointensity marker that has the potential to inform surgical targeting and stimulation programming in Essential Tremor. The clinical applicability of the hypointensity was validated using – among others – a probabilistic map of tremor improvement derived from 36 patients. Both, the hypointensity template and the probabilistic map have been combined into a comprehensive atlas resource featured in Lead-DBS.
+  about: On fast grey matter acquisition T1 inversion recovery (FGATIR) images, Neudorfer et al. identified a hypointensity in essential tremor that the study proposed as an imaging marker for targeting and programming. It was compared with, among others, a probabilistic map of tremor improvement from 36 patients. The atlas includes the hypointensity template and probabilistic tremor-improvement map.
   get: []
   cite:
   - neudorfer2022
@@ -738,7 +738,7 @@ atlases:
   ref: Nowacki 2022
   covers: Essential tremor, stimulation map
   preinstalled: true
-  about: The essential tremor probabilistic stimulation map is based on neuroimaging and longterm clinical outcome data (% tremor reduction at 12 months following DBS lead implantation) of 119 patients from five different European centers. The map contains a mean improvement image, which displays the volume of therapeutic effect of DBS where each voxel is assigned the mean tremor improvement of all associated stimulation volumes that activated this particular voxel. Furthermore, it displays a stimulation sweet spot representing a statistically significant volume that is associated with a greater than 50% tremor improvement.
+  about: From imaging and long-term outcomes (tremor reduction 12 months after implantation) of 119 patients at five European centres. Each voxel of the mean improvement image holds the mean tremor improvement of all stimulation volumes that included it; a sweet spot marks the volume significantly associated with more than 50% improvement.
   get: []
   cite:
   - nowacki2022
@@ -750,7 +750,7 @@ atlases:
   ref: Horn 2017
   covers: STN beta power, Parkinson's disease
   preinstalled: true
-  about: In this atlas, beta power estimates recorded from >50 PD patients were mapped to the subthalamic nucleus, forming an electrophysiological target for DBS.
+  about: Beta power recorded in more than 50 patients with Parkinson’s disease, mapped to the subthalamic nucleus.
   get:
   - 'The method behind it: [Subcortical electrophysiology mapping (SEM)](/helpsupport/knowledge-base/lead-dbs-methods/subcortical-electrophysiology-mapping-sem/)'
   cite:
@@ -763,7 +763,7 @@ atlases:
   ref: Neumann 2017
   covers: GPi theta power, dystonia
   preinstalled: true
-  about: In this atlas, theta power estimates recorded from 27 dystonia patients were mapped to the internal pallidum, forming an electrophysiological target for DBS. Literature based similar sweetspots are also included.
+  about: Theta power recorded in 27 patients with dystonia, mapped to the internal pallidum, with comparable sweet spots from the literature.
   get:
   - 'Information: [the newsletter that introduced the GPi atlas](https://us8.campaign-archive.com/?u=a5b93846a3a2a714edbcce8ef&id=5d0c76f0df)'
   - 'The method behind it: [Subcortical electrophysiology mapping (SEM)](/helpsupport/knowledge-base/lead-dbs-methods/subcortical-electrophysiology-mapping-sem/)'
@@ -777,7 +777,7 @@ atlases:
   ref: Horn 2017
   covers: Literature targets for nine diseases
   preinstalled: true
-  about: Atlas defining DBS targets for nine diseases in MNI space. A systematic literature research defined optimal stimulation targets for each disease in AC/PC (functional) coordinates that were warped into MNI space based on a probabilistic mapping via an age-matched cohort.
+  about: 'DBS targets for nine diseases in MNI space: targets from a systematic literature search in AC/PC coordinates, warped to MNI space through an age-matched cohort.'
   get:
   - 'Current version: v1.1 (v1.0 can no longer be downloaded separately)'
   cite:
@@ -790,7 +790,7 @@ atlases:
   ref: Boutet 2018
   covers: Essential tremor, focused-ultrasound lesions
   preinstalled: true
-  about: Sweetspot for optimal tremor response based on 66 patients with essential tremor who underwent MRgFUS.
+  about: The sweet spot for tremor response in 66 patients with essential tremor treated with MRgFUS.
   get: []
   cite:
   - boutet2018
@@ -802,7 +802,7 @@ atlases:
   ref: Hollunder 2024
   covers: Sweet streamlines and spots for four disorders
   preinstalled: true
-  about: Sweet streamlines and sweet spots calculated based on 197 STN-DBS patients including dystonia (n = 70), Tourette’s syndrome (n = 14), Parkinson’s disease (n = 94) and obsessive-compulsive disorder (n = 19).
+  about: Sweet streamlines and sweet spots from 197 DBS patients with dystonia (n = 70), Tourette’s syndrome (n = 14), Parkinson’s disease (n = 94) and obsessive-compulsive disorder (n = 19).
   get: []
   cite:
   - hollunder2024
@@ -815,12 +815,12 @@ atlases:
   covers: Subcortex at four scales, 3T and 7T
   preinstalled: true
   about: |-
-    This hierarchical functional MRI Atlas of the human subcortex features
+    A hierarchical fMRI atlas of the human subcortex:
 
     - Volumetric parcellation of the human subcortex representing consensus among more than 1000 healthy adults.
     - Available in four hierarchical scales as well as 3 and 7 Tesla versions.
     - Personalizable to represent individual variation in regional boundaries.
-    - Seamlessly integratable into established cortex-only parcellation atlases.
+    - Combines with cortex-only parcellations.
     - Includes subdivisions of the striatum, thalamus, hippocampus, amygdala and globus pallidus.
   get:
   - 'Download: [Melbourne Subcortex Atlas on GitHub](https://github.com/yetianmed/subcortex)'
@@ -835,9 +835,9 @@ atlases:
   ref: Choi 2012
   covers: Striatum by resting-state fMRI
   preinstalled: true
-  about: As in the Yeo 2011 brain parcellation atlas, 1000 rs-fMRI scans were used to create this striatal parcellation atlas.
+  about: A parcellation of the striatum from the same 1,000 resting-state fMRI scans as the Yeo 2011 parcellation.
   get:
-  - The atlas comes preinstalled within Lead-DBS and matches with the Yeo 2011 parcellation (labeling atlas).
+  - Comes with Lead-DBS and matches the Yeo 2011 parcellation (labelling atlas)
   - 'Information: [Choi 2012 striatum parcellation in the FreeSurfer wiki](https://surfer.nmr.mgh.harvard.edu/fswiki/StriatumParcellation_Choi2012)'
   cite:
   - choi2012
@@ -849,9 +849,9 @@ atlases:
   ref: Yeo 2011
   covers: Seven and 17 networks across the brain
   preinstalled: true
-  about: Combining results from multiple landmark studies around Thomas Yeo, Randy Buckner and others, we have built a combined atlas that divides the cortex, striatum, cerebellum and thalamus into the famous seven or seventeen networks based on resting-state functional connectivity acquired in 1000 subjects. The atlas of the thalamus is unpublished.
+  about: Combines the studies of Thomas Yeo, Randy Buckner and others into one atlas that divides the cortex, striatum, cerebellum and thalamus into 7 or 17 networks, from resting-state functional connectivity in 1,000 subjects. The thalamus part is unpublished.
   get:
-  - The atlas comes preinstalled within Lead-DBS and matches with the Yeo 2011 parcellation (labeling atlas).
+  - Comes with Lead-DBS and matches the Yeo 2011 parcellation (labelling atlas)
   - 'Resources: [Thomas Yeo''s thread on Twitter](https://twitter.com/bttyeo/status/1248992127985434624?s=20)'
   cite:
   - {paper: yeo2011, label: "Cortex"}
@@ -865,9 +865,9 @@ atlases:
   ref: Joliot 2015
   covers: Thalamus, striatum and more by intrinsic connectivity
   preinstalled: true
-  about: The AICHA atlas is an atlas of intrinsic connectivity of homotopic areas. It also features a subcortical section functionally parcellating the thalamus and other deep nuclei such as Caudate, Pallidum, Putamen and Amygdama.
+  about: An atlas of intrinsic connectivity of homotopic areas, with a subcortical part that parcellates the thalamus and other deep nuclei such as the caudate, pallidum, putamen and amygdala.
   get:
-  - The atlas comes preinstalled within Lead-DBS both in form of a parcellation (labeling atlas) and a subcortical atlas (nuclei only).
+  - Comes with Lead-DBS as a parcellation (labelling atlas) and as a subcortical atlas (nuclei only)
   - 'Information: [AICHA at GIN, CNRS](http://www.gin.cnrs.fr/AICHA)'
   cite:
   - joliot2015
@@ -879,7 +879,7 @@ atlases:
   ref: Buckner 2011
   covers: Cerebellum by resting-state fMRI
   preinstalled: false
-  about: This atlas is from rs-fMRI data acquired in 1000 young healthy adults that were registered using nonlinear deformation of the cerebellum in combination with surface-based alignment of the cerebral cortex.
+  about: From resting-state fMRI of 1,000 young healthy adults, registered with nonlinear deformation of the cerebellum and surface-based alignment of the cortex.
   get:
   - 'Information: [Buckner 2011 cerebellum parcellation in the FreeSurfer wiki](https://www.freesurfer.net/fswiki/CerebellumParcellation_Buckner2011)'
   cite:
@@ -893,7 +893,7 @@ atlases:
   ref: Li 2021
   covers: Subcortical nodes of the default mode network
   preinstalled: true
-  about: This atlas was derived from a group of 7T HCP resting-state fMRI data using the Nadam-Accelerated SCAlable and Robust (NASCAR) tensor decomposition method after a temporal synchronization via the BrainSync algorithm. It provides a comprehensive view of the subcortical functional connectivity of the default mode network, showing both positively correlated and negatively (anti) correlated regions to the cortical default mode network nodes.
+  about: Derived from 7T HCP resting-state fMRI with the Nadam-Accelerated SCAlable and Robust (NASCAR) tensor decomposition method after a temporal synchronization via the BrainSync algorithm. It maps subcortical regions with positive and negative functional connectivity to cortical default mode network nodes.
   get: []
   cite:
   - li2021dmn
@@ -907,7 +907,7 @@ atlases:
   preinstalled: false
   included: Macaque toolbox
   about: |-
-    A detailed atlas informed from over 100 structural MR scans of 19 rhesus macaque animals.
+    An atlas from more than 100 structural MRI scans of 19 rhesus macaques.
 
     The atlas is not precisely registered to macaque MNI space. The Lead-DBS macaque toolbox includes a script for transformations between INIA19 and MNI space.
   get:

@@ -1,10 +1,10 @@
 ---
 title: "Contact"
-description: "How to reach the Lead-DBS team: questions, bug reports, and a contact form."
+description: "How to reach the Lead-DBS team: the user Slack for questions, GitHub for bugs, and email for everything else."
 date: "2014-06-24T16:48:44"
 lastmod: "2022-03-15T20:30:21"
 weight: 10
-keywords: ["contact", "email", "email"]
+keywords: ["contact", "email", "write"]
 # In the menu hierarchy the contact page is the last step of "Get help" (breadcrumb Docs / Contact).
 # the faster ways, as rows (layouts/_shortcodes/link-rows.html)
 faster:
@@ -15,11 +15,12 @@ faster:
 share: "images/renders/head-docs.jpg"
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
+  - {page: "/manual/", name: "Manual"}
+  - {page: "/helpsupport/slack-user-channel/"}
   - {page: "/about/"}
-  - {page: "/subscribe-to-our-newsletter/"}
 ---
 
-Got a question or found a bug? Start here:
+For questions and bug reports:
 
 {{< link-rows key="faster" >}}
 

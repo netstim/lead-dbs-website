@@ -11,31 +11,22 @@ layout: "contribute"
 actions:
   - {text: "Lead-DBS on GitHub", url: "https://github.com/netstim/leaddbs"}
   - {text: "Developer meeting", page: "/events/developer-meeting/"}
-# The three ways: a title, a sentence (Markdown), up to two actions, and a small picture (show):
-#   terminal  the lines of "lines" in a terminal
-#   chips     the words of "chips" as pills
-#   issue     the fields of "fields" as a bug report to fill in
+# The three ways: a title, a sentence (Markdown) and up to two actions.
 ways:
   - id: "how-to-contribute"
     title: "Add your code"
     text: "Open a pull request on GitHub, or ask us for push access."
-    show: terminal
-    lines: ["git clone netstim/leaddbs", "git checkout develop"]
     actions:
       - {text: "Set-up", page: "/develop/#setup"}
   - id: "add-your-atlas-or-dataset"
     title: "Add your atlas or dataset"
     text: "Published atlases are included so that the studies behind them can be reproduced."
-    show: chips
-    chips: ["Atlases", "Parcellations", "Connectomes", "Datasets"]
     actions:
       - {text: "Submission requirements", page: "/develop/#atlas"}
       - {text: "Atlas and data contributors", page: "/about/team/#atlases-and-data-contributed-by"}
   - id: "report-a-bug"
     title: "Report a bug"
     text: "Open an issue on GitHub. Questions about using Lead-DBS are best asked on the [user Slack](/helpsupport/slack-user-channel/)."
-    show: issue
-    fields: ["Lead-DBS version", "Operating system", "Full error message"]
     actions:
       - {text: "Open an issue", url: "https://github.com/netstim/leaddbs/issues"}
 # Working on the code: install Lead-DBS from GitHub instead of the download. A step is a line of text
@@ -43,6 +34,7 @@ ways:
 setup:
   - {text: "Check the requirements", link: {text: "What you need", page: "/download/#what-you-need"}}
   - {text: "Clone the repository", command: "git clone https://github.com/netstim/leaddbs.git"}
+  - {text: "Open the repository folder", command: "cd leaddbs"}
   - {text: "Switch to the develop branch", command: "git checkout develop"}
   - {text: "Download the data and unzip it into the repository", link: {text: "Download the data", url: "https://www.lead-dbs.org/release/download.php?id=data_pcloud"}}
   - {text: "Add SPM12 and Lead-DBS to the MATLAB path, then run", command: "ea_setpath"}

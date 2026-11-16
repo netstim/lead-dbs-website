@@ -12,7 +12,7 @@
 
 Adapted from the walkthrough tutorial by Svenja Treu. See the [original tutorial (PDF)](https://ars.els-cdn.com/content/image/1-s2.0-S1053811920305048-mmc1.pdf).
 
-## 2D visualization of electrodes as point clouds colored by group {#1-2d-visualization-of-electrodes-as-point-clouds-colored-by-group}
+## 2D visualization of electrodes as point clouds coloured by group {#1-2d-visualization-of-electrodes-as-point-clouds-colored-by-group}
 
 ![Example image of 2D visualization by group. Adapted from S. Treu et al., 2020.](manual/d3d4d106b9f46285.png "Example image of 2D visualization by group. Adapted from S. Treu et al., 2020.")
 
@@ -35,11 +35,11 @@ Adapted from the walkthrough tutorial by Svenja Treu. See the [original tutorial
 
    ![3D Options settings window](manual/2d8a066ffcca1e15.png)
 
-3. Select **Visualize 3D**. Three new windows will pop up: electrode scene, atlas settings and anatomy slices. From the anatomy slices window, you can select the backdrop of your choice and adjust slice position. From atlas settings, you can choose which atlas structures to display. From the electrode scene window you can adjust the camera angle, lighting of the scene and colors of individual atlas structures.
+3. Select **Visualize 3D**. Three new windows will pop up: electrode scene, atlas settings and anatomy slices. From the anatomy slices window, you can select the backdrop of your choice and adjust slice position. From atlas settings, you can choose which atlas structures to display. From the electrode scene window you can adjust the camera angle, lighting of the scene and colours of individual atlas structures.
 
 ### 3D visualization examples
 
-![Point clouds. Groups are represented by different colors. GPe is shown blue, STN and GPi are displayed in gray.](manual/2ce102cf882e5dbf.png "Point clouds. Groups are represented by different colors. GPe is shown blue, STN and GPi are displayed in gray.")
+![Point clouds. Groups are represented by different colours. GPe is shown blue, STN and GPi are displayed in grey.](manual/2ce102cf882e5dbf.png "Point clouds. Groups are represented by different colours. GPe is shown blue, STN and GPi are displayed in grey.")
 
 ![Transparent electrodes with the Highlight Active Contacts option.](manual/6057255a215ce446.png "Transparent electrodes with the Highlight Active Contacts option.")
 
@@ -47,9 +47,9 @@ Adapted from the walkthrough tutorial by Svenja Treu. See the [original tutorial
 
 ## Clinical regressors {#3-clinical-regressors}
 
-### Point clouds, colored by regressor {#31-point-clouds-colored-by-regressor}
+### Point clouds, coloured by regressor {#31-point-clouds-colored-by-regressor}
 
-![3.1. Active contacts colored by regressor intensity.](manual/2f180ee22f1f9140.png "3.1. Active contacts colored by regressor intensity.")
+![3.1. Active contacts coloured by regressor intensity.](manual/2f180ee22f1f9140.png "3.1. Active contacts coloured by regressor intensity.")
 
 * From **3D Settings**, select point clouds and check the box **color by regressor**. This box can only be checked if point clouds are selected.
 

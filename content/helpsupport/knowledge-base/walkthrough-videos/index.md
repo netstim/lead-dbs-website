@@ -14,6 +14,7 @@ next:
   - {page: "/manual/", name: "Manual"}
   - {page: "/helpsupport/slack-user-channel/"}
 layout: "showcase"
+headRender: false
 ---
 
 New here? Start with [First steps](/helpsupport/first-steps/). See the [manual](/manual/) for current instructions.
@@ -23,7 +24,7 @@ New here? Start with [First steps](/helpsupport/first-steps/). See the [manual](
 {{% video-card tag="March 2022 · for experienced users" lead="true" %}}
 ## Refresher course {#lead-dbs-refresher}
 
-Organising your data and checking your results.
+Organizing your data and checking your results.
 
 {{< youtube id="pHKlTbkxz3o" title="Lead-DBS refresher course (March 2022)" >}}
 {{% /video-card %}}

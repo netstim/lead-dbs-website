@@ -16,17 +16,17 @@ This page is under construction.
 
 ## Choosing a normative connectome {#context}
 
-Normative connectomes are brain connectivity profiles that are represented in a common (template) space. Such connectomes form the basis of several further analyses, including discriminative fibertract analysis, as well as network mapping analysis. There are both advantages and disadvantages of using normative connectomes. For instance, one primary advantage of using normative connectome is that these connectomes are often prepared from a large number of patients, and are processed with state of the art preprocessing pipelines (for example, HCP1064 connectome, HCP1200 subjects connectome). This ensures that data quality is high. One potential disadvantage could be that the influence of a disease on the structural and functional patterns may not be adequately represented in normative connectomes, given that it is usually based on healthy patients. However, Wang et al performed a quantitative analysis comparing normative and patient-specific connectomes to show that patient-specific diffusion-MRI data, age- and disease-matched or normative group connectome data show very similar optimal connectivity profile when analyzing stimulation-dependent connectivity profiles.
+Normative connectomes are brain connectivity profiles that are represented in a common (template) space. Such connectomes form the basis of several further analyses, including discriminative fibertract analysis, as well as network mapping analysis. There are both advantages and disadvantages of using normative connectomes. For instance, one primary advantage of using normative connectome is that these connectomes are often prepared from a large number of patients, and are processed with state of the art preprocessing pipelines (for example, HCP1064 connectome, HCP1200 subjects connectome). This ensures that data quality is high. One potential disadvantage could be that the influence of a disease on the structural and functional patterns may not be adequately represented in normative connectomes, given that it is usually based on healthy patients. However, Wang et al performed a quantitative analysis comparing normative and patient-specific connectomes to show that patient-specific diffusion-MRI data, age- and disease-matched or normative group connectome data show very similar optimal connectivity profile when analysing stimulation-dependent connectivity profiles.
 
 ## Building connectomes {#how-to}
 
 Connectomes can be structural (tract based) or functional (fMRI based). For structural connectomes, the basic building block is a "tract file", whose data structure is specific to Lead-DBS. These tract files can be in `.trk` format and then converted to Lead-DBS specific `.mat` format using the function `ea_trk2ftr`. Briefly, a Lead-DBS specific tract file is a struct which contains the variables:
 
-* `fibers` - n x 4 array, where column 1,2 and 3 represents the x,y,z coordinates of each point in a streamline and column 4 represents which fiber bundle the streamline belongs to.
-* `idx` - number of streamlines in one fiber bundle, used to index the fiber.
+* `fibers` - n x 4 array, where column 1,2 and 3 represents the x,y,z coordinates of each point in a streamline and column 4 represents which fibre bundle the streamline belongs to.
+* `idx` - number of streamlines in one fibre bundle, used to index the fibre.
 * `voxmm` - `'mm'`
-* `mirrored` - whether the fiber is mirrored or not
-* `ea_fibformat` - string, version of the fiber format
+* `mirrored` - whether the fibre is mirrored or not
+* `ea_fibformat` - string, version of the fibre format
 
 For functional connectomes, the basic building block is a "time series" file, in `.mat` format.
 
@@ -52,7 +52,7 @@ To construct a dMRI multitract connectome, follow these steps:
 * Both the left and right files can be placed inside one main subfolder, but each tract name should contain a suffix `_left` or `_right`, and should be contained within one folder.
 * Name your tracts with the same name except the suffix `_left` or `_right`. Do not use special characters for naming tracts, including `-`. Further analysis requires that this is correctly indexed across hemispheres and therefore, they need to be matched correctly.
 * Your connectome should finally have this format: `leaddbs/connectomes/dMRI_multitract<connectome_name>/{*_left.mat, *_right.mat}`
-* Additional note on mirroring: fiber filtering and many further tools require the presence of boolean flag 'mirrored' for enabling mirroring functions. This flag can be added manually to each tract or can be added automatically by the script `ea_connectome_filter_downsample_flip.m` when flipping is performed.
+* Additional note on mirroring: fibre filtering and many further tools require the presence of boolean flag 'mirrored' for enabling mirroring functions. This flag can be added manually to each tract or can be added automatically by the script `ea_connectome_filter_downsample_flip.m` when flipping is performed.
 
 ## References
 

@@ -32,7 +32,7 @@ With this we come up with something like the following (see included text annota
 The issue with this approach is that when visualizing images that range from negative to positive values we still see the voxels with value zero, and close to zero. This is usually not the intended purpose when visualizing a sweet-sour image. When thresholding with the GUI in the Volumes module, it is not possible to mask out inner ranges.
 
 * Alternative 1: Create an image for the positive values and another one for the negative ones. The problem here is that it is not possible to visualize 3 volumes (positive, negative and template) at the same time in Slicer.
-* Alternative 2: Use the Segment editor to threshold the image and create segmentations of the sweet and sour spots. The problem here is that the segments are seen with one color and not with a gradient indicating the intensity ranges.
+* Alternative 2: Use the Segment editor to threshold the image and create segmentations of the sweet and sour spots. The problem here is that the segments are seen with one colour and not with a gradient indicating the intensity ranges.
 
 ## Solution
 
@@ -85,7 +85,7 @@ Now we reached the following:
 
 ### Custom colormap
 
-The following specifies a custom colormap, based on three colors (min, center, max):
+The following specifies a custom colormap, based on three colours (min, centre, max):
 
 ```python
 colorNode = slicer.mrmlScene.AddNewNodeByClass("vtkMRMLProceduralColorNode","MyColormap")

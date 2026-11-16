@@ -1,12 +1,12 @@
 ---
 {
-  "title": "Adding Fortran dependencies for VTA modeling",
+  "title": "Adding Fortran dependencies for VTA modelling",
   "linkTitle": "Fortran dependencies",
   "layout": "manual",
   "manual_group": "appendix",
-  "description": "Install the Fortran dependencies needed for VTA modeling.",
+  "description": "Install the Fortran dependencies needed for VTA modelling.",
   "source_url": "https://netstim.gitbook.io/leaddbs/appendix/troubleshooting-specific-help/adding-fortran-dependencies-for-vta-modeling",
-  "manual_lead": "Install the Fortran dependencies needed for VTA modeling."
+  "manual_lead": "Install the Fortran dependencies needed for VTA modelling."
 }
 ---
 

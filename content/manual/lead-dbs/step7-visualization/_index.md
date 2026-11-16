@@ -15,11 +15,11 @@
 
 ## Visualization options {#context}
 
-In the final step of the electrode reconstruction process, Lead-DBS offers a wide variety of options for electrode visualisation.
+In the final step of the electrode reconstruction process, Lead-DBS offers a wide variety of options for electrode visualization.
 
 Lead-DBS allows you to choose the space in which you want to visualize the electrodes: the standard MNI space and the native space of the patient. If the latter is selected, the selected MNI atlas will be warped to the native patient space using an inversion of the transformation matrix that was generated during the process of normalization and which warped our patient image to the MNI space.
 
-We can also visualise the atlas to define how and which target regions should be displayed. Here, Lead-DBS offers an impressive collection of subcortical atlases.
+We can also visualize the atlas to define how and which target regions should be displayed. Here, Lead-DBS offers an impressive collection of subcortical atlases.
 
 One atlas has been specifically created for Lead-DBS called the “Distal atlas.” This atlas precisely matched the MNI template, which other atlases usually do not. Moreover, it also offers you a parcellated STN and GPi (parcellated into sensorimotor and other functional areas through fibre tracking).
 
@@ -36,7 +36,7 @@ Lead-DBS also offers to visualize the volume of tissue activated (VTA) by the el
 > The 2D images are based on the localization obtained during the reconstruction and the manual correction. They help to better understand how the electrode contacts relate to the surrounding brain structures.
 
 2. Certain features can be changed to enhance the understanding of the structures surrounding the contacts:
-   * *Labels and colors*: Specific brain areas are labeled and colored for easier identification. The labels can be turned off or on by checking the **Label** box. The color of the contour can also be selected from a pop-up window.
+   * *Labels and colours*: Specific brain areas are labeled and coloured for easier identification. The labels can be turned off or on by checking the **Label** box. The colour of the contour can also be selected from a pop-up window.
    * *Bounding box*: Determines the final size of the 2D image.
 3. Images are stored as `.png` files within the patient folder and are named according to the electrode and the plane they belong to.
 
@@ -47,7 +47,7 @@ Lead-DBS also offers to visualize the volume of tissue activated (VTA) by the el
 ![Image3. Lead-DBS 3D Viewer with Atlas Control and Slice Control panels on the right.](manual/12323faea420c613.png)
 
 1. If you check **Render 3D** in the Lead-DBS main window and select **Run** (Image 1), the Lead-DBS 3D viewer pops up and renders the reconstructed electrodes and the atlas components in the main window.
-2. This figure can be rotated in 3D using the built-in MATLAB 3D rotation tool and atlas components can be hidden (and shown back again) by pressing the corresponding colored checkboxes in the secondary toolbar of the viewer (press the Alt key to hide/show all atlases of the set – this only works if no other tool, such as the MATLAB 3D rotation tool is selected).
+2. This figure can be rotated in 3D using the built-in MATLAB 3D rotation tool and atlas components can be hidden (and shown back again) by pressing the corresponding coloured checkboxes in the secondary toolbar of the viewer (press the Alt key to hide/show all atlases of the set – this only works if no other tool, such as the MATLAB 3D rotation tool is selected).
 3. In the 3D viewer, there are various icons in the tool strip. You can set:
 
 ![Image 4. Menu in the 3D viewer.](manual/fc1234c5b2fe42ea.png)
@@ -62,19 +62,19 @@ Lead-DBS also offers to visualize the volume of tissue activated (VTA) by the el
 * **Cortical Reconstruction Visualization**: Displays the cortex.
 * Different options to set lighting, save screenshots or set the default view.
 * **Save video**: Use this button to export a video of the current scene. This is done based on preferences set in `ea_prefs.m`.
-* The colored squares denote atlas components or added objects. You can add objects such as ROI, and tracts either through drag and drop or **Add Objects** in the menu bar.
+* The coloured squares denote atlas components or added objects. You can add objects such as ROI, and tracts either through drag and drop or **Add Objects** in the menu bar.
 
 ### LeGUI 3D visualization options {#legui-3d-visualization-options}
 
 LeGUI includes several options for displaying SEEG reconstructions in 3D:
 
 1. **Spheres vs. electrodes**: select the **Settings** button on the Lead-DBS main window to choose whether contacts are rendered as spheres or electrodes in the 3D view.
-2. **SEEG cortex visualization**: after running **Render 3D**, select the **SEEG Cortex Visualization** button (1) to display the electrodes within a 3D cortical rendering. The accompanying settings window can be used to adjust additional features (transparency, surface color, and hemisphere visibility).
+2. **SEEG cortex visualization**: after running **Render 3D**, select the **SEEG Cortex Visualization** button (1) to display the electrodes within a 3D cortical rendering. The accompanying settings window can be used to adjust additional features (transparency, surface colour, and hemisphere visibility).
 
    ![SEEG cortex visualization with the SEEG Cortex Visualization (1) and Label (2) buttons](manual/20da38753740c850.png)
 
 3. **Electrode label**: select the **Label** button (2) to display the electrode name at the distal tip of each electrode.
-4. **Multi-patient visualization**: multiple SEEG reconstructions can be displayed in a single Lead-DBS MNI view using `LeG_PlotSEEGGroup`. The function can render all patients in a directory or a selected subset, with contacts shown as either spheres or electrode models. When using sphere mode, each patient is automatically assigned a different color.
+4. **Multi-patient visualization**: multiple SEEG reconstructions can be displayed in a single Lead-DBS MNI view using `LeG_PlotSEEGGroup`. The function can render all patients in a directory or a selected subset, with contacts shown as either spheres or electrode models. When using sphere mode, each patient is automatically assigned a different colour.
 
    ```matlab
    LeG_PlotSEEGGroup('/path/to/dataset', [], 'sphere')

@@ -53,13 +53,13 @@ Finally, these maps may be used to actually predict outcome (right hand scatter 
 
 > The three types of maps may be created using ea_Rmap, ea_Amap and ea_Cmap code included in Lead-DBS.
 
-![Maps from the Berlin cohort predicting improvement in the Würzburg cohort, for functional and structural connectivity](crosspredict-970x1030.png "Fig. 5: In our study, we could show that a map learned from data in one DBS centre may be used to predict outcome in data from a second DBS centre. This may demonstrate the utility of these maps to define optimal connectivity profiles for effective DBS.")
+![Maps from the Berlin cohort predicting improvement in the Würzburg cohort, for functional and structural connectivity](crosspredict-970x1030.png "Fig. 5: A map learned from data in one DBS centre predicted outcomes in data from a second centre.")
 
-![Active contacts in the STN, a connectivity map on the cortex, and fibre tracts](figure_1-1030x350.png "Fig. 6: Summary of network mapping results for STN-DBS in PD. A) active contacts from two cohorts mapped to the STN in MNI space. B) rs-fMRI connectivity based network map (R-map type) for % UPDRS-III improvement. C) connected fibertracts colored by association with good (red), midline (yellow) or poor (blue) symptom improvement.")
+![Active contacts in the STN, a connectivity map on the cortex, and fibre tracts](figure_1-1030x350.png "Fig. 6: Summary of network mapping results for STN-DBS in PD. A) active contacts from two cohorts mapped to the STN in MNI space. B) rs-fMRI connectivity based network map (R-map type) for % UPDRS-III improvement. C) connected fibertracts coloured by association with good (red), midline (yellow) or poor (blue) symptom improvement.")
 
 ### Normative or individualized connectivity
 
-Patient-specific connectomes can replace the normative ones used above (and studies are running to do so). The concept could be used to guide DBS programming and/or DBS surgery. Finally, the connectivity profiles may help to define target maps for noninvasive brain stimulation (see [Fox et al. 2014, PNAS](https://doi.org/10.1073/pnas.1405003111)).
+Patient-specific connectomes can replace the normative ones used above (and studies are running to do so). The study proposed that the concept could guide DBS programming and surgery, pending prospective validation. Finally, the connectivity profiles may help to define target maps for noninvasive brain stimulation (see [Fox et al. 2014, PNAS](https://doi.org/10.1073/pnas.1405003111)).
 
 </details>
 

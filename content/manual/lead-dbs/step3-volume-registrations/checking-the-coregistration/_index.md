@@ -65,7 +65,7 @@ Check the fit of red wires in the results view. Focus specifically on the DBS ta
 {{% /manual-note %}}
 
 2. You can select **Detail Viewer** (arrow 2) again, to check normalization in more detail. The same window as when checking coregistration will appear (Image 4).
-   * Click the image, and drag the mouse around to check normalisation.
+   * Click the image, and drag the mouse around to check normalization.
    * Press `X` to see the hybrid view. Since the main area of interest is the DBS target, focus on the normalization of those structures. `A`, `C`, or `S` changes between axial, coronal and sagittal slices just like for coregistration.
 
 {{% manual-note "info" %}}

@@ -11,7 +11,7 @@ share: "images/renders/head-features.jpg"
 # the named tools of the Tools table, found by the site search as results of their own
 # (layouts/home.searchindex.json); Lead-OR and Lead Tutor have pages of their own
 searchEntries:
-  - {title: "Lead Group", id: "lead-group", keywords: "Lead Group LeadGroup group analysis cohort tool", description: "Relate electrode placement, stimulation volumes, sweetspots and brain networks to clinical outcomes across patients."}
+  - {title: "Lead Group", id: "lead-group", keywords: "Lead Group LeadGroup group analysis cohort tool", description: "Relate electrode placement, stimulation volumes, sweet spots and brain networks to clinical outcomes across patients."}
   - {title: "Lead Connectome", id: "lead-connectome", keywords: "Lead Connectome Mapper connectome tractography diffusion resting-state fMRI tool", description: "Build connectomes from diffusion MRI and resting-state fMRI. Use Lead Connectome Mapper to estimate connectivity from a seed region."}
   - {title: "OSS-DBS", id: "oss-dbs", keywords: "OSS-DBS OSSDBS stimulation modelling electric field VTA pathway activation tool", description: "OSS-DBS v2, developed with the University of Rostock, supports stimulation modelling in Lead-DBS 3.1 onwards; installs on first use."}
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
@@ -21,18 +21,18 @@ next:
   - {page: "/about/citing_leaddbs/"}
 # the named tools, as picture cells at the end of the page (layouts/_shortcodes/tools.html)
 tools:
-  - {id: "lead-group", img: "images/renders/cohort-hero.jpg", name: "Lead Group", text: "Compare outcomes across patients.", manual: "Group analyses|/manual/lead-group/group-analyses-with-lead-dbs/", papers: "treu2020"}
+  - {id: "lead-group", img: "images/renders/cohort-hero.jpg", name: "Lead Group", text: "Compare outcomes across patients.", manual: "Lead Group|/manual/lead-group/group-analyses-with-lead-dbs/", papers: "treu2020"}
   - {id: "lead-connectome", img: "images/renders/fiber-filtering-wide.jpg", name: "Lead Connectome", text: "Build connectomes from diffusion MRI and resting-state fMRI, and estimate connectivity from seed regions.", manual: "Lead Connectome Mapper|/manual/connectomics/lead-mapper/", papers: "horn2014"}
   - {id: "oss-dbs", img: "images/renders/pathway-activation-2.jpg", name: "OSS-DBS", text: "Stimulation modelling developed with the University of Rostock; installs automatically on first use.", manual: "Calculate VTA and stats|/manual/lead-group/calculate-vta-and-stats/", code: "https://github.com/SFB-ELAINE/OSS-DBSv2", papers: "butenko2020 zimmermann2026"}
-  - {id: "lead-tutor", img: "images/renders/cohort-black.jpg", name: "Lead Tutor", text: "Practise electrode localization and receive feedback against expert localizations.", link: "/helpsupport/learn-lead-dbs-yourself/", manual: "Self-tutoring|/manual/lead-dbs/self-tutoring-with-lead-tutor/", papers: "madan2025"}
+  - {id: "lead-tutor", img: "images/renders/cohort-black.jpg", name: "Lead Tutor", text: "Practise electrode localization and compare your results with expert localizations.", link: "/helpsupport/learn-lead-dbs-yourself/", manual: "Practise with Lead Tutor|/manual/lead-dbs/self-tutoring-with-lead-tutor/", papers: "madan2025"}
 layout: "showcase"
 ---
 
-{{< jumps "Single patients|#single-patients; Groups of patients|#groups-of-patients; In the operating theatre|#operating-theatre; Tools|#tools" >}}
+{{< jumps "Single-patient analysis|#single-patients; Group analysis|#groups-of-patients; In the operating theatre|#operating-theatre; Tools|#tools" >}}
 {{< /jumps >}}
 
 {{% chapter n="1" %}}
-## Single patients {#single-patients}
+## Single-patient analysis {#single-patients}
 
 **Where the electrodes sit,** and what they stimulate.
 {{% /chapter %}}
@@ -78,14 +78,14 @@ Surgical AC/PC coordinates to MNI space and back.
 {{< /capabilities >}}
 
 {{% chapter n="2" %}}
-## Groups of patients {#groups-of-patients}
+## Group analysis {#groups-of-patients}
 
 **Relate electrode placement and stimulation** to clinical outcomes across patients in a common space.
 {{% /chapter %}}
 
 {{< capabilities >}}
 {{< capability title="Group analysis and sweet spots" id="group" img="gallery/li2020_fig1.png" fit="contain"
-    manual="Group analyses|/manual/lead-group/group-analyses-with-lead-dbs/; Sweetspot Explorer|/manual/lead-group/sweetspot-explorer/"
+    manual="Lead Group|/manual/lead-group/group-analyses-with-lead-dbs/; Sweetspot Explorer|/manual/lead-group/sweetspot-explorer/"
     papers="treu2020 neudorfer2023" >}}
 Maps which stimulation sites go with better or worse outcomes.
 {{< /capability >}}
@@ -100,7 +100,7 @@ Identify connections associated with clinical outcomes and build models to predi
 {{< capability title="Electrophysiology mapping" id="sem" link="/helpsupport/knowledge-base/lead-dbs-methods/subcortical-electrophysiology-mapping-sem/"
     img="/helpsupport/knowledge-base/lead-dbs-methods/subcortical-electrophysiology-mapping-sem/betaalpha3d.png" fit="contain"
     alt="Beta and alpha peaks within the STN in 3D, with electrode trajectories"
-    manual="Group analyses|/manual/lead-group/group-analyses-with-lead-dbs/"
+    manual="Lead Group|/manual/lead-group/group-analyses-with-lead-dbs/"
     papers="horn2017hbm" >}}
 Recordings from many patients, pooled into one 3D map.
 {{< /capability >}}

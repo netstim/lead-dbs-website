@@ -1,5 +1,5 @@
 ---
-title: "{{ replace .File.ContentBaseName "-" " " | title }}"
+title: "{{ replace .File.ContentBaseName "-" " " | strings.FirstUpper }}"
 description: ""
 # Page type: event — the standard head and sidebar; the facts and registration come from data/events.yaml
 layout: "event"

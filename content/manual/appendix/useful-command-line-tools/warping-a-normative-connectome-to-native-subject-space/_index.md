@@ -12,7 +12,7 @@
 
 This example shows how to warp the fibertracts represented in a normative connectome to the space of the `anat_t1.nii` (anchor space) of a subject and to convert the result to a `.trk` file.
 
-The example is not a "typical use-case" but I wrote the code for a colleague and potentially, some bits and pieces could be helpful for others. It could also be helpful to do the reverse (warp subject specific fibers to template space), however, this functionality is supported within Lead Connectome anyway.
+The example is not a "typical use-case" but I wrote the code for a colleague and potentially, some bits and pieces could be helpful for others. It could also be helpful to do the reverse (warp subject specific fibres to template space), however, this functionality is supported within Lead Connectome anyway.
 
 ```matlab
 clear

@@ -12,7 +12,7 @@ share: "CAREN-1-1030x761.png"
 next:
   - {page: "/helpsupport/knowledge-base/atlasesresources/normative-connectomes/"}
 ---
-Parcellations for connectivity analyses: most come with Lead-DBS, the others are a download away.
+Cortical and whole-brain parcellations for connectivity analysis. Each entry lists access details and the paper to cite.
 
 {{< atlas-index noun="parcellations" >}}
 

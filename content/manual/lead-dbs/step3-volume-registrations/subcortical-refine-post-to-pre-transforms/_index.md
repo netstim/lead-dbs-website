@@ -61,5 +61,5 @@ In our example, let's see the use of the **Coarse Mask**. This will produce the 
 - New normalization data will appear in the selected folder, under {{< manual-path "derivatives/leaddbs/patient_name/brainshift/" >}}. The `anat` folder contains results, the `checkreg` folder stores the images as `.png` files.
 
 {{% manual-note "info" %}}
-Brainshift correction may not be appropriate to use for SEEG electrode reconstructions. The default options use masks centered around the basal ganglia, meaning that the resulting correction may not accurately account for brainshift in cortical or other regions targeted by SEEG electrodes. You may choose to skip this step or, if using it, carefully review the results. Brainshift correction was not part of the legacy LeGUI pipeline.
+Brainshift correction may not be appropriate to use for SEEG electrode reconstructions. The default options use masks centred around the basal ganglia, meaning that the resulting correction may not accurately account for brainshift in cortical or other regions targeted by SEEG electrodes. You may choose to skip this step or, if using it, carefully review the results. Brainshift correction was not part of the legacy LeGUI pipeline.
 {{% /manual-note %}}

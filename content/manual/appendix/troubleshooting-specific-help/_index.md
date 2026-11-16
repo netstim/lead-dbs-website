@@ -1,6 +1,6 @@
 ---
 {
-  "title": "Troubleshooting and specific help",
+  "title": "Troubleshooting",
   "linkTitle": "Troubleshooting",
   "layout": "manual",
   "manual_group": "appendix",
@@ -10,5 +10,5 @@
 }
 ---
 
-- [Adding Fortran dependencies for VTA modeling](/manual/appendix/troubleshooting-specific-help/adding-fortran-dependencies-for-vta-modeling/)
+- [Adding Fortran dependencies for VTA modelling](/manual/appendix/troubleshooting-specific-help/adding-fortran-dependencies-for-vta-modeling/)
 - [VTA calculation troubleshooting](/manual/appendix/troubleshooting-specific-help/vta-calculation-troubleshoot/)

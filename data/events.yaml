@@ -53,7 +53,7 @@ events:
     timezone: "Europe/Berlin"
     where: "Cologne"
     host: "Institute for Network Stimulation and Uniklinik Köln"
-    text: "A two-day Lead-DBS workshop with access to a pre-release of Lead-DBS 4.0, rewritten in Python."
+    text: "Two days of hands-on Lead-DBS, with an early preview of Lead-DBS 4.0, rebuilt in Python."
     register_url: ""
     links:
       - {label: "Workshop details", url: "/events/hands-on-workshop-2027/"}

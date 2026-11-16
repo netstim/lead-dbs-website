@@ -1,59 +1,44 @@
 ---
-title: "Privacy Policy"
-description: "The privacy policy of lead-dbs.org: what personal data the site collects, from cookies to embedded content, how long it is kept and what rights you have."
+title: "Privacy policy"
+description: "What lead-dbs.org records when you visit, download Lead-DBS, play a video or write to the team."
 date: "2022-04-18T14:13:06"
-lastmod: "2022-04-18T14:29:09"
+lastmod: "2026-11-16T12:00:00"
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
   - {page: "/impressum-datenschutzerklarung/"}
   - {page: "/contact/"}
   - {page: "/about/"}
+# Every section below describes what the code does (layouts/_partials/form.html, assets/js/main/videos.js,
+# assets/js/main/theme.js, server/forms/). Retention periods, legal bases and the controller are still open:
+# see docs/launch/privacy-draft.md. Don't add a claim here that the code or the lab hasn't confirmed.
 ---
 
 ## Who we are
 
 Our website address is: https://www.lead-dbs.org. Contact mail [at] andreas-horn.de for more information.
 
-## Comments
+## Visiting the site
 
-When visitors leave comments on the site we collect the data shown in the comments form, and also the visitor’s IP address and browser user agent string to help spam detection.
+The site is hosted by STRATO AG. Like every web server, it records each request in its access log: your IP address, the time, the page requested, the referring page and your browser's identification.
 
-An anonymized string created from your email address (also called a hash) may be provided to the Gravatar service to see if you are using it. The Gravatar service privacy policy is available here: https://automattic.com/privacy/. After approval of your comment, your profile picture is visible to the public in the context of your comment.
+The site sets no cookies, runs no analytics or tracking in your browser and loads its fonts and scripts from lead-dbs.org only. If you choose a light or dark theme, your browser keeps that choice on your device (`localStorage`); the manual keeps its sidebar position for the open tab (`sessionStorage`). Neither is sent to us.
 
-## Media
+## Downloads
 
-If you upload images to the website, you should avoid uploading images with embedded location data (EXIF GPS) included. Visitors to the website can download and extract any location data from images on the website.
+Download links go through lead-dbs.org/release/download.php, which records the IP address, the time and the file of each download. We use these records to count downloads and to show by country where Lead-DBS is used. The published figures contain no IP addresses.
 
-## Cookies
+## Videos
 
-If you leave a comment on our site you may opt-in to saving your name, email address and website in cookies. These are for your convenience so that you do not have to fill in your details again when you leave another comment. These cookies will last for one year.
+Videos from YouTube and Vimeo load only when you press play; until then nothing is sent to either service. When you play one, it loads from youtube-nocookie.com or player.vimeo.com, which receive your IP address and may set cookies under their own privacy policies.
 
-If you visit our login page, we will set a temporary cookie to determine if your browser accepts cookies. This cookie contains no personal data and is discarded when you close your browser.
+## Contact and FOCUS requests
 
-When you log in, we will also set up several cookies to save your login information and your screen display choices. Login cookies last for two days, and screen options cookies last for a year. If you select “Remember Me”, your login will persist for two weeks. If you log out of your account, the login cookies will be removed.
+When you write to the team or request the FOCUS atlas, we receive what you send, such as your name, institution, email address and message. We use it to reply or to send you the download link.
 
-If you edit or publish an article, an additional cookie will be saved in your browser. This cookie includes no personal data and simply indicates the post ID of the article you just edited. It expires after 1 day.
+## Links to other sites
 
-## Embedded content from other websites
+GitHub, Slack, Zoom, publishers and the other sites we link to have their own privacy policies. Nothing is sent to them until you follow a link.
 
-Articles on this site may include embedded content (e.g. videos, images, articles, etc.). Embedded content from other websites behaves in the exact same way as if the visitor has visited the other website.
+## Your data
 
-These websites may collect data about you, use cookies, embed additional third-party tracking, and monitor your interaction with that embedded content, including tracking your interaction with the embedded content if you have an account and are logged in to that website.
-
-## Who we share your data with
-
-If you request a password reset, your IP address will be included in the reset email.
-
-## How long we retain your data
-
-If you leave a comment, the comment and its metadata are retained indefinitely. This is so we can recognize and approve any follow-up comments automatically instead of holding them in a moderation queue.
-
-For users that register on our website (if any), we also store the personal information they provide in their user profile. All users can see, edit, or delete their personal information at any time (except they cannot change their username). Website administrators can also see and edit that information.
-
-## What rights you have over your data
-
-If you have an account on this site, or have left comments, you can request to receive an exported file of the personal data we hold about you, including any data you have provided to us. You can also request that we erase any personal data we hold about you. This does not include any data we are obliged to keep for administrative, legal, or security purposes.
-
-## Where we send your data
-
-Visitor comments may be checked through an automated spam detection service.
+To ask what personal data we hold about you, or to have it corrected or deleted, write to the address above.

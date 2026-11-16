@@ -1,6 +1,6 @@
 ---
 {
-  "title": "Lead-OR",
+  "title": "Lead-OR manual",
   "layout": "manual",
   "manual_group": "lead-or",
   "description": "Set up imaging and electrophysiology inputs for the Lead-OR platform.",

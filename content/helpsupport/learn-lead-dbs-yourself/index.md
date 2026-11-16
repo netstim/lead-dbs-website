@@ -1,8 +1,8 @@
 ---
-title: "Practice dataset (Lead Tutor)"
+title: "Lead Tutor"
 description: "Ten DBS patients with expert electrode localizations, free to practise on."
 weight: 1
-linkTitle: "Practice dataset (Lead Tutor)"
+linkTitle: "Lead Tutor"
 date: "2025-02-28T17:20:40"
 lastmod: "2026-11-12"
 keywords: ["Lead Tutor", "Lead-Tutor", "tutorial", "training", "training dataset", "practise", "practice", "dataset", "exercise", "OSF", "ground truth", "expert localizations"]

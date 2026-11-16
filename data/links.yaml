@@ -1,10 +1,2 @@
-# Footer columns after the main menu's groups (hugo.toml [menus.main]). Same fields as above.
-footer:
-  - title: "Lab"
-    links:
-      # short names: the column's heading ("Institute") says whose they are; Lead-DBS's own Bluesky is
-      # under "Stay in touch" (layouts/_partials/footer.html)
-      - {name: "netstim.org", url: "https://www.netstim.org"}
-      - {name: "GitHub", url: "https://github.com/netstim"}
-      - {name: "LinkedIn", url: "https://www.linkedin.com/company/institute-for-network-stimulation/"}
-      - {name: "Stimulating Brains podcast", url: "https://stimulatingbrains.org"}
+# The institute named in the footer's legal line (layouts/_partials/footer.html).
+institute: {name: "Institute for Network Stimulation", url: "https://www.netstim.org"}

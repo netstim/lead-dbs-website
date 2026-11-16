@@ -14,7 +14,7 @@ next:
   - {page: "/helpsupport/knowledge-base/atlasesresources/distal-atlas/"}
   - {page: "/helpsupport/knowledge-base/atlasesresources/normative-connectomes/"}
 ---
-Most come with Lead-DBS; the others are a download away.
+Atlases of the basal ganglia, thalamus, nuclei and tracts in MNI space. Each entry lists access details and the paper to cite.
 
 {{< atlas-index >}}
 

@@ -16,7 +16,7 @@ This page is currently under construction.
 
 ## How network mapping works {#context}
 
-* Network Mapping Explorer can be used to associate observed effects with distributed functional or structural brain networks. This effect could be clinical (for example, %-UPDRS-III improvement following STN-DBS) or behavioral (for example, change in risk-taking behavior or movement speed in a motor task).
+* Network Mapping Explorer can be used to associate observed effects with distributed functional or structural brain networks. This effect could be clinical (for example, %-UPDRS-III improvement following STN-DBS) or behavioural (for example, change in risk-taking behaviour or movement speed in a motor task).
 * The connectivity profiles (fingerprints) are calculated seeding from active DBS contacts, volume of tissue activated, or estimated electric field. Connectivity estimates can be calculated for each voxel in the brain (sometimes referred to as a voxel-wise parcellation) or to a specific set of larger brain regions.
 * Derivation of these estimates involves projections to the cortical surface and calculation of cortico-subcortical connectivity strength by means of voxel-wise correlation.
 
@@ -109,12 +109,12 @@ Two sample t-test is used to compare results between two groups. Lead-DBS allows
 
 </details>
 
-### Visualisation and thresholding {#3-visualisation--thresholding}
+### Visualization and thresholding {#3-visualisation--thresholding}
 
 ![Image 3. Network Mapping Explorer Visualization & Thresholds window.](manual/14d15b72ca89e53b.png "Image 3. Network Mapping Explorer Visualization & Thresholds window.")
 
 * Generated model can be visualized and further adjusted during **Visualization & Thresholding** (Image 1, red arrow 2). Specifically, this step allows thresholding of the generated maps based on a predefined alpha-level and correction for multiple comparison (Image 3, arrows 1&2).
-* You can select to **show voxels** positively or negatively correlated with your selected dependent variable (Image 3, arrow 3), as well as their respective color (Image 3, arrow 5). The surface to visualize on and further smoothing of the resulting model can also be selected (Image 3, arrow 4).
+* You can select to **show voxels** positively or negatively correlated with your selected dependent variable (Image 3, arrow 3), as well as their respective colour (Image 3, arrow 5). The surface to visualize on and further smoothing of the resulting model can also be selected (Image 3, arrow 4).
 * For more advanced post-hoc analysis, the option to export the generated maps in the form of NIfTI files is also available, by ticking the box **Export as NIfTI** (Image 3, arrow 6).
 * After you select all the settings, select **Refresh View** or alternatively, tick the **Auto-Refresh** box that will refresh the view automatically.
 
@@ -123,7 +123,7 @@ Two sample t-test is used to compare results between two groups. Lead-DBS allows
 ![Image 4. Network Mapping Explorer Crossvalidation & Prediction window.](manual/728e34e4abe9b400.png "Image 4. Network Mapping Explorer Crossvalidation & Prediction window.")
 
 * The final step across frameworks is **Crossvalidation & Prediction** (Image 1, red arrow 3). This step is crucial in establishing the validity of generated models within and generalizability across cohorts. Current validation strategies include permutation (Leave-Nothing-Out) based approaches, as well as Leave-One-Patient-Out, Leave-One-Cohort-Out, and k-fold (randomized) cross-validations (Image 4, arrow 1). In addition, it is possible to customize this process and generate predictions for individual patients, as well as predefined subcohorts, cohorts, and sets (Image 4, arrow 2).
-* The drop-down window allows you to select the type of spatial correlation on which to select similarity between training and test datasets (Spearman, Pearson, Bend) (Image 2, arrow 3). Mask can be applied, by selecting one of the predefined masks (Gray Matter, Brain, Cortex & Cerebellum, Cortex, Cerebellum, Custom Image, Custom Equation, Gray Matter) (Image 4, arrow 4). Applying the mask during cross-validation means that only voxels located within that brain structure will be considered for crossvalidations. For example, using Cerebellum as a mask will keep voxel correlation values associated with cerebellum unchanged, but other voxels, such as voxels in cortex, or striatum will be set to NaN. If **Custom Image** is selected, the UI accepts data in `.nii` format and in the same space dimensions as the connectivity fingerprints.
+* The drop-down window allows you to select the type of spatial correlation on which to select similarity between training and test datasets (Spearman, Pearson, Bend) (Image 2, arrow 3). Mask can be applied, by selecting one of the predefined masks (Grey Matter, Brain, Cortex & Cerebellum, Cortex, Cerebellum, Custom Image, Custom Equation, Grey Matter) (Image 4, arrow 4). Applying the mask during cross-validation means that only voxels located within that brain structure will be considered for crossvalidations. For example, using Cerebellum as a mask will keep voxel correlation values associated with cerebellum unchanged, but other voxels, such as voxels in cortex, or striatum will be set to NaN. If **Custom Image** is selected, the UI accepts data in `.nii` format and in the same space dimensions as the connectivity fingerprints.
 * Individual fingerprints can also be exported by ticking the box **Export Models as NIfTI** (Image 4, arrow 5).
 * After selecting **Run**, cross-validations will run automatically and return a graph with the clinical improvement on the x-axis and the network score on the y-axis.
 

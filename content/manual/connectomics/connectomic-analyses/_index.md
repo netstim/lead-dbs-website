@@ -1,6 +1,6 @@
 ---
 {
-  "title": "Connectomics",
+  "title": "Connectomic analyses",
   "linkTitle": "Connectomic analyses",
   "layout": "manual",
   "manual_group": "connectomics",
@@ -12,5 +12,5 @@
 
 Lead-DBS Connectome supports connectomic analyses based on
 
-* [functional magnetic resonance imaging (fMRI)](/manual/connectomics/connectomic-analyses/fmri/) data acquired at rest (rs-fMRI). This metric is used to analyze functional interactions ("functional connectivity") in the brain.
-* [diffusion-weighted magnetic resonance imaging (dMRI)](/manual/connectomics/connectomic-analyses/dmri/), commonly referred to as "DTI". This metric is commonly used to analyze structural connectivity in the brain.
+* [functional magnetic resonance imaging (fMRI)](/manual/connectomics/connectomic-analyses/fmri/) data acquired at rest (rs-fMRI). This metric is used to analyse functional interactions ("functional connectivity") in the brain.
+* [diffusion-weighted magnetic resonance imaging (dMRI)](/manual/connectomics/connectomic-analyses/dmri/), commonly referred to as "DTI". This metric is commonly used to analyse structural connectivity in the brain.

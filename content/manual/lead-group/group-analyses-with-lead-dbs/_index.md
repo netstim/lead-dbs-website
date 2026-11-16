@@ -1,7 +1,7 @@
 ---
 {
-  "title": "Group analyses with Lead-DBS",
-  "linkTitle": "About Lead Group",
+  "title": "Lead Group",
+  "linkTitle": "Lead Group",
   "layout": "manual",
   "manual_group": "lead-group",
   "description": "An introduction to cohort-level analysis with Lead Group.",

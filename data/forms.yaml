@@ -11,7 +11,7 @@
 # action: it stays on its offline line until the newsletter service is settled.
 newsletter:
   submit: Subscribe
-  offline: "Newsletter sign-up is not yet available here. Read release announcements in [News](/news/) or subscribe to the [RSS feed](/news/index.xml)."
+  offline: "For release and workshop announcements, read [News](/news/), follow the [RSS feed](/news/index.xml) or [join Slack](/helpsupport/slack-user-channel/)."
   fields:
     - {name: first_name, label: First name, autocomplete: given-name, half: true}
     - {name: last_name, label: Last name, autocomplete: family-name, half: true}

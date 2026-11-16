@@ -26,7 +26,7 @@ help:
   - {name: "User Slack", text: "Ask other users and the developers", url: "/helpsupport/slack-user-channel/"}
   - {name: "Troubleshooting", text: "Known problems and their fixes", url: "/manual/appendix/troubleshooting-specific-help/"}
   - {name: "Bug reports", text: "Include your Lead-DBS version, operating system and full error message", url: "https://github.com/netstim/leaddbs/issues"}
-  - {name: "Contact", text: "For everything else", url: "/contact/"}
+  - {name: "Contact", url: "/contact/"}
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
   - {page: "/events/"}
@@ -36,7 +36,7 @@ layout: "hub"
 
 <div class="page-intro"><div class="page-intro__text">
 
-**The manual** covers every step, from installation to group analyses.
+Install Lead-DBS and follow your first analysis.
 
 </div>
 <p class="page-intro__actions"><a class="btn btn--primary" href="{{< relref "/manual/" >}}">Open the manual</a><a class="btn btn--secondary" href="{{< relref "/helpsupport/first-steps/" >}}">First steps</a></p>
@@ -45,23 +45,17 @@ layout: "hub"
 {{% hub-section %}}
 ## Start here {#learn}
 
-**New to Lead-DBS?** Start with First steps, then practise on the Lead Tutor data.
-
 {{< link-rows key="learn" >}}
 {{% /hub-section %}}
 
 {{% hub-section %}}
 ## Manual {#manual}
 
-**The [manual](/manual/)** covers installation and analysis workflows.
-
 {{< link-rows key="manual" >}}
 {{% /hub-section %}}
 
 {{% hub-section %}}
 ## Get help {#get-help}
-
-**Stuck?** Ask in the user Slack, or report a bug.
 
 {{< link-rows key="help" >}}
 {{% /hub-section %}}

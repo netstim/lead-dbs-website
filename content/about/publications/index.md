@@ -19,7 +19,7 @@ next:
 
 ## Studies that used Lead-DBS {#applications}
 
-Studies by many groups that used Lead-DBS are collected in a public Zotero library.
+A public Zotero library collects studies by many groups that used Lead-DBS. If yours is missing, [tell us](/contact/).
 
 {{< button href="https://www.zotero.org/groups/5193749/lead-dbs-publications/library" >}}Open the Lead-DBS publications library{{< /button >}}
 
@@ -42,8 +42,4 @@ Journal covers with images made with Lead-DBS. [See all covers](/gallery/#covers
 
 ## What others write {#what-others-write}
 
-{{< quote-wall >}}
-
-## Did we miss a publication?
-
-Used Lead-DBS in a published study that is not in the Zotero library? [Tell us](/contact/).
+{{< quote-wall limit="1" >}}

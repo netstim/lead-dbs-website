@@ -9,7 +9,7 @@ keywords: ["newsletter", "subscribe", "email"]
 share: "images/renders/head-community.jpg"
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
-  - {page: "/events/"}
+  - {page: "/news/"}
   - {page: "/helpsupport/slack-user-channel/"}
 ---
 

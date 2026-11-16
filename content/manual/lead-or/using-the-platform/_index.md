@@ -26,7 +26,7 @@ An overview of the Lead-OR platform using the sample data mentioned in the imagi
 
    ![Recording channels linked to their trajectories in Slicer](manual/eba4690e9dfc792f.png)
 
-6. The features sent by OpenEphys also appear in Slicer, where they can be set to map to the Tube's radius and/or color.
+6. The features sent by OpenEphys also appear in Slicer, where they can be set to map to the Tube's radius and/or colour.
 
 That's all! A few more tips:
 

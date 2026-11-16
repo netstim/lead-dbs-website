@@ -30,7 +30,7 @@ After calculating VTA and stats, Lead Group provides statistical tests for group
 2. From the window that pops up (Fig. 3), choose the subcortical region you're interested in. If the structure you're interested in is not on the list, you can change the subcortical atlas from the main GUI under **General Settings**.
 3. From the **Activated regions** menu, choose VTAs or E-fields.
 4. Select **Generate Target Report**. From the pop-up window, select the threshold you want to use in mm.
-5. Two windows will pop up, one showing the distances of electrode centers to the nearest voxel of the target and one showing electrode centers residing in the target structure based on the selected threshold. Active contacts will be highlighted in red.
+5. Two windows will pop up, one showing the distances of electrode centres to the nearest voxel of the target and one showing electrode centres residing in the target structure based on the selected threshold. Active contacts will be highlighted in red.
 
 ![Target report windows with contact distances and contacts inside the target](manual/0d73a721957a8b74.png)
 

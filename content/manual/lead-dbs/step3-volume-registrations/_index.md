@@ -13,8 +13,6 @@
 }
 ---
 
-First steps in the Lead-DBS pipeline.
-
 ![3. Volume Registrations — screenshot](manual/105ed15df60fdffd.png)
 
 First, Lead-DBS coregisters preoperative and postoperative images. MR images are coregistered to MR images by default with SPM. Postoperative CT images are coregistered to preoperative MR images with ANTs (red arrow number 1).

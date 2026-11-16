@@ -63,6 +63,22 @@ drawn as `h2`).
 - **"Lead-DBS" never breaks at its hyphen**: the templates wrap it in a no-wrap span
   (`layouts/_partials/nobreak-html.html`; headings, links, tables, menus, cards, news and atlas entries).
   Write the ordinary hyphen.
+- **House style** (`.github/scripts/check-copy.py` fails the build on the objective part): British spelling
+  with Oxford -ize (colour, fibre, modelling, centre, millimetre, grey, behaviour; normalize, localize,
+  visualize, organize; analyse; *practice* the noun, *practise* the verb), sentence case, and the product
+  names Lead-DBS, Lead Tutor, Lead Group, Lead Connectome, OSS-DBS and WarpDrive. Quotations, paper titles and
+  literal software labels keep their own spelling: in the manual, write interface labels in **bold** and the
+  checker leaves them alone; elsewhere add a literal to `EXEMPT` in the checker. FOCUS is *requested*, not
+  downloaded. The checker also prints warnings that never fail: hype words, a sentence repeated on several
+  pages, a paragraph with several dash pairs, a menu name that differs from its page's title. Read them
+  before a release.
+- **Claims carry their source**: an accuracy or clinical claim names the study it comes from ("The study
+  proposed…", "The paper compares…"), not a universal "outperforms" or "perfectly".
+- **The quotes on Publications**: `{{< quote-wall limit="1" >}}` shows the first quote of `data/quotes.yaml`
+  (by `wall` number) and folds the rest.
+- **The privacy policy** (`content/privacy-policy/`) describes only what the site's code does (its front matter
+  names the files). When a form, analytics or a video host changes, change the policy in the same commit;
+  what is still open for the lab is in `docs/launch/privacy-draft.md`.
 - **Old material says it is old**: a news post older than three years shows an archive note with the
   current version above its text (`layouts/news/single.html`); give older recordings and change-logs a
   date in their text.
@@ -107,13 +123,17 @@ it under `links`, and other pages link the page rather than a news post about th
   a winter one "15:00 CET (09:00 EST)"; without `also_in` just "15:00 CEST". Visitors elsewhere also see the
   start in their own time. (`tz_label` replaces the printed zone; it is rarely needed.)
 - **No meeting links on the site.** An online meeting gets `register_url`: the page where people leave their
-  e-mail address and are sent the link. For the developer meeting that is its Zoom registration page
+  email address and are sent the link. For the developer meeting that is its Zoom registration page
   (`…zoom.us/meeting/register/…`); `/events/developer-meeting/` (`content/events/developer-meeting/index.md`)
   links it and offers the meeting's flyer for download. While `register_url` is empty, the event says that
   registration opens soon and that the link is shared in the user Slack; an event on site says that details
   and registration will follow. Never put the meeting's own join link in the file.
-- The past workshops of 2016 to 2020 are one page, `/helpsupport/workshops/` ("Past workshops"), with a section
-  per workshop, newest first: `#brisbane-2020`, `#berlin-2019`, `#deep-learning-2019`, `#hamburg-2019`,
+- The past workshops of 2016 to 2020 are one page, `/helpsupport/workshops/` ("Past workshops"): one list,
+  newest first, with the same parts for every workshop: an `##` heading "City, Month Year" (`/events/` turns
+  each into a tile, from the picture named under `pictures:` in the page's front matter), one line of facts
+  (name · dates · venue · programme), a sentence or two, and its flyer or photos in a fold. A related event
+  on the same trip is a dated line inside that entry, not a heading (the 2019 deep learning workshop,
+  `#deep-learning-2019`). Anchors: `#brisbane-2020`, `#berlin-2019`, `#deep-learning-2019`, `#hamburg-2019`,
   `#shanghai-2018`, `#berlin-2016`. Their old pages are redirect stubs that lead to these sections; keep the
   anchors.
 

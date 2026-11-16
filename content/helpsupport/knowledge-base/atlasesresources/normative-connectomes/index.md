@@ -46,7 +46,6 @@ and in **large retrospective databases** ([Horn 2017a](https://onlinelibrary.wil
 
 </details>
 
-## Is a connectome missing?
+## Add a connectome
 
-Know a connectome that should be listed here, or want yours to come with Lead-DBS?
-[Write to us](/contact/).
+To suggest a connectome, or to have yours come with Lead-DBS, [write to us](/contact/).

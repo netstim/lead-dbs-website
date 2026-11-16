@@ -1,6 +1,6 @@
 ---
 title: "Cite Lead-DBS"
-description: "Which papers to cite when you use Lead-DBS, with a methods paragraph you can copy."
+description: "Which papers to cite when you use Lead-DBS, and a methods template to adapt."
 date: "2020-02-13T06:03:01"
 lastmod: "2026-11-11"
 weight: 1
@@ -28,8 +28,24 @@ RRID: [SCR_002915](https://scicrunch.org/scicrunch/Resources/record/nlx_144509-1
 
 {{< cells key="also" label="Also cite" >}}
 
-## A methods paragraph to adapt {#methods-snippet}
+## Report the methods you used {#methods-snippet}
 
-{{% copybox label="Copy the paragraph" %}}
-DBS electrodes were localized with the processing pipeline [*(Horn & Li et al. 2019)*](https://doi.org/10.1016/j.neuroimage.2018.08.068) of Lead-DBS v3 ([lead-dbs.org](/); [*Neudorfer et al. 2023*](https://doi.org/10.1016/j.neuroimage.2023.119862); [*Horn & Kühn 2015*](https://doi.org/10.1016/j.neuroimage.2014.12.002); RRID:SCR_002915). Postoperative CT or MRI were linearly coregistered to preoperative MRI with advanced normalization tools (ANTs; [stnava.github.io/ANTs/](http://stnava.github.io/ANTs/); [*Avants et al. 2011*](https://doi.org/10.1016/j.neuroimage.2010.09.025)), inspected and refined if needed, and corrected for brain shift as implemented in Lead-DBS. All preoperative volumes were used for a multispectral normalization to ICBM 2009b NLIN asymmetric (“MNI”) space [*(Fonov et al. 2009)*](https://doi.org/10.1016/S1053-8119(09)70884-5) with the ANTs SyN Diffeomorphic Mapping [*(Avants et al. 2008)*](https://doi.org/10.1016/j.media.2007.06.004), preset “effective: low variance default + subcortical refinement”; where it failed, with the multispectral Unified Segmentation [*(Ashburner et al. 2005)*](https://doi.org/10.1016/j.neuroimage.2005.02.018) of SPM12 ([fil.ion.ucl.ac.uk/spm](https://www.fil.ion.ucl.ac.uk/spm); [*Friston et al. 1994*](https://doi.org/10.1002/hbm.460020402)). Both presets of Lead-DBS segmented the STN about as precisely as manual experts in a comparative study [*(Ewert et al. 2019)*](https://doi.org/10.1016/j.neuroimage.2018.09.061). Contacts were pre-reconstructed with PaCER [*(Husch et al. 2018)*](https://doi.org/10.1016/j.nicl.2017.10.004) or TRAC/CORE and refined manually if needed. The orientation of segmented leads was estimated with DiODe [*(Dembek et al. 2019)*](https://doi.org/10.1016/j.parkreldis.2019.08.017). Atlas structures are from the DISTAL atlas [*(Ewert et al. 2018)*](https://doi.org/10.1016/j.neuroimage.2017.05.015); group visualizations were made with Lead Group [*(Treu et al. 2020)*](https://doi.org/10.1016/j.neuroimage.2020.117018).
+Start with `ea_methods.txt` in each patient folder. Check the software version, registration settings, reconstruction method and atlases before adding this text to your paper.
+
+{{% copybox label="Copy the template" %}}
+DBS electrodes were localized with Lead-DBS [version] ([*Neudorfer et al. 2023*](https://doi.org/10.1016/j.neuroimage.2023.119862); RRID:SCR_002915). Postoperative [CT/MRI] was coregistered to preoperative MRI using [method and settings]. [Describe brain shift correction, normalization and manual checks used in this study.] Electrodes were reconstructed using [method] and checked manually. [Add the stimulation model, atlas, connectivity and group-analysis methods used, with their citations.]
 {{% /copybox %}}
+
+<details class="more"><summary>Papers for common methods</summary>
+
+- Processing pipeline: [Horn & Li et al. 2019](https://doi.org/10.1016/j.neuroimage.2018.08.068); Lead-DBS v1: [Horn & Kühn 2015](https://doi.org/10.1016/j.neuroimage.2014.12.002)
+- Coregistration with ANTs: [Avants et al. 2011](https://doi.org/10.1016/j.neuroimage.2010.09.025); SyN normalization: [Avants et al. 2008](https://doi.org/10.1016/j.media.2007.06.004)
+- Unified Segmentation in SPM12: [Ashburner et al. 2005](https://doi.org/10.1016/j.neuroimage.2005.02.018); SPM: [Friston et al. 1994](https://doi.org/10.1002/hbm.460020402)
+- ICBM 2009b NLIN asymmetric (“MNI”) space: [Fonov et al. 2009](https://doi.org/10.1016/S1053-8119(09)70884-5)
+- Normalization accuracy for the STN: [Ewert et al. 2019](https://doi.org/10.1016/j.neuroimage.2018.09.061)
+- PaCER reconstruction: [Husch et al. 2018](https://doi.org/10.1016/j.nicl.2017.10.004)
+- DiODe orientation of directional leads: [Dembek et al. 2019](https://doi.org/10.1016/j.parkreldis.2019.08.017)
+- DISTAL atlas: [Ewert et al. 2018](https://doi.org/10.1016/j.neuroimage.2017.05.015)
+- Lead Group: [Treu et al. 2020](https://doi.org/10.1016/j.neuroimage.2020.117018)
+
+</details>

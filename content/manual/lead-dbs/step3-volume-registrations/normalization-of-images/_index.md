@@ -60,7 +60,7 @@ This protocol is based on the approach described in [Schönecker 2009](https://w
 
 You can select the protocol depending on the image files that are available for processing.
 
-If applicable, Lead-DBS also gives you the option to normalize fiber tracking images into MNI space. For processing of these images, the option **Normalize Fibers** under the **Lead-Connectome** panel should be checked.
+If applicable, Lead-DBS also gives you the option to normalize fibre tracking images into MNI space. For processing of these images, the option **Normalize Fibers** under the **Lead-Connectome** panel should be checked.
 
 </details>
 
