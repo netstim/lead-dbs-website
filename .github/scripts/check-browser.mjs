@@ -153,7 +153,12 @@ async function check(view, scheme) {
   const note = (what) => problems.push(`${current} (${view.name}, ${scheme}): ${what}`);
   page.on('pageerror', (e) => note(`script error: ${e.message.split('\n')[0]}`));
   page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource/.test(m.text())) note(`console: ${m.text().slice(0, 200)}`); });
-  page.on('requestfailed', (r) => { if (r.url().startsWith(origin)) note(`request failed: ${r.url().slice(origin.length)}`); });
+  // a request the page itself gave up on (net::ERR_ABORTED: the home page's drifting gallery rows still loading
+  // when the check moves to the next page) is not a broken file: a missing one answers 404, caught below
+  page.on('requestfailed', (r) => {
+    if (!r.url().startsWith(origin) || /ERR_ABORTED/.test(r.failure()?.errorText || '')) return;
+    note(`request failed: ${r.url().slice(origin.length)} (${r.failure()?.errorText || 'no answer'})`);
+  });
   page.on('response', (r) => {
     if (!r.url().startsWith(origin) || r.status() < 400) return;
     // the 404 page's own document answers 404; anything it loads must not
