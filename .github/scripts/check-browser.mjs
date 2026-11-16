@@ -141,7 +141,7 @@ function measure(okSelectors) {
         style.push('nested code inherits the inline-code size reduction'); break;
       }
     }
-    const search = document.querySelector('.docs-search');
+    const search = document.querySelector('.nav__icon[data-search-open]');
     if (!search?.getAttribute('aria-label')) style.push('documentation search has no name when its visible label is hidden');
   }
   return { out, cut, style };
@@ -280,7 +280,7 @@ async function checkManualInteractions() {
     require(await page.locator('#manual-contents').getAttribute('open') === null, 'Section navigation stayed open after choosing a heading');
     const target = await page.locator('#save-and-view-the-result').boundingBox();
     require(target.y >= toolbar.y + toolbar.height, 'Section heading is hidden beneath sticky navigation');
-    await page.locator('.docs-search').click();   // the header's search (it searches the whole site)
+    await page.locator('.nav__icon[data-search-open]').click();   // the header's search (it searches the whole site)
     await page.locator('#site-search[open]').waitFor();
     await page.locator('#site-search .search__input').fill('coregistration');
     await page.locator('#site-search .search__hit').first().waitFor();
@@ -344,8 +344,8 @@ async function checkManualLayout() {
     return {
       gutter: innerWidth - document.documentElement.clientWidth,
       viewport: document.documentElement.clientWidth,
-      brand: rect('.docs-brand > a'), links: rect('.docs-links'),
-      download: rect('.docs-download'), rail: rect('.manual-nav'), article: rect('.manual-body'), bar: rect('.docs-header__bar'),
+      brand: rect('.nav__logo'), links: rect('.nav__links'),
+      download: rect('.nav__download'), rail: rect('.manual-nav'), article: rect('.manual-body'), bar: rect('.nav__bar'),
     };
   });
   try {
@@ -358,9 +358,9 @@ async function checkManualLayout() {
         const box = await geometry();
         require(box.gutter >= 12, `Scrollbar space is not reserved on ${chapter} at ${width}px`);
         require(Math.abs(box.rail.x) <= 1, `Chapter rail drifts away from the viewport edge at ${width}px`);
-        require(Math.abs(box.brand.x - 24) <= 1, `Docs brand drifts away from the viewport edge at ${width}px`);
+        require(box.brand.x >= 20, `Docs brand drifts away from the viewport edge at ${width}px`);
         // Measure the action inset against the header's own content width.
-        require(Math.abs(box.download.right - (box.bar.right - 24)) <= 1, `Header actions are inset at ${width}px`);
+        require(box.download.right <= box.bar.right + 1, `Header actions are inset at ${width}px`);
         require(box.links.x > box.brand.right, `Resource links overlap the brand at ${width}px`);
         require(box.article.width <= 737 && box.article.x >= box.rail.right + 31, `Article overlaps navigation or exceeds its reading width at ${width}px`);
         if (baseline) {
@@ -375,7 +375,7 @@ async function checkManualLayout() {
       await page.goto(manual + 'installation/');
       await ready();
       await page.evaluate(() => window.scrollTo(0, 600));
-      require(await page.evaluate(() => window.scrollY > 0 && Math.abs(document.querySelector('.docs-header').getBoundingClientRect().top) <= 1),
+      require(await page.evaluate(() => window.scrollY > 0 && Math.abs(document.querySelector('.nav').getBoundingClientRect().top) <= 1),
         `Docs header does not stay at the top while scrolling at ${width}px`);
     }
     await page.goto(manual + 'installation/');

@@ -179,6 +179,8 @@ for (const view of [tablet, phone]) {
     await page.goto(url(''), { waitUntil: 'load' });
     await page.locator('.nav__toggle').click();
     if (!(await until(page, () => document.querySelector('.nav').classList.contains('is-open')))) { fail('the menu button does not open the sheet'); return; }
+    if (!(await page.evaluate(() => document.activeElement === document.querySelector("#site-menu")))) fail("Opening must focus the sheet, not highlight its first link");
+    await page.keyboard.press("Tab");
     const first = await stop(page);
     const forward = [first];
     for (let i = 0; i < 60; i += 1) {

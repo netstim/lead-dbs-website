@@ -38,7 +38,7 @@ import pathlib
 import re
 import sys
 
-BUDGET = {"colour": 116, "important": 19, "spacing": 148, "line-height": 127, "letter-spacing": 42}
+BUDGET = {"colour": 116, "important": 19, "spacing": 147, "line-height": 127, "letter-spacing": 42}
 EXEMPT_MAX = 6
 # hard-rule violations the stylesheets already had when this script began to read whole declarations (the
 # line-by-line reading missed them): "file: selector property". Each is allowed until it is fixed, and then
@@ -277,6 +277,20 @@ for path in manual_sources:
         source = re.sub(r"`[^`\n]+`", "", source)
     if re.search(r"<style(?:\s|>)|<[^>]+\sstyle\s*=", source, re.I):
         errors.append(f"{path}: manual presentation belongs in shared CSS, not inline styles")
+
+# Shared phone component contract: prevent parallel header and primary-action systems.
+base = pathlib.Path("assets/css/base.css").read_text()
+if "--btn-h: 48px" not in base or "--arrow: var(--arrow-go)" not in base:
+    errors.append("base.css: keep the shared 48px primary and full internal arrow")
+if 'partial "manual-header.html"' in pathlib.Path("layouts/baseof.html").read_text():
+    errors.append("baseof.html: manual must use the shared site header")
+if 'class="btn btn--primary"' not in pathlib.Path("layouts/_partials/manual-start.html").read_text():
+    errors.append("manual-start: install action must use the shared primary component")
+
+for path in CSS:
+    source = pathlib.Path(path).read_text()
+    if re.search(r"\.m-arrow__stem\s*\{[^}]*display:\s*none", source):
+        errors.append(f"{path}: navigation arrows must retain their stem on phones")
 
 if "--ratchet" in sys.argv:
     # lower each budget to its count (never raise one), then check as usual

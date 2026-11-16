@@ -189,3 +189,40 @@ avoid stacking desktop-sized margins. Download mirrors are plain links, not comp
 Small CTA and playback controls retain at least 44px touch height. The menu locks the root
 scroller as well as the body and contains overscroll in a dynamic-viewport-height sheet.
 Landscape touch layouts reserve the sensor housing's safe-area inset in their gutters.
+
+## Phone component contract (round 2)
+
+This supersedes the earlier chevron-on-hover and rounded opening-render descriptions.
+At widths below 640px the inventory is deliberately small:
+
+| Part | Before | Shared specification |
+| --- | --- | --- |
+| Header | Separate manual and site chrome | Same `header.html`: 56px bar, 44px icon targets, 18px menu icon; theme in the menu; manual Chapters adds a 44px sticky row |
+| Action | Four independently sized pills | `.btn.btn--primary`, 48px high, 24px inline padding, 15px/500; inverse on black; inline compact `.btn--sm` 44px, 12px padding, 13px/500 |
+| Internal action | Chevron, arrow, animated stem | Full arrow at rest and focus, 14px square; disclosures keep directional chevrons; external actions use ↗ and never a second arrow |
+| Opening | Different breadcrumb lengths and gaps | One linked parent, 44px target; 44px/500 H1; 32px content gap, 24px between introduction and actions; Home retains its own display composition |
+| Lead | Four unrelated treatments | Hub/showcase statements 26px/500, 1.2 leading, ink with optional muted continuation; task/editorial introductions use body text; linked video introduction is body text |
+| Navigation/content | Rounded cards and rows | Hairline rows for steps, events, manual section links and related pages; quiet text actions for copy/edit |
+| Code/citation | Unrelated panels | 12px radius, neutral hairline; panels retained because they contain copyable documents rather than navigation |
+| Render | Inset rounded black rectangles | Opening renders edge-to-edge, 16:9, no radius; atlas catalogue omits its duplicated decorative opening render; catalogue thumbnails remain illustrations attached to entries |
+| Contents | Short pages get large disclosure | At least four sections and 600 words; sticky 44px disclosure on ordinary pages, Chapters/contents bar in manual |
+| Filters | Wrapped chips | Single horizontal scroll strip, 44px targets, snap and trailing fade; no outlined pills |
+| Notice | Grey box and coloured stripe | Hairline text region; research-use wording unchanged |
+| Tables/code | Wide technical content | Existing local scroll and code wrapping controls retained; no page-level horizontal scrolling |
+
+Shared changes intentionally affect desktop too: full arrows, 48px default primary,
+manual site navigation, quiet manual actions, row section links, simplified notices,
+News breadcrumb, stricter contents eligibility and removal of the duplicated catalogue render.
+Hover effects are inside hover-capable media queries. Menu opening focuses the container,
+not the first navigation link; keyboard Tab still enters the trapped link sequence.
+Theme metadata follows the dark opening/header and returns to the page theme when its menu opens.
+
+Visual inventory and comparison evidence: `/tmp/ldbs-audit/phone/round2/` contains
+before/after page captures and labelled contact sheets. The test suite guards shared
+header/action markup, full-arrow token, narrow layouts, menu containment and manual navigation.
+
+Showcase and hub statement openings now live with their title in `page-head.html`, before
+any opening render. `content-page.html` extracts the existing introductory block without
+rewriting its text; it is rendered once, not duplicated for breakpoints. Manual installation
+and workflow navigation precede the unchanged research notice. This intentionally changes
+page composition on desktop as well: the task is readable before the illustration.

@@ -143,13 +143,13 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
   /* the release: a 32px chip (a 44px target), a coral dot, the version, "Release notes" muted, a round arrow */
   .home-chip { margin: 0 0 var(--s-5); }
   .home-hero .home-chip a { position: relative; display: inline-flex; align-items: center; gap: var(--s-2); height: 32px;
-    padding: 0 calc(var(--s-1) * 1.5) 0 var(--s-3); border: 1px solid color-mix(in srgb, var(--on-render) 10%, transparent); border-radius: var(--r-pill);
+    padding: 0 calc(var(--s-1) * 1.5) 0 var(--s-3); border: 0; border-radius: var(--r-pill);
     background: color-mix(in srgb, var(--on-render) 4%, transparent); color: var(--on-render); font: 500 var(--t-label)/1 var(--font-text); text-decoration: none; }
   .home-hero .home-chip a::before { content: ""; position: absolute; inset: -7px 0; }
   .home-chip__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--p-accent); }
   .home-chip__more { color: var(--muted); font-weight: 400; }
   .home-chip__go { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: color-mix(in srgb, var(--on-render) 10%, transparent); }
-  .home-chip__go .m-arrow { width: 10px; height: 10px; margin: 0; }
+  .home-chip__go .m-arrow { width: 14px; height: 14px; margin: 0; }
 
   .home-hero__media { position: relative; height: 380px; aspect-ratio: auto; margin-top: var(--s-2); overflow: hidden; }
   /* the poster (16:10) and the phone clip (square) framed alike: a square box, the poster's part from
@@ -288,7 +288,6 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
   .data-band__title a { display: inline; min-height: 0; color: var(--ink); }
   .data-band__title a::after { content: ""; position: absolute; inset: 0; }
   .data-band__title a .m-arrow { position: absolute; top: 50%; right: 0; width: 16px; height: 16px; margin: -8px 0 0; color: var(--muted); }
-  .data-band__title .m-arrow__stem { display: none; }
   .data-band__text p { display: block; margin: 0; color: var(--muted); font: 400 var(--t-small)/1.43 var(--font-text); }
   .data-band__counts { display: none; }
 }

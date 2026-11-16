@@ -5,9 +5,9 @@
    measure; a figure from a paper adds its short citation as the caption's second line */
 .caption { margin: 0; font-size: var(--t-note); line-height: 1.5; color: var(--muted); max-width: 60ch; }
 /* a link to another site (menus, footer, rows, buttons): the ↗ after its label */
-.ext-mark { display: inline-block; margin-left: 0.25em; font-size: 0.8em; color: var(--muted); }
+.ext-mark { display: inline-block; margin-left: 0.25em; font-size: var(--t-small); color: var(--muted); }
 /* on a button or a .link it stands in the chevron's place (base.css), the flex gap before it */
-.btn > .ext-mark { margin-left: 0; color: inherit; opacity: .8; font-size: .9em; }
+.btn > .ext-mark { margin-left: 0; color: inherit; opacity: .8; font-size: var(--t-small); }
 .link > .ext-mark { margin-left: 0; }
 /* the citation box (partial cite-box.html), the same wherever a paper is to be cited: a white box with a
    hairline, its bar (format tabs, copy) over the reference or its BibTeX, the paper's further links under it;
