@@ -183,7 +183,7 @@ html .event--listing .event__poster img { position: static; max-width: none; max
 .prose a.ev-news { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); max-width: 640px; min-height: 56px; margin: var(--s-5) 0 0;
   padding: var(--s-3) 0; border-bottom: 1px solid var(--line); background: none; color: var(--ink); font-size: var(--t-body); font-weight: 500; text-decoration: none; }
 .ev-news__go { display: inline-flex; align-items: center; gap: var(--s-1); color: var(--muted); font-weight: 400; transition: color var(--t-out) var(--ease); }
-.ev-news__go::after { content: ""; width: 14px; height: 14px; background: currentColor; -webkit-mask: var(--arrow) center / 12px no-repeat; mask: var(--arrow) center / 12px no-repeat; }
+.ev-news__go::after { content: ""; width: 14px; height: 14px; background: currentColor; -webkit-mask: var(--arrow) center / contain no-repeat; mask: var(--arrow) center / contain no-repeat; }
 @media (hover: hover) { .prose a.ev-news:hover .ev-news__go { color: var(--action); } }
 /* ---------------------------------------------------------------- an event's page (layouts/event.html)
    One opening at every width: the title, the page's line, the facts as hairline rows (a label column and

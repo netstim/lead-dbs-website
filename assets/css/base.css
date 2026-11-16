@@ -138,12 +138,12 @@ p { text-wrap: pretty; }
   text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--line-strong);
 }
 @media (hover: hover) { .btn--secondary:hover { text-decoration-color: currentColor; } }
-/* the one arrow of the site: a chevron that grows a stem on hover and focus. Templates draw it as
+/* The full action arrow is unchanged at rest, hover and focus. Templates draw it as
    svg.m-arrow (below); where a button or link has no svg (Markdown, shortcodes), ::after draws the same
    two shapes as a mask. */
 :root {
   --arrow: var(--arrow-go);
-  --arrow-go: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 14 14' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 6h8M7.5 2.5 11 6l-3.5 3.5'/%3E%3C/svg%3E");
+  --arrow-go: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 6h8M7.5 2.5 11 6l-3.5 3.5'/%3E%3C/svg%3E");
 }
 .btn::after, .link::after {
   content: ""; flex: none; width: 14px; height: 14px; margin: 0 -3px 0 -1px; background: currentColor;

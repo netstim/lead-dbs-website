@@ -79,7 +79,7 @@
   transition: border-color var(--t-out) var(--ease), background-color var(--t-out) var(--ease), color var(--t-out) var(--ease); }
 @media (hover: hover) { .prose :is(.capability__links, .tool__links) a:hover { border-color: var(--ink); background: var(--ink); color: var(--bg); transition-duration: var(--t-in); } }
 .prose :is(.capability__links, .tool__links) :is(.ext-mark, .m-arrow) { margin: 0; font-size: var(--t-small); color: currentColor; opacity: .55; }
-.prose :is(.capability__links, .tool__links) .m-arrow { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+.prose :is(.capability__links, .tool__links) .m-arrow { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.6; }
 /* a picture: the black box; a render fills it, a figure from a paper lies on it as a sheet of its own
    shape (--ar, width over height), as large as the box allows, the credit's line kept free under it */
 .prose .cap-fig { position: relative; display: grid; place-items: center; margin: 0; max-width: none; aspect-ratio: 4 / 3; container-type: size; overflow: hidden; border-radius: var(--r-lg); background: var(--render); }

@@ -14,7 +14,7 @@
     <p class="search__group-label">Quick links</p>
     <ul>
       {{ range slice "/helpsupport/first-steps/" "/download/" "/helpsupport/knowledge-base/atlasesresources/" "/about/citing_leaddbs/" }}
-      {{ with site.GetPage . }}<li><a href="{{ .RelPermalink }}"><span>{{ .LinkTitle }}</span><span class="search__quick-arrow" aria-hidden="true">→</span></a></li>{{ end }}
+      {{ with site.GetPage . }}<li><a href="{{ .RelPermalink }}"><span>{{ .LinkTitle }}</span><svg class="m-arrow search__quick-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a></li>{{ end }}
       {{ end }}
     </ul>
   </div>

@@ -169,7 +169,7 @@ html:not(.dl-terms-ready) .dl-terms__close { display: none; }
 .fs-file__t b { font-size: var(--t-small); font-weight: 600; }
 .fs-file__t span { color: var(--muted); font-size: var(--t-label); }
 .fs-file__go { flex: none; display: inline-flex; align-items: center; gap: 2px; font-size: var(--t-small); font-weight: 500; transition: color var(--t-out) var(--ease); }
-.fs-file__go:not(:has(.ext-mark))::after { content: ""; width: 14px; height: 14px; background: currentColor; -webkit-mask: var(--arrow) center / 12px no-repeat; mask: var(--arrow) center / 12px no-repeat; }
+.fs-file__go:not(:has(.ext-mark))::after { content: ""; width: 14px; height: 14px; background: currentColor; -webkit-mask: var(--arrow) center / contain no-repeat; mask: var(--arrow) center / contain no-repeat; }
 @media (hover: hover) { .fs-file:hover .fs-file__go { color: var(--action); transition-duration: var(--t-in); } }
 .fs-step > .dl-step__actions { margin-top: var(--s-2); }
 .fs-step > .fs-file:last-child { margin-bottom: var(--s-5); }

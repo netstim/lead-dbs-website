@@ -290,7 +290,7 @@ if 'class="btn btn--primary"' not in pathlib.Path("layouts/_partials/manual-star
 for path in CSS:
     source = pathlib.Path(path).read_text()
     for selector, declarations in re.findall(r"([^{}]+)\{([^{}]*)\}", source):
-        if ".m-arrow" in selector and re.search(r"(?:width|height):\s*(?!14px)[0-9.]+(?:px|rem)", declarations):
+        if any(mark in selector for mark in (".m-arrow", ".news-row__arrow")) and re.search(r"(?:width|height):\s*(?!14px)[0-9.]+(?:px|rem)", declarations):
             errors.append(f"{path}: action arrows must use the shared 14px size")
     if re.search(r"\.m-arrow__stem\s*\{[^}]*display:\s*none", source):
         errors.append(f"{path}: navigation arrows must retain their stem on phones")
