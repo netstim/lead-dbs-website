@@ -11,7 +11,8 @@ a retry does not download them again. Every index URL must be a chapter below ht
 and every image must be an https URL on a public host name.
 
 The import is assembled in a staging folder and moved into content/manual, assets/manual and data/manual.json
-only after every chapter and image was fetched, so a failed run changes nothing and can simply be retried.
+only after every chapter and image was fetched. Publication failures undo completed moves. If interrupted
+or recovery itself fails, staging and its publication.json remain: run --recover STAGING before retrying.
 
 Run it once: it refuses to start while content/manual or data/manual.json exists, so it never overwrites the
 editorial changes made since the import (docs/manual.md).
@@ -216,19 +217,47 @@ def stage_import(stage, root, chapters, pages, assets):
     (stage / 'manual.json').write_text(json.dumps(navigation(pages), ensure_ascii=False, indent=2)+'\n')
 
 
+def recover_publication(stage, root):
+    """Undo even a move completed just before a crash; the journal precedes every publication move."""
+    journal = json.loads((stage / 'publication.json').read_text())
+    for source, target in reversed(journal['moves']):
+        src, dst = contained(stage, source), contained(root, target)
+        if dst.exists() and not src.exists():
+            dst.rename(src)
+    for folder in reversed(journal['created_folders']):
+        path = contained(root, folder)
+        if path.exists():
+            path.rmdir()  # refuse to discard anything not in this publication
+    (stage / 'publication.json').unlink()
+
+
 def publish(stage, root):
-    """Moves a complete staged import into the repository."""
-    (root / 'assets' / 'manual').mkdir(parents=True, exist_ok=True)
-    for image in (stage / 'assets').iterdir():
-        image.replace(root / 'assets' / 'manual' / image.name)
-    (root / 'content').mkdir(exist_ok=True)
-    (stage / 'content' / 'manual').rename(root / 'content' / 'manual')
-    (root / 'data').mkdir(exist_ok=True)
-    (stage / 'manual.json').rename(root / 'data' / 'manual.json')
+    """Journal publication before moving anything, and undo all moves on an ordinary failure."""
+    moves = [('assets/' + image.name, 'assets/manual/' + image.name)
+             for image in sorted((stage / 'assets').iterdir())]
+    moves += [('content/manual', 'content/manual'), ('manual.json', 'data/manual.json')]
+    for _, target in moves:
+        if (root / target).exists() or (root / target).is_symlink():
+            raise ImportRefused(f'{target} already exists; refusing to overwrite it.')
+    folders = [name for name in ('assets', 'assets/manual', 'content', 'data') if not (root / name).exists()]
+    journal = stage / 'publication.json'
+    journal.write_text(json.dumps({'moves': moves, 'created_folders': folders}))
+    try:
+        for name in folders:
+            (root / name).mkdir(exist_ok=True)
+        for source, target in moves:
+            (stage / source).rename(root / target)
+    except BaseException:
+        recover_publication(stage, root)
+        raise
+    journal.unlink()
 
 
 def import_manual(root, cache, plan=False):
     """Imports the manual into root (the repository), or with plan=True only reports what it would import."""
+    pending = [stage for stage in root.glob('.manual-import-*') if (stage / 'publication.json').exists()]
+    if pending:
+        raise ImportRefused(f'publication needs recovery: run with --recover {pending[0]} before retrying')
     for existing in (root / 'content' / 'manual', root / 'data' / 'manual.json'):
         if existing.exists():
             raise ImportRefused(f'{existing.relative_to(root)} already exists; refusing to overwrite editorial changes.')
@@ -246,7 +275,8 @@ def import_manual(root, cache, plan=False):
         stage_import(stage, root, chapters, pages, assets)
         publish(stage, root)
     finally:
-        shutil.rmtree(stage, ignore_errors=True)
+        if not (stage / 'publication.json').exists():
+            shutil.rmtree(stage, ignore_errors=True)
     print(f'Imported {len(pages)} chapters and {len(assets)} images.')
 
 
@@ -255,9 +285,18 @@ def main(argv=None):
     parser.add_argument('cache', nargs='?', type=Path, default=DEFAULT_CACHE,
                         help=f'source cache directory (default {DEFAULT_CACHE})')
     parser.add_argument('--plan', action='store_true', help='report what would be imported; write nothing')
+    parser.add_argument('--recover', type=Path, help='undo a journalled partial publication, then retry the import')
     args = parser.parse_args(argv)
     try:
-        import_manual(ROOT, args.cache, plan=args.plan)
+        if args.recover:
+            stage = args.recover.resolve()
+            if stage.parent != ROOT.resolve() or not stage.name.startswith('.manual-import-'):
+                raise ImportRefused('recovery staging must be a .manual-import-* folder in the repository')
+            recover_publication(stage, ROOT)
+            shutil.rmtree(stage)
+            print('Publication undone; the import can be retried.')
+        else:
+            import_manual(ROOT, args.cache, plan=args.plan)
     except ImportRefused as error:
         raise SystemExit(f'refused: {error}')
 

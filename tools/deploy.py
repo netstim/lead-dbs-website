@@ -21,7 +21,8 @@ used with another, every command refuses.
 
 What it never touches: the folders /release/, /docs/, /forms/, everything of WordPress (wp-*, index.php,
 the wp-*.php files), /.well-known/, and any file that is not its own. It refuses to start when the build
-would overwrite one of those, when a file or a symbolic link is in the way of one of its files, when WEBROOT
+would overwrite one of those, when a file or a symbolic link is in the way of a file it would write, restore
+or remove (checked again right before each write; a deleted folder is made again), when WEBROOT
 does not look like the lead-dbs.org web root (no release/ folder), when the package, web root and state
 folder overlap, while another deploy or rollback holds the lock, and after a deploy that did not finish
 (roll that back first).
@@ -131,6 +132,29 @@ def put_file(src, dst, token):
     fsync_folder(os.path.dirname(dst))
 
 
+def put_in_webroot(webroot, rel, src, token, stopped):
+    """copies src to webroot/rel, the only way anything is written into the web root. Right before the write it
+    refuses a symbolic link, a file or a folder in the way, makes missing folders one at a time (a restore whose
+    folder was deleted since), and checks that the folder written into is below the web root. stopped says what
+    a refusal leaves behind."""
+    problem = link_in_the_way(webroot, rel)
+    if problem is None and os.path.isdir(os.path.join(webroot, rel)):
+        problem = "a folder is in the way: " + rel
+    if problem:
+        fail("{}: {} ({})".format(rel, problem, stopped))
+    parts = rel.split("/")
+    for i in range(1, len(parts)):
+        folder = os.path.join(webroot, *parts[:i])
+        if not os.path.lexists(folder):
+            os.mkdir(folder)
+        if os.path.islink(folder) or not os.path.isdir(folder):
+            fail("{}: something other than a folder is at {} ({})".format(rel, "/".join(parts[:i]), stopped))
+    dst = os.path.join(webroot, rel)
+    if not inside(os.path.realpath(os.path.dirname(dst)), os.path.realpath(webroot)):
+        fail("{}: its folder is outside the web root ({})".format(rel, stopped))
+    put_file(src, dst, token)
+
+
 def write_json(path, data):
     fd, tmp = tempfile.mkstemp(dir=os.path.dirname(path), prefix="." + os.path.basename(path) + "-")
     try:
@@ -230,6 +254,8 @@ def export(repo, commit, dest):
 
 
 def package(out):
+    # absolute from here on: Hugo and the checks run in other folders than the caller's
+    out = os.path.abspath(out)
     if git("status", "--porcelain", "--untracked-files=no"):
         fail("the checkout has uncommitted changes; a package is built from one commit, so commit them first")
     commit = git("rev-parse", "HEAD")
@@ -413,6 +439,19 @@ def make_plan(site, webroot, state):
                 folders.add("/".join(parts[:i]))
     plan["remove_ours"] = sorted(ours - set(new))
     plan["new_folders"] = sorted(folders)
+    # the files of the last deploy it takes out, restores or keeps for a while: no write or removal may go
+    # through a link either, and a saved original must still be there to restore
+    replaced = previous["replaced"] if previous else {}
+    for rel in plan["remove_ours"]:
+        problem = link_in_the_way(webroot, rel)
+        if problem is None and rel in replaced:
+            backup = os.path.join(state, replaced[rel])
+            if os.path.isdir(os.path.join(webroot, rel)):
+                problem = "a folder is in the way of its saved original"
+            elif os.path.islink(backup) or not os.path.isfile(backup):
+                problem = "its saved original is missing: " + backup
+        if problem:
+            plan["refuse"].append(rel + " (" + problem + ")")
     return plan
 
 
@@ -475,16 +514,12 @@ def deploy(site, webroot, state, grace_days=GRACE_DAYS):
                   "files": sorted(set(new) | (set(previous["files"]) if previous else set()))}
         # recorded before the web root is touched, so a deploy cut off halfway can still be rolled back
         write_json(os.path.join(state, STATE_FILE), record)
+        stopped = "the deploy stopped; roll it back"
         for rel in files:
-            dst = os.path.join(webroot, rel)
-            problem = link_in_the_way(webroot, rel)     # checked again right before the write
-            if problem:
-                fail(rel + ": " + problem + " (the deploy stopped; roll it back)")
-            os.makedirs(os.path.dirname(dst), exist_ok=True)
-            put_file(os.path.join(site, rel), dst, token)
+            put_in_webroot(webroot, rel, os.path.join(site, rel), token, stopped)
         for rel in plan["remove_ours"]:
             if rel in replaced:
-                put_file(os.path.join(state, replaced[rel]), os.path.join(webroot, rel), token)
+                put_in_webroot(webroot, rel, os.path.join(state, replaced[rel]), token, stopped)
             elif grace_days > 0 and FINGERPRINTED.search(rel):
                 retired.setdefault(rel, now)
             else:
@@ -529,12 +564,15 @@ def rollback(webroot, state):
             path = os.path.join(state, backup)
             if rel in files and (os.path.islink(path) or not os.path.isfile(path)):
                 fail("the saved original of {} is missing ({}); nothing was changed".format(rel, path))
+            if rel in files and os.path.isdir(os.path.join(webroot, rel)):
+                fail("{}: a folder is in the way of its saved original; nothing was changed".format(rel))
         token = current.get("token", "")
         # the .htaccess first, then the pages, then the rest
         for rel in sorted(files, key=lambda rel: (rel != ".htaccess", not rel.endswith(".html"), rel)):
             path = os.path.join(webroot, rel)
             if rel in current["replaced"]:
-                put_file(os.path.join(state, current["replaced"][rel]), path, "rollback-" + token)
+                put_in_webroot(webroot, rel, os.path.join(state, current["replaced"][rel]), "rollback-" + token,
+                               "the rollback stopped; fix that and run it again")
             else:
                 remove_file(webroot, rel)
             # what an interrupted deploy (or rollback) left under a temporary name

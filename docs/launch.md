@@ -107,10 +107,38 @@ every answer, and two headers that are rolled out in steps:
    and `mod_deflate` are on. Every block for an optional module is wrapped in `<IfModule>`, so a missing
    module loses its rules silently: the acceptance checks below are what proves them. Find out which file
    holds the release downloads' log, so the switch-day checks can confirm it is refused.
-5. **HTTPS and www.** If STRATO's domain settings already redirect `lead-dbs.org` to `https://www.…`, delete
-   those two rules from the `.htaccess`. Does STRATO end TLS in a proxy in front of Apache? If not, delete the
-   `X-Forwarded-Proto` line (it then only lets a visitor skip the redirect to HTTPS). DNS stays as it is; the
-   mail records aren't touched.
+5. **HTTPS and www.** The shipped rules use Apache's actual TLS state; client-supplied
+   `X-Forwarded-Proto` never disables the redirect or enables HSTS. Record whether STRATO uses direct TLS
+   or a proxy, the tested configuration, test date and responsible operator before launch. If STRATO's
+   domain settings already perform the canonical redirects, remove the matching redirect rules.
+   DNS and mail records stay as they are.
+
+   **Proxy alternative (only after confirmation).** Use this only if the origin accepts requests solely
+   from the trusted proxy, and that proxy strips and overwrites `X-Forwarded-Proto` with one authoritative
+   value. Verify both properties on the rehearsal host; a client must not be able to supply `https` on an
+   HTTP request or reach the origin directly. Otherwise keep direct TLS or use an authenticated
+   server-set HTTPS indicator agreed with the host. Do not guess STRATO's topology.
+
+   For that confirmed proxy mode, replace the direct HTTPS redirect block (from `RewriteCond %{HTTPS}`
+   through its `RewriteRule`) with these exact lines:
+
+   ```apache
+   RewriteCond %{HTTPS} !=on
+   RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+   RewriteCond %{HTTP_HOST} ^www\.lead-dbs\.org$ [NC]
+   RewriteRule ^ https://www.lead-dbs.org%{REQUEST_URI} [R=301,L,NE]
+   ```
+
+   Also replace the `Strict-Transport-Security` line with:
+
+   ```apache
+   Header always set Strict-Transport-Security "max-age=86400" "expr=%{HTTPS} == 'on' || %{HTTP:X-Forwarded-Proto} == 'https'"
+   ```
+
+   The local Apache regression executes these exact two snippets as the trusted proxy-origin hop;
+   it does not prove hosting isolation or proxy header sanitation. Rehearse genuine external HTTPS,
+   HTTP with a forged header, and direct-origin refusal before selecting this mode. Keep one-day HSTS
+   without `includeSubDomains` or `preload` until the existing ramp gates pass.
 6. **A full backup** of the web root and the WordPress database on the morning of the switch, besides
    `deploy`'s own.
 
@@ -256,3 +284,15 @@ file that exists).
 - the newsletter plugin's version and settings
 - what changed on WordPress since the import
 - which other files on the server are linked from elsewhere
+
+### Manual importer recovery
+
+`tools/import_manual.py` refuses existing editorial manual content/navigation. It stages all downloads,
+then records `publication.json` before the final moves. An ordinary publication error undoes those moves;
+a process interruption or failed undo retains `.manual-import-*` and its staged navigation. Do not delete
+that directory. Stop other imports, run `python3 tools/import_manual.py --recover /absolute/path/to/.manual-import-TOKEN`
+from the repository, then retry the normal import. Recovery moves only the journalled destinations back
+to staging and refuses to remove nonempty created directories. Keep the source cache for the retry.
+
+Deploy tooling requires POSIX Python 3.6+ (including `fcntl`); use WSL on Windows. The analytics operations
+scripts separately require Python 3.10+. Confirm the host's supported runtime during rehearsal.

@@ -28,7 +28,7 @@ jobs:
       - name: Install PHP (CLI, SQLite, mbstring), Composer and Apache
         run: |
           sudo apt-get update
-          sudo apt-get install -y php-cli php-sqlite3 php-mbstring composer apache2
+          sudo apt-get install -y php-cli php-sqlite3 php-mbstring composer apache2 openssl
       # what server/forms/README.md and server/analytics/README.md require of the host
       - name: PHP 8.2+, mbstring, pdo_sqlite, SQLite 3.35+ (RETURNING)
         run: |

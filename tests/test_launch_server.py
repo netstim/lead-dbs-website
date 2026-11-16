@@ -21,6 +21,7 @@ from pathlib import Path
 import re
 import shutil
 import socket
+import ssl
 import subprocess
 import sys
 import tempfile
@@ -304,6 +305,117 @@ class DeployTests(unittest.TestCase):
         run('rollback', self.web, '--state', self.state)
         self.assertUnchanged()
 
+    def with_legacy_original(self):
+        """an original web-root file in a folder of its own, replaced by a first deploy and dropped by the second
+        package; returns that second package"""
+        (self.web / 'legacy').mkdir()
+        (self.web / 'legacy' / 'x.txt').write_text('ORIGINAL')
+        self.before, self.dirs = tree(self.web), folders(self.web)
+        first = self.package_copy('first')
+        (first / 'legacy').mkdir()
+        (first / 'legacy' / 'x.txt').write_text('NEW')
+        seal(first)
+        run('deploy', first, self.web, '--state', self.state)
+        self.assertEqual((self.web / 'legacy' / 'x.txt').read_text(), 'NEW')
+        return self.package_copy('second')
+
+    def outside_sentinel(self):
+        outside = self.tmp / 'another-site'
+        outside.mkdir()
+        (outside / 'x.txt').write_text('OUTSIDE')
+        return outside
+
+    def test_a_dropped_file_is_never_restored_through_a_link(self):
+        second = self.with_legacy_original()
+        outside = self.outside_sentinel()
+        shutil.rmtree(self.web / 'legacy')
+        (self.web / 'legacy').symlink_to(outside, target_is_directory=True)
+        deployed = tree(self.web)
+        for command in ('plan', 'deploy'):
+            with self.subTest(command=command):
+                r = run(command, second, self.web, '--state', self.state, ok=False)
+                self.assertIn('legacy/x.txt (a link is in the way: legacy)', r.stdout)
+                self.assertEqual((outside / 'x.txt').read_text(), 'OUTSIDE')
+                self.assertEqual(tree(self.web), deployed)
+        # the same in a file's place
+        (self.web / 'legacy').unlink()
+        (self.web / 'legacy').write_text('a file where the folder was')
+        r = run('deploy', second, self.web, '--state', self.state, ok=False)
+        self.assertIn('legacy/x.txt (a file is in the way: legacy)', r.stdout)
+        (self.web / 'legacy').unlink()
+        (self.web / 'legacy').mkdir()
+        run('deploy', second, self.web, '--state', self.state)
+        self.assertEqual((self.web / 'legacy' / 'x.txt').read_text(), 'ORIGINAL')
+        run('rollback', self.web, '--state', self.state)
+        self.assertUnchanged()
+
+    def test_a_link_made_during_the_deploy_stops_the_restore(self):
+        """the restore checks its path again right before writing, not only in the plan"""
+        second = self.with_legacy_original()
+        outside = self.outside_sentinel()
+        original = deploy.put_file
+
+        def swap_then_put(src, dst, token):
+            if os.path.isdir(self.web / 'legacy') and not os.path.islink(self.web / 'legacy'):
+                shutil.rmtree(self.web / 'legacy')
+                (self.web / 'legacy').symlink_to(outside, target_is_directory=True)
+            original(src, dst, token)
+        with mock.patch.object(deploy, 'put_file', side_effect=swap_then_put), quiet(), \
+                self.assertRaises(SystemExit):
+            deploy.deploy(str(second), str(self.web), str(self.state))
+        self.assertEqual((outside / 'x.txt').read_text(), 'OUTSIDE')
+        self.assertEqual(sorted(p.name for p in outside.iterdir()), ['x.txt'])
+        self.assertFalse(json.loads((self.state / 'deployed.json').read_text())['complete'])
+        r = run('rollback', self.web, '--state', self.state, ok=False)   # the link is still there
+        self.assertIn('a link is in the way: legacy', r.stdout)
+        (self.web / 'legacy').unlink()
+        run('rollback', self.web, '--state', self.state)
+        self.assertUnchanged()
+        self.assertEqual((outside / 'x.txt').read_text(), 'OUTSIDE')
+
+    def test_a_deleted_folder_of_a_saved_original_is_made_again(self):
+        second = self.with_legacy_original()
+        shutil.rmtree(self.web / 'legacy')
+        run('deploy', second, self.web, '--state', self.state)
+        self.assertEqual((self.web / 'legacy' / 'x.txt').read_text(), 'ORIGINAL')
+        run('rollback', self.web, '--state', self.state)
+        self.assertUnchanged()
+
+    def test_a_rollback_makes_a_deleted_folder_again_and_can_be_retried_after_a_cut(self):
+        self.with_legacy_original()
+        shutil.rmtree(self.web / 'legacy')
+        original = deploy.put_file
+        cut = {'done': False}
+
+        def put(src, dst, token):
+            if dst.endswith('legacy/x.txt') and not cut['done']:   # cut off while restoring it
+                cut['done'] = True
+                shutil.copy2(src, '{}.lead-deploy-{}.tmp'.format(dst, token))
+                raise OSError('connection lost')
+            original(src, dst, token)
+        with mock.patch.object(deploy, 'put_file', side_effect=put), quiet(), self.assertRaises(OSError):
+            deploy.rollback(str(self.web), str(self.state))
+        self.assertTrue(cut['done'])
+        run('rollback', self.web, '--state', self.state)
+        self.assertUnchanged()
+
+    def test_something_in_place_of_a_folder_still_stops_a_rollback(self):
+        self.with_legacy_original()
+        shutil.rmtree(self.web / 'legacy')
+        (self.web / 'legacy').write_text('a file where the folder was')
+        deployed = tree(self.web)
+        r = run('rollback', self.web, '--state', self.state, ok=False)
+        self.assertIn('a file is in the way: legacy', r.stdout)
+        self.assertEqual(tree(self.web), deployed)
+        (self.web / 'legacy').unlink()
+        (self.web / 'legacy').mkdir()
+        (self.web / 'legacy' / 'x.txt').mkdir()      # a folder where the original goes
+        r = run('rollback', self.web, '--state', self.state, ok=False)
+        self.assertIn('a folder is in the way of its saved original', r.stdout)
+        (self.web / 'legacy' / 'x.txt').rmdir()
+        run('rollback', self.web, '--state', self.state)
+        self.assertUnchanged()
+
     def test_one_deploy_or_rollback_at_a_time(self):
         self.state.mkdir()
         with open(self.state / 'deploy.lock', 'w') as lock:
@@ -508,7 +620,53 @@ class PackageSourceTests(unittest.TestCase):
         self.assertEqual(log, [commit])     # with its history, for Hugo's last-modified dates
 
 
-@needs(HTTPD and MODULES and HUGO, 'Apache (httpd or apache2 with mod_rewrite) and hugo')
+def committed_copy(dest):
+    """a repository at dest holding this checkout as it would be committed: HEAD, plus the tracked files changed
+    since and the new files git doesn't ignore (in CI that is HEAD itself)"""
+    lines = lambda *args: subprocess.run(['git', '-C', str(ROOT)] + list(args), stdout=subprocess.PIPE,
+                                         universal_newlines=True, check=True).stdout.split('\0')
+    subprocess.run(['git', 'clone', '--quiet', '--no-checkout', str(ROOT), str(dest)], check=True)
+    head = lines('rev-parse', 'HEAD')[0].strip()
+    subprocess.run(['git', '-C', str(dest), 'checkout', '--quiet', '-B', 'under-test', head], check=True)
+    for rel in filter(None, lines('ls-files', '-z', '--modified', '--others', '--exclude-standard')):
+        if (ROOT / rel).is_file():
+            (dest / rel).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / rel, dest / rel)
+    for rel in filter(None, lines('ls-files', '-z', '--deleted')):
+        (dest / rel).unlink()
+    git = ['git', '-C', str(dest), '-c', 'user.name=t', '-c', 'user.email=t@example.org']
+    subprocess.run(git + ['add', '--all'], check=True)
+    subprocess.run(git + ['commit', '--quiet', '--allow-empty', '-m', 'the checkout under test'], check=True)
+
+
+@needs(shutil.which('git') and shutil.which('hugo'), 'git and hugo')
+class PackageTests(unittest.TestCase):
+    def test_package_with_a_relative_out_folder(self):
+        """the documented `package --out dist`, from another folder than the repository's: Hugo, the checks and
+        Python must all mean the same folder"""
+        tmp = Path(tempfile.mkdtemp(prefix='lead-package-test-'))
+        self.addCleanup(shutil.rmtree, tmp)
+        repo, work = tmp / 'repo', tmp / 'work'
+        committed_copy(repo)
+        work.mkdir()
+        r = subprocess.run([sys.executable, str(repo / 'tools/deploy.py'), 'package', '--out', 'dist'], cwd=str(work),
+                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
+        self.assertEqual(r.returncode, 0, r.stdout[-3000:])
+        short = subprocess.run(['git', '-C', str(repo), 'rev-parse', '--short', 'HEAD'], stdout=subprocess.PIPE,
+                               universal_newlines=True, check=True).stdout.strip()
+        stage = work / 'dist' / ('lead-dbs-site-' + short)
+        self.assertTrue((work / 'dist' / ('lead-dbs-site-' + short + '.tar.gz')).is_file())
+        self.assertFalse((repo / 'dist').exists(), 'built into the source instead')
+        with quiet():
+            manifest = deploy.read_manifest(str(stage / 'site'))     # exits on any difference
+        self.assertGreater(len(manifest['files']), 100)
+        self.assertIn('index.html', manifest['files'])
+        policy = deploy.page_policy((stage / 'site' / '.htaccess').read_text())
+        self.assertIn("'sha256-", policy)
+        self.assertTrue((stage / 'deploy.py').is_file())
+
+
+@needs(HTTPD and MODULES and HUGO and shutil.which('openssl') and Path(MODULES, 'mod_ssl.so').exists(), 'Apache (httpd or apache2 with mod_rewrite) and hugo')
 class ApacheTests(unittest.TestCase):
     """the deployed web root on a local Apache with AllowOverride All, as on STRATO. The server's own MIME list
     is empty: the .htaccess has to name every type the site serves."""
@@ -524,14 +682,22 @@ class ApacheTests(unittest.TestCase):
         with socket.socket() as s:
             s.bind(('127.0.0.1', 0))
             cls.port = s.getsockname()[1]
+        with socket.socket() as s:
+            s.bind(('127.0.0.1', 0))
+            cls.tls_port = s.getsockname()[1]
+        subprocess.run(['openssl', 'req', '-x509', '-newkey', 'rsa:2048', '-nodes', '-days', '1',
+                        '-subj', '/CN=localhost', '-keyout', str(cls.tmp / 'key.pem'),
+                        '-out', str(cls.tmp / 'cert.pem')], check=True, capture_output=True)
         mods = ['mpm_prefork', 'unixd', 'authz_core', 'dir', 'mime', 'rewrite', 'headers', 'alias', 'deflate',
-                'filter', 'log_config', 'env', 'setenvif']
+                'filter', 'log_config', 'env', 'setenvif', 'socache_shmcb', 'ssl']
         load = '\n'.join('LoadModule {}_module {}/mod_{}.so'.format(m, MODULES, m)
                          for m in mods if Path(MODULES, 'mod_%s.so' % m).exists())
         (cls.tmp / 'mime.types').write_text('')   # Debian's mod_mime wants a file; the .htaccess sets the types
         (cls.tmp / 'httpd.conf').write_text(f"""
 ServerRoot "{cls.tmp}"
+Mutex file:{cls.tmp} default
 Listen 127.0.0.1:{cls.port}
+Listen 127.0.0.1:{cls.tls_port}
 PidFile "{cls.tmp}/httpd.pid"
 TypesConfig "{cls.tmp}/mime.types"
 ErrorLog "{cls.tmp}/error.log"
@@ -546,6 +712,13 @@ DocumentRoot "{cls.web}"
   AllowOverride All
   Require all granted
 </Directory>
+<VirtualHost 127.0.0.1:{cls.tls_port}>
+  ServerName www.lead-dbs.org
+  DocumentRoot "{cls.web}"
+  SSLEngine on
+  SSLCertificateFile "{cls.tmp}/cert.pem"
+  SSLCertificateKeyFile "{cls.tmp}/key.pem"
+</VirtualHost>
 # as on shared hosting with PHP: a folder's index.php when it has no index.html
 DirectoryIndex index.html index.php
 """)
@@ -569,10 +742,10 @@ DirectoryIndex index.html index.php
 
     def request(self, path, host='www.lead-dbs.org', https=True, method='GET', **headers):
         """status, headers and the raw body"""
-        con = http.client.HTTPConnection('127.0.0.1', self.port, timeout=5)
+        con = (http.client.HTTPSConnection('127.0.0.1', self.tls_port, timeout=5,
+                                            context=ssl._create_unverified_context()) if https else
+               http.client.HTTPConnection('127.0.0.1', self.port, timeout=5))
         headers = {'Host': host, **{k.replace('_', '-'): v for k, v in headers.items()}}
-        if https:
-            headers['X-Forwarded-Proto'] = 'https'
         con.request(method, path, headers=headers)
         r = con.getresponse()
         body = r.read()
@@ -756,6 +929,36 @@ DirectoryIndex index.html index.php
         status, r, _ = self.request('/about/', https=False)
         self.assertEqual(status, 301)
         self.assertIsNone(r.getheader('Strict-Transport-Security'))
+
+    def test_documented_trusted_proxy_alternative(self):
+        docs = (ROOT / 'docs/launch.md').read_text()
+        proxy = docs.split('**Proxy alternative (only after confirmation).**', 1)[1]
+        redirect, hsts = [block.strip() for block in re.findall(r'```apache\n(.*?)\n\s*```', proxy, re.S)[:2]]
+        htaccess = self.web / '.htaccess'
+        direct = htaccess.read_text()
+        changed = re.sub(r'  RewriteCond %\{HTTPS\} !=on.*?\[R=301,L,NE\]', lambda m: redirect, direct, count=1, flags=re.S)
+        changed = re.sub(r'  Header always set Strict-Transport-Security[^\n]+', hsts, changed)
+        try:
+            htaccess.write_text(changed)
+            status, r, _ = self.request('/about/', https=False, X_Forwarded_Proto='https')
+            self.assertEqual(status, 200)
+            self.assertEqual(r.getheader('Strict-Transport-Security'), 'max-age=86400')
+            status, r, _ = self.request('/about/', https=False, X_Forwarded_Proto='http')
+            self.assertEqual(status, 301)
+            self.assertIsNone(r.getheader('Strict-Transport-Security'))
+            self.assertEqual(self.request('/about/')[0], 200)
+        finally:
+            htaccess.write_text(direct)
+
+    def test_forwarded_headers_cannot_forge_direct_tls(self):
+        for proto in ('https', 'HTTPS', 'https, http'):
+            status, r, _ = self.request('/about/', https=False, X_Forwarded_Proto=proto)
+            self.assertEqual(status, 301)
+            self.assertEqual(r.getheader('Location'), 'https://www.lead-dbs.org/about/')
+            self.assertIsNone(r.getheader('Strict-Transport-Security'))
+        status, r, _ = self.request('/about/', X_Forwarded_Proto='http')
+        self.assertEqual(status, 200)
+        self.assertEqual(r.getheader('Strict-Transport-Security'), 'max-age=86400')
 
     def test_zz_after_a_rollback_wordpress_answers_everything_again(self):
         run('rollback', self.web, '--state', self.state)

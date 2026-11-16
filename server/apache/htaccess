@@ -55,12 +55,11 @@ AddDefaultCharset utf-8
   RewriteBase /
 
   # The bare domain to www, http to https. Andy: drop these two if STRATO already does it in the domain
-  # settings (a double redirect is harmless but slow). X-Forwarded-Proto only matters when STRATO ends TLS in a
-  # proxy in front of Apache; if it doesn't, delete that line (docs/launch.md, Server setup).
+  # settings (a double redirect is harmless but slow). Direct TLS is the default; a trusted proxy requires
+  # both explicit changes and the hosting checks in docs/launch.md, Server setup.
   RewriteCond %{HTTP_HOST} ^lead-dbs\.org$ [NC]
   RewriteRule ^ https://www.lead-dbs.org%{REQUEST_URI} [R=301,L,NE]
   RewriteCond %{HTTPS} !=on
-  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
   RewriteCond %{HTTP_HOST} ^www\.lead-dbs\.org$ [NC]
   RewriteRule ^ https://www.lead-dbs.org%{REQUEST_URI} [R=301,L,NE]
 
@@ -102,7 +101,7 @@ AddDefaultCharset utf-8
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
   # HTTPS only, and for a day at first: docs/launch.md says when to raise it. No includeSubDomains or preload
   # until every subdomain of lead-dbs.org is known to answer on HTTPS. (Browsers ignore it over plain HTTP.)
-  Header always set Strict-Transport-Security "max-age=86400" "expr=%{HTTPS} == 'on' || %{HTTP:X-Forwarded-Proto} == 'https'"
+  Header always set Strict-Transport-Security "max-age=86400" env=HTTPS
 
   # Pages are checked each time; other files are kept for 30 days.
   <FilesMatch "\.(woff2|avif|webp|png|jpe?g|gif|svg|ico|mp4|webm|pdf)$">

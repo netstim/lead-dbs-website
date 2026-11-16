@@ -16,6 +16,23 @@ use LeadForms\FormHandler;
 const LEAD_FORMS_SWEEP_STATUS = 'sweep-status.json';
 const LEAD_FORMS_SWEEP_MAX_AGE = 2 * 3600;   // the schedule is hourly
 
+function writeSweepStatus(string $file, array $status): void
+{
+    $previousMask = umask(0077);
+    $tmp = null;
+    try {
+        $tmp = tempnam(dirname($file), '.sweep-');
+        if ($tmp === false || realpath(dirname($tmp)) !== realpath(dirname($file))
+            || @file_put_contents($tmp, json_encode($status), LOCK_EX) === false || !@rename($tmp, $file)) {
+            throw new RuntimeException('The sweep status cannot be written.');
+        }
+    } finally {
+        if (is_string($tmp) && is_file($tmp)) @unlink($tmp);
+        umask($previousMask);
+    }
+}
+
+$statusFile = null;
 $command = $argv[1] ?? 'sweep';
 try {
     $path = getenv('LEAD_FORMS_CONFIG');
@@ -24,16 +41,7 @@ try {
     $statusFile = rtrim($config['rate_dir'], '/') . '/' . LEAD_FORMS_SWEEP_STATUS;
     if ($command === 'sweep') {
         $removed = FormHandler::sweep($config['rate_dir']);
-        $status = json_encode(['ok' => true, 'completed_at' => gmdate('c'), 'removed' => $removed]);
-        $tmp = $statusFile . '.tmp';
-        $previousMask = umask(0077);
-        try {
-            if (@file_put_contents($tmp, $status, LOCK_EX) === false || !@rename($tmp, $statusFile)) {
-                throw new RuntimeException('The sweep status cannot be written.');
-            }
-        } finally {
-            umask($previousMask);
-        }
+        writeSweepStatus($statusFile, ['ok' => true, 'completed_at' => gmdate('c'), 'removed' => $removed]);
         echo "Forms rate-limit sweep: {$removed} files removed.\n";
     } elseif ($command === 'check') {
         $status = is_readable($statusFile) ? json_decode((string) file_get_contents($statusFile), true) : null;
@@ -47,6 +55,14 @@ try {
         throw new InvalidArgumentException('Use: php sweep.php [check]');
     }
 } catch (Throwable $e) {
+    if ($command === 'sweep' && $statusFile !== null) {
+        try {
+            writeSweepStatus($statusFile, ['ok' => false, 'completed_at' => gmdate('c')]);
+        } catch (Throwable $statusError) {
+            // Monitoring must consume this command's exit code if status storage itself fails.
+            fwrite(STDERR, "The failed sweep status could not be written.\n");
+        }
+    }
     // the reason, never a value of the configuration
     fwrite(STDERR, 'Forms rate-limit sweep failed: ' . $e->getMessage() . "\n");
     exit(1);

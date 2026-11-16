@@ -21,7 +21,7 @@ The newsletter form is not handled here. It keeps its News/RSS line until the ne
   holding only the times of that day's submissions (mode 0600). `sweep.php`, run hourly from cron, deletes each
   file two days after its last change, so a file is gone at most three days and an hour after the first
   submission it records, plus however long the sweep job is down. `sweep.php check` fails after two hours
-  without a successful sweep. Keep the job running after switching the forms off until the folder holds only
+  without a successful sweep, and immediately after a recorded failed sweep. Keep the job running after switching the forms off until the folder holds only
   `sweep-status.json`. Submissions also run the sweep now and then, but nothing relies on that.
 - FOCUS: the academic-use box must be ticked. The newsletter box is optional, and the email only says
   "yes" or "no". Someone adds the person to the newsletter by hand. Nothing subscribes them automatically.
@@ -50,6 +50,9 @@ The newsletter form is not handled here. It keeps its News/RSS line until the ne
    `php -r 'echo bin2hex(random_bytes(32));'`. The handler and the sweep refuse a shorter key, the example's
    placeholder, and a `limit` or `window` outside the ranges above.
 4. Install the sweep as an hourly cron job, and its check where the lab's monitoring sees the exit code.
+   Monitor the sweep command's exit code as well as `check`: if status storage itself is unwritable,
+   a fresh previous success can remain. Status replacement uses a unique private temporary file; a failed
+   sweep records `ok: false` whenever the configured rate folder is writable.
    `sweep.php` stays beside `FormHandler.php` in `forms/`; the `.htaccess` keeps it off the web, and it answers
    404 to a web request anyway:
 

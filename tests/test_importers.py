@@ -326,6 +326,42 @@ class ManualImportTests(unittest.TestCase):
             self.run_import(unused)
         self.assertEqual(unused.requests, [])
 
+    def test_each_publication_move_failure_is_undone_and_retryable(self):
+        self.write_cache()
+        rename = Path.rename
+        for cut in range(1, 5):  # two images, content, navigation
+            with self.subTest(move=cut):
+                calls = [0]
+                def failing(src, dst):
+                    calls[0] += 1
+                    if calls[0] == cut:
+                        raise OSError('publication interrupted')
+                    return rename(src, dst)
+                with mock.patch.object(Path, 'rename', failing), self.assertRaises(OSError):
+                    self.run_import(FakeFetch({image: PNG for image in IMAGES}))
+                self.assertEqual(listing(self.repo), ['content'])
+        self.run_import(FakeFetch({image: PNG for image in IMAGES}))
+        self.assertTrue((self.repo / 'data/manual.json').exists())
+
+    def test_interrupted_recovery_keeps_staging_and_can_be_retried(self):
+        self.write_cache()
+        rename = Path.rename
+        def failing(src, dst):
+            if src.name == 'manual.json' or str(dst).find('.manual-import-') >= 0:
+                raise OSError('publication and undo interrupted')
+            return rename(src, dst)
+        with mock.patch.object(Path, 'rename', failing), self.assertRaises(OSError):
+            self.run_import(FakeFetch({image: PNG for image in IMAGES}))
+        stage, = self.repo.glob('.manual-import-*')
+        self.assertTrue((stage / 'manual.json').exists())
+        self.assertTrue((stage / 'publication.json').exists())
+        with self.assertRaises(SystemExit):
+            self.run_import(FakeFetch({}))
+        self.run_import(FakeFetch({}), '--recover', stage)
+        self.assertEqual(listing(self.repo), ['content'])
+        self.run_import(FakeFetch({image: PNG for image in IMAGES}))
+        self.assertTrue((self.repo / 'data/manual.json').exists())
+
     def test_index_url_outside_the_gitbook_is_refused(self):
         urls = ('https://evil.example/leaddbs/x.md', 'http://netstim.gitbook.io/leaddbs/x.md',
                 'https://netstim.gitbook.io.evil.example/leaddbs/x.md', GITBOOK + 'x.txt')

@@ -322,6 +322,35 @@ class FormHandlerHTTPTests(unittest.TestCase):
             cmd = ['bash', '-c', "trap '' XFSZ; ulimit -f 0; exec \"$@\"", 'php'] + cmd
         return subprocess.run(cmd, capture_output=True, text=True)
 
+    def test_a_failed_sweep_replaces_a_recent_success(self):
+        self.assertEqual(self.sweep().returncode, 0)
+        rate = self.root / 'rate'
+        expired = rate / ('a' * 64)
+        expired.mkdir()
+        os.utime(expired, (0, 0))
+        self.assertEqual(self.sweep().returncode, 1)
+        self.assertFalse(json.loads((rate / 'sweep-status.json').read_text())['ok'])
+        self.assertEqual(self.sweep('check').returncode, 1)
+        expired.rmdir()
+        self.assertEqual(self.sweep().returncode, 0)
+        self.assertEqual(self.sweep('check').returncode, 0)
+        self.assertEqual(list(rate.glob('.sweep-*')), [])
+
+    def test_status_write_failure_is_reported_even_after_success(self):
+        self.assertEqual(self.sweep().returncode, 0)
+        rate = self.root / 'rate'
+        os.chmod(rate, 0o500)
+        try:
+            if os.access(rate, os.W_OK):
+                self.skipTest('the process can write read-only directories')
+            result = self.sweep()
+            self.assertEqual(result.returncode, 1)
+            self.assertIn('status could not be written', result.stderr)
+            # No writable status destination: the scheduler must consume the sweep exit code.
+            self.assertEqual(self.sweep('check').returncode, 0)
+        finally:
+            os.chmod(rate, 0o700)
+
     def test_rate_limit_counts_across_midnight(self):
         d = tempfile.mkdtemp(dir=self.root)
         out = self.php(f'$m = gmmktime(0, 0, 0, 1, 2, 2027); foreach ([$m - 2, $m - 1, $m + 1, $m + 2] as $t) '
