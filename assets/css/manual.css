@@ -333,6 +333,8 @@ html:not(.js) .manual-launch-tabs { display: none; }
   .manual-crumbs a { display: inline-flex; align-items: center; min-height: 2.75rem; }
   .manual-head h1, .manual--home .manual-head h1 { font-size: var(--t-h1); font-weight: 500; line-height: var(--lh-h1); }
   .manual-head p { font-size: var(--t-doc); margin-top: var(--s-6); }
+  .manual--home .manual-head { margin-bottom: var(--s-5); }
+  .manual--home .manual-prose { margin-top: var(--s-5); }
 }
 
 @media (max-width: 767px) { .manual-prose :is(h2, h3, h4) { scroll-margin-top: calc(var(--nav) + 2.75rem + var(--s-4)); } }
