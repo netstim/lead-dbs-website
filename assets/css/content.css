@@ -519,3 +519,8 @@ html .prose .cells a { color: var(--ink); text-decoration-color: var(--line-stro
 .prose a.resource-index__link:not(:has(.resource-index__text)) { min-height: 64px; padding-block: var(--s-4); }
 .resource-index__link:not(:has(.resource-index__text)) .resource-index__title { grid-column: 1; grid-row: 1; }
 .resource-index__link:not(:has(.resource-index__text)) .resource-index__arrow { grid-column: 2; grid-row: 1; }
+
+@media (max-width: 639px) {
+  .prose .page-intro { margin-block: var(--s-4) var(--s-6); }
+  .prose .page-intro__actions { margin-top: var(--s-5); }
+}

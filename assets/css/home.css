@@ -137,7 +137,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
   .home-hero__text { order: -1; margin: 0; padding: calc(var(--s-6) + var(--s-2)) var(--gut) 0; text-align: center; }
   .home-hero h1 { font: 600 var(--t-h1)/1 var(--font-display); letter-spacing: var(--display-tracking-xl); text-wrap: balance; }
   .home-hero .hero__lead { max-width: 300px; margin: var(--s-5) auto 0; font: 400 var(--t-doc)/1.53 var(--font-text); letter-spacing: 0; text-wrap: balance; }
-  .home-hero .btn-row { margin-top: var(--s-6); gap: var(--s-1); }
+  .home-hero .btn-row { margin-top: var(--s-6); gap: var(--s-3) var(--s-4); justify-content: center; }
   .home-hero .btn-row > .btn--primary { padding-inline: var(--s-5); }
 
   /* the release: a 32px chip (a 44px target), a coral dot, the version, "Release notes" muted, a round arrow */
@@ -159,7 +159,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
   .home-hero__media::after { height: var(--s-9); }
   .home-hero__foot { position: absolute; inset: auto var(--gut) var(--s-5) auto; padding: 0; }
   .hero__proof { display: none; }
-  .hero__pause { position: static; width: 40px; height: 40px; border-color: color-mix(in srgb, var(--on-render) 15%, transparent);
+  .hero__pause { position: static; width: 44px; height: 44px; border-color: color-mix(in srgb, var(--on-render) 15%, transparent);
     background: color-mix(in srgb, var(--render) 40%, transparent); }
 }
 /* what goes in and what comes out (the localization on the home page): two steps side by side, an arrow

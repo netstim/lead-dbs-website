@@ -179,7 +179,7 @@ html:not(.js) .nav__link .chev { display: none; }
   .nav__actions { margin-left: auto; }
   .nav__toggle { display: inline-grid; place-items: center; width: 44px; height: 44px; flex: none; border-radius: var(--r-sm);
     border: 1px solid var(--line-strong); background: transparent; color: var(--ink); cursor: pointer; }
-  .nav.is-open .nav__links { display: flex; flex-direction: column; position: fixed; inset: var(--nav) 0 0; overflow-y: auto;
+  .nav.is-open .nav__links { display: flex; flex-direction: column; position: fixed; inset: var(--nav) 0 auto; height: calc(100dvh - var(--nav)); overflow-y: auto; overscroll-behavior: contain;
     padding: var(--s-4) var(--gut) var(--s-8); background: var(--bg);
     transition: opacity 200ms var(--ease), transform 200ms var(--ease); }
   @starting-style { .nav.is-open .nav__links { opacity: 0; transform: translateY(-8px); } }
@@ -197,7 +197,7 @@ html:not(.js) .nav__link .chev { display: none; }
   .nav.is-open .menu-col a { padding: 10px 0; }
   .nav.is-open .menu-col > p.t-label { margin: var(--s-2) 0 0; }
   .nav.is-open .menu-col > p.t-label a { color: var(--muted); }
-  body.nav-locked { overflow: hidden; }
+  html:has(body.nav-locked), body.nav-locked { overflow: hidden; overscroll-behavior: none; }
 }
 /* a phone: the name stays, the search and menu buttons; GitHub and Download are in the sheet, in a bar
    along its bottom edge */
@@ -225,7 +225,7 @@ html:not(.js) .nav__link .chev { display: none; }
   html:not(.js) .nav__toggle { display: none !important; }
   html:not(.js) .nav__nojs-menu { display: inline-flex !important; align-items: center; height: 44px; padding: 0 var(--s-3); border: 1px solid var(--line-strong); border-radius: var(--r-sm); color: inherit; font-weight: 500; font-size: var(--t-note); flex: none; }
   html:not(.js) .nav__links:target { --ink: var(--p-ink); --bg: var(--p-bg); --surface: var(--p-surface); --muted: var(--p-muted); --line: color-mix(in oklab, var(--p-ink) 11%, transparent);
-    display: flex !important; flex-direction: column; position: fixed; inset: var(--nav) 0 0; overflow-y: auto; padding: var(--s-4) var(--gut) var(--s-8); background: var(--bg); color: var(--ink); }
+    display: flex !important; flex-direction: column; position: fixed; inset: var(--nav) 0 auto; height: calc(100dvh - var(--nav)); overflow-y: auto; overscroll-behavior: contain; padding: var(--s-4) var(--gut) var(--s-8); background: var(--bg); color: var(--ink); }
   html:not(.js) .nav__links:target .nav__nojs-close { display: inline-flex; align-items: center; align-self: flex-end; min-height: 44px; font-weight: 600; }
   html:not(.js) .nav__links:target .nav__item { display: block; height: auto; border-bottom: 1px solid var(--line); }
   html:not(.js) .nav__links:target .nav__link { display: flex; height: 56px; padding: 0; font-size: 20px; color: var(--ink); /* design-exempt: the header's own sizes */ }

@@ -226,12 +226,12 @@ html:not(.dl-terms-ready) .dl-terms__close { display: none; }
   .co-setup li > span:first-child { grid-column: 1 / -1; color: var(--ink); font-size: var(--t-body); }
   .co-setup__link { grid-column: 1 / -1; }
 }
-/* a phone: the black band's render a 300px picture at the top, fading into the black, the words under
+/* a phone: the black band's render a 200px picture at the top, fading into the black, the words under
    it, the picture black behind the title (its lower 45%); the steps open up (no frame, the text at the
    page margin); the other servers wrap; the "coming" pill fills the 4.0 box's width */
 @media (max-width: 639px) {
-  .page-head--render { padding: calc(var(--s-9) + var(--s-8) + var(--s-2)) 0 calc(var(--s-6) + var(--s-2)); }
-  .page-head--render > .page-head__render { bottom: auto; width: 100%; height: 300px; opacity: 1; object-fit: cover;
+  .page-head--render { padding: calc(var(--s-9) + var(--s-4)) 0 var(--s-6); }
+  .page-head--render > .page-head__render { bottom: auto; width: 100%; height: 200px; opacity: 1; object-fit: cover;
     -webkit-mask-image: linear-gradient(to bottom, color-mix(in srgb, var(--render) 50%, transparent), var(--render) 30%, transparent);
     mask-image: linear-gradient(to bottom, color-mix(in srgb, var(--render) 50%, transparent), var(--render) 30%, transparent); }
   .dl-hero .page-head__render {
@@ -248,4 +248,9 @@ html:not(.dl-terms-ready) .dl-terms__close { display: none; }
   .dl-hero__mirrors ul { flex-wrap: wrap; }
   .dl-next .dl-chip { display: flex; justify-content: center; width: 100%; height: auto; min-height: 48px; padding: var(--s-3) var(--s-5);
     border-radius: var(--r-lg); text-align: center; }
+}
+
+@media (max-width: 639px) {
+  .dl-hero__mirrors .dl-chip { min-height: 44px; height: auto; padding-inline: 0; border: 0; border-radius: 0; background: none; text-decoration: underline; text-underline-offset: .2em; }
+  .dl-hero__mirrors ul { gap: 0 var(--s-5); }
 }

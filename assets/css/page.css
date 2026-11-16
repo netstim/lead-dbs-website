@@ -33,11 +33,11 @@ main.page { padding-top: var(--nav); }
   .breadcrumb .breadcrumb__parent:not(:first-child) { display: flex; align-items: center; flex: 0 1 auto; min-width: 0; overflow: hidden; }
   .breadcrumb .breadcrumb__parent a { display: block; overflow: hidden; text-overflow: ellipsis; line-height: 44px; }
 }
-/* a phone: the title 44/46 on the page, a render panel 4:3 under it, the breadcrumb a size smaller */
+/* a phone: the title 44/46 on the page, a render panel 16:9 under it, the breadcrumb a size smaller */
 @media (max-width: 639px) {
-  .page-head { padding-top: var(--s-6); }
+  .page-head { padding-top: var(--s-4); }
   .page-head h1 { max-width: none; font-size: var(--t-h1); line-height: var(--lh-h1); }
-  .page-head__panel { margin-top: var(--s-5); aspect-ratio: 4 / 3; }
+  .page-head__panel { margin-top: var(--s-5); aspect-ratio: 16 / 9; }
   .breadcrumb ol { font-size: var(--t-label); }
   .breadcrumb li + li::before { content: "\203A"; }
   .breadcrumb .breadcrumb__parent--far::before { content: "\203A  \2026  \203A"; white-space: pre; }
@@ -258,3 +258,7 @@ img.featured { display: block; margin: 0 0 var(--s-6); border-radius: var(--r-md
 .page-head--docs + .doc-layout .page-intro { margin-top: 0; margin-bottom: var(--head-gap); }
 .page-head--docs + .doc-layout .page-intro + .hub-section { margin-top: var(--head-gap); }
 .page-head.page-head--docs + .dl-sec { padding-top: var(--head-gap); }
+
+@media (max-width: 639px) {
+  .page-head:has(.page-head__panel) + .doc-layout { padding-top: var(--s-5); }
+}

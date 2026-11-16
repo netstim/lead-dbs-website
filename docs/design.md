@@ -179,3 +179,13 @@ Secondary actions stay plain links in both themes and at every breakpoint. A row
 `text` value uses the title-only layout and never reserves a description track.
 Supported browsers are current Chromium, Firefox and Safari with `:has()`, `:modal` and native
 `dialog`. Manual chapter navigation remains a native disclosure if its external script fails.
+
+## Phone hierarchy and touch
+
+Below 640px, actions use their intrinsic width and wrap as a pair; only explicitly block-sized
+controls and the menu's download action fill the width. Opening hub renders use 16:9 so the
+page's introduction is visible sooner. Page heads use 16px top spacing, and introductions
+avoid stacking desktop-sized margins. Download mirrors are plain links, not competing pills.
+Small CTA and playback controls retain at least 44px touch height. The menu locks the root
+scroller as well as the body and contains overscroll in a dynamic-viewport-height sheet.
+Landscape touch layouts reserve the sensor housing's safe-area inset in their gutters.

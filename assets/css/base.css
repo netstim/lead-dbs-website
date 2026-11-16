@@ -158,14 +158,13 @@ p { text-wrap: pretty; }
 }
 .btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); }
 @media (max-width: 639px) {
-  .btn-row { flex-direction: column; align-items: stretch; width: 100%; }
-  /* a hero's or a closing block's actions on a phone: the pill full width and 48px high; the secondary
-     stays the plain underlined link, centred under it on a 48px target, no ring and no ground */
+  .btn-row { flex-direction: row; align-items: center; width: 100%; }
+  /* Phone actions keep their natural width and wrap, with a 48px target. */
   :is(.btn-row, .page-intro__actions, .co-actions, .dl-hero__main) { --btn-h: 48px; }
-  :is(.btn-row, .page-intro__actions, .co-actions, .dl-hero__main) > .btn { width: 100%; }
-  /* pills in a card (the event cards and the registration card): .btn--sm a small one (32px) in a
+  :is(.btn-row, .page-intro__actions, .co-actions, .dl-hero__main) > .btn { width: auto; max-width: 100%; }
+  /* pills in a card (the event cards and the registration card): .btn--sm a compact one (44px) in a
      footer strip, .btn--block one across the card (44px); neither size takes the arrow */
-  .btn.btn--sm { --btn-h: 32px; gap: var(--s-1); padding: 0 var(--s-3); font-size: var(--t-label); }
+  .btn.btn--sm { --btn-h: 44px; gap: var(--s-1); padding: 0 var(--s-3); font-size: var(--t-label); }
   .btn--block { width: 100%; }
   :is(.btn--sm, .btn--block)::after { content: none; }
 }
@@ -264,3 +263,8 @@ p:not(:where(.prose *)) a:not([class]) { --rest: color-mix(in oklab, currentColo
 }
 
 @media (max-width: 639px) { :is(.btn-row, .page-intro__actions, .co-actions) > .btn--secondary { justify-content: flex-start; } }
+
+/* Landscape phones retain readable gutters outside the sensor housing. */
+@media (orientation: landscape) and (pointer: coarse) and (max-width: 1023px) {
+  :root { --gut: max(var(--s-5), env(safe-area-inset-left), env(safe-area-inset-right)); }
+}
