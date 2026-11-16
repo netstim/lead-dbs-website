@@ -178,7 +178,7 @@ p { text-wrap: pretty; }
 .btn:active { transform: translateY(1px) scale(.985); }
 .btn--secondary:active { transform: scale(.985); }
 
-/* the arrow drawn in the templates (svg.m-arrow): a chevron that grows a stem on hover and focus */
+/* The shared 14px internal action arrow stays complete at rest, hover and focus. */
 .m-arrow { flex: none; width: 14px; height: 14px; margin-right: 0; overflow: visible;
   fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .m-arrow__stem { opacity: 1; transform: none; transform-origin: 1px 50%; transform-box: fill-box;

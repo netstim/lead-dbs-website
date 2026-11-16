@@ -103,7 +103,7 @@ html .video-embed--poster .video-embed__start { background: linear-gradient(to t
 .next-step::after { content: none; }
 .next-step__title { grid-column: 1; grid-row: 1; font: 500 var(--t-body)/1.4 var(--font-text); text-wrap: pretty; }
 .next-step .next-step__arrow { grid-column: 2; grid-row: 1; align-self: center; width: 14px; height: 14px; margin: 0; color: var(--muted); }
-.next-step .ext-mark { font-size: var(--t-body); line-height: 1; }
+.next-step .ext-mark { font-size: var(--t-small); line-height: 1; }
 @media (hover: hover) { .next-step:hover .next-step__title { color: var(--action); } }
 .post .next-steps { margin-top: var(--s-7); }
 /* a phone: "Related" a small muted label, then rows 58px high, the title 17px medium, a chevron in

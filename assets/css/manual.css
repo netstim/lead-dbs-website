@@ -200,7 +200,7 @@
 
 /* ---------------------------------------------------------------- pagination and footer */
 .manual-pagination { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); margin-top: var(--s-8); }
-.manual-pagination a { display: grid; gap: var(--s-1); padding: var(--s-3) var(--s-4); border: 1px solid var(--line); border-radius: var(--r-md); }
+.manual-pagination a { display: grid; gap: var(--s-1); padding: var(--s-3) 0; border-top: 1px solid var(--line); }
 @media (hover: hover) { .manual-pagination a:hover { border-color: var(--line-strong); background: var(--hover); } }
 .manual-pagination span { color: var(--muted); font-size: var(--t-label); }
 .manual-pagination strong { font-weight: 500; }
@@ -236,10 +236,10 @@
 .manual-terminal__comment { color: var(--muted); }
 .manual-terminal__prompt { color: var(--action); }
 .manual-start > h2 { margin-bottom: var(--s-1); font-size: var(--t-manual-section); font-weight: 600; letter-spacing: var(--docs-tracking); scroll-margin-top: calc(var(--docs-top) + var(--s-5)); }
-/* the workflows: plain rows under hairlines, a chevron at the right */
+/* Workflows use the shared action arrow at the right of each hairline row. */
 .manual-workflows { list-style: none; margin: var(--s-3) 0 0; padding: 0; border-top: 1px solid var(--line); }
 .manual-workflows a { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); min-height: 3rem; border-bottom: 1px solid var(--line); font-weight: 500; }
-.manual-workflows svg { flex: none; width: 1rem; height: 1rem; color: var(--muted); transition: transform var(--t-out) var(--ease); }
+.manual-workflows svg { flex: none; width: 14px; height: 14px; color: var(--muted); transition: transform var(--t-out) var(--ease); }
 @media (hover: hover) { .manual-workflows a:hover { color: var(--action); } }
 @media (hover: hover) { .manual-workflows a:hover svg { color: currentColor; transform: translateX(2px); } }
 .manual--home .manual-prose { margin-top: var(--s-7); }
@@ -329,6 +329,7 @@ html:not(.js) .manual-launch-tabs { display: none; }
 .manual-actions { gap: var(--s-5); }
 .manual-research-note { padding-inline: 0; border-inline: 0; border-radius: 0; }
 @media (max-width: 639px) {
+  .manual-crumbs > :not(:last-child) { display: none; }
   .manual-head h1, .manual--home .manual-head h1 { font-size: var(--t-h1); font-weight: 500; line-height: var(--lh-h1); }
   .manual-head p { font-size: var(--t-doc); margin-top: var(--s-5); }
 }

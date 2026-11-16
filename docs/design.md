@@ -202,7 +202,7 @@ At widths below 640px the inventory is deliberately small:
 | Internal action | Chevron, arrow, animated stem | Full arrow at rest and focus, 14px square; disclosures keep directional chevrons; external actions use ↗ and never a second arrow |
 | Opening | Different breadcrumb lengths and gaps | One linked parent, 44px target; 44px/500 H1; 32px content gap, 24px between introduction and actions; Home retains its own display composition |
 | Lead | Four unrelated treatments | Hub/showcase statements 26px/500, 1.2 leading, ink with optional muted continuation; task/editorial introductions use body text; linked video introduction is body text |
-| Navigation/content | Rounded cards and rows | Hairline rows for steps, events, manual section links and related pages; quiet text actions for copy/edit |
+| Navigation/content | Rounded cards and rows | Hairline rows for steps, events, manual section/previous/next links and related pages; quiet text actions for copy/edit |
 | Code/citation | Unrelated panels | 12px radius, neutral hairline; panels retained because they contain copyable documents rather than navigation |
 | Render | Inset rounded black rectangles | Opening renders edge-to-edge, 16:9, no radius; atlas catalogue omits its duplicated decorative opening render; catalogue thumbnails remain illustrations attached to entries |
 | Contents | Short pages get large disclosure | At least four sections and 600 words; sticky 44px disclosure on ordinary pages, Chapters/contents bar in manual |
