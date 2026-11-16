@@ -1,6 +1,7 @@
 {{ define "main" }}
 <main id="top" class="page newsroom">
-  <header class="newsroom__head wrap">
+  <header class="newsroom__head page-head wrap">
+    {{ partial "breadcrumb.html" . }}
     <div class="newsroom__heading">
       <h1>{{ .Title }}</h1>
     </div>

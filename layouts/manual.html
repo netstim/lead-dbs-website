@@ -9,6 +9,7 @@
 {{ $isGroupPage := and $groupPage (eq $groupPage $p) }}
 {{ $entry := partial "manual-find.html" (dict "entries" $all "page" $p) }}
 {{ $tocItems := partial "manual-page-items.html" . }}
+{{ if not (partial "has-toc.html" .) }}{{ $tocItems = slice }}{{ end }}
 {{ $home := eq .RelPermalink (site.GetPage "/manual").RelPermalink }}
 <main id="top" class="manual{{ if $home }} manual--home{{ end }}">
   <aside class="manual-nav" aria-label="Manual chapters">

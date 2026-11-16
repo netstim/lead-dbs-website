@@ -8,7 +8,7 @@
   {{ partial "head.html" . }}
 </head>
 <body class="kind-{{ .Kind }}{{ with .Section }} section-{{ . }}{{ end }}{{ if eq .Layout "download" }} top-dark{{ end }}">
-  {{ if eq .Layout "manual" }}{{ partial "manual-header.html" . }}{{ else }}{{ partial "header.html" . }}{{ end }}
+  {{ partial "header.html" . }}
   {{- if .File }}{{ partial "page-check.html" . }}{{ end }}
   {{ block "main" . }}{{ end }}
   {{ if ne .Layout "manual" }}{{ partial "footer.html" . }}{{ end }}

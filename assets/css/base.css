@@ -14,7 +14,7 @@
   --t-h1: clamp(38px, 3.24vw + 25.4px, 72px);
   --t-h2: clamp(30px, 1.72vw + 23.3px, 48px);
   --t-statement: var(--t-h3);   /* the one-sentence lead under a page head */
-  --lh-lead: 1.5;
+  --lh-lead: 1.5; --lh-statement: 1.2;
   --lh-h1: 1.04;            /* an h1's line height (44/46 on a phone) */
   --r-xs: 4px; --r-sm: 8px; --r-md: 12px; --r-lg: 20px; --r-pill: 999px;
   --container: 1280px;      /* the widest a page's content gets */
@@ -22,7 +22,7 @@
   --gutter: 12px;           /* between grid columns */
   --row-gap: 12px;          /* between grid rows */
   --nav: 56px;              /* the header's height */
-  --btn-h: 44px;
+  --btn-h: 48px;
   --head-gap: 32px;         /* under a home section's heading */
   --band: 56px;             /* above the footer's columns */
   --dur: 180ms;
@@ -125,24 +125,24 @@ p { text-wrap: pretty; }
   transition: background-color var(--t-out) var(--ease), color var(--t-out) var(--ease), border-color var(--t-out) var(--ease),
     text-decoration-color var(--t-out) var(--ease), transform 90ms var(--ease);
 }
-.btn:hover { transition-duration: var(--t-in), var(--t-in), var(--t-in), var(--t-in), 90ms; }
+@media (hover: hover) { .btn:hover { transition-duration: var(--t-in), var(--t-in), var(--t-in), var(--t-in), 90ms; } }
 .btn--primary { background: var(--ink); color: var(--bg); }
-.btn--primary:hover { background: color-mix(in oklab, var(--ink) 84%, var(--bg)); }
+@media (hover: hover) { .btn--primary:hover { background: color-mix(in oklab, var(--ink) 84%, var(--bg)); } }
 .btn--primary::after { content: none; }
 .btn[disabled] { opacity: .45; cursor: not-allowed; transform: none; }
 /* the same pill on the black of the renders (the download head, the gallery, the home page's black bands) */
 .btn--on-dark { background: var(--on-render); color: var(--render); }
-.btn--on-dark:hover { background: color-mix(in oklab, var(--on-render) 84%, var(--render)); }
+@media (hover: hover) { .btn--on-dark:hover { background: color-mix(in oklab, var(--on-render) 84%, var(--render)); } }
 .btn--secondary {
   background: none; color: var(--ink); padding-inline: 0;
   text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--line-strong);
 }
-.btn--secondary:hover { text-decoration-color: currentColor; }
+@media (hover: hover) { .btn--secondary:hover { text-decoration-color: currentColor; } }
 /* the one arrow of the site: a chevron that grows a stem on hover and focus. Templates draw it as
    svg.m-arrow (below); where a button or link has no svg (Markdown, shortcodes), ::after draws the same
    two shapes as a mask. */
 :root {
-  --arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 14 14' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 2.5 8 6l-3.5 3.5'/%3E%3C/svg%3E");
+  --arrow: var(--arrow-go);
   --arrow-go: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 14 14' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 6h8M7.5 2.5 11 6l-3.5 3.5'/%3E%3C/svg%3E");
 }
 .btn::after, .link::after {
@@ -154,7 +154,7 @@ p { text-wrap: pretty; }
 :is(.btn, .link):has(> .ext-mark)::after { content: none; }
 :is(.btn, .link):focus-visible::after { -webkit-mask-image: var(--arrow-go); mask-image: var(--arrow-go); }
 @media (hover: hover) and (pointer: fine) {
-  :is(.btn, .link):hover::after { -webkit-mask-image: var(--arrow-go); mask-image: var(--arrow-go); }
+@media (hover: hover) { :is(.btn, .link):hover::after { -webkit-mask-image: var(--arrow-go); mask-image: var(--arrow-go); } }
 }
 .btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); }
 @media (max-width: 639px) {
@@ -172,23 +172,23 @@ p { text-wrap: pretty; }
 @media (max-width: 359px) { .btn:not(.btn--secondary) { padding-inline: var(--s-4); } }
 /* a mouse lifts a button a pixel; a press pushes it in */
 @media (hover: hover) and (pointer: fine) {
-  .btn:hover { transform: translateY(-1px); }
-  .btn--secondary:hover { transform: none; }
+@media (hover: hover) { .btn:hover { transform: translateY(-1px); } }
+@media (hover: hover) { .btn--secondary:hover { transform: none; } }
 }
 .btn:active { transform: translateY(1px) scale(.985); }
 .btn--secondary:active { transform: scale(.985); }
 
 /* the arrow drawn in the templates (svg.m-arrow): a chevron that grows a stem on hover and focus */
-.m-arrow { flex: none; width: 12px; height: 12px; margin-right: -2px; overflow: visible;
+.m-arrow { flex: none; width: 14px; height: 14px; margin-right: 0; overflow: visible;
   fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.m-arrow__stem { opacity: 0; transform: scaleX(.2); transform-origin: 1px 50%; transform-box: fill-box;
+.m-arrow__stem { opacity: 1; transform: none; transform-origin: 1px 50%; transform-box: fill-box;
   transition: opacity var(--t-out) var(--ease), transform var(--t-out) var(--ease); }
-.m-arrow__head { transition: transform var(--t-out) var(--ease); }
+.m-arrow__head { transform: translateX(3px); transition: transform var(--t-out) var(--ease); }
 :is(a, button):focus-visible > .m-arrow .m-arrow__stem { opacity: 1; transform: none; transition-duration: var(--t-in); }
 :is(a, button):focus-visible > .m-arrow .m-arrow__head { transform: translateX(3px); transition-duration: var(--t-in); }
 @media (hover: hover) and (pointer: fine) {
-  :is(a, button):hover > .m-arrow .m-arrow__stem { opacity: 1; transform: none; transition-duration: var(--t-in); }
-  :is(a, button):hover > .m-arrow .m-arrow__head { transform: translateX(3px); transition-duration: var(--t-in); }
+@media (hover: hover) { :is(a, button):hover > .m-arrow .m-arrow__stem { opacity: 1; transform: none; transition-duration: var(--t-in); } }
+@media (hover: hover) { :is(a, button):hover > .m-arrow .m-arrow__head { transform: translateX(3px); transition-duration: var(--t-in); } }
 }
 
 /* ---------------------------------------------------------------- links
@@ -207,7 +207,11 @@ p { text-wrap: pretty; }
 p:not(:where(.prose *)) a:not([class]) { --rest: color-mix(in oklab, currentColor 45%, transparent); }
 /* the resting line of a .link stops short of its arrow */
 .link { background-size: 0% 1px, calc(100% - 1em - var(--s-2)) 1px; background-position: 0 100%, 0 100%; }
-:is(.link, p:not(:where(.prose *)) a:not([class])):is(:hover, :focus-visible) {
+@media (hover: hover) { :is(.link, p:not(:where(.prose *)) a:not([class])):is(:hover, :focus-visible) {
+  background-size: 100% 1px, 100% 1px; background-position: 0 100%, 0 100%; transition-duration: var(--t-in);
+} }
+
+:is(.link, p:not(:where(.prose *)) a:not([class])):is(:not(*), :focus-visible)  {
   background-size: 100% 1px, 100% 1px; background-position: 0 100%, 0 100%; transition-duration: var(--t-in);
 }
 /* on a phone a 44px target: padding above and below the words, the underline drawn under the words
@@ -246,7 +250,7 @@ p:not(:where(.prose *)) a:not([class]) { --rest: color-mix(in oklab, currentColo
   transition: border-color var(--t-out) var(--ease), box-shadow var(--t-out) var(--ease), background-color var(--t-out) var(--ease);
 }
 .field textarea { height: auto; min-height: 120px; padding-block: var(--s-3); resize: vertical; }
-.field :is(input:not([type=checkbox]), select, textarea):hover { border-color: color-mix(in oklab, var(--ink) 48%, transparent); }
+@media (hover: hover) { .field :is(input:not([type=checkbox]), select, textarea):hover { border-color: color-mix(in oklab, var(--ink) 48%, transparent); } }
 /* a focused field: the accent border and a soft ring instead of the outline */
 .field :is(input:not([type=checkbox]), select, textarea):focus {
   outline: none; border-color: var(--action); transition-duration: 0s;
@@ -258,7 +262,9 @@ p:not(:where(.prose *)) a:not([class]) { --rest: color-mix(in oklab, currentColo
 /* ---------------------------------------------------------------- reduced motion: nothing slides, fades stay instant */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after { transition-duration: .001ms !important; animation-duration: .001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
-  .btn:is(:hover, :active), :is(a, button):hover > .m-arrow :is(.m-arrow__head, .m-arrow__stem) { transform: none !important; }
+@media (hover: hover) { .btn:is(:hover, :active), :is(a, button):hover > .m-arrow :is(.m-arrow__head, .m-arrow__stem) { transform: none; } }
+
+  .btn:is(:not(*), :active), :is(a, button):not(*) > .m-arrow :is(.m-arrow__head, .m-arrow__stem)  { transform: none !important; }
   .m-arrow__stem { opacity: 1; transform: none; }
 }
 

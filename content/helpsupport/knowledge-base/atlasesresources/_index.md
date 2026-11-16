@@ -1,4 +1,5 @@
 ---
+headRender: false
 title: "Atlases and data"
 description: "Brain atlases, parcellations and normative connectomes in MNI space that work with Lead-DBS, and where to get them."
 date: "2017-04-08T22:50:27"

@@ -12,7 +12,7 @@
 .prose .jumps li { margin: 0; }
 .prose .jumps a { display: inline-flex; align-items: center; min-height: 36px; padding: 0 var(--s-4); border-radius: var(--r-pill); background: var(--surface);
   color: var(--ink); font-size: var(--t-small); font-weight: 500; text-decoration: none; transition: background-color var(--t-out) var(--ease); }
-.prose .jumps a:hover { background: color-mix(in oklab, var(--p-tint-1) 45%, var(--p-bg)); transition-duration: var(--t-in); }
+@media (hover: hover) { .prose .jumps a:hover { background: color-mix(in oklab, var(--p-tint-1) 45%, var(--p-bg)); transition-duration: var(--t-in); } }
 @media (max-width: 639px) {
   .prose .jumps ul { flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none;
     margin-inline: calc(-1 * var(--gut)); padding-inline: var(--gut); }
@@ -60,12 +60,12 @@
 .prose .capability h3 { margin: 0; font-size: var(--t-sub); font-weight: 600; line-height: 1.2; letter-spacing: -.025em; }
 .prose .capability h3 > button { display: block; width: 100%; margin: 0; padding: 9px 0; border: 0; border-radius: 0; background: none; font: inherit; letter-spacing: inherit; text-align: left;
   color: var(--muted); cursor: pointer; transition: color var(--t-out) var(--ease); }
-.prose .capability h3 > button:hover { color: var(--ink); transition-duration: var(--t-in); }
+@media (hover: hover) { .prose .capability h3 > button:hover { color: var(--ink); transition-duration: var(--t-in); } }
 .prose .capability.is-active h3 > button { color: var(--ink); cursor: default; }
 /* a small chevron after a name says it can be chosen; it stays with the last word when the name wraps */
 .prose .capability__last { white-space: nowrap; }
 .prose .capability__mark { display: inline-block; width: .3em; height: .3em; margin-left: .45em; border: solid currentColor; border-width: 2px 2px 0 0; rotate: 45deg; translate: 0 -.16em; opacity: .75; transition: translate 200ms var(--ease-out); }
-.prose .capability h3 > button:hover .capability__mark { translate: 3px -.16em; }
+@media (hover: hover) { .prose .capability h3 > button:hover .capability__mark { translate: 3px -.16em; } }
 .prose .capability.is-active .capability__mark { opacity: 1; translate: 0 -.16em; }
 @media (scripting: none) { .prose .capability__mark { display: none; } }
 .prose .capability__body { padding: var(--s-1) 0 var(--s-5); }
@@ -77,7 +77,7 @@
 .prose :is(.capability__links, .tool__links) a { display: inline-flex; align-items: center; gap: 5px; min-height: 32px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: var(--r-pill); background: var(--bg);
   font-size: var(--t-label); font-weight: 500; line-height: 1; white-space: nowrap; color: var(--ink); text-decoration: none;
   transition: border-color var(--t-out) var(--ease), background-color var(--t-out) var(--ease), color var(--t-out) var(--ease); }
-.prose :is(.capability__links, .tool__links) a:hover { border-color: var(--ink); background: var(--ink); color: var(--bg); transition-duration: var(--t-in); }
+@media (hover: hover) { .prose :is(.capability__links, .tool__links) a:hover { border-color: var(--ink); background: var(--ink); color: var(--bg); transition-duration: var(--t-in); } }
 .prose :is(.capability__links, .tool__links) :is(.ext-mark, .m-arrow) { margin: 0; font-size: var(--t-xs); color: currentColor; opacity: .55; }
 .prose :is(.capability__links, .tool__links) .m-arrow { width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 1.5; }
 /* a picture: the black box; a render fills it, a figure from a paper lies on it as a sheet of its own
@@ -91,7 +91,7 @@
 .prose .cap-fig__sheet img { display: block; width: 100%; height: 100%; max-width: none; border-radius: 0; object-fit: contain; }
 .prose .cap-fig__credit { position: absolute; left: var(--s-5); bottom: 12px; margin: 0; font-size: var(--t-xs); line-height: 1.5; color: rgb(255 255 255 / .62); }
 .prose .cap-fig__credit a { color: inherit; text-decoration: none; transition: color var(--t-out) var(--ease); }
-.prose .cap-fig__credit a:hover { color: var(--on-render); }
+@media (hover: hover) { .prose .cap-fig__credit a:hover { color: var(--on-render); } }
 .prose .cap-show__stage { display: none; }
 /* one that is not chosen folds its sentence, links and picture away (with script only); the clip is the
    box that folds, so the body keeps its padding */
@@ -132,7 +132,7 @@
 .prose .cap-fig:has(.cap-fig__sheet) { background: var(--surface); }
 /* on that light surface the credit is muted ink, not the white it has on a render's black */
 .prose .cap-fig:has(.cap-fig__sheet) .cap-fig__credit { color: var(--muted); }
-.prose .cap-fig:has(.cap-fig__sheet) .cap-fig__credit a:hover { color: var(--ink); }
+@media (hover: hover) { .prose .cap-fig:has(.cap-fig__sheet) .cap-fig__credit a:hover { color: var(--ink); } }
 .prose .cap-fig:has(.cap-fig__sheet) .cap-fig__sheet { --pad: clamp(8px, 2cqw, 16px); }
 @media (max-width: 639px) {
   /* -------------------------------------------------------------- the module: stage, segments, names */
@@ -158,7 +158,7 @@
   .prose :is(.cap-show__stage, .tool-stage) .cap-fig__sheet { --pad: var(--s-4); --foot: calc(var(--s-5) + var(--s-1)); flex: none; margin: 0; border-radius: var(--r-sm); }
   .prose :is(.cap-show__stage, .tool-stage) .cap-fig__credit,
   .prose :is(.cap-show__stage, .tool-stage) .cap-fig:has(.cap-fig__sheet) .cap-fig__credit { position: static; text-align: center; color: color-mix(in srgb, var(--on-render) 50%, transparent); }
-  .prose :is(.cap-show__stage, .tool-stage) .cap-fig__credit a:hover { color: var(--on-render); }
+@media (hover: hover) { .prose :is(.cap-show__stage, .tool-stage) .cap-fig__credit a:hover { color: var(--on-render); } }
 
   /* the segments: one per name, the chosen one in ink (decoration; the names say which is chosen) */
   .prose .cap-show__segs { display: flex; gap: calc(var(--s-1) * 1.5); margin-top: var(--s-4); }
@@ -179,9 +179,9 @@
   .prose :is(.capability__body, .tool) > p:not(.capability__links, .tool__links) { max-width: none; margin: 0; font-size: var(--t-body); line-height: var(--s-5); color: var(--muted); }
   .prose :is(.capability__body, .tool) > p:not(.capability__links, .tool__links) a { --rest: color-mix(in oklab, var(--ink) 25%, transparent); color: var(--ink); }
   .prose :is(.capability__links, .tool__links) { gap: 0 calc(var(--s-4) + var(--s-1)); margin: var(--s-2) 0 0; }
-  .prose :is(.capability__links, .tool__links) a,
+@media (hover: hover) { .prose :is(.capability__links, .tool__links) a,
   .prose :is(.capability__links, .tool__links) a:hover { gap: var(--s-1); min-height: 36px; padding: 0; border: 0; border-radius: 0; background: none;
-    font-size: var(--t-small); color: var(--ink); }
+    font-size: var(--t-small); color: var(--ink); } }
   .prose :is(.capability__links, .tool__links) :is(.ext-mark, .m-arrow) { color: var(--muted); opacity: 1; }
   @media (scripting: none) { .prose .capability h3 > button { color: var(--ink); } }
   /* -------------------------------------------------------------- Tools: the same module on a black band

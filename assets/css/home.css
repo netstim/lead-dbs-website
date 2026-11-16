@@ -61,11 +61,11 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .home-hero .btn-row { margin-top: var(--s-6); }
 .home-hero .btn { border-radius: var(--r-pill); font-weight: 500; }
 .home-hero .btn--primary { padding-inline: 22px 18px; background: var(--on-render); color: #111315; }
-.home-hero .btn--primary:hover { background: rgb(255 255 255 / .86); }
+@media (hover: hover) { .home-hero .btn--primary:hover { background: rgb(255 255 255 / .86); } }
 /* the second action is the site's plain underlined link, in white on the black */
 .home-hero .btn--secondary { color: var(--on-render); }
 .home-hero .btn .m-arrow { transition: transform var(--t-in) var(--ease); }
-.home-hero .btn:hover .m-arrow { transform: translateX(2px); }
+@media (hover: hover) { .home-hero .btn:hover .m-arrow { transform: translateX(2px); } }
 /* the facts: short parts on one line, each kept whole and parted by a dot. Every part starts with its
    dot, the list starts one dot to the left and clips that strip, so a line never starts with a dot. */
 .hero__proof { --dot: 1.3em; list-style: none; margin: 0 0 0 calc(-1 * var(--dot)); padding: 0; display: flex; flex-wrap: wrap; gap: 0;
@@ -74,12 +74,12 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .hero__proof li::before { content: "·"; display: inline-block; width: var(--dot); text-align: center; color: rgb(255 255 255 / .35); }
 .hero__proof a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; text-decoration-color: rgb(255 255 255 / 0);
   transition: color var(--t-out) var(--ease), text-decoration-color var(--t-out) var(--ease); }
-.hero__proof a:hover { color: var(--on-render); text-decoration-color: rgb(255 255 255 / .5); }
+@media (hover: hover) { .hero__proof a:hover { color: var(--on-render); text-decoration-color: rgb(255 255 255 / .5); } }
 .hero__proof em { font-style: italic; }
 .hero__pause { flex: none; width: 40px; height: 40px; display: grid; place-items: center; padding: 0; border-radius: 50%; cursor: pointer;
   border: 1px solid rgb(255 255 255 / .2); background: rgb(255 255 255 / .08); color: rgb(255 255 255 / .85);
   transition: background-color var(--t-out) var(--ease), border-color var(--t-out) var(--ease); }
-.hero__pause:hover { border-color: rgb(255 255 255 / .4); background: rgb(255 255 255 / .16); color: var(--on-render); }
+@media (hover: hover) { .hero__pause:hover { border-color: rgb(255 255 255 / .4); background: rgb(255 255 255 / .16); color: var(--on-render); } }
 .hero__pause svg { width: 14px; height: 14px; }
 /* 1024 and up: the panel fills the first screen under the header, the words on its left */
 @media (min-width: 1024px) {
@@ -227,9 +227,9 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .feature { position: relative; }
 .feature__link { color: var(--ink); transition: color var(--t-out) var(--ease); }
 .feature__link::after { content: ""; position: absolute; inset: 0; border-radius: var(--r-md); }
-.feature:hover .feature__link { color: var(--action); transition-duration: var(--t-in); }
+@media (hover: hover) { .feature:hover .feature__link { color: var(--action); transition-duration: var(--t-in); } }
 .feature__img { transition: opacity var(--t-out) var(--ease); }
-.feature:hover .feature__img { opacity: .88; }
+@media (hover: hover) { .feature:hover .feature__img { opacity: .88; } }
 /* the atlases and data, one slim band under the cards on the surface grey: the atlas render at its left
    edge (on its own black), the hub's name and line, and its three catalogues, each its size over what it
    holds. The name links to the hub, each count to its catalogue. Below 1200 the counts move under the
@@ -240,11 +240,11 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .home .data-band__title { font-size: var(--t-card); }
 .data-band__title a { color: var(--ink); }
 .data-band__title a .m-arrow { display: inline-block; vertical-align: -1px; margin-left: var(--s-2); color: var(--action); }
-.data-band__title a:hover { color: var(--action); }
+@media (hover: hover) { .data-band__title a:hover { color: var(--action); } }
 .data-band__text p { margin-top: var(--s-1); font-size: var(--t-note); line-height: 1.5; color: var(--muted); }
 .data-band__counts { list-style: none; margin: 0; padding: 0; display: flex; gap: var(--s-6); }
 .data-band__counts a { display: inline-block; padding-block: var(--s-2); color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
-.data-band__counts a:hover { color: var(--action); }
+@media (hover: hover) { .data-band__counts a:hover { color: var(--action); } }
 @media (max-width: 1199px) {
   .data-band { grid-template-columns: 176px minmax(0, 1fr); row-gap: 0; padding-right: var(--s-5); }
   .data-band__img { grid-row: 1 / span 2; align-self: stretch; height: 100%; min-height: 0; aspect-ratio: auto; }
@@ -275,7 +275,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
   .feature__img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 38%, color-mix(in srgb, var(--render) 86%, transparent) 82%); }
   .feature__text { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: var(--s-1) var(--s-4); width: 100%; }
   .home .feature h3 { margin: 0; font: 600 var(--t-card)/1.264 var(--font-display); letter-spacing: var(--display-tracking); }
-  .feature .feature__link, .feature:hover .feature__link { color: var(--on-render); }
+@media (hover: hover) { .feature .feature__link, .feature:hover .feature__link { color: var(--on-render); } }
   .feature__link::after { border-radius: var(--r-lg); }
   .feature__text p { grid-column: 1; margin: 0; max-width: none; color: color-mix(in srgb, var(--on-render) 70%, transparent); font: 400 var(--t-small)/1.43 var(--font-text); }
   .feature__go { grid-column: 2; grid-row: 1 / span 2; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%;
@@ -309,7 +309,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .drift__row { overflow: hidden; }
 .drift__track { display: flex; width: max-content; animation: drift var(--dur, 150s) linear infinite; }
 .drift__row--rev .drift__track { animation-direction: reverse; }
-.drift:hover .drift__track, .drift.is-held .drift__track { animation-play-state: paused; }
+@media (hover: hover) { .drift:hover .drift__track, .drift.is-held .drift__track { animation-play-state: paused; } }
 .drift__set { display: flex; gap: clamp(40px, 4vw, 64px); padding-right: clamp(40px, 4vw, 64px); }
 @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .drift__item { cursor: default; }
@@ -318,7 +318,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .drift__item blockquote { margin: 0; white-space: nowrap; font: 500 var(--t-sub)/1.2 var(--font-display); letter-spacing: -.02em; color: var(--on-render); }
 .drift__q { color: rgb(255 255 255 / .35); }
 /* hovering one phrase holds the rows and lets it stand out */
-.drift:has(.drift__item:hover) .drift__item:not(:hover) { opacity: .3; }
+@media (hover: hover) { .drift:has(.drift__item:hover) .drift__item:not(:hover) { opacity: .3; } }
 .drift__item figcaption { white-space: nowrap; font-size: var(--t-label); color: rgb(255 255 255 / .55); }
 .drift__item figcaption b { font-weight: 500; color: rgb(255 255 255 / .85); }
 @media (prefers-reduced-motion: reduce) {
@@ -352,7 +352,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
   .drift__row, .drift__track, .drift__set { display: contents; }
   .drift__set[aria-hidden] { display: none; }
   .drift__item { flex: none; width: 284px; scroll-snap-align: start; }
-  .drift:has(.drift__item:hover) .drift__item:not(:hover) { opacity: 1; }
+@media (hover: hover) { .drift:has(.drift__item:hover) .drift__item:not(:hover) { opacity: 1; } }
   .drift__item > figure { display: flex; flex-direction: column; justify-content: space-between; gap: var(--s-5); height: 100%; min-height: 212px; padding: var(--s-5);
     border-radius: var(--r-lg); background: color-mix(in srgb, var(--on-render) 4%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--on-render) 10%, transparent); }
   .drift__item blockquote { white-space: normal; font: 500 var(--t-sub)/1.273 var(--font-display); letter-spacing: var(--display-tracking-xl); text-wrap: pretty; }
@@ -383,7 +383,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .made-grid__plane { position: absolute; inset: 0; }
 .made-tile { position: absolute; top: 0; left: 0; display: block; border-radius: var(--r-md); overflow: hidden; background: color-mix(in oklab, var(--on-render) 10%, var(--render)); will-change: transform; -webkit-user-drag: none; }
 .made-tile img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transition: transform 600ms var(--ease); }
-.made-tile:hover img { transform: scale(1.04); }
+@media (hover: hover) { .made-tile:hover img { transform: scale(1.04); } }
 
 /* the fan (the deck Fable drew for the home page): seven covers turned about a point far below them, --k
    from -3 (left, oldest) to 3 (the newest, on top); .is-up lifts the card whose journal the caption names */
@@ -400,7 +400,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .made-fan__cap { position: absolute; left: 0; right: 0; bottom: calc(var(--made-h) * .17); display: grid; justify-items: center; font-size: var(--t-small); line-height: 1.45; text-align: center; color: var(--muted); transition: opacity 300ms var(--ease); }
 .made-fan__cap b { font-weight: 500; color: var(--on-render); }
 .made-fan__cap.is-changing { opacity: 0; }
-.made-fan:hover .made-fan__cap b { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
+@media (hover: hover) { .made-fan:hover .made-fan__cap b { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); } }
 /* a tablet: the grid at full width, the fan under it */
 @media (max-width: 1023px) {
   .made { grid-template-columns: minmax(0, 1fr); gap: var(--s-7); --made-h: 440px; }
@@ -436,7 +436,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .worldwide__foot { display: flex; align-items: center; justify-content: center; gap: var(--s-3); margin-top: var(--s-3); min-height: 36px; }
 .worldwide__foot .caption { max-width: none; font-variant-numeric: tabular-nums; }
 .worldwide__pause { flex: none; width: 36px; height: 36px; display: grid; place-items: center; padding: 0; border: 1px solid var(--line-strong); border-radius: 50%; background: none; color: var(--ink); cursor: pointer; transition: background-color var(--t-out) var(--ease); }
-.worldwide__pause:hover { background: var(--surface); }
+@media (hover: hover) { .worldwide__pause:hover { background: var(--surface); } }
 .worldwide__pause svg { width: 12px; height: 12px; }
 .worldwide .split__text h2, #localize .split__text h2 { font-weight: 400; letter-spacing: -0.04em; }
 @media (min-width: 1024px) {
@@ -502,7 +502,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .pulse__links { display: flex; gap: var(--s-5); margin: 0; font-size: var(--t-small); font-weight: 500; }
 .pulse__links a { display: inline-flex; align-items: center; color: var(--ink); text-decoration: none; background-image: none; }
 .pulse__links a::after { content: none; }
-.pulse__links a:hover { color: var(--action); }
+@media (hover: hover) { .pulse__links a:hover { color: var(--action); } }
 .pulse__links .m-arrow { width: 10px; height: 10px; margin-left: 4px; }
 .pulse__row { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-6) var(--s-4); margin: 0; padding: 0; }
 @media (min-width: 1024px) { .pulse__row { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
@@ -527,12 +527,12 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
   border-radius: var(--r-md); background: var(--p-bg); color: var(--ink); font: 600 var(--t-card)/1 var(--font-text); letter-spacing: -.02em; font-variant-numeric: tabular-nums;
   box-shadow: var(--shadow-1); }
 .pulse-card__day > span { font-size: var(--t-xs); letter-spacing: 0; color: var(--p-accent-text); }
-.pulse-card__link:hover .pulse-card__media > img { transform: scale(1.02); }
-.pulse-card__link:hover .pulse-card__media--poster > img { transform: translateY(-3px); }
+@media (hover: hover) { .pulse-card__link:hover .pulse-card__media > img { transform: scale(1.02); } }
+@media (hover: hover) { .pulse-card__link:hover .pulse-card__media--poster > img { transform: translateY(-3px); } }
 .pulse-card__meta { font-size: var(--t-label); color: var(--muted); font-variant-numeric: tabular-nums; }
 .pulse-card__kind { color: var(--ink); font-weight: 500; }
 .pulse-card__title { font-size: var(--t-card); font-weight: 500; line-height: 1.35; letter-spacing: -.01em; text-wrap: pretty; }
-.pulse-card__link:hover .pulse-card__title { color: var(--action); }
+@media (hover: hover) { .pulse-card__link:hover .pulse-card__title { color: var(--action); } }
 .prose .pulse__row { max-width: none; }
 .prose .pulse-card { max-width: none; }
 .prose .pulse-card__link { text-decoration: none; color: var(--ink); }
@@ -602,7 +602,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
    pointer a logo shows its own colours. */
 .funders img { display: block; width: auto; max-width: 190px; object-fit: contain; filter: grayscale(1) brightness(.6) contrast(6); opacity: .45; mix-blend-mode: multiply;
   transition: opacity var(--t-out) var(--ease), filter var(--t-out) var(--ease); }
-.funders li:hover img { filter: none; opacity: 1; }
+@media (hover: hover) { .funders li:hover img { filter: none; opacity: 1; } }
 @media (max-width: 639px) { .funders { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4) var(--gutter); } .funders img { max-width: 140px; }
   .funders > li:last-child:nth-child(odd) { grid-column: 1 / -1; } }
 .funders-row { margin-top: var(--s-7); padding-top: var(--s-5); }

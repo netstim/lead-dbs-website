@@ -25,7 +25,7 @@
     toggle.setAttribute('aria-expanded', String(open));
     toggle.setAttribute('aria-label', open ? 'Close the menu' : 'Open the menu');
     toggle.innerHTML = open ? icon.close : icon.open;
-    if (open && focus) inSheet().find((el) => menu?.contains(el))?.focus();
+    if (open && focus) { menu.tabIndex = -1; menu.focus({ preventScroll: true }); }
   };
   toggle.addEventListener('click', () => setOpen(!nav.classList.contains('is-open'), true));
   wide.addEventListener('change', (e) => {

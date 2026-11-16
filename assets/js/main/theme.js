@@ -11,7 +11,7 @@
   };
   // the browser's chrome (theme-color, head.html) takes the ground of the theme in use
   const chrome = () => document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {
-    m.content = root.dataset.theme === 'dark' ? '#161819' : '#ffffff';
+    m.content = document.querySelector('.nav.is-dark:not(.is-open)') ? '#000000' : root.dataset.theme === 'dark' ? '#161819' : '#ffffff';
   });
   const set = (t) => { root.dataset.theme = t; label(); chrome(); };
   buttons.forEach((b) => b.addEventListener('click', () => {
@@ -24,6 +24,7 @@
     try { saved = localStorage.getItem('theme'); } catch (e) { /* none */ }
     if (!saved) set(e.matches ? 'dark' : 'light');
   });
+  new MutationObserver(chrome).observe(document.querySelector('.nav'), { attributes: true, attributeFilter: ['class'] });
   label();
   chrome();
 })();

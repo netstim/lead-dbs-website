@@ -14,13 +14,13 @@
    an optional label above. Compact: the stacked boxes of an atlas entry's Cite list. */
 .cite-snip { align-self: stretch; }
 .cite-snip__label { margin: 0 0 var(--s-2); font-size: var(--t-small); font-weight: 500; color: var(--muted); }
-.cite-snip__box { border: 1px solid var(--line-strong); border-radius: var(--r-md); background: var(--bg); overflow: hidden; }
+.cite-snip__box { border: 1px solid var(--line); border-radius: var(--r-md); background: var(--bg); overflow: hidden; }
 .cite-snip__bar { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding: var(--s-2) var(--s-2) var(--s-2) var(--s-3); border-bottom: 1px solid var(--line); }
 .cite-snip__bar[hidden] { display: none; }
 .cite-snip__tabs { display: flex; gap: var(--s-1); }
 .cite-snip__tab, .cite-snip__copy { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 var(--s-3); border: 0; border-radius: var(--r-pill);
   background: none; font: 500 var(--t-small)/1 var(--font-text); color: var(--muted); cursor: pointer; }
-.cite-snip__tab:hover, .cite-snip__copy:hover { color: var(--ink); background: var(--surface); }
+@media (hover: hover) { .cite-snip__tab:hover, .cite-snip__copy:hover { color: var(--ink); background: var(--surface); } }
 .cite-snip__tab[aria-pressed="true"] { background: var(--surface); color: var(--ink); }
 .cite-snip__copy svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .cite-snip__text { margin: 0; padding: var(--s-4); font-family: var(--font-text); font-size: var(--t-note); line-height: 1.6; color: var(--ink); overflow-wrap: anywhere; }
@@ -52,7 +52,7 @@ html .prose > .video-embed--poster { max-width: min(100%, var(--poster-w, 100%),
   background: radial-gradient(120% 90% at 85% 20%, #1c2124 0%, var(--render) 62%); }
 .video-embed__play { flex: none; display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: var(--p-action); color: var(--on-render); transition: transform var(--dur) var(--ease); }
 .video-embed__play svg { width: 26px; height: 26px; margin-left: 3px; }
-.video-embed__start:hover .video-embed__play { transform: scale(1.06); }
+@media (hover: hover) { .video-embed__start:hover .video-embed__play { transform: scale(1.06); } }
 .video-embed__start:focus-visible { outline: 3px solid #b4bff6; outline-offset: -3px; }
 .video-embed__text { display: grid; gap: var(--s-1); }
 .video-embed__title { font: var(--title-weight) var(--t-card)/1.3 var(--font-display); }
@@ -95,25 +95,24 @@ html .video-embed--poster .video-embed__start { background: linear-gradient(to t
 .prose > .next-steps { max-width: none; }
 .next-steps__h, .prose .next-steps__h { margin: 0 0 var(--s-2); color: var(--muted); font-family: var(--font-label); font-size: var(--t-xs); font-weight: 400; line-height: 1.4; }
 .next-steps__h a, .prose .next-steps__h a { color: inherit; text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
-.next-steps__h a:hover, .prose .next-steps__h a:hover { color: var(--ink); }
+@media (hover: hover) { .next-steps__h a:hover, .prose .next-steps__h a:hover { color: var(--ink); } }
 .next-steps__list, .prose .next-steps__list { list-style: none; padding: 0; margin: 0; max-width: none; display: grid; gap: 0; grid-template-columns: minmax(0, 1fr); }
 .next-steps__list > li, .prose .next-steps__list > li { margin: 0; max-width: none; }
 .next-step { display: grid; grid-template-columns: minmax(0, 1fr) 12px; align-items: center; gap: var(--s-1) var(--s-5); min-height: 56px; padding: var(--s-4) 0; border-bottom: 1px solid var(--line); text-decoration: none; }
 .prose a.next-step { padding: var(--s-4) 0; color: var(--ink); background: none; text-decoration: none; }
 .next-step::after { content: none; }
 .next-step__title { grid-column: 1; grid-row: 1; font: 500 var(--t-body)/1.4 var(--font-text); text-wrap: pretty; }
-.next-step .next-step__arrow { grid-column: 2; grid-row: 1; align-self: center; width: 12px; height: 12px; margin: 0; color: var(--muted); }
+.next-step .next-step__arrow { grid-column: 2; grid-row: 1; align-self: center; width: 14px; height: 14px; margin: 0; color: var(--muted); }
 .next-step .ext-mark { font-size: var(--t-body); line-height: 1; }
-.next-step:hover .next-step__title { color: var(--action); }
+@media (hover: hover) { .next-step:hover .next-step__title { color: var(--action); } }
 .post .next-steps { margin-top: var(--s-7); }
 /* a phone: "Related" a small muted label, then rows 58px high, the title 17px medium, a chevron in
    muted, hairlines between */
 @media (max-width: 639px) {
   :is(.next-steps__h, .prose .next-steps__h) { margin-bottom: var(--s-1); color: var(--muted); font-family: var(--font-text); font-size: var(--t-label); font-weight: 500; }
-  .next-step .m-arrow__stem { display: none; }
   :is(.next-step, .prose a.next-step) { min-height: 58px; padding-block: var(--s-3); }
   .next-step__title { font-size: var(--t-doc); }
-  .next-step .next-step__arrow { width: 16px; height: 16px; }
+  .next-step .next-step__arrow { width: 14px; height: 14px; }
 }
 /* the round button that pauses a clip that plays by itself (layouts/_partials/clip-script.html), in the
    manner of the hero's: on the clip's top right corner, a 44px target */
@@ -121,7 +120,7 @@ html .video-embed--poster .video-embed__start { background: linear-gradient(to t
 .media-pause { position: absolute; top: var(--s-3); right: var(--s-3); width: 44px; height: 44px; display: grid; place-items: center; padding: 0;
   border: 1px solid color-mix(in oklab, var(--on-render) 25%, transparent); border-radius: 50%; cursor: pointer;
   background: color-mix(in oklab, var(--render) 55%, transparent); color: var(--on-render); transition: background-color var(--t-out) var(--ease); }
-.media-pause:hover { background: color-mix(in oklab, var(--render) 75%, transparent); }
+@media (hover: hover) { .media-pause:hover { background: color-mix(in oklab, var(--render) 75%, transparent); } }
 .media-pause svg { width: 14px; height: 14px; }
 /* the video popup (assets/js/main/videos.js): the player large on black, the card's words under it, and its
    chapters beside it (under it on a phone) as buttons that start the video at that time */
@@ -143,11 +142,11 @@ html .video-embed--poster .video-embed__start { background: linear-gradient(to t
 .v-box__chapters-h { margin: 0 0 var(--s-2); padding: 0 var(--s-2); font-size: var(--t-label); font-weight: 500; color: rgb(255 255 255 / .55); }
 .v-box__chapters ol { list-style: none; margin: 0; padding: 0; }
 .v-box__chapter { display: grid; grid-template-columns: 4.4em minmax(0, 1fr); align-items: baseline; gap: var(--s-2); width: 100%; padding: 8px var(--s-2); border: 0; border-radius: var(--r-sm); background: none; color: rgb(255 255 255 / .82); font: 400 var(--t-small)/1.4 var(--font-text); text-align: left; cursor: pointer; }
-.v-box__chapter:hover { background: rgb(255 255 255 / .07); color: var(--on-render); }
+@media (hover: hover) { .v-box__chapter:hover { background: rgb(255 255 255 / .07); color: var(--on-render); } }
 .v-box__chapter[aria-current="true"] { background: rgb(255 255 255 / .12); color: var(--on-render); }
 .v-box__chapter time { justify-self: start; padding: 1px 7px; border-radius: var(--r-pill); background: rgb(255 255 255 / .1); font-size: var(--t-xs); font-variant-numeric: tabular-nums; color: rgb(255 255 255 / .7); }
 .v-box__close { display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 50%; background: rgb(255 255 255 / .1); color: var(--on-render); cursor: pointer; }
-.v-box__close:hover { background: rgb(255 255 255 / .2); }
+@media (hover: hover) { .v-box__close:hover { background: rgb(255 255 255 / .2); } }
 .v-box__close svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
 @media (min-width: 1024px) {
   /* the chapters column as tall as the player and its words (contain: size keeps the list from
