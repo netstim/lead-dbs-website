@@ -50,7 +50,7 @@ jobs:
   # errors, missing files and pictures, anything past the screen's edge, text cut off, requests to other
   # servers. The screenshots are kept with the run (Summary → Artifacts) for review.
   browser:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # Playwright 1.48 installs its WebKit system libraries by Ubuntu 24.04 package names
     env:
       HUGO_VERSION: 0.169.0
     steps:
@@ -71,7 +71,7 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-      - name: Install Playwright and Chromium
+      - name: Install Playwright with Chromium and WebKit
         run: npm ci && npx playwright install --with-deps chromium webkit
       - name: Build
         run: hugo --gc --minify

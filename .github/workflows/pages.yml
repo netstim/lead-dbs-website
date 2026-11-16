@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # Playwright 1.48 installs its WebKit system libraries by Ubuntu 24.04 package names
     env:
       HUGO_VERSION: 0.169.0
     steps:
@@ -71,7 +71,7 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-      - name: Install Playwright and Chromium
+      - name: Install Playwright with Chromium and WebKit
         run: npm ci && npx playwright install --with-deps chromium webkit
       - name: Pages in the browser (.github/scripts/check-browser.mjs)
         run: node .github/scripts/check-browser.mjs "$RUNNER_TEMP/production" https://www.lead-dbs.org/
