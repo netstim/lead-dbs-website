@@ -428,8 +428,13 @@ if (wk) {
     const pause = await page.locator('.hero__pause').boundingBox();
     if (!pause || pause.width < 44 || pause.height < 44) fail('hero pause target below 44px');
     await page.locator('.nav__toggle').click();
-    const locked = await page.evaluate(() => getComputedStyle(document.documentElement).overflowY === 'hidden' && getComputedStyle(document.querySelector('#site-menu')).overscrollBehaviorY === 'contain');
-    if (!locked) fail('root scroller or sheet overscroll is unlocked');
+    const lock = await page.evaluate(() => ({
+      root: getComputedStyle(document.documentElement).overflowY,
+      // an engine without overscroll-behavior (Playwright's WebKit on Linux, unlike Safari) cannot show it
+      sheet: CSS.supports('overscroll-behavior-y', 'contain') ? getComputedStyle(document.querySelector('#site-menu')).overscrollBehaviorY : 'contain',
+    }));
+    if (lock.root !== 'hidden') fail(`root scroller is unlocked (overflow-y: ${lock.root})`);
+    if (lock.sheet !== 'contain') fail(`sheet overscroll is unlocked (overscroll-behavior-y: ${lock.sheet})`);
     await page.keyboard.press('Escape');
     if (await page.evaluate(() => getComputedStyle(document.documentElement).overflowY === 'hidden')) fail('root remains locked after Escape');
   }, { engine: wk });
