@@ -336,10 +336,11 @@
 
   {{/* 8. What is coming up and what is new, as on x.ai's news: one row of picture cards, the upcoming
        events first (their flyer; the meta line ends in a countdown from assets/js/main/events.js), then the newest posts (their
-       picture; a release post shows its version number large instead), four in all. An event's tile carries
+       picture; a release post shows its version number large instead), eight in all. An event's tile carries
        its day as a small calendar leaf. A post that
        only repeats an event's flyer is left out. Each card: a short line (Event or News, the date) and
-       the title, the whole card one link. On a phone the row scrolls sideways. */}}
+       the title, the whole card one link. Four cards show at a time on a wide screen (two on a tablet);
+       the row scrolls sideways with a finger or a trackpad, and a mouse drags it (assets/js/main/home.js). */}}
   {{ with $p.events }}
   {{ $up := where (partial "events/list.html" $) "over" false }}
   {{ $flyers := slice }}{{ $cards := slice }}
@@ -349,7 +350,7 @@
     {{ $cards = $cards | append (dict "kind" "Event" "ev" $ev "title" $ev.e.title "url" $url "img" $img "date" $ev.when_short "place" $ev.e.where) }}
   {{ end }}
   {{ $posts := slice }}{{ range (where site.RegularPages "Section" "news").ByDate.Reverse }}{{ if not (in $flyers (.Params.image | default "")) }}{{ $posts = $posts | append . }}{{ end }}{{ end }}
-  {{ range first (sub 4 (len $cards)) $posts }}
+  {{ range first (sub 8 (len $cards)) $posts }}
     {{ $cards = $cards | append (dict "kind" "News" "title" .Title "url" .RelPermalink "img" (.Resources.GetMatch (.Params.image | default "__none__")) "date" (.Date.Format "2 Jan 2006") "version" (index (findRE `\d+\.\d+(\.\d+)?` .Title 1) 0)) }}
   {{ end }}
   {{ $up := partial "updates.html" . }}
@@ -359,7 +360,7 @@
         <h2 id="events-h" class="pulse__h">{{ partial "nobreak.html" .title }}</h2>
         <p class="pulse__links"><a href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a><a href="{{ partial "resolve-url.html" (dict "url" $p.news.link.url "page" $) }}">{{ $p.news.link.label }}{{ $arrow }}</a></p>
       </div>
-      <ol class="pulse__row" data-ev-next-list data-ev-updates="{{ $up.href }}" data-ev-updates-name="{{ $up.name }}">
+      <ol class="pulse__row" data-drag-row data-ev-next-list data-ev-updates="{{ $up.href }}" data-ev-updates-name="{{ $up.name }}">
         {{ range $cards }}{{ $c := . }}
         <li class="pulse-card{{ if eq .kind "Event" }} pulse-card--event{{ end }}"{{ with .ev }} data-ev data-ev-ends="{{ .iso_ends }}"{{ end }}>
           <a class="pulse-card__link" href="{{ .url }}">

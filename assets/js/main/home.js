@@ -44,24 +44,57 @@ import { showPlayState } from '../lib/play-state.js';
     if (img.dataset.src !== it.f.src) { img.dataset.src = it.f.src; img.sizes = `${W}px`; img.srcset = it.f.srcset; img.src = it.f.src; }
     img.alt = it.f.alt;
   };
+  // the tiles stand at whole pixels on the plane and stay put; only the plane moves, to (ox, oy)
   let ox = 0, oy = 0, vx = 0, vy = 0;
-  const draw = () => {
-    const fw = grid.clientWidth, fh = grid.clientHeight, step = W + G, seen = new Set();
-    for (let i = Math.floor(-ox / step) - 1; i <= Math.floor((fw - ox) / step); i++) {
-      const c = cols[((i % K) + K) % K], x = i * step + ox, base = oy + c.shift;
-      for (let r = Math.floor(-base / c.period) - 1; r <= Math.floor((fh - base) / c.period); r++) {
+  const place = () => {
+    const fw = grid.clientWidth, fh = grid.clientHeight, step = W + G, seen = new Set(), m = 48;
+    for (let i = Math.floor((-ox - m) / step) - 1; i <= Math.floor((fw - ox + m) / step); i++) {
+      const c = cols[((i % K) + K) % K], x = i * step;
+      for (let r = Math.floor((-oy - m - c.shift) / c.period) - 1; r <= Math.floor((fh - oy + m - c.shift) / c.period); r++) {
         c.items.forEach((it, j) => {
-          const y = base + r * c.period + it.y;
-          if (y + it.h < 0 || y > fh) return;
+          const y = Math.round(c.shift + r * c.period + it.y);
+          if (y + oy + it.h < -m || y + oy > fh + m) return;
           const key = `${i}:${r}:${j}`;
-          let el = live.get(key);
-          if (!el) { el = pool.pop() || make(); fill(el, it); plane.append(el); live.set(key, el); }
-          el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+          if (!live.has(key)) {
+            const el = pool.pop() || make();
+            fill(el, it);
+            el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+            plane.append(el); live.set(key, el);
+          }
           seen.add(key);
         });
       }
     }
     live.forEach((el, key) => { if (!seen.has(key)) { el.remove(); live.delete(key); pool.push(el); } });
+  };
+  const draw = () => { plane.style.transform = `translate3d(${ox}px, ${oy}px, 0)`; place(); };
+
+  // The slow drift runs as one long linear animation of the plane, on the compositor: driven from here,
+  // frame by frame, any busy moment on the page made it skip a frame and jump (a flutter). Every 250ms
+  // the tiles that come into the frame (with a margin) are added and those gone are dropped.
+  const RX = -0.012, RY = -0.007, SPAN = 600000;
+  let anim = null, from = [0, 0], tick = 0;
+  const reached = () => {
+    const t = Math.min(SPAN, Number(anim.currentTime) || 0);
+    return [from[0] + RX * t, from[1] + RY * t];
+  };
+  const stopDrift = () => {
+    if (!anim) return;
+    [ox, oy] = reached();
+    anim.cancel(); anim = null; clearInterval(tick);
+    // at rest the plane stands on whole pixels, so the figures stay sharp
+    ox = Math.round(ox); oy = Math.round(oy);
+    draw();
+  };
+  const startDrift = () => {
+    if (anim) return;
+    from = [ox, oy];
+    anim = plane.animate([
+      { transform: `translate3d(${ox}px, ${oy}px, 0)` },
+      { transform: `translate3d(${ox + RX * SPAN}px, ${oy + RY * SPAN}px, 0)` },
+    ], { duration: SPAN, easing: 'linear' });
+    anim.onfinish = () => { stopDrift(); kick(); };
+    tick = setInterval(() => { [ox, oy] = reached(); place(); }, 250);
   };
 
   let raf = 0, last = 0, near = false, built = false, dragging = false, drifting = !still.matches, held = false;
@@ -88,26 +121,27 @@ import { showPlayState } from '../lib/play-state.js';
         vx *= k; vy *= k;
       } else {
         vx = vy = 0;
-        if (drifting && !held) { ox -= 0.012 * dt; oy -= 0.007 * dt; }
+        ox = Math.round(ox); oy = Math.round(oy);
       }
     }
-    const going = near && !document.hidden && (dragging || (drifting && !held) || vx || vy);
-    // in motion the tiles sit on fractions of a pixel: rounded, a drift of 12px a second moves in visible
-    // one-pixel steps, and x and y on different frames (a stutter); once it stops they snap to whole
-    // pixels again, so the figures at rest stay sharp
-    if (!going) { ox = Math.round(ox); oy = Math.round(oy); }
     draw();
-    if (going) raf = requestAnimationFrame(frame);
-    else last = 0;
+    if (near && !document.hidden && (dragging || vx || vy)) raf = requestAnimationFrame(frame);
+    else { last = 0; kick(); }
   };
-  const kick = () => { if (built && !raf) raf = requestAnimationFrame(frame); };
+  // a drag, or the glide after one, moves the plane frame by frame; otherwise it drifts, or stands
+  const kick = () => {
+    if (!built) return;
+    const on = near && !document.hidden;
+    if (on && drifting && !held && !dragging && !raf && !vx && !vy) startDrift(); else stopDrift();
+    if (on && !raf && (dragging || vx || vy)) raf = requestAnimationFrame(frame);
+  };
   const build = () => { built = true; layout(); draw(); kick(); };
 
   let start = null, moved = 0, px = 0, py = 0, pt = 0;
   const end = (e) => {
     if (!start || e.pointerId !== start.id) return;
     start = null;
-    if (!dragging) return;
+    if (!dragging) { kick(); return; }
     dragging = false;
     grid.classList.remove('is-dragging');
     if (e.type === 'pointercancel' || e.timeStamp - pt > 80 || still.matches) vx = vy = 0;
@@ -115,6 +149,7 @@ import { showPlayState } from '../lib/play-state.js';
   };
   grid.addEventListener('pointerdown', (e) => {
     if (e.button !== 0 || !built) return;
+    stopDrift();
     start = { x: e.clientX, y: e.clientY, id: e.pointerId, finger: e.pointerType === 'touch' };
     px = e.clientX; py = e.clientY; pt = e.timeStamp; moved = 0;
     vx = vy = 0;
@@ -170,6 +205,65 @@ import { showPlayState } from '../lib/play-state.js';
     near = es.some((e) => e.isIntersecting);
     if (near && !built) build(); else kick();
   }, { rootMargin: '600px 0px' }).observe(grid);
+})();
+
+// ------------------------------------------------------------------ the home page's row of news and events
+// More cards than fit (layouts/home.html): a finger or a trackpad scrolls the row sideways by itself; here a
+// mouse can drag it too. Let go, it glides on to the card the flick aims at and settles there. A drag is not
+// a click.
+(() => {
+  const row = document.querySelector('[data-drag-row]');
+  if (!row) return;
+  const still = matchMedia('(prefers-reduced-motion: reduce)');
+  let start = null, dragged = false, v = 0, lx = 0, lt = 0, settle = 0;
+  const done = () => { clearTimeout(settle); row.classList.remove('is-dragging'); };
+  row.addEventListener('pointerdown', (e) => {
+    dragged = false;
+    if (e.pointerType !== 'mouse' || e.button !== 0 || row.scrollWidth <= row.clientWidth + 1) return;
+    start = { x: e.clientX, left: row.scrollLeft, id: e.pointerId };
+    v = 0; lx = e.clientX; lt = e.timeStamp;
+  });
+  row.addEventListener('pointermove', (e) => {
+    if (!start || e.pointerId !== start.id) return;
+    if (!e.buttons) { start = null; return; }
+    const dx = e.clientX - start.x;
+    if (!dragged) {
+      if (Math.abs(dx) < 6) return;
+      dragged = true; done();
+      row.classList.add('is-dragging');
+      row.setPointerCapture(e.pointerId);
+    }
+    const dt = Math.max(1, e.timeStamp - lt);
+    v = 0.7 * ((e.clientX - lx) / dt) + 0.3 * v;
+    lx = e.clientX; lt = e.timeStamp;
+    row.scrollLeft = start.left - dx;
+  });
+  const end = (e) => {
+    if (!start || e.pointerId !== start.id) return;
+    start = null;
+    if (!dragged) return;
+    if (e.timeStamp - lt > 80) v = 0;
+    // the card whose left edge is nearest to where the flick would carry the row
+    const box = row.getBoundingClientRect();
+    const pad = parseFloat(getComputedStyle(row).scrollPaddingLeft) || 0;
+    const max = row.scrollWidth - row.clientWidth;
+    const aim = row.scrollLeft - v * 250;
+    let to = row.scrollLeft, best = Infinity;
+    [...row.children].forEach((c) => {
+      if (c.hidden) return;
+      const x = Math.min(max, Math.max(0, row.scrollLeft + c.getBoundingClientRect().left - box.left - pad - row.clientLeft));
+      if (Math.abs(x - aim) < best) { best = Math.abs(x - aim); to = x; }
+    });
+    row.scrollTo({ left: to, behavior: still.matches ? 'auto' : 'smooth' });
+    // snapping comes back once the glide has ended
+    row.addEventListener('scrollend', done, { once: true });
+    settle = setTimeout(done, 700);
+  };
+  row.addEventListener('pointerup', end);
+  row.addEventListener('pointercancel', end);
+  row.addEventListener('lostpointercapture', end);
+  row.addEventListener('click', (e) => { if (dragged) { e.preventDefault(); e.stopPropagation(); dragged = false; } }, true);
+  row.addEventListener('dragstart', (e) => e.preventDefault());
 })();
 
 // ------------------------------------------------------------------ the home page's fan of covers

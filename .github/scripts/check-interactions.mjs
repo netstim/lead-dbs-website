@@ -307,14 +307,15 @@ await journey('home with motion: the figure grid has a pause button that stops i
   await page.mouse.move(0, 0);
   await page.evaluate(() => document.activeElement?.blur());
   if (!(await until(page, () => document.querySelectorAll('.made-tile').length > 0))) { fail('no figure tiles'); return; }
-  const transforms = () => page.evaluate(() => [...document.querySelectorAll('.made-tile')].slice(0, 4).map(t => t.style.transform).join('|'));
+  // where the tiles are on the screen (the drift moves the plane under them, home.js)
+  const transforms = () => page.evaluate(() => [...document.querySelectorAll('.made-tile')].slice(0, 4).map((t) => { const r = t.getBoundingClientRect(); return `${r.left.toFixed(2)},${r.top.toFixed(2)}`; }).join('|'));
   const moving = await transforms();
   await page.waitForTimeout(700);
   if (moving === await transforms()) fail('figures never moved before pause');
   await (await page.evaluateHandle(find)).asElement().click();
   if (await page.locator('[data-made-pause]').getAttribute('aria-label') !== 'Play the figures') fail('pause label did not change');
   await page.waitForTimeout(300);
-  const at = () => page.evaluate(() => [...document.querySelectorAll('.made-tile')].slice(0, 4).map((t) => t.style.transform).join('|'));
+  const at = transforms;
   const a = await at();
   await page.waitForTimeout(1200);
   if (a !== await at()) fail('the figures still drift after "Pause figures"');
