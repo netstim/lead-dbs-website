@@ -48,10 +48,10 @@ import { showPlayState } from '../lib/play-state.js';
   const draw = () => {
     const fw = grid.clientWidth, fh = grid.clientHeight, step = W + G, seen = new Set();
     for (let i = Math.floor(-ox / step) - 1; i <= Math.floor((fw - ox) / step); i++) {
-      const c = cols[((i % K) + K) % K], x = Math.round(i * step + ox), base = oy + c.shift;
+      const c = cols[((i % K) + K) % K], x = i * step + ox, base = oy + c.shift;
       for (let r = Math.floor(-base / c.period) - 1; r <= Math.floor((fh - base) / c.period); r++) {
         c.items.forEach((it, j) => {
-          const y = Math.round(base + r * c.period + it.y);
+          const y = base + r * c.period + it.y;
           if (y + it.h < 0 || y > fh) return;
           const key = `${i}:${r}:${j}`;
           let el = live.get(key);
@@ -91,8 +91,13 @@ import { showPlayState } from '../lib/play-state.js';
         if (drifting && !held) { ox -= 0.012 * dt; oy -= 0.007 * dt; }
       }
     }
+    const going = near && !document.hidden && (dragging || (drifting && !held) || vx || vy);
+    // in motion the tiles sit on fractions of a pixel: rounded, a drift of 12px a second moves in visible
+    // one-pixel steps, and x and y on different frames (a stutter); once it stops they snap to whole
+    // pixels again, so the figures at rest stay sharp
+    if (!going) { ox = Math.round(ox); oy = Math.round(oy); }
     draw();
-    if (near && !document.hidden && (dragging || (drifting && !held) || vx || vy)) raf = requestAnimationFrame(frame);
+    if (going) raf = requestAnimationFrame(frame);
     else last = 0;
   };
   const kick = () => { if (built && !raf) raf = requestAnimationFrame(frame); };

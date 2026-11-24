@@ -292,7 +292,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
   .data-band__counts { display: none; }
 }
 /* The voices: the render on the black band, the heading over it, and under it two rows of key phrases
-   drifting slowly across the whole width in opposite directions (layouts/home.html). Each row's track
+   drifting slowly across the content's width in opposite directions (layouts/home.html). Each row's track
    holds its phrases twice and moves by half its width, so it loops without a seam; the edges fade.
    Hover holds both rows; with reduced motion they stand and scroll sideways. */
 .home > .render-band { position: relative; isolation: isolate; overflow: hidden; padding-block: var(--rhythm); background: var(--render); color: var(--on-render);
@@ -305,6 +305,8 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .home .render-band__h { max-width: 20ch; margin: 0; color: var(--on-render); font: var(--title-weight) var(--t-h2)/1.12 var(--font-display); letter-spacing: var(--display-tracking); text-wrap: balance; }
 .drift { display: grid; gap: clamp(28px, 3vw, 40px); margin-top: clamp(40px, 5vw, 64px);
   -webkit-mask-image: linear-gradient(90deg, transparent, var(--render) 8%, var(--render) 92%, transparent); mask-image: linear-gradient(90deg, transparent, var(--render) 8%, var(--render) 92%, transparent); }
+/* the rows keep to the content's width (.wrap, base.css), like the heading above and the grid below */
+.drift { width: min(100% - 2 * var(--gut), var(--container)); margin-inline: auto; }
 .drift__row { overflow: hidden; }
 .drift__track { display: flex; width: max-content; animation: drift var(--dur, 150s) linear infinite; }
 .drift__row--rev .drift__track { animation-direction: reverse; }
@@ -344,7 +346,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
      one row at one height, their journal and year under each, and an outline pill to the gallery. */
   .home > .render-band { padding-block: var(--s-9) 0; background: var(--render); }
   .render-band__img, .render-band__actions { display: none; }
-  .drift { display: flex; gap: var(--s-3); margin-top: var(--s-6); padding: 0 var(--gut); overflow-x: auto; overscroll-behavior-x: contain;
+  .drift { display: flex; width: auto; gap: var(--s-3); margin-top: var(--s-6); padding: 0 var(--gut); overflow-x: auto; overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory; scroll-padding-inline: var(--gut); scrollbar-width: none; -webkit-mask-image: none; mask-image: none; }
   .drift::-webkit-scrollbar { display: none; }
   .drift:focus-visible { outline-offset: -2px; }
