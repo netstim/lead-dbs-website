@@ -1,7 +1,7 @@
 ---
 title: "First steps"
 linkTitle: "First steps"
-description: "From download to your first electrode localization: install Lead-DBS, practise on the open Lead Tutor dataset, and fix common errors."
+description: "From download to your first electrode localization: install Lead-DBS, practice on the open Lead Tutor dataset, and fix common errors."
 date: "2026-11-11"
 weight: 1
 keywords: ["getting started", "first steps", "install", "installation", "tutorial", "quick start", "documentation", "docs", "troubleshooting", "error", "errors", "problem", "not working", "FAQ", "frequently asked questions", "ea_restoreprefs", "ea_setpath", "Lead Tutor dataset", "exercise"]
@@ -42,13 +42,13 @@ steps:
     actions:
       - {text: "See a report", page: "/helpsupport/learn-lead-dbs-yourself/#your-report"}
       - {text: "Walkthrough videos", page: "/helpsupport/knowledge-base/walkthrough-videos/"}
-# If something goes wrong: the problem and the command to type in MATLAB
+# Common setup errors: the problem and the command to type in MATLAB
 fixes:
   - {problem: "Errors after an update", command: "ea_restoreprefs(1,1)"}
   - {problem: "Unrecognized function or variable", command: "ea_setpath"}
 # found by the site search as a result of its own (layouts/home.searchindex.json)
 searchEntries:
-  - {title: "Troubleshooting: if something goes wrong", id: "troubleshooting", keywords: "troubleshooting FAQ frequently asked questions error errors problem not working ea_restoreprefs ea_setpath unrecognized function", description: "Errors after an update, unrecognized functions, and where to ask when you are stuck."}
+  - {title: "Troubleshooting: common setup errors", id: "troubleshooting", keywords: "troubleshooting FAQ frequently asked questions error errors problem not working ea_restoreprefs ea_setpath unrecognized function", description: "Errors after an update, unrecognized functions, and where to ask when you are stuck."}
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
   - {page: "/manual/", name: "Manual"}

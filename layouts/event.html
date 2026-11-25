@@ -28,7 +28,7 @@
             <div class="ev-facts__row"><dt>Host</dt><dd>{{ if .url }}<a href="{{ .url }}">{{ .name }}</a>{{ else }}{{ .name }}{{ end }}</dd></div>
             {{- end }}
             {{- if not $ev.over }}
-            <div class="ev-facts__row" data-ev-live data-ev-ends="{{ $ev.iso_ends }}"><dt>Registration</dt><dd>{{ if $e.register_url }}Open{{ if $e.online }}: the {{ if strings.Contains (lower $e.where) "zoom" }}Zoom {{ end }}link comes by email{{ end }}{{ else if $e.online }}Opens soon; until then the link is shared in <a href="{{ (site.GetPage "/helpsupport/slack-user-channel").RelPermalink }}">the user Slack</a>{{ else }}Not open yet{{ end }}</dd></div>
+            <div class="ev-facts__row" data-ev-live data-ev-ends="{{ $ev.iso_ends }}"><dt>Registration</dt><dd>{{ if $e.register_url }}Open{{ if $e.online }}: register with your email to receive the {{ if strings.Contains (lower $e.where) "zoom" }}Zoom {{ end }}link{{ end }}{{ else if $e.online }}Opens soon; until then the link is shared in <a href="{{ (site.GetPage "/helpsupport/slack-user-channel").RelPermalink }}">the user Slack</a>{{ else }}Not open yet{{ end }}</dd></div>
             {{- end }}
           </dl>
           <p class="ev-head__over"{{ if $ev.over }} id="register"{{ else }} hidden{{ end }} data-ev-over-note data-ev-ends="{{ $ev.iso_ends }}">This event took place on <time datetime="{{ $ev.iso_start }}">{{ $ev.when }}</time>.{{ with $events }} The next dates are on <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>.{{ end }}</p>

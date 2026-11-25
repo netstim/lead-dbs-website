@@ -1,0 +1,71 @@
+{{- /* The menu (hugo.toml [menus.main]), drawn twice: in the header bar ("id" "desktop") and in the phone
+       sheet ("phone" true), matching NetStim's header navigation pattern.
+       An item with children:
+       - header bar: the title stays a link to the item's page; the chevron button after it opens the sheet
+         of child links (visible on touch screens and keyboard focus; with a mouse the sheet opens on hover).
+       - phone sheet: the whole row is a button that unfolds the child links; the current group starts open. */ -}}
+{{- $page := .page -}}
+{{- $here := $page.RelPermalink -}}
+{{- $phone := .phone -}}
+{{- $id := .id -}}
+{{- $best := "" -}}
+{{- with (partial "nav-place.html" $page).group -}}
+  {{- if ne .Params.role "action" }}{{ $best = .Identifier | default .Name }}{{ end -}}
+{{- end -}}
+{{- $chev := `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>` | safeHTML -}}
+<ul class="nav-list">
+  {{- range $i, $item := site.Menus.main }}
+    {{- if ne .Params.role "action" }}
+      {{- $key := .Identifier | default .Name }}
+      {{- $current := eq $key $best }}
+      {{- $sub := printf "nav-%s-%d" $id $i }}
+      {{- $label := cond $phone .Name (.Params.short | default .Name) }}
+      {{- $hasSub := .HasChildren }}
+      {{- $children := .Children }}
+      <li class="nav-item{{ if $hasSub }} has-sub{{ end }}{{ if $current }} is-current{{ end }}">
+        <div class="nav-row">
+          {{- if and $phone $hasSub }}
+            <button type="button" class="nav-group" aria-expanded="{{ if $current }}true{{ else }}false{{ end }}" aria-controls="{{ $sub }}"><span>{{ partial "nobreak-html.html" ($label | htmlEscape) }}</span>{{ $chev }}</button>
+          {{- else }}
+            <a class="nav-link" href="{{ .URL }}"{{ if eq $here .URL }} aria-current="page"{{ end }}>{{ partial "nobreak-html.html" ($label | htmlEscape) }}</a>
+            {{- if $hasSub }}<button type="button" class="nav-toggle" aria-expanded="false" aria-controls="{{ $sub }}" aria-label="{{ .Name }} pages">{{ $chev }}</button>{{ end }}
+          {{- end }}
+        </div>
+        {{- if $hasSub }}
+          {{- $wide := gt (len $children) 5 }}
+          <div class="nav-panel{{ if $wide }} nav-panel--wide{{ end }}" id="{{ $sub }}"{{ if and $phone (not $current) }} hidden{{ end }}>
+            <ul class="nav-sub{{ if $wide }} nav-sub--cols{{ end }}">
+              {{- range $children }}
+                {{- $dup := eq .Params.role "sheet-word" }}
+                {{- if not (and $phone $dup) }}
+                <li>
+                  <a class="nav-sub__link" href="{{ .URL }}"{{ if eq $here .URL }} aria-current="page"{{ end }}>
+                    <span class="nav-sub__title">{{ partial "menu-label.html" . }}</span>
+                    {{- if ne .Params.bandLine false }}{{ with .Params.card }}<span class="nav-sub__text">{{ partial "nobreak-html.html" (. | htmlEscape) }}</span>{{ end }}{{ end }}
+                  </a>
+                </li>
+                {{- end }}
+              {{- end }}
+            </ul>
+          </div>
+        {{- end }}
+      </li>
+      {{- if $phone }}
+        {{- range .Children }}{{ if eq .Params.role "sheet-word" }}
+        <li class="nav-item">
+          <div class="nav-row">
+            <a class="nav-link" href="{{ .URL }}"{{ if eq $here .URL }} aria-current="page"{{ end }}>{{ partial "menu-label.html" . }}</a>
+          </div>
+        </li>
+        {{- end }}{{ end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  {{- if $phone }}{{ with site.Params.github }}
+  <li class="nav-item">
+    <div class="nav-row">
+      <a class="nav-link" href="{{ . }}" rel="noopener">Lead-DBS on GitHub</a>
+    </div>
+  </li>
+  {{- end }}{{ end }}
+</ul>

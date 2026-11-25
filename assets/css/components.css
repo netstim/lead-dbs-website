@@ -1,9 +1,6 @@
-/* Pieces several page families share (shell): captions, links that leave the site, the citation box,
+/* Pieces several page families share (shell): links that leave the site, the citation box,
    buttons in text, videos and the video popup, form notes, the notice, the "Related" rows and the pause
    button of a clip. */
-/* one caption style for the pictures of the gallery and the home page: --t-note, muted, at a readable
-   measure; a figure from a paper adds its short citation as the caption's second line */
-.caption { margin: 0; font-size: var(--t-note); line-height: 1.5; color: var(--muted); max-width: 60ch; }
 /* a link to another site (menus, footer, rows, buttons): the ↗ after its label */
 .ext-mark { display: inline-block; margin-left: 0.25em; font-size: var(--t-small); color: var(--muted); }
 /* on a button or a .link it stands in the chevron's place (base.css), the flex gap before it */

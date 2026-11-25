@@ -1,276 +1,206 @@
-/* The header (layouts/_partials/header.html, assets/js/main/header.js), on every page but the manual's.
-   Phones included: the rules for below 640px close this file. */
-/* ---------------------------------------------------------------- header
-   1200 and up: logo, the six words beside it (short names from hugo.toml params.short: "Docs",
-   "Atlases"), each with its chevron, then search and the "Download" pill at the right end; below 1280
-   the words are a size smaller. Below 1200: logo, search, "Download" and the menu button; the words open
-   in a sheet. Below 640: logo, search, menu button. GitHub is not an icon of the bar: the sheet and the
-   footer link it.
-   The script for the sheet and the panels is in assets/js/main/header.js. */
-.nav { position: fixed; inset: 0 0 auto; z-index: 50; height: var(--nav); background: var(--bg); color: var(--ink); border-bottom: 1px solid var(--line); }
-.nav__bar { height: 100%; display: flex; align-items: center; gap: var(--s-3); }
-html.nav-ready .nav { transition: background-color 360ms ease, color 360ms ease, border-color 360ms ease, backdrop-filter 360ms ease, -webkit-backdrop-filter 360ms ease; }
-/* A translucent, blurred surface lets the header change with the page without a hard flash. */
-.nav.is-scrolled:not(.is-open) { background-color: color-mix(in srgb, var(--p-bg) 90%, transparent); -webkit-backdrop-filter: blur(18px) saturate(1.2); backdrop-filter: blur(18px) saturate(1.2); }
-/* over the black hero and the black page heads (.is-dark, set by assets/js/main/header.js while such a ground
-   lies under the header) the bar takes the black. A page that starts on such a ground (body.top-dark,
-   layouts/baseof.html) has it from the first paint, before the script runs (html.nav-ready). On the home
-   page's hero the bar is clear at the very top, a soft shade behind its words, so the render runs up to
-   the window's edge; it turns solid (blurred black) as soon as the page scrolls. Its bands (at 1200 and up) take the same ground; the open
-   sheet stay light. The home rules name html and body, so they outrank the black bar's two rules. */
-.nav.is-dark:not(.is-open), html:not(.nav-ready) .top-dark .nav:not(.is-open) { background-color: var(--render); color: var(--on-render); border-bottom-color: transparent;
-  --ink: #fff; --surface: rgb(255 255 255 / .12); --line: rgb(255 255 255 / .16); --line-strong: rgb(255 255 255 / .4); }
-/* Script supplies the portion of dark page beneath the glass. Keep the same blur in both
-   themes, so crossing the section boundary changes the tint rather than replacing the surface. */
-html.nav-ready body .nav.is-scrolled:not(.is-open),
-html.nav-ready body.kind-home .nav.is-scrolled:not(.is-open) {
-  background-color: color-mix(in srgb, rgb(0 0 0 / .82) calc(var(--nav-darkness, 0) * 100%), color-mix(in srgb, var(--p-bg) 90%, transparent));
-  -webkit-backdrop-filter: blur(18px) saturate(1.2); backdrop-filter: blur(18px) saturate(1.2);
-  transition: background-color 100ms linear, color 140ms ease, border-color 140ms ease;
+/* The header (layouts/_partials/header.html, nav.html, assets/js/main/header.js): adapted from the
+   NetStim website header. A fixed, solid bar with no bottom hairline; the logo sits on the left edge
+   of the content, and the navigation sits on the right beside search, theme toggle, and Download.
+   Pointing at an item (or opening it) dims the others; the current section is underlined in the accent
+   colour. An item with pages under it opens a full-width sheet drawn down over the page with a dimmed
+   scrim below it and large, clean titles under the menu. */
+.site-header {
+  --scrim: rgb(22 24 25 / .3);
+  position: fixed; inset: 0 0 auto; z-index: 50; height: var(--nav);
+  overflow-x: clip; background: var(--bg); color: var(--ink);
+  transition: background-color 240ms ease, color 240ms ease;
 }
-@media (prefers-reduced-motion: reduce) { html.nav-ready .nav, html.nav-ready body .nav.is-scrolled:not(.is-open), html.nav-ready body.kind-home .nav.is-scrolled:not(.is-open) { transition: none; } }
-@media (hover: hover) { .nav.is-dark .nav__icon:hover, html:not(.nav-ready) .top-dark .nav .nav__icon:hover { color: var(--on-render); } }
-.nav__logo { display: inline-flex; align-items: center; gap: var(--s-2); flex: none; font: var(--title-weight) var(--t-logo)/1 var(--font-display); letter-spacing: -0.02em; }
-.nav__logo img { height: 34px; width: auto; }
-.nav__item { display: flex; align-items: center; height: 100%; }
-.nav__actions { display: flex; align-items: center; gap: var(--s-2); flex: none; }
-/* the icons and words take the bar's own colour, so they change with it and never stand light on light */
-.nav__icon { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: var(--r-sm); color: inherit; flex: none; }
-@media (hover: hover) { .nav__icon:hover { background: var(--surface); color: var(--action); } }
-.nav__icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-/* the theme toggle (assets/js/main/theme.js): a moon on the light theme, a sun on the dark one */
-.nav__theme .i-sun, [data-theme="dark"] .nav__theme .i-moon { display: none; }
-[data-theme="dark"] .nav__theme .i-sun { display: block; }
-.nav__theme { border: 0; padding: 0; background: none; cursor: pointer; }
-.nav__actions .btn { font-size: var(--t-note); }
-/* the main action: a short pill, "Download", ink on the light bar and white on the black one (the hero and the
-   download page say "Download Lead-DBS" in full; the phone's sheet too) */
-.nav__actions .nav__download { margin-left: var(--s-2); height: var(--btn-h); padding-inline: var(--s-5); border-radius: var(--r-pill);
-  background: var(--p-ink); color: var(--p-bg); }
-.nav__actions .nav__download::after { content: none; }
-@media (hover: hover) { .nav__actions .nav__download:hover { background: color-mix(in oklab, var(--p-ink) 85%, var(--p-bg)); } }
-:is(.nav.is-dark:not(.is-open), html:not(.nav-ready) .top-dark .nav:not(.is-open)) .nav__actions .nav__download { background: var(--on-render); color: var(--render); }
-@media (hover: hover) { :is(.nav.is-dark:not(.is-open), html:not(.nav-ready) .top-dark .nav:not(.is-open)) .nav__actions .nav__download:hover { background: rgb(255 255 255 / .85); } }
-.nav__item.nav__item--sheet, .nav__nojs-menu, .nav__expand, .nav__toggle { display: none; }
-/* without script there is no chevron button, and a panel opens on hover and keyboard focus only, so the
-   word carries no chevron either */
-html:not(.js) .nav__link .chev { display: none; }
+[data-theme="dark"] .site-header { --scrim: rgb(0 0 0 / .56); }
+.site-header.is-dark, html:not(.nav-ready) .top-dark .site-header {
+  --bg: var(--render); --ink: var(--on-render); --muted: var(--p-inv-muted);
+  --surface: rgb(255 255 255 / .12); --line: rgb(255 255 255 / .16); --line-strong: rgb(255 255 255 / .36);
+  --scrim: rgb(0 0 0 / .62);
+  background: var(--render); color: var(--on-render);
+}
+@media (prefers-reduced-motion: reduce) { .site-header { transition: none; } }
+
+.header-inner { display: flex; align-items: center; gap: var(--s-3); height: 100%; }
+.site-logo {
+  display: inline-flex; align-items: center; gap: var(--s-2); flex: none; min-height: 44px;
+  color: inherit; font: var(--title-weight) var(--t-logo)/1 var(--font-display); letter-spacing: var(--display-tracking);
+  white-space: nowrap;
+}
+.site-logo img { width: auto; height: 34px; }
+
+/* "Skip to content" shows over the bar's left end while it has keyboard focus */
+.skip-link {
+  position: absolute; z-index: 2; top: 50%; left: max(var(--gut), (100% - var(--container)) / 2);
+  width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+.skip-link:focus {
+  width: auto; height: var(--btn-h); padding: 0 var(--s-5); clip-path: none; translate: 0 -50%;
+  display: inline-flex; align-items: center; background: var(--p-bg); color: var(--p-ink);
+  border: 1px solid var(--p-ink); border-radius: var(--r-sm); font: 500 var(--t-body)/1 var(--font-text);
+}
+
+.header-actions { display: flex; align-items: center; margin-left: auto; gap: var(--s-1); flex: none; }
+.desktop-nav { position: relative; margin-left: auto; height: 100%; }
+.desktop-nav + .header-actions { margin-left: var(--s-2); }
+
+.icon-button {
+  display: inline-grid; place-items: center; flex: none; width: 44px; height: 44px; padding: 0;
+  appearance: none; border: 0; border-radius: var(--r-sm); background: none; color: inherit; cursor: pointer;
+  transition: background-color var(--t-out) var(--ease), color var(--t-out) var(--ease);
+}
+.icon-button svg { width: 20px; height: 20px; display: block; }
+@media (hover: hover) {
+  .icon-button:hover { background: var(--surface); color: var(--action); }
+  .site-header.is-dark .icon-button:hover,
+  html:not(.nav-ready) .top-dark .site-header .icon-button:hover { color: var(--on-render); }
+}
+
+.nav__download {
+  margin-left: var(--s-2); height: 38px; padding-inline: var(--s-4); border-radius: var(--r-pill);
+  background: var(--p-ink); color: var(--p-bg); font-size: var(--t-small); font-weight: 500;
+}
+.nav__download::after { content: none; }
+@media (hover: hover) { .nav__download:hover { background: color-mix(in oklab, var(--p-ink) 85%, var(--p-bg)); } }
+:is(.site-header.is-dark, html:not(.nav-ready) .top-dark .site-header) .nav__download { background: var(--on-render); color: var(--render); }
+@media (hover: hover) { :is(.site-header.is-dark, html:not(.nav-ready) .top-dark .site-header) .nav__download:hover { background: rgb(255 255 255 / .86); } }
 .nav__dl-more { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-/* "Skip to content" shows over the bar's left end while it has the keyboard focus */
-.skip-link { position: absolute; z-index: 2; top: 50%; left: max(var(--gut), (100% - var(--container)) / 2);
-  width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.skip-link:focus { width: auto; height: var(--btn-h); padding: 0 var(--s-5); clip-path: none; translate: 0 -50%; display: inline-flex; align-items: center;
-  background: var(--p-bg); color: var(--p-ink); border: 1px solid var(--p-ink); border-radius: var(--r-sm); font: 500 var(--t-body)/1 var(--font-text); }
 
-/* the words: a line grows under a word on hover and focus, and stays under the current page's */
-.nav__link { position: relative; display: inline-flex; align-items: center; gap: var(--s-1); height: 36px; padding: 0 var(--s-3); border-radius: var(--r-sm);
-  font-size: var(--t-note); font-weight: 500; color: inherit; white-space: nowrap; transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease); }
-.nav__link::before, .nav__link[aria-current="page"]::after { content: ""; position: absolute; left: var(--s-3); right: var(--s-3); bottom: -2px; height: 2px; border-radius: var(--r-xs); background: currentColor; pointer-events: none; }
-.nav__link::before { transform: scaleX(0); transform-origin: right; transition: transform var(--dur) var(--ease); }
-@media (hover: hover) { :is(.nav__link:hover, .nav__link:focus-visible, .nav__item:hover > .nav__link, .nav__item:focus-within > .nav__link)::before { transform: scaleX(1); transform-origin: left; } }
+.nav-list, .nav-sub { list-style: none; margin: 0; padding: 0; }
+.nav-row { display: flex; align-items: center; }
 
-:is(.nav__link:not(*), .nav__link:focus-visible, .nav__item:not(*) > .nav__link, .nav__item:focus-within > .nav__link)::before  { transform: scaleX(1); transform-origin: left; }
-.nav__link .chev { width: 12px; height: 12px; opacity: .6; transition: transform var(--dur) var(--ease); }
-.menu-col { display: grid; align-content: start; }
-.menu-col a { display: grid; font-weight: 500; transition: color var(--t-out) var(--ease); }
-@media (hover: hover) { .menu-col a:hover { color: var(--action); transition-duration: var(--t-in); } }
-.menu-col > .t-label { color: var(--muted); }
-
-/* 1200 and up: the words in the bar; a word with pages opens a band under the whole header. With script
-   (assets/js/main/header.js) hover is the header's as a whole: a panel opens once the pointer has rested on its
-   word (.is-hovered), at once from its chevron button (.is-expanded), and the spaces between the words
-   keep it open. All panels share one ground, .nav__band: it stays while the pointer moves from word to
-   word at a steady height, while each panel fades out before the next fades in (the
-   old one out, then the new one in, so two never show at once). Without script each panel is a band of
-   its own, on hover and keyboard focus. The band takes the open panel's height. It is the header grown
-   downwards: the header's own ground
-   (black over the renders, light elsewhere), its content on the page's container, one column per section
-   (hugo.toml params.divider), a caption over each, every entry its title, over a line (params.card)
-   where the name needs one (params.bandLine). A band of one section spreads over the full width. */
-@media (min-width: 1200px) {
-  .nav__bar { gap: var(--s-6); }
-  .nav__links { display: flex; align-self: stretch; justify-content: flex-start; flex: none; min-width: 0; }
-  /* a closed panel is not drawn at all (display: none; it fades with allow-discrete), so the band can take
-     the open panel's own height and nothing stale is ever painted */
-  .nav__menu { position: absolute; top: 100%; left: 0; right: 0; z-index: 1;
-    display: none; padding: var(--s-6) 0 var(--s-6); color: var(--ink);
-    opacity: 0; pointer-events: none;
-    transition: opacity 80ms linear, display 80ms allow-discrete; }
-  .nav__menu-cols { width: min(100% - 2 * var(--gut), var(--container)); margin-inline: auto;
-    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-6); align-items: start; }
-@media (hover: hover) { :is(.nav__item.is-hovered, .nav__item.is-expanded, html:not(.js) .nav__item:hover, html:not(.js) .nav__item:focus-within) > .nav__menu {
-    display: block; opacity: 1; pointer-events: auto; transition: opacity 160ms ease 100ms, display 0s allow-discrete; } }
-
-  :is(.nav__item.is-hovered, .nav__item.is-expanded, html:not(.js) .nav__item:not(*), html:not(.js) .nav__item:focus-within) > .nav__menu  {
-    display: block; opacity: 1; pointer-events: auto; transition: opacity 160ms ease 100ms, display 0s allow-discrete; }
-  @starting-style {
-@media (hover: hover) { :is(.nav__item.is-hovered, .nav__item.is-expanded, html:not(.js) .nav__item:hover, html:not(.js) .nav__item:focus-within) > .nav__menu { opacity: 0; } }
- :is(.nav__item.is-hovered, .nav__item.is-expanded, html:not(.js) .nav__item:not(*), html:not(.js) .nav__item:focus-within) > .nav__menu  { opacity: 0; } }
-@media (hover: hover) { :is(.nav__item.is-hovered, .nav__item.is-expanded, html:not(.js) .nav__item:hover, html:not(.js) .nav__item:focus-within) > :is(.nav__link .chev, .nav__expand svg) { transform: rotate(180deg); } }
-
-  :is(.nav__item.is-hovered, .nav__item.is-expanded, html:not(.js) .nav__item:not(*), html:not(.js) .nav__item:focus-within) > :is(.nav__link .chev, .nav__expand svg)  { transform: rotate(180deg); }
-  .nav__item.is-dismissed:not(.is-expanded) > .nav__menu { display: none; opacity: 0; transition: none; }
-  .nav__item.is-dismissed:not(.is-expanded) > :is(.nav__link .chev, .nav__expand svg) { transform: none; }
-  /* the shared ground */
-  /* closed, it is not drawn at all (display: none, faded out and in with allow-discrete), so no capture
-     or compositor ever shows a stale band */
-  .nav__band { position: absolute; top: 100%; left: 0; right: 0; z-index: 0; height: 0; pointer-events: none;
-    display: none; background: var(--bg); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-    box-shadow: var(--shadow-3);
-    opacity: 0; transition: opacity 140ms ease, display 140ms allow-discrete, height 180ms var(--ease); }
-  .nav.band-open .nav__band { display: block; opacity: 1; transition: opacity 160ms ease, display 0s allow-discrete, height 180ms var(--ease); }
-  @starting-style { .nav.band-open .nav__band { opacity: 0; } }
-  html:not(.js) .nav__menu { background: var(--bg); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); box-shadow: var(--shadow-3); }
-  /* while a band is open the header is solid, so the clear bar over the home page's hero and the band
-     read as one surface */
-  html body.kind-home .nav.is-dark:has(.nav__expand[aria-expanded="true"]):not(.is-open),
-  html:not(.js) body.kind-home .nav:has(.nav__item:focus-within .nav__menu) { background: var(--render); }
-  :is(.nav.is-dark, html:not(.nav-ready) .top-dark .nav) .nav__band { background: var(--render); }
-  :is(.nav.is-dark, html:not(.nav-ready) .top-dark .nav) .nav__menu { --muted: var(--p-inv-muted); }
-  html:not(.js) .top-dark .nav .nav__menu { background: var(--render); }
-  /* with script the chevron is a button of its own beside the word (it opens the panel from the keyboard) */
-  html.js .nav__link .chev { display: none; }
-  /* the chevron sits close after its word (about 2px); its button is 24px wide (WCAG 2.5.8), its target 36 × 44: it
-     reaches into the space after it (the next word's start padding), never over a letter */
-  html.js .nav__item:has(> .nav__expand) > .nav__link { padding-right: 1px; }
-  html.js .nav__item:has(> .nav__expand) > .nav__link::before, html.js .nav__item:has(> .nav__expand) > .nav__link[aria-current="page"]::after { right: 1px; }
-  .nav__expand { position: relative; display: inline-grid; place-items: center start; width: 24px; height: 36px; margin-right: var(--s-1); padding: 0; border: 0; border-radius: var(--r-sm);
-    background: none; color: inherit; cursor: pointer; }
-  .nav__expand { z-index: 1; }
-  .nav__expand::before { content: ""; position: absolute; inset: -4px -10px -4px -4px; }
-  .nav__expand svg { width: 12px; height: 12px; opacity: .6; transition: transform var(--dur) var(--ease); }
-@media (hover: hover) { .nav__expand:hover svg { opacity: 1; } }
-  .nav__expand:focus-visible { outline-offset: -2px; }
-  /* a section: its caption, then its entries (more than three: in two columns) */
-  .nav__menu .menu-col { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; column-gap: var(--s-6); row-gap: var(--s-5); min-width: 0; }
-  .nav__menu .menu-col--two { grid-column: span 2; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .nav__menu .menu-col--all { grid-column: 1 / -1; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); }
-  .nav__menu .menu-caption { grid-column: 1 / -1; min-height: 1.4em; margin-bottom: var(--s-1); color: var(--muted); }
-  .nav__menu .menu-entry { display: grid; align-content: start; gap: var(--s-1); font-weight: 400; }
-  .nav__menu .menu-entry__title { display: inline-flex; align-items: center; gap: var(--s-2); font-size: var(--t-body); font-weight: 500; line-height: 1.4; }
-  .nav__menu .menu-entry__text { font-size: var(--t-small); line-height: 1.45; color: var(--muted); text-wrap: pretty; }
-@media (hover: hover) { .nav__menu .menu-entry:hover { color: inherit; } }
-@media (hover: hover) { .nav__menu .menu-entry:hover .menu-entry__title { color: var(--action); } }
-@media (hover: hover) { .nav.is-dark .nav__menu .menu-entry:hover .menu-entry__title { color: var(--on-render); } }
-  .nav__menu .menu-entry .m-arrow { color: var(--action); opacity: 0; transition: opacity var(--t-out) var(--ease); }
-  .nav.is-dark .nav__menu .menu-entry .m-arrow { color: var(--on-render); }
-@media (hover: hover) { .nav__menu .menu-entry:is(:hover, :focus-visible) .m-arrow { opacity: 1; transition-duration: var(--t-in); } }
-
-  .nav__menu .menu-entry:is(:not(*), :focus-visible) .m-arrow  { opacity: 1; transition-duration: var(--t-in); }
-@media (hover: hover) { .nav__menu .menu-entry:is(:hover, :focus-visible) .m-arrow__stem { opacity: 1; transform: none; transition-duration: var(--t-in); } }
-
-  .nav__menu .menu-entry:is(:not(*), :focus-visible) .m-arrow__stem  { opacity: 1; transform: none; transition-duration: var(--t-in); }
-@media (hover: hover) { .nav__menu .menu-entry:is(:hover, :focus-visible) .m-arrow__head { transform: translateX(3px); transition-duration: var(--t-in); } }
-
-  .nav__menu .menu-entry:is(:not(*), :focus-visible) .m-arrow__head  { transform: translateX(3px); transition-duration: var(--t-in); }
-  .nav__menu .t-label a { color: var(--muted); font-weight: 500; padding-bottom: 2px; }
-@media (hover: hover) { .nav__menu .t-label a:hover { color: var(--action); } }
+/* the desktop bar: plain words right-aligned next to search, theme and Download. The chevron button of an
+   item with pages under it shows on touch screens (where nothing hovers); with a mouse it stays hidden
+   until keyboard focus reaches it. */
+.desktop-nav > .nav-list { display: flex; align-items: center; height: 100%; }
+.desktop-nav .nav-item { display: flex; align-items: center; height: 100%; }
+.desktop-nav .nav-row { position: relative; height: 44px; transition: opacity 160ms ease; }
+.desktop-nav .nav-link {
+  position: relative; display: inline-flex; align-items: center; gap: var(--s-1); height: 100%; padding: 0 var(--s-3);
+  border-radius: var(--r-sm); color: inherit; font-size: var(--t-body); font-weight: 500;
+  letter-spacing: -.011em; text-decoration: none; white-space: nowrap;
 }
-@media (min-width: 1200px) and (prefers-reduced-motion: reduce) { .nav .nav__menu, .nav .nav__band { transition: none; } }
-@media (min-width: 1200px) and (max-width: 1439px) {
-  .nav__link { padding: 0 var(--s-2); }
-  .nav__expand { margin-right: 0; }
-  .nav__link::before { left: var(--s-2); right: var(--s-2); }
+.desktop-nav .has-sub .nav-link { padding-right: 0; }
+.desktop-nav .is-current > .nav-row > .nav-link::after {
+  content: ""; position: absolute; inset: auto var(--s-3) var(--s-2); height: 2px; border-radius: var(--r-xs); background: var(--accent);
 }
-/* 1200 to 1279: the words a size smaller and the bar's parts closer, so logo, words, search and Download
-   fit the 1040px of the bar without touching */
-@media (min-width: 1200px) and (max-width: 1279px) {
-  .nav__bar { gap: var(--s-3); }
-  .nav__link { font-size: var(--t-small); }
-  .nav__actions { gap: 0; margin-left: auto; }
-  .nav__actions .nav__download { margin-left: var(--s-1); padding-inline: var(--s-4); }
+.desktop-nav .has-sub.is-current > .nav-row > .nav-link::after { right: 0; }
+.nav-toggle {
+  display: grid; place-items: center; flex: none; width: 44px; height: 100%; margin: 0 -6px 0 -10px; padding: 0;
+  appearance: none; border: 0; border-radius: var(--r-sm); background: none; color: var(--muted); cursor: pointer;
 }
-/* 1200 and up: the words beside the logo, the actions at the right end, so the bar reads left to right:
-   the name, what is here, then the one thing to do */
-@media (min-width: 1200px) {
-  .nav__links { margin-left: var(--s-4); gap: var(--s-1); }
-  .nav__actions { margin-left: auto; }
+.nav-toggle svg, .nav-group svg { flex: none; stroke-width: 2; transition: transform 200ms cubic-bezier(.2, .8, .2, 1); }
+.nav-toggle svg { width: 14px; height: 14px; }
+:is(.nav-toggle, .nav-group)[aria-expanded="true"] svg { transform: rotate(180deg); }
+.desktop-nav .nav-link:focus-visible { outline-offset: -2px; border-radius: var(--r-sm); }
+.nav-toggle:focus-visible { outline-offset: -2px; border-radius: var(--r-xs); }
+.desktop-nav.has-open .nav-item:not(.is-open) > .nav-row { opacity: .55; }
+@media (hover: hover) and (pointer: fine) {
+  .desktop-nav .has-sub .nav-link { padding-right: var(--s-3); }
+  .desktop-nav .has-sub.is-current > .nav-row > .nav-link::after { right: var(--s-3); }
+  .nav-toggle { position: absolute; top: var(--s-2); right: -9px; width: 20px; height: 26px; margin: 0; border-radius: var(--r-xs); opacity: 0; }
+  .nav-toggle svg { width: 12px; height: 12px; }
+  .nav-toggle:focus-visible { opacity: 1; }
 }
 
-/* below 1200: the menu button opens the words in a sheet over the page; a word's pages open with the
-   chevron beside it */
-@media (max-width: 1199px) {
-  .nav__links { display: none; }
-  .nav__actions { margin-left: auto; }
-  .nav__toggle { display: inline-grid; place-items: center; width: 44px; height: 44px; flex: none; border-radius: var(--r-sm);
-    border: 1px solid var(--line-strong); background: transparent; color: var(--ink); cursor: pointer; }
-  .nav.is-open .nav__links { display: flex; flex-direction: column; position: fixed; inset: var(--nav) 0 auto; height: calc(100dvh - var(--nav)); overflow-y: auto; overscroll-behavior: contain;
-    padding: var(--s-4) var(--gut) var(--s-8); background: var(--bg);
-    transition: opacity 200ms var(--ease), transform 200ms var(--ease); }
-  @starting-style { .nav.is-open .nav__links { opacity: 0; transform: translateY(-8px); } }
-  .nav.is-open .nav__item { display: grid; grid-template-columns: 1fr auto; height: auto; border-bottom: 1px solid var(--line); }
-  .nav.is-open .nav__link { height: 56px; padding: 0; font-size: 20px; } /* design-exempt: the header's own sizes */
-  .nav.is-open .nav__link::before, .nav.is-open .nav__link .chev { display: none; }
-  .nav.is-open .nav__link[aria-current="page"]::after { left: 0; right: auto; width: 24px; bottom: 10px; }
-  .nav.is-open .nav__expand { display: inline-grid; place-items: center; width: 44px; height: 56px; padding: 0; border: 0; background: none; color: var(--ink); cursor: pointer; }
-  .nav__expand svg { width: 16px; height: 16px; transition: transform var(--dur) var(--ease); }
-  .nav__item.is-expanded .nav__expand svg { transform: rotate(180deg); }
-  .nav.is-open .nav__menu { grid-column: 1 / -1; display: none; padding: 0 0 var(--s-4); }
-  .nav.is-open .nav__item.is-expanded .nav__menu { display: block; }
-  .nav__menu-cols { display: grid; gap: var(--s-3); }
-  .nav.is-open .menu-col { gap: var(--s-2); }
-  .nav.is-open .menu-col a { padding: 10px 0; }
-  .nav.is-open .menu-col > p.t-label { margin: var(--s-2) 0 0; }
-  .nav.is-open .menu-col > p.t-label a { color: var(--muted); }
-  html:has(body.nav-locked), body.nav-locked { overflow: hidden; overscroll-behavior: none; }
+/* the sheet: closed it is out of sight and out of the Tab order. The list hangs cleanly under the menu
+   on the right; the surface behind it spans the full viewport width, and its shadow dims the page below
+   the bar. Open, the surface fades in and the list settles 8px down; switching sheets crossfades the list;
+   closing fades the whole sheet out. */
+.desktop-nav .nav-panel { position: absolute; top: 100%; left: 0; right: 0; z-index: 1; visibility: hidden; }
+.desktop-nav .nav-panel--wide { right: -140px; }
+.desktop-nav .nav-panel::before {
+  content: ""; position: absolute; inset: 0 -100vw; background: var(--bg); border-bottom: 1px solid var(--line);
+  box-shadow: 0 0 0 100vmax var(--scrim); clip-path: inset(0 -100vmax -100vmax);
 }
-/* a phone: the name stays, the search and menu buttons; GitHub and Download are in the sheet, in a bar
-   along its bottom edge */
+@supports not (overflow-x: clip) {
+  .desktop-nav .nav-panel::before { inset: 0 -10px; border: 1px solid var(--line); border-radius: var(--r-md); }
+}
+.desktop-nav .is-open > .nav-panel { visibility: visible; }
+.desktop-nav .is-open > .nav-panel::before { animation: nav-fade 200ms ease both; }
+.desktop-nav .is-open > .nav-panel > .nav-sub { animation: nav-panel-in 280ms cubic-bezier(.2, .8, .2, 1) both; }
+.desktop-nav .is-open.is-switch > .nav-panel::before { animation: none; }
+.desktop-nav .is-open.is-switch > .nav-panel > .nav-sub { animation: nav-fade 160ms ease both; }
+.desktop-nav .is-closing > .nav-panel { visibility: visible; pointer-events: none; animation: nav-out 140ms ease both; }
+/* without scripts the sheet opens on keyboard focus (and on hover, below) */
+.desktop-nav:not(.is-ready) .has-sub:focus-within > .nav-panel { visibility: visible; }
+@keyframes nav-panel-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+@keyframes nav-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes nav-out { to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .desktop-nav .is-open > .nav-panel::before,
+  .desktop-nav .is-open > .nav-panel > .nav-sub,
+  .desktop-nav .is-open.is-switch > .nav-panel > .nav-sub,
+  .desktop-nav .is-closing > .nav-panel { animation: none; }
+}
+
+.desktop-nav .nav-sub { position: relative; display: grid; padding: var(--s-3) 0 var(--s-7); }
+.desktop-nav .nav-sub--cols { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-5); align-items: start; }
+.nav-sub__link { display: grid; gap: var(--s-1); color: var(--ink); text-decoration: none; }
+.desktop-nav .nav-sub__link { padding: var(--s-2) var(--s-3); border-radius: var(--r-sm); transition: opacity 160ms ease; }
+.nav-sub__link:focus-visible { outline-offset: -2px; border-radius: var(--r-sm); }
+.nav-sub__title { display: flex; align-items: center; gap: var(--s-2); }
+.desktop-nav .nav-sub__title { font-size: var(--t-sub); font-weight: 500; line-height: 1.25; letter-spacing: var(--display-tracking); }
+.desktop-nav .nav-sub--cols .nav-sub__title { font-size: var(--t-lead); }
+.nav-sub__text { color: var(--muted); font-size: var(--t-small); }
+.desktop-nav .nav-sub__link[aria-current="page"] .nav-sub__title { color: var(--action); }
+.site-header.is-dark .desktop-nav .nav-sub__link[aria-current="page"] .nav-sub__title { color: var(--on-render); text-decoration: underline; text-underline-offset: 4px; }
+.mobile-toggle { display: none; }
+
+@media (hover: hover) {
+  .desktop-nav > .nav-list:hover > .nav-item:not(:hover) > .nav-row { opacity: .55; }
+  .desktop-nav:not(.is-ready) .has-sub:hover > .nav-panel { visibility: visible; }
+  .desktop-nav .nav-sub:has(.nav-sub__link:hover) .nav-sub__link:not(:hover) { opacity: .5; }
+  .phone-menu :is(.nav-link, .nav-group, .nav-sub__link):hover { color: var(--action); }
+}
+
+/* the phone menu: a full-screen sheet whose top bar matches the header (logo left, close right).
+   Full-width rows with hairlines between; a row with pages under it unfolds them (current group starts open). */
+.phone-menu {
+  width: 100%; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0 var(--gut) var(--s-6);
+  border: 0; border-radius: 0; background: var(--bg); color: var(--ink); overflow-y: auto;
+}
+.phone-menu::backdrop { background: transparent; }
+.phone-menu:focus-visible { outline: none; }
+.phone-menu .dialog-top {
+  position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between;
+  height: var(--nav); background: var(--bg); border-bottom: 1px solid var(--line);
+  margin-inline: calc(-1 * var(--gut)); padding-inline: var(--gut);
+}
+.phone-menu > nav { margin-top: var(--s-2); }
+.phone-menu .nav-item { border-bottom: 1px solid var(--line); }
+.phone-menu :is(.nav-link, .nav-group) {
+  flex: 1; display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); min-height: 60px; padding: 0;
+  appearance: none; border: 0; background: none; color: var(--ink); font: inherit; font-size: var(--t-sub);
+  font-weight: 500; letter-spacing: var(--display-tracking); text-align: left; text-decoration: none; cursor: pointer;
+}
+.nav-group svg { width: 20px; height: 20px; color: var(--muted); }
+.nav-group:active { opacity: .7; }
+.phone-menu .nav-panel { padding: 0 0 var(--s-3); animation: nav-panel-in 200ms cubic-bezier(.2, .8, .2, 1); }
+.phone-menu .nav-sub__link { display: flex; align-items: center; min-height: 44px; padding: 0; border-radius: 0; color: var(--muted); }
+.phone-menu .nav-sub__link:active { opacity: .7; }
+.phone-menu .nav-sub__title { font-size: var(--t-doc); font-weight: 400; }
+.phone-menu .nav-sub__text { display: none; }
+.phone-menu :is(.nav-link, .nav-sub__link)[aria-current="page"] { color: var(--action); }
+.phone-menu__foot { margin-top: var(--s-6); padding-bottom: env(safe-area-inset-bottom); }
+.phone-menu__download { width: 100%; height: var(--btn-h); border-radius: var(--r-pill); }
+
+/* the theme button shows what it switches to */
+.theme-toggle .i-sun, [data-theme="dark"] .theme-toggle .i-moon { display: none; }
+[data-theme="dark"] .theme-toggle .i-sun { display: block; }
+
+@media (max-width: 1149px) and (min-width: 1024px) {
+  .desktop-nav .nav-link { padding: 0 10px; font-size: var(--t-note); }
+  .desktop-nav .is-current > .nav-row > .nav-link::after { inset: auto 10px 7px; }
+  .desktop-nav .nav-panel--wide { right: -110px; }
+}
+@media (max-width: 1023px) {
+  .desktop-nav { display: none; }
+  .mobile-toggle { display: grid; }
+  .desktop-nav + .header-actions { margin-left: auto; }
+}
 @media (max-width: 639px) {
-  .nav__bar { gap: var(--s-2); }
-  .nav__logo { min-height: 44px; gap: 6px; white-space: nowrap; }
-  .nav:not(.is-open) .nav__actions > .nav__download { display: none; }
-  .nav.is-open .nav__links { padding-bottom: calc(48px + 2 * var(--s-4) + var(--s-6)); }
-  .nav.is-open .nav__actions { position: fixed; inset: auto 0 0; z-index: 51; display: grid; grid-template-columns: 1fr; gap: var(--s-2);
-    padding: var(--s-4) var(--gut) calc(var(--s-4) + env(safe-area-inset-bottom)); background: var(--bg); border-top: 1px solid var(--line); }
-  .nav.is-open .nav__actions .nav__icon { display: none; }
-  .nav.is-open .nav__toggle { margin-left: auto; }
-  .nav.is-open .nav__actions .nav__download { width: 100%; height: var(--btn-h); margin: 0; font-size: var(--t-note); }
-  .nav.is-open .nav__actions .nav__dl-more { position: static; width: auto; height: auto; clip-path: none; }
+  .site-header .nav__download { display: none; }
+  .site-logo img { height: 30px; }
 }
-/* the narrowest phones (320px): the theme toggle joins them in the sheet's bar, so the menu button fits */
-@media (max-width: 359px) {
-  .nav:not(.is-open) .nav__actions > .nav__theme { display: none; }
+@media (min-width: 1024px) {
+  .phone-menu { display: none; }
 }
-/* the phone menu without script (no "js" class on <html>, set in head.html): the menu button is not
-   shown; a "Menu" link targets #site-menu, which then opens as the sheet, with every group's pages
-   listed under its word. "Close the menu" leaves the target. */
-.nav__nojs-close { display: none; }
-@media (max-width: 1199px) {
-  html:not(.js) .nav__toggle { display: none !important; }
-  html:not(.js) .nav__nojs-menu { display: inline-flex !important; align-items: center; height: 44px; padding: 0 var(--s-3); border: 1px solid var(--line-strong); border-radius: var(--r-sm); color: inherit; font-weight: 500; font-size: var(--t-note); flex: none; }
-  html:not(.js) .nav__links:target { --ink: var(--p-ink); --bg: var(--p-bg); --surface: var(--p-surface); --muted: var(--p-muted); --line: color-mix(in oklab, var(--p-ink) 11%, transparent);
-    display: flex !important; flex-direction: column; position: fixed; inset: var(--nav) 0 auto; height: calc(100dvh - var(--nav)); overflow-y: auto; overscroll-behavior: contain; padding: var(--s-4) var(--gut) var(--s-8); background: var(--bg); color: var(--ink); }
-  html:not(.js) .nav__links:target .nav__nojs-close { display: inline-flex; align-items: center; align-self: flex-end; min-height: 44px; font-weight: 600; }
-  html:not(.js) .nav__links:target .nav__item { display: block; height: auto; border-bottom: 1px solid var(--line); }
-  html:not(.js) .nav__links:target .nav__link { display: flex; height: 56px; padding: 0; font-size: 20px; color: var(--ink); /* design-exempt: the header's own sizes */ }
-  html:not(.js) .nav__links:target .nav__link::before, html:not(.js) .nav__links:target .chev { display: none; }
-  html:not(.js) .nav__links:target .nav__menu { display: block; padding: 0 0 var(--s-4); }
-  html:not(.js) .nav__links:target .nav__menu-cols { display: grid; gap: var(--s-3); }
-  html:not(.js) .nav__links:target .menu-col { display: grid; gap: var(--s-2); }
-  html:not(.js) .nav__links:target .menu-col a { padding: 10px 0; color: var(--ink); }
-  html:not(.js) .nav__links:target .menu-col > p.t-label { margin: var(--s-2) 0 0; }
-}
-
-/* the header's panels: a line above an entry that starts a small group of its own (hugo.toml
-   params.divider: DISTAL and FOCUS after the catalogues). In the phone sheet the manual is a first-level
-   word right under "Docs and help", so the panel's own copy is hidden there (with and without script). */
-/* the sheet (and the view without script): a section after the first starts under a hairline, its
-   caption (if any) over it; the first section's caption repeats the word above it, so it is left out,
-   and the one-line descriptions are for the desktop band only */
-@media (max-width: 1199px) {
-  .nav__menu .menu-caption { display: block; color: var(--muted); padding-block: var(--s-2) var(--s-1); }
-  .nav__menu :is(.menu-caption--lead, .menu-caption:empty, .menu-entry__text, .menu-entry .m-arrow) { display: none; }
-  .nav__menu .menu-col + .menu-col { border-top: 1px solid var(--line); padding-top: var(--s-2); }
-}
-@media (max-width: 1199px) { .nav__menu a.menu-sheet-dup { display: none !important; } }
-/* a phone: logo, search, a round menu button; the theme toggle joins Download in the sheet's bottom bar */
-@media (max-width: 639px) {
-  .nav:not(.is-open) .nav__actions > .nav__theme { display: none; }
-  .nav__toggle { border: 0; border-radius: var(--r-pill); background: var(--surface); }
-  .nav.is-open .nav__actions { grid-template-columns: minmax(0, 1fr) 48px 48px; align-items: center; }
-  .nav.is-open .nav__actions .nav__download { order: -1; }
-  .nav.is-open .nav__actions .nav__icon { display: inline-grid; place-items: center; width: 48px; height: 48px; border-radius: var(--r-pill); background: var(--surface); }
-}
-
-#site-menu:focus { outline: none; }

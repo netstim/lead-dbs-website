@@ -15,7 +15,7 @@ next:
 ---
 
 There is no single “MNI space”: there are several MNI templates, and they differ slightly. In fMRI or
-diffusion MRI the differences rarely matter; in DBS imaging, where millimetres matter, they can change
+diffusion MRI the differences rarely matter; in DBS imaging, where millimeters matter, they can change
 results. Lead-DBS uses the ICBM 2009b nonlinear asymmetric template.
 
 | Template | What it is | Contrasts | Used by |
@@ -29,9 +29,9 @@ The [BIDS appendix on coordinate systems](https://bids-specification.readthedocs
 
 ## Why the template matters {#space-or-template-what-is-the-difference}
 
-The MNI “space” only defines the boundaries around the brain, in millimetres from a set origin. Depending
+The MNI “space” only defines the boundaries around the brain, in millimeters from a set origin. Depending
 on the template, one coordinate can end up in a different anatomical structure. With smoothing kernels of
-up to 8 × 8 × 8 mm and fMRI voxels of 3 × 3 × 3 mm this rarely matters; in DBS imaging millimetres do,
+up to 8 × 8 × 8 mm and fMRI voxels of 3 × 3 × 3 mm this rarely matters; in DBS imaging millimeters do,
 and Lead-DBS is built to account for that as well as possible (one reason why its output folders can be
 large).
 
@@ -49,7 +49,7 @@ leaves open which of the three 152 templates was used, and within the 2009 serie
 
 Lead-DBS uses the MNI 2009b NLIN asymmetric T2 template as its primary definition of anatomy. The 6th
 generation templates were never an option: they have no T2 version, and the most common DBS target is
-the STN, for which most centres acquire T2-weighted images before and after surgery.
+the STN, for which most centers acquire T2-weighted images before and after surgery.
 
 Most MNI resources, however, exist only in 6th generation space, because SPM and FSL use it. With the
 help of Vladimir Fonov from the MNI we estimated a nonlinear warp from 6th generation MNI T1 to 2009b

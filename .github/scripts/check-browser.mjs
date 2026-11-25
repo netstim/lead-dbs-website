@@ -141,7 +141,7 @@ function measure(okSelectors) {
         style.push('nested code inherits the inline-code size reduction'); break;
       }
     }
-    const search = document.querySelector('.nav__icon[data-search-open]');
+    const search = document.querySelector('.nav [data-search-open]');
     if (!search?.getAttribute('aria-label')) style.push('documentation search has no name when its visible label is hidden');
   }
   return { out, cut, style };
@@ -280,7 +280,7 @@ async function checkManualInteractions() {
     require(await page.locator('#manual-contents').getAttribute('open') === null, 'Section navigation stayed open after choosing a heading');
     const target = await page.locator('#save-and-view-the-result').boundingBox();
     require(target.y >= toolbar.y + toolbar.height, 'Section heading is hidden beneath sticky navigation');
-    await page.locator('.nav__icon[data-search-open]').click();   // the header's search (it searches the whole site)
+    await page.locator('.nav [data-search-open]').click();   // the header's search (it searches the whole site)
     await page.locator('#site-search[open]').waitFor();
     await page.locator('#site-search .search__input').fill('coregistration');
     await page.locator('#site-search .search__hit').first().waitFor();
@@ -344,7 +344,7 @@ async function checkManualLayout() {
     return {
       gutter: innerWidth - document.documentElement.clientWidth,
       viewport: document.documentElement.clientWidth,
-      brand: rect('.nav__logo'), links: rect('.nav__links'),
+      brand: rect('.site-logo'), links: rect('.desktop-nav'),
       download: rect('.nav__download'), rail: rect('.manual-nav'), article: rect('.manual-body'), bar: rect('.nav__bar'),
     };
   });

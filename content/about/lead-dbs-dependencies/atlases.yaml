@@ -1,10 +1,10 @@
 # The software Lead-DBS builds on, shown by the shortcodes atlas-index and atlas-group like the atlas
-# catalogues (fields: ../../helpsupport/knowledge-base/atlasesresources/atlases-2/atlases.yaml; papers: ids in data/papers.yaml).
+# catalogs (fields: ../../helpsupport/knowledge-base/atlasesresources/atlases-2/atlases.yaml; papers: ids in data/papers.yaml).
 groups:
 - id: registration
   title: Registration and normalization
 - id: stimulation
-  title: Stimulation modelling
+  title: Stimulation modeling
 - id: connectivity
   title: Diffusion and fMRI
 - id: statistics
@@ -73,7 +73,7 @@ atlases:
 - id: simbio-and-fieldtrip
   group: stimulation
   name: SimBio and FieldTrip
-  covers: Field modelling and mesh generation
+  covers: Field modeling and mesh generation
   ref: Oostenveld 2010
   get:
   - '[fieldtriptoolbox.org](http://fieldtriptoolbox.org/)'
@@ -114,7 +114,7 @@ atlases:
 - id: gibbs-tracker-dti-fibertools
   group: connectivity
   name: Gibbs tracker (DTI & Fibertools)
-  covers: Global fibre tracking
+  covers: Global fiber tracking
   ref: Reisert 2011
   get:
   - '[uniklinik-freiburg.de](https://www.uniklinik-freiburg.de/mr-en/research-groups/diffperf/fibertools.html)'
@@ -123,7 +123,7 @@ atlases:
 - id: mesotracker-mesoft
   group: connectivity
   name: Mesotracker / MesoFT
-  covers: Diffusion modelling and fibre tracking
+  covers: Diffusion modeling and fiber tracking
   ref: Reisert 2014
   get:
   - '[bitbucket.org](https://bitbucket.org/reisert/mesoft_v1)'
@@ -132,7 +132,7 @@ atlases:
 - id: dsi-studio-generalized-q-ball-imaging-gqi
   group: connectivity
   name: DSI Studio / Generalized Q-Ball Imaging (GQI)
-  covers: Diffusion reconstruction and fibre tracking
+  covers: Diffusion reconstruction and fiber tracking
   ref: Yeh 2010
   get:
   - '[dsi-studio.labsolver.org](http://dsi-studio.labsolver.org/)'
@@ -141,7 +141,7 @@ atlases:
 - id: tensor-based-dti-tractography
   group: connectivity
   name: Tensor-based DTI tractography
-  covers: Fibre tracking from diffusion tensors
+  covers: Fiber tracking from diffusion tensors
   get:
   - '[mathworks.com](http://www.mathworks.com/matlabcentral/fileexchange/21130-dti-and-fiber-tracking)'
   about: By Dirk-Jan Kroon.

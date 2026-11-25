@@ -8,8 +8,9 @@ it and supplied the facts in square brackets. Publishing an approved notice is a
 
 ## Questions to settle first
 
-1. **Who is the controller and provider?** The imprint names Andreas Horn with a private address in
-   Brookline, MA. Should it be Andreas personally, the Institute for Network Stimulation / Uniklinik Köln,
+1. **Who is the controller and provider?** The imprint names Andreas Horn at the Institute for Network
+   Stimulation, University Hospital Cologne (Kerpener Straße 62, 50937 Köln), with an email address and no
+   telephone number. Should it be Andreas personally, the Institute for Network Stimulation / Uniklinik Köln,
    or another body? A German provider usually has to name a postal address where they can be served, an
    email address and a quick way to make contact (§ 5 DDG). Is a data-protection officer to be named?
 2. **Server logs.** How long does STRATO keep access and error logs for this package, and does Andy keep

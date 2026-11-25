@@ -16,22 +16,16 @@
 groups:
 - id: basal-ganglia
   title: Basal ganglia and whole subcortex
-  intro: 'Atlases of several deep nuclei at once: the usual starting point for visualizing a DBS target.'
 - id: thalamus
   title: Thalamus
-  intro: Parcellations of the thalamic nuclei, by histology, structural MRI or connectivity.
 - id: nuclei
   title: Single nuclei and the brainstem
-  intro: STN, GPi, substantia nigra, zona incerta, nucleus accumbens, PPN and brainstem nuclei.
 - id: tracts
-  title: Fibre tracts
-  intro: Tractography atlases of white-matter pathways that matter for DBS.
+  title: Fiber tracts
 - id: dbs-maps
   title: Sweet spots, response tracts and target maps
-  intro: 'Maps derived from DBS and lesion outcomes: sweet spots, response tracts, electrophysiological hot spots and target coordinates.'
 - id: functional
   title: Functional parcellations
-  intro: Parcellations of the subcortex and cerebellum by resting-state functional connectivity.
 - id: macaque
   title: Macaque
   intro: 'Lead-DBS has supported electrode localization in macaque MRI and CT since version 1.4.9. Install the macaque toolbox, then type `lead macaque` in MATLAB.'
@@ -58,9 +52,9 @@ atlases:
   group: basal-ganglia
   name: FOCUS atlas
   ref: Friedrich 2026
-  covers: 95 structures and 82 fibre pathways at 100 µm; by the Lead-DBS team
+  covers: 95 structures and 82 fiber pathways at 100 µm; by the Lead-DBS team
   page: /helpsupport/knowledge-base/atlasesresources/focus-atlas
-  about: Made by the Lead-DBS team. A 100-micron atlas of the human subcortex from 7T ex vivo MRI, with 95 manually segmented grey and white matter structures and 82 curated fibre pathways, registered to MNI space.
+  about: Made by the Lead-DBS team. A 100-micron atlas of the human subcortex from 7T ex vivo MRI, with 95 manually segmented gray and white matter structures and 82 curated fiber pathways, registered to MNI space.
   get:
   - '[Request FOCUS](/helpsupport/knowledge-base/atlasesresources/focus-atlas/#download), for academic research only'
   cite:
@@ -87,7 +81,7 @@ atlases:
   ref: Alkemade 2020
   covers: Basal ganglia from 7T MRI
   preinstalled: true
-  about: AHEAD provides freely available multimodal 7 T MRI data and submillimetre subcortical atlases. Subcortical resolution was obtained with a multi-echo extension of the second gradient echo imaging of MPRAGE sequences. Its basal ganglia probability maps are based on more than 1,000 manual delineations; the imaging data are also available for further analysis.
+  about: AHEAD provides freely available multimodal 7 T MRI data and submillimeter subcortical atlases. Subcortical resolution was obtained with a multi-echo extension of the second gradient echo imaging of MPRAGE sequences. Its basal ganglia probability maps are based on more than 1,000 manual delineations; the imaging data are also available for further analysis.
   get:
   - 'Information: [the AHEAD paper in NeuroImage](https://www.sciencedirect.com/science/article/pii/S1053811920306868)'
   cite:
@@ -104,7 +98,7 @@ atlases:
   get:
   - 'Information and download: [CIT168 atlas on OSF](https://osf.io/jkzwp/)'
   - 'The nuclei in ICBM 2009c space: [CIT168 collection on NeuroVault](https://neurovault.org/collections/3145/)'
-  - 'Comes with Lead-DBS, warped from CIT168 space to ICBM 2009b space. Current version: v1.1, with a refined warp from February 2020 (v1.0 can no longer be downloaded separately)'
+  - 'Warped from CIT168 space to ICBM 2009b space. Current version: v1.1, with a refined warp from February 2020 (v1.0 can no longer be downloaded separately)'
   cite:
   - pauli2018
   image: bg-1030x592.png
@@ -124,7 +118,7 @@ atlases:
   - xiao2014
   - chakravarty2006
   image: mni_pd25.jpg
-  alt: MNI PD25 atlas in 3D, labelled caudate, putamen, thalamus, GPe, GPi, STN, SN and RN
+  alt: MNI PD25 atlas in 3D, labeled caudate, putamen, thalamus, GPe, GPi, STN, SN and RN
 - id: computational-brain-anatomy-lab-merged-atlas-cobralab-atlas-in-mni-space-pipitone-2014
   group: basal-ganglia
   name: CoBrALab merged atlas
@@ -149,7 +143,7 @@ atlases:
   ref: Lorio 2016
   covers: Tissue priors for subcortical segmentation
   preinstalled: true
-  about: Grey matter, white matter and CSF priors for segmenting subcortical structures with SPM, from manual labels on iron- and myelin-sensitive parameter maps of nearly 100 people aged 25 to 75. They are not an atlas with strict borders for each nucleus; they provide priors for patient-specific segmentation and normalization of the subcortex. Lead-DBS builds a TPM for each space you use from them (for the default ICBM 2009b NLIN Asym space, for example).
+  about: Gray matter, white matter and CSF priors for segmenting subcortical structures with SPM, from manual labels on iron- and myelin-sensitive parameter maps of nearly 100 people aged 25 to 75. They are not an atlas with strict borders for each nucleus; they provide priors for patient-specific segmentation and normalization of the subcortex. Lead-DBS builds a TPM for each space you use from them (for the default ICBM 2009b NLIN Asym space, for example).
   get:
   - 'Information and download: [enhanced TPMs at LREN, Lausanne](https://www.unil.ch/lren/home/menuinst/teaching--utilities/data--utilities.html)'
   cite:
@@ -164,7 +158,6 @@ atlases:
   preinstalled: true
   about: STN, pallidum and red nucleus from 7T data of 12 healthy controls. Its templates are not in MNI space, but Lead-DBS can normalize to them instead of an MNI template; an MNI version of the atlas comes with Lead-DBS.
   get:
-  - An MNI version comes with Lead-DBS
   - 'The original templates and atlases in 7T template space: from the spaces menu in Lead-DBS'
   - 'Raw data: [deepbrain7t on NITRC](https://www.nitrc.org/projects/deepbrain7t/)'
   cite:
@@ -182,7 +175,7 @@ atlases:
   cite:
   - he2020
   image: He_atlas-1030x730.png
-  alt: 'Atlas of the Basal Ganglia and Thalamus: colour-coded parcels in 3D'
+  alt: 'Atlas of the Basal Ganglia and Thalamus: color-coded parcels in 3D'
 - id: morel-atlas
   group: basal-ganglia
   name: Morel atlas
@@ -196,7 +189,7 @@ atlases:
 
     The VLpv is the nucleus of the atlas best corresponding to the VIM although it may not be exactly the same. On conversions between thalamic nomenclatures, see for example Paxinos, G. (2012). The Human Nervous System. Academic Press.
   get:
-  - Comes with Lead-DBS; its authors have also made it [openly available](https://zenodo.org/records/13918589)
+  - Its authors have also made it [openly available](https://zenodo.org/records/13918589)
   - 'A surface-based version: [Morel atlas surfaces in the ETH Research Collection](https://www.research-collection.ethz.ch/handle/20.500.11850/669887)'
   cite:
   - jakab2012
@@ -220,7 +213,7 @@ atlases:
   cite:
   - chakravarty2006
   image: Chakravarty_Atlas-300x300.png
-  alt: 'Chakravarty atlas: labelled nuclei outlined on a histological section'
+  alt: 'Chakravarty atlas: labeled nuclei outlined on a histological section'
   caption: 2D slice visualization of the atlas
 - id: atag-atlas
   group: basal-ganglia
@@ -249,7 +242,7 @@ atlases:
   - amunts2013
   - {paper: xiao2019, label: "Warp into 2009b space"}
   image: bigbrain.png
-  alt: 'BigBrain: axial histological section in false colour'
+  alt: 'BigBrain: axial histological section in false color'
 - id: ahsan-2007-basal-ganglia-atlas
   group: basal-ganglia
   name: Basal ganglia atlas
@@ -298,9 +291,9 @@ atlases:
   group: basal-ganglia
   name: MIDA model
   ref: Iacono 2015
-  covers: Whole head, for computational modelling
+  covers: Whole head, for computational modeling
   preinstalled: false
-  about: "A detailed image-based anatomical model of the whole head for computational modelling, including blood vessels, ventricles and subcortical structures such as the thalamus and pallidum.\n\n**It is not registered to MNI space, which limits its use with Lead-DBS.**"
+  about: "A detailed image-based anatomical model of the whole head for computational modeling, including blood vessels, ventricles and subcortical structures such as the thalamus and pallidum.\n\n**It is not registered to MNI space, which limits its use with Lead-DBS.**"
   get:
   - 'Download: [MIDA model at the IT''IS Foundation](http://www.itis.ethz.ch/virtual-population/regional-human-models/mida-model/)'
   cite:
@@ -345,7 +338,7 @@ atlases:
   cite:
   - yu2021
   image: 1-300x270.png
-  alt: 'HybraPD atlas: labelled subcortical structures in 3D'
+  alt: 'HybraPD atlas: labeled subcortical structures in 3D'
 - id: human-motor-thalamus-atlas-ilinsky-2018
   group: thalamus
   name: Human Motor Thalamus atlas
@@ -416,7 +409,7 @@ atlases:
   cite:
   - zhang2008
   image: zhang-495x400.png
-  alt: 'Zhang thalamic connectivity atlas: colour-coded thalamic parcels in 3D'
+  alt: 'Zhang thalamic connectivity atlas: color-coded thalamic parcels in 3D'
 - id: oxford-thalamic-connectivity-atlas-behrens-2003
   group: thalamus
   name: Oxford Thalamic Connectivity Atlas
@@ -429,7 +422,7 @@ atlases:
   cite:
   - behrens2003
   image: oxf-495x400.png
-  alt: 'Oxford thalamic connectivity atlas: colour-coded thalamic parcels in 3D'
+  alt: 'Oxford thalamic connectivity atlas: color-coded thalamic parcels in 3D'
 - id: thalamic-connectivity-atlas-horn-2016
   group: thalamus
   name: Thalamic Connectivity Atlas
@@ -441,7 +434,7 @@ atlases:
   cite:
   - horn2016
   image: thal_conn_horn-300x258.png
-  alt: 'Thalamic connectivity atlas (Horn 2016): colour-coded thalamic parcels in 3D'
+  alt: 'Thalamic connectivity atlas (Horn 2016): color-coded thalamic parcels in 3D'
 - id: thalamic-functional-atlas-kumar-2017
   group: thalamus
   name: Thalamic Functional Atlas
@@ -466,7 +459,7 @@ atlases:
   cite:
   - accolla2014
   image: Accolla-300x221.png
-  alt: 'Accolla STN atlas: three coloured functional zones of the STN'
+  alt: 'Accolla STN atlas: three colored functional zones of the STN'
 - id: nigral-organization-atlas-zhang-2017
   group: nuclei
   name: Nigral organization atlas
@@ -565,14 +558,14 @@ atlases:
   cite:
   - lau2020
   image: Picture4-300x223.png
-  alt: 'Zona incerta atlas: subregions in 3D with neighbouring nuclei'
+  alt: 'Zona incerta atlas: subregions in 3D with neighboring nuclei'
 - id: levinson-bari-limbic-brainstem-atlas-levinson-2022
   group: nuclei
   name: Levinson-Bari Limbic Brainstem Atlas
   ref: Levinson 2022
   covers: Limbic brainstem nuclei
   preinstalled: true
-  about: 'Five brainstem nuclei involved in limbic processing, delineated on 3T T1 and T2 data of about 200 Human Connectome Project subjects: the locus coeruleus, nucleus tractus solitarius, periaqueductal grey, ventral tegmental area and dorsal raphe nucleus. Each was masked by radiographic anatomical boundaries and registered to the 0.5 mm 2009b nonlinear asymmetric MNI template.'
+  about: 'Five brainstem nuclei involved in limbic processing, delineated on 3T T1 and T2 data of about 200 Human Connectome Project subjects: the locus coeruleus, nucleus tractus solitarius, periaqueductal gray, ventral tegmental area and dorsal raphe nucleus. Each was masked by radiographic anatomical boundaries and registered to the 0.5 mm 2009b nonlinear asymmetric MNI template.'
   get: []
   cite:
   - levinson2023
@@ -611,13 +604,13 @@ atlases:
   ref: Meola 2016
   covers: Brainstem tracts, incl. the dentatorubrothalamic tract
   preinstalled: true
-  about: Canonical fibre tracts in MNI space from Human Connectome Project data, including tracts relevant to DBS surgery such as the dentatorubrothalamic and corticospinal tracts. Antonio Meola (Brigham and Women’s Hospital, Boston) provided them for distribution with Lead-DBS. More in [the newsletter that introduced it](http://us8.campaign-archive1.com/?u=a5b93846a3a2a714edbcce8ef&id=aa1f8724d5); questions for Antonio go through our [contact page](/contact/).
+  about: Canonical fiber tracts in MNI space from Human Connectome Project data, including tracts relevant to DBS surgery such as the dentatorubrothalamic and corticospinal tracts. Antonio Meola (Brigham and Women’s Hospital, Boston) provided them for distribution with Lead-DBS. More in [the newsletter that introduced it](http://us8.campaign-archive1.com/?u=a5b93846a3a2a714edbcce8ef&id=aa1f8724d5); questions for Antonio go through our [contact page](/contact/).
   get: []
   cite:
   - meola2016
   - meola2015
   image: Meola_fibers_zoom-1-295x300.png
-  alt: 'Brainstem connectome: colour-coded fibre tracts beside two DBS electrodes'
+  alt: 'Brainstem connectome: color-coded fiber tracts beside two DBS electrodes'
 - id: brainstem-connectome-atlas
   group: tracts
   name: Brainstem Connectome Atlas
@@ -630,14 +623,14 @@ atlases:
   cite:
   - tang2018
   image: Screen-Shot-2020-05-25-at-10.38.14-PM-187x300.png
-  alt: 'Brainstem connectome atlas: colour-coded brainstem tracts'
+  alt: 'Brainstem connectome atlas: color-coded brainstem tracts'
 - id: fornix-fmrib-fa-template
   group: tracts
   name: Fornix FMRIB FA template
   ref: Brown 2017
   covers: Fornix
   preinstalled: true
-  about: A fornix template merged from younger and older adults, for studies of ageing and preclinical Alzheimer’s disease.
+  about: A fornix template merged from younger and older adults, for studies of aging and preclinical Alzheimer’s disease.
   get: []
   cite:
   - brown2017
@@ -654,7 +647,7 @@ atlases:
   cite:
   - middlebrooks2020
   image: image002-1030x801.png
-  alt: 'DBS tractography atlas: colour-coded fibre tracts around subcortical nuclei'
+  alt: 'DBS tractography atlas: color-coded fiber tracts around subcortical nuclei'
 - id: stn-sweetspots-dembek-2019
   group: dbs-maps
   name: STN sweet spots
@@ -667,7 +660,7 @@ atlases:
   cite:
   - dembek2019ann
   image: Dembek_Atlas_frei-1030x995.png
-  alt: 'STN sweetspot atlas: subthalamic nucleus with coloured regions in 3D'
+  alt: 'STN sweetspot atlas: subthalamic nucleus with colored regions in 3D'
 - id: tor-psm-elias-2020
   group: dbs-maps
   name: TOR-PSM
@@ -699,7 +692,7 @@ atlases:
   ref: Li 2020
   covers: Obsessive-compulsive disorder, response tracts
   preinstalled: true
-  about: Tracts associated with optimal response to DBS in obsessive-compulsive disorder, found with fibre filtering (discriminative tractography) in Lead-DBS. From 50 patients at four centres and a normative connectome of 1,000 participants, it identifies the bundle associated with response at two targets (subthalamic nucleus and anterior limb of the internal capsule); its relevance at two more (bed nucleus of the stria terminalis and internal pallidum) was shown indirectly (Baldermann et al., Biological Psychiatry 2022). Optimal fMRI response networks (Li & Hollunder et al., Biological Psychiatry 2021) are included.
+  about: Tracts associated with optimal response to DBS in obsessive-compulsive disorder, found with fiber filtering (discriminative tractography) in Lead-DBS. From 50 patients at four centers and a normative connectome of 1,000 participants, it identifies the bundle associated with response at two targets (subthalamic nucleus and anterior limb of the internal capsule); its relevance at two more (bed nucleus of the stria terminalis and internal pallidum) was shown indirectly (Baldermann et al., Biological Psychiatry 2022). Optimal fMRI response networks (Li & Hollunder et al., Biological Psychiatry 2021) are included.
   get: []
   cite:
   - li2020
@@ -707,26 +700,26 @@ atlases:
   - baldermann2021
   - baldermann2019
   image: screenshot_ocd_asym-1030x660.png
-  alt: 'OCD response tract atlas: fibre tracts and subcortical structures in 3D'
+  alt: 'OCD response tract atlas: fiber tracts and subcortical structures in 3D'
 - id: dystonia-response-tract-atlas-horn-2022
   group: dbs-maps
   name: Dystonia response tract atlas
   ref: Horn 2022
   covers: Dystonia, response tracts
   preinstalled: true
-  about: Tracts associated with optimal response to DBS in cervical and generalized dystonia, found with fibre filtering (discriminative tractography) in Lead-DBS. From 80 patients at five centres and the tracts of the Basal Ganglia Pathway Atlas ([Petersen et al. 2019, Neuron](https://www.cell.com/neuron/pdf/S0896-6273(19)30832-3.pdf)), it separates the bundles associated with response in the two phenotypes. A sweet spot model and optimal fMRI response networks are included.
+  about: Tracts associated with optimal response to DBS in cervical and generalized dystonia, found with fiber filtering (discriminative tractography) in Lead-DBS. From 80 patients at five centers and the tracts of the Basal Ganglia Pathway Atlas ([Petersen et al. 2019, Neuron](https://www.cell.com/neuron/pdf/S0896-6273(19)30832-3.pdf)), it separates the bundles associated with response in the two phenotypes. A sweet spot model and optimal fMRI response networks are included.
   get: []
   cite:
   - horn2022
   image: screenshot_blank_oblique-1030x950.png
-  alt: 'Dystonia response tract atlas: fibre tracts of both hemispheres in 3D'
+  alt: 'Dystonia response tract atlas: fiber tracts of both hemispheres in 3D'
 - id: essential-tremor-hypointensity-neudorfer-2022
   group: dbs-maps
   name: Essential tremor hypointensity
   ref: Neudorfer 2022
   covers: Essential tremor, imaging marker
   preinstalled: true
-  about: On fast grey matter acquisition T1 inversion recovery (FGATIR) images, Neudorfer et al. identified a hypointensity in essential tremor that the study proposed as an imaging marker for targeting and programming. It was compared with, among others, a probabilistic map of tremor improvement from 36 patients. The atlas includes the hypointensity template and probabilistic tremor-improvement map.
+  about: On fast gray matter acquisition T1 inversion recovery (FGATIR) images, Neudorfer et al. identified a hypointensity in essential tremor that the study proposed as an imaging marker for targeting and programming. It was compared with, among others, a probabilistic map of tremor improvement from 36 patients. The atlas includes the hypointensity template and probabilistic tremor-improvement map.
   get: []
   cite:
   - neudorfer2022
@@ -738,12 +731,12 @@ atlases:
   ref: Nowacki 2022
   covers: Essential tremor, stimulation map
   preinstalled: true
-  about: From imaging and long-term outcomes (tremor reduction 12 months after implantation) of 119 patients at five European centres. Each voxel of the mean improvement image holds the mean tremor improvement of all stimulation volumes that included it; a sweet spot marks the volume significantly associated with more than 50% improvement.
+  about: From imaging and long-term outcomes (tremor reduction 12 months after implantation) of 119 patients at five European centers. Each voxel of the mean improvement image holds the mean tremor improvement of all stimulation volumes that included it; a sweet spot marks the volume significantly associated with more than 50% improvement.
   get: []
   cite:
   - nowacki2022
   image: LEAD_Scene-7-754x1030.png
-  alt: Essential tremor probabilistic map in 3D with nearby fibre tracts and nuclei
+  alt: Essential tremor probabilistic map in 3D with nearby fiber tracts and nuclei
 - id: electrophysiological-atlas-of-stn-activity-horn-2017
   group: dbs-maps
   name: Electrophysiological atlas of STN activity
@@ -783,7 +776,7 @@ atlases:
   cite:
   - horn2017acpc
   image: dbstargets-1-300x195.png
-  alt: 'DBS targets atlas: small coloured target regions over an MRI slice'
+  alt: 'DBS targets atlas: small colored target regions over an MRI slice'
 - id: twh-thalamotomy-sweetspot-boutet-2018
   group: dbs-maps
   name: TWH thalamotomy sweet spot
@@ -807,7 +800,7 @@ atlases:
   cite:
   - hollunder2024
   image: Hollunder_et_al_fig1-300x245.png
-  alt: 'Human Dysfunctome atlas: fibre tracts in a 3D brain, with an enlarged detail'
+  alt: 'Human Dysfunctome atlas: fiber tracts in a 3D brain, with an enlarged detail'
 - id: melbourne-subcortex-atlas-tian-2020
   group: functional
   name: Melbourne Subcortex Atlas
@@ -837,12 +830,12 @@ atlases:
   preinstalled: true
   about: A parcellation of the striatum from the same 1,000 resting-state fMRI scans as the Yeo 2011 parcellation.
   get:
-  - Comes with Lead-DBS and matches the Yeo 2011 parcellation (labelling atlas)
+  - Matches the Yeo 2011 parcellation (labeling atlas)
   - 'Information: [Choi 2012 striatum parcellation in the FreeSurfer wiki](https://surfer.nmr.mgh.harvard.edu/fswiki/StriatumParcellation_Choi2012)'
   cite:
   - choi2012
   image: Yeostriatum-300x238.png
-  alt: 'Functional striatum parcellation: striatum coloured by functional network'
+  alt: 'Functional striatum parcellation: striatum colored by functional network'
 - id: cortical-functional-networks-yeo-2011
   group: functional
   name: Functional networks of cortex, striatum and cerebellum
@@ -851,14 +844,14 @@ atlases:
   preinstalled: true
   about: Combines the studies of Thomas Yeo, Randy Buckner and others into one atlas that divides the cortex, striatum, cerebellum and thalamus into 7 or 17 networks, from resting-state functional connectivity in 1,000 subjects. The thalamus part is unpublished.
   get:
-  - Comes with Lead-DBS and matches the Yeo 2011 parcellation (labelling atlas)
+  - Matches the Yeo 2011 parcellation (labeling atlas)
   - 'Resources: [Thomas Yeo''s thread on Twitter](https://twitter.com/bttyeo/status/1248992127985434624?s=20)'
   cite:
   - {paper: yeo2011, label: "Cortex"}
   - {paper: choi2012, label: "Striatum"}
   - {paper: buckner2011, label: "Cerebellum"}
   image: yeo-1-212x300.png
-  alt: 'Yeo functional networks: a subcortical structure coloured by network'
+  alt: 'Yeo functional networks: a subcortical structure colored by network'
 - id: aicha-subcortical-regions
   group: functional
   name: AICHA subcortical regions
@@ -867,7 +860,7 @@ atlases:
   preinstalled: true
   about: An atlas of intrinsic connectivity of homotopic areas, with a subcortical part that parcellates the thalamus and other deep nuclei such as the caudate, pallidum, putamen and amygdala.
   get:
-  - Comes with Lead-DBS as a parcellation (labelling atlas) and as a subcortical atlas (nuclei only)
+  - Installed both as a parcellation (labeling atlas) and as a subcortical atlas (nuclei only)
   - 'Information: [AICHA at GIN, CNRS](http://www.gin.cnrs.fr/AICHA)'
   cite:
   - joliot2015
@@ -886,7 +879,7 @@ atlases:
   - buckner2011
   - yeo2011
   image: Picture1-300x262.png
-  alt: 'Cerebellar functional networks: cerebellum coloured by network on a sagittal MRI slice'
+  alt: 'Cerebellar functional networks: cerebellum colored by network on a sagittal MRI slice'
 - id: subcortical-default-mode-network-functional-atlas-li-2021
   group: functional
   name: Subcortical default mode network atlas
@@ -898,7 +891,7 @@ atlases:
   cite:
   - li2021dmn
   image: DMN-300x207.jpg
-  alt: 'Subcortical default mode network atlas: coloured map over a coronal histological section'
+  alt: 'Subcortical default mode network atlas: colored map over a coronal histological section'
 - id: inia19-primate-brain-atlas
   group: macaque
   name: INIA19 primate brain atlas

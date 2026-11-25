@@ -1,17 +1,17 @@
 {{ define "main" }}
 {{- /* /community/ (front matter layout: "community"), a showcase page in the manner of x.ai and vercel.com:
-     the page head; then one line on the left and a large workshop photo on the right (cut from its top,
-     so a banner printed at its foot falls away); then two sections in the layout of the hub pages: the
+     the page head; then a large workshop photo (cut from its top, so a banner printed at its foot falls
+     away), with an optional line (front matter lead:) on its left; then two sections in the layout of the hub pages: the
      ways to take part (front matter tiles:, each a page and its title) and where to follow Lead-DBS
      (front matter follow:, each a name and an address). */ -}}
 {{ $p := .Params }}
 <main id="top" class="page">
   {{ partial "page-head.html" . }}
   <div class="wrap cm">
-    <section class="cm-hero">
-      <div class="cm-hero__text">
-        <p class="cm-hero__lead">{{ $p.lead }}</p>
-      </div>
+    <section class="cm-hero{{ if not $p.lead }} cm-hero--photo{{ end }}">
+      {{ with $p.lead }}<div class="cm-hero__text">
+        <p class="cm-hero__lead">{{ . }}</p>
+      </div>{{ end }}
       {{ with $p.photo }}{{ $pg := site.GetPage .page }}{{ $img := $pg.Resources.Get .file }}{{ if not $img }}{{ errorf "community: no photo %q on %s" .file .page }}{{ end }}{{ $t := $img.Fill "1000x620 webp q82 Top" }}
       <figure class="cm-hero__photo"><img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="{{ .alt }}" fetchpriority="high"><figcaption>{{ .caption }}</figcaption></figure>
       {{ end }}

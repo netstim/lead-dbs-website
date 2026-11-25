@@ -1,8 +1,7 @@
 {{ define "main" }}
 {{- /* The home page. Texts and lists: content/_index.md (front matter). Release facts: data/release.yaml.
      Events: data/events.yaml. Pictures: assets/images/renders/<file> (Hugo makes the WebP sizes).
-     Sections take the height of their content, on one vertical rhythm (assets/css/home.css).
-     The one scroll-linked motion of the site is the electrode insertion in #localize (assets/js/insertion.js). */ -}}
+     Sections take the height of their content, on one vertical rhythm (assets/css/home.css). */ -}}
 {{ $p := .Params }}
 {{ $r := hugo.Data.release }}
 {{ $date := time.AsTime $r.date }}
@@ -12,30 +11,18 @@
 
   <p class="forum-note notice" role="note" hidden data-forum-note>The Lead-DBS forum has closed. Questions are answered on the <a href="{{ with site.GetPage "/helpsupport/slack-user-channel" }}{{ .RelPermalink }}{{ end }}">user Slack</a>.</p>
 
+  {{- /* with `story: true` in the front matter, the opening, the localization and the three feature cards
+         are one scroll story instead (layouts/_partials/home-story.html) */}}
+  {{ if $p.story }}{{ partial "home-story.html" . }}{{ else }}
   {{/* 1. Hero: the render clip, the words, the main action and the facts that matter, in that order */}}
   {{ with $p.hero }}
   {{ $poster := resources.Get (printf "images/renders/%s" .poster) }}
   {{ $pd := $poster.Resize "1600x webp q78" }}
-  {{- /* the hero: one rounded black panel on the white page, under the light header. In it the clip, the
-         words over its black left half, and the facts line and the pause button along its lower edge
-         (assets/css/home.css, "home: the hero") */}}
   <section class="hero home-hero" data-enter aria-labelledby="hero-h">
-    {{- /* a phone: the hero's black runs up under the header, so the header turns black over it (header.js
-           reads [data-nav-dark]; this ground is not drawn from 640px, so it counts there as nothing) */}}
     <div class="home-hero__ground phone-only" data-nav-dark aria-hidden="true"></div>
     <div class="wrap home-hero__wrap">
       <div class="home-hero__panel">
         <div class="home-hero__media">
-          {{- /* the clip in AV1 first, then HEVC at 1600 px for desktop browsers without AV1 (Safari on
-                 older Macs), then H.264 for the rest; the browser takes the first source
-                 whose type it can play and whose media query matches: the 1600 px AV1 clip (the largest
-                 render there is, lighter than the 1280 px H.264 one) for desktop windows from 1024 px, the
-                 1280 px clip for the windows from 640 px (and, in H.264, for the desktops too), a square
-                 crop of the render for phones (docs/home-and-media.md, "hero clip").
-                 The poster is the first picture: the sources carry their address in data-src, and
-                 assets/js/main/home.js gives it to them once the page has loaded and the browser is idle (on a
-                 phone, and under reduced motion or Save-Data, only when the visitor presses play). Without
-                 script the poster stays. */}}
           <video class="hero__bg" muted loop playsinline preload="none" poster="{{ $pd.RelPermalink }}" width="1600" height="1000" aria-hidden="true" data-hero-video>
             <source data-src="{{ .video_av1 | relURL }}" type='video/mp4; codecs="av01.0.08M.08"' media="(min-width: 1024px)">
             <source data-src="{{ .video_hevc | relURL }}" type='video/mp4; codecs="hvc1.1.6.L120.90"' media="(min-width: 1024px)">
@@ -46,7 +33,6 @@
           </video>
         </div>
         <div class="home-hero__text">
-          {{- /* a phone: the release as a small chip above the title (the facts line under the hero is not shown there) */}}
           <p class="home-chip phone-only"><a href="{{ partial "resolve-url.html" (dict "url" $r.notes "page" $) }}"><span class="home-chip__dot" aria-hidden="true"></span><span>Version <span class="num">{{ $r.version }}</span></span> <span class="home-chip__more">Release notes</span><span class="home-chip__go" aria-hidden="true">{{ $arrow }}</span></a></p>
           <h1 id="hero-h">{{ partial "nobreak.html" .title }}</h1>
           <p class="hero__lead">{{ .lead }}</p>
@@ -55,7 +41,6 @@
             <a class="btn btn--secondary" href="{{ partial "resolve-url.html" (dict "url" .secondary.url "page" $) }}">{{ .secondary.label }}{{ $arrow }}</a>
           </div>
         </div>
-        {{- /* one quiet line: the release, what it runs on, its licence, then the proof (content/_index.md) */}}
         <div class="home-hero__foot">
           <ul class="hero__proof" aria-label="About Lead-DBS">
             <li><a href="{{ partial "resolve-url.html" (dict "url" $r.notes "page" $) }}">Version <span class="num">{{ $r.version }}</span></a></li>
@@ -85,19 +70,13 @@
         <div class="span-5 split__text">
           <h2 id="localize-h">{{ partial "nobreak.html" .title }}</h2>
           <p class="t-lead">{{ .text }}</p>
-          {{- /* a phone: the same text as a statement, its first three words in the ink of the heading (a copy,
-                 so the line above keeps one run of text from 640px up) */}}
           <p class="phone-only localize__statement">{{ replaceRE `^(\S+ \S+ \S+)` `<span class="split__first">$1</span>` (.text | htmlEscape) | safeHTML }}</p>
-          {{- /* the four steps from scans to a 3D scene: a diagram drawn with Pele (assets/diagrams/localize.mmd,
-               rendered to SVG by scripts/diagrams.mjs), left to right, top to bottom on a phone; for
-               screen readers the same steps as a list */}}
           <figure class="flow-diagram">
             <div class="flow-diagram__lr">{{ (resources.Get "diagrams/localize.svg").Content | safeHTML }}</div>
             <div class="flow-diagram__tb">{{ (resources.Get "diagrams/localize-tb.svg").Content | safeHTML }}</div>
             <ol class="sr-only">{{ range .steps }}<li>{{ .name }}: {{ .value }}</li>{{ end }}</ol>
           </figure>
           <p class="localize__btn"><a class="btn btn--primary" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}</a></p>
-          {{- /* a phone: the steps' names as a plain list under a label (the diagram is not shown there), the link as a text link */}}
           <div class="localize__steps phone-only">
             <p>Steps</p>
             <ol>{{ range .steps }}<li>{{ .name }}</li>{{ end }}</ol>
@@ -122,15 +101,14 @@
     </div>
   </section>
   {{ end }}
+  {{ end }}{{/* of the sections the story replaces */}}
 
-  {{/* 3. What else it does: three pictures with their words (media cards, each a link to its part of the
-       overview of everything Lead-DBS does), beside the heading a link to that overview; under the cards
-       a slim band for the atlases and data: the atlas render, the hub's name and line, and a link to each
-       of its three catalogues */}}
+  {{/* 3. Atlases and data (with feature cards when story is off) */}}
   {{ with $p.features }}
   {{ $more := partial "resolve-url.html" (dict "url" .more.url "page" $) }}
-  <section class="section home-sec home-sec--tight" id="features" aria-labelledby="features-h">
+  <section class="section home-sec home-sec--tight home-sec--tinted" id="features" {{ if $p.story }}aria-label="{{ with site.GetPage $p.features.data.page }}{{ .Title }}{{ end }}"{{ else }}aria-labelledby="features-h"{{ end }}>
     <div class="wrap">
+      {{ if not $p.story }}
       <div class="section-head section-head--row">
         <h2 id="features-h" class="home-h2 features__h">{{ partial "nobreak.html" .title }}</h2>
         <p class="section-head__more"><a class="link" href="{{ $more }}">{{ .more.label }}{{ $arrow }}</a></p>
@@ -147,24 +125,31 @@
         </li>
         {{ end }}
       </ul>
+      {{ end }}
       {{ with .data }}
       {{ $hub := site.GetPage .page }}
       {{ if not $hub }}{{ errorf "home: features.data.page %q is not a page" .page }}{{ end }}
-      <div class="data-band">
-        {{ with resources.Get (printf "images/renders/%s" .image) }}
-        {{ $img := . }}{{ with $.Params.features.data.crop }}{{ $img = ($img.Crop (printf "%dx%d TopLeft" (index . 2) (index . 3))).Crop (printf "%dx%d BottomRight" (sub (index . 2) (index . 0)) (sub (index . 3) (index . 1))) }}{{ end }}
-        {{ $t := $img.Resize "480x webp q78" }}
-        <img class="data-band__img" src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="" loading="lazy" decoding="async">
-        {{ end }}
-        <div class="data-band__text">
-          <h3 class="data-band__title"><a href="{{ $hub.RelPermalink }}">{{ $hub.Title }}{{ $arrow }}</a></h3>
-          <p>{{ .text }}</p>
+      <div class="atlases-band">
+        <div class="section-head section-head--row atlases-band__head">
+          <div>
+            <h2 id="atlases-h" class="atlases-band__h">{{ $hub.Title }}</h2>
+            <p class="atlases-band__lead">{{ .text }}</p>
+          </div>
+          <p class="section-head__more"><a class="link" href="{{ $hub.RelPermalink }}">Browse all resources{{ $arrow }}</a></p>
         </div>
-        <ul class="data-band__counts">
+        <ul class="atlases-cards">
           {{ range .links }}
           {{ $pg := site.GetPage .page }}
           {{ if not $pg }}{{ errorf "home: features.data.links names %q, which is not a page" .page }}{{ end }}
-          <li><a href="{{ $pg.RelPermalink }}">{{ .label | default $pg.LinkTitle }}</a></li>
+          <li class="atlases-card">
+            <a class="atlases-card__link" href="{{ $pg.RelPermalink }}">
+              <span class="atlases-card__top">
+                <span class="atlases-card__title">{{ .label | default $pg.LinkTitle }}</span>
+                {{ $arrow }}
+              </span>
+              {{ with .text }}<span class="atlases-card__text">{{ . }}</span>{{ end }}
+            </a>
+          </li>
           {{ end }}
         </ul>
       </div>
@@ -173,174 +158,129 @@
   </section>
   {{ end }}
 
-  {{/* 4. A render across the whole width, the voices of researchers over its dark lower part: the
-       pause between what Lead-DBS does and the published work made with it */}}
-  {{ with $p.voices }}
-  <section class="render-band" id="voices" aria-labelledby="voices-h" data-nav-dark>
-    {{ partial "render.html" (dict "file" .image "alt" .alt "class" "render-band__img" "sizes" "100vw") }}
-    <div class="wrap render-band__wrap">
-      <div class="render-band__head">
-        <h2 id="voices-h" class="render-band__h">{{ .title }}</h2>
-        <div class="render-band__actions">
-          {{- /* holds the drifting rows for good (WCAG 2.2.2); assets/js/main/home.js shows it, not under reduced motion */}}
-          <button class="media-pause drift__pause" type="button" aria-label="Pause the quotes" hidden data-drift-pause>
-            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </button>
-          {{ with site.GetPage "/about/publications" }}<a class="btn btn--primary btn--on-dark" href="{{ .RelPermalink }}#what-others-write">All quotes</a>{{ end }}
-        </div>
-      </div>
-    </div>
-    {{- /* two rows of key phrases drifting slowly in opposite directions (CSS only): each phrase is a few
-         words of its quote (phrase), the whole quote shows on hover (title) and to screen readers. Each row's phrases come twice, the copy hidden
-         from screen readers, so the row loops without a seam. Hover holds the rows; with reduced motion
-         they stand and scroll sideways. */}}
-    <div class="drift" role="list" aria-label="Quotes about Lead-DBS">
-      {{ $qs := hugo.Data.quotes.quotes }}
-      {{ range $r, $row := slice (where $qs "row" 1) (where $qs "row" 2) }}
-      <div class="drift__row{{ if $r }} drift__row--rev{{ end }}" style="--dur: {{ cond (eq $r 0) "110s" "130s" }}">
-        <div class="drift__track">
-          {{ range $copy := slice 0 1 }}
-          <div class="drift__set"{{ if $copy }} aria-hidden="true"{{ end }}>
-            {{ range $row }}{{ $paper := eq .kind "paper" }}{{ $roles := split .role ", " }}
-            <div class="drift__item"{{ if not $copy }} role="listitem"{{ end }}><figure title="“{{ .text }}”">
-              <blockquote><span aria-hidden="true"><span class="drift__q">“</span>{{ .phrase }}<span class="drift__q">”</span></span><span class="sr-only">{{ .text }}</span></blockquote>
-              <figcaption><span><b>{{ index (split .name ", ") 0 }}</b>{{ if $paper }} <em>{{ .role }}</em>{{ else }}, {{ index $roles (sub (len $roles) 1) }}{{ end }}</span>{{ if not $paper }}<span class="drift__who phone-only"><b>{{ index (split .name ", ") 0 }}</b> {{ index $roles (sub (len $roles) 1) }}</span>{{ end }}</figcaption>
-            </figure></div>
-            {{ end }}
-          </div>
-          {{ end }}
-        </div>
-      </div>
-      {{ end }}
-    </div>
-    {{ with site.GetPage "/about/publications" }}<p class="wrap phone-only render-band__more"><a class="link home-more" href="{{ .RelPermalink }}#what-others-write">All quotes{{ $arrow }}</a></p>{{ end }}
-  </section>
-  {{ end }}
-
-  {{/* 5. Made with Lead-DBS, on the black of the voices band above (the two read as one dark stretch): the
-       heading and a pill to /gallery/, under them two equal halves. Left an endless grid of the figures
-       from papers (data/gallery.yaml) in a window with rounded corners: masonry columns that wrap
-       in every direction, dragged with the mouse or a finger, drifting slowly until they are (assets/js/main/home.js
-       builds the tiles from the list in [data-made-figs], and only once the section comes near the screen).
-       A click on a figure opens it on /gallery/. Right seven journal covers (data/covers.yaml) fanned out like
-       a hand of cards about a point far below them; one lifts after another, slowly, its journal and date
-       under the fan (a pointer on a card lifts it and holds the fan). The fan is one link to the covers on Publications.
-       Under reduced motion nothing moves by itself; the grid can still be dragged. On a phone the grid is
-       360px tall and the fan sits under it, smaller (assets/css/home.css). */}}
-  {{ with $p.research }}
-  {{ $gallery := site.GetPage "/gallery" }}
-  {{ $pubs := site.GetPage "/about/publications" }}
-  <section class="section home-sec research-band" id="research" aria-labelledby="research-h" data-nav-dark>
-    <div class="wrap">
-      <div class="section-head section-head--row">
-        <h2 id="research-h">{{ partial "nobreak.html" .title }}</h2>
-        {{ with $gallery }}<p class="section-head__more"><a class="btn btn--primary btn--on-dark" href="{{ .RelPermalink }}">{{ $p.research.link_label }}</a></p>{{ end }}
-      </div>
-      <div class="made">
-        {{- /* the figures as data for the grid: each one's sizes (WebP), shape, what it shows and its entry on /gallery/ */}}
-        {{ $figs := slice }}
-        {{ range hugo.Data.gallery.figures }}{{ $f := . }}
-        {{ with resources.Get (printf "gallery/%s" $f.file) }}
-        {{ $s := .Resize "240x webp q78" }}{{ $m := .Resize "480x webp q78" }}
-        {{ $figs = $figs | append (dict "src" $s.RelPermalink "srcset" (printf "%s 240w, %s 480w" $s.RelPermalink $m.RelPermalink) "ar" (div (math.Round (mul 1000 (div (float .Width) .Height))) 1000) "alt" $f.shows "href" (printf "%s#fig-%s" (cond (ne $gallery nil) $gallery.RelPermalink "/gallery/") (path.BaseName $f.file))) }}
-        {{ else }}{{ errorf "home: no file static/gallery/%s (data/gallery.yaml)" $f.file }}{{ end }}
-        {{ end }}
-        <div class="made-grid-box has-media-pause">
-          <div class="made-grid" role="region" tabindex="0" aria-label="{{ .label }}" aria-describedby="made-grid-how" data-made-grid>
-            <p class="sr-only" id="made-grid-how">Drag, or use the arrow keys, to look around; either stops the drift. Every figure is also on the gallery page.</p>
-            <div class="made-grid__plane" aria-hidden="true"></div>
-            <script type="application/json" data-made-figs>{{ $figs | jsonify | safeJS }}</script>
-          </div>
-          {{- /* stops the drift for good (WCAG 2.2.2); assets/js/main/home.js shows it, not under reduced motion */}}
-          <button class="media-pause made-grid__pause" type="button" aria-label="Pause the figures" hidden data-made-pause>
-            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </button>
-        </div>
-        {{ with $pubs }}
-        {{- /* seven covers, mixed journals, the newest on top at the right (the deck Fable drew for the home
-               page): positions in data/covers.yaml, newest first */}}
-        {{ $all := partial "covers.html" 0 }}
-        {{ $pick := slice }}{{ range slice 13 10 8 5 2 1 0 }}{{ if lt . (len $all) }}{{ $pick = $pick | append (index $all .) }}{{ end }}{{ end }}
-        {{ $n := len $pick }}
-        <a class="made-fan" href="{{ .RelPermalink }}#cover-art" aria-label="Journal covers made with Lead-DBS, on Publications" data-made-fan>
-          <span class="made-fan__deck" aria-hidden="true">
-            {{ range $k, $c := $pick }}{{ $s := $c.large.Resize "300x webp q78" }}{{ $m := $c.large.Resize "600x webp q78" }}
-            <span class="made-fan__card{{ if eq $k (sub $n 1) }} is-top is-up{{ end }}" style="--k: {{ sub $k (div (float (sub $n 1)) 2) }}; z-index: {{ $k }}" data-journal="{{ $c.journal }}" data-date="{{ $c.date }}">
-              <img src="{{ $s.RelPermalink }}" srcset="{{ $s.RelPermalink }} 300w, {{ $m.RelPermalink }} 600w" sizes="(max-width: 639px) 130px, 240px" width="{{ $s.Width }}" height="{{ $s.Height }}" alt="" loading="lazy" decoding="async" draggable="false">
-            </span>
-            {{ end }}
-          </span>
-          {{ with index $pick (sub $n 1) }}<span class="made-fan__cap" aria-hidden="true"><b data-made-journal>{{ .journal }}</b><span data-made-date>{{ .date }}</span></span>{{ end }}
-        </a>
-        {{ end }}
-      </div>
-      {{ with $gallery }}<div class="phone-only research-band__actions"><div class="btn-row"><a class="btn btn--secondary" href="{{ .RelPermalink }}">{{ $p.research.link_label }}</a></div></div>{{ end }}
-    </div>
-  </section>
-  {{ end }}
-
-  {{/* 6. Lead-DBS around the world: the words left (heading, one line), right a wireframe
-       globe drawn by assets/js/globe.js that replays monthly Lead-DBS download-request aggregates since 2015, from
-       data/downloads.json (tools/downloads.py writes it from the download log): no individual events. Without the
-       script, or until the map has loaded, the figure is not shown. */}}
+  {{/* 4. Who relies on it: the wireframe globe, download figures, and one whole researcher quote beside it */}}
   {{ with $p.worldwide }}{{ with hugo.Data.downloads }}
   {{ $d := . }}{{ $w := $p.worldwide }}
   {{ $map := resources.Get "data/world-110m.json" | minify | fingerprint }}
-  {{- /* the figures for the globe (about 35 KB) are fetched with the map, not written into the page */}}
   {{ $figures := dict "countries" $d.countries "months" $d.months | jsonify | resources.FromString "data/downloads.json" | fingerprint }}
-  {{- /* the globe's script (about 70 KB with d3 and topojson), the map and the figures are fetched only when
-         the section comes near the screen: main/home.js adds the script, which then fetches the rest */}}
   {{ $globe := slice (resources.Get "js/vendor/d3-array.min.js") (resources.Get "js/vendor/d3-geo.min.js") (resources.Get "js/vendor/topojson-client.min.js") (resources.Get "js/globe.js" | js.Build (dict "targetPath" "js/globe.js") | minify) | resources.Concat "js/globe.bundle.js" | fingerprint }}
   <section class="section home-sec worldwide" id="worldwide" aria-labelledby="worldwide-h" data-map="{{ $map.RelPermalink }}" data-downloads="{{ $figures.RelPermalink }}" data-globe-src="{{ $globe.RelPermalink }}" data-globe-integrity="{{ $globe.Data.Integrity }}">
     <div class="wrap">
       <div class="grid split home-split">
         <div class="split__text worldwide__text">
-          <h2 id="worldwide-h">{{ replace $w.title "{countries}" (len $d.countries) | partial "nobreak.html" }}</h2>
-          <p class="t-lead">{{ replace (replace $w.text "{downloads}" (lang.FormatNumber 0 $d.total)) "{year}" (substr $d.from 0 4) | partial "nobreak.html" }}</p>
+          <h2 id="worldwide-h" class="sr-only">{{ lang.FormatNumber 0 $d.total }} Lead-DBS download requests from {{ len $d.countries }} countries since {{ substr $d.from 0 4 }}</h2>
+          <dl class="worldwide__stats">
+            <div class="worldwide__stat worldwide__stat--total">
+              <dt>Download requests</dt>
+              <dd class="num" data-globe-total>{{ lang.FormatNumber 0 $d.total }}</dd>
+            </div>
+            <div class="worldwide__stat worldwide__stat--countries">
+              <dt>Countries</dt>
+              <dd class="num" data-globe-countries>{{ len $d.countries }}</dd>
+            </div>
+          </dl>
+          <div class="worldwide__timeline">
+            <div class="worldwide__time-row">
+              <span class="worldwide__since num">{{ substr $d.from 0 4 }}</span>
+              <div class="worldwide__time-end">
+                <span class="worldwide__now num" data-globe-now>{{ substr $d.to 0 4 }}</span>
+                <button class="worldwide__pause" type="button" aria-label="Pause the globe" hidden data-globe-pause></button>
+              </div>
+            </div>
+            <div class="worldwide__bar" data-globe-bar>
+              <span class="worldwide__fill" data-globe-progress></span>
+            </div>
+          </div>
         </div>
+        {{ with $p.voices }}
+        {{ $short := slice }}
+        {{ range where hugo.Data.quotes.quotes "kind" "researcher" }}{{ if le (len .text) 140 }}{{ $short = $short | append . }}{{ end }}{{ end }}
+        {{ $pubs := site.GetPage "/about/publications" }}
+        <div class="voice" data-voice-rotator aria-roledescription="carousel" aria-label="Quotes from researchers">
+          <a class="voice__hit" href="{{ with $pubs }}{{ .RelPermalink }}#what-others-write{{ end }}" aria-label="Read all quotes on Publications"></a>
+          <div class="voice__stage">
+            {{ range $i, $q := $short }}
+            <figure class="voice__slide{{ if eq $i 0 }} is-active{{ end }}"{{ if ne $i 0 }} aria-hidden="true"{{ end }}>
+              <blockquote class="voice__quote">“{{ $q.text }}”</blockquote>
+              <figcaption class="voice__meta">
+                {{ with $q.logo }}{{ with resources.Get . }}<img class="voice__logo qcard__logo" src="{{ .RelPermalink }}" alt="" loading="lazy" decoding="async">{{ end }}{{ end }}
+                <span class="voice__who"><b>{{ index (split $q.name ", ") 0 }}</b><span>{{ $q.role }}</span></span>
+              </figcaption>
+            </figure>
+            {{ end }}
+          </div>
+          {{ if gt (len $short) 1 }}
+          <div class="voice__nav" hidden data-voice-controls>
+            <button type="button" class="voice__btn" aria-label="Previous quote" data-voice-prev>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button type="button" class="voice__btn" aria-label="Next quote" data-voice-next>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          {{ end }}
+        </div>
+        {{ end }}
         <figure class="worldwide__fig">
           <div class="worldwide__stage" data-globe-stage>
             <canvas data-globe aria-hidden="true"></canvas>
             <p class="worldwide__tip" data-globe-tip hidden></p>
           </div>
-          <figcaption class="worldwide__foot">
-            <span class="caption num" data-globe-now></span>
-            <button class="worldwide__pause" type="button" aria-label="Pause the globe" hidden data-globe-pause></button>
-          </figcaption>
         </figure>
       </div>
     </div>
   </section>
   {{ end }}{{ end }}
 
-  {{/* 7. Three points about the forthcoming release, with a shared heading. */}}
-  {{ with $p.next }}
-  <section class="section home-sec next-band" id="next" aria-labelledby="next-h">
-    <div class="wrap next-band__inner">
-      <div class="next-band__head">
-        <p class="t-label next-band__label">{{ .label }}</p>
-        <h2 id="next-h" class="next-band__title">{{ partial "nobreak.html" .title }}</h2>
-      </div>
-      <div class="next-band__points">
-        {{ range $i, $pt := .points }}
-        <div class="next-band__point">
-          {{ with .title }}<h3>{{ . }}</h3>{{ end }}
-          <p>{{ .text }}</p>
-          {{ if eq (add $i 1) (len $p.next.points) }}{{ with $p.next.link }}<a class="link" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}</a>{{ end }}{{ end }}
+  {{/* 5. Made with Lead-DBS: a full-width horizontal gallery ribbon of all published figures from
+       data/gallery.yaml at their natural aspect ratios (uncropped), with gentle auto-glide, mouse/touch
+       drag, and step controls (assets/js/main/home.js). Clicking any figure opens its entry on /gallery/. */}}
+  {{ with $p.research }}
+  {{ $gallery := site.GetPage "/gallery" }}
+  {{ $figs := hugo.Data.gallery.figures }}
+  <section class="section home-sec home-sec--tinted made-sec" id="research" aria-labelledby="research-h">
+    <div class="wrap">
+      <div class="section-head section-head--row">
+        <h2 id="research-h">{{ partial "nobreak.html" .title }}</h2>
+        <div class="made-head__actions">
+          {{ with $gallery }}<a class="link" href="{{ .RelPermalink }}">{{ $p.research.link_label }}{{ $arrow }}</a>{{ end }}
+          <div class="made-controls" hidden data-made-controls>
+            <button type="button" class="made-step" aria-label="Pause the gallery" data-made-strip-pause>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </button>
+            <button type="button" class="made-step" aria-label="Previous figures" data-made-prev>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button type="button" class="made-step" aria-label="More figures" data-made-next>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
         </div>
-        {{ end }}
       </div>
+    </div>
+    <div class="made-strip" role="region" tabindex="0" aria-label="{{ .label | default "Figures from peer-reviewed papers that used Lead-DBS" }}" data-made-strip>
+      <ul class="made-strip__track">
+        {{ range $figs }}{{ $f := . }}
+        {{ with resources.Get (printf "gallery/%s" $f.file) }}
+        {{ $s := .Resize "520x webp q82" }}{{ $m := .Resize "960x webp q84" }}
+        {{ $ar := div (math.Round (mul 1000 (div (float .Width) .Height))) 1000 }}
+        <li class="made-card" style="--ar: {{ $ar }}">
+          <a class="made-card__link" href="{{ with $gallery }}{{ .RelPermalink }}{{ end }}#fig-{{ path.BaseName $f.file }}" draggable="false">
+            <span class="made-card__frame">
+              <img src="{{ $s.RelPermalink }}" srcset="{{ $s.RelPermalink }} 520w, {{ $m.RelPermalink }} 960w" sizes="(min-width: 1024px) 520px, 320px" width="{{ $m.Width }}" height="{{ $m.Height }}" alt="{{ $f.shows }}" decoding="async" draggable="false">
+            </span>
+            <span class="made-card__cap"><b>{{ $f.journal }}</b> {{ $f.authors }} {{ $f.year }}</span>
+          </a>
+        </li>
+        {{ else }}{{ errorf "home: no file static/gallery/%s (data/gallery.yaml)" $f.file }}{{ end }}
+        {{ end }}
+      </ul>
     </div>
   </section>
   {{ end }}
 
-  {{/* 8. What is coming up and what is new, as on x.ai's news: one row of picture cards, the upcoming
-       events first (their flyer; the meta line ends in a countdown from assets/js/main/events.js), then the newest posts (their
-       picture; a release post shows its version number large instead), eight in all. An event's tile carries
-       its day as a small calendar leaf. A post that
-       only repeats an event's flyer is left out. Each card: a short line (Event or News, the date) and
-       the title, the whole card one link. Four cards show at a time on a wide screen (two on a tablet);
-       the row scrolls sideways with a finger or a trackpad, and a mouse drags it (assets/js/main/home.js). */}}
+  {{/* 6. What's happening: the forthcoming Lead-DBS 4.0 in one tinted panel beside the next event and the
+       latest release/news card. */}}
   {{ with $p.events }}
   {{ $up := where (partial "events/list.html" $) "over" false }}
   {{ $flyers := slice }}{{ $cards := slice }}
@@ -360,11 +300,20 @@
         <h2 id="events-h" class="pulse__h">{{ partial "nobreak.html" .title }}</h2>
         <p class="pulse__links"><a href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a><a href="{{ partial "resolve-url.html" (dict "url" $p.news.link.url "page" $) }}">{{ $p.news.link.label }}{{ $arrow }}</a></p>
       </div>
+      <div class="pulse__body">
+      {{ with $p.next }}
+      <div class="pulse-next">
+        <p class="t-label pulse-next__label">{{ .label }}</p>
+        <h3 class="pulse-next__title">{{ partial "nobreak.html" .title }}</h3>
+        {{ with .text }}<p class="pulse-next__text">{{ . }}</p>{{ end }}
+        {{ range .points }}<p class="pulse-next__text">{{ .text }}</p>{{ end }}
+        {{ with .link }}<a class="link" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}{{ $arrow }}</a>{{ end }}
+      </div>
+      {{ end }}
       <ol class="pulse__row" data-drag-row data-ev-next-list data-ev-updates="{{ $up.href }}" data-ev-updates-name="{{ $up.name }}">
-        {{ range $cards }}{{ $c := . }}
+        {{ range first 2 $cards }}{{ $c := . }}
         <li class="pulse-card{{ if eq .kind "Event" }} pulse-card--event{{ end }}"{{ with .ev }} data-ev data-ev-ends="{{ .iso_ends }}"{{ end }}>
           <a class="pulse-card__link" href="{{ .url }}">
-            {{- /* a release post shows its version number, whatever picture it has, so releases look alike */}}
             {{ $img := .img }}{{ if and (eq .kind "News") .version }}{{ $img = false }}{{ end }}
             <span class="pulse-card__media{{ if eq .kind "Event" }} pulse-card__media--poster{{ else if not $img }} pulse-card__media--tile{{ end }}">
               {{- with .ev }}<span class="pulse-card__day" aria-hidden="true"><span>{{ .start.Format "Jan" }}</span>{{ .start.Format "2" }}</span>{{ end -}}
@@ -376,26 +325,28 @@
         </li>
         {{ end }}
       </ol>
+      </div>
     </div>
   </section>
   {{ end }}
 
-  {{/* 9. The close: two halves built alike, a heading, then the content, then the action: where to get
-       help (one line and a button to the Get help section) and how to cite Lead-DBS (the reference or
-       its BibTeX to copy, and the page with every paper to cite). The funders in one row under both. */}}
+  {{/* 7. The close: two balanced surface cards (help and citation) above the funders row */}}
   {{ with $p.help }}
-  <section class="section home-sec home-sec--tight closing" id="help" aria-label="Help and citation">
+  <section class="section home-sec home-sec--tight home-sec--tinted closing" id="help" aria-label="Help and citation">
     <div class="wrap">
       <div class="closing__cols">
-        <div class="closing__col">
+        <div class="closing__col closing__card">
           <h2 class="closing__h">{{ partial "nobreak.html" .title }}</h2>
           {{ with .text }}<p class="closing__text">{{ . }}</p>{{ end }}
+          <ul class="closing__shortcuts">
+            {{ with site.GetPage "/helpsupport/slack-user-channel" }}<li><a href="{{ .RelPermalink }}">User Slack{{ $arrow }}</a></li>{{ end }}
+            {{ with site.GetPage "/manual" }}<li><a href="{{ .RelPermalink }}">Manual{{ $arrow }}</a></li>{{ end }}
+            {{ with site.Params.github }}<li><a href="{{ . }}/issues" rel="noopener">Report a bug{{ $arrow }}</a></li>{{ end }}
+          </ul>
           <div class="closing__actions"><a class="btn btn--primary" href="{{ partial "resolve-url.html" (dict "url" .url "page" $) }}">{{ .label }}{{ $arrow }}</a></div>
         </div>
         {{ with $p.cite }}
-        {{- /* the citation as a snippet to copy: the shared citation box (partial cite-box.html), the
-               reference as on the citing page and the same paper as BibTeX */}}
-        <div class="closing__col cite" id="cite">
+        <div class="closing__col closing__card cite" id="cite">
           <h2 class="closing__h">{{ partial "nobreak.html" .title }}</h2>
           {{ partial "cite-box.html" (dict "id" .paper "uid" "home") }}
           <div class="closing__actions">
@@ -407,16 +358,18 @@
         </div>
         {{ end }}
       </div>
-      {{ with $p.funders }}
+    </div>
+  </section>
+  {{ with $p.funders }}
+  <section class="section home-sec home-sec--tight funders-sec" aria-labelledby="funders-h">
+    <div class="wrap">
       <div class="funders-row">
-        <h3 class="funders__h">{{ .title }}</h3>
+        <h3 id="funders-h" class="funders__h">{{ .title }}</h3>
         <ul class="funders">
           {{ range .logos }}
           {{ $f := . }}
           {{ with $.Resources.Get .file }}
           {{ $img := . }}{{ range $f.crop }}{{ $img = $img.Crop . }}{{ end }}
-          {{- /* every logo gets about the same area, so a wide word mark is lower and a compact mark taller;
-                 scale (front matter) corrects a logo that still looks too heavy or too light */ -}}
           {{ $aspect := div (float $img.Width) $img.Height }}
           {{ $h := mul (math.Sqrt (div 6600.0 $aspect)) ($f.scale | default 1.0) | math.Round }}{{ $h = math.Max 32 (math.Min 62 $h) }}
           {{ $w := math.Round (mul $h $aspect) }}
@@ -427,9 +380,9 @@
           {{ end }}
         </ul>
       </div>
-      {{ end }}
     </div>
   </section>
+  {{ end }}
   {{ end }}
 
 </main>

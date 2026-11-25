@@ -7,8 +7,9 @@ and never fail the run.
 Failures, for copy that is objectively wrong:
   - the visible text of <main> (and of the 404 page), without code blocks, citations, quotations and links'
     addresses: template or comment leftovers, text that describes the interface instead of the content, a
-    word written twice in a row (also across inline tags: "the <a>the</a>"), the house spelling (British
-    -our/-re/-ll- with -ize: fibre, colour, modelling, centre, millimetre, grey; "email"), the product names
+    word written twice in a row (also across inline tags: "the <a>the</a>"), the house spelling (American:
+    fiber, color, modeling, center, millimeter, gray, license, practice, program, analyze, -ize; "email"),
+    except in the manual, which keeps its imported British spelling until it has a pass of its own; the product names
     (Lead-DBS, Lead Tutor, Lead Group, Lead Connectome, OSS-DBS, WarpDrive) and FOCUS, which is requested,
     not downloaded;
   - the editorial surface around it: every page's <title> and meta description, alt and placeholder texts,
@@ -42,17 +43,20 @@ import sys
 
 ROOT = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else "public")
 
-SPELLING = (r"\b(fiber|fibers|color|colors|colored|modeling|center|centers|centered|millimeter|millimeters|"
-            r"neighboring|behavior|behaviors|behavioral|gray)\b")
+# British forms, in any case ("Fibre tracts" at the start of a heading too); names of institutions that keep
+# them ("McConnell Brain Imaging Centre") are in EXEMPT
+SPELLING = (r"(?i)\b((sub)?millimetres?|fibres?|colours?|coloured|colouring|modell(ing|ed)|"
+            r"centres?|centred|neighbour\w*|behaviour\w*|grey|labell(ed|ing)|catalogues?|programmes?|paediatric|ageing|"
+            r"licences?|practis(e|es|ed|ing)|operating theatre)\b")
 NAMES = r"\b(LeadDBS|Lead DBS|LEAD-DBS|Lead-Tutor|Lead-Group|Lead-Connectome|OSS DBS|OSSDBS|Warpdrive|Warp Drive)\b"
 RULES = [
     (r"-->|–>|\{\{|\}\}|\{[.#][\w-]", "template or Markdown leftover"),
     (r"\b(type in the box|open an entry|the box below|click here|this page (explains|shows|lists))\b", "describes the interface, not the content"),
-    (SPELLING, "house spelling: fibre, colour, modelling, centre, millimetre, neighbouring, behaviour, grey"),
-    (r"\b(to|can|will|you|then) practice (on|with|the|your|electrode|locali[sz])|(^|[.!?] )Practice (the|on|with|your)\b", "house spelling: practise (the verb)"),
+    (SPELLING, "house spelling (American): fiber, color, modeling, center, millimeter, gray, labeled, catalog, program, license, practice"),
     (r"\be-mail\b", "house spelling: email"),
-    (r"\b([Aa]nalyz(e|es|ed|ing)|[Vv]isualis\w*|[Nn]ormalis\w*|[Ll]ocalis\w*|[Oo]rganis(e|es|ed|ing|ation|ations))\b",
-     "house spelling: Oxford -ize with analyse (visualize, normalize, localize, organize)"),
+    (r"\b([Aa]nalys(e|ed|ing)|[Vv]isualis\w*|[Nn]ormalis\w*|[Ll]ocalis\w*|[Oo]rganis(e|es|ed|ing|ation|ations)|"
+     r"[Gg]eneralis\w*|[Oo]ptimis\w*|[Cc]haracteris(e|es|ed|ing|ation))\b",
+     "house spelling (American): analyze, visualize, normalize, localize, organize, generalize"),
     (NAMES, "product name: Lead-DBS, Lead Tutor, Lead Group, Lead Connectome, OSS-DBS, WarpDrive"),
     (r"\bDownload FOCUS\b", "FOCUS is sent on request: Request FOCUS"),
     (r"forum is closed|Renders by the Lead-DBS team|Just looking for the software|player loads from|Each entry says|"
@@ -74,7 +78,7 @@ EXEMPT = [
     r"Fiber Filtering( Explorer)?", r"[Ff]iber [Ff]iltering [Ee]xplorer", r"Fiber Activation", r"fiber_filtering",
     r"[Ff]ast [Gg]ray [Mm]atter [Aa]cquisition", r"Gray Matter", r"gray matter nulled",
     r"Center for [A-Z]\w+", r"[A-Z]\w+ (Medical )?Center\b", r"Medical Center", r"Brain Center",
-    r"Color ?map", r"Colorbar", r"Modeling (Platform|Toolbox)", r"Lead-DBS Main Window", r"Color by regressor",
+    r"Color ?map", r"Colorbar", r"McConnell Brain Imaging Centre", r"Centre Hospitalier\b[^,<]*", r"Modeling (Platform|Toolbox)", r"Lead-DBS Main Window", r"Color by regressor",
     r"Group Colors", r"NIfTI and Analyze", r"Analyze (format|image)",
 ]
 
@@ -121,12 +125,6 @@ REPEATS = {
         {"/download/", "/manual/"},
     "Outputs must not be used as a basis for clinical care.":
         {"/download/", "/manual/"},
-    # the next version, on the home page and on Download
-    "We’re rebuilding Lead-DBS in Python, without a MATLAB requirement.":
-        {"/download/", "/"},
-    # the catalogues' shared opening
-    "Each entry lists access details and the paper to cite.":
-        {"/helpsupport/knowledge-base/atlasesresources/atlases-2/", "/helpsupport/knowledge-base/atlasesresources/cortical-atlas-parcellations-mni-space/"},
     # the methods pop-up of both registration steps
     "A pop-up window with information about methods and references.":
         {NORM, REFINE},
@@ -284,11 +282,13 @@ def blank_exempt(text):
     return text
 
 
-def matches(text, as_published):
-    """(why, context) for every rule that the text breaks."""
+def matches(text, as_published, manual=False):
+    """(why, context) for every rule that the text breaks. The manual is not checked for spelling."""
     checked = blank_exempt(text)
     for pattern, why in RULES:
         if as_published and cased(why):
+            continue
+        if manual and "spelling" in why:
             continue
         for m in re.finditer(pattern, checked, flags=0 if cased(why) else re.I):
             if why.startswith("house spelling") and re.search(r"\((19|20)\d\d\)|et al\.|doi|Proceedings|\d+ ?\(\d+\),",
@@ -328,9 +328,10 @@ for f in sorted(ROOT.rglob("index.html")) + [ROOT / "404.html"]:
     # its head shows as "kept for the record") stays entirely as published, without repeats or warnings
     archived = bool(re.search(r'\bpage-head__meta\b[^>]*>(?:(?!</p>).)*kept for the record', raw, re.S))
     as_published = archived or "section-news" in p.body_class.split()
+    manual = "section-manual" in p.body_class.split()
     for ctx in [] if archived else p.repeats():
         errors.append(f"{rel}: repeated word: …{ctx}…")
-    for why, ctx in matches(text, as_published):
+    for why, ctx in matches(text, as_published, manual):
         if "struck" in why and rel.startswith("helpsupport/forum/"):
             continue  # the page old forum links land on says that the forum closed
         errors.append(f"{rel}: {why}: …{ctx}…")
@@ -338,7 +339,7 @@ for f in sorted(ROOT.rglob("index.html")) + [ROOT / "404.html"]:
         s = re.sub(r"\s+", " ", s).strip()
         if not s:
             continue
-        for why, ctx in matches(s, as_published):
+        for why, ctx in matches(s, as_published, manual):
             if "struck" in why and rel.startswith("helpsupport/forum/"):
                 continue
             if (why, ctx) not in surface_seen:

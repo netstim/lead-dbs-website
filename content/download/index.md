@@ -39,13 +39,12 @@ standalone:
   - {name: "Windows", url: "https://www.lead-dbs.org/release/download.php?id=leaddbs_standalone_windows"}
 # the next version, in the black panel
 upcoming:
-  title: "Lead-DBS 4.0 is coming."
-  text: "We’re rebuilding Lead-DBS in Python, without a MATLAB requirement."
+  title: "Lead-DBS 4.0 is being rewritten in Python and will not require MATLAB."
   link: {page: "/events/hands-on-workshop-2027/", text: "Preview it at the workshop, 11–12 February 2027"}
 # the terms of use, in the dialog the "Terms of use" button opens (text: Markdown; id: an anchor
 # other pages link to)
 terms:
-  - label: "Licence"
+  - label: "License"
     value: "GNU GPL v3"
     text: "By downloading Lead-DBS you accept that it and its toolboxes are free but copyrighted software under the [GNU General Public License, version 3](https://github.com/netstim/leaddbs/blob/master/LICENSE.md), as published by the Free Software Foundation, and that it comes with absolutely no warranty."
   - label: "Use"
@@ -58,7 +57,7 @@ share: "images/renders/cohort-front.jpg"
 searchEntries:
   - {title: "Standalone version: Windows, macOS, Linux", id: "standalone-version", keywords: "standalone no matlab without matlab compiled windows linux macos mac os mac apple silicon intel", description: "Experimental builds of Lead-DBS that run without MATLAB, for Windows, macOS (Intel and Apple silicon) and Linux."}
   - {title: "Release history", id: "releases", keywords: "release history release notes changelog change log changes what changed versions version history older versions", description: "Lead-DBS release dates, announcements and changes."}
-  - {title: "Lead-DBS 4.0", id: "lead-dbs-4", keywords: "4.0 v4 version 4 Python next version no MATLAB pre-release", description: "We’re rebuilding Lead-DBS in Python, without a MATLAB requirement."}
+  - {title: "Lead-DBS 4.0", id: "lead-dbs-4", keywords: "4.0 v4 version 4 Python next version no MATLAB pre-release", description: "Lead-DBS 4.0 is being rewritten in Python and will not require MATLAB."}
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
   - {page: "/helpsupport/first-steps/"}

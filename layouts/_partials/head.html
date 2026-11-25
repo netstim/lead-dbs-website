@@ -58,7 +58,7 @@
 {{- end }}
 {{- /* the browser's chrome takes the page's ground: by the system's setting without script; the script
        below and assets/js/main/theme.js set both to the theme in use, so a reader's choice wins */}}
-{{ $darkTop := or .IsHome (eq .Layout "download") (eq .Section "gallery") }}
+{{ $darkTop := or (and .IsHome (not .Params.story)) (eq .Layout "download") (eq .Section "gallery") }}
 <meta name="theme-color" content="{{ if $darkTop }}#000000{{ else }}#ffffff{{ end }}" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="{{ if $darkTop }}#000000{{ else }}#161819{{ end }}" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="{{ "images/favicon-32x32.png" | relURL }}" sizes="32x32">

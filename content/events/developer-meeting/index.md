@@ -17,4 +17,4 @@ flyer:
 share: "lead-dbs-developer-meeting-flyer.jpg"
 ---
 
-A monthly online meeting about the development of Lead-DBS, open to contributors and users alike.
+A monthly online meeting on Lead-DBS development, open to anyone who wants to contribute or follow along.

@@ -57,9 +57,9 @@ Finally, the concept was extended to electrophysiological features recorded duri
 
 ## Mapping other measures
 
-The same mapping works for any measure known per patient, electrode or contact: behavioural or clinical
-scores, task signals, demographics or the treating centre. Studies have mapped clinical outcome this way,
-some of them with modelled stimulation volumes.
+The same mapping works for any measure known per patient, electrode or contact: behavioral or clinical
+scores, task signals, demographics or the treating center. Studies have mapped clinical outcome this way,
+some of them with modeled stimulation volumes.
 
 <details class="more">
 <summary>Show the studies that mapped clinical outcome</summary>
@@ -142,16 +142,16 @@ Three-dimensional ROIs mark the peaks of high beta and alpha activity (above).
 
 We tested whether a standardized structural connectome could distinguish cortical connectivity between these two small, adjacent regions.
 
-For this analysis – which could only be performed on group level – a standardized high precision structural connectome [[Horn 2017](https://www.sciencedirect.com/science/article/pii/S1053811917301088)] was used to select fibre-tracts connected to the alpha and beta peaks, respectively.
+For this analysis – which could only be performed on group level – a standardized high precision structural connectome [[Horn 2017](https://www.sciencedirect.com/science/article/pii/S1053811917301088)] was used to select fiber-tracts connected to the alpha and beta peaks, respectively.
 
 The two regions had slightly different connectivity profiles, largely consistent with [[Accolla et al.](https://academic.oup.com/brain/article-abstract/139/9/2503/1744844/Brain-networks-modulated-by-subthalamic-nucleus?redirectedFrom=fulltext)].
 
-![Structural connectivity from alpha and beta seeds to the cortex](fibertracts-1030x841.png "Fig. 5: Contrasting fibre tract maps seeding either from the “alpha-hotspot” or “beta-hotspot”. Panel B shows a contrast map between the two seeds. Given their proximity, the overall connectivity profiles of both seeds are similar.")
+![Structural connectivity from alpha and beta seeds to the cortex](fibertracts-1030x841.png "Fig. 5: Contrasting fiber tract maps seeding either from the “alpha-hotspot” or “beta-hotspot”. Panel B shows a contrast map between the two seeds. Given their proximity, the overall connectivity profiles of both seeds are similar.")
 
 ### The beta atlas
 
 Given the importance of the beta rhythm in Parkinson’s disease, the study proposed that the beta atlas could guide DBS programming (and potentially targeting), pending prospective validation in follow-up studies. The atlas is available in Lead-DBS and on [Neurovault](https://neurovault.org/collections/2418/).
 
-![DBS electrode in the STN with the beta peak and a volume of tissue activated](fig_7.png "Fig. 6: The beta-power peak (yellow) relative to a hypothetical electrode and modelled stimulation volume.")
+![DBS electrode in the STN with the beta peak and a volume of tissue activated](fig_7.png "Fig. 6: The beta-power peak (yellow) relative to a hypothetical electrode and modeled stimulation volume.")
 
 </details>

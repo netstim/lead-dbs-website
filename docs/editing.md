@@ -63,10 +63,10 @@ drawn as `h2`).
 - **"Lead-DBS" never breaks at its hyphen**: the templates wrap it in a no-wrap span
   (`layouts/_partials/nobreak-html.html`; headings, links, tables, menus, cards, news and atlas entries).
   Write the ordinary hyphen.
-- **House style** (`.github/scripts/check-copy.py` fails the build on the objective part): British spelling
-  with Oxford -ize (colour, fibre, modelling, centre, millimetre, grey, behaviour; normalize, localize,
-  visualize, organize; analyse; *practice* the noun, *practise* the verb), sentence case, and the product
-  names Lead-DBS, Lead Tutor, Lead Group, Lead Connectome, OSS-DBS and WarpDrive. Quotations, paper titles and
+- **House style** (`.github/scripts/check-copy.py` fails the build on the objective part): American spelling
+  (color, fiber, modeling, center, millimeter, gray, behavior, labeled, catalog, program, license, pediatric;
+  normalize, localize, visualize, organize, analyze; *practice* as noun and verb; operating room), sentence
+  case, and the product names Lead-DBS, Lead Tutor, Lead Group, Lead Connectome, OSS-DBS and WarpDrive. Quotations, paper titles and
   literal software labels keep their own spelling: in the manual, write interface labels in **bold** and the
   checker leaves them alone; elsewhere add a literal to `EXEMPT` in the checker. FOCUS is *requested*, not
   downloaded. The checker also prints warnings that never fail: hype words, a sentence repeated on several
@@ -75,11 +75,13 @@ drawn as `h2`).
   the connectomic explorers) goes into `REPEATS` in the checker, with the exact sentence and the exact pages it
   stands on; fix a repetition that is only padding. Dated news posts keep their published spelling and
   names but get the tone warnings; only a page marked `archived: true` in its front matter (its head says
-  "kept for the record") is left entirely as published.
+  "kept for the record") is left entirely as published. The manual still has the British spelling it was
+  imported with; the checker leaves its spelling alone until it gets a pass of its own.
 - **Claims carry their source**: an accuracy or clinical claim names the study it comes from ("The study
   proposed…", "The paper compares…"), not a universal "outperforms" or "perfectly".
 - **The quotes on Publications**: `{{< quote-wall limit="1" >}}` shows the first quote of `data/quotes.yaml`
-  (by `wall` number) and folds the rest.
+  (by `wall` number) and folds the rest. Every quote is shown whole, on the wall and in the home page's rows
+  (the quotes with a `row`); never cut a phrase out of one.
 - **The privacy policy** (`content/privacy-policy/`) describes only what the site's code does (its front matter
   names the files). When a form, analytics or a video host changes, change the policy in the same commit;
   what is still open for the lab is in `docs/launch/privacy-draft.md`.
@@ -252,8 +254,8 @@ Text on the left …
   size). A click on a name chooses it (`assets/js/main/features.js`); below 1024px the chosen one holds its own
   picture; without script every one is open. Renders carry no credit of their own; the page credits them
   once. Its `id` is the anchor other pages link to (`#stimulation`, `#connectivity` …): such a link chooses
-  that one. `tools` shows the named tools of the page's front matter as picture cells, four
-  across: a render (`img`), the name, one sentence, its links.
+  that one. `tools` shows the named tools of the page's front matter as one compact row, four
+  across: each the name and its links (what each does is said once, in the capabilities above).
 - `chapter` opens a numbered chapter of a long showcase page (Features): `{{% chapter n="1" img="images/renders/…" %}}`
   around the chapter's `##` heading and a one-line lede; from 1024px the render is a low band beside them,
   below that it follows them, and a phone leaves it out. Its number has the style of the numbers of `jumps`

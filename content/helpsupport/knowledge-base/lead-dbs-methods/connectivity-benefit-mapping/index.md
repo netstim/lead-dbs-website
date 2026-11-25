@@ -43,9 +43,9 @@ with improvement. This map can be used to predict outcomes in new patients.
 
 ![Functional connectivity profiles of the DBS sites of 12 patients on cortical surfaces](cbm1-1030x676.png "Fig. 2: The result is a connectivity profile from each (pair of) stimulation volumes. Above, functional connectivity profiles of DBS electrodes implanted in 12 Parkinson’s disease patients are shown. At first glance, they look pretty similar (which is not surprising since all electrodes are implanted inside the STN). However, small changes can be seen.")
 
-![The same connectivity profiles with a voxel in M1 marked](cbm2-1030x679.png "Fig. 3: …take, for instance a voxel inside M1 (orange boxes). Across subjects, it is mostly anticorrelated (cold colours) to the DBS sites but in some patients, it is positive (hot colours).")
+![The same connectivity profiles with a voxel in M1 marked](cbm2-1030x679.png "Fig. 3: …take, for instance a voxel inside M1 (orange boxes). Across subjects, it is mostly anticorrelated (cold colors) to the DBS sites but in some patients, it is positive (hot colors).")
 
-![Connectivity maps combined with clinical improvement, and the predictions they make](maps-1030x440.png "Fig. 4: The connectivity profiles of patients may be concatenated to predictive maps by integrating them with clinical improvement (in our case % UPDRS-III improvement). In our article, we estimated three types of maps (for details, see [Horn et al. 2017](https://doi.org/10.1002/ana.24974)). Here, we’ll cover the R-map in detail only: It shows hot colours (positive R-values) for voxels a connectivity to which is positively associated with clinical improvement. Cold colours for the inverse: Weaker or more negative connectivity is associated with clinical improvement.")
+![Connectivity maps combined with clinical improvement, and the predictions they make](maps-1030x440.png "Fig. 4: The connectivity profiles of patients may be concatenated to predictive maps by integrating them with clinical improvement (in our case % UPDRS-III improvement). In our article, we estimated three types of maps (for details, see [Horn et al. 2017](https://doi.org/10.1002/ana.24974)). Here, we’ll cover the R-map in detail only: It shows hot colors (positive R-values) for voxels a connectivity to which is positively associated with clinical improvement. Cold colors for the inverse: Weaker or more negative connectivity is associated with clinical improvement.")
 
 An intuitive explanation of this type of map is that it shows areas that a DBS electrode “should be” connected to and areas to which it “should not be” connected for best efficacy.
 
@@ -53,9 +53,9 @@ Finally, these maps may be used to actually predict outcome (right hand scatter 
 
 > The three types of maps may be created using ea_Rmap, ea_Amap and ea_Cmap code included in Lead-DBS.
 
-![Maps from the Berlin cohort predicting improvement in the Würzburg cohort, for functional and structural connectivity](crosspredict-970x1030.png "Fig. 5: A map learned from data in one DBS centre predicted outcomes in data from a second centre.")
+![Maps from the Berlin cohort predicting improvement in the Würzburg cohort, for functional and structural connectivity](crosspredict-970x1030.png "Fig. 5: A map learned from data in one DBS center predicted outcomes in data from a second center.")
 
-![Active contacts in the STN, a connectivity map on the cortex, and fibre tracts](figure_1-1030x350.png "Fig. 6: Summary of network mapping results for STN-DBS in PD. A) active contacts from two cohorts mapped to the STN in MNI space. B) rs-fMRI connectivity based network map (R-map type) for % UPDRS-III improvement. C) connected fibertracts coloured by association with good (red), midline (yellow) or poor (blue) symptom improvement.")
+![Active contacts in the STN, a connectivity map on the cortex, and fiber tracts](figure_1-1030x350.png "Fig. 6: Summary of network mapping results for STN-DBS in PD. A) active contacts from two cohorts mapped to the STN in MNI space. B) rs-fMRI connectivity based network map (R-map type) for % UPDRS-III improvement. C) connected fibertracts colored by association with good (red), midline (yellow) or poor (blue) symptom improvement.")
 
 ### Normative or individualized connectivity
 

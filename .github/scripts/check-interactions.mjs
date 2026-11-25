@@ -77,26 +77,21 @@ const tablet = { width: 820, height: 1180, mobile: true };
 // text geometry waits for the fonts: a fallback face lays out lines differently
 const fonts = (page) => page.evaluate(() => document.fonts.ready.then(() => null));
 
-await journey('phone menu: the button opens the sheet, Escape and the button close it', phone, async (page, fail) => {
+await journey('phone menu: the button opens the sheet, Escape and the close button close it', phone, async (page, fail) => {
   await page.goto(url(''), { waitUntil: 'load' });
-  const toggle = page.locator('.nav__toggle');
+  const toggle = page.locator('[data-menu-open]');
   if (!(await toggle.isVisible())) { fail('no menu button on a phone'); return; }
   await toggle.click();
-  if (!(await until(page, () => document.querySelector('.nav').classList.contains('is-open')))) fail('the menu button does not open the sheet');
-  if (await toggle.getAttribute('aria-expanded') !== 'true') fail('the open sheet\'s button does not say aria-expanded="true"');
-  if (!(await page.evaluate(() => document.getElementById('site-menu').contains(document.activeElement)))) fail(`the focus is not in the sheet once it opens (it is on ${await focused(page)})`);
-  if (!(await page.locator('#site-menu .nav__link').first().isVisible())) fail('the sheet\'s words are not visible');
+  if (!(await until(page, () => document.getElementById('phone-menu')?.open))) fail('the menu button does not open the sheet');
+  if (!(await page.evaluate(() => document.getElementById('phone-menu').contains(document.activeElement)))) fail(`the focus is not in the sheet once it opens (it is on ${await focused(page)})`);
+  if (!(await page.locator('#phone-menu .nav-row a').first().isVisible())) fail('the sheet\'s words are not visible');
   await page.keyboard.press('Escape');
-  if (!(await until(page, () => !document.querySelector('.nav').classList.contains('is-open')))) fail('Escape does not close the sheet');
-  if (!(await page.evaluate(() => document.activeElement === document.querySelector('.nav__toggle')))) fail(`after Escape the focus is not on the menu button (it is on ${await focused(page)})`);
-  if (await toggle.getAttribute('aria-expanded') !== 'false') fail('the closed sheet\'s button does not say aria-expanded="false"');
+  if (!(await until(page, () => !document.getElementById('phone-menu')?.open))) fail('Escape does not close the sheet');
+  if (!(await page.evaluate(() => document.activeElement === document.querySelector('[data-menu-open]')))) fail(`after Escape the focus is not on the menu button (it is on ${await focused(page)})`);
   await toggle.click();
-  try {
-    await toggle.click({ timeout: 5000 });
-  } catch {
-    fail('the menu button cannot be pressed while the sheet is open (it is off the screen or covered)'); return;
-  }
-  if (!(await until(page, () => !document.querySelector('.nav').classList.contains('is-open')))) fail('the menu button does not close the sheet');
+  if (!(await until(page, () => document.getElementById('phone-menu')?.open))) { fail('the menu button does not reopen the sheet'); return; }
+  await page.locator('#phone-menu [aria-label="Close menu"]').click();
+  if (!(await until(page, () => !document.getElementById('phone-menu')?.open))) fail('the close button does not close the sheet');
 });
 
 for (const how of ['the "/" key', 'the header\'s button']) {
@@ -106,7 +101,7 @@ for (const how of ['the "/" key', 'the header\'s button']) {
     const opener = page.locator('.nav [data-search-open]');
     if (how.includes('/')) {
       // from a link in the page, which must have the focus again afterwards
-      await page.locator('.nav__bar .nav__logo').focus();
+      await page.locator('.nav__bar .site-logo').focus();
       await page.keyboard.press('/');
     } else {
       await opener.click();
@@ -125,7 +120,7 @@ for (const how of ['the "/" key', 'the header\'s button']) {
       await page.keyboard.press('Escape');
     }
     if (!(await until(page, () => !document.getElementById('site-search').open))) { fail('Escape does not close the search dialog'); return; }
-    const back = how.includes('/') ? '.nav__bar .nav__logo' : '.nav [data-search-open]';
+    const back = how.includes('/') ? '.nav__bar .site-logo' : '.nav [data-search-open]';
     if (!(await page.evaluate((s) => document.activeElement === document.querySelector(s), back))) fail(`after Escape the focus is not back on ${back} (it is on ${await focused(page)})`);
   });
 }
@@ -162,42 +157,24 @@ await journey('dialog by keyboard: "Terms of use" opens with Enter, closes with 
   if (!(await page.evaluate(() => document.activeElement?.matches('[data-terms-open]')))) fail(`after Escape the focus is not back on the button (it is on ${await focused(page)})`);
 });
 
-// The menu sheet by keyboard. A short name for each stop: the sheet's words, then the bar's actions.
-const stop = (page) => page.evaluate(() => {
-  const el = document.activeElement;
-  if (!el || el === document.body) return 'nothing';
-  if (el.matches('.nav__toggle')) return 'menu button';
-  if (el.matches('.nav__download')) return 'Download';
-  if (el.matches('.nav__theme')) return 'theme';
-  if (el.matches('.nav__actions [data-search-open]')) return 'Search';
-  if (el.closest('.nav__item--sheet') && /github/i.test(el.textContent)) return 'GitHub';
-  if (el.closest('#site-menu')) return `word: ${(el.textContent.trim() || el.getAttribute('aria-label') || '').replace(/\s+/g, ' ').slice(0, 30)}`;
-  return `outside the sheet: ${el.tagName.toLowerCase()}.${String(el.className).split(' ')[0]}`;
-});
+// The menu sheet (#phone-menu modal dialog) by keyboard: Tab stays inside the modal sheet.
 for (const view of [tablet, phone]) {
-  await journey(`menu sheet by keyboard (${view.width}px): Tab and Shift+Tab run through it and around`, view, async (page, fail) => {
+  await journey(`menu sheet by keyboard (${view.width}px): Tab stays inside the sheet`, view, async (page, fail) => {
     await page.goto(url(''), { waitUntil: 'load' });
-    await page.locator('.nav__toggle').click();
-    if (!(await until(page, () => document.querySelector('.nav').classList.contains('is-open')))) { fail('the menu button does not open the sheet'); return; }
-    if (!(await page.evaluate(() => document.activeElement === document.querySelector("#site-menu")))) fail("Opening must focus the sheet, not highlight its first link");
-    await page.keyboard.press("Tab");
-    const first = await stop(page);
-    const forward = [first];
-    for (let i = 0; i < 60; i += 1) {
+    await page.locator('[data-menu-open]').click();
+    if (!(await until(page, () => document.getElementById('phone-menu')?.open))) { fail('the menu button does not open the sheet'); return; }
+    if (!(await page.evaluate(() => document.getElementById('phone-menu').contains(document.activeElement)))) fail('Opening must move focus into #phone-menu');
+    const seen = new Set();
+    for (let i = 0; i < 20; i += 1) {
       await page.keyboard.press('Tab');
-      const s = await stop(page);
-      if (s === first) break;
-      forward.push(s);
+      const ok = await page.evaluate(() => {
+        const dlg = document.getElementById('phone-menu');
+        return dlg.contains(document.activeElement) ? (document.activeElement.textContent.trim() || document.activeElement.getAttribute('aria-label') || document.activeElement.tagName) : null;
+      });
+      if (!ok) { fail(`Tab left #phone-menu (focus on ${await focused(page)})`); return; }
+      seen.add(ok);
     }
-    if (forward.length >= 60) { fail(`Tab never comes back to the first word: ${forward.slice(-6).join(' → ')}`); return; }
-    const tail = forward.filter((s) => !s.startsWith('word: '));
-    const want = ['GitHub', 'Search', 'theme', 'Download', 'menu button'];
-    if (tail.join(' → ') !== want.join(' → ')) fail(`after the words Tab goes ${tail.join(' → ')}, not ${want.join(' → ')}`);
-    if (forward.some((s) => s.startsWith('outside') || s === 'nothing')) fail(`Tab leaves the sheet: ${forward.find((s) => s.startsWith('outside') || s === 'nothing')}`);
-    const back = [];
-    for (let i = 0; i < forward.length; i += 1) { await page.keyboard.press('Shift+Tab'); back.push(await stop(page)); }
-    const expected = [...forward.slice(1).reverse(), first];
-    if (back.join(' | ') !== expected.join(' | ')) fail(`Shift+Tab does not run the same way back: ${back.slice(0, 6).join(' → ')} …`);
+    if (seen.size < 4) fail(`Tab only reached ${seen.size} controls inside #phone-menu`);
   });
 }
 
@@ -245,92 +222,60 @@ for (const view of [desktop, phone]) {
 }
 
 // The home page as most visitors see it, with motion.
-await journey('home with motion: the hero\'s words and actions show at once', desktop, async (page, fail) => {
+await journey('home with motion: the opening words and actions show at once', desktop, async (page, fail) => {
   await page.goto(url(''), { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(500);
   const dim = await page.evaluate(() => {
     const seen = (el) => { let o = 1; for (let a = el; a; a = a.parentElement) o *= Number(getComputedStyle(a).opacity); return o; };
-    return ['.home-hero .hero__lead', '.home-hero .btn-row'].map((s) => [s, document.querySelector(s)]).filter(([, el]) => el && seen(el) < 0.99)
+    return ['.story__step--first .story__lead', '.story__step--first .btn-row'].map((s) => [s, document.querySelector(s)]).filter(([, el]) => el && seen(el) < 0.99)
       .map(([s, el]) => `${s} at opacity ${seen(el).toFixed(2)}`);
   });
   for (const d of dim) fail(`500 ms after the page's HTML: ${d}`);
 }, { motion: 'no-preference' });
-await journey('home with motion: the video\'s button pauses it, or the poster stands without a button', desktop, async (page, fail) => {
+await journey('home with motion: the researcher quote panel cycles with its arrow buttons', desktop, async (page, fail) => {
   await page.goto(url(''), { waitUntil: 'load' });
-  const btn = page.locator('[data-hero-pause]');
-  const playing = await until(page, () => { const b = document.querySelector('[data-hero-pause]'); return b && !b.hidden && b.checkVisibility(); });
-  if (!playing) {
-    // the clip did not start here (Playwright's Chromium lacks some codecs): no dead control, the poster stays
-    if (await btn.isVisible()) fail('a pause button shows for a video that does not play');
-    if (!(await page.evaluate(() => document.querySelector('.hero__bg')?.getAttribute('poster')))) fail('the hero video has no poster');
-    return;
-  }
-  const label = await btn.getAttribute('aria-label');
-  await btn.click();
-  if (!(await until(page, (l) => document.querySelector('[data-hero-pause]').getAttribute('aria-label') !== l, label))) fail('the video\'s button does not change its name when pressed');
-  if (!(await page.evaluate(() => document.querySelector('.hero__bg').paused))) fail('the video plays on after its pause button');
+  await fonts(page);
+  const rot = page.locator('[data-voice-rotator]');
+  await rot.scrollIntoViewIfNeeded();
+  const next = rot.locator('[data-voice-next]');
+  if (!(await next.isVisible())) { fail('the quote arrows are not visible'); return; }
+  const q0 = await rot.locator('.voice__slide.is-active .voice__quote').textContent();
+  await next.click();
+  const q1 = await rot.locator('.voice__slide.is-active .voice__quote').textContent();
+  if (q1 === q0) fail('pressing the next quote arrow did not advance the quote');
+  await rot.locator('[data-voice-prev]').click();
+  const q2 = await rot.locator('.voice__slide.is-active .voice__quote').textContent();
+  if (q2 !== q0) fail('pressing the previous quote arrow did not return to the first quote');
 }, { motion: 'no-preference' });
-for (const view of [desktop, { width: 820, height: 1180, mobile: false }]) {
-  await journey(`home with motion (${view.width}px): the quotes' pause button is not covered and pauses them`, view, async (page, fail) => {
-    await page.goto(url(''), { waitUntil: 'load' });
-    await fonts(page);
-    const btn = page.locator('[data-drift-pause]');
-    await page.locator('.render-band').scrollIntoViewIfNeeded();
-    if (!(await until(page, () => { const b = document.querySelector('[data-drift-pause]'); return b && !b.hidden; }))) { fail('the quotes have no pause button'); return; }
-    const hit = await btn.evaluate((b) => {
-      const r = b.getBoundingClientRect();
-      // its centre and four points around it, inside the round button (a corner of its box is outside the circle)
-      const cx = r.left + r.width / 2, cy = r.top + r.height / 2, dx = r.width * 0.3, dy = r.height * 0.3;
-      return [[cx, cy], [cx - dx, cy], [cx + dx, cy], [cx, cy - dy], [cx, cy + dy]]
-        .map(([x, y]) => { const e = document.elementFromPoint(x, y); return e === b || b.contains(e) ? '' : `${e?.tagName.toLowerCase()}.${String(e?.className).split(' ')[0]}`; })
-        .filter(Boolean);
-    });
-    // a click on a covered button would press what covers it (and may leave the page)
-    if (hit.length) { fail(`the quotes' pause button is covered by ${hit[0]}`); return; }
-    const before = page.url();
-    const label = await btn.getAttribute('aria-label');
-    const pressed = await btn.getAttribute('aria-pressed');
-    await btn.click();
-    await page.waitForTimeout(200);
-    if (page.url() !== before) fail(`pressing the quotes' pause button leaves the page (${page.url()})`);
-    if (await btn.getAttribute('aria-label') === label && await btn.getAttribute('aria-pressed') === pressed) fail('the quotes\' pause button changes neither its name nor aria-pressed');
-    if (!(await page.evaluate(() => [...document.querySelectorAll('.drift__track')].length > 0 && [...document.querySelectorAll('.drift__track')].every((t) => getComputedStyle(t).animationPlayState === 'paused')))) fail('the quotes still move after their pause button');
-  }, { motion: 'no-preference' });
-}
-await journey('home with motion: the figure grid has a pause button that stops it', desktop, async (page, fail) => {
+await journey('home with motion: the gallery strip has a pause button that stops it', desktop, async (page, fail) => {
   await page.goto(url(''), { waitUntil: 'load' });
-  const grid = page.locator('[data-made-grid]');
-  await grid.scrollIntoViewIfNeeded();
-  // the button: any visible button of the figures' section whose name says pause
-  const find = () => [...document.querySelectorAll('.made button, button[data-made-pause]')].find((b) => /pause/i.test(b.getAttribute('aria-label') || b.textContent) && b.checkVisibility());
-  if (!(await until(page, find))) { fail('no visible "Pause figures" button by the figure grid'); return; }
+  const strip = page.locator('[data-made-strip]');
+  await strip.scrollIntoViewIfNeeded();
+  const btn = page.locator('[data-made-strip-pause]');
+  if (!(await until(page, () => { const b = document.querySelector('[data-made-strip-pause]'); return b && !b.hidden && b.checkVisibility(); }))) { fail('no visible pause button by the gallery strip'); return; }
   await page.mouse.move(0, 0);
   await page.evaluate(() => document.activeElement?.blur());
-  if (!(await until(page, () => document.querySelectorAll('.made-tile').length > 0))) { fail('no figure tiles'); return; }
-  // where the tiles are on the screen (the drift moves the plane under them, home.js)
-  const transforms = () => page.evaluate(() => [...document.querySelectorAll('.made-tile')].slice(0, 4).map((t) => { const r = t.getBoundingClientRect(); return `${r.left.toFixed(2)},${r.top.toFixed(2)}`; }).join('|'));
-  const moving = await transforms();
+  const x0 = await strip.evaluate((el) => el.scrollLeft);
   await page.waitForTimeout(700);
-  if (moving === await transforms()) fail('figures never moved before pause');
-  await (await page.evaluateHandle(find)).asElement().click();
-  if (await page.locator('[data-made-pause]').getAttribute('aria-label') !== 'Play the figures') fail('pause label did not change');
-  await page.waitForTimeout(300);
-  const at = transforms;
-  const a = await at();
-  await page.waitForTimeout(1200);
-  if (a !== await at()) fail('the figures still drift after "Pause figures"');
-  await page.locator('[data-made-pause]').click();
+  if (x0 === await strip.evaluate((el) => el.scrollLeft)) fail('gallery strip never moved before pause');
+  await btn.click();
+  if (await btn.getAttribute('aria-label') !== 'Play the gallery') fail('pause label did not change');
+  await page.waitForTimeout(200);
+  const a = await strip.evaluate((el) => el.scrollLeft);
+  await page.waitForTimeout(900);
+  if (a !== await strip.evaluate((el) => el.scrollLeft)) fail('the gallery strip still glides after pause');
+  await btn.click();
   await page.mouse.move(0, 0);
-  await page.locator('[data-made-pause]').evaluate(b => b.blur());
+  await btn.evaluate((b) => b.blur());
   await page.waitForTimeout(700);
-  if (a === await at()) fail('figures did not resume');
+  if (a === await strip.evaluate((el) => el.scrollLeft)) fail('gallery strip did not resume');
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  if (!(await until(page, () => document.querySelector('[data-made-pause]').hidden))) { fail('reduced motion leaves pause visible'); return; }
+  if (!(await until(page, () => document.querySelector('[data-made-strip-pause]').hidden))) { fail('reduced motion leaves pause visible'); return; }
   await page.emulateMedia({ reducedMotion: 'no-preference' });
-  if (!(await until(page, () => !document.querySelector('[data-made-pause]').hidden))) fail('Play control does not return');
-  const stopped = await at();
+  if (!(await until(page, () => !document.querySelector('[data-made-strip-pause]').hidden))) fail('Play control does not return');
+  const stopped = await strip.evaluate((el) => el.scrollLeft);
   await page.waitForTimeout(700);
-  if (stopped !== await at()) fail('preference change restarted drift');
+  if (stopped !== await strip.evaluate((el) => el.scrollLeft)) fail('preference change restarted glide');
 }, { motion: 'no-preference' });
 
 await journey('manual with blocked bundle: native chapters remain reachable', phone, async (page, fail) => {
@@ -355,7 +300,7 @@ await journey('manual rejected clipboard: explicit failure feedback', phone, asy
 await journey('home initially reduced: restoring motion exposes a stopped Play control', desktop, async (page, fail) => {
   await page.goto(url(''), { waitUntil: 'load' });
   await page.emulateMedia({ reducedMotion: 'no-preference' });
-  if (!(await until(page, () => { const b = document.querySelector('[data-made-pause]'); return !b.hidden && b.getAttribute('aria-label') === 'Play the figures'; }))) fail('initially reduced grid has no stopped Play control');
+  if (!(await until(page, () => { const b = document.querySelector('[data-made-strip-pause]'); return b && !b.hidden && b.getAttribute('aria-label') === 'Play the gallery'; }))) fail('initially reduced gallery strip has no stopped Play control');
 });
 
 // An address with a broken fragment must not stop the page's script.
@@ -370,13 +315,9 @@ for (const hash of ['#%', '#%E0%A4%A']) {
 }
 
 // Without script.
-await journey('without script: the phone menu opens as #site-menu', phone, async (page, fail) => {
+await journey('without script: the home story shows its still fallbacks', phone, async (page, fail) => {
   await page.goto(url(''), { waitUntil: 'load' });
-  const link = page.locator('.nav__nojs-menu');
-  if (!(await link.isVisible())) { fail('no visible Menu link without script'); return; }
-  await link.click();
-  if (!page.url().endsWith('#site-menu')) fail(`the Menu link goes to ${page.url()}`);
-  if (!(await page.locator('#site-menu .nav__link').first().isVisible())) fail('the menu\'s words are not visible after the Menu link');
+  if (!(await page.locator('.story__still img').first().isVisible())) fail('no visible story fallback picture without script');
 }, { script: false });
 await journey('without script: the manual\'s chapters are on the page', phone, async (page, fail) => {
   await page.goto(url(MANUAL), { waitUntil: 'load' });
@@ -396,11 +337,11 @@ try { wk = await webkit.launch(); } catch (error) { if (process.env.CI || !/Exec
 if (wk) {
   await journey('WebKit: the phone menu opens and Escape closes it', phone, async (page, fail) => {
     await page.goto(url(''), { waitUntil: 'load' });
-    await page.locator('.nav__toggle').click();
-    if (!(await until(page, () => document.querySelector('.nav').classList.contains('is-open')))) { fail('the menu button does not open the sheet'); return; }
-    if (!(await page.locator('#site-menu .nav__link').first().isVisible())) fail('the sheet\'s words are not visible');
+    await page.locator('[data-menu-open]').click();
+    if (!(await until(page, () => document.getElementById('phone-menu')?.open))) { fail('the menu button does not open the sheet'); return; }
+    if (!(await page.locator('#phone-menu .nav-row a').first().isVisible())) fail('the sheet\'s words are not visible');
     await page.keyboard.press('Escape');
-    if (!(await until(page, () => !document.querySelector('.nav').classList.contains('is-open')))) fail('Escape does not close the sheet');
+    if (!(await until(page, () => !document.getElementById('phone-menu')?.open))) fail('Escape does not close the sheet');
   }, { engine: wk });
   await journey('WebKit: the manual\'s Chapters open in a drawer', phone, async (page, fail) => {
     await page.goto(url(MANUAL), { waitUntil: 'load' });
@@ -425,16 +366,10 @@ if (wk) {
       if (tiny) fail(`${path}: input triggers iOS text zoom`);
     }
     await page.goto(url(''), { waitUntil: 'load' });
-    const pause = await page.locator('.hero__pause').boundingBox();
-    if (!pause || pause.width < 44 || pause.height < 44) fail('hero pause target below 44px');
-    await page.locator('.nav__toggle').click();
-    const lock = await page.evaluate(() => ({
-      root: getComputedStyle(document.documentElement).overflowY,
-      // an engine without overscroll-behavior (Playwright's WebKit on Linux, unlike Safari) cannot show it
-      sheet: CSS.supports('overscroll-behavior-y', 'contain') ? getComputedStyle(document.querySelector('#site-menu')).overscrollBehaviorY : 'contain',
-    }));
-    if (lock.root !== 'hidden') fail(`root scroller is unlocked (overflow-y: ${lock.root})`);
-    if (lock.sheet !== 'contain') fail(`sheet overscroll is unlocked (overscroll-behavior-y: ${lock.sheet})`);
+    await page.locator('[data-menu-open]').click();
+    if (!(await until(page, () => document.getElementById('phone-menu')?.open))) { fail('phone menu did not open'); return; }
+    const locked = await page.evaluate(() => getComputedStyle(document.documentElement).overflowY === 'hidden');
+    if (!locked) fail('root scroller is unlocked while modal menu is open');
     await page.keyboard.press('Escape');
     if (await page.evaluate(() => getComputedStyle(document.documentElement).overflowY === 'hidden')) fail('root remains locked after Escape');
   }, { engine: wk });

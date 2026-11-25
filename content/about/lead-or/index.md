@@ -1,6 +1,6 @@
 ---
 title: "Lead-OR"
-description: "Lead-OR supports research during DBS surgery in 3D Slicer, displaying recordings and modelling test stimulation on patient images in real time."
+description: "Lead-OR supports research during DBS surgery in 3D Slicer, displaying recordings and modeling test stimulation on patient images in real time."
 date: "2023-07-07T18:58:13"
 lastmod: "2026-11-11"
 weight: 4
@@ -17,7 +17,7 @@ next:
 glance:
   - {label: "Runs in", value: "3D Slicer"}
   - {label: "Extension", value: "SlicerNetstim"}
-  - {label: "Licence", value: "Open source"}
+  - {label: "License", value: "Open source"}
   - {label: "Released", value: "August 2021"}
 layout: "showcase"
 ---
@@ -33,10 +33,10 @@ layout: "showcase"
 {{< cells key="glance" label="Lead-OR at a glance" >}}
 
 {{% hub-section %}}
-## Recordings and stimulation modelling
+## Recordings and stimulation modeling
 
 Lead-OR shows invasive recordings (microelectrode recordings and local field potentials) on the patient's
-images as they are made, and models the effect of test stimulation on fibre tracts.
+images as they are made, and models the effect of test stimulation on fiber tracts.
 
 ![A 3D scene of a patient's skull in the stereotactic frame during surgery, with the planned electrode paths leading to small target structures deep in the brain](gallery/oxenford2022_fig1.jpg "The stereotactic frame, the planned trajectories and their targets. Figure 1 of Oxenford et al., eLife 2022 (CC BY 4.0).")
 {{% /hub-section %}}
@@ -44,16 +44,12 @@ images as they are made, and models the effect of test stimulation on fibre trac
 {{% hub-section %}}
 ## Imaging setup {#download}
 
-**Prepare the images in Lead-DBS first.**
-
 Lead-OR uses coregistrations and segmentations prepared in Lead-DBS. Follow the
 [imaging setup](/manual/lead-or/imaging-setup/) instructions in the manual.
 {{% /hub-section %}}
 
 {{% hub-section %}}
 ## What to cite
-
-**Oxenford et al. 2022,** eLife.
 
 {{< paper oxenford2022 "full" >}}
 

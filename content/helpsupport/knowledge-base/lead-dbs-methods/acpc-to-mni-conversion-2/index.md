@@ -28,7 +28,7 @@ Open the *AC/PC to MNI conversion tool* from the Tools menu of Lead-DBS.
 ### The IXI reference data {#ixi}
 
 No patient data yet? Use the preprocessed
-[IXI dataset](https://brain-development.org/ixi-dataset/) of healthy subjects (open licence): Lead-DBS picks
+[IXI dataset](https://brain-development.org/ixi-dataset/) of healthy subjects (open license): Lead-DBS picks
 an age-matched sample from it, as described in [Horn et al. 2017](https://doi.org/10.1016/j.neuroimage.2017.02.004).
 
 {{< button href="https://filedn.com/lsPIJ4ragTWjjmV6PvlDQLu/data/IXI.tgz" >}}Download the IXI dataset{{< /button >}}
@@ -73,7 +73,7 @@ brain with anatomical labels and the cytoarchitectonic details of Korbinian Brod
 The AC and PC vary little between people, which makes them good reference points. But both atlases
 were drawn from single brains that were smaller than average, and, as
 [Weiss and colleagues](https://www.ajnr.org/content/24/5/922) point out, the reference points differ:
-sometimes the centres of AC and PC are used, sometimes their borders, sometimes a mix of the two.
+sometimes the centers of AC and PC are used, sometimes their borders, sometimes a mix of the two.
 
 ![Comparison of brain size and AC-PC distance in MNI, average and Talairach brains, and electrode positions in three spaces](fig_1-1.png "Figure 1: AC/PC coordinates are ill-defined. A) The Schaltenbrand-Wahren and Talairach-Tournoux atlases are both based on single brains that are smaller than average. B) The anterior and posterior commissures are not always defined in the same way; it depends on the atlas and on the surgeon's preference.")
 
@@ -100,7 +100,7 @@ covers several templates: see [About the MNI spaces](/about-the-mni-spaces/).
 ### Surgical coordinates are not Talairach coordinates
 
 At least not always. Depending on the target and their preference, surgeons report coordinates relative
-to the AC, the PC or the MCP, most often in millimetres **lateral**, **anterior** and **below** the MCP,
+to the AC, the PC or the MCP, most often in millimeters **lateral**, **anterior** and **below** the MCP,
 but sometimes, for example, **lateral**, **posterior** and **above** the AC. Talairach coordinates, in
 contrast, are always relative to the AC, and their signs say where a point lies (a negative x is in the
 left hemisphere, a positive z is dorsal to the AC). Talairach-to-MNI tools therefore apply only in part

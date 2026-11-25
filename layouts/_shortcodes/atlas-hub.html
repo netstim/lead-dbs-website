@@ -23,7 +23,7 @@
 </a></li>
 {{- end -}}
 <div class="atlas-hub">
-  <ul class="atlas-tiles" aria-label="Atlas and connectome catalogues">
+  <ul class="atlas-tiles" aria-label="Atlas and connectome catalogs">
     {{- range $catalogues }}{{ partial "atlas-tile.html" (dict "menu" .menu "count" .count "wide" false) }}{{ end }}
   </ul>
   {{ with $featured }}

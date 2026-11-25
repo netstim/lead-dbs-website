@@ -17,11 +17,12 @@ import { showPlayState } from './lib/play-state.js';
   if (!sec || !sec.dataset.map || !sec.dataset.downloads || !window.d3 || !window.topojson || !('IntersectionObserver' in window)) return;
   const $ = (s) => sec.querySelector(s);
   const stage = $('[data-globe-stage]'), canvas = $('[data-globe]'), tip = $('[data-globe-tip]'), now = $('[data-globe-now]'), btn = $('[data-globe-pause]');
+  const totalEl = $('[data-globe-total]'), countriesEl = $('[data-globe-countries]'), fillEl = $('[data-globe-progress]'), barEl = $('[data-globe-bar]');
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
   const fmt = new Intl.NumberFormat('en'), RAD = Math.PI / 180;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const MONTH = 300, HOLD = 5000; // milliseconds a month takes, and the pause at the end
+  const MONTH = 125, SPIN = 0.01; // ms per month (~15.5s full sweep), then gentle ambient spin (deg/ms)
   const LON = -20, LAT = 24; // where the globe looks at the start and the end (the Atlantic)
   const rnd = (s) => { const h = Math.sin(s * 127.1 + 311.7) * 43758.5453; return h - Math.floor(h); };
 
@@ -48,10 +49,15 @@ import { showPlayState } from './lib/play-state.js';
     // the downloads: per country, the running total at the start of each month (and at the end)
     const M = D.months.length;
     const names = new Map(D.countries.map((c) => [c[0], c[1]])), lmax = Math.log1p(D.countries[0][2]);
-    const cum = new Map(D.countries.map((c) => [c[0], new Float64Array(M + 1)])), all = new Float64Array(M + 1);
+    const cum = new Map(D.countries.map((c) => [c[0], new Float64Array(M + 1)])), all = new Float64Array(M + 1), reached = new Float64Array(M + 1);
     D.months.forEach(([, by], i) => {
-      cum.forEach((a, id) => { a[i + 1] = a[i] + (by[id] || 0); });
+      let cCount = 0;
+      cum.forEach((a, id) => {
+        a[i + 1] = a[i] + (by[id] || 0);
+        if (a[i + 1] > 0) cCount++;
+      });
       all[i + 1] = all[i] + Object.values(by).reduce((a, b) => a + b, 0);
+      reached[i + 1] = cCount;
     });
     // the running total at a moment of the replay (t in months; a month's downloads come in evenly)
     const at = (a, t) => { const i = Math.min(M - 1, Math.floor(t)), f = Math.min(1, t - i); return a[i] + (a[i + 1] - a[i]) * f; };
@@ -79,20 +85,19 @@ import { showPlayState } from './lib/play-state.js';
 
     const front = d3.geoOrthographic().clipAngle(90).precision(.4), back = d3.geoOrthographic().clipAngle(90).precision(.6).reflectX(true);
     const pf = d3.geoPath(front, ctx), pb = d3.geoPath(back, ctx);
-    let W, R, dpr, visible = false, playing = !reduced, last = performance.now(), hold = 0, shown = '', offset = [0, 0], drag = null, hover = null, dirty = true;
+    let W, R, dpr, visible = false, playing = !reduced, last = performance.now(), spin = 0, shown = '', offset = [0, 0], drag = null, hover = null, dirty = true;
     let clock = reduced ? M : 0; // the replay's moment, in months since November 2015
     const born = new Map(); // country → when it lit up (for the ring and the fade-in)
     let leads = [];
     repaint = () => { dirty = true; };
-    const restart = () => { clock = 0; hold = 0; born.clear(); };
 
     function layout() {
       dpr = Math.min(2, devicePixelRatio || 1); W = stage.clientWidth; canvas.width = canvas.height = Math.round(W * dpr); R = W * .46;
       front.scale(R).translate([W / 2, W / 2]); back.scale(R).translate([W / 2, W / 2]); dirty = true;
     }
     function draw(t) {
-      // one turn in the replay, from the Atlantic back to it
-      const lon = LON - 360 * clock / M + offset[0], lat = LAT + offset[1];
+      // one turn during the replay, then keeps turning gently once all downloads are in
+      const lon = LON - 360 * clock / M + spin + offset[0], lat = LAT + offset[1];
       front.rotate([-lon, -lat]); back.rotate([-lon + 180, lat]);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, W); ctx.lineJoin = 'round';
       // the far side, faint
@@ -103,7 +108,7 @@ import { showPlayState } from './lib/play-state.js';
       ctx.fillStyle = `rgba(${BG},.82)`; ctx.beginPath(); pf(land); ctx.fill();
       for (const p of pins) {
         if (!p.f || !born.has(p.id)) continue;
-        const n = at(p.a, clock), lit = Math.min(1, (t - born.get(p.id)) / 800);
+        const n = at(p.a, clock), lit = Math.min(1, (t - born.get(p.id)) / 450);
         ctx.fillStyle = `rgba(${TINT},${(.3 + .7 * Math.min(1, Math.log1p(n) / lmax)) * lit})`; ctx.beginPath(); pf(p.f); ctx.fill();
       }
       if (hover && hover.f) { ctx.fillStyle = `rgba(${ACTION},.28)`; ctx.beginPath(); pf(hover.f); ctx.fill(); }
@@ -115,7 +120,7 @@ import { showPlayState } from './lib/play-state.js';
       for (const p of pins) {
         if (!born.has(p.id) || d3.geoDistance(p.ll, c) > Math.PI / 2 - .02) continue;
         const s = Math.min(1, Math.log1p(at(p.a, clock)) / lmax), base = front(p.ll), age = (t - born.get(p.id)) / 1000;
-        const grow = 1 - Math.pow(1 - Math.min(1, age / 1.1), 3), fresh = Math.max(0, 1 - age / 2), h = (.015 + .11 * s) * grow;
+        const grow = 1 - Math.pow(1 - Math.min(1, age / 0.65), 3), fresh = Math.max(0, 1 - age / 1.2), h = (.015 + .11 * s) * grow;
         const end = [cx + (base[0] - cx) * (1 + h), cx + (base[1] - cx) * (1 + h)]; end[0] += (end[1] - base[1]) * p.lean * .3; end[1] -= (end[0] - base[0]) * p.lean * .3;
         // seen end-on (near the middle) a lead is short: give it a little height towards the top
         end[1] -= R * (.012 + .045 * s) * grow * Math.cos(d3.geoDistance(p.ll, c));
@@ -132,11 +137,17 @@ import { showPlayState } from './lib/play-state.js';
       const dt = Math.min(64, t - last); last = t;
       if (visible && (playing || dirty)) {
         if (playing) {
-          if (clock >= M) { hold += dt; if (hold > HOLD) restart(); }
+          if (clock >= M) { if (!drag) spin -= dt * SPIN; }
           else clock = Math.min(M, clock + dt / MONTH);
         }
         light(playing || !reduced ? t : -1e9); draw(t); dirty = false;
-        const s = `${month(clock)} · ${fmt.format(Math.round(at(all, clock)))} requests`;
+        const reqs = Math.round(at(all, clock));
+        const ctrs = Math.round(at(reached, clock));
+        const mLabel = month(clock);
+        if (totalEl) totalEl.textContent = fmt.format(reqs);
+        if (countriesEl) countriesEl.textContent = fmt.format(ctrs);
+        if (fillEl) fillEl.style.transform = `scaleX(${Math.max(0.008, Math.min(1, clock / M))})`;
+        const s = totalEl ? mLabel : `${mLabel} · ${fmt.format(reqs)} requests`;
         if (s !== shown) now.textContent = shown = s;
         if (hover && !born.has(hover.p.id)) unhover(); else if (hover) note();
       }
@@ -145,7 +156,14 @@ import { showPlayState } from './lib/play-state.js';
 
     // the pause button, as the hero's
     const show = () => { btn.hidden = false; showPlayState(btn, playing, 'the globe'); };
-    btn.addEventListener('click', () => { playing = !playing; if (playing && clock >= M) restart(); show(); });
+    btn.addEventListener('click', () => { playing = !playing; show(); });
+    if (barEl) {
+      barEl.addEventListener('click', (ev) => {
+        const r = barEl.getBoundingClientRect();
+        const frac = Math.max(0, Math.min(1, (ev.clientX - r.left) / r.width));
+        clock = frac * M; born.clear(); light(-1e9); dirty = true;
+      });
+    }
     show();
 
     // the tooltip: a country and its downloads so far (kept up to date while the replay runs)

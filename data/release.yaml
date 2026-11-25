@@ -20,6 +20,6 @@ needs_url: "https://www.fil.ion.ucl.ac.uk/spm/software/spm12/"
 memory: "32 GB"
 # Version of the experimental standalone build (runs without MATLAB).
 standalone: "3.1"
-# Licence, as printed on the site, and the licence file.
+# License, as printed on the site, and the license file.
 licence: "GNU GPL v3"
 licence_url: "https://github.com/netstim/leaddbs/blob/master/LICENSE.md"

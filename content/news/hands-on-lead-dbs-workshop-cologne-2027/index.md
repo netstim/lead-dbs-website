@@ -1,7 +1,7 @@
 ---
 title: "Hands-on Lead-DBS workshop in Cologne, 11–12 February 2027"
 linkTitle: "Hands-on Lead-DBS Workshop, 11–12 February 2027"
-description: "Participants in Cologne will be among the first to try the Lead-DBS 4.0 pre-release. Details and registration will follow."
+description: "The next hands-on workshop, in Cologne, includes an early look at the Lead-DBS 4.0 pre-release. Details and registration will follow."
 date: 2026-11-10
 slug: "hands-on-lead-dbs-workshop-cologne-2027"
 image: "workshop-2027-flyer.png"
@@ -10,6 +10,6 @@ keywords: ["workshop", "hands-on", "Cologne", "registration", "4.0"]
 image_in_post: false
 ---
 
-The next hands-on workshop takes place in Cologne. Participants will be among the first to try the pre-release of Lead-DBS 4.0, rebuilt completely in Python.
+The next hands-on workshop takes place in Cologne. Participants can try a pre-release of Lead-DBS 4.0, rewritten in Python.
 
 {{< button href="/events/hands-on-workshop-2027/" >}}Workshop details{{< /button >}}

@@ -2,7 +2,7 @@
 title: "Privacy policy"
 description: "What lead-dbs.org records when you visit, download Lead-DBS, play a video or write to the team."
 date: "2022-04-18T14:13:06"
-lastmod: "2026-11-16T12:00:00"
+lastmod: "2026-11-25"
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
   - {page: "/impressum-datenschutzerklarung/"}
@@ -19,7 +19,7 @@ next:
 
 ## Who we are
 
-Our website address is: https://www.lead-dbs.org. Contact mail [at] andreas-horn.de for more information.
+This website, www.lead-dbs.org, is run by Andreas Horn at the Institute for Network Stimulation, University Hospital Cologne (address in the [imprint](/impressum-datenschutzerklarung/)). For questions about this policy, write to [mail@andreas-horn.de](mailto:mail@andreas-horn.de).
 
 ## Visiting the site
 

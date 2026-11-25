@@ -12,7 +12,7 @@ share: "CAREN-1-1030x761.png"
 next:
   - {page: "/helpsupport/knowledge-base/atlasesresources/normative-connectomes/"}
 ---
-Cortical and whole-brain parcellations for connectivity analysis. Each entry lists access details and the paper to cite.
+Parcellations for connectivity analyses in MNI space. Most are included with Lead-DBS.
 
 {{< atlas-index noun="parcellations" >}}
 
@@ -30,5 +30,4 @@ Looking for atlases of the deep nuclei? See [Subcortical atlases](/helpsupport/k
 
 ## Is a parcellation missing?
 
-Know a parcellation that should be listed here, or want yours to come with Lead-DBS?
-[Write to us](/contact/).
+Missing a parcellation, or want to include yours in Lead-DBS? [Get in touch](/contact/).

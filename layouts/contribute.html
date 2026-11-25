@@ -62,7 +62,7 @@
 
   {{- with .Params.facts }}
   <section class="wrap dl-sec" id="source-code-and-licence" aria-labelledby="facts-h">
-    <h2 id="facts-h">Source code and licence</h2>
+    <h2 id="facts-h">Source code and license</h2>
     <ul class="dl-grid {{ if eq (len .) 3 }}dl-grid--3{{ else }}dl-grid--os{{ end }}">
       {{- range . }}{{ $ext := hasPrefix .url "http" }}
       <li><a class="dl-os co-fact" href="{{ if $ext }}{{ .url }}{{ else }}{{ partial "resolve-url.html" (dict "url" .url "page" $page) }}{{ end }}"><span class="dl-os__name">{{ .name }}{{ if $ext }}<span class="sr-only"> (another site)</span>{{ end }}</span><span class="dl-os__note">{{ .text }}</span><span class="link-cells__arrow" aria-hidden="true">{{ if $ext }}↗{{ else }}›{{ end }}</span></a></li>

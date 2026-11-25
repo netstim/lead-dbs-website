@@ -1,6 +1,6 @@
 ---
 title: "Lead Tutor"
-description: "Ten DBS patients with expert electrode localizations, free to practise on."
+description: "Ten DBS patients with expert electrode localizations, free to practice on."
 weight: 1
 linkTitle: "Lead Tutor"
 date: "2025-02-28T17:20:40"
@@ -23,7 +23,7 @@ layout: "showcase"
 
 <span id="learn-lead-dbs-yourself"></span>
 
-**Practise on imaging data from ten patients,** then compare your electrode localizations with those of two experts.
+**Practice on imaging data from ten patients,** then compare your electrode localizations with those of two experts.
 {.dataset-intro}
 
 <div class="resource-actions">
@@ -47,23 +47,20 @@ layout: "showcase"
 
 </div>
 
-The colours show the range of non-expert localizations relative to the expert results.
+The colors show the range of non-expert localizations relative to the expert results.
 {.fine-print}
 {{% /hub-section %}}
 
 {{% hub-section %}}
 ## The dataset {#dataset}
 
-**Open data,** free to download from OSF.
-
-Shared openly with the approval of the institutional review board of Brigham and Women's Hospital, Boston,
-where the images were acquired.
+The dataset is freely available on [OSF](https://osf.io/jxecg/?view_only=f2765a6aa3604dea8afa14365b70381c),
+shared with the approval of the institutional review board of Brigham and Women’s Hospital, Boston, where
+the images were acquired.
 {{% /hub-section %}}
 
 {{% hub-section %}}
 ## What to cite {#what-to-cite}
-
-**Madan et al. 2025,** Aperture Neuro.
 
 <div class="cite-row">
 <div class="cite-row__paper">

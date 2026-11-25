@@ -10,5 +10,3 @@ next:
   - {page: "/develop/"}
   - {page: "/helpsupport/first-steps/"}
 ---
-
-Developer meetings and hands-on workshops.

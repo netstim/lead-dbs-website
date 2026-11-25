@@ -2,7 +2,7 @@
 {{- /* The download page (content/download/index.md, front matter layout: download): a black hero with the
        one download, then full-width sections drawn as hairline grids: what you need, the install steps
        (each with a small picture of the step), the standalone builds, the next version, the release
-       history, and the licence. Where the content comes from:
+       history, and the license. Where the content comes from:
          data/release.yaml    the current version, its date and notes, MATLAB, toolboxes, SPM12, memory
          data/install.yaml    the other requirements and the install steps
          data/releases.yaml   the release history (the build stops if its first row differs from release.yaml)
@@ -106,7 +106,7 @@
   {{- with .Params.upcoming }}
   <section class="wrap dl-sec" id="lead-dbs-4" aria-labelledby="next-h">
     <div class="dl-next ground-inverse">
-      <h2 id="next-h">{{ .title }} <span>{{ .text }}</span></h2>
+      <h2 id="next-h">{{ .title }}{{ with .text }} <span>{{ . }}</span>{{ end }}</h2>
       {{- with .link }}{{ $t := site.GetPage .page }}{{ if not $t }}{{ errorf "%s: upcoming link %q is not a page" $.File.Path .page }}{{ end }}
       <p><a class="dl-chip" href="{{ $t.RelPermalink }}">{{ .text }}</a></p>
       {{- end }}
@@ -147,7 +147,7 @@
 
   <section class="wrap dl-sec" aria-labelledby="licence-and-terms-of-use">
     <div class="dl-sec__head">
-      <h2 id="licence-and-terms-of-use">Licence</h2>
+      <h2 id="licence-and-terms-of-use">License</h2>
     </div>
     <div class="dl-licence">
       <p>Free and open source under the <a href="{{ $r.licence_url }}">{{ $r.licence }}</a>, with no warranty. <strong>For research use only.</strong></p>

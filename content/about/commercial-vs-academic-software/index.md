@@ -7,7 +7,7 @@ url: "/commercial-vs-academic-software/"
 showDate: true
 # not kept up to date: the line under the title says "Written July 2017, kept for the record"
 archived: true
-description: "An essay of 2017: pros and cons of commercial and academic software for modelling DBS electrodes, and why Lead-DBS is academic research software."
+description: "An essay of 2017: pros and cons of commercial and academic software for modeling DBS electrodes, and why Lead-DBS is academic research software."
 keywords: ["commercial", "academic", "open source", "GUIDE", "SureTune", "Brainlab"]
 # the picture shown when the page is shared (head.html)
 share: "images/renders/lead-closeup.jpg"

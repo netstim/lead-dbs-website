@@ -1,5 +1,5 @@
 # The normative connectomes on this page, shown by the shortcodes atlas-index and atlas-group, built like
-# the atlas catalogues (see the comment at the top of ../atlases-2/atlases.yaml for the fields).
+# the atlas catalogs (see the comment at the top of ../atlases-2/atlases.yaml for the fields).
 groups:
 - id: structural
   title: Structural
@@ -33,7 +33,7 @@ atlases:
   group: structural
   name: HCP MGH-USC group connectome
   ref: Horn 2017
-  covers: 32 adult diffusion subjects of the MGH-USC HCP · GQI fibre tracking
+  covers: 32 adult diffusion subjects of the MGH-USC HCP · GQI fiber tracking
   about: From the high-quality multishell diffusion data of the Human Connectome Project's MGH-USC adult diffusion study ([Setsompop 2013](https://doi.org/10.1016/j.neuroimage.2013.05.078)).
   get:
   - '[Version 1.2 from lead-dbs.org](https://www.lead-dbs.org/release/download.php?id=group2017)'
@@ -44,7 +44,7 @@ atlases:
   group: structural
   name: PPMI group connectome
   ref: Ewert 2017
-  covers: 85 patients with Parkinson's disease (PPMI) · GQI fibre tracking
+  covers: 85 patients with Parkinson's disease (PPMI) · GQI fiber tracking
   about: From patients with Parkinson's disease of the PPMI ([Marek 2011](https://doi.org/10.1016/j.pneurobio.2011.09.005)).
   get:
   - '[Version 1.1 from lead-dbs.org](https://www.lead-dbs.org/release/download.php?id=group2017_ppmi)'
@@ -55,7 +55,7 @@ atlases:
   group: structural
   name: dTOR-985
   ref: Elias 2024
-  covers: 985 HCP subjects · GQI fibre tracking
+  covers: 985 HCP subjects · GQI fiber tracking
   about: The largest structural connectome here, in three sizes; scripts and data are on FigShare.
   get:
   - 'From lead-dbs.org: [quarter](https://www.lead-dbs.org/release/download.php?id=dTOR985_Quarter), [half](https://www.lead-dbs.org/release/download.php?id=dTOR985_Half) or [full](https://www.lead-dbs.org/release/download.php?id=dTOR985_Full) version'
@@ -97,10 +97,10 @@ atlases:
   - horn2017ana
 - id: paediatric-connectome
   group: functional
-  name: Paediatric connectome
+  name: Pediatric connectome
   ref: Al-Fatly 2023
-  covers: 100 typically developing children, 6–18 years · resting-state fMRI, paediatric MNI space
-  about: Assembled from the [NYU 2](http://fcon_1000.projects.nitrc.org/indi/CoRR/html/nyu_2.html) sub-cohort of the [Consortium for Reliability and Reproducibility](http://fcon_1000.projects.nitrc.org/indi/CoRR/html/index.html), preprocessed with SPM, FSL and Lead-DBS, and normalized to the [paediatric MNI space](https://nist.mni.mcgill.ca/pediatric-atlases-4-5-18-5y/). For data normalized to that space.
+  covers: 100 typically developing children, 6–18 years · resting-state fMRI, pediatric MNI space
+  about: Assembled from the [NYU 2](http://fcon_1000.projects.nitrc.org/indi/CoRR/html/nyu_2.html) sub-cohort of the [Consortium for Reliability and Reproducibility](http://fcon_1000.projects.nitrc.org/indi/CoRR/html/index.html), preprocessed with SPM, FSL and Lead-DBS, and normalized to the [pediatric MNI space](https://nist.mni.mcgill.ca/pediatric-atlases-4-5-18-5y/). For data normalized to that space.
   get:
   - '[Download from lead-dbs.org](https://www.lead-dbs.org/release/download.php?id=PedrsfMRI)'
   cite:

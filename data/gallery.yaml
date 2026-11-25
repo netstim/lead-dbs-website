@@ -3,7 +3,7 @@
 # in the order listed here. Each entry is one block starting with "- file:"; to drop a figure,
 # delete its whole block (and, if you like, its file in static/gallery/).
 #
-# Every field is printed with the figure; the build stops when a required one is missing. The citation, DOI and licence are attribution requirements
+# Every field is printed with the figure; the build stops when a required one is missing. The citation, DOI and license are attribution requirements
 # of CC BY: fill them all. "modification" says how the figure was changed from the published one
 # (CC BY requires changes to be stated); "none" prints nothing. "shows" is one plain sentence
 # printed under the figure and used as its alt text. The page shows a resized copy; a click opens
@@ -33,7 +33,7 @@ figures:
     license: "CC BY 4.0"
     license_url: "https://creativecommons.org/licenses/by/4.0/"
     modification: "cropped to the top 3D panel (title line and the two scatter plots below removed)"
-    shows: "Electrodes from two OCD patient groups and fibre tracts reached by stimulation. Red indicates association with greater improvement; blue with less."
+    shows: "Electrodes from two OCD patient groups and fiber tracts reached by stimulation. Red indicates association with greater improvement; blue with less."
 
   - file: "hollunder2024_fig2_right.png"
     authors: "Hollunder B et al."
@@ -45,7 +45,7 @@ figures:
     license: "CC BY 4.0"
     license_url: "https://creativecommons.org/licenses/by/4.0/"
     modification: "cropped to the large right-hand panel (four left-hand panels removed)"
-    shows: "Hundreds of electrodes implanted in the subthalamic nucleus, seen from above on a histological brain section and coloured by the disorder they treat."
+    shows: "Hundreds of electrodes implanted in the subthalamic nucleus, seen from above on a histological brain section and colored by the disorder they treat."
 
   - file: "edlow2019_fig7_panela.png"
     authors: "Edlow BL et al."
@@ -57,7 +57,7 @@ figures:
     license: "CC BY 4.0"
     license_url: "https://creativecommons.org/licenses/by/4.0/"
     modification: "cropped to panel a (panels b and c removed)"
-    shows: "Two electrodes of a hypothetical patient among labelled deep brain structures, displayed over an ultra-high-resolution brain scan."
+    shows: "Two electrodes of a hypothetical patient among labeled deep brain structures, displayed over an ultra-high-resolution brain scan."
 
   - file: "oxenford2022_fig1.jpg"
     authors: "Oxenford S et al."
@@ -94,7 +94,7 @@ figures:
     license: "CC BY 4.0"
     license_url: "https://creativecommons.org/licenses/by/4.0/"
     modification: "none"
-    shows: "Electrodes in the internal pallidum (green) of two groups of dystonia patients, generalised and cervical or segmental, and below them of two patients with a poor result, next to the subthalamic nucleus (orange) and red nucleus; active contacts in red."
+    shows: "Electrodes in the internal pallidum (green) of two groups of dystonia patients, generalized and cervical or segmental, and below them of two patients with a poor result, next to the subthalamic nucleus (orange) and red nucleus; active contacts in red."
 
   - file: "rajamani2024_fig7.png"
     authors: "Rajamani N et al."
@@ -106,7 +106,7 @@ figures:
     license: "CC BY 4.0"
     license_url: "https://creativecommons.org/licenses/by/4.0/"
     modification: "none"
-    shows: "Symptom-related fibre tracts near the subthalamic nucleus, reached by a single stimulation volume (A) and two separate volumes from a hypothetical future electrode (B)."
+    shows: "Symptom-related fiber tracts near the subthalamic nucleus, reached by a single stimulation volume (A) and two separate volumes from a hypothetical future electrode (B)."
 
 
   - file: "hollunder2024_fig4_panela.png"
@@ -119,7 +119,7 @@ figures:
     license: "CC BY 4.0"
     license_url: "https://creativecommons.org/licenses/by/4.0/"
     modification: "cropped to panel a (statistics panel b removed)"
-    shows: "For four brain disorders, successive rows narrow the fibre tracts passing the subthalamic nucleus to the bundle whose stimulation was associated with the best outcomes."
+    shows: "For four brain disorders, successive rows narrow the fiber tracts passing the subthalamic nucleus to the bundle whose stimulation was associated with the best outcomes."
 
   - file: "oxenford2022_fig6.jpg"
     authors: "Oxenford S et al."
@@ -132,7 +132,7 @@ figures:
     license: "CC BY 4.0"
     license_url: "https://creativecommons.org/licenses/by/4.0/"
     modification: "none"
-    shows: "Increasing intraoperative test stimulation from 2.0 to 3.5 mA is modelled to activate more fibres near the electrode. Arm muscle activity recorded simultaneously is shown alongside."
+    shows: "Increasing intraoperative test stimulation from 2.0 to 3.5 mA is modeled to activate more fibers near the electrode. Arm muscle activity recorded simultaneously is shown alongside."
 
   - file: "rios2022_fig6_panela.png"
     authors: "Ríos AS et al."
@@ -144,6 +144,6 @@ figures:
     license: "CC BY 4.0"
     license_url: "https://creativecommons.org/licenses/by/4.0/"
     modification: "cropped to panel a (panel b, which includes a reproduction of Penfield & Perot 1963, removed)"
-    shows: "Fibre tracts whose stimulation was associated with flashback-like experiences during fornix stimulation for Alzheimer’s disease, shown in 3D on high-resolution brain sections."
+    shows: "Fiber tracts whose stimulation was associated with flashback-like experiences during fornix stimulation for Alzheimer’s disease, shown in 3D on high-resolution brain sections."
 
 

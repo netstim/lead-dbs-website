@@ -33,7 +33,7 @@ enableGitInfo = true
   # WordPress feeds /feed/ and /news/feed/ point to it.
 
 [params]
-  description = "Lead-DBS: an open-source toolbox for deep brain stimulation electrode localization, stimulation modelling and connectomic imaging from postoperative MRI and CT."
+  description = "Lead-DBS: an open-source toolbox for deep brain stimulation electrode localization, stimulation modeling and connectomic imaging from postoperative MRI and CT."
   # Forms are switched off: production shows each form's offline line (data/forms.yaml), the
   # preview the form disabled with a note. With true, the forms that have an action (contact and
   # FOCUS, sent by server/forms/send.php) go live. Set it only at the switch, once send.php is on
@@ -130,7 +130,7 @@ enableGitInfo = true
   # capability with its name, a picture, its manual chapter and papers, in four numbered chapters. The
   # panel lists those chapters first: the anchors of the page (entries with url, not pages; params.panelOnly
   # keeps them out of the sidebar of the group's articles, where they would read as pages), and for the
-  # operating theatre, whose chapter is the one tool Lead-OR, its page. Then under a caption
+  # operating room, whose chapter is the one tool Lead-OR, its page. Then under a caption
   # (params.divider) the articles that explain a method in depth, then the figures made with Lead-DBS.
   [[menus.main]]
     parent = "features"
@@ -138,7 +138,7 @@ enableGitInfo = true
     url = "/helpsupport/knowledge-base/lead-dbs-methods/#single-patients"
     weight = 1
     [menus.main.params]
-      card = "Electrode localization and stimulation modelling"
+      card = "Electrode localization and stimulation modeling"
       panelOnly = true
   [[menus.main]]
     parent = "features"
@@ -249,7 +249,7 @@ enableGitInfo = true
       card = "Write to the Lead-DBS team"
       bandLine = false
 
-  # Atlases and data: the three catalogues, then (after a captioned line: params.divider) the two
+  # Atlases and data: the three catalogs, then (after a captioned line: params.divider) the two
   # atlases the Lead-DBS team made, then the background article on the MNI spaces
   [[menus.main]]
     parent = "data"
@@ -286,7 +286,7 @@ enableGitInfo = true
     pageRef = "/helpsupport/knowledge-base/atlasesresources/focus-atlas"
     weight = 5
     [menus.main.params]
-      card = "100 µm subcortical anatomy and fibre pathways"
+      card = "100 µm subcortical anatomy and fiber pathways"
   [[menus.main]]
     parent = "data"
     name = "About the MNI spaces"

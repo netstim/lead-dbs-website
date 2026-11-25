@@ -1,216 +1,6 @@
 import { showPlayState } from '../lib/play-state.js';
 
-// Virtualized figure grid: native vertical touch scrolling, optional drift and inertia.
-(() => {
-  const grid = document.querySelector('[data-made-grid]');
-  const plane = grid?.querySelector('.made-grid__plane');
-  if (!plane) return;
-  let figs = [];
-  try { figs = JSON.parse(grid.querySelector('[data-made-figs]').textContent); } catch (e) { return; }
-  const n = figs.length;
-  if (!n) return;
-  const still = matchMedia('(prefers-reduced-motion: reduce)');
-  const K = 5, PER = Math.max(2, Math.ceil((2 * n) / K)), DRAG = 6;
-  let W = 0, G = 0, cols = [];
-  const layout = () => {
-    const phone = innerWidth < 640;
-    W = phone ? 140 : 172; G = phone ? 8 : 12;
-    cols = Array.from({ length: K }, (_, k) => {
-      const items = [];
-      let y = 0;
-      for (let j = 0; j < PER; j++) {
-        const f = figs[(k * 2 + j * 3) % n];
-        const h = Math.round(W / Math.min(1.6, Math.max(0.72, f.ar)));
-        items.push({ f, y, h });
-        y += h + G;
-      }
-      return { items, period: y, shift: [0, 0.42, 0.14, 0.68, 0.3][k] * y };
-    });
-  };
-  const live = new Map(), pool = [];
-  const make = () => {
-    const a = document.createElement('a');
-    a.className = 'made-tile';
-    a.tabIndex = -1;
-    a.draggable = false;
-    // no loading="lazy": a tile exists only while it is in the frame, and the frame only once it is near
-    a.innerHTML = '<img alt="" decoding="async" draggable="false">';
-    return a;
-  };
-  const fill = (el, it) => {
-    const img = el.firstChild;
-    el.href = it.f.href;
-    el.style.width = `${W}px`; el.style.height = `${it.h}px`;
-    if (img.dataset.src !== it.f.src) { img.dataset.src = it.f.src; img.sizes = `${W}px`; img.srcset = it.f.srcset; img.src = it.f.src; }
-    img.alt = it.f.alt;
-  };
-  // the tiles stand at whole pixels on the plane and stay put; only the plane moves, to (ox, oy)
-  let ox = 0, oy = 0, vx = 0, vy = 0;
-  const place = () => {
-    const fw = grid.clientWidth, fh = grid.clientHeight, step = W + G, seen = new Set(), m = 48;
-    for (let i = Math.floor((-ox - m) / step) - 1; i <= Math.floor((fw - ox + m) / step); i++) {
-      const c = cols[((i % K) + K) % K], x = i * step;
-      for (let r = Math.floor((-oy - m - c.shift) / c.period) - 1; r <= Math.floor((fh - oy + m - c.shift) / c.period); r++) {
-        c.items.forEach((it, j) => {
-          const y = Math.round(c.shift + r * c.period + it.y);
-          if (y + oy + it.h < -m || y + oy > fh + m) return;
-          const key = `${i}:${r}:${j}`;
-          if (!live.has(key)) {
-            const el = pool.pop() || make();
-            fill(el, it);
-            el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-            plane.append(el); live.set(key, el);
-          }
-          seen.add(key);
-        });
-      }
-    }
-    live.forEach((el, key) => { if (!seen.has(key)) { el.remove(); live.delete(key); pool.push(el); } });
-  };
-  const draw = () => { plane.style.transform = `translate3d(${ox}px, ${oy}px, 0)`; place(); };
-
-  // The slow drift runs as one long linear animation of the plane, on the compositor: driven from here,
-  // frame by frame, any busy moment on the page made it skip a frame and jump (a flutter). Every 250ms
-  // the tiles that come into the frame (with a margin) are added and those gone are dropped.
-  const RX = -0.012, RY = -0.007, SPAN = 600000;
-  let anim = null, from = [0, 0], tick = 0;
-  const reached = () => {
-    const t = Math.min(SPAN, Number(anim.currentTime) || 0);
-    return [from[0] + RX * t, from[1] + RY * t];
-  };
-  const stopDrift = () => {
-    if (!anim) return;
-    [ox, oy] = reached();
-    anim.cancel(); anim = null; clearInterval(tick);
-    // at rest the plane stands on whole pixels, so the figures stay sharp
-    ox = Math.round(ox); oy = Math.round(oy);
-    draw();
-  };
-  const startDrift = () => {
-    if (anim) return;
-    from = [ox, oy];
-    anim = plane.animate([
-      { transform: `translate3d(${ox}px, ${oy}px, 0)` },
-      { transform: `translate3d(${ox + RX * SPAN}px, ${oy + RY * SPAN}px, 0)` },
-    ], { duration: SPAN, easing: 'linear' });
-    anim.onfinish = () => { stopDrift(); kick(); };
-    tick = setInterval(() => { [ox, oy] = reached(); place(); }, 250);
-  };
-
-  let raf = 0, last = 0, near = false, built = false, dragging = false, drifting = !still.matches, held = false;
-  const pause = document.querySelector('[data-made-pause]');
-  const setDrifting = (on) => {
-    drifting = on;
-    if (pause) showPlayState(pause, on, 'the figures');
-  };
-  if (pause) {
-    pause.hidden = still.matches;
-    showPlayState(pause, drifting, 'the figures');
-    pause.addEventListener('click', () => { setDrifting(!drifting); kick(); });
-  }
-  const hold = () => { held = grid.matches(':hover, :focus-within'); kick(); };
-  ['pointerenter', 'pointerleave', 'focusin', 'focusout'].forEach((t) => grid.addEventListener(t, () => requestAnimationFrame(hold)));
-  const frame = (t) => {
-    raf = 0;
-    const dt = last ? Math.min(48, t - last) : 16;
-    last = t;
-    if (!dragging) {
-      if (Math.abs(vx) + Math.abs(vy) > 0.004) {
-        ox += vx * dt; oy += vy * dt;
-        const k = 0.995 ** dt;
-        vx *= k; vy *= k;
-      } else {
-        vx = vy = 0;
-        ox = Math.round(ox); oy = Math.round(oy);
-      }
-    }
-    draw();
-    if (near && !document.hidden && (dragging || vx || vy)) raf = requestAnimationFrame(frame);
-    else { last = 0; kick(); }
-  };
-  // a drag, or the glide after one, moves the plane frame by frame; otherwise it drifts, or stands
-  const kick = () => {
-    if (!built) return;
-    const on = near && !document.hidden;
-    if (on && drifting && !held && !dragging && !raf && !vx && !vy) startDrift(); else stopDrift();
-    if (on && !raf && (dragging || vx || vy)) raf = requestAnimationFrame(frame);
-  };
-  const build = () => { built = true; layout(); draw(); kick(); };
-
-  let start = null, moved = 0, px = 0, py = 0, pt = 0;
-  const end = (e) => {
-    if (!start || e.pointerId !== start.id) return;
-    start = null;
-    if (!dragging) { kick(); return; }
-    dragging = false;
-    grid.classList.remove('is-dragging');
-    if (e.type === 'pointercancel' || e.timeStamp - pt > 80 || still.matches) vx = vy = 0;
-    kick();
-  };
-  grid.addEventListener('pointerdown', (e) => {
-    if (e.button !== 0 || !built) return;
-    stopDrift();
-    start = { x: e.clientX, y: e.clientY, id: e.pointerId, finger: e.pointerType === 'touch' };
-    px = e.clientX; py = e.clientY; pt = e.timeStamp; moved = 0;
-    vx = vy = 0;
-  });
-  grid.addEventListener('pointermove', (e) => {
-    if (!start || e.pointerId !== start.id) return;
-    if (!e.buttons) { end(e); return; }
-    const dx = e.clientX - px, dy = start.finger ? 0 : e.clientY - py;
-    px = e.clientX; py = e.clientY;
-    moved = Math.max(moved, Math.hypot(e.clientX - start.x, start.finger ? 0 : e.clientY - start.y));
-    if (!dragging) {
-      if (moved < DRAG) return;
-      dragging = true; setDrifting(false);
-      grid.classList.add('is-dragging');
-      grid.setPointerCapture(e.pointerId);
-    }
-    ox += dx; oy += dy;
-    const dt = Math.max(1, e.timeStamp - pt);
-    pt = e.timeStamp;
-    const cap = (v) => Math.max(-3, Math.min(3, v));
-    vx = cap(0.8 * (dx / dt) + 0.2 * vx); vy = cap(0.8 * (dy / dt) + 0.2 * vy);
-    kick();
-  });
-  grid.addEventListener('pointerup', end);
-  grid.addEventListener('pointercancel', end);
-  grid.addEventListener('lostpointercapture', end);
-  // a drag is not a click
-  grid.addEventListener('click', (e) => { if (moved >= DRAG) { e.preventDefault(); e.stopPropagation(); } }, true);
-  grid.addEventListener('dragstart', (e) => e.preventDefault());
-  grid.addEventListener('keydown', (e) => {
-    const d = { ArrowLeft: [1, 0], ArrowRight: [-1, 0], ArrowUp: [0, 1], ArrowDown: [0, -1] }[e.key];
-    if (!d || !built) return;
-    e.preventDefault();
-    setDrifting(false);
-    if (still.matches) { ox += d[0] * 160; oy += d[1] * 160; draw(); return; }
-    vx = d[0] * 1.1; vy = d[1] * 1.1;
-    kick();
-  });
-  still.addEventListener('change', () => {
-    if (still.matches) { setDrifting(false); vx = vy = 0; }
-    if (pause) pause.hidden = still.matches;
-    kick();
-  });
-  let resized = 0;
-  addEventListener('resize', () => {
-    if (!built) return;
-    cancelAnimationFrame(resized);
-    resized = requestAnimationFrame(() => { live.forEach((el) => { el.remove(); pool.push(el); }); live.clear(); layout(); draw(); });
-  });
-  document.addEventListener('visibilitychange', kick);
-  if (!('IntersectionObserver' in window)) { near = true; build(); return; }
-  new IntersectionObserver((es) => {
-    near = es.some((e) => e.isIntersecting);
-    if (near && !built) build(); else kick();
-  }, { rootMargin: '600px 0px' }).observe(grid);
-})();
-
 // ------------------------------------------------------------------ the home page's row of news and events
-// More cards than fit (layouts/home.html): a finger or a trackpad scrolls the row sideways by itself; here a
-// mouse can drag it too. Let go, it glides on to the card the flick aims at and settles there. A drag is not
-// a click.
 (() => {
   const row = document.querySelector('[data-drag-row]');
   if (!row) return;
@@ -243,7 +33,6 @@ import { showPlayState } from '../lib/play-state.js';
     start = null;
     if (!dragged) return;
     if (e.timeStamp - lt > 80) v = 0;
-    // the card whose left edge is nearest to where the flick would carry the row
     const box = row.getBoundingClientRect();
     const pad = parseFloat(getComputedStyle(row).scrollPaddingLeft) || 0;
     const max = row.scrollWidth - row.clientWidth;
@@ -255,7 +44,6 @@ import { showPlayState } from '../lib/play-state.js';
       if (Math.abs(x - aim) < best) { best = Math.abs(x - aim); to = x; }
     });
     row.scrollTo({ left: to, behavior: still.matches ? 'auto' : 'smooth' });
-    // snapping comes back once the glide has ended
     row.addEventListener('scrollend', done, { once: true });
     settle = setTimeout(done, 700);
   };
@@ -266,51 +54,7 @@ import { showPlayState } from '../lib/play-state.js';
   row.addEventListener('dragstart', (e) => e.preventDefault());
 })();
 
-// ------------------------------------------------------------------ the home page's fan of covers
-// Seven journal covers fanned out like a hand of cards (layouts/home.html): one lifts after another, slowly,
-// its journal and date in the caption under the fan. A pointer on a card lifts that one, and the fan holds
-// while the pointer or the focus is on it, or while it is off the screen. Under reduced motion it stands.
-(() => {
-  const fan = document.querySelector('[data-made-fan]');
-  const cards = fan ? [...fan.querySelectorAll('.made-fan__card')] : [];
-  const n = cards.length;
-  if (!n) return;
-  const cap = fan.querySelector('.made-fan__cap');
-  const still = matchMedia('(prefers-reduced-motion: reduce)');
-  let cur = cards.findIndex((c) => c.classList.contains('is-up'));
-  let held = false, focused = false, seen = false, timer = 0;
-  const up = (k) => {
-    if (k === cur) return;
-    cur = k;
-    cards.forEach((c, i) => c.classList.toggle('is-up', i === k));
-    if (!cap) return;
-    cap.classList.add('is-changing');
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      cap.querySelector('[data-made-journal]').textContent = cards[k].dataset.journal;
-      cap.querySelector('[data-made-date]').textContent = cards[k].dataset.date;
-      cap.classList.remove('is-changing');
-    }, still.matches ? 0 : 220);
-  };
-  cards.forEach((c, k) => c.addEventListener('pointerenter', () => up(k)));
-  fan.addEventListener('pointerenter', () => { held = true; });
-  fan.addEventListener('pointerleave', () => { held = false; });
-  fan.addEventListener('focusin', () => { focused = true; });
-  fan.addEventListener('focusout', () => { focused = false; });
-  if ('IntersectionObserver' in window) new IntersectionObserver((es) => { seen = es.some((e) => e.isIntersecting); }).observe(fan);
-  else seen = true;
-  setInterval(() => {
-    if (!still.matches && seen && !held && !focused && !document.hidden) up((cur + n - 1) % n);
-  }, 3600);
-})();
-
 // ------------------------------------------------------------------ the home page's hero: its entrance
-// The page head sets html.hero-wait, which keeps the hero's title hidden and its clip a little larger
-// (assets/css/home.css); the lead and the buttons stand from the first paint, so the main action never
-// looks unavailable. Here the title's words rise out of their own lines (under 400ms, line after line)
-// while the clip settles. The hero simply shows under reduced motion and when the page opens scrolled
-// past it; if this runs late (html.hero-late, set 700ms after the head), the style sheet has already
-// faded the title in.
 (() => {
   const hero = document.querySelector('.home-hero');
   const h1 = hero?.querySelector('h1');
@@ -335,7 +79,6 @@ import { showPlayState } from '../lib/play-state.js';
     if (words) { h1.replaceChildren(...words.original); h1.removeAttribute('aria-label'); }
     shown();
   };
-  // each word of the title in a box that clips it, so it can rise from below its own line
   const splitWords = () => {
     const original = [...h1.childNodes];
     const copy = h1.cloneNode(true);
@@ -387,13 +130,6 @@ import { showPlayState } from '../lib/play-state.js';
 })();
 
 // ------------------------------------------------------------------ the home page's render clip
-// Muted and looping. The poster is the first picture: the clip's sources come without an address
-// (data-src, layouts/home.html), and it gets one only once the page has loaded and the browser is idle,
-// so the first view never includes the clip. On a phone, under reduced motion and when the visitor
-// asks to save data (or is on a slow connection) it gets one only when the play button is pressed.
-// It plays only while the hero is on the screen: it starts when the hero comes into view and rests
-// while it is scrolled away. The round button pauses and plays it; a visitor's pause holds until they
-// press play again. The browser picks the encode from the <source> types (AV1 first) and media queries.
 (() => {
   const video = document.querySelector('[data-hero-video]');
   const btn = document.querySelector('[data-hero-pause]');
@@ -431,41 +167,196 @@ import { showPlayState } from '../lib/play-state.js';
   const phone = window.matchMedia('(max-width: 639px)').matches;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || slow || phone) { wanted = false; show(false); return; }
   show(true);
-  // after the load event, when the browser is idle, so the clip never competes with the page's own files
   const idle = window.requestIdleCallback || ((f) => setTimeout(f, 200));
   const start = () => idle(() => { if (wanted) attach(); watch(); }, { timeout: 2000 });
   if (document.readyState === 'complete') start();
   else addEventListener('load', start, { once: true });
 })();
 
-// ------------------------------------------------------------------ the quotes on a phone
-// There the two rows stand still and the quotes are one row of cards that scrolls sideways
-// (assets/css/home.css): while it scrolls it is a tab stop of its own, so the arrow keys move it.
+// ------------------------------------------------------------------ the home page's horizontal gallery ribbon
+// Full-width uncropped strip of published figures (layouts/home.html): gently glides sideways while in
+// view (looping seamlessly), pauses on hover/focus/drag or via the pause button, supports native swipe,
+// trackpad scroll, mouse click-drag with inertia, and prev/next step buttons.
 (() => {
-  const drift = document.querySelector('.drift');
-  if (!drift) return;
-  const update = () => {
-    if (drift.scrollWidth > drift.clientWidth + 4) drift.tabIndex = 0; else drift.removeAttribute('tabindex');
+  const strip = document.querySelector('[data-made-strip]');
+  const track = strip?.querySelector('.made-strip__track');
+  if (!strip || !track || track.children.length < 2) return;
+  const still = matchMedia('(prefers-reduced-motion: reduce)');
+  const controls = document.querySelector('[data-made-controls]');
+  const pauseBtn = document.querySelector('[data-made-strip-pause]');
+  const prevBtn = document.querySelector('[data-made-prev]');
+  const nextBtn = document.querySelector('[data-made-next]');
+  if (controls) controls.hidden = false;
+
+  // duplicate the figures once (hidden from screen readers/tab) so the ribbon loops seamlessly
+  const originals = [...track.children];
+  const clones = originals.map((li) => {
+    const c = li.cloneNode(true);
+    c.setAttribute('aria-hidden', 'true');
+    c.querySelectorAll('a').forEach((a) => { a.tabIndex = -1; });
+    return c;
+  });
+  track.append(...clones);
+
+  const loopWidth = () => {
+    const first = originals[0], firstClone = clones[0];
+    return first && firstClone ? firstClone.offsetLeft - first.offsetLeft : 0;
   };
-  addEventListener('resize', update);
-  update();
+  const wrap = () => {
+    const w = loopWidth();
+    if (!w) return;
+    if (strip.scrollLeft >= w) strip.scrollLeft -= w;
+    else if (strip.scrollLeft < 0) strip.scrollLeft += w;
+  };
+
+  let drifting = !still.matches, held = false, near = false, dragging = false, stepping = false;
+  let acc = 0, last = 0, raf = 0, stepTimer = 0;
+  const setDrifting = (on) => {
+    drifting = on;
+    if (pauseBtn) showPlayState(pauseBtn, on, 'the gallery');
+  };
+  if (pauseBtn) {
+    pauseBtn.hidden = still.matches;
+    showPlayState(pauseBtn, drifting, 'the gallery');
+    pauseBtn.addEventListener('click', () => { setDrifting(!drifting); kick(); });
+  }
+
+  const tick = (t) => {
+    raf = 0;
+    const dt = last ? Math.min(48, t - last) : 16;
+    last = t;
+    if (near && !document.hidden && drifting && !held && !dragging && !stepping) {
+      acc += dt * 0.032; // ~32 px/sec calm gallery glide
+      const dx = Math.floor(acc);
+      if (dx >= 1) {
+        acc -= dx;
+        strip.scrollLeft += dx;
+        wrap();
+      }
+      raf = requestAnimationFrame(tick);
+    } else {
+      last = 0;
+    }
+  };
+  const kick = () => {
+    if (near && !document.hidden && drifting && !held && !dragging && !stepping && !raf) {
+      raf = requestAnimationFrame(tick);
+    }
+  };
+
+  const hold = () => { held = strip.matches(':hover, :focus-within'); kick(); };
+  ['pointerenter', 'pointerleave', 'focusin', 'focusout'].forEach((ev) => strip.addEventListener(ev, () => requestAnimationFrame(hold)));
+  strip.addEventListener('scroll', wrap, { passive: true });
+  strip.addEventListener('wheel', () => {
+    clearTimeout(stepTimer);
+    stepping = true;
+    stepTimer = setTimeout(() => { stepping = false; kick(); }, 900);
+  }, { passive: true });
+
+  const stepBy = (dir) => {
+    clearTimeout(stepTimer);
+    stepping = true;
+    const w = loopWidth();
+    const delta = Math.round(Math.min(540, strip.clientWidth * 0.55)) * dir;
+    if (dir < 0 && w && strip.scrollLeft + delta < 0) strip.scrollLeft += w;
+    strip.scrollBy({ left: delta, behavior: still.matches ? 'auto' : 'smooth' });
+    stepTimer = setTimeout(() => { stepping = false; wrap(); kick(); }, 650);
+  };
+  prevBtn?.addEventListener('click', () => stepBy(-1));
+  nextBtn?.addEventListener('click', () => stepBy(1));
+
+  // mouse drag with smooth feel
+  let start = null, dragged = false;
+  strip.addEventListener('pointerdown', (e) => {
+    dragged = false;
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    start = { x: e.clientX, left: strip.scrollLeft, id: e.pointerId };
+  });
+  strip.addEventListener('pointermove', (e) => {
+    if (!start || e.pointerId !== start.id) return;
+    if (!e.buttons) { start = null; dragging = false; strip.classList.remove('is-dragging'); kick(); return; }
+    const dx = e.clientX - start.x;
+    if (!dragged) {
+      if (Math.abs(dx) < 6) return;
+      dragged = true; dragging = true; setDrifting(false);
+      strip.classList.add('is-dragging');
+      strip.setPointerCapture(e.pointerId);
+    }
+    const w = loopWidth();
+    let target = start.left - dx;
+    if (w) {
+      if (target < 0) { target += w; start.left += w; }
+      else if (target >= w) { target -= w; start.left -= w; }
+    }
+    strip.scrollLeft = target;
+  });
+  const endDrag = (e) => {
+    if (!start || e.pointerId !== start.id) return;
+    start = null;
+    if (!dragging) return;
+    dragging = false;
+    strip.classList.remove('is-dragging');
+    kick();
+  };
+  strip.addEventListener('pointerup', endDrag);
+  strip.addEventListener('pointercancel', endDrag);
+  strip.addEventListener('lostpointercapture', endDrag);
+  strip.addEventListener('click', (e) => { if (dragged) { e.preventDefault(); e.stopPropagation(); dragged = false; } }, true);
+  strip.addEventListener('dragstart', (e) => e.preventDefault());
+
+  still.addEventListener('change', () => {
+    if (still.matches) setDrifting(false);
+    if (pauseBtn) pauseBtn.hidden = still.matches;
+    kick();
+  });
+  document.addEventListener('visibilitychange', kick);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((es) => { near = es.some((e) => e.isIntersecting); kick(); }, { rootMargin: '200px 0px' }).observe(strip);
+  } else { near = true; kick(); }
 })();
 
-// ------------------------------------------------------------------ the home page's drifting quotes
-// The round button beside "All quotes" holds both rows until it is pressed again (hover holds them only
-// while the pointer rests). Under reduced motion the rows stand anyway, so the button stays hidden.
+// ------------------------------------------------------------------ the home page's cycling researcher quotes
+// Crossfades through similarly sized researcher quotes beside the globe every 6s while visible;
+// pauses on hover, focus, or reduced motion. Clicking the panel navigates to Publications#what-others-write.
 (() => {
-  const btn = document.querySelector('[data-drift-pause]');
-  const drift = document.querySelector('.drift');
-  if (!btn || !drift || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  btn.hidden = false;
-  btn.addEventListener('click', () => showPlayState(btn, !drift.classList.toggle('is-held'), 'the quotes'));
+  const root = document.querySelector('[data-voice-rotator]');
+  if (!root) return;
+  const slides = [...root.querySelectorAll('.voice__slide')];
+  if (slides.length < 2) return;
+  const controls = root.querySelector('[data-voice-controls]');
+  const prev = root.querySelector('[data-voice-prev]');
+  const next = root.querySelector('[data-voice-next]');
+  const still = matchMedia('(prefers-reduced-motion: reduce)');
+  if (controls) controls.hidden = false;
+
+  let cur = 0, held = false, focused = false, seen = false, timer = 0;
+  const show = (k) => {
+    cur = ((k % slides.length) + slides.length) % slides.length;
+    slides.forEach((s, i) => {
+      const on = i === cur;
+      s.classList.toggle('is-active', on);
+      s.setAttribute('aria-hidden', String(!on));
+    });
+  };
+  const reset = () => {
+    clearInterval(timer);
+    timer = setInterval(() => {
+      if (!still.matches && seen && !held && !focused && !document.hidden) show(cur + 1);
+    }, 6000);
+  };
+  prev?.addEventListener('click', (e) => { e.stopPropagation(); show(cur - 1); reset(); });
+  next?.addEventListener('click', (e) => { e.stopPropagation(); show(cur + 1); reset(); });
+  reset();
+  root.addEventListener('pointerenter', () => { held = true; });
+  root.addEventListener('pointerleave', () => { held = false; });
+  root.addEventListener('focusin', () => { focused = true; });
+  root.addEventListener('focusout', () => { focused = false; });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((es) => { seen = es.some((e) => e.isIntersecting); }).observe(root);
+  } else seen = true;
 })();
 
 // ------------------------------------------------------------------ the home page's globe: its script
-// The globe (assets/js/globe.js with d3 and topojson, about 70 KB) is not needed until its section is
-// near: its script is added when the section comes within 800 px of the screen, the distance at which
-// globe.js then fetches the map (layouts/home.html, data-globe-src and data-globe-integrity).
 (() => {
   const sec = document.getElementById('worldwide');
   const src = sec?.dataset.globeSrc;

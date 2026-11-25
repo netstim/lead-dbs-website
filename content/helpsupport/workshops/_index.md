@@ -1,6 +1,6 @@
 ---
 title: "Past workshops"
-description: "The Lead-DBS workshops of 2016 to 2020 in Berlin, Shanghai, Hamburg and Brisbane: dates, places, programmes and photos."
+description: "The Lead-DBS workshops of 2016 to 2020 in Berlin, Shanghai, Hamburg and Brisbane: dates, places, programs and photos."
 date: "2019-01-22T13:10:32"
 lastmod: "2026-11-11"
 weight: 5
@@ -31,7 +31,7 @@ next:
 
 ## Brisbane, February 2020 {#brisbane-2020}
 
-**5th International Lead-DBS Workshop** · 22–23 February 2020 · [Customs House](https://customshouse.com.au/), Brisbane · [Programme (PDF)](https://www.lead-dbs.org/docs/workshops/Lead-DBS_Workshop2020_Programme_BRIS.pdf)
+**5th International Lead-DBS Workshop** · 22–23 February 2020 · [Customs House](https://customshouse.com.au/), Brisbane · [Program (PDF)](https://www.lead-dbs.org/docs/workshops/Lead-DBS_Workshop2020_Programme_BRIS.pdf)
 
 An overview of Lead-DBS and its research applications, with hands-on sessions on electrode localization,
 multispectral normalization and brain shift correction.
@@ -44,11 +44,11 @@ multispectral normalization and brain shift correction.
 
 ## Berlin, September 2019 {#berlin-2019}
 
-**4th International Lead-DBS Workshop** · 13–15 September 2019 · Berlin · [Programme (PDF)](https://www.lead-dbs.org/docs/workshops/Lead-DBS_Workshop2019_Programme_BER.pdf)
+**4th International Lead-DBS Workshop** · 13–15 September 2019 · Berlin · [Program (PDF)](https://www.lead-dbs.org/docs/workshops/Lead-DBS_Workshop2019_Programme_BER.pdf)
 
-The same programme as in Brisbane.
+The same program as in Brisbane.
 
-<span id="deep-learning-2019"></span>**Deep learning workshop** · 16–17 September 2019 · Berlin · [Programme (PDF)](https://www.lead-dbs.org/docs/workshops/Applied_Deep_Learning_in_Intracranial_Neurophysiology_Workshop.pdf)
+<span id="deep-learning-2019"></span>**Deep learning workshop** · 16–17 September 2019 · Berlin · [Program (PDF)](https://www.lead-dbs.org/docs/workshops/Applied_Deep_Learning_in_Intracranial_Neurophysiology_Workshop.pdf)
 
 Directly after the Lead-DBS workshop, Chadwick Boulay from Ottawa taught deep learning on intracranial
 recordings (spikes and LFPs).
@@ -61,7 +61,7 @@ recordings (spikes and LFPs).
 
 ## Hamburg, February 2019 {#hamburg-2019}
 
-**3rd International Lead-DBS Workshop** · 21 February 2019 · University Hospital Hamburg-Eppendorf (UKE) · [Programme (PDF)](https://www.lead-dbs.org/docs/workshops/Lead-DBS_Workshop2019_Programme_HH.pdf)
+**3rd International Lead-DBS Workshop** · 21 February 2019 · University Hospital Hamburg-Eppendorf (UKE) · [Program (PDF)](https://www.lead-dbs.org/docs/workshops/Lead-DBS_Workshop2019_Programme_HH.pdf)
 
 A satellite event of the annual meeting of the stereotaxy and radiosurgery section of the German
 Neurosurgery Society (DGNC).
@@ -71,7 +71,7 @@ Neurosurgery Society (DGNC).
 **2nd International Lead-DBS Workshop** · 18–19 September 2018 · Fudan University, Shanghai · [Recordings of the talks](/helpsupport/knowledge-base/walkthrough-videos/#workshop-recordings)
 
 Over 45 participants from around the world attended sessions on preprocessing, electrode localization, VTA
-modelling and connectomic DBS. A satellite symposium of the TRDBS meeting, hosted by Prof. Shouyan Wang.
+modeling and connectomic DBS. A satellite symposium of the TRDBS meeting, hosted by Prof. Shouyan Wang.
 
 <details class="more"><summary>Group photo</summary>
 

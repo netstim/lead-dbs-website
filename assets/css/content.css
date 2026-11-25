@@ -103,6 +103,8 @@
 .cm { padding: var(--s-8) 0 var(--s-9); }
 .cm-hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-7); align-items: start; }
 @media (min-width: 1024px) { .cm-hero { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--gutter); } }
+/* without a line beside it, the photo stands alone at about the width it has beside one */
+@media (min-width: 1024px) { .cm-hero--photo { grid-template-columns: minmax(0, 1fr); } .cm-hero--photo .cm-hero__photo { max-width: 760px; } }
 .cm-hero__lead { margin: 0; max-width: 22ch; font-size: var(--t-statement); line-height: 1.25; letter-spacing: var(--display-tracking); text-wrap: balance; color: var(--ink); }
 .cm-hero__photo { position: relative; margin: 0; border-radius: var(--r-lg); overflow: hidden; }
 .cm-hero__photo img { display: block; width: 100%; height: auto; }
@@ -315,8 +317,7 @@
 .prose .qwall__list > li:first-child { border-top: 0; padding-top: 0; }
 .prose .qwall__more .qwall__list > li:first-child { border-top: 1px solid var(--line); padding-top: var(--s-5); }
 .prose .qcard { margin: 0; max-width: none; }
-.prose .qcard blockquote { margin: 0 0 var(--s-4); padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; max-width: none; font-size: var(--t-card); line-height: 1.5; letter-spacing: -.01em; color: var(--muted); font-style: normal; text-wrap: pretty; }
-.prose .qcard blockquote strong { font-weight: 500; color: var(--ink); }
+.prose .qcard blockquote { margin: 0 0 var(--s-4); padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; max-width: none; font-size: var(--t-card); line-height: 1.5; letter-spacing: -.01em; color: var(--ink); font-style: normal; text-wrap: pretty; }
 .qcard figcaption { display: flex; align-items: center; gap: var(--s-3); font-size: var(--t-label); line-height: 1.4; color: var(--muted); }
 /* the logo beside the name: one height for all, so wide wordmarks stay readable */
 .prose .qcard__logo { display: block; flex: none; width: auto; height: 28px; max-width: 140px; margin: 0; border-radius: 0; object-fit: contain; object-position: left center; }

@@ -33,7 +33,7 @@ layout: "showcase"
 <p class="page-intro__actions"><a class="btn btn--primary" href="{{< relref `/download/` >}}">Download Lead-DBS</a><a class="btn btn--secondary btn--ext" href="https://doi.org/10.1016/j.neuroimage.2017.05.015">Read the paper<span class="ext-mark" aria-hidden="true">↗</span><span class="sr-only"> (another site)</span></a></p>
 </div>
 
-![The final DISTAL atlas in 3D with labelled structures and a DBS electrode](distal_fig_9-1030x501.png)
+![The final DISTAL atlas in 3D with labeled structures and a DBS electrode](distal_fig_9-1030x501.png)
 {.atlas-hero}
 
 {{< cells key="glance" label="DISTAL at a glance" >}}
@@ -61,10 +61,8 @@ zones of the STN and GPi.
 {{% hub-section %}}
 ## How it was built
 
-**Built in three stages** on the MNI template.
-
 None of the atlases collected since 2012 matched the STN of the MNI template precisely, and in DBS imaging
-millimetres matter.
+millimeters matter.
 
 {{< cells key="stages" label="The three stages" >}}
 
@@ -83,7 +81,7 @@ One limitation of most available atlases (when used in Lead-DBS) is shown in thi
 
 {{% /col %}}
 {{% col "1/3" %}}
-*The upper left panel shows the hypointense region of the subthalamic nucleus as defined by the [ICBM 2009b MNI template](/about-the-mni-spaces/). The region of the STN is further magnified in the next panel. Subsequent panels overlay available atlases of the STN to this region. None of them precisely matches the STN of the template. In DBS imaging, a discrepancy of millimetres can change the anatomical interpretation.*
+*The upper left panel shows the hypointense region of the subthalamic nucleus as defined by the [ICBM 2009b MNI template](/about-the-mni-spaces/). The region of the STN is further magnified in the next panel. Subsequent panels overlay available atlases of the STN to this region. None of them precisely matches the STN of the template. In DBS imaging, a discrepancy of millimeters can change the anatomical interpretation.*
 
 {{% /col %}}
 {{% /row %}}
@@ -129,7 +127,7 @@ To “fill the gaps” between the regions defined on the template itself, a pre
 
 {{% /col %}}
 {{% col "1/3" %}}
-*Conventional (left panel) and additional anchor point warp (right panel). Both warps apply multiple spectra to align histology to the template. The right warp includes an additional high signal-to-noise (binary) manual segmentation of the same structures (STN, RN, GPi/GPe) defined on histology and the template (manual anchorpoints). This leads to a very precise alignment of i) these structures and ii) neighbouring structures. These structures are the most important ones in DBS imaging.*
+*Conventional (left panel) and additional anchor point warp (right panel). Both warps apply multiple spectra to align histology to the template. The right warp includes an additional high signal-to-noise (binary) manual segmentation of the same structures (STN, RN, GPi/GPe) defined on histology and the template (manual anchorpoints). This leads to a very precise alignment of i) these structures and ii) neighboring structures. These structures are the most important ones in DBS imaging.*
 
 {{% /col %}}
 {{% /row %}}
@@ -220,8 +218,6 @@ The video below shows these features (recorded in 2017):
 
 {{% hub-section %}}
 ## What to cite
-
-**Ewert et al. 2018,** NeuroImage.
 
 {{< paper ewert2018 "full" >}}
 {{% /hub-section %}}

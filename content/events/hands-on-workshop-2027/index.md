@@ -16,4 +16,4 @@ keywords: ["workshop", "hands-on", "Cologne", "Köln", "2027", "registration", "
 share: "workshop-2027-flyer.png"
 ---
 
-Two days of hands-on work in Cologne, with an early preview of Lead-DBS 4.0. Venue, programme and fee will be announced in [News](/news/) and on the [user Slack](/helpsupport/slack-user-channel/).
+Two days of hands-on training in Cologne, including an early preview of Lead-DBS 4.0 (Python). Venue, schedule, and fees will be announced in [News](/news/) and on the [user Slack](/helpsupport/slack-user-channel/).

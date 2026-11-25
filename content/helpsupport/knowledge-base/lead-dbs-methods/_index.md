@@ -1,6 +1,6 @@
 ---
 title: "Methods"
-description: "Electrode localization, stimulation modelling, connectivity and group analysis in Lead-DBS."
+description: "Electrode localization, stimulation modeling, connectivity and group analysis in Lead-DBS."
 weight: 3
 linkTitle: "Methods"
 date: "2017-04-19T16:59:05"
@@ -13,28 +13,28 @@ share: "images/renders/head-features.jpg"
 searchEntries:
   - {title: "Lead Group", id: "lead-group", keywords: "Lead Group LeadGroup group analysis cohort tool", description: "Relate electrode placement, stimulation volumes, sweet spots and brain networks to clinical outcomes across patients."}
   - {title: "Lead Connectome", id: "lead-connectome", keywords: "Lead Connectome Mapper connectome tractography diffusion resting-state fMRI tool", description: "Build connectomes from diffusion MRI and resting-state fMRI. Use Lead Connectome Mapper to estimate connectivity from a seed region."}
-  - {title: "OSS-DBS", id: "oss-dbs", keywords: "OSS-DBS OSSDBS stimulation modelling electric field VTA pathway activation tool", description: "OSS-DBS v2, developed with the University of Rostock, supports stimulation modelling in Lead-DBS 3.1 onwards; installs on first use."}
+  - {title: "OSS-DBS", id: "oss-dbs", keywords: "OSS-DBS OSSDBS stimulation modeling electric field VTA pathway activation tool", description: "OSS-DBS v2, developed with the University of Rostock, supports stimulation modeling in Lead-DBS 3.1 onwards; installs on first use."}
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
 next:
   - {page: "/helpsupport/first-steps/"}
   - {page: "/helpsupport/knowledge-base/atlasesresources/"}
   - {page: "/about/citing_leaddbs/"}
-# the named tools, as picture cells at the end of the page (layouts/_shortcodes/tools.html)
+# the named tools, as one compact row of links at the end of the page (layouts/_shortcodes/tools.html)
 tools:
-  - {id: "lead-group", img: "images/renders/cohort-hero.jpg", name: "Lead Group", text: "Compare outcomes across patients.", manual: "Lead Group|/manual/lead-group/group-analyses-with-lead-dbs/", papers: "treu2020"}
-  - {id: "lead-connectome", img: "images/renders/fiber-filtering-wide.jpg", name: "Lead Connectome", text: "Build connectomes from diffusion MRI and resting-state fMRI, and estimate connectivity from seed regions.", manual: "Lead Connectome Mapper|/manual/connectomics/lead-mapper/", papers: "horn2014"}
-  - {id: "oss-dbs", img: "images/renders/pathway-activation-2.jpg", name: "OSS-DBS", text: "Stimulation modelling developed with the University of Rostock; installs automatically on first use.", manual: "Calculate VTA and stats|/manual/lead-group/calculate-vta-and-stats/", code: "https://github.com/SFB-ELAINE/OSS-DBSv2", papers: "butenko2020 zimmermann2026"}
-  - {id: "lead-tutor", img: "images/renders/cohort-black.jpg", name: "Lead Tutor", text: "Practise electrode localization and compare your results with expert localizations.", link: "/helpsupport/learn-lead-dbs-yourself/", manual: "Practise with Lead Tutor|/manual/lead-dbs/self-tutoring-with-lead-tutor/", papers: "madan2025"}
+  - {id: "lead-group", name: "Lead Group", manual: "Lead Group|/manual/lead-group/group-analyses-with-lead-dbs/", papers: "treu2020"}
+  - {id: "lead-connectome", name: "Lead Connectome", manual: "Lead Connectome Mapper|/manual/connectomics/lead-mapper/", papers: "horn2014"}
+  - {id: "oss-dbs", name: "OSS-DBS", manual: "Calculate VTA and stats|/manual/lead-group/calculate-vta-and-stats/", code: "https://github.com/SFB-ELAINE/OSS-DBSv2", papers: "butenko2020 zimmermann2026"}
+  - {id: "lead-tutor", name: "Lead Tutor", link: "/helpsupport/learn-lead-dbs-yourself/", manual: "Practice with Lead Tutor|/manual/lead-dbs/self-tutoring-with-lead-tutor/", papers: "madan2025"}
 layout: "showcase"
 ---
 
-{{< jumps "Single-patient analysis|#single-patients; Group analysis|#groups-of-patients; In the operating theatre|#operating-theatre; Tools|#tools" >}}
+{{< jumps "Single-patient analysis|#single-patients; Group analysis|#groups-of-patients; In the operating room|#operating-theatre; Tools|#tools" >}}
 {{< /jumps >}}
 
 {{% chapter n="1" %}}
 ## Single-patient analysis {#single-patients}
 
-**Where the electrodes sit,** and what they stimulate.
+**Electrode reconstruction, stimulation modeling and connectivity** for individual patients.
 {{% /chapter %}}
 
 {{< capabilities >}}
@@ -50,7 +50,7 @@ Normalize patient images to [MNI space](/about-the-mni-spaces/) and refine the n
 Electrodes on postoperative MRI or CT, detected automatically or placed by hand.
 {{< /capability >}}
 
-{{< capability title="Stimulation modelling" id="stimulation" img="images/renders/pathway-activation.jpg"
+{{< capability title="Stimulation modeling" id="stimulation" img="images/renders/pathway-activation.jpg"
     manual="Calculate VTA and stats|/manual/lead-group/calculate-vta-and-stats/"
     papers="butenko2020 zimmermann2026" >}}
 Models the electric field, activated tissue and pathways for a stimulation setting, with [OSS-DBS](#oss-dbs).
@@ -59,7 +59,7 @@ Models the electric field, activated tissue and pathways for a stimulation setti
 {{< capability title="Visualization" id="visualization" img="gallery/edlow2019_fig7_panela.png" fit="contain"
     manual="Visualization|/manual/lead-dbs/step7-visualization/"
     papers="horn2015" >}}
-Electrodes, atlases, fibre tracts and stimulation volumes in 2D and 3D.
+Electrodes, atlases, fiber tracts and stimulation volumes in 2D and 3D.
 {{< /capability >}}
 
 {{< capability title="Connectivity" id="connectivity" img="/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping/cbm1-1030x676.png" fit="contain"
@@ -71,7 +71,7 @@ A stimulation site's connections, from the patient's own or a [normative connect
 
 {{< capability title="AC/PC to MNI conversion" id="acpc" link="/helpsupport/knowledge-base/lead-dbs-methods/acpc-to-mni-conversion-2/"
     img="/helpsupport/knowledge-base/lead-dbs-methods/acpc-to-mni-conversion-2/fig_3.png" fit="contain"
-    alt="DBS targets of nine indications, from Parkinson’s disease to addiction, as heat maps on slices of the MNI template with the surrounding structures labelled"
+    alt="DBS targets of nine indications, from Parkinson’s disease to addiction, as heat maps on slices of the MNI template with the surrounding structures labeled"
     papers="horn2017acpc" >}}
 Surgical AC/PC coordinates to MNI space and back.
 {{< /capability >}}
@@ -90,7 +90,7 @@ Surgical AC/PC coordinates to MNI space and back.
 Maps which stimulation sites go with better or worse outcomes.
 {{< /capability >}}
 
-{{< capability title="Network mapping and fibre filtering" id="network-mapping" link="/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping/"
+{{< capability title="Network mapping and fiber filtering" id="network-mapping" link="/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping/"
     img="gallery/li2020_fig4_top.png" fit="contain"
     manual="Connectomics|/manual/connectomics/connectomic-analyses/"
     papers="horn2017ana neudorfer2023" >}}
@@ -107,7 +107,7 @@ Recordings from many patients, pooled into one 3D map.
 {{< /capabilities >}}
 
 {{% chapter n="3" %}}
-## In the operating theatre {#operating-theatre}
+## In the operating room {#operating-theatre}
 
 **Map recordings and model test stimulation** on patient images in real time.
 {{% /chapter %}}

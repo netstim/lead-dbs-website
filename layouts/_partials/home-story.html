@@ -1,0 +1,64 @@
+{{- /* The home page's scroll story (front matter `story: true` in content/_index.md): the opening, the
+       localization and the three things Lead-DBS does besides, as five steps beside one drawing that stays on
+       the screen and changes with them (assets/js/story.js draws it from assets/data/story.json, which
+       tools/story.py packs; docs/home-and-media.md, "The scroll story"). The words are those of `hero`,
+       `localize` and `features.cards`. Until the drawing is live (and without script) each step shows
+       its still render beside its words. */ -}}
+{{ $p := .Params }}
+{{ $r := hugo.Data.release }}
+{{ $dl := "" }}{{ range site.Menus.main }}{{ if eq .Identifier "download" }}{{ $dl = .URL }}{{ end }}{{ end }}
+{{ $arrow := `<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg>` | safeHTML }}
+{{ $data := resources.Get "data/story.json" | minify | fingerprint }}
+{{ $brain := (resources.Get "images/story-brain.png").Resize "6000x webp q80" }}
+{{ $more := partial "resolve-url.html" (dict "url" $p.features.more.url "page" .) }}
+<section class="story" id="story" aria-label="What Lead-DBS does" data-story="{{ $data.RelPermalink }}" data-story-brain="{{ $brain.RelPermalink }}">
+  <div class="story__stage">
+    <canvas aria-hidden="true"></canvas>
+    {{ with $p.story_note }}<p class="story__note" data-story-note>{{ . }}</p>{{ end }}
+    {{- /* the last step: a real render takes the drawing's place (story.js fades it in) */}}
+    {{ with $p.story_render }}<div class="story__render" data-story-render>{{ partial "render.html" (dict "file" .file "alt" .alt "class" "story__real" "sizes" "(min-width: 760px) 54vw, 100vw") }}</div>{{ end }}
+  </div>
+  <div class="story__steps">
+    {{ with $p.hero }}
+    <div class="story__step story__step--first" data-story-step>
+      <div class="wrap story__wrap">
+        <div class="story__text">
+          <h1 id="hero-h">{{ partial "nobreak.html" .title }}</h1>
+          <p class="story__lead">{{ .lead }}</p>
+          <div class="btn-row">
+            <a class="btn btn--primary" href="{{ $dl }}">{{ .primary.label }}{{ $arrow }}</a>
+            <a class="btn btn--secondary" href="{{ partial "resolve-url.html" (dict "url" .secondary.url "page" $) }}">{{ .secondary.label }}{{ $arrow }}</a>
+          </div>
+        </div>
+        {{ partial "render.html" (dict "file" .poster "alt" .alt "class" "story__still" "sizes" "(min-width: 1024px) 54vw, 100vw" "eager" true) }}
+      </div>
+    </div>
+    {{ end }}
+    {{ with $p.localize }}
+    <div class="story__step" data-story-step>
+      <div class="wrap story__wrap">
+        <div class="story__text">
+          <h2 id="localize-h">{{ partial "nobreak.html" .title }}</h2>
+          <p class="story__lead">{{ .text }}</p>
+          <p><a class="link" href="{{ partial "resolve-url.html" (dict "url" .link.url "page" $) }}">{{ .link.label }}{{ $arrow }}</a></p>
+        </div>
+        {{ partial "render.html" (dict "file" "insertion-final.png" "alt" (hugo.Data.insertion.alt | default "Electrodes of Lead Tutor patients in place in the subthalamic nucleus") "class" "story__still" "sizes" "(min-width: 1024px) 54vw, 100vw") }}
+      </div>
+    </div>
+    {{ end }}
+    {{ range $i, $c := $p.features.cards }}
+    <div class="story__step" data-story-step>
+      <div class="wrap story__wrap">
+        <div class="story__text">
+          <h2>{{ partial "nobreak.html" $c.title }}</h2>
+          <p class="story__lead">{{ $c.text }}</p>
+          <p><a class="link" href="{{ $more }}{{ with $c.anchor }}#{{ . }}{{ end }}">{{ cond (eq (add $i 1) (len $p.features.cards)) $p.features.more.label "How it works" }}{{ $arrow }}</a></p>
+        </div>
+        {{ partial "render.html" (dict "file" $c.image "alt" $c.alt "class" "story__still" "sizes" "(min-width: 1024px) 54vw, 100vw") }}
+      </div>
+    </div>
+    {{ end }}
+  </div>
+</section>
+{{ $js := resources.Get "js/story.js" | js.Build (dict "targetPath" "js/story.js") | minify | fingerprint }}
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

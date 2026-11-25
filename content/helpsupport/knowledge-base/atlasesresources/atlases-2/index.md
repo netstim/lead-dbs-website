@@ -14,7 +14,7 @@ next:
   - {page: "/helpsupport/knowledge-base/atlasesresources/distal-atlas/"}
   - {page: "/helpsupport/knowledge-base/atlasesresources/normative-connectomes/"}
 ---
-Atlases of the basal ganglia, thalamus, nuclei and tracts in MNI space. Each entry lists access details and the paper to cite.
+Atlases of the basal ganglia, thalamus, nuclei, and tracts in MNI space. Most are included with Lead-DBS; the rest can be downloaded separately.
 
 {{< atlas-index >}}
 
@@ -36,5 +36,4 @@ Looking for the cortex or whole-brain parcellations? See [Cortical parcellations
 
 ## Is an atlas missing?
 
-Know an atlas that should be listed here, or want yours to come with Lead-DBS?
-[Write to us](/contact/).
+Missing an atlas, or want to include yours in Lead-DBS? [Get in touch](/contact/).

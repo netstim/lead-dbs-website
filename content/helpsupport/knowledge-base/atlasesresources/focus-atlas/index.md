@@ -1,6 +1,6 @@
 ---
 title: "FOCUS atlas"
-description: "FOCUS: a 100-micron atlas of the human subcortex with 95 structures and 82 fibre pathways, from 7T ex vivo MRI. For academic research only."
+description: "FOCUS: a 100-micron atlas of the human subcortex with 95 structures and 82 fiber pathways, from 7T ex vivo MRI. For academic research only."
 weight: 5
 linkTitle: "FOCUS atlas"
 date: "2026-02-20T22:59:21"
@@ -11,8 +11,8 @@ share: "STN_Forel_ZI_tracts_mediolateral-1030x1019.png"
 keywords: ["FOCUS", "atlas", "subcortex", "100 micron", "7T", "ex vivo", "tracts", "download FOCUS", "request FOCUS"]
 # the atlas at a glance (layouts/_shortcodes/cells.html)
 glance:
-  - {label: "Structures", value: "95, grey and white matter"}
-  - {label: "Fibre pathways", value: "82, curated"}
+  - {label: "Structures", value: "95, gray and white matter"}
+  - {label: "Fiber pathways", value: "82, curated"}
   - {label: "Resolution", value: "100 µm isotropic"}
   - {label: "Space", value: "MNI"}
 # "Related" at the end of the page (layouts/_partials/next-steps.html)
@@ -38,12 +38,12 @@ layout: "showcase"
 {{% hub-section %}}
 ## Anatomical coverage
 
-FOCUS gives submillimetre definitions of the nuclei and fibre tracts of the basal ganglia, thalamus,
+FOCUS gives submillimeter definitions of the nuclei and fiber tracts of the basal ganglia, thalamus,
 subthalamus, midbrain and cerebellum, including delicate pathways often invisible on conventional MRI:
-anatomical detail for modelling deep brain stimulation (DBS), focused ultrasound and lesion surgery. Its
+anatomical detail for modeling deep brain stimulation (DBS), focused ultrasound and lesion surgery. Its
 registration to MNI space allows it to be transformed into an individual brain.
 
-![FOCUS atlas: subcortical structures and fibre pathways of the right hemisphere in 3D, medial-lateral view](Fig1_newdraft_rh_segtracts_mediolateral-1030x1019.png)
+![FOCUS atlas: subcortical structures and fiber pathways of the right hemisphere in 3D, medial-lateral view](Fig1_newdraft_rh_segtracts_mediolateral-1030x1019.png)
 {{% /hub-section %}}
 
 {{% hub-section %}}
@@ -62,17 +62,13 @@ The team will email you a download link.
 {{% hub-section %}}
 ## How it was built
 
-**Segmented by hand,** checked against histology and fibre dissections.
-
-The structures were segmented on 7T ex vivo MRI. Fibre pathways were curated using anatomical priors (“tract architectonics”) to reconstruct complex fibre
+The structures were segmented on 7T ex vivo MRI. Fiber pathways were curated using anatomical priors (“tract architectonics”) to reconstruct complex fiber
 anatomy. The atlas was validated against 48 additional anatomical
-resources, including histology and fibre dissections, and will be refined version by version.
+resources, including histology and fiber dissections, and will be refined version by version.
 {{% /hub-section %}}
 
 {{% hub-section %}}
 ## What to cite
-
-**Friedrich et al. 2026,** a preprint on bioRxiv.
 
 {{< paper friedrich2026 "full" >}}
 {{% /hub-section %}}

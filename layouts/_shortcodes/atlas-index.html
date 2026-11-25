@@ -9,6 +9,9 @@
 {{- if not $d.atlases }}{{ errorf "atlas-index: %s has no atlases.yaml" .Page.File.Path }}{{ end -}}
 {{- $n := len $d.atlases -}}
 {{- $noun := .Get "noun" | default "atlases" -}}
+{{- /* one of them, for the line under an empty filter: "suggest a tool to add" on Dependencies */ -}}
+{{- $one := index (dict "atlases" "an atlas" "parcellations" "a parcellation" "connectomes" "a connectome" "tools" "a tool") $noun -}}
+{{- if not $one }}{{ errorf "atlas-index: %s: unknown noun %q (atlases, parcellations, connectomes or tools)" .Page.File.Path $noun }}{{ end -}}
 <div class="atlas-index" id="atlas-index" data-atlas-index>
   {{- /* a filter only where the list is too long to scan */}}
   {{ if ge $n 15 }}<div class="atlas-filter" hidden data-atlas-filter-box>
@@ -16,5 +19,5 @@
     <input id="atlas-filter" type="search" placeholder="{{ .Get "placeholder" | default "Filter by name, structure, disease or author" }}" autocomplete="off" data-atlas-filter>
     <p class="atlas-filter__count" aria-live="polite" data-atlas-count></p>
   </div>{{ end }}
-  <p class="atlas-filter__none" hidden data-atlas-none>No matches. Try another name or author. <a href="{{ with site.GetPage "/contact" }}{{ .RelPermalink }}{{ end }}">Suggest a resource</a></p>
+  <p class="atlas-filter__none" hidden data-atlas-none>No matches. Try another search term, or <a href="{{ with site.GetPage "/contact" }}{{ .RelPermalink }}{{ end }}">suggest {{ $one }} to add</a>.</p>
 </div>

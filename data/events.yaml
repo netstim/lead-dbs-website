@@ -40,7 +40,7 @@ events:
     also_in: "America/New_York"
     where: "Online (Zoom)"
     online: true
-    text: "Monthly, online and open to anyone who wants to contribute or follow the development."
+    text: "Monthly on Zoom, for contributors and anyone following development."
     # Zoom's registration page: people leave their email address and Zoom sends them the link
     register_url: "https://uni-koeln.zoom.us/meeting/register/UiZRfHxiRHyyxCMEM0iSPg"
     links:
@@ -53,7 +53,7 @@ events:
     timezone: "Europe/Berlin"
     where: "Cologne"
     host: "Institute for Network Stimulation and Uniklinik Köln"
-    text: "Two days of hands-on Lead-DBS, with an early preview of Lead-DBS 4.0, rebuilt in Python."
+    text: "Two days of hands-on training with Lead-DBS, and a first look at Lead-DBS 4.0 in Python."
     register_url: ""
     links:
       - {label: "Workshop details", url: "/events/hands-on-workshop-2027/"}

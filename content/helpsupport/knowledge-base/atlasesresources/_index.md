@@ -16,7 +16,7 @@ next:
 other:
   - {name: "About the MNI spaces", text: "Template versions and coordinate spaces", url: "/about-the-mni-spaces/"}
   - {name: "IXI dataset", text: "Age-matched reference for AC/PC to MNI conversion", url: "/helpsupport/knowledge-base/lead-dbs-methods/acpc-to-mni-conversion-2/#ixi"}
-  - {name: "Lead Tutor", text: "Practise electrode localization", url: "/helpsupport/learn-lead-dbs-yourself/"}
+  - {name: "Lead Tutor", text: "Practice electrode localization", url: "/helpsupport/learn-lead-dbs-yourself/"}
 layout: "hub"
 ---
 <div class="page-intro"><div class="page-intro__text">
@@ -24,6 +24,15 @@ layout: "hub"
 **Brain atlases and connectivity datasets** in MNI space.
 
 </div></div>
+
+<div class="notice" role="note">
+
+**Included for reproducibility.** Lead-DBS includes published atlases and datasets so that the studies
+behind them can be reproduced. Inclusion is not an endorsement, and the team cannot vet every resource.
+Read the original paper before using an atlas or connectome, and check which template space it was built
+for ([About the MNI spaces](/about-the-mni-spaces/)).
+
+</div>
 
 {{< atlas-hub >}}
 

@@ -16,19 +16,15 @@
 groups:
 - id: anatomical
   title: Anatomical parcellations
-  intro: Regions drawn along gyri, sulci and other macroanatomical landmarks.
 - id: histological
   title: Cyto- and myeloarchitecture
-  intro: Maps from post-mortem histology and classical architectonic atlases.
 - id: functional
   title: Functional and multimodal parcellations
-  intro: Regions and networks defined by resting-state or task fMRI, or several MRI modalities together.
 - id: data-driven
   title: Fine-grained and voxelwise parcellations
   intro: Random, clustered and voxelwise schemes for connectivity matrices.
 - id: motor-cerebellum
   title: Motor areas and the cerebellum
-  intro: Templates of the (pre-)motor cortex and its tracts, and parcellations of the cerebellum.
 atlases:
 - id: mindboggle-101-klein-2012
   group: anatomical
@@ -36,16 +32,16 @@ atlases:
   ref: Klein 2012
   covers: Cortex, Desikan protocol
   preinstalled: true
-  about: 101 brain images labelled by hand, largely following the Desikan protocol. Its group-level parcellation is included in Lead-DBS for connectomic analyses.
+  about: 101 brain images labeled by hand, largely following the Desikan protocol. Its group-level parcellation is included in Lead-DBS for connectomic analyses.
   get:
   - 'Information: [Mindboggle data](https://mindboggle.info/data.html)'
   cite:
   - klein2012
   image: Mindboggle101_FIBIM2012.1200x1200.jpeg
-  alt: 'Mindboggle 101: labelled cortical regions on inflated surfaces, lateral and medial views'
+  alt: 'Mindboggle 101: labeled cortical regions on inflated surfaces, lateral and medial views'
 - id: miccai-2012-multi-atlas-labeling-workshop-and-challenge-neuromorphometrics
   group: anatomical
-  name: MICCAI 2012 multi-atlas labelling
+  name: MICCAI 2012 multi-atlas labeling
   ref: Neuromorphometrics
   covers: Whole brain, manual labels
   preinstalled: true
@@ -68,7 +64,7 @@ atlases:
   cite:
   - tzourio2002
   image: aal-289x300.png
-  alt: 'AAL atlas: colour-coded regions on a brain surface'
+  alt: 'AAL atlas: color-coded regions on a brain surface'
 - id: harvard-oxford-corticalsubcortical-atlases-makris-2006
   group: anatomical
   name: Harvard–Oxford (whole brain)
@@ -85,7 +81,7 @@ atlases:
   - desikan2006
   - goldstein2007
   image: harvardoxford-289x300.png
-  alt: 'Harvard-Oxford cortical atlas: colour-coded regions on a brain surface'
+  alt: 'Harvard-Oxford cortical atlas: color-coded regions on a brain surface'
 - id: hammersmith-atlas-hammers-2003-gousias-2008-faillenot-2017-wild-2017
   group: anatomical
   name: Hammersmith atlas
@@ -101,7 +97,7 @@ atlases:
   - faillenot2017
   - wild2017
   image: hammersmith-289x300.png
-  alt: 'Hammersmith atlas: colour-coded regions on a brain surface'
+  alt: 'Hammersmith atlas: color-coded regions on a brain surface'
 - id: desikan-killiany-atlas-desikan-2006
   group: anatomical
   name: Desikan-Killiany atlas
@@ -115,7 +111,7 @@ atlases:
   cite:
   - desikan2006
   image: desikan.001.png
-  alt: 'Desikan-Killiany atlas: colour-coded regions on an inflated surface'
+  alt: 'Desikan-Killiany atlas: color-coded regions on an inflated surface'
 - id: destrieux-atlas-destrieux-2010
   group: anatomical
   name: Destrieux atlas
@@ -129,7 +125,7 @@ atlases:
   - destrieux2010
   - fischl2004
   image: destrieux.001.png
-  alt: 'Destrieux atlas: colour-coded gyri and sulci on an inflated surface'
+  alt: 'Destrieux atlas: color-coded gyri and sulci on an inflated surface'
 - id: marsatlas-auzias-2016
   group: anatomical
   name: MarsAtlas
@@ -143,14 +139,14 @@ atlases:
   - auzias2016
   - auzias2013
   image: marsAtlas-template-e1458593354824-300x98.jpg
-  alt: 'MarsAtlas: labelled cortical regions, lateral and medial views'
+  alt: 'MarsAtlas: labeled cortical regions, lateral and medial views'
 - id: jubrain--juelich-histological-atlas-eickhoff-2005
   group: histological
   name: JuBrain / Juelich histological atlas
   ref: Eickhoff 2005
   covers: Cyto- and myeloarchitectonic areas
   preinstalled: true
-  about: A probabilistic atlas averaged from multi-subject post-mortem cyto- and myeloarchitectonic segmentations, by the teams of Karl Zilles and Katrin Amunts in Jülich and Düsseldorf. Cytoarchitectonic areas were analysed in sections of ten brains. Area borders are defined by image analysis and statistical criteria. Published maps are available to the scientific community.
+  about: A probabilistic atlas averaged from multi-subject post-mortem cyto- and myeloarchitectonic segmentations, by the teams of Karl Zilles and Katrin Amunts in Jülich and Düsseldorf. Cytoarchitectonic areas were analyzed in sections of ten brains. Area borders are defined by image analysis and statistical criteria. Published maps are available to the scientific community.
   get:
   - 'Information: [JuBrain at Forschungszentrum Jülich](http://www.fz-juelich.de/inm/inm-1/EN/Forschung/JuBrain/Jubrain_Webtools/Jubrain_Webtools_node.html)'
   cite:
@@ -160,7 +156,7 @@ atlases:
   - eickhoff2010
   - eickhoff2006
   image: juelich.png
-  alt: 'Juelich histological atlas: colour-coded areas on a brain surface'
+  alt: 'Juelich histological atlas: color-coded areas on a brain surface'
 - id: myelo--and-cytoarchitectonic-microstructural-and-functional-human-cortical-atlases-pijnenburg-2021
   group: histological
   name: Classical cortical atlases in MRI space
@@ -173,7 +169,7 @@ atlases:
   cite:
   - pijnenburg2021
   image: Brodmann-300x227.png
-  alt: Brodmann areas in colour on a brain surface
+  alt: Brodmann areas in color on a brain surface
 - id: julich-brain-cytoarchitectonic-atlas-amunts-2020
   group: histological
   name: Julich-Brain cytoarchitectonic atlas
@@ -186,7 +182,7 @@ atlases:
   cite:
   - amunts2020
   image: JulichBrainAtlas-300x235.png
-  alt: 'Julich-Brain atlas: colour-coded cytoarchitectonic areas on a brain surface'
+  alt: 'Julich-Brain atlas: color-coded cytoarchitectonic areas on a brain surface'
 - id: cortical-area-parcellation-from-resting-state-correlations-gordon-2016
   group: functional
   name: Gordon parcellation
@@ -199,7 +195,7 @@ atlases:
   cite:
   - gordon2016
   image: gordon2014-845x684.png
-  alt: 'Gordon parcellation: colour-coded cortical areas on an inflated surface'
+  alt: 'Gordon parcellation: color-coded cortical areas on an inflated surface'
 - id: consensual-atlas-of-resting-state-network-caren-doucet-2019
   group: functional
   name: CAREN
@@ -211,7 +207,7 @@ atlases:
   cite:
   - doucet2019
   image: CAREN-1-1030x761.png
-  alt: 'CAREN atlas: resting-state networks in colour on an inflated surface'
+  alt: 'CAREN atlas: resting-state networks in color on an inflated surface'
 - id: brainnetome-atlas-parcellation-fan-2016
   group: functional
   name: Brainnetome atlas
@@ -224,7 +220,7 @@ atlases:
   cite:
   - fan2016
   image: brainnetome.001.png
-  alt: 'Brainnetome atlas: colour-coded cortical and subcortical regions on a brain surface'
+  alt: 'Brainnetome atlas: color-coded cortical and subcortical regions on a brain surface'
 - id: local-global-parcellation-of-the-human-cerebral-cortex-schaefer-2018
   group: functional
   name: Local-Global parcellation
@@ -237,7 +233,7 @@ atlases:
   cite:
   - schaefer2017
   image: schaefer-997x1030.png
-  alt: 'Schaefer parcellation: colour-coded cortical areas on a brain surface'
+  alt: 'Schaefer parcellation: color-coded cortical areas on a brain surface'
 - id: aicha-an-atlas-of-intrinsic-connectivity-of-homotopic-areas-joliot-2015
   group: functional
   name: AICHA
@@ -250,20 +246,22 @@ atlases:
   cite:
   - joliot2015
   image: aicha-289x300.png
-  alt: 'AICHA atlas: colour-coded regions on a brain surface'
+  alt: 'AICHA atlas: color-coded regions on a brain surface'
 - id: yeo-2011-functional-parcellations-yeo-2011
+  also:
+  - cortical-functional-networks-yeo-2011
   group: functional
   name: Yeo functional parcellations
   ref: Yeo 2011
   covers: Cortex, 7 or 17 networks
   preinstalled: true
-  about: Resting-state fMRI networks from 1,000 subjects, in versions with 7 and 17 networks.
+  about: Cortical networks from the resting-state fMRI of 1,000 young, healthy adults, registered with surface-based alignment, in versions with 7 and 17 networks.
   get:
   - 'Information: [Yeo 2011 cortical parcellation in the FreeSurfer wiki](https://surfer.nmr.mgh.harvard.edu/fswiki/CorticalParcellation_Yeo2011)'
   cite:
   - yeo2011
   image: yeo-289x300.png
-  alt: 'Yeo 2011 parcellation: functional networks in colour on a brain surface'
+  alt: 'Yeo 2011 parcellation: functional networks in color on a brain surface'
 - id: hcp-mmp-10-glasser-2016
   group: functional
   name: HCP MMP 1.0
@@ -278,7 +276,7 @@ atlases:
   cite:
   - glasser2016
   image: hcp_mmp1.png
-  alt: 'HCP MMP 1.0: cortical areas in colour, seen from above'
+  alt: 'HCP MMP 1.0: cortical areas in color, seen from above'
 - id: pragmatic-huth-2016
   group: functional
   name: PrAGMATiC
@@ -292,27 +290,14 @@ atlases:
   - huth2016
   - huth2015
   image: pragmatic-300x231.png
-  alt: 'PrAGMATiC: colour-coded cortical areas on an inflated surface'
-- id: cortical-functional-networks-yeo-2011
-  group: functional
-  name: Cortical functional networks
-  ref: Yeo 2011
-  covers: Cortical networks, surface-aligned
-  preinstalled: true
-  about: Built from resting-state fMRI of 1000 young, healthy adults, registered with surface-based alignment.
-  get:
-  - Released in the [FreeSurfer wiki (Yeo 2011)](https://surfer.nmr.mgh.harvard.edu/fswiki/CorticalParcellation_Yeo2011)
-  cite:
-  - yeo2011
-  image: Picture5-300x214.png
-  alt: Cortical functional networks (Yeo 2011) in colour on an inflated surface
+  alt: 'PrAGMATiC: color-coded cortical areas on an inflated surface'
 - id: functional-connectivity-atlas-7-networks-yeo-2011
   group: functional
   name: Functional connectivity atlas, 7 networks
   ref: Yeo 2011
-  covers: Cortex, 7 networks
+  covers: Cortex, striatum and cerebellum, 7 networks
   preinstalled: true
-  about: Built from resting-state fMRI of 1000 young, healthy adults, registered with surface-based alignment.
+  about: The 7 cortical networks of Yeo 2011 together with the matching parcellations of the striatum (Choi 2012) and the cerebellum (Buckner 2011), all from the same resting-state fMRI data of 1,000 young, healthy adults.
   get:
   - Released in the [FreeSurfer wiki (Yeo 2011)](https://surfer.nmr.mgh.harvard.edu/fswiki/CorticalParcellation_Yeo2011)
   cite:
@@ -320,7 +305,7 @@ atlases:
   - choi2012
   - buckner2011
   image: Screen-Shot-2020-06-26-at-4.28.03-PM-300x212.png
-  alt: Seven functional connectivity networks in colour on an inflated surface
+  alt: Seven functional connectivity networks in color on an inflated surface
 - id: fmri-based-random-parcellations-craddock-2011
   group: data-driven
   name: fMRI-based random parcellations
@@ -329,12 +314,12 @@ atlases:
   preinstalled: true
   about: Fine-grained random parcellations informed by rs-fMRI data.
   get:
-  - Two of the functional parcellations come preinstalled within Lead-DBS.
+  - Two of the functional parcellations are included.
   - 'Information: [Craddock cluster ROI atlases](http://ccraddock.github.io/cluster_roi/atlases.html)'
   cite:
   - craddock2012
   image: randomcraddock-289x300.png
-  alt: 'Random fMRI-based parcellation (Craddock): many small parcels in colour on a brain surface'
+  alt: 'Random fMRI-based parcellation (Craddock): many small parcels in color on a brain surface'
 - id: voxelwise-parcellations-lead-dbs
   group: data-driven
   name: Voxelwise parcellations
@@ -347,7 +332,7 @@ atlases:
   cite:
   - neudorfer2023
   image: voxelwiseleaddbs-289x300.png
-  alt: 'Voxelwise parcellation: colour gradient on a brain surface'
+  alt: 'Voxelwise parcellation: color gradient on a brain surface'
 - id: shen-atlas-shen-2009
   group: data-driven
   name: Shen atlas
@@ -375,7 +360,7 @@ atlases:
   cite:
   - mayka2006
   image: hmat-997x1030.png
-  alt: 'Human Motor Area Template: motor areas in colour on a grey brain surface'
+  alt: 'Human Motor Area Template: motor areas in color on a gray brain surface'
 - id: sensorimotor-area-tract-template-archer-2017
   group: motor-cerebellum
   name: Sensorimotor Area Tract Template (S‑MATT)
@@ -402,7 +387,7 @@ atlases:
   - diedrichsen2006
   - diedrichsen2011
   image: suit-1-997x1030.png
-  alt: 'SUIT cerebellar parcellation: cerebellar lobules in colour, seen from below'
+  alt: 'SUIT cerebellar parcellation: cerebellar lobules in color, seen from below'
 - id: buckner-functional-cerebellar-parcellation-buckner-2011
   group: motor-cerebellum
   name: Buckner functional cerebellar parcellation

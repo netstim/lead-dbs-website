@@ -2,7 +2,7 @@
 title: "Contribute"
 date: "2026-11-10"
 lastmod: "2026-11-11"
-description: "Contribute to Lead-DBS: code and fixes, atlases and datasets, bug reports; the source code, its licence and the developer meeting."
+description: "Contribute to Lead-DBS: code and fixes, atlases and datasets, bug reports; the source code, its license and the developer meeting."
 keywords: ["contribute", "code", "github", "developer", "pull request", "bug", "changelog", "release notes", "source", "atlas", "dataset", "method", "inclusion", "data and code inclusion philosophy", "contribute an atlas"]
 # this page has its own template (layouts/contribute.html): the text below as the opening line, then
 # the three ways to contribute, the set-up for development, what an atlas needs, and the facts
@@ -53,7 +53,7 @@ atlas:
 # the facts, as link cells
 facts:
   - {name: "Other tools", text: "SlicerNetstim, including Lead-OR, and other Netstim repositories.", url: "https://github.com/netstim"}
-  - {name: "Licence", text: "GNU General Public License, version 3.", url: "https://github.com/netstim/leaddbs/blob/master/LICENSE.md"}
+  - {name: "License", text: "GNU General Public License, version 3.", url: "https://github.com/netstim/leaddbs/blob/master/LICENSE.md"}
   - {name: "Release history", text: "Release notes and links to changes on GitHub.", url: "/download/#releases"}
 # the picture shown when the page is shared (head.html)
 share: "images/renders/head-community.jpg"
@@ -64,4 +64,4 @@ next:
   - {page: "/about/lead-dbs-dependencies/"}
 ---
 
-Contribute code, share an atlas or report a bug.
+Lead-DBS is developed openly on GitHub. You can contribute code, share an atlas or dataset, or report bugs.

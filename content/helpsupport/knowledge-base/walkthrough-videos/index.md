@@ -38,9 +38,9 @@ Converting your data to BIDS, and working with the new file layout.
 {{% video-card tag="January 2021" %}}
 ## Lead Group explorers {#sweetspot-fibre-filtering--network-mapping-explorer-walkthroughs}
 
-Sweet spots, fibre filtering and [network mapping](/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping/).
+Sweet spots, fiber filtering and [network mapping](/helpsupport/knowledge-base/lead-dbs-methods/connectivity-benefit-mapping/).
 
-{{< youtube id="xobhQDgtVfs" title="Sweetspot, fibre filtering and network mapping explorers" >}}
+{{< youtube id="xobhQDgtVfs" title="Sweetspot, fiber filtering and network mapping explorers" >}}
 {{% /video-card %}}
 {{% /video-grid %}}
 
