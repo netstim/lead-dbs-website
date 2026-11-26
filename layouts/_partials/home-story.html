@@ -20,7 +20,7 @@
   </div>
   <div class="story__steps">
     {{ with $p.hero }}
-    <div class="story__step story__step--first" data-story-step>
+    <div class="story__step story__step--first is-current" data-story-step>
       <div class="wrap story__wrap">
         <div class="story__text">
           <h1 id="hero-h">{{ partial "nobreak.html" .title }}</h1>
@@ -30,7 +30,7 @@
             <a class="btn btn--secondary" href="{{ partial "resolve-url.html" (dict "url" .secondary.url "page" $) }}">{{ .secondary.label }}{{ $arrow }}</a>
           </div>
         </div>
-        {{ partial "render.html" (dict "file" .poster "alt" .alt "class" "story__still" "sizes" "(min-width: 1024px) 54vw, 100vw" "eager" true) }}
+        {{ partial "render.html" (dict "file" .poster "alt" .alt "class" "story__still" "sizes" "(min-width: 1024px) 54vw, 100vw") }}
       </div>
     </div>
     {{ end }}

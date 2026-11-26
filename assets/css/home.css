@@ -130,7 +130,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
      The facts line is not shown; the play button sits at the render's lower right. */
   .home > .home-hero { position: relative; background: var(--render); }
   .home-hero__ground { position: absolute; inset: 0; pointer-events: none; }
-  html:not(.nav-ready) body.kind-home .nav:not(.is-open) { background-color: var(--render); color: var(--on-render);
+  html:not(.nav-ready) body.kind-home:has(.home-hero) .nav:not(.is-open) { background-color: var(--render); color: var(--on-render);
     --ink: var(--on-render); --surface: color-mix(in srgb, var(--on-render) 12%, transparent); }
   .home-hero__wrap { width: 100%; padding-top: var(--nav); }
   .home-hero__panel { display: flex; flex-direction: column; border-radius: 0; }
@@ -457,28 +457,28 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
 .story__still { margin: 0; overflow: hidden; border-radius: var(--r-lg); background: var(--render); aspect-ratio: 16 / 10; }
 .story__still img { width: 100%; height: 100%; object-fit: cover; }
 @media (min-width: 1024px) { .story__wrap { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-8); } }
-.story.is-live .story__stage { display: block; position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+:is(html.story-live .story, .story.is-live) .story__stage { display: block; position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
 .story__stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .story__render { position: absolute; top: 50%; right: var(--gut); width: min(54vw, 46rem); transform: translateY(-46%); opacity: 0; pointer-events: none; }
-.story.is-live .story__steps { position: relative; margin-top: -100vh; margin-top: -100svh; padding-bottom: 18vh; pointer-events: none; }
-.story.is-live .story__step { min-height: 56vh; min-height: 56svh; display: flex; align-items: center; }
-.story.is-live .story__step--first { min-height: 92vh; min-height: 92svh; }
+:is(html.story-live .story, .story.is-live) .story__steps { position: relative; margin-top: -100vh; margin-top: -100svh; padding-bottom: 18vh; pointer-events: none; }
+:is(html.story-live .story, .story.is-live) .story__step { min-height: 56vh; min-height: 56svh; display: flex; align-items: center; }
+:is(html.story-live .story, .story.is-live) .story__step--first { min-height: 92vh; min-height: 92svh; }
 @media (min-width: 760px) {
-  .story.is-live .story__step { opacity: 0; transition: opacity 260ms var(--ease); }
-  .story.is-live .story__step.is-current { opacity: 1; }
+  :is(html.story-live .story, .story.is-live) .story__step { opacity: 0; transition: opacity 260ms var(--ease); }
+  :is(html.story-live .story, .story.is-live) .story__step.is-current { opacity: 1; }
 }
-.story.is-live .story__wrap { display: block; padding-block: var(--nav) 0; }
-.story.is-live .story__text { width: min(100%, 27rem); pointer-events: auto; }
-.story.is-live .story__still { display: none; }
+:is(html.story-live .story, .story.is-live) .story__wrap { display: block; padding-block: var(--nav) 0; }
+:is(html.story-live .story, .story.is-live) .story__text { width: min(100%, 27rem); pointer-events: auto; }
+:is(html.story-live .story, .story.is-live) .story__still { display: none; }
 @media (min-width: 760px) { .story__stage canvas { -webkit-mask-image: linear-gradient(to right, transparent 22%, #000 46%); mask-image: linear-gradient(to right, transparent 22%, #000 46%); } }
 @media (max-width: 759px) {
-  .story.is-live { height: 384vh; height: 384svh; }
-  .story.is-live .story__steps { position: sticky; top: 0; height: 100vh; height: 100svh; padding: 0; }
-  .story.is-live .story__step { position: absolute; inset: auto 0 0; min-height: 0; display: block; opacity: 0; visibility: hidden;
+  :is(html.story-live .story, .story.is-live) { height: 384vh; height: 384svh; }
+  :is(html.story-live .story, .story.is-live) .story__steps { position: sticky; top: 0; height: 100vh; height: 100svh; padding: 0; }
+  :is(html.story-live .story, .story.is-live) .story__step { position: absolute; inset: auto 0 0; min-height: 0; display: block; opacity: 0; visibility: hidden;
     transition: opacity 260ms var(--ease), visibility 0s 260ms; }
-  .story.is-live .story__step.is-current { opacity: 1; visibility: visible; transition-delay: 120ms, 0s; }
-  .story.is-live .story__wrap { width: 100%; padding: 0; }
-  .story.is-live .story__text { width: auto; min-height: 40vh; min-height: 40svh; padding: var(--s-7) var(--gut) var(--s-6);
+  :is(html.story-live .story, .story.is-live) .story__step.is-current { opacity: 1; visibility: visible; transition-delay: 120ms, 0s; }
+  :is(html.story-live .story, .story.is-live) .story__wrap { width: 100%; padding: 0; }
+  :is(html.story-live .story, .story.is-live) .story__text { width: auto; min-height: 40vh; min-height: 40svh; padding: var(--s-7) var(--gut) var(--s-6);
     background: linear-gradient(to bottom, transparent, var(--bg) var(--s-7)); }
   .story__text > * + * { margin-top: var(--s-4); }
   .story h1 { font-size: var(--t-h2); }
@@ -486,7 +486,7 @@ html body.kind-home .nav:not(.is-scrolled, .is-open) { border-bottom-color: tran
   .story__render { top: calc(var(--nav) + var(--s-4)); right: var(--gut); left: var(--gut); width: auto; transform: none; }
   .story__note { left: 0; right: 0; top: var(--nav); bottom: auto; max-width: none; padding: var(--s-2) var(--gut); background: var(--bg); text-align: left; }
 }
-@media (prefers-reduced-motion: reduce) { .story.is-live .story__step { transition: none; } }
+@media (prefers-reduced-motion: reduce) { :is(html.story-live .story, .story.is-live) .story__step { transition: none; } }
 
 /* 3. Atlases and data: calm header + three surface cards matching the rest of the page */
 .atlases-band__head { align-items: end; margin-bottom: var(--s-6); }

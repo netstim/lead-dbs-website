@@ -18,7 +18,11 @@
   const root = document.querySelector('[data-story]');
   const canvas = root?.querySelector('canvas');
   const ctx = canvas?.getContext('2d');
-  if (!ctx || !('IntersectionObserver' in window)) return;
+  const fallback = () => {
+    document.documentElement.classList.remove('story-live');
+    root?.classList.remove('is-live');
+  };
+  if (!ctx || !('IntersectionObserver' in window)) { fallback(); return; }
   const stage = canvas.parentElement;
   const steps = [...root.querySelectorAll('[data-story-step]')];
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -817,7 +821,7 @@
 
   const start = (d) => {
     S = build(d);
-    if (window.innerHeight < 520) return;   // too low a window for a screen-tall stage: the stills stay
+    if (window.innerHeight < 520) { fallback(); return; }   // too low a window for a screen-tall stage: the stills stay
     readTheme(); size(); place();
     born = performance.now();
     root.classList.add('is-live');
@@ -830,5 +834,5 @@
     new MutationObserver(() => { readTheme(); kick(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => { readTheme(); kick(); });
   };
-  fetch(root.dataset.story).then((r) => (r.ok ? r.json() : Promise.reject())).then(start).catch(() => {});
+  fetch(root.dataset.story).then((r) => (r.ok ? r.json() : Promise.reject())).then(start).catch(fallback);
 })();

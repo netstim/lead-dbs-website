@@ -66,8 +66,10 @@
 <link rel="apple-touch-icon" href="{{ "images/favicon-180x180.png" | relURL }}">
 <link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
 <link rel="preload" href="{{ "fonts/inter-latin-var.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
-{{- /* the home page's first picture, the hero's poster (layouts/home.html makes the same copy) */}}
-{{- if .IsHome }}{{ with .Params.hero }}{{ with resources.Get (printf "images/renders/%s" .poster) }}{{ $pd := .Resize "1600x webp q78" }}
+{{- /* the home page's first asset: the scroll story's data when story is on, else the hero's poster */}}
+{{- if and .IsHome .Params.story }}{{ with resources.Get "data/story.json" | minify | fingerprint }}
+<link rel="preload" href="{{ .RelPermalink }}" as="fetch" crossorigin="anonymous" fetchpriority="high">
+{{- end }}{{ else if .IsHome }}{{ with .Params.hero }}{{ with resources.Get (printf "images/renders/%s" .poster) }}{{ $pd := .Resize "1600x webp q78" }}
 <link rel="preload" href="{{ $pd.RelPermalink }}" as="image" type="image/webp" fetchpriority="high">
 {{- end }}{{ end }}{{ end }}
 {{- /* The style sheets (docs/design.md), each minified, fingerprinted and render-blocking: the shell on every
@@ -87,6 +89,6 @@
 {{- /* "js": script runs, so the phone menu is a button (without it, a link that opens the menu as a target,
      assets/css/header.css). The home hero's entrance waits for assets/js/main/home.js; after 700ms the style
      sheet shows the hero without it. */}}
-<script>try{var t=localStorage.getItem('theme')}catch(e){}t=t==='dark'||t==='light'?t:matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;document.querySelectorAll('meta[name=theme-color]').forEach(m=>m.content={{ if $darkTop }}'#000000'{{ else }}t==='dark'?'#161819':'#ffffff'{{ end }});document.documentElement.classList.add('js','hero-wait');setTimeout(()=>document.documentElement.classList.add('hero-late'),700)</script>
+<script>try{var t=localStorage.getItem('theme')}catch(e){}t=t==='dark'||t==='light'?t:matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;document.querySelectorAll('meta[name=theme-color]').forEach(m=>m.content={{ if $darkTop }}'#000000'{{ else }}t==='dark'?'#161819':'#ffffff'{{ end }});document.documentElement.classList.add('js','hero-wait');{{ if and .IsHome .Params.story }}if(innerHeight>=520&&'IntersectionObserver'in window)document.documentElement.classList.add('story-live');{{ end }}setTimeout(()=>document.documentElement.classList.add('hero-late'),700)</script>
 {{- /* without script a <video> shows its own controls: the hero clip is a still picture then */}}
 <noscript><style>.hero__bg{pointer-events:none}.hero__bg::-webkit-media-controls{display:none!important}</style></noscript>
