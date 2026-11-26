@@ -65,15 +65,21 @@
       {{ if gt $index 0 }}{{ with site.GetPage (index $order (sub $index 1)) }}<a class="manual-pagination__prev" href="{{ .RelPermalink }}"><span>Previous</span><strong>{{ .LinkTitle }}</strong></a>{{ end }}{{ end }}
       {{ if lt (add $index 1) (len $order) }}{{ with site.GetPage (index $order (add $index 1)) }}<a class="manual-pagination__next" href="{{ .RelPermalink }}"><span>Next</span><strong>{{ .LinkTitle }}</strong></a>{{ end }}{{ end }}
     </nav>{{ end }}
-    <footer class="manual-footer"><div><a href="{{ site.Home.RelPermalink }}">Lead-DBS</a><span>For research use only, not for clinical use</span></div><div><a href="https://github.com/netstim/leaddbs">GitHub</a><a href="{{ $editURL }}">Suggest an edit</a></div></footer>
+    <footer class="manual-footer">
+      <div><a href="{{ site.Home.RelPermalink }}">Lead-DBS</a><span>For research use only, not for clinical use</span></div>
+      <div>
+        <a href="{{ "helpsupport/slack-user-channel/" | relURL }}">Ask on Slack</a>
+        <a href="https://github.com/netstim/leaddbs/issues">Report an issue</a>
+        <a href="{{ $editURL }}">Suggest an edit</a>
+      </div>
+    </footer>
   </div>
+  {{ if $showOutline }}
   <aside class="manual-outline" aria-label="Page contents">
-    {{ if $showOutline }}
     <p class="manual-outline__title">On this page</p>
     {{ partial "manual-toc.html" $tocItems }}
-    {{ end }}
-    <div class="manual-help"><a href="{{ "helpsupport/slack-user-channel/" | relURL }}">Ask on Slack</a><a href="https://github.com/netstim/leaddbs/issues">Report an issue {{ partial "manual-icon.html" "external" }}</a></div>
   </aside>
+  {{ end }}
   </div>
 </main>
 <dialog class="manual-drawer" id="manual-drawer" aria-labelledby="manual-drawer-title" tabindex="-1">

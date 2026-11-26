@@ -17,9 +17,9 @@ import { leadFragment } from '../lib/fragment.js';
   const outlineFold = document.querySelector('.manual-toc-fold');
   const inlineOutline = outlineFold?.querySelector('.manual-toc');
   const side = document.querySelector('.manual-outline');
-  const sideLinks = [...side.querySelectorAll('.manual-toc a')];
+  const sideLinks = side ? [...side.querySelectorAll('.manual-toc a')] : [];
   const headings = sideLinks.map((link) => document.getElementById(leadFragment(link.hash.slice(1))));
-  const mobile = matchMedia('(width < 960px)');
+  const mobile = matchMedia('(width < 1024px)');
   const dialogs = [[drawer, trigger], ...(contents ? [[contents, sections]] : [])];
 
   const reveal = (box, item) => {
@@ -65,20 +65,27 @@ import { leadFragment } from '../lib/fragment.js';
 
   const activeIndex = () => {
     const offset = headings[0] ? parseFloat(getComputedStyle(headings[0]).scrollMarginTop) : 0;
-    const top = Math.max(offset + 1, innerHeight / 3);
+    const { scrollTop, scrollHeight, clientHeight } = document.scrollingElement;
+    const atEnd = scrollHeight > clientHeight && scrollHeight - clientHeight - scrollTop <= 2;
+    const top = atEnd ? innerHeight : Math.max(offset + 1, innerHeight / 3);
+    if (scrollHeight <= clientHeight) {
+      const anchor = headings.findIndex((heading) => heading?.id === leadFragment(location.hash.slice(1)));
+      if (anchor >= 0) return anchor;
+    }
     let active = 0;
     headings.forEach((heading, index) => {
       if (heading?.getClientRects().length && heading.getBoundingClientRect().top <= top) active = index;
     });
     return active;
   };
-  const highlight = (links, active, box) => {
+  const highlight = (links, active, box, revealCurrent = false) => {
     const link = links[active];
-    if (link.getAttribute('aria-current') !== 'location') {
+    const changed = link.getAttribute('aria-current') !== 'location';
+    if (changed) {
       box.querySelector('a[aria-current="location"]')?.removeAttribute('aria-current');
       link.setAttribute('aria-current', 'location');
     }
-    reveal(box, link);
+    if (changed || revealCurrent) reveal(box, link);
   };
 
   const close = () => dialogs.forEach(([dialog]) => { if (dialog.open) dialog.close(); });
@@ -88,7 +95,7 @@ import { leadFragment } from '../lib/fragment.js';
     button.addEventListener('click', () => {
       button.setAttribute('aria-expanded', 'true');
       if (dialog === drawer) restoreRail(body);
-      else highlight([...inlineOutline.querySelectorAll('a')], activeIndex(), contentsList);
+      else highlight([...inlineOutline.querySelectorAll('a')], activeIndex(), contentsList, true);
     });
     dialog.addEventListener('close', () => {
       button.setAttribute('aria-expanded', 'false');

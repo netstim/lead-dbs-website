@@ -19,6 +19,11 @@
 }
 /* ---------------------------------------------------------------- layout */
 .manual { display: grid; grid-template-columns: var(--docs-rail) minmax(0, 1fr); padding-top: var(--nav); align-items: start; min-height: 100dvh; }
+.section-manual .site-header { box-shadow: inset 0 -1px var(--line); }
+@media (width >= 1024px) {
+  .section-manual .nav__bar { width: calc(100% - 2 * var(--s-5)); }
+  .section-manual .skip-link { left: var(--s-5); }
+}
 .manual-page { display: grid; grid-template-columns: minmax(0, var(--docs-measure)) var(--docs-outline); justify-content: center; column-gap: var(--s-8); padding: 0 var(--s-6); align-items: start; }
 .manual-body { min-width: 0; padding-top: var(--s-6); }
 .manual-body :is([id], .manual-code) { scroll-margin-top: var(--manual-anchor-offset); }
@@ -55,7 +60,7 @@
 .manual-head h1 { font-size: var(--t-manual-title); line-height: var(--docs-tight); font-weight: 600; letter-spacing: var(--docs-title-tracking); text-wrap: pretty; }
 .manual-head p { margin-top: var(--s-3); color: var(--muted); font-size: var(--t-lead); line-height: var(--docs-leading); max-width: 60ch; }
 .manual-actions { display: flex; align-items: center; gap: var(--s-5); margin-top: var(--s-4); font-size: var(--t-label); }
-.manual-actions :is(button, a) { display: inline-flex; align-items: center; gap: var(--s-2); min-height: var(--manual-toolbar-height); padding: 0; border: 0; background: none; color: var(--ink); font: inherit; cursor: pointer; }
+.manual-actions :is(button, a) { display: inline-flex; align-items: center; gap: var(--s-2); min-height: var(--manual-toolbar-size); padding: 0; border: 0; background: none; color: var(--ink); font: inherit; cursor: pointer; }
 @media (hover: hover) { .manual-actions :is(button, a):hover { color: var(--action); } }
 .manual-actions svg { width: .875rem; height: .875rem; color: var(--muted); }
 
@@ -170,10 +175,6 @@
 .manual-outline .manual-toc a[aria-current] { border-left-color: var(--action); }
 .manual-toc .manual-toc__sub a { padding-inline-start: var(--s-5); }
 .manual-page .manual-toc-fold { display: none; position: static; margin-bottom: var(--s-5); }
-.manual-help { display: grid; gap: var(--s-2); margin-top: var(--s-5); padding-top: var(--s-4); border-top: 1px solid var(--line); color: var(--muted); }
-.manual-help a { display: inline-flex; gap: var(--s-1); align-items: center; }
-@media (hover: hover) { .manual-help a:hover { color: var(--ink); } }
-.manual-help svg { width: .75rem; height: .75rem; }
 
 /* ---------------------------------------------------------------- pagination and footer */
 .manual-pagination { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); margin-top: var(--s-8); }
@@ -218,7 +219,8 @@
 @media (hover: hover) { .manual-workflows a:hover svg { color: currentColor; transform: translateX(2px); } }
 .manual--home .manual-prose { margin-top: var(--s-7); }
 .manual-start__resources { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); margin-block: var(--s-5) var(--s-6); }
-.manual-start__resources a { display: inline-flex; align-items: center; min-height: 44px; }
+.manual-start__resources a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: .2em; text-decoration-color: var(--line-strong); }
+@media (hover: hover) { .manual-start__resources a:hover { color: var(--action); text-decoration-color: currentColor; } }
 
 /* ---------------------------------------------------------------- narrow-screen drawers */
 .manual-mobile-bar { display: none; align-items: center; justify-content: space-between; gap: var(--s-5); }
@@ -238,8 +240,7 @@
 .manual-drawer__body .manual-nav__group h2 { display: flex; align-items: center; min-height: 2.75rem; margin: 0; }
 .manual-drawer__footer { display: grid; gap: var(--s-2); border-top: 1px solid var(--line); padding: var(--s-3) var(--s-4) max(var(--s-4), env(safe-area-inset-bottom)); font-size: var(--t-small); }
 .manual-drawer__footer a { display: flex; justify-content: space-between; align-items: center; min-height: 2.75rem; }
-html:has(.manual-drawer[open], .manual-contents[open]) { overflow: hidden; }
-.manual-contents { position: fixed; inset: var(--manual-contents-top) var(--s-4) auto; width: auto; max-width: none; max-height: min(70dvh, calc(100dvh - var(--manual-contents-top) - var(--s-2))); padding: 0; margin: 0; border: 1px solid var(--line); border-radius: var(--r-md); color: var(--ink); background: var(--bg); }
+.manual-contents { position: fixed; inset: var(--manual-contents-top) var(--gut) auto; width: auto; max-width: none; max-height: min(70dvh, calc(100dvh - var(--manual-contents-top) - var(--s-2))); padding: 0; margin: 0; border: 1px solid var(--line); border-radius: var(--r-md); color: var(--ink); background: var(--bg); }
 .manual-contents[open] { display: flex; flex-direction: column; }
 .manual-contents::backdrop { background: color-mix(in oklab, var(--render) 30%, transparent); }
 .manual-contents__list { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--s-2) var(--s-4); font-size: var(--t-small); }
@@ -253,13 +254,25 @@ html:has(.manual-drawer[open], .manual-contents[open]) { overflow: hidden; }
 }
 
 /* Keep the full reading column on tablets. Match the drawer breakpoint in main/manual.js. */
-@media (width < 960px) {
-  .manual { display: block; }
+@media (width >= 1024px) {
+  @supports selector(details::details-content) {
+    .manual-nav__fold > summary { display: none; }
+    .manual-nav__fold::details-content { content-visibility: visible; }
+  }
+}
+
+@media (width < 1024px) {
+  .manual { display: block; position: relative; }
   .manual-nav { position: relative; top: auto; height: auto; padding: 0 var(--gut); border-right: 0; border-bottom: 1px solid var(--line); overflow: visible; }
   .manual-ready .section-manual { --manual-toolbar-height: var(--manual-toolbar-size); }
   .manual-ready .manual-nav { position: sticky; top: var(--nav); z-index: 40; background: var(--bg); }
   .manual-ready .manual-mobile-bar { display: flex; }
   .manual-ready .manual-nav__fold, .manual-ready .manual-toc-fold { display: none; }
+  /* Give the native fallback the same row as the enhanced toolbar. */
+  .manual-page .manual-toc-fold { position: absolute; z-index: 1; inset: var(--nav) var(--gut) auto auto; margin: 0; border: 0; font-size: var(--t-small); }
+  .manual-toc-fold > summary { min-height: var(--manual-toolbar-size); padding: 0; gap: var(--s-2); }
+  .manual-toc-fold .manual-toc { position: absolute; inset: 100% 0 auto auto; width: min(24rem, calc(100vw - 2 * var(--gut))); max-height: 55dvh; padding: var(--s-2); overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: var(--r-sm); }
+  .manual-toc-fold .manual-toc a { display: flex; align-items: center; min-height: var(--manual-toolbar-size); }
   .manual-nav__tree { max-height: 55dvh; overflow: auto; }
   .manual-drawer__body .manual-nav__tree { max-height: none; overflow: visible; }
   .manual-page { padding: 0 var(--gut); }
@@ -268,19 +281,18 @@ html:has(.manual-drawer[open], .manual-contents[open]) { overflow: hidden; }
   .manual-code__copy, .manual-code__wrap, .manual-code__expand { min-height: 2.75rem; }
   .manual-code--collapsed .manual-code__source { max-height: 18rem; }
   .manual-research-note summary { min-height: 2.75rem; align-content: center; }
+  :is(.manual-crumbs, .manual-footer) a { display: inline-flex; align-items: center; min-height: var(--manual-toolbar-size); }
 }
 
 @media (max-width: 639px) {
   .manual-crumbs li:not(:last-child), .manual-crumbs li::before { display: none; }
-  .manual-crumbs a { display: inline-flex; align-items: center; min-height: 2.75rem; }
-  .manual-head h1, .manual--home .manual-head h1 { font-size: var(--t-h1); font-weight: 500; line-height: var(--lh-h1); }
+  .manual-head h1, .manual--home .manual-head h1 { font-weight: 500; }
   .manual-head p { font-size: var(--t-doc); margin-top: var(--s-6); }
   .manual--home .manual-head { margin-bottom: var(--s-5); }
   .manual--home .manual-prose { margin-top: var(--s-5); }
   .manual-cards, .manual-pagination { grid-template-columns: minmax(0, 1fr); }
   .manual-pagination__next { grid-column: auto; text-align: start; }
   .manual-footer > div { flex-basis: 100%; }
-  .manual-footer a { display: inline-flex; align-items: center; min-height: 2.75rem; }
 }
 
 @media (max-width: 359px) {

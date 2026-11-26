@@ -34,7 +34,7 @@ The header exposes search (Cmd/Ctrl+K) and Download. Search indexes the full tex
 
 The chapter rail stays at the left edge on desktop. The article (at most 736px) and a separately
 scrollable outline sit in the remaining width. Below 1280px the outline appears in a disclosure
-above the article. Below 960px the chapter rail becomes a sticky toolbar and the reading column
+above the article. Below 1024px the chapter rail becomes a sticky toolbar and the reading column
 gets the full available width. The header height token includes the preview banner and sets both
 the sticky offsets and the clearance for fragment links.
 

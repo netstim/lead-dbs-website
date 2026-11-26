@@ -287,7 +287,8 @@ for (const [name, view] of [['phone', phone], ['desktop', desktop]]) {
   await manualJourney(`manual with blocked bundle on ${name}: chapters and landing sections still work`, view, async (page, fail) => {
     await page.route('**/manual.min.*.js', r => r.abort());
     await page.goto(url(MANUAL), { waitUntil: 'load' });
-    await page.getByText('Browse chapters', { exact: true }).click();
+    const browse = page.getByText('Browse chapters', { exact: true });
+    if (await browse.isVisible()) await browse.click();
     const deep = page.locator('.manual-nav__tree a[href$="/checking-the-coregistration/"]');
     if (!(await deep.isVisible())) fail('nested chapters are unavailable');
     if (await page.getByRole('tablist').count()) fail('launch tabs are exposed without their script');
@@ -298,8 +299,32 @@ for (const [name, view] of [['phone', phone], ['desktop', desktop]]) {
     } else if (!(await page.locator('.manual-outline a[href="#workflows"]').isVisible())) {
       fail('desktop contents are unavailable');
     }
+    await page.goto(url(MANUAL + 'installation/'));
+    const edit = await page.getByRole('link', { name: 'Edit on GitHub' }).boundingBox();
+    if (!edit || edit.height < 44) fail('Edit on GitHub has an undersized target');
   });
 }
+
+await manualJourney('the Manual landing stays in place when the bundle arrives', phone, async (page, fail) => {
+  let release;
+  const ready = new Promise(resolve => { release = resolve; });
+  await page.route('**/manual.min.*.js', async route => {
+    await ready;
+    await route.continue();
+  });
+  try {
+    await page.goto(url(MANUAL), { waitUntil: 'commit' });
+    await page.locator('.manual-toc-fold > summary').waitFor();
+    await fonts(page);
+    const before = await page.locator('#workflows').boundingBox();
+    release();
+    await page.locator('.manual-sections').waitFor();
+    const after = await page.locator('#workflows').boundingBox();
+    if (!before || !after || Math.abs(before.y - after.y) > 1) fail('workflows moved when the controls initialized');
+  } finally {
+    release();
+  }
+});
 
 await manualJourney('manual skip link puts keyboard focus in the article', desktop, async (page, fail) => {
   await page.goto(url(MANUAL + 'installation/'));
@@ -321,6 +346,28 @@ await manualJourney('manual outline scrolls its active item into view on short d
     const active = outline.querySelector('a[aria-current="location"][href="#useful-tools"]');
     return active && active.getBoundingClientRect().bottom <= outline.getBoundingClientRect().bottom + 1;
   }))) fail('the active section is missing or clipped by the outline');
+
+  await page.evaluate(() => {
+    document.querySelector('#normal-installation').scrollIntoView();
+  });
+  const outline = page.locator('.manual-outline');
+  await page.waitForFunction(() => document.querySelector('.manual-outline a[aria-current="location"][href="#normal-installation"]'));
+  const before = await outline.evaluate(el => {
+    el.scrollTop = el.scrollHeight;
+    return el.scrollTop;
+  });
+  await page.evaluate(() => scrollBy(0, 1));
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  if ((await outline.evaluate(el => el.scrollTop)) !== before) fail('article scrolling reset the independent outline scroll');
+});
+
+await manualJourney('the last section can become active at the end of a chapter', desktop, async (page, fail) => {
+  await page.goto(url(MANUAL + 'installation/#useful-tools'));
+  await fonts(page);
+  await page.evaluate(() => scrollTo(0, document.scrollingElement.scrollHeight));
+  if (!(await until(page, () => document.querySelector('.manual-outline a[aria-current="location"][href="#useful-tools"]') !== null))) {
+    fail('the final heading never becomes current');
+  }
 });
 
 const checkManualContents = async (page, fail) => {
