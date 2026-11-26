@@ -18,8 +18,9 @@
   font-family: var(--font-text); font-size: var(--t-manual-body); font-weight: 400;
 }
 /* ---------------------------------------------------------------- layout */
-.manual { display: grid; grid-template-columns: var(--docs-rail) minmax(0, 1fr); padding-top: var(--nav); align-items: start; min-height: 100dvh; }
-.section-manual .site-header { box-shadow: inset 0 -1px var(--line); }
+.manual { display: grid; grid-template-columns: var(--docs-rail) minmax(0, 1fr); align-items: start; min-height: calc(100dvh - var(--nav)); }
+/* Keep the header in the same width as the article when the scrollbar appears. */
+.section-manual .site-header { position: sticky; inset: 0 auto auto; box-shadow: inset 0 -1px var(--line); }
 @media (width >= 1024px) {
   .section-manual .nav__bar { width: calc(100% - 2 * var(--s-5)); }
   .section-manual .skip-link { left: var(--s-5); }
@@ -269,7 +270,7 @@
   .manual-ready .manual-mobile-bar { display: flex; }
   .manual-ready .manual-nav__fold, .manual-ready .manual-toc-fold { display: none; }
   /* Give the native fallback the same row as the enhanced toolbar. */
-  .manual-page .manual-toc-fold { position: absolute; z-index: 1; inset: var(--nav) var(--gut) auto auto; margin: 0; border: 0; font-size: var(--t-small); }
+  .manual-page .manual-toc-fold { position: absolute; z-index: 1; inset: 0 var(--gut) auto auto; margin: 0; border: 0; font-size: var(--t-small); }
   .manual-toc-fold > summary { min-height: var(--manual-toolbar-size); padding: 0; gap: var(--s-2); }
   .manual-toc-fold .manual-toc { position: absolute; inset: 100% 0 auto auto; width: min(24rem, calc(100vw - 2 * var(--gut))); max-height: 55dvh; padding: var(--s-2); overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: var(--r-sm); }
   .manual-toc-fold .manual-toc a { display: flex; align-items: center; min-height: var(--manual-toolbar-size); }
