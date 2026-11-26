@@ -27,17 +27,16 @@ This is a local copy, not a live synchronization with GitBook.
   original spelling, so the house-spelling copy rule excludes manual pages. Other copy,
   link, image, layout and browser checks still apply.
 
-The manual shares the site's theme and search, with a dedicated compact docs header and article footer. The header exposes search (Cmd/Ctrl+K), learning resources and the download link. Search indexes each chapter's
-full text, not just its opening paragraphs. It requires no new runtime or build dependency.
+The manual uses the shared site header, theme and search, and has its own article footer.
+The header exposes search (Cmd/Ctrl+K) and Download. Search indexes the full text of each chapter.
 
 ## Visual system
 
-The documentation borrows vercel.com/docs's layout, not its typeface: one 64px header row (brand, First
-steps, Community, GitHub, site search, theme, the Download pill), a chapter rail fixed to the window's
-left edge with a hairline border, and the article (at most 736px) with its outline centred in the
-remaining width. No breakpoint moves the rail, so nothing jumps between long and short pages. Below
-1280px the outline moves above the article; below 1024px the resource links hide; below 768px the
-chapters open in a modal drawer.
+The chapter rail stays at the left edge on desktop. The article (at most 736px) and a separately
+scrollable outline sit in the remaining width. Below 1280px the outline appears in a disclosure
+above the article. Below 960px the chapter rail becomes a sticky toolbar and the reading column
+gets the full available width. The header height token includes the preview banner and sets both
+the sticky offsets and the clearance for fragment links.
 
 It uses the site's own type and colours: Inter for text and headings, the system monospace
 (`--font-mono`) for code, and the Blend palette tokens of `site.css` (only the code-highlight colours,
@@ -64,12 +63,12 @@ available; copying always includes the entire example. Overflow cues appear only
 the code needs horizontal scrolling. A wrapping toggle changes presentation only; copied
 code keeps its original line breaks. Long examples have collapse controls at both ends. Without JavaScript, the complete example is visible.
 
-Mobile navigation reuses the desktop tree in a native modal dialog, preserving the
-active branch; its rows and chevrons are 44px targets. Escape, backdrop and close control dismiss it.
-A compact sticky toolbar keeps chapters and a page-contents dialog available during deep reading. CSS
-draws that phone layout from the first paint whenever script runs (`html.js`, set in the head), so the
-article never moves when the script arrives (layout shift 0); the script only moves the tree into the
-drawer. Without script the tree and the page outline stay in the page.
+The narrow layout moves the chapter tree and the inline outline into native modal dialogs after
+the manual bundle initializes. Escape, the backdrop and the close button dismiss the dialogs.
+Selecting a section moves keyboard focus to its heading. Without the bundle, the chapters are
+available in a native disclosure at every width, and the outline stays in the page. The outline
+uses the rendered article's second- and third-level headings and also includes the landing
+page's template sections and the generated “In this section” heading when present.
 
 A two-column table whose first cells are code names (the command-line options) reads as a list on a
 phone, each name unbroken over its description; code names in table cells never break inside.
@@ -112,16 +111,15 @@ The existing PR and deployment workflows enforce the manual's design tokens, lin
 copy rules and CSS usage. `check-design.py` also rejects un-tokenized font families
 and inline styles in manual content and components.
 
-Docs interaction tests live in `.github/scripts/check-browser.mjs`; there is no separate
-`check-interactions` command. Its normal run checks every page at desktop and phone sizes
-in both themes, then exercises quick-start command tabs and keyboard selection, search result counts, code expansion, wrapping and complete copying, narrow-screen
-copy feedback, chapter-drawer focus and dismissal, sticky page navigation, and search.
-It also checks that a chapter's chevron opens its pages without navigating, that previous/next follow the sidebar, and long-to-short page transitions at 1280, 1440, 1920 and 3000px with visible scrollbars, asserting stable header, chapter-rail and article geometry and retained rail scroll position. Headless Chromium normally hides scrollbars, so this check explicitly enables them.
-Run it with the production build as documented in the script header.
+The browser sweep in `.github/scripts/check-browser.mjs` checks desktop and phone layouts in both
+themes, plus command tabs, code examples, navigation, and chapter rail geometry with visible
+scrollbars. `.github/scripts/check-interactions.mjs` covers keyboard navigation, short viewports,
+blocked scripts, and drawer behavior in Chromium and WebKit. The Pages workflow also runs it
+with `--manual-only` against the published artifact's base path and preview-banner layout.
 
-The introduction keeps a concise research-use restriction above the first action, with
-the complete original notice in the adjacent disclosure. Both command tabs copy only
-the selected MATLAB command; without JavaScript, the Lead-DBS example remains visible.
+The landing page has a short research-use restriction with the complete original notice in a
+disclosure. Both command tabs copy the selected MATLAB command. When their script is unavailable,
+the Lead-DBS example remains visible and the tabs stay hidden.
 
 The landing page lists four workflow categories linked to the section overview pages from
 `data/manual.json`, followed by User Slack, Dependencies and Source code, then the MATLAB

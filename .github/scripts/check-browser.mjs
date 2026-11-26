@@ -396,7 +396,7 @@ async function checkManualLayout() {
       linkY: document.querySelector('.manual-nav a[aria-current="page"]').getBoundingClientRect().y,
     }));
     require(Math.abs(after.scroll - before.scroll) <= 1 && Math.abs(after.linkY - before.linkY) <= 1,
-      'An already-visible chapter jumps when navigating to it');
+      `An already-visible chapter jumps when navigating to it: scroll ${before.scroll} → ${after.scroll}, row y ${before.linkY} → ${after.linkY}`);
   } catch (e) {
     problems.push(`manual layout: ${e.message.split('\n')[0]}`);
   } finally {

@@ -77,6 +77,8 @@ jobs:
         run: node .github/scripts/check-browser.mjs "$RUNNER_TEMP/production" https://www.lead-dbs.org/
       - name: Interactions (.github/scripts/check-interactions.mjs)
         run: node .github/scripts/check-interactions.mjs "$RUNNER_TEMP/production" https://www.lead-dbs.org/
+      - name: Manual interactions on the Pages build
+        run: node .github/scripts/check-interactions.mjs public "${{ steps.pages.outputs.base_url }}/" --manual-only
       - name: Content Security Policy (tests/test_csp_browser.mjs)
         run: node tests/test_csp_browser.mjs "$RUNNER_TEMP/production"
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0

@@ -1,28 +1,33 @@
+import { wireDialog } from '../lib/dialog.js';
 import { leadFragment } from '../lib/fragment.js';
 
-// Reuse the chapter tree in a modal drawer; keep chapter and section controls
-// available throughout long mobile articles. Native dialogs contain keyboard focus.
+// Keep the server-rendered disclosures until the drawer controls are ready.
 (() => {
   const fold = document.querySelector('.manual-nav__fold');
   if (!fold) return;
   const tree = fold.querySelector('.manual-nav__tree');
   const rail = document.querySelector('.manual-nav');
   const drawer = document.querySelector('#manual-drawer');
+  if (typeof drawer.showModal !== 'function') return;
   const trigger = document.querySelector('.manual-menu');
   const body = drawer.querySelector('.manual-drawer__body');
   const contents = document.querySelector('#manual-contents');
   const sections = document.querySelector('.manual-sections');
-  const mobile = matchMedia('(max-width: 767px)');
-  const pairs = [[drawer, trigger], ...(contents ? [[contents, sections]] : [])];
-  const reveal = (box) => {
-    const current = tree.querySelector('[aria-current="page"]');
-    if (!current) return;
-    const item = current.getBoundingClientRect();
+  const contentsList = contents?.querySelector('.manual-contents__list');
+  const outlineFold = document.querySelector('.manual-toc-fold');
+  const inlineOutline = outlineFold?.querySelector('.manual-toc');
+  const side = document.querySelector('.manual-outline');
+  const sideLinks = [...side.querySelectorAll('.manual-toc a')];
+  const headings = sideLinks.map((link) => document.getElementById(leadFragment(link.hash.slice(1))));
+  const mobile = matchMedia('(width < 960px)');
+  const dialogs = [[drawer, trigger], ...(contents ? [[contents, sections]] : [])];
+
+  const reveal = (box, item) => {
+    if (!item?.getClientRects().length) return;
     const bounds = box.getBoundingClientRect();
-    // Do not recenter a chapter that is already visible: that moves the whole rail
-    // when navigating between nearby pages. Scroll only enough to reveal it.
-    if (item.top < bounds.top) box.scrollTop += item.top - bounds.top;
-    else if (item.bottom > bounds.bottom) box.scrollTop += item.bottom - bounds.bottom;
+    const row = item.getBoundingClientRect();
+    if (row.top < bounds.top) box.scrollTop += row.top - bounds.top;
+    else if (row.bottom > bounds.bottom) box.scrollTop += row.bottom - bounds.bottom;
   };
   const navigationKey = 'lead-manual-navigation';
   let previousNavigation;
@@ -30,9 +35,11 @@ import { leadFragment } from '../lib/fragment.js';
     previousNavigation = JSON.parse(sessionStorage.getItem(navigationKey));
     sessionStorage.removeItem(navigationKey);
   } catch { /* Navigation works when browser storage is unavailable. */ }
+
+  const plainClick = (event) => event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
   tree.addEventListener('click', (event) => {
     const link = event.target.closest('a');
-    if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (!link || !plainClick(event)) return;
     const target = new URL(link.href);
     if (target.origin !== location.origin) return;
     const box = mobile.matches ? body : rail;
@@ -40,61 +47,95 @@ import { leadFragment } from '../lib/fragment.js';
       sessionStorage.setItem(navigationKey, JSON.stringify({ path: target.pathname, scrollTop: box.scrollTop }));
     } catch { /* Storage is optional. */ }
   });
-  // A chapter with sub-pages: the link opens the chapter, the chevron beside it shows or hides its pages.
+  const restoreRail = (box) => {
+    if (previousNavigation?.path === location.pathname && Number.isFinite(previousNavigation.scrollTop)) {
+      box.scrollTop = previousNavigation.scrollTop;
+    }
+    previousNavigation = null;
+    reveal(box, tree.querySelector('[aria-current="page"]'));
+  };
+
   tree.querySelectorAll('.manual-nav__toggle').forEach((toggle) => {
-    toggle.hidden = false;
     toggle.addEventListener('click', () => {
       const open = toggle.closest('.manual-nav__branch').classList.toggle('is-open');
       toggle.setAttribute('aria-expanded', String(open));
     });
+    toggle.hidden = false;
   });
-  const close = () => pairs.forEach(([dialog]) => { if (dialog.open) dialog.close(); });
-  pairs.forEach(([dialog, button]) => {
+
+  const activeIndex = () => {
+    const offset = headings[0] ? parseFloat(getComputedStyle(headings[0]).scrollMarginTop) : 0;
+    const top = Math.max(offset + 1, innerHeight / 3);
+    let active = 0;
+    headings.forEach((heading, index) => {
+      if (heading?.getClientRects().length && heading.getBoundingClientRect().top <= top) active = index;
+    });
+    return active;
+  };
+  const highlight = (links, active, box) => {
+    const link = links[active];
+    if (link.getAttribute('aria-current') !== 'location') {
+      box.querySelector('a[aria-current="location"]')?.removeAttribute('aria-current');
+      link.setAttribute('aria-current', 'location');
+    }
+    reveal(box, link);
+  };
+
+  const close = () => dialogs.forEach(([dialog]) => { if (dialog.open) dialog.close(); });
+  let sectionTarget;
+  dialogs.forEach(([dialog, button]) => {
+    wireDialog(dialog, [button]);
+    button.addEventListener('click', () => {
+      button.setAttribute('aria-expanded', 'true');
+      if (dialog === drawer) restoreRail(body);
+      else highlight([...inlineOutline.querySelectorAll('a')], activeIndex(), contentsList);
+    });
     dialog.addEventListener('close', () => {
       button.setAttribute('aria-expanded', 'false');
-      if (!pairs.some(([d]) => d.open)) document.documentElement.classList.remove('manual-drawer-open');
-    });
-    dialog.querySelector('[data-manual-close]').addEventListener('click', close);
-    dialog.addEventListener('click', (e) => {
-      if (e.target === dialog || e.target.closest('a')) close();
-    });
-    button.addEventListener('click', () => {
-      dialog.showModal();
-      button.setAttribute('aria-expanded', 'true');
-      document.documentElement.classList.add('manual-drawer-open');
-      if (dialog === drawer) reveal(body);
-      else {
-        const links = [...dialog.querySelectorAll('a[href^="#"]')];
-        let current = links[0];
-        links.forEach((a) => {
-          a.removeAttribute('aria-current');
-          const heading = document.getElementById(leadFragment(a.hash.slice(1)));
-          if (heading?.getBoundingClientRect().top <= innerHeight / 3) current = a;
-        });
-        current?.setAttribute('aria-current', 'location');
-        if (current) {
-          const list = dialog.querySelector('nav');
-          list.scrollTop += current.getBoundingClientRect().top - list.getBoundingClientRect().top - list.clientHeight / 3;
-        }
+      if (dialog === contents && sectionTarget) {
+        sectionTarget.setAttribute('tabindex', '-1');
+        sectionTarget.focus({ preventScroll: true });
+        sectionTarget.scrollIntoView({ block: 'start' });
+        sectionTarget = null;
       }
     });
+    dialog.querySelector('[data-manual-close]').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (e) => {
+      const link = e.target.closest('a');
+      if (!link || !plainClick(e)) return;
+      if (dialog === contents) sectionTarget = document.getElementById(leadFragment(link.hash.slice(1)));
+      dialog.close();
+    });
   });
-  // Keep the native chapter disclosure until relocation and handlers are ready.
-  const update = () => {
+
+  let queued = false;
+  const updateOutline = () => {
+    if (queued || !sideLinks.length) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      queued = false;
+      if (side.getClientRects().length) highlight(sideLinks, activeIndex(), side);
+    });
+  };
+  const updateLayout = () => {
     close();
     fold.open = !mobile.matches;
     (mobile.matches ? body : fold).append(tree);
-    if (!mobile.matches) {
-      if (previousNavigation?.path === location.pathname && Number.isFinite(previousNavigation.scrollTop)) rail.scrollTop = previousNavigation.scrollTop;
-      previousNavigation = null;
-      reveal(rail);
-    }
+    if (inlineOutline) (mobile.matches ? contentsList : outlineFold).append(inlineOutline);
+    if (!mobile.matches) restoreRail(rail);
+    updateOutline();
   };
-  update();
   document.documentElement.classList.add('manual-ready');
-  mobile.addEventListener('change', update);
+  updateLayout();
+  mobile.addEventListener('change', updateLayout);
+  addEventListener('scroll', updateOutline, { passive: true });
+  addEventListener('resize', updateOutline);
+  addEventListener('hashchange', updateOutline);
+  if (sideLinks.length) document.fonts.ready.then(updateOutline);
   document.addEventListener('keydown', (e) => {
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') close();
+    if (e.target.closest?.('input, textarea, select, [contenteditable="true"]')) return;
+    const command = (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k';
+    if (command || (e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey)) close();
   }, true);
 })();
 // Preview long examples without hiding their full source from the copy control.
@@ -187,4 +228,5 @@ import { leadFragment } from '../lib/fragment.js';
     });
   });
   select(buttons[0]);
+  tabs.hidden = false;
 })();

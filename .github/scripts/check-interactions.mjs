@@ -1,12 +1,15 @@
-// Interactive journeys. Usage: node check-interactions.mjs <build folder> <baseURL>.
+// Interactive journeys. Usage: node check-interactions.mjs <build folder> <baseURL> [--manual-only].
 // CHROME_PATH selects a local Chromium; CI requires WebKit.
 import { createServer } from 'node:http';
 import { readFile, realpath } from 'node:fs/promises';
 import { extname, join, normalize, sep } from 'node:path';
 import { chromium, webkit } from 'playwright';
 
-const [dir, baseURL] = process.argv.slice(2);
-if (!dir || !baseURL) { console.error('usage: check-interactions.mjs <build folder> <baseURL>'); process.exit(2); }
+const [dir, baseURL, filter] = process.argv.slice(2);
+if (!dir || !baseURL || (filter && filter !== '--manual-only')) {
+  console.error('usage: check-interactions.mjs <build folder> <baseURL> [--manual-only]');
+  process.exit(2);
+}
 
 // the pages the journeys use
 const ATLASES = 'helpsupport/knowledge-base/atlasesresources/atlases-2/';
@@ -46,7 +49,8 @@ let passed = 0;
 // Requests to other servers are refused (as in check-browser.mjs); script errors are failures.
 // Options: motion (the reader's motion preference, 'reduce' unless set), script (false: script off), engine
 // (another browser, WebKit).
-async function journey(name, view, steps, { motion = 'reduce', script = true, engine = browser } = {}) {
+async function journey(name, view, steps, { motion = 'reduce', script = true, engine = browser, manual = false } = {}) {
+  if (filter === '--manual-only' && !manual) return;
   const context = await engine.newContext({ viewport: { width: view.width, height: view.height }, isMobile: view.mobile, hasTouch: view.mobile,
     reducedMotion: motion, javaScriptEnabled: script });
   const page = await context.newPage();
@@ -63,6 +67,7 @@ async function journey(name, view, steps, { motion = 'reduce', script = true, en
   if (problems.length === before) passed += 1;
   console.log(`${problems.length === before ? 'ok  ' : 'FAIL'} ${name}`);
 }
+const manualJourney = (name, view, steps, options) => journey(name, view, steps, { ...options, manual: true });
 // waits up to 3 s for a condition in the page; false if it never holds
 const until = (page, fn, arg) => page.waitForFunction(fn, arg, { timeout: 3000, polling: 50 }).then(() => true, () => false);
 // what has the focus, as a short description
@@ -278,19 +283,79 @@ await journey('home with motion: the gallery strip has a pause button that stops
   if (stopped !== await strip.evaluate((el) => el.scrollLeft)) fail('preference change restarted glide');
 }, { motion: 'no-preference' });
 
-await journey('manual with blocked bundle: native chapters remain reachable', phone, async (page, fail) => {
-  await page.route('**/*.js', r => r.abort());
-  await page.goto(url(MANUAL), { waitUntil: 'load' });
-  await page.locator('.manual-nav__fold > summary').click();
-  if (!(await page.locator('.manual-nav__tree a').first().isVisible())) fail('fallback chapters are unavailable');
+for (const [name, view] of [['phone', phone], ['desktop', desktop]]) {
+  await manualJourney(`manual with blocked bundle on ${name}: chapters and landing sections still work`, view, async (page, fail) => {
+    await page.route('**/manual.min.*.js', r => r.abort());
+    await page.goto(url(MANUAL), { waitUntil: 'load' });
+    await page.getByText('Browse chapters', { exact: true }).click();
+    const deep = page.locator('.manual-nav__tree a[href$="/checking-the-coregistration/"]');
+    if (!(await deep.isVisible())) fail('nested chapters are unavailable');
+    if (await page.getByRole('tablist').count()) fail('launch tabs are exposed without their script');
+    if ((await page.locator('.manual-launch__command').textContent()).trim() !== 'lead dbs') fail('the fallback command is missing');
+    if (name === 'phone') {
+      await page.locator('.manual-toc-fold > summary').click();
+      if (!(await page.locator('.manual-toc-fold a[href="#workflows"]').isVisible())) fail('fallback contents are unavailable');
+    } else if (!(await page.locator('.manual-outline a[href="#workflows"]').isVisible())) {
+      fail('desktop contents are unavailable');
+    }
+  });
+}
+
+await manualJourney('manual skip link puts keyboard focus in the article', desktop, async (page, fail) => {
+  await page.goto(url(MANUAL + 'installation/'));
+  // The preview banner has one link before the skip link.
+  for (let i = 0; i < 2 && !(await page.evaluate(() => document.activeElement.matches('.skip-link'))); i += 1) {
+    await page.keyboard.press('Tab');
+  }
+  await page.keyboard.press('Enter');
+  if (!(await until(page, () => document.activeElement === document.getElementById('manual-content')))) fail('Skip to content did not focus the article heading');
+  await page.keyboard.press('Tab');
+  if (await page.evaluate(() => document.activeElement.closest('.manual-nav') !== null)) fail('Tab entered the chapters after skipping them');
 });
-await journey('manual clipboard unavailable: no dead Copy link control', phone, async (page, fail) => {
+
+await manualJourney('manual outline scrolls its active item into view on short desktop windows', { ...desktop, height: 340 }, async (page, fail) => {
+  await page.goto(url(MANUAL + 'installation/#useful-tools'));
+  await fonts(page);
+  if (!(await until(page, () => {
+    const outline = document.querySelector('.manual-outline');
+    const active = outline.querySelector('a[aria-current="location"][href="#useful-tools"]');
+    return active && active.getBoundingClientRect().bottom <= outline.getBoundingClientRect().bottom + 1;
+  }))) fail('the active section is missing or clipped by the outline');
+});
+
+const checkManualContents = async (page, fail) => {
+  await page.goto(url(MANUAL));
+  await page.locator('.manual-sections').click();
+  const entries = await page.locator('#manual-contents a').evaluateAll(links => links.map(link => link.hash));
+  if (entries.join(' ') !== '#workflows #research-use') fail('the landing outline differs from article order');
+  await page.locator('#manual-contents a[href="#workflows"]').click();
+  if (!(await until(page, () => {
+    const heading = document.getElementById('workflows');
+    return location.hash === '#workflows' && document.activeElement === heading &&
+      heading.getBoundingClientRect().top >= document.querySelector('.manual-nav').getBoundingClientRect().bottom;
+  }))) fail('the selected section is covered or did not receive focus');
+
+  await page.goto(url(MANUAL + 'installation/#troubleshooting'));
+  await page.locator('.manual-sections').click();
+  const drawer = await page.locator('#manual-contents').boundingBox();
+  if (!drawer || drawer.y + drawer.height > page.viewportSize().height + 1) fail('the contents drawer extends below the viewport');
+  await page.keyboard.press('Escape');
+  if (!(await until(page, () => document.activeElement.matches('.manual-sections')))) fail('Escape did not return focus to the contents button');
+};
+await manualJourney('manual contents drawer fits a short tablet and focuses its destination', { ...tablet, height: 340 }, checkManualContents);
+
+await manualJourney('manual breadcrumb contains all ancestors of a nested article', desktop, async (page, fail) => {
+  await page.goto(url(MANUAL + 'lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/determining-the-orientation-of-directional-leads/automatic-algorithm/'));
+  const crumbs = await page.locator('.manual-crumbs a').allTextContents();
+  if (crumbs.length !== 4 || crumbs[0] !== 'Manual') fail(`incomplete breadcrumb: ${crumbs.join(' / ')}`);
+});
+await manualJourney('manual clipboard unavailable: no dead Copy link control', phone, async (page, fail) => {
   await page.addInitScript(() => Object.defineProperty(navigator, 'clipboard', { value: undefined }));
   await page.goto(url('manual/lead-dbs/step3-volume-registrations/checking-the-coregistration/'), { waitUntil: 'load' });
   if (await page.locator('[data-copy-url]').isVisible()) fail('dead copy control is visible');
 });
 
-await journey('manual rejected clipboard: explicit failure feedback', phone, async (page, fail) => {
+await manualJourney('manual rejected clipboard: explicit failure feedback', phone, async (page, fail) => {
   await page.addInitScript(() => Object.defineProperty(navigator, 'clipboard', { value: { writeText: () => Promise.reject(new Error('denied')) } }));
   await page.goto(url('manual/lead-dbs/step3-volume-registrations/checking-the-coregistration/'), { waitUntil: 'load' });
   await page.locator('[data-copy-url]').click();
@@ -305,7 +370,7 @@ await journey('home initially reduced: restoring motion exposes a stopped Play c
 
 // An address with a broken fragment must not stop the page's script.
 for (const hash of ['#%', '#%E0%A4%A']) {
-  await journey(`manual at ${hash}: no script error, the Chapters button still opens`, phone, async (page, fail) => {
+  await manualJourney(`manual at ${hash}: no script error, the Chapters button still opens`, phone, async (page, fail) => {
     await page.goto(url(MANUAL) + hash, { waitUntil: 'load' });
     const chapters = page.locator('.manual-menu');
     if (!(await until(page, () => document.querySelector('.manual-menu')?.checkVisibility()))) { fail('the Chapters button is not shown'); return; }
@@ -319,7 +384,7 @@ await journey('without script: the home story shows its still fallbacks', phone,
   await page.goto(url(''), { waitUntil: 'load' });
   if (!(await page.locator('.story__still img').first().isVisible())) fail('no visible story fallback picture without script');
 }, { script: false });
-await journey('without script: the manual\'s chapters are on the page', phone, async (page, fail) => {
+await manualJourney('without script: the manual\'s chapters are on the page', phone, async (page, fail) => {
   await page.goto(url(MANUAL), { waitUntil: 'load' });
   await page.locator('.manual-nav__fold > summary').click();
   const n = await page.evaluate(() => [...document.querySelectorAll('.manual-nav a[href*="/manual/"], noscript ~ * a[href*="/manual/"]')].filter((a) => a.checkVisibility()).length);
@@ -343,7 +408,7 @@ if (wk) {
     await page.keyboard.press('Escape');
     if (!(await until(page, () => !document.getElementById('phone-menu')?.open))) fail('Escape does not close the sheet');
   }, { engine: wk });
-  await journey('WebKit: the manual\'s Chapters open in a drawer', phone, async (page, fail) => {
+  await manualJourney('WebKit: the manual\'s Chapters open in a drawer', phone, async (page, fail) => {
     await page.goto(url(MANUAL), { waitUntil: 'load' });
     await page.locator('.manual-menu').click();
     if (!(await until(page, () => document.getElementById('manual-drawer')?.open))) { fail('the Chapters button does not open the drawer'); return; }
@@ -351,6 +416,7 @@ if (wk) {
     await page.keyboard.press('Escape');
     if (!(await until(page, () => !document.getElementById('manual-drawer').open))) fail('Escape does not close the drawer');
   }, { engine: wk });
+  await manualJourney('WebKit: manual contents fit the viewport and focus their destination', phone, checkManualContents, { engine: wk });
   await journey('WebKit: the search opens and finds pages', desktop, async (page, fail) => {
     await page.goto(url(''), { waitUntil: 'load' });
     await page.locator('.nav [data-search-open]').click();

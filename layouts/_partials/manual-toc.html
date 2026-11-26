@@ -1,10 +1,7 @@
-{{ $items := partial "manual-page-items.html" .page }}
-{{ if $items }}
-{{ if eq .variant "side" }}
-<nav class="toc toc--side" aria-labelledby="toc-side-h" data-toc><p class="t-label muted" id="toc-side-h">On this page</p>
-{{ else }}
-<details class="toc toc--top"><summary>On this page</summary><nav aria-label="On this page">
-{{ end }}
-<ol>{{ range $items }}<li{{ if eq .Level 3 }} class="manual-toc__sub"{{ end }}><a href="#{{ .ID }}">{{ .Title | plainify | htmlUnescape }}</a></li>{{ end }}</ol>
-{{ if eq .variant "side" }}</nav>{{ else }}</nav></details>{{ end }}
-{{ end }}
+<nav class="toc manual-toc" aria-label="On this page">
+  <ol>
+    {{ range . }}
+    <li{{ if eq .Level 3 }} class="manual-toc__sub"{{ end }}><a href="#{{ .ID }}">{{ .Title | plainify | htmlUnescape }}</a></li>
+    {{ end }}
+  </ol>
+</nav>
