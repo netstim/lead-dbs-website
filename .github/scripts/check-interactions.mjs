@@ -290,6 +290,7 @@ for (const [name, view] of [['phone', phone], ['desktop', desktop]]) {
     const browse = page.getByText('Browse chapters', { exact: true });
     if (await browse.isVisible()) await browse.click();
     const deep = page.locator('.manual-nav__tree a[href$="/checking-the-coregistration/"]');
+    await page.locator('.manual-nav__tree summary').filter({ hasText: 'Registration subchapters' }).click();
     if (!(await deep.isVisible())) fail('nested chapters are unavailable');
     if (await page.getByRole('tablist').count()) fail('launch tabs are exposed without their script');
     if ((await page.locator('.manual-launch__command').textContent()).trim() !== 'lead dbs') fail('the fallback command is missing');
@@ -304,6 +305,48 @@ for (const [name, view] of [['phone', phone], ['desktop', desktop]]) {
     if (!edit || edit.height < 44) fail('Edit on GitHub has an undersized target');
   });
 }
+
+await manualJourney('desktop chapter rail and controls keep their positions', desktop, async (page, fail) => {
+  let release;
+  const held = new Promise(resolve => { release = resolve; });
+  const bundle = /\/(?:main|manual)\.min\.[^/]+\.js$/;
+  const holdBundle = async route => { await held; await route.continue(); };
+  const registration = page.locator('.manual-nav__tree summary').filter({ hasText: 'Registration subchapters' });
+  const chapter = page.locator('.manual-nav__tree').getByRole('link', { name: 'Surface reconstruction', exact: true });
+  const search = page.locator('.manual-header__search');
+  const edit = page.getByRole('link', { name: 'Edit on GitHub' });
+  const normalisation = MANUAL + 'lead-dbs/step3-volume-registrations/normalization-of-images/';
+  const position = async () => (await chapter.boundingBox())?.y;
+  const compare = (before, after, message) => {
+    if (before == null || after == null || Math.abs(before - after) > 1) fail(`${message}: ${before} → ${after}`);
+  };
+  try {
+    await page.route(bundle, holdBundle);
+    await page.goto(url(MANUAL + 'lead-dbs/step0-overview/'), { waitUntil: 'commit' });
+    await chapter.waitFor();
+    await fonts(page);
+    const beforeBundle = await position();
+    const searchBefore = (await search.boundingBox())?.x;
+    const editBefore = (await edit.boundingBox())?.x;
+    release();
+    await page.locator('html.manual-ready').waitFor();
+    compare(beforeBundle, await position(), 'the rail moved when the bundle initialized');
+    compare(searchBefore, (await search.boundingBox())?.x, 'search moved when the theme control appeared');
+    compare(editBefore, (await edit.boundingBox())?.x, 'the edit link moved when the copy control appeared');
+    await page.unroute(bundle, holdBundle);
+
+    await page.goto(url(normalisation));
+    await fonts(page);
+    const beforeNavigation = await position();
+    await chapter.click();
+    await page.waitForURL('**/step4-optional-surface-reconstruction/');
+    await fonts(page);
+    compare(beforeNavigation, await position(), 'the selected row moved when switching chapters');
+    if (!(await registration.evaluate(summary => summary.parentElement.open))) fail('navigation lost the open branch');
+  } finally {
+    release();
+  }
+});
 
 await manualJourney('the Manual landing stays in place when the bundle arrives', phone, async (page, fail) => {
   let release;
@@ -429,8 +472,12 @@ await manualJourney('manual clipboard unavailable: no dead Copy link control', p
 await manualJourney('manual rejected clipboard: explicit failure feedback', phone, async (page, fail) => {
   await page.addInitScript(() => Object.defineProperty(navigator, 'clipboard', { value: { writeText: () => Promise.reject(new Error('denied')) } }));
   await page.goto(url('manual/lead-dbs/step3-volume-registrations/checking-the-coregistration/'), { waitUntil: 'load' });
+  const edit = page.getByRole('link', { name: 'Edit on GitHub' });
+  const before = await edit.boundingBox();
   await page.locator('[data-copy-url]').click();
   if (!(await until(page, () => /could not|couldn.t|unable|failed/i.test(document.querySelector('[role="status"]')?.textContent || '')))) fail('copy rejection has no feedback');
+  const after = await edit.boundingBox();
+  if (!before || !after || Math.abs(before.x - after.x) > 1) fail('copy feedback moved the edit link');
 });
 
 await journey('home initially reduced: restoring motion exposes a stopped Play control', desktop, async (page, fail) => {

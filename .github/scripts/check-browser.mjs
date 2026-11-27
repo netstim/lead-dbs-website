@@ -231,12 +231,11 @@ async function checkManualInteractions() {
     const next = await page.locator('.manual-pagination__next').getAttribute('href');
     require(next && new URL(next, manual).href !== manual, 'Introduction next link points to itself');
     // A chapter's chevron shows its pages without leaving the page; its link still opens the chapter.
-    const branchLink = await page.locator('.manual-nav__branch:not(.is-open) > .manual-nav__row > a').first().getAttribute('href');
-    const branchSel = `.manual-nav__branch:has(> .manual-nav__row > a[href="${branchLink}"])`;
-    const toggle = page.locator(`${branchSel} > .manual-nav__row > .manual-nav__toggle`);
-    await toggle.click();
+    const branch = page.locator('.manual-nav__subchapters:not([open])').first();
+    const branchId = await branch.getAttribute('id');
+    await page.locator(`#${branchId} > summary`).click();
     require(page.url() === manual, 'The chapter toggle navigated away');
-    require(await toggle.getAttribute('aria-expanded') === 'true' && await page.locator(`${branchSel} > ul`).isVisible(), 'The chapter toggle did not show its pages');
+    require(await page.locator(`#${branchId}[open] > ul`).isVisible(), 'The chapter toggle did not show its pages');
     // previous/next follow the sidebar: every rail link in order, each page's next is the following one
     const rail = await page.$$eval('.manual-nav__tree .manual-nav__row > a', (as) => as.map((a) => a.href));
     require(new URL(next, manual).href === rail[1], 'Introduction next link does not follow the sidebar order');
@@ -465,8 +464,9 @@ async function checkManualLayout() {
     require(Math.abs(after.scroll - before.scroll) <= 1 && Math.abs(after.linkY - before.linkY) <= 1,
       `An already-visible chapter jumps when navigating to it: scroll ${before.scroll} → ${after.scroll}, row y ${before.linkY} → ${after.linkY}`);
     require(await page.locator('.manual-nav').evaluate((rail) => {
+      for (const branch of rail.querySelectorAll('.manual-nav__subchapters')) branch.open = true;
       rail.scrollTop = rail.scrollHeight;
-      const last = [...rail.querySelectorAll('a')].filter((link) => link.getClientRects().length).at(-1);
+      const last = [...rail.querySelectorAll('.manual-nav__tree a')].at(-1);
       return last.getBoundingClientRect().bottom < rail.getBoundingClientRect().bottom;
     }), 'The final chapter is clipped at the bottom of the rail');
   } catch (e) {

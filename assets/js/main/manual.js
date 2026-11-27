@@ -1,6 +1,7 @@
 import { wireDialog } from '../lib/dialog.js';
 import { leadFragment } from '../lib/fragment.js';
 import { wireCopyButton } from '../lib/copy.js';
+import { desktopRailQuery, restoreChapterPosition, reveal } from '../lib/manual-navigation.js';
 
 const plainClick = (event) => event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
 
@@ -60,51 +61,9 @@ for (const references of document.querySelectorAll('[data-manual-references]')) 
   const side = document.querySelector('.manual-outline');
   const sideLinks = side ? [...side.querySelectorAll('.manual-toc a')] : [];
   const headings = sideLinks.map((link) => document.getElementById(leadFragment(link.hash.slice(1))));
-  const mobile = matchMedia('(width < 1024px)');
+  const desktop = matchMedia(desktopRailQuery);
   const dialogs = [[drawer, trigger], ...(contents ? [[contents, sections]] : [])];
-
-  const reveal = (box, item) => {
-    if (!item?.getClientRects().length) return;
-    const bounds = box.getBoundingClientRect();
-    const row = item.getBoundingClientRect();
-    const style = getComputedStyle(box);
-    const top = bounds.top + box.clientTop + (parseFloat(style.scrollPaddingTop) || 0);
-    const bottom = bounds.top + box.clientTop + box.clientHeight - (parseFloat(style.scrollPaddingBottom) || 0);
-    if (row.top < top) box.scrollTop += row.top - top;
-    else if (row.bottom > bottom) box.scrollTop += row.bottom - bottom;
-  };
-  const navigationKey = 'lead-manual-navigation';
-  let previousNavigation;
-  try {
-    previousNavigation = JSON.parse(sessionStorage.getItem(navigationKey));
-    sessionStorage.removeItem(navigationKey);
-  } catch { /* Navigation works when browser storage is unavailable. */ }
-
-  tree.addEventListener('click', (event) => {
-    const link = event.target.closest('a');
-    if (!link || !plainClick(event)) return;
-    const target = new URL(link.href);
-    if (target.origin !== location.origin) return;
-    const box = mobile.matches ? body : rail;
-    try {
-      sessionStorage.setItem(navigationKey, JSON.stringify({ path: target.pathname, scrollTop: box.scrollTop }));
-    } catch { /* Storage is optional. */ }
-  });
-  const restoreRail = (box) => {
-    if (previousNavigation?.path === location.pathname && Number.isFinite(previousNavigation.scrollTop)) {
-      box.scrollTop = previousNavigation.scrollTop;
-    }
-    previousNavigation = null;
-    reveal(box, tree.querySelector('[aria-current="page"]'));
-  };
-
-  tree.querySelectorAll('.manual-nav__toggle').forEach((toggle) => {
-    toggle.addEventListener('click', () => {
-      const open = toggle.closest('.manual-nav__branch').classList.toggle('is-open');
-      toggle.setAttribute('aria-expanded', String(open));
-    });
-    toggle.hidden = false;
-  });
+  let drawerPositionRestored = false;
 
   const activeIndex = () => {
     const offset = headings[0] ? parseFloat(getComputedStyle(headings[0]).scrollMarginTop) : 0;
@@ -137,8 +96,11 @@ for (const references of document.querySelectorAll('[data-manual-references]')) 
     wireDialog(dialog, [button]);
     button.addEventListener('click', () => {
       button.setAttribute('aria-expanded', 'true');
-      if (dialog === drawer) restoreRail(body);
-      else highlight([...inlineOutline.querySelectorAll('a')], activeIndex(), contentsList, true);
+      if (dialog !== drawer) highlight([...inlineOutline.querySelectorAll('a')], activeIndex(), contentsList, true);
+      else if (!drawerPositionRestored) {
+        restoreChapterPosition(body, tree, false);
+        drawerPositionRestored = true;
+      }
     });
     dialog.addEventListener('close', () => {
       button.setAttribute('aria-expanded', 'false');
@@ -169,15 +131,19 @@ for (const references of document.querySelectorAll('[data-manual-references]')) 
   };
   const updateLayout = () => {
     close();
-    fold.open = !mobile.matches;
-    (mobile.matches ? body : fold).append(tree);
-    if (inlineOutline) (mobile.matches ? contentsList : outlineFold).append(inlineOutline);
-    if (!mobile.matches) restoreRail(rail);
+    fold.open = desktop.matches;
+    const treeContainer = desktop.matches ? fold : body;
+    if (tree.parentElement !== treeContainer) {
+      treeContainer.append(tree);
+      if (desktop.matches) restoreChapterPosition(rail, tree, true);
+      else drawerPositionRestored = false;
+    }
+    if (inlineOutline) (desktop.matches ? outlineFold : contentsList).append(inlineOutline);
     updateOutline();
   };
   document.documentElement.classList.add('manual-ready');
   updateLayout();
-  mobile.addEventListener('change', updateLayout);
+  desktop.addEventListener('change', updateLayout);
   addEventListener('scroll', updateOutline, { passive: true });
   addEventListener('resize', updateOutline);
   addEventListener('hashchange', updateOutline);

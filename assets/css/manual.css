@@ -37,6 +37,7 @@ html.is-preview { --nav: calc(var(--manual-header-height) + var(--manual-preview
 .manual-header__brand a { display: inline-flex; align-items: center; min-height: var(--manual-toolbar-size); }
 .manual-header__manual::before { content: ""; width: 1px; height: 1.25em; margin-inline-end: var(--s-3); background: var(--line-strong); }
 .manual-header__tools { gap: var(--s-2); }
+.manual-header__theme { flex: none; display: grid; inline-size: var(--manual-toolbar-size); block-size: var(--manual-toolbar-size); }
 .manual-header :is(.skip-link) { left: var(--s-5); }
 .manual-header__search, .manual-header__download { display: inline-flex; align-items: center; min-height: var(--manual-toolbar-size); padding-inline: var(--s-3); gap: var(--s-2); border: 1px solid var(--line); border-radius: var(--r-sm); font-size: var(--t-small); white-space: nowrap; }
 .manual-header__search { min-width: 13rem; color: var(--muted); background: var(--surface); }
@@ -59,7 +60,7 @@ html.is-preview { --nav: calc(var(--manual-header-height) + var(--manual-preview
 .manual-nav { position: sticky; top: var(--nav); height: calc(100dvh - var(--nav)); padding: var(--s-5) var(--s-3) var(--s-6) var(--s-4); overflow-y: auto; overscroll-behavior: contain; scroll-padding-block: var(--s-3); scrollbar-gutter: stable; scrollbar-width: thin; scrollbar-color: var(--line) transparent; border-right: 1px solid var(--line); }
 .manual-nav:is(:hover, :focus-within) { scrollbar-color: var(--line-strong) transparent; }
 .manual-nav__fold > summary { min-height: var(--manual-toolbar-size); align-content: center; cursor: pointer; }
-.manual-ready .manual-nav__fold > summary { display: none; }
+.manual-nav__tree { --chapter-toggle-size: 1.75rem; --chapter-toggle-inset: var(--s-1); }
 .manual-nav__tree ul { list-style: none; margin: 0; padding: 0; }
 .manual-nav__group + .manual-nav__group { margin-top: var(--s-5); }
 .manual-nav__group h2 { margin: 0 0 var(--s-1); padding: var(--s-1) var(--s-2); font-size: var(--t-label); font-weight: 500; line-height: var(--docs-nav-leading); color: var(--ink); }
@@ -71,12 +72,13 @@ html.is-preview { --nav: calc(var(--manual-header-height) + var(--manual-preview
 @media (hover: hover) { .manual-nav__row > a:hover { color: var(--ink); } }
 .manual-nav__row:has(> a[aria-current]) { background: var(--hover); }
 .manual-nav__row > a[aria-current="page"] { color: var(--ink); font-weight: 500; }
-.manual-nav__toggle { flex: none; display: grid; place-items: center; width: 1.75rem; height: 1.75rem; margin-right: var(--s-1); padding: 0; border: 0; border-radius: var(--r-xs); background: none; color: var(--muted); cursor: pointer; }
-.manual-nav__toggle[hidden] { display: none; }
+.manual-nav__branch { position: relative; }
+.manual-nav__branch > .manual-nav__row { padding-inline-end: calc(var(--chapter-toggle-size) + var(--chapter-toggle-inset)); }
+.manual-nav__toggle { position: absolute; inset-block-start: 0; inset-inline-end: var(--chapter-toggle-inset); display: grid; place-items: center; width: var(--chapter-toggle-size); height: var(--chapter-toggle-size); border-radius: var(--r-xs); color: var(--muted); cursor: pointer; }
+.manual-nav__toggle::-webkit-details-marker { display: none; }
 @media (hover: hover) { .manual-nav__toggle:hover { color: var(--ink); background: var(--hover); } }
 .manual-nav__toggle svg { width: .875rem; height: .875rem; transition: transform var(--dur) var(--ease); }
-.manual-nav__toggle[aria-expanded="true"] svg { transform: rotate(90deg); }
-.manual-ready .manual-nav__branch:not(.is-open) > ul { display: none; }
+.manual-nav__subchapters[open] > .manual-nav__toggle svg { transform: rotate(90deg); }
 .manual-nav__tree ul ul { margin: var(--s-1) 0 var(--s-2) var(--s-3); padding-left: var(--s-2); border-left: 1px solid var(--line); }
 
 /* ---------------------------------------------------------------- article head */
@@ -86,8 +88,10 @@ html.is-preview { --nav: calc(var(--manual-header-height) + var(--manual-preview
 .manual-head { margin-bottom: var(--s-6); }
 .manual-head h1 { font-size: var(--t-manual-title); line-height: var(--docs-tight); font-weight: 600; letter-spacing: var(--docs-title-tracking); text-wrap: pretty; }
 .manual-head p { margin-top: var(--s-3); color: var(--muted); font-size: var(--t-lead); line-height: var(--docs-leading); max-width: 60ch; }
-.manual-actions { display: flex; align-items: center; gap: var(--s-5); margin-top: var(--s-4); font-size: var(--t-label); }
+.manual-actions { display: grid; grid-template-columns: 6rem max-content; align-items: center; gap: var(--s-5); margin-top: var(--s-4); font-size: var(--t-label); }
 .manual-actions :is(button, a) { display: inline-flex; align-items: center; gap: var(--s-2); min-height: var(--manual-toolbar-size); padding: 0; border: 0; background: none; color: var(--ink); font: inherit; cursor: pointer; }
+.manual-actions .manual-copy { white-space: nowrap; }
+.manual-actions > a { grid-column: 2; }
 @media (hover: hover) { .manual-actions :is(button, a):hover { color: var(--action); } }
 .manual-actions svg { width: .875rem; height: .875rem; color: var(--muted); }
 
@@ -290,7 +294,7 @@ html.is-preview { --nav: calc(var(--manual-header-height) + var(--manual-preview
 /* a finger's targets in the drawer: rows and chevrons 44px; the chevron's mark stays small */
 .manual-drawer__body .manual-nav__row { min-height: 2.75rem; }
 .manual-drawer__body .manual-nav__row > a { display: flex; align-items: center; min-height: 2.75rem; padding-block: var(--s-2); }
-.manual-drawer__body .manual-nav__toggle { width: 2.75rem; height: 2.75rem; margin-right: 0; }
+.manual-drawer__body .manual-nav__tree { --chapter-toggle-size: var(--manual-toolbar-size); --chapter-toggle-inset: 0px; }
 .manual-drawer__body .manual-nav__group h2 { display: flex; align-items: center; min-height: 2.75rem; margin: 0; }
 .manual-drawer__footer { display: grid; gap: var(--s-2); border-top: 1px solid var(--line); padding: var(--s-3) var(--s-4) max(var(--s-4), env(safe-area-inset-bottom)); font-size: var(--t-small); }
 .manual-drawer__footer a { display: flex; justify-content: space-between; align-items: center; min-height: 2.75rem; }
@@ -308,6 +312,7 @@ html.is-preview { --nav: calc(var(--manual-header-height) + var(--manual-preview
 
 /* Keep the full reading column on tablets. Match the drawer breakpoint in main/manual.js. */
 @media (width >= 1024px) {
+  .manual-nav__fold[open][data-rail-ready] > summary { display: none; }
   @supports selector(details::details-content) {
     .manual-nav__fold > summary { display: none; }
     .manual-nav__fold::details-content { content-visibility: visible; }

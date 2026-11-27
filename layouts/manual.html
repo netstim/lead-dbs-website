@@ -36,6 +36,7 @@
         {{ end }}
       </nav>
     </details>
+    {{ with resources.Get "js/manual-rail.js" | js.Build | minify }}<script>{{ .Content | safeJS }}</script>{{ end }}
   </aside>
   <div class="manual-page">
   <div class="manual-body">

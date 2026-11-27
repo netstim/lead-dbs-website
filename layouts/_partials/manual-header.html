@@ -16,10 +16,12 @@
       <a class="manual-header__search" href="{{ (site.GetPage "/search").RelPermalink }}?scope=manual" data-search-open aria-label="Search the Manual" aria-haspopup="dialog" aria-controls="site-search">
         {{ partial "manual-icon.html" "search" }}<span>Search the Manual</span><kbd aria-hidden="true">/</kbd>
       </a>
-      <button type="button" class="icon-button theme-toggle" data-theme-toggle aria-label="Switch to dark mode" hidden>
-        <span class="i-sun">{{ partial "manual-icon.html" "sun" }}</span>
-        <span class="i-moon">{{ partial "manual-icon.html" "moon" }}</span>
-      </button>
+      <span class="manual-header__theme">
+        <button type="button" class="icon-button theme-toggle" data-theme-toggle aria-label="Switch to dark mode" hidden>
+          <span class="i-sun">{{ partial "manual-icon.html" "sun" }}</span>
+          <span class="i-moon">{{ partial "manual-icon.html" "moon" }}</span>
+        </button>
+      </span>
       <a class="manual-header__download" href="{{ (site.GetPage "/download").RelPermalink }}">Download</a>
     </div>
   </div>

@@ -5,8 +5,13 @@
 {{ $target := site.GetPage .page }}
 {{ $open := and .children (or (eq $p $target) ($target.IsAncestor $p)) }}
 {{ $branchID := printf "chapter-%s" (anchorize (strings.TrimPrefix "/manual/" .page)) }}
-<li{{ if .children }} class="manual-nav__branch{{ if $open }} is-open{{ end }}"{{ end }}>
-  <div class="manual-nav__row"><a href="{{ $target.RelPermalink }}"{{ if eq $p $target }} aria-current="page"{{ end }}>{{ $target.LinkTitle }}</a>{{ if .children }}<button type="button" class="manual-nav__toggle" aria-controls="{{ $branchID }}" aria-expanded="{{ if $open }}true{{ else }}false{{ end }}" aria-label="{{ $target.LinkTitle }} subchapters" hidden>{{ partial "manual-icon.html" "chevron" }}</button>{{ end }}</div>
-  {{ with .children }}<ul id="{{ $branchID }}">{{ partial "manual-tree.html" (dict "entries" . "page" $p) }}</ul>{{ end }}
+<li{{ if .children }} class="manual-nav__branch"{{ end }}>
+  <div class="manual-nav__row"><a href="{{ $target.RelPermalink }}"{{ if eq $p $target }} aria-current="page"{{ end }}>{{ $target.LinkTitle }}</a></div>
+  {{ with .children }}
+  <details class="manual-nav__subchapters" id="{{ $branchID }}"{{ if $open }} open{{ end }}>
+    <summary class="manual-nav__toggle"><span class="sr-only">{{ $target.LinkTitle }} subchapters</span>{{ partial "manual-icon.html" "chevron" }}</summary>
+    <ul>{{ partial "manual-tree.html" (dict "entries" . "page" $p) }}</ul>
+  </details>
+  {{ end }}
 </li>
 {{ end }}

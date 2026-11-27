@@ -74,7 +74,8 @@ Publications, use `kind="publication"` so those buttons are named distinctly.
 The narrow layout moves the chapter tree and the inline outline into native modal dialogs after
 the manual bundle initializes. Escape, the backdrop and the close button dismiss the dialogs.
 Selecting a section moves keyboard focus to its heading. Without the bundle, the chapters are
-available in a native disclosure at every width, and the outline stays in the page. The outline
+available in native disclosures at every width, and the outline stays in the page. Following a
+chapter link carries the open branches and keeps the selected row in view across pages. The outline
 uses the rendered article's second- and third-level headings and also includes the landing
 page's template sections and the generated “In this section” heading when present.
 
