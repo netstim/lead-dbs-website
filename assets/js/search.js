@@ -76,7 +76,7 @@
     return (from ? '…' : '') + mark(r.x.slice(from, end), words) + (end < r.x.length ? '…' : '');
   };
 
-  const wire = (box) => {
+  const wire = (box, scope) => {
     const input = box.querySelector('.search__input');
     const list = box.querySelector('.search__results');
     const status = box.querySelector('.search__status');
@@ -101,7 +101,7 @@
       let rows;
       try { rows = await load(); } catch { if (request === generation) { status.textContent = 'Search is unavailable. Try again or browse the manual.'; fallback.hidden = false; } return; }
       if (request !== generation || input.value.trim() !== q) return;
-      const all = rank(rows, q);
+      const all = rank(scope === 'manual' ? rows.filter((row) => row.u.startsWith(MANUAL)) : rows, q);
       const hits = all.slice(0, SHOWN);
       status.textContent = !all.length ? 'No results. Try a shorter search.'
         : all.length > SHOWN ? `The best ${SHOWN} of ${all.length} results` : `${all.length} result${all.length === 1 ? '' : 's'}`;
@@ -117,6 +117,7 @@
       ++generation;
       list.replaceChildren();
       fallback.hidden = true;
+      status.textContent = input.value.trim() ? 'Searching…' : '';
       clearTimeout(timer);
       timer = setTimeout(run, 120);
     });
@@ -139,7 +140,7 @@
     return { input, run };
   };
 
-  const inDialog = wire(dialog);
+  const inDialog = wire(dialog, dialog.dataset.searchScope);
   const open = () => {
     if (!dialog.open) { dialog.showModal(); load().catch(() => {}); }
     inDialog.input.focus(); inDialog.input.select();
@@ -159,9 +160,16 @@
 
   // a box on a page (/search/, the 404 page): it searches in place; /search/ reads ?q=
   document.querySelectorAll('main [data-search]').forEach((box) => {
-    const p = wire(box);
-    if (!box.closest('.search-page')) return;
-    const q = new URLSearchParams(location.search).get('q');
+    const isSearchPage = box.closest('.search-page');
+    const params = new URLSearchParams(location.search);
+    const scope = isSearchPage ? params.get('scope') : null;
+    const p = wire(box, scope);
+    if (!isSearchPage) return;
+    if (scope === 'manual') {
+      p.input.placeholder = 'Search the Manual…';
+      p.input.labels[0].textContent = 'Search the Manual';
+    }
+    const q = params.get('q');
     if (q) { p.input.value = q; p.run(); }
     p.input.focus();
   });

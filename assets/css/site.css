@@ -98,8 +98,9 @@ html:has(> body.top-dark) { background: var(--render); }
 body { overflow-x: clip; }
 
 /* ---------------------------------------------------------------- preview banner (params.preview) */
+:root { --preview-bg: #fff4d6; }
 .preview-banner { height: 32px; display: flex; align-items: center; justify-content: center; padding: 0 var(--s-4);
-  background: #fff4d6; color: #4d3d0c; border-bottom: 1px solid #e8d49a; font-size: var(--t-label); line-height: 1.3; text-align: center; overflow: hidden; }
+  background: var(--preview-bg); color: #4d3d0c; border-bottom: 1px solid #e8d49a; font-size: var(--t-label); line-height: 1.3; text-align: center; overflow: hidden; }
 .preview-banner a { color: inherit; text-decoration: underline; font-weight: 500; }
 html.is-preview { --nav: 104px; }
 @media (max-width: 639px) { html.is-preview { --nav: 88px; } .preview-banner { font-size: var(--t-xs); } .preview-banner span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; } }

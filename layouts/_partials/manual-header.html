@@ -1,0 +1,26 @@
+<header class="manual-header">
+  {{ if site.Params.preview }}
+  <div class="preview-banner" role="note">
+    <span><strong>Preview:</strong> the official site is <a href="{{ site.Params.liveSite }}">www.lead-dbs.org</a>.</span>
+  </div>
+  {{ end }}
+  <div class="manual-header__bar">
+    <a class="skip-link" href="#manual-content">Skip to content</a>
+    <div class="manual-header__brand">
+      <a class="manual-header__home" href="{{ site.Home.RelPermalink }}" aria-label="Lead-DBS website">
+        {{ partial "logo.html" (dict "h" 28) }}<span>Lead-DBS</span>
+      </a>
+      <a class="manual-header__manual" href="{{ (site.GetPage "/manual").RelPermalink }}"{{ if eq . (site.GetPage "/manual") }} aria-current="page"{{ end }}>Manual</a>
+    </div>
+    <div class="manual-header__tools">
+      <a class="manual-header__search" href="{{ (site.GetPage "/search").RelPermalink }}?scope=manual" data-search-open aria-label="Search the Manual" aria-haspopup="dialog" aria-controls="site-search">
+        {{ partial "manual-icon.html" "search" }}<span>Search the Manual</span><kbd aria-hidden="true">/</kbd>
+      </a>
+      <button type="button" class="icon-button theme-toggle" data-theme-toggle aria-label="Switch to dark mode" hidden>
+        <span class="i-sun">{{ partial "manual-icon.html" "sun" }}</span>
+        <span class="i-moon">{{ partial "manual-icon.html" "moon" }}</span>
+      </button>
+      <a class="manual-header__download" href="{{ (site.GetPage "/download").RelPermalink }}">Download</a>
+    </div>
+  </div>
+</header>

@@ -27,8 +27,9 @@ This is a local copy, not a live synchronization with GitBook.
   original spelling, so the house-spelling copy rule excludes manual pages. Other copy,
   link, image, layout and browser checks still apply.
 
-The manual uses the shared site header, theme and search, and has its own article footer.
-The header exposes search (Cmd/Ctrl+K) and Download. Search indexes the full text of each chapter.
+The Manual has its own header with a link to the main site, a Manual home link, search, theme and
+Download. Its search uses the shared index and limits results to Manual pages. Open it with
+`/` or Cmd/Ctrl+K. The main site's header and search retain their site-wide navigation.
 
 ## Visual system
 

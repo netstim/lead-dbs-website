@@ -75,8 +75,98 @@ You can check `ea_normmethod_applied` in the legacy patient folder to know which
 
 ## Essential files in a legacy folder of a patient with post-op CT
 
-![Importing a classic Lead-DBS dataset to BIDS version — screenshot](manual/b236612ade283c79.png)
+```text
+postopCT
+├── anat_t12postop_ct_ants1.mat
+├── anat_t1.nii
+├── anat_t2.nii
+├── checkreg
+│   ├── anat_t22anat_t1.png
+│   ├── glanat2t1_ea_normalize_ants.png
+│   ├── tp_glpostop_ct2t1_ea_normalize_ants.png
+│   └── tp_rpostop_ct2anat_t1_ea_coregctmri_ants.png
+├── coregCT_20230830T194917.log
+├── coregMR_20230830T195039.log
+├── ct_mask.nii
+├── ea_ants_command.txt
+├── ea_coregctmethod_applied.mat
+├── ea_methods.txt
+├── ea_normmethod_applied.mat
+├── ea_reconstruction.mat
+├── ea_ui.mat
+├── glanatComposite.nii.gz
+├── glanatInverseComposite.nii.gz
+├── glanat.nii
+├── glpostop_ct.nii
+├── normalize_20230830T195103.log
+├── postop_ct2anat_t1_ants1.mat
+├── postop_ct.nii
+├── raw_anat_t2.nii
+├── rct_mask.nii
+├── rpostop_ct.nii
+├── scrf
+│   ├── anat_t1.nii
+│   ├── bgmsk2.nii
+│   ├── bgmsk.nii
+│   ├── ea_methods.txt
+│   ├── movim.nii
+│   ├── scrf_converted.mat
+│   ├── scrf_instore_converted.mat
+│   ├── scrf_instore.mat
+│   ├── scrfmovim.nii
+│   ├── scrf.png
+│   ├── standard.png
+│   └── tp_rpostop_ct.nii
+├── tp_glpostop_ct.nii
+└── tp_rpostop_ct.nii
+```
 
 ## Essential files in a legacy folder of a patient with a post-op MRI
 
-![Importing a classic Lead-DBS dataset to BIDS version — screenshot](manual/0a2452259156a3a9.png)
+```text
+postopMRI
+├── anat_t1.nii
+├── anat_t2.nii
+├── checkreg
+│   ├── anat_t22anat_t1_SPM.png
+│   ├── glanat2t1_ea_normalize_ants.png
+│   ├── glpostop_cor2t1_ea_normalize_ants.png
+│   ├── glpostop_sag2t1_ea_normalize_ants.png
+│   ├── glpostop_tra2t1_ea_normalize_ants.png
+│   ├── postop_cor2anat_t1_SPM.png
+│   ├── postop_sag2anat_t1_SPM.png
+│   └── postop_tra2anat_t1_SPM.png
+├── coregMR_20230830T201146.log
+├── ea_ants_command.txt
+├── ea_coregmrmethod_applied.mat
+├── ea_methods.txt
+├── ea_normmethod_applied.mat
+├── ea_reconstruction.mat
+├── ea_ui.mat
+├── glanatComposite.nii.gz
+├── glanatInverseComposite.nii.gz
+├── glanat.nii
+├── glpostop_cor.nii
+├── glpostop_sag.nii
+├── glpostop_tra.nii
+├── normalize_20230830T201300.log
+├── postop_cor.nii
+├── postop_sag.nii
+├── postop_tra.nii
+├── raw_anat_t2.nii
+├── raw_postop_cor.nii
+├── raw_postop_sag.nii
+├── raw_postop_tra.nii
+└── scrf
+    ├── anat_t1.nii
+    ├── bgmsk2.nii
+    ├── bgmsk.nii
+    ├── ea_methods.txt
+    ├── movim.nii
+    ├── scrf_converted.mat
+    ├── scrf_instore_converted.mat
+    ├── scrf_instore.mat
+    ├── scrfmovim.nii
+    ├── scrf.png
+    └── standard.png
+```

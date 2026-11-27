@@ -56,4 +56,8 @@ To construct a dMRI multitract connectome, follow these steps:
 
 ## References
 
+{{< manual-references >}}
+
 1. Wang Q, Akram H, Muthuraman M, Gonzalez-Escamilla G, Sheth SA, Oxenford S, Yeh FC, Groppa S, Vanegas-Arroyave N, Zrinzo L, Li N, Kühn A, Horn A. Normative vs. patient-specific brain connectivity in deep brain stimulation. Neuroimage. 2021 Jan 1;224:117307. doi: 10.1016/j.neuroimage.2020.117307. Epub 2020 Aug 28. PMID: 32861787.
+
+{{< /manual-references >}}

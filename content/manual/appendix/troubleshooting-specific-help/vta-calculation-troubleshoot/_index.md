@@ -54,10 +54,11 @@ Go for the new and shiny tool, OSS-DBS v2. This is the future anyway, the model 
 
 ## References
 
-\[1] Vorwerk, J., Oostenveld, R., Piastra, M.C. *et al.* The FieldTrip-SimBio pipeline for EEG forward solutions. *BioMed Eng OnLine* **17,** 37 (2018). [doi:10.1186/s12938-018-0463-y](https://doi.org/10.1186/s12938-018-0463-y)
+{{< manual-references >}}
 
-\[2] Qianqian Fang and David Boas, "Tetrahedral mesh generation from volumetric binary and gray-scale images," Proceedings of IEEE International Symposium on Biomedical Imaging 2009, pp. 1142-1145, 2009
+1. Vorwerk, J., Oostenveld, R., Piastra, M.C. *et al.* The FieldTrip-SimBio pipeline for EEG forward solutions. *BioMed Eng OnLine* **17,** 37 (2018). [doi:10.1186/s12938-018-0463-y](https://doi.org/10.1186/s12938-018-0463-y)
+2. Qianqian Fang and David Boas, "Tetrahedral mesh generation from volumetric binary and gray-scale images," Proceedings of IEEE International Symposium on Biomedical Imaging 2009, pp. 1142-1145, 2009
+3. Hang Si. 2015. "[*TetGen, a Delaunay-Based Quality Tetrahedral Mesh Generator*](https://doi.acm.org/10.1145/2629697)". ACM Trans. on Mathematical Software. **41** (2), Article 11 (February 2015), 36 pages. [doi:10.1145/2629697](https://doi.acm.org/10.1145/2629697)
+4. Baniasadi M, Proverbio D, Gonçalves J, Hertel F, Husch A. FastField: An open-source toolbox for efficient approximation of deep brain stimulation electric fields. Neuroimage. 2020 Dec;223:117330. doi: 10.1016/j.neuroimage.2020.117330. Epub 2020 Sep 2. PMID: 32890746.
 
-\[3] Hang Si. 2015. "[*TetGen, a Delaunay-Based Quality Tetrahedral Mesh Generator*](https://doi.acm.org/10.1145/2629697)". ACM Trans. on Mathematical Software. **41** (2), Article 11 (February 2015), 36 pages. [doi:10.1145/2629697](https://doi.acm.org/10.1145/2629697)
-
-\[4] Baniasadi M, Proverbio D, Gonçalves J, Hertel F, Husch A. FastField: An open-source toolbox for efficient approximation of deep brain stimulation electric fields. Neuroimage. 2020 Dec;223:117330. doi: 10.1016/j.neuroimage.2020.117330. Epub 2020 Sep 2. PMID: 32890746.
+{{< /manual-references >}}

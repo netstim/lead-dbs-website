@@ -183,6 +183,10 @@ At last, data can be fit to scores and post-hoc corrected for groups (Figure 4, 
 
 ## References
 
+{{< manual-references >}}
+
 > Information on this page was taken from the book "Connectomic Deep Brain Stimulation" by Horn, 2022 and the following research publication:
 >
 > * Neudorfer C, Butenko K, Oxenford S, Rajamani N, Achtzehn J, Goede L, Hollunder B, Ríos AS, Hart L, Tasserie J, Fernando KB, Nguyen TAK, Al-Fatly B, Vissani M, Fox M, Richardson RM, van Rienen U, Kühn AA, Husch AD, Opri E, Dembek T, Li N, Horn A. Lead-DBS v3.0: Mapping deep brain stimulation effects to local anatomy and global networks. Neuroimage. 2023 Mar;268:119862. doi: 10.1016/j.neuroimage.2023.119862. Epub 2023 Jan 5. PMID: 36610682; PMCID: PMC10144063.
+
+{{< /manual-references >}}

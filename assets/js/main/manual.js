@@ -1,5 +1,17 @@
 import { wireDialog } from '../lib/dialog.js';
 import { leadFragment } from '../lib/fragment.js';
+import { wireCopyButton } from '../lib/copy.js';
+
+for (const references of document.querySelectorAll('[data-manual-references]')) {
+  const template = document.getElementById('manual-reference-copy');
+  references.querySelectorAll('li').forEach((item, index) => {
+    const button = template.content.firstElementChild.cloneNode(true);
+    button.dataset.copyText = item.innerText.trim();
+    button.setAttribute('aria-label', `Copy reference ${index + 1}`);
+    item.append(button);
+    wireCopyButton(button);
+  });
+}
 
 // Keep the server-rendered disclosures until the drawer controls are ready.
 (() => {
@@ -148,7 +160,7 @@ import { leadFragment } from '../lib/fragment.js';
 // Preview long examples without hiding their full source from the copy control.
 // No-JavaScript readers get the complete code. Overflow cues reflect the actual viewport.
 (() => {
-  const blocks = [...document.querySelectorAll('.manual-code')];
+  const blocks = [...document.querySelectorAll('.manual-code:has(.manual-code__source)')];
   blocks.forEach((block) => {
     block.querySelectorAll('.line').forEach((line) => {
       const indent = line.textContent.match(/^[\t ]*/)[0].replace(/\t/g, '    ').length;
@@ -178,7 +190,10 @@ import { leadFragment } from '../lib/fragment.js';
             ? (collapsed ? 'Expand' : 'Collapse')
             : (collapsed ? `Show all ${block.dataset.codeLines} lines` : 'Collapse code');
         });
-        if (collapsed && block.getBoundingClientRect().top < 0) block.scrollIntoView({ block: 'start' });
+        if (collapsed && expand.closest('.manual-code__foot')) {
+          expands[0].focus({ preventScroll: true });
+          block.scrollIntoView({ block: 'start' });
+        }
       });
     });
     const wrap = block.querySelector('.manual-code__wrap');
@@ -195,7 +210,8 @@ import { leadFragment } from '../lib/fragment.js';
     const overflows = pre.scrollWidth > pre.clientWidth + 1;
     block.querySelector('.manual-code__wrap').hidden = !(overflows || block.classList.contains('manual-code--wrapped'));
     block.querySelector('.manual-code__overflow').hidden = !overflows;
-    block.querySelector('.manual-code__foot').hidden = !block.dataset.codeLines;
+    const footer = block.querySelector('.manual-code__foot');
+    if (footer) footer.hidden = false;
   });
   const observer = new ResizeObserver(update);
   blocks.forEach((block) => observer.observe(block));

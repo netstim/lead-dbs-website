@@ -1,10 +1,10 @@
 {{- /* The search box and its results, in the dialog and on /search/ (argument: dict "id"). */ -}}
 <div class="search" data-search>
   <form class="search__form" role="search" action="{{ with site.GetPage "/search" }}{{ .RelPermalink }}{{ end }}" method="get">
-    <label class="search__label sr-only" id="site-search-h{{ if ne .id "dlg" }}-{{ .id }}{{ end }}" for="q-{{ .id }}">Search lead-dbs.org</label>
+    <label class="search__label sr-only" id="site-search-h{{ if ne .id "dlg" }}-{{ .id }}{{ end }}" for="q-{{ .id }}">{{ if .manual }}Search the Manual{{ else }}Search lead-dbs.org{{ end }}</label>
     <div class="search__row">
       <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4.2-4.2"/></svg>
-      <input class="search__input" id="q-{{ .id }}" type="search" name="q" autocomplete="off" spellcheck="false" placeholder="Search Lead-DBS…" aria-describedby="q-{{ .id }}-status" aria-controls="q-{{ .id }}-results">
+      <input class="search__input" id="q-{{ .id }}" type="search" name="q" autocomplete="off" spellcheck="false" placeholder="{{ if .manual }}Search the Manual…{{ else }}Search Lead-DBS…{{ end }}" aria-describedby="q-{{ .id }}-status" aria-controls="q-{{ .id }}-results">
     </div>
   </form>
   {{ if eq .id "dlg" }}<div class="search__content">{{ end }}
@@ -13,7 +13,9 @@
   <div class="search__start">
     <p class="search__group-label">Quick links</p>
     <ul>
-      {{ range slice "/helpsupport/first-steps/" "/download/" "/helpsupport/knowledge-base/atlasesresources/" "/about/citing_leaddbs/" }}
+      {{ $quickLinks := slice "/helpsupport/first-steps/" "/download/" "/helpsupport/knowledge-base/atlasesresources/" "/about/citing_leaddbs/" }}
+      {{ if .manual }}{{ $quickLinks = slice "/manual/installation/" "/manual/lead-dbs/self-tutoring-with-lead-tutor/" "/manual/lead-dbs/" "/manual/appendix/troubleshooting-specific-help/" }}{{ end }}
+      {{ range $quickLinks }}
       {{ with site.GetPage . }}<li><a href="{{ .RelPermalink }}"><span>{{ .LinkTitle }}</span><svg class="m-arrow search__quick-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a></li>{{ end }}
       {{ end }}
     </ul>

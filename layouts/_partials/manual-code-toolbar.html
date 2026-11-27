@@ -1,0 +1,10 @@
+<div class="manual-code__head">
+  <span class="manual-code__label">{{ if .icon }}{{ partial "manual-icon.html" .icon }}{{ end }}{{ .language }}{{ if .target }}<span class="manual-code__overflow" title="Code scrolls horizontally" aria-hidden="true" hidden>↔</span>{{ end }}</span>
+  <div class="manual-code__tools">
+    {{ if .target }}
+    <button type="button" class="manual-code__wrap" aria-pressed="false" aria-label="Wrap code lines" hidden>Wrap</button>
+    {{ if .expand }}<button type="button" class="manual-code__expand manual-code__expand--top" aria-expanded="false" aria-controls="{{ .target }}" hidden>Expand</button>{{ end }}
+    {{ end }}
+    {{ partial "manual-copy.html" . }}
+  </div>
+</div>

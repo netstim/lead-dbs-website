@@ -141,7 +141,7 @@ function measure(okSelectors) {
         style.push('nested code inherits the inline-code size reduction'); break;
       }
     }
-    const search = document.querySelector('.nav [data-search-open]');
+    const search = document.querySelector('.manual-header [data-search-open]');
     if (!search?.getAttribute('aria-label')) style.push('documentation search has no name when its visible label is hidden');
   }
   return { out, cut, style };
@@ -222,7 +222,7 @@ async function check(view, scheme) {
 // Check the manual's stateful controls once, after the parallel page sweep so clipboard
 // operations cannot race between contexts. This runs in both PR and pre-deploy CI.
 async function checkManualInteractions() {
-  const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, permissions: ['clipboard-read', 'clipboard-write'] });
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: 'light', permissions: ['clipboard-read', 'clipboard-write'] });
   const page = await context.newPage();
   const manual = origin + basePath + 'manual/';
   const require = (ok, message) => { if (!ok) throw new Error(message); };
@@ -240,12 +240,54 @@ async function checkManualInteractions() {
     // previous/next follow the sidebar: every rail link in order, each page's next is the following one
     const rail = await page.$$eval('.manual-nav__tree .manual-nav__row > a', (as) => as.map((a) => a.href));
     require(new URL(next, manual).href === rail[1], 'Introduction next link does not follow the sidebar order');
+    await page.locator('.manual-pagination__next').click();
+    await page.waitForURL(rail[1]);
+    await page.locator('.manual-pagination__prev').click();
+    await page.waitForURL(manual);
+    await page.locator('.manual-header [data-theme-toggle]').click();
+    require(await page.locator('html').getAttribute('data-theme') === 'dark', 'Manual theme control did not switch to dark');
+    await page.locator('.manual-header [data-theme-toggle]').click();
+    require(await page.locator('html').getAttribute('data-theme') === 'light', 'Manual theme control did not switch back to light');
+    await page.locator('.manual-header__download').click();
+    await page.waitForURL(origin + basePath + 'download/');
+
+    await page.goto(manual + 'connectomics/connectomic-analyses/using-normative-connectomes/');
+    const citation = page.locator('.manual-references li').first();
+    const reference = citation.getByRole('button', { name: 'Copy reference 1', exact: true });
+    await reference.click();
+    await page.waitForFunction(() => document.querySelector('.manual-references [data-copy-state="copied"]') !== null);
+    const copiedReference = await page.evaluate(() => navigator.clipboard.readText());
+    require(copiedReference.startsWith('Wang Q, Akram H') && copiedReference.endsWith('PMID: 32861787.'), 'Copy reference did not copy the citation');
+
+    await page.goto(manual + 'lead-dbs/step1-load-patient-folder/importing-a-classic-lead-dbs-dataset-to-bids-version/');
+    const trees = page.locator('.manual-code__source');
+    require(await trees.count() === 2, 'The legacy folder examples are not both rendered as code');
+    await page.locator('.manual-code').first().getByRole('button', { name: 'Copy code', exact: true }).click();
+    await page.waitForFunction(() => document.querySelector('.manual-code [data-copy-state="copied"]') !== null);
+    require(await page.evaluate(() => navigator.clipboard.readText()) === await trees.first().textContent(), 'Copy folder tree did not preserve all lines');
+
+    await page.goto(manual + 'installation/#troubleshooting');
+    const summary = page.getByText('Resolve an “Unrecognized function or variable” error', { exact: true });
+    await summary.click();
+    require(await summary.evaluate((el) => {
+      const details = el.parentElement;
+      return details.open && parseFloat(getComputedStyle(details).paddingInlineStart) >= 20;
+    }), 'Troubleshooting disclosure did not open with an inset body');
+    await summary.click();
+    require(await summary.evaluate((el) => !el.parentElement.open), 'Troubleshooting disclosure did not close');
+
+    await page.goto(manual + 'lead-dbs/step0-overview/');
+    const zoom = page.locator('.img-figure .img-zoom').first();
+    const imageURL = await zoom.evaluate((link) => link.href);
+    await zoom.click();
+    await page.waitForURL(imageURL);
+
     await page.goto(manual + 'appendix/useful-command-line-tools/installing-an-atlas-from-a-repository/');
     const example = page.locator('.manual-code[data-code-lines]').first();
     const expand = example.getByRole('button', { name: /^Show all/ });
     await expand.click();
     require(await example.locator('.manual-code__expand').first().getAttribute('aria-expanded') === 'true', 'Long code did not expand');
-    const source = (await example.locator('.manual-code__source').textContent()).trim();
+    const source = await example.locator('.manual-code__source').textContent();
     await example.getByRole('button', { name: 'Wrap code lines', exact: true }).click();
     require(await example.locator('pre').evaluate((e) => e.scrollWidth <= e.clientWidth + 1), 'Wrapped code still overflows horizontally');
     require(source.split('\n').length > 20, 'The test needs a complete long example');
@@ -280,7 +322,7 @@ async function checkManualInteractions() {
     require(await page.locator('#manual-contents').getAttribute('open') === null, 'Section navigation stayed open after choosing a heading');
     const target = await page.locator('#save-and-view-the-result').boundingBox();
     require(target.y >= toolbar.y + toolbar.height, 'Section heading is hidden beneath sticky navigation');
-    await page.locator('.nav [data-search-open]').click();   // the header's search (it searches the whole site)
+    await page.locator('.manual-header [data-search-open]').click();
     await page.locator('#site-search[open]').waitFor();
     await page.locator('#site-search .search__input').fill('coregistration');
     await page.locator('#site-search .search__hit').first().waitFor();
@@ -289,6 +331,8 @@ async function checkManualInteractions() {
     await page.waitForFunction(() => /^\d+ results?$/.test(document.querySelector('#site-search .search__status')?.textContent || ''));
     const resultCount = parseInt(await page.locator('#site-search .search__status').innerText(), 10);
     require(await page.locator('#site-search .search__results > li').count() === resultCount, 'Search count includes an uncounted browse link');
+    require(await page.locator('#site-search .search__results a').evaluateAll((links, prefix) =>
+      links.length > 0 && links.every((link) => new URL(link.href).pathname.startsWith(prefix)), basePath + 'manual/'), 'Manual search returns another site section');
     await page.keyboard.press('Escape');
     await page.setViewportSize({ width: 320, height: 568 });
     await page.goto(manual + 'appendix/useful-command-line-tools/installing-an-atlas-from-a-repository/');
@@ -344,8 +388,8 @@ async function checkManualLayout() {
     return {
       gutter: innerWidth - document.documentElement.clientWidth,
       viewport: document.documentElement.clientWidth,
-      brand: rect('.site-logo'), links: rect('.desktop-nav'),
-      download: rect('.nav__download'), rail: rect('.manual-nav'), article: rect('.manual-body'), bar: rect('.nav__bar'),
+      brand: rect('.manual-header__brand'), controls: rect('.manual-header__tools'),
+      download: rect('.manual-header__download'), rail: rect('.manual-nav'), article: rect('.manual-body'), bar: rect('.manual-header__bar'),
     };
   });
   try {
@@ -361,10 +405,10 @@ async function checkManualLayout() {
         require(box.brand.x >= 20, `Docs brand drifts away from the viewport edge at ${width}px`);
         // Measure the action inset against the header's own content width.
         require(box.download.right <= box.bar.right + 1, `Header actions are inset at ${width}px`);
-        require(box.links.x > box.brand.right, `Resource links overlap the brand at ${width}px`);
+        require(box.controls.x > box.brand.right, `Manual controls overlap the brand at ${width}px`);
         require(box.article.width <= 737 && box.article.x >= box.rail.right + 31, `Article overlaps navigation or exceeds its reading width at ${width}px`);
         if (baseline) {
-          for (const part of ['bar', 'brand', 'links', 'download', 'rail', 'article']) {
+          for (const part of ['bar', 'brand', 'controls', 'download', 'rail', 'article']) {
             for (const dimension of ['x', 'y', 'width']) {
               require(Math.abs(box[part][dimension] - baseline[part][dimension]) <= 1,
                 `${part} ${dimension} jumps between long and short pages at ${width}px on ${chapter}: ${baseline[part][dimension]} -> ${box[part][dimension]}`);
@@ -375,7 +419,7 @@ async function checkManualLayout() {
       await page.goto(manual + 'installation/');
       await ready();
       await page.evaluate(() => window.scrollTo(0, 600));
-      require(await page.evaluate(() => window.scrollY > 0 && Math.abs(document.querySelector('.nav').getBoundingClientRect().top) <= 1),
+      require(await page.evaluate(() => window.scrollY > 0 && Math.abs(document.querySelector('.manual-header').getBoundingClientRect().top) <= 1),
         `Docs header does not stay at the top while scrolling at ${width}px`);
     }
     await page.goto(manual + 'installation/');
@@ -397,6 +441,11 @@ async function checkManualLayout() {
     }));
     require(Math.abs(after.scroll - before.scroll) <= 1 && Math.abs(after.linkY - before.linkY) <= 1,
       `An already-visible chapter jumps when navigating to it: scroll ${before.scroll} → ${after.scroll}, row y ${before.linkY} → ${after.linkY}`);
+    require(await page.locator('.manual-nav').evaluate((rail) => {
+      rail.scrollTop = rail.scrollHeight;
+      const last = [...rail.querySelectorAll('a')].filter((link) => link.getClientRects().length).at(-1);
+      return last.getBoundingClientRect().bottom < rail.getBoundingClientRect().bottom;
+    }), 'The final chapter is clipped at the bottom of the rail');
   } catch (e) {
     problems.push(`manual layout: ${e.message.split('\n')[0]}`);
   } finally {

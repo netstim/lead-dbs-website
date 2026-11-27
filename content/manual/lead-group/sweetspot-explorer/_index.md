@@ -170,8 +170,12 @@ N-Image represents the number of times the voxel was covered by VTAs from the da
 
 ## References
 
+{{< manual-references >}}
+
 > Information on this page was taken from the book "Connectomic Deep Brain Stimulation" by Horn, 2022 and the following research publications:
 >
 > 1. Neudorfer C, Butenko K, Oxenford S, Rajamani N, Achtzehn J, Goede L, Hollunder B, Ríos AS, Hart L, Tasserie J, Fernando KB, Nguyen TAK, Al-Fatly B, Vissani M, Fox M, Richardson RM, van Rienen U, Kühn AA, Husch AD, Opri E, Dembek T, Li N, Horn A. Lead-DBS v3.0: Mapping deep brain stimulation effects to local anatomy and global networks. Neuroimage. 2023 Mar;268:119862. doi: 10.1016/j.neuroimage.2023.119862. Epub 2023 Jan 5. PMID: 36610682; PMCID: PMC10144063.
 > 2. Elias, G.J.B., Boutet, A., Joel, S.E., Germann, J., Gwun, D., Neudorfer, C., Gramer, R.M., Algarni, M., Paramanandam, V., Prasad, S., Beyn, M.E., Horn, A., Madhavan, R., Ranjan, M., Lozano, C.S., Kühn, A.A., Ashe, J., Kucharczyk, W., Munhoz, R.P., Giacobbe, P., Kennedy, S.H., Woodside, D.B., Kalia, S.K., Fasano, A., Hodaie, M. and Lozano, A.M. (2021), Probabilistic Mapping of Deep Brain Stimulation: Insights from 15 Years of Therapy. Ann Neurol, 89: 426-443. [doi:10.1002/ana.25975](https://doi.org/10.1002/ana.25975)
 > 3. Dembek TA, Baldermann JC, Petry-Schmelzer JN, Jergas H, Treuer H, Visser-Vandewalle V, Dafsari HS, Barbe MT. Sweetspot Mapping in Deep Brain Stimulation: Strengths and Limitations of Current Approaches. Neuromodulation. 2022 Aug;25(6):877-887. doi: 10.1111/ner.13356. Epub 2022 Feb 10. PMID: 33476474.
+
+{{< /manual-references >}}

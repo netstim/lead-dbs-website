@@ -14,17 +14,21 @@
     m.content = document.querySelector('.nav.is-dark:not(.is-open)') ? '#000000' : root.dataset.theme === 'dark' ? '#161819' : '#ffffff';
   });
   const set = (t) => { root.dataset.theme = t; label(); chrome(); };
-  buttons.forEach((b) => b.addEventListener('click', () => {
-    const t = root.dataset.theme === 'dark' ? 'light' : 'dark';
-    try { localStorage.setItem('theme', t); } catch (e) { /* private mode: the choice lasts this page */ }
-    set(t);
-  }));
+  buttons.forEach((b) => {
+    b.addEventListener('click', () => {
+      const t = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      try { localStorage.setItem('theme', t); } catch (e) { /* private mode: the choice lasts this page */ }
+      set(t);
+    });
+    b.hidden = false;
+  });
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
     let saved = null;
     try { saved = localStorage.getItem('theme'); } catch (e) { /* none */ }
     if (!saved) set(e.matches ? 'dark' : 'light');
   });
-  new MutationObserver(chrome).observe(document.querySelector('.nav'), { attributes: true, attributeFilter: ['class'] });
+  const nav = document.querySelector('.nav');
+  if (nav) new MutationObserver(chrome).observe(nav, { attributes: true, attributeFilter: ['class'] });
   label();
   chrome();
 })();

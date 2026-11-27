@@ -62,8 +62,8 @@
     {{ with $children }}<section class="manual-section-pages" aria-labelledby="in-this-section"><h2 id="in-this-section">In this section</h2>{{ partial "manual-cards.html" . }}</section>{{ end }}
     {{ end }}
     {{ if ge $index 0 }}<nav class="manual-pagination" aria-label="Previous and next chapter">
-      {{ if gt $index 0 }}{{ with site.GetPage (index $order (sub $index 1)) }}<a class="manual-pagination__prev" href="{{ .RelPermalink }}"><span>Previous</span><strong>{{ .LinkTitle }}</strong></a>{{ end }}{{ end }}
-      {{ if lt (add $index 1) (len $order) }}{{ with site.GetPage (index $order (add $index 1)) }}<a class="manual-pagination__next" href="{{ .RelPermalink }}"><span>Next</span><strong>{{ .LinkTitle }}</strong></a>{{ end }}{{ end }}
+      {{ if gt $index 0 }}{{ with site.GetPage (index $order (sub $index 1)) }}<a class="manual-pagination__prev" href="{{ .RelPermalink }}"><span>{{ partial "manual-icon.html" "chevron" }}Previous</span><strong>{{ .LinkTitle }}</strong></a>{{ end }}{{ end }}
+      {{ if lt (add $index 1) (len $order) }}{{ with site.GetPage (index $order (add $index 1)) }}<a class="manual-pagination__next" href="{{ .RelPermalink }}"><span>Next{{ partial "manual-icon.html" "chevron" }}</span><strong>{{ .LinkTitle }}</strong></a>{{ end }}{{ end }}
     </nav>{{ end }}
     <footer class="manual-footer">
       <div><a href="{{ site.Home.RelPermalink }}">Lead-DBS</a><span>For research use only, not for clinical use</span></div>
@@ -82,6 +82,9 @@
   {{ end }}
   </div>
 </main>
+{{ if .HasShortcode "manual-references" }}
+<template id="manual-reference-copy">{{ partial "manual-copy.html" (dict "label" "Copy reference" "text" "") }}</template>
+{{ end }}
 <dialog class="manual-drawer" id="manual-drawer" aria-labelledby="manual-drawer-title" tabindex="-1">
   <div class="manual-drawer__head"><span id="manual-drawer-title">Chapters</span><button type="button" class="icon-button" data-manual-close aria-label="Close chapters">{{ partial "manual-icon.html" "close" }}</button></div>
   <div class="manual-drawer__body"></div>

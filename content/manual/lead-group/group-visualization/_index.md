@@ -78,4 +78,8 @@ Adapted from the walkthrough tutorial by Svenja Treu. See the [original tutorial
 
 ## References
 
+{{< manual-references >}}
+
 * Treu, Svenja, Bryan Strange, Simon Oxenford, Wolf-Julian Neumann, Andrea Kühn, Ningfei Li, and Andreas Horn. “Deep Brain Stimulation: Imaging on a Group Level.” NeuroImage 219 (October 1, 2020): 117018. [doi:10.1016/j.neuroimage.2020.117018](https://doi.org/10.1016/j.neuroimage.2020.117018).
+
+{{< /manual-references >}}
