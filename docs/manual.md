@@ -36,11 +36,11 @@ Download. Its search uses the shared index and limits results to Manual pages. O
 ## Visual system
 
 The chapter rail stays at the left edge on desktop. The article (at most 736px) and a separately
-scrollable outline sit in the remaining width. Chapters without an outline center in that space.
-Below 1280px the outline appears in a disclosure
-above the article. Below 1024px the chapter rail becomes a sticky toolbar and the reading column
-gets the full available width. The header height token includes the preview banner and sets both
-the sticky offsets and the clearance for fragment links.
+scrollable outline sit in the remaining width. At 1280px and above, the grid reserves space for
+the outline on every chapter so the article stays aligned across pages. Below 1280px the outline
+appears in a disclosure above the article. Below 1024px the chapter rail becomes a sticky toolbar
+and the reading column gets the full available width. The header height token includes the preview
+banner and sets both the sticky offsets and the clearance for fragment links.
 
 It uses the site's own type and colours: Inter for text and headings, the system monospace
 (`--font-mono`) for code, and the Blend palette tokens of `site.css` (only the code-highlight colours,

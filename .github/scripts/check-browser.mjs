@@ -396,6 +396,8 @@ async function checkManualLayout() {
   });
   const page = await context.newPage();
   const manual = origin + basePath + 'manual/';
+  const outlinedChapter = 'lead-dbs/step0-overview/';
+  const chapterWithoutOutline = 'lead-dbs/self-tutoring-with-lead-tutor/';
   const require = (ok, message) => { if (!ok) throw new Error(message); };
   const ready = () => page.evaluate(() => document.fonts.ready.then(() => null));
   const geometry = () => page.evaluate(() => {
@@ -408,17 +410,19 @@ async function checkManualLayout() {
       viewport: document.documentElement.clientWidth,
       brand: rect('.manual-header__brand'), controls: rect('.manual-header__tools'),
       download: rect('.manual-header__download'), rail: rect('.manual-nav'), article: rect('.manual-body'), bar: rect('.manual-header__bar'),
-      shell: rect('.manual-page'), outline: !!document.querySelector('.manual-outline'),
+      outline: !!document.querySelector('.manual-outline'),
     };
   });
   try {
-    for (const width of [1280, 1440, 1920, 3000]) {
+    for (const width of [1279, 1280, 1440, 1920, 3000]) {
       await page.setViewportSize({ width, height: 1308 });
       let baseline;
-      for (const chapter of ['installation/', 'ways-to-contribute-to-lead-dbs/', 'lead-dbs/step2-image-import/']) {
+      for (const chapter of [outlinedChapter, chapterWithoutOutline, 'installation/', 'ways-to-contribute-to-lead-dbs/', 'lead-dbs/step2-image-import/']) {
         await page.goto(manual + chapter);
         await ready();
         const box = await geometry();
+        if (chapter === outlinedChapter) require(box.outline, `${chapter} must have an outline for this check`);
+        if (chapter === chapterWithoutOutline) require(!box.outline, `${chapter} must have no outline for this check`);
         require(box.gutter >= 12, `Scrollbar space is not reserved on ${chapter} at ${width}px`);
         require(Math.abs(box.rail.x) <= 1, `Chapter rail drifts away from the viewport edge at ${width}px`);
         require(box.brand.x >= 20, `Docs brand drifts away from the viewport edge at ${width}px`);
@@ -427,15 +431,13 @@ async function checkManualLayout() {
         require(box.controls.x > box.brand.right, `Manual controls overlap the brand at ${width}px`);
         require(box.article.width <= 737 && box.article.x >= box.rail.right + 31, `Article overlaps navigation or exceeds its reading width at ${width}px`);
         if (baseline) {
-          for (const part of ['bar', 'brand', 'controls', 'download', 'rail']) {
+          for (const part of ['bar', 'brand', 'controls', 'download', 'rail', 'article']) {
             for (const dimension of ['x', 'y', 'width']) {
               require(Math.abs(box[part][dimension] - baseline[part][dimension]) <= 1,
-                `${part} ${dimension} jumps between long and short pages at ${width}px on ${chapter}: ${baseline[part][dimension]} -> ${box[part][dimension]}`);
+                `${part} ${dimension} jumps between chapters at ${width}px on ${chapter}: ${baseline[part][dimension]} -> ${box[part][dimension]}`);
             }
           }
         } else baseline = box;
-        if (!box.outline) require(Math.abs((box.article.x + box.article.right) - (box.shell.x + box.shell.right)) <= 2,
-          `Article without an outline is off center at ${width}px on ${chapter}`);
       }
       await page.goto(manual + 'installation/');
       await ready();
