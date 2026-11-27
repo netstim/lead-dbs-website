@@ -10,7 +10,9 @@ This is a local copy, not a live synchronization with GitBook.
   nested chapter addresses. Keep existing paths and heading anchors when possible.
 - Images are shared Hugo resources in `assets/manual/`. Markdown references them as
   `![Description](manual/filename.png "Optional caption")`; the existing image hook
-  makes responsive versions and links large images to their originals. Tall screenshots are displayed at no more than 512px high; their source files remain unchanged. Small toolbar icons use the `manual-toolbar-icon` shortcode with the source display width.
+  makes responsive versions. Large images open in a viewer, with access to the full original.
+  Tall screenshots are displayed at no more than 512px high. Small toolbar icons use the
+  `manual-toolbar-icon` shortcode with the source display width.
 - `data/manual.json` is the only place that orders the manual: groups, and in each group the chapters
   with their nested `children`. The sidebar, the previous/next links (the sidebar read top to bottom) and
   each section's overview cards all come from it. A chapter's sidebar label is its `linkTitle`; its page
@@ -34,7 +36,8 @@ Download. Its search uses the shared index and limits results to Manual pages. O
 ## Visual system
 
 The chapter rail stays at the left edge on desktop. The article (at most 736px) and a separately
-scrollable outline sit in the remaining width. Below 1280px the outline appears in a disclosure
+scrollable outline sit in the remaining width. Chapters without an outline center in that space.
+Below 1280px the outline appears in a disclosure
 above the article. Below 1024px the chapter rail becomes a sticky toolbar and the reading column
 gets the full available width. The header height token includes the preview banner and sets both
 the sticky offsets and the clearance for fragment links.
@@ -62,7 +65,11 @@ The render hook supplies syntax highlighting, a language label and shared clipbo
 feedback. Examples over 20 lines start as expandable previews when JavaScript is
 available; copying always includes the entire example. Overflow cues appear only when
 the code needs horizontal scrolling. A wrapping toggle changes presentation only; copied
-code keeps its original line breaks. Long examples have collapse controls at both ends. Without JavaScript, the complete example is visible.
+code keeps its original line breaks. The toolbar has one Copy control. Long examples have one
+expand/collapse control below the code. Without JavaScript, the complete example is visible.
+
+Wrap citation lists in `manual-references` to give each entry its own Copy action. For lists headed
+Publications, use `kind="publication"` so those buttons are named distinctly.
 
 The narrow layout moves the chapter tree and the inline outline into native modal dialogs after
 the manual bundle initializes. Escape, the backdrop and the close button dismiss the dialogs.

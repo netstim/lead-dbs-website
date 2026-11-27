@@ -259,6 +259,16 @@ async function checkManualInteractions() {
     const copiedReference = await page.evaluate(() => navigator.clipboard.readText());
     require(copiedReference.startsWith('Wang Q, Akram H') && copiedReference.endsWith('PMID: 32861787.'), 'Copy reference did not copy the citation');
 
+    await page.goto(manual + 'lead-group/sweetspot-explorer/#publications');
+    const publication = page.getByRole('button', { name: 'Copy publication 1', exact: true });
+    await publication.click();
+    await page.waitForFunction(() => document.querySelector('[data-manual-references="publication"] [data-copy-state="copied"]'));
+    require((await page.evaluate(() => navigator.clipboard.readText())).includes('doi:10.1073/pnas.2114985119'), 'Copy publication omitted the DOI');
+
+    await page.goto(manual + 'lead-dbs/');
+    const firstChapter = page.locator('.manual-cards a').first();
+    require(await page.locator('.manual-pagination__next').getAttribute('href') === await firstChapter.getAttribute('href'), 'The section index does not lead into its chapters');
+
     await page.goto(manual + 'lead-dbs/step1-load-patient-folder/importing-a-classic-lead-dbs-dataset-to-bids-version/');
     const trees = page.locator('.manual-code__source');
     require(await trees.count() === 2, 'The legacy folder examples are not both rendered as code');
@@ -279,11 +289,19 @@ async function checkManualInteractions() {
     await page.goto(manual + 'lead-dbs/step0-overview/');
     const zoom = page.locator('.img-figure .img-zoom').first();
     const imageURL = await zoom.evaluate((link) => link.href);
+    const articleURL = page.url();
     await zoom.click();
-    await page.waitForURL(imageURL);
+    await page.locator('#manual-image[open]').waitFor();
+    await page.waitForFunction(() => document.querySelector('#manual-image img').naturalWidth > 0);
+    require(page.url() === articleURL, 'Image zoom navigated away from the article');
+    require(await page.locator('#manual-image img').evaluate((image) => image.src) === imageURL, 'Image viewer did not load the original');
+    await page.keyboard.press('Escape');
+    await page.waitForFunction(() => !document.getElementById('manual-image').open && document.activeElement.matches('.img-zoom'));
 
     await page.goto(manual + 'appendix/useful-command-line-tools/installing-an-atlas-from-a-repository/');
     const example = page.locator('.manual-code[data-code-lines]').first();
+    require(await example.getByRole('button', { name: 'Copy code', exact: true }).count() === 1, 'Collapsed example has duplicate copy controls');
+    require(await example.locator('.manual-code__expand').count() === 1, 'Collapsed example has duplicate expand controls');
     const expand = example.getByRole('button', { name: /^Show all/ });
     await expand.click();
     require(await example.locator('.manual-code__expand').first().getAttribute('aria-expanded') === 'true', 'Long code did not expand');
@@ -291,12 +309,12 @@ async function checkManualInteractions() {
     await example.getByRole('button', { name: 'Wrap code lines', exact: true }).click();
     require(await example.locator('pre').evaluate((e) => e.scrollWidth <= e.clientWidth + 1), 'Wrapped code still overflows horizontally');
     require(source.split('\n').length > 20, 'The test needs a complete long example');
-    await example.getByRole('button', { name: 'Copy full code', exact: true }).click();
-    await page.waitForFunction(() => document.querySelector('.manual-code[data-code-lines] .manual-code__foot [data-copy-label]')?.textContent === 'Copied');
+    await example.getByRole('button', { name: 'Copy code', exact: true }).click();
+    await page.waitForFunction(() => document.querySelector('.manual-code[data-code-lines] .manual-code__head [data-copy-label]')?.textContent === 'Copied');
     require(await page.evaluate(() => navigator.clipboard.readText()) === source, 'Clipboard omitted part of the example');
-    const copiedIcon = example.locator('.manual-code__foot [data-icon="check"]');
+    const copiedIcon = example.locator('.manual-code__head [data-icon="check"]');
     require(await copiedIcon.isVisible(), 'Code copy succeeded without visible confirmation');
-    await example.getByRole('button', { name: 'Collapse', exact: true }).click();
+    await example.getByRole('button', { name: 'Collapse code', exact: true }).click();
     require(await example.locator('.manual-code__expand').first().getAttribute('aria-expanded') === 'false', 'Long code did not collapse');
 
     await page.setViewportSize({ width: 390, height: 844 });
@@ -390,6 +408,7 @@ async function checkManualLayout() {
       viewport: document.documentElement.clientWidth,
       brand: rect('.manual-header__brand'), controls: rect('.manual-header__tools'),
       download: rect('.manual-header__download'), rail: rect('.manual-nav'), article: rect('.manual-body'), bar: rect('.manual-header__bar'),
+      shell: rect('.manual-page'), outline: !!document.querySelector('.manual-outline'),
     };
   });
   try {
@@ -408,13 +427,15 @@ async function checkManualLayout() {
         require(box.controls.x > box.brand.right, `Manual controls overlap the brand at ${width}px`);
         require(box.article.width <= 737 && box.article.x >= box.rail.right + 31, `Article overlaps navigation or exceeds its reading width at ${width}px`);
         if (baseline) {
-          for (const part of ['bar', 'brand', 'controls', 'download', 'rail', 'article']) {
+          for (const part of ['bar', 'brand', 'controls', 'download', 'rail']) {
             for (const dimension of ['x', 'y', 'width']) {
               require(Math.abs(box[part][dimension] - baseline[part][dimension]) <= 1,
                 `${part} ${dimension} jumps between long and short pages at ${width}px on ${chapter}: ${baseline[part][dimension]} -> ${box[part][dimension]}`);
             }
           }
         } else baseline = box;
+        if (!box.outline) require(Math.abs((box.article.x + box.article.right) - (box.shell.x + box.shell.right)) <= 2,
+          `Article without an outline is off center at ${width}px on ${chapter}`);
       }
       await page.goto(manual + 'installation/');
       await ready();

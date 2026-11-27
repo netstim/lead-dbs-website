@@ -135,6 +135,8 @@ Two sample t-test is used to compare results between two groups. Lead-DBS allows
 
 ## Publications
 
+{{< manual-references kind="publication" >}}
+
 > 1. Hollunder, B. *et al.* (2022) ‘Toward personalized medicine in connectomic deep brain stimulation’, *Progress in Neurobiology*, 210, p. 102211. Available at: [doi:10.1016/j.pneurobio.2021.102211](https://doi.org/10.1016/j.pneurobio.2021.102211).
 >
 > 2. Horn, A. *et al.* (2022) ‘Optimal deep brain stimulation sites and networks for cervical vs. generalized dystonia’, *Proceedings of the National Academy of Sciences*, 119(14), p. e2114985119. Available at: [doi:10.1073/pnas.2114985119](https://doi.org/10.1073/pnas.2114985119).
@@ -144,6 +146,8 @@ Two sample t-test is used to compare results between two groups. Lead-DBS allows
 > 4. Ríos, A.S. *et al.* (2022) ‘Optimal deep brain stimulation sites and networks for stimulation of the fornix in Alzheimer’s disease’, *Nature Communications*, 13, p. 7707. Available at: [doi:10.1038/s41467-022-34510-3](https://doi.org/10.1038/s41467-022-34510-3).
 >
 > 5. Sobesky, L. *et al.* (2021) ‘Subthalamic and pallidal deep brain stimulation: are we modulating the same network?’, *Brain*, 145(1), pp. 251–262. Available at: [doi:10.1093/brain/awab258](https://doi.org/10.1093/brain/awab258).
+
+{{< /manual-references >}}
 
 ## References
 

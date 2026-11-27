@@ -164,9 +164,13 @@ N-Image represents the number of times the voxel was covered by VTAs from the da
 
 ## Publications
 
+{{< manual-references kind="publication" >}}
+
 > 1. Horn, A. *et al.* (2022) ‘Optimal deep brain stimulation sites and networks for cervical vs. generalized dystonia’, *Proceedings of the National Academy of Sciences*, 119(14), p. e2114985119. Available at: [doi:10.1073/pnas.2114985119](https://doi.org/10.1073/pnas.2114985119).
 > 2. Neudorfer, C. *et al.* (2023) ‘Lead-DBS v3.0: Mapping deep brain stimulation effects to local anatomy and global networks’, *NeuroImage*, 268, p. 119862. Available at: [doi:10.1016/j.neuroimage.2023.119862](https://doi.org/10.1016/j.neuroimage.2023.119862).
 > 3. Ríos, A.S. *et al.* (2022) ‘Optimal deep brain stimulation sites and networks for stimulation of the fornix in Alzheimer’s disease’, *Nature Communications*, 13, p. 7707. Available at: [doi:10.1038/s41467-022-34510-3](https://doi.org/10.1038/s41467-022-34510-3).
+
+{{< /manual-references >}}
 
 ## References
 

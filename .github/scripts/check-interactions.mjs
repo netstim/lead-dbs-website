@@ -391,6 +391,30 @@ const checkManualContents = async (page, fail) => {
 };
 await manualJourney('manual contents drawer fits a short tablet and focuses its destination', { ...tablet, height: 340 }, checkManualContents);
 
+for (const [name, view] of [['rail', desktop], ['drawer', phone]]) {
+  await manualJourney(`manual ${name} leaves room below the last active chapter`, view, async (page, fail) => {
+    await page.goto(url(MANUAL + 'appendix/using-slicer/sweet-sour-spot/'));
+    if (view.mobile) await page.locator('.manual-menu').click();
+    if (!(await until(page, (mobile) => {
+      const box = document.querySelector(mobile ? '.manual-drawer__body' : '.manual-nav');
+      const row = box.querySelector('[aria-current="page"]');
+      return row && box.getBoundingClientRect().bottom - row.getBoundingClientRect().bottom >= 10;
+    }, view.mobile))) fail('the active chapter is flush against the lower edge');
+  });
+}
+
+await manualJourney('manual dark theme paints a matching page canvas and preview banner', desktop, async (page, fail) => {
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.goto(url(MANUAL));
+  if (!await page.evaluate(() => {
+    const color = (element) => getComputedStyle(element).backgroundColor;
+    const root = document.documentElement;
+    const banner = document.querySelector('.manual-header .preview-banner');
+    return root.dataset.theme === 'dark' && color(root) === color(document.body) &&
+      (!banner || color(banner) === color(document.querySelector('.manual-header__search')));
+  })) fail('the viewport canvas or banner still uses the light preview color');
+});
+
 await manualJourney('manual breadcrumb contains all ancestors of a nested article', desktop, async (page, fail) => {
   await page.goto(url(MANUAL + 'lead-dbs/step5-optional-reconstruction-of-electrode-trajectories/determining-the-orientation-of-directional-leads/automatic-algorithm/'));
   const crumbs = await page.locator('.manual-crumbs a').allTextContents();
@@ -464,6 +488,19 @@ if (wk) {
     if (!(await until(page, () => !document.getElementById('manual-drawer').open))) fail('Escape does not close the drawer');
   }, { engine: wk });
   await manualJourney('WebKit: manual contents fit the viewport and focus their destination', phone, checkManualContents, { engine: wk });
+  await manualJourney('WebKit: manual figures enlarge in place and remain dismissible', phone, async (page, fail) => {
+    await page.goto(url(MANUAL + 'lead-dbs/step0-overview/'));
+    const article = page.url();
+    await page.locator('.img-figure .img-zoom').first().click();
+    if (!(await until(page, () => document.getElementById('manual-image')?.open && document.querySelector('#manual-image img').naturalWidth > 0))) {
+      fail('the figure did not load in a dialog'); return;
+    }
+    if (page.url() !== article) fail('zoom opened another document');
+    const box = await page.locator('#manual-image').boundingBox();
+    if (!box || box.y < 0 || box.y + box.height > page.viewportSize().height + 1) fail('viewer is clipped by the viewport');
+    await page.getByRole('button', { name: 'Close image' }).click();
+    if (!(await until(page, () => !document.getElementById('manual-image').open))) fail('the viewer could not be dismissed');
+  }, { engine: wk });
   await journey('WebKit: the search opens and finds pages', desktop, async (page, fail) => {
     await page.goto(url(''), { waitUntil: 'load' });
     await page.locator('.nav [data-search-open]').click();

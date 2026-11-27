@@ -3,8 +3,13 @@
 {{ $manual := site.GetPage "/manual" }}
 {{ $home := eq $p $manual }}
 {{ $groups := hugo.Data.manual.groups }}
-{{ $all := slice }}{{ range $groups }}{{ $all = $all | append .chapters }}{{ end }}
-{{ $order := partial "manual-order.html" $all }}
+{{ $all := slice }}
+{{ $order := slice }}
+{{ range $groups }}
+  {{ $all = $all | append .chapters }}
+  {{ with site.GetPage (printf "/manual/%s" .id) }}{{ $order = $order | append .Path }}{{ end }}
+  {{ $order = $order | append (partial "manual-order.html" .chapters) }}
+{{ end }}
 {{ $index := -1 }}{{ range $i, $path := $order }}{{ if eq (site.GetPage $path) $p }}{{ $index = $i }}{{ end }}{{ end }}
 {{ $group := dict }}{{ range $groups }}{{ if eq .id $p.Params.manual_group }}{{ $group = . }}{{ end }}{{ end }}
 {{ $groupPage := site.GetPage (printf "/manual/%s" $group.id) }}
@@ -84,6 +89,16 @@
 </main>
 {{ if .HasShortcode "manual-references" }}
 <template id="manual-reference-copy">{{ partial "manual-copy.html" (dict "label" "Copy reference" "text" "") }}</template>
+{{ end }}
+{{ if strings.Contains .Content "class=\"img-zoom\"" }}
+<dialog class="manual-image" id="manual-image" aria-label="Enlarged figure" tabindex="-1">
+  <div class="manual-image__bar">
+    <a class="manual-image__original" rel="noopener" target="_blank">Open original image</a>
+    <form method="dialog"><button type="submit" class="icon-button" aria-label="Close image">{{ partial "manual-icon.html" "close" }}</button></form>
+  </div>
+  <img class="manual-image__picture" alt="">
+  <p class="manual-image__caption" hidden></p>
+</dialog>
 {{ end }}
 <dialog class="manual-drawer" id="manual-drawer" aria-labelledby="manual-drawer-title" tabindex="-1">
   <div class="manual-drawer__head"><span id="manual-drawer-title">Chapters</span><button type="button" class="icon-button" data-manual-close aria-label="Close chapters">{{ partial "manual-icon.html" "close" }}</button></div>

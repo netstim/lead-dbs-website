@@ -2,12 +2,41 @@ import { wireDialog } from '../lib/dialog.js';
 import { leadFragment } from '../lib/fragment.js';
 import { wireCopyButton } from '../lib/copy.js';
 
+const plainClick = (event) => event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
+
+// Keep the original linked image available when the dialog cannot run.
+const imageDialog = document.getElementById('manual-image');
+if (typeof imageDialog?.showModal === 'function') {
+  const openImage = wireDialog(imageDialog, []);
+  const picture = imageDialog.querySelector('.manual-image__picture');
+  const caption = imageDialog.querySelector('.manual-image__caption');
+  const original = imageDialog.querySelector('.manual-image__original');
+  for (const link of document.querySelectorAll('.manual-prose a.img-zoom')) {
+    const thumbnail = link.querySelector('img');
+    if (!thumbnail) continue;
+    link.setAttribute('aria-haspopup', 'dialog');
+    link.addEventListener('click', (event) => {
+      if (!plainClick(event)) return;
+      event.preventDefault();
+      picture.alt = thumbnail.alt;
+      original.href = link.href;
+      const text = link.closest('.img-figure')?.querySelector('.img-figure__caption')?.textContent.trim();
+      caption.textContent = text || '';
+      caption.hidden = !text;
+      picture.src = link.href;
+      openImage(link);
+    });
+  }
+}
+
 for (const references of document.querySelectorAll('[data-manual-references]')) {
   const template = document.getElementById('manual-reference-copy');
   references.querySelectorAll('li').forEach((item, index) => {
     const button = template.content.firstElementChild.cloneNode(true);
     button.dataset.copyText = item.innerText.trim();
-    button.setAttribute('aria-label', `Copy reference ${index + 1}`);
+    const label = `Copy ${references.dataset.manualReferences} ${index + 1}`;
+    button.setAttribute('aria-label', label);
+    button.title = label;
     item.append(button);
     wireCopyButton(button);
   });
@@ -38,8 +67,11 @@ for (const references of document.querySelectorAll('[data-manual-references]')) 
     if (!item?.getClientRects().length) return;
     const bounds = box.getBoundingClientRect();
     const row = item.getBoundingClientRect();
-    if (row.top < bounds.top) box.scrollTop += row.top - bounds.top;
-    else if (row.bottom > bounds.bottom) box.scrollTop += row.bottom - bounds.bottom;
+    const style = getComputedStyle(box);
+    const top = bounds.top + box.clientTop + (parseFloat(style.scrollPaddingTop) || 0);
+    const bottom = bounds.top + box.clientTop + box.clientHeight - (parseFloat(style.scrollPaddingBottom) || 0);
+    if (row.top < top) box.scrollTop += row.top - top;
+    else if (row.bottom > bottom) box.scrollTop += row.bottom - bottom;
   };
   const navigationKey = 'lead-manual-navigation';
   let previousNavigation;
@@ -48,7 +80,6 @@ for (const references of document.querySelectorAll('[data-manual-references]')) 
     sessionStorage.removeItem(navigationKey);
   } catch { /* Navigation works when browser storage is unavailable. */ }
 
-  const plainClick = (event) => event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
   tree.addEventListener('click', (event) => {
     const link = event.target.closest('a');
     if (!link || !plainClick(event)) return;
@@ -178,24 +209,24 @@ for (const references of document.querySelectorAll('[data-manual-references]')) 
         end.append(newline);
       }
     });
-    const expands = [...block.querySelectorAll('.manual-code__expand')];
-    if (expands.length) block.classList.add('manual-code--collapsed');
-    expands.forEach((expand) => {
-      expand.hidden = false;
+    const expand = block.querySelector('.manual-code__expand');
+    if (expand) {
+      const source = block.querySelector('.manual-code__source');
+      source.tabIndex = -1;
+      const expandLabel = expand.textContent;
+      block.classList.add('manual-code--collapsed');
+      expand.parentElement.hidden = false;
       expand.addEventListener('click', () => {
         const collapsed = block.classList.toggle('manual-code--collapsed');
-        expands.forEach((button) => {
-          button.setAttribute('aria-expanded', String(!collapsed));
-          button.textContent = button.classList.contains('manual-code__expand--top')
-            ? (collapsed ? 'Expand' : 'Collapse')
-            : (collapsed ? `Show all ${block.dataset.codeLines} lines` : 'Collapse code');
-        });
-        if (collapsed && expand.closest('.manual-code__foot')) {
-          expands[0].focus({ preventScroll: true });
-          block.scrollIntoView({ block: 'start' });
+        expand.setAttribute('aria-expanded', String(!collapsed));
+        expand.textContent = collapsed ? expandLabel : 'Collapse code';
+        if (collapsed) expand.scrollIntoView({ block: 'nearest' });
+        else {
+          source.focus({ preventScroll: true });
+          source.scrollIntoView({ block: 'start' });
         }
       });
-    });
+    }
     const wrap = block.querySelector('.manual-code__wrap');
     wrap.addEventListener('click', () => {
       const wrapped = block.classList.toggle('manual-code--wrapped');
@@ -210,8 +241,6 @@ for (const references of document.querySelectorAll('[data-manual-references]')) 
     const overflows = pre.scrollWidth > pre.clientWidth + 1;
     block.querySelector('.manual-code__wrap').hidden = !(overflows || block.classList.contains('manual-code--wrapped'));
     block.querySelector('.manual-code__overflow').hidden = !overflows;
-    const footer = block.querySelector('.manual-code__foot');
-    if (footer) footer.hidden = false;
   });
   const observer = new ResizeObserver(update);
   blocks.forEach((block) => observer.observe(block));

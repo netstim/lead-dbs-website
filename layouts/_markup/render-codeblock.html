@@ -4,9 +4,9 @@
 {{- $id := printf "code-%d" .Ordinal -}}
 {{- $lines := len (split (strings.TrimRight "\n" .Inner) "\n") -}}
 <div class="manual-code"{{ if gt $lines 20 }} data-code-lines="{{ $lines }}"{{ end }}>
-  {{ partial "manual-code-toolbar.html" (dict "language" (index $labels $language | default $language) "target" $id "expand" (gt $lines 20)) }}
+  {{ partial "manual-code-toolbar.html" (dict "language" (index $labels $language | default $language) "target" $id) }}
   <div class="manual-code__source" data-copy-verbatim id="{{ $id }}">{{ transform.Highlight .Inner $language "noClasses=false" }}</div>
-  {{ if gt $lines 20 }}<div class="manual-code__foot" hidden><button type="button" class="manual-code__expand" aria-expanded="false" aria-controls="{{ $id }}" hidden>Show all {{ $lines }} lines</button>{{ partial "manual-copy.html" (dict "target" $id "label" "Copy full code") }}</div>{{ end }}
+  {{ if gt $lines 20 }}<div class="manual-code__foot" hidden><button type="button" class="manual-code__expand" aria-expanded="false" aria-controls="{{ $id }}">Show all {{ $lines }} lines</button></div>{{ end }}
 </div>
 {{- else -}}
 {{ transform.Highlight .Inner (.Type | default "text") .Options }}

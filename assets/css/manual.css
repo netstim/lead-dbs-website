@@ -10,7 +10,6 @@
   background: var(--bg);
 }
 html.is-preview { --nav: calc(var(--manual-header-height) + var(--manual-preview-height)); }
-.is-preview:has(> body.section-manual) { background: var(--preview-bg); }
 .section-manual {
   --docs-rail: clamp(15rem, 22vw, 17rem);
   --docs-measure: 46rem;
@@ -31,6 +30,7 @@ html.is-preview { --nav: calc(var(--manual-header-height) + var(--manual-preview
 /* In-flow sticky header shares the document width, including its reserved scrollbar. */
 .manual-header { position: sticky; top: 0; z-index: 50; background: var(--bg); }
 .manual-header .preview-banner { height: var(--manual-preview-height); }
+[data-theme="dark"] .manual-header .preview-banner { background: var(--surface); color: var(--ink); border-color: var(--line); }
 .manual-header__bar { position: relative; display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); height: var(--manual-header-height); padding-inline: var(--s-5); border-bottom: 1px solid var(--line); }
 .manual-header__brand, .manual-header__tools, .manual-header__home { display: flex; align-items: center; gap: var(--s-2); }
 .manual-header__brand { gap: var(--s-3); white-space: nowrap; font-size: var(--t-small); font-weight: 600; }
@@ -47,7 +47,10 @@ html.is-preview { --nav: calc(var(--manual-header-height) + var(--manual-preview
   .manual-header__brand a:hover { color: var(--action); }
   .manual-header__tools a:hover { color: var(--ink); border-color: var(--line-strong); background: var(--surface); }
 }
-.manual-page { display: grid; grid-template-columns: minmax(0, var(--docs-measure)) var(--docs-outline); justify-content: center; column-gap: var(--s-8); padding: 0 var(--s-6); align-items: start; }
+.manual-page { display: grid; grid-template-columns: minmax(0, var(--docs-measure)); justify-content: center; column-gap: var(--s-8); padding: 0 var(--s-6); align-items: start; }
+@media (width >= 1280px) {
+  .manual-page:has(> .manual-outline) { grid-template-columns: minmax(0, var(--docs-measure)) var(--docs-outline); }
+}
 .manual-body { min-width: 0; padding-top: var(--s-6); }
 .manual-body :is([id], .manual-code) { scroll-margin-top: var(--manual-anchor-offset); }
 
@@ -117,7 +120,7 @@ html.is-preview { --nav: calc(var(--manual-header-height) + var(--manual-preview
 .manual-code__head { border-bottom: 1px solid var(--line); }
 .manual-code__label { display: inline-flex; align-items: center; gap: var(--s-1); }
 .manual-code__tools { display: flex; align-items: center; gap: var(--s-1); margin-inline-start: auto; }
-.manual-code__copy { display: inline-flex; align-items: center; gap: var(--s-1); min-inline-size: 6.75rem; justify-content: flex-end; }
+.manual-code__copy { display: inline-flex; align-items: center; justify-content: center; inline-size: var(--manual-toolbar-size); }
 :is(.manual-code__copy, .manual-code__wrap, .manual-code__expand) { min-height: var(--manual-toolbar-size); padding-inline: var(--s-2); border: 0; border-radius: var(--r-sm); background: none; color: var(--muted); cursor: pointer; font: inherit; }
 :is(.manual-code__copy, .manual-code__wrap, .manual-code__expand):focus-visible { outline-offset: -2px; }
 @media (hover: hover) {
@@ -136,8 +139,7 @@ html.is-preview { --nav: calc(var(--manual-header-height) + var(--manual-preview
 .manual-code :is(.s, .s1, .s2, .sa, .sb, .sc, .sd, .se, .sh, .si, .sr, .ss) { color: var(--docs-code-string); }
 .manual-code :is(.c, .c1, .cm, .cp, .cs) { color: var(--muted); }
 .manual-code :is(.m, .mf, .mi, .mo, .mh, .il, .nb, .nf) { color: var(--docs-code-number); }
-.manual-code__foot { border-top: 1px solid var(--line); }
-.manual-code__foot .manual-code__copy { margin-inline-start: auto; }
+.manual-code__foot { justify-content: center; border-top: 1px solid var(--line); }
 .manual-code--collapsed .manual-code__source { max-height: 22rem; overflow: hidden; mask-image: linear-gradient(var(--ink) 80%, transparent); }
 /* Each highlighted source line keeps its indentation. Wrapped continuations hang two characters beyond
    it; the clipboard reads the original text, not the visual line breaks. */
@@ -163,6 +165,13 @@ html.is-preview { --nav: calc(var(--manual-header-height) + var(--manual-preview
 .manual-prose .img-figure > .img-zoom { width: fit-content; }
 .manual-prose :is(figcaption, .img-figure__caption) { max-width: 68ch; margin-top: var(--s-3); color: var(--muted); font-size: var(--t-small); }
 .manual-prose .manual-toolbar-icon { border: 0; border-radius: 0; vertical-align: middle; }
+.manual-image { box-sizing: border-box; inline-size: min(64rem, calc(100% - 2 * var(--s-4))); block-size: min(52rem, calc(100dvh - 2 * var(--s-4))); max-inline-size: none; max-block-size: none; margin: auto; padding: var(--s-3); border: 1px solid var(--line-strong); border-radius: var(--r-md); background: var(--bg); color: var(--ink); }
+.manual-image[open] { display: grid; gap: var(--s-2); grid-template-rows: auto minmax(0, 1fr) auto; }
+.manual-image::backdrop { background: color-mix(in oklab, var(--render) 75%, transparent); }
+.manual-image__bar { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); font-size: var(--t-small); }
+.manual-image__original { padding: var(--s-3); text-decoration: underline; text-underline-offset: .2em; }
+.manual-image__picture { inline-size: 100%; block-size: 100%; object-fit: contain; }
+.manual-image__caption { margin: 0; padding: var(--s-2) var(--s-3); max-height: 25dvh; overflow-y: auto; font-size: var(--t-small); color: var(--muted); }
 .manual-prose table { display: table; width: 100%; font-size: var(--t-small); overflow-wrap: normal; border-collapse: collapse; }
 .manual-prose th { color: var(--muted); font-weight: 500; text-align: left; }
 .manual-prose :is(th, td) { padding: var(--s-2) var(--s-3); border-bottom: 1px solid var(--line); vertical-align: top; }
@@ -197,7 +206,8 @@ html.is-preview { --nav: calc(var(--manual-header-height) + var(--manual-preview
 .manual-references blockquote { margin-inline: 0; padding: 0; border: 0; }
 .manual-prose .manual-references :is(ol, ul) { padding-inline-start: var(--s-5); }
 .manual-references li { padding-block: var(--s-3); border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
-.manual-references .manual-code__copy { display: flex; justify-content: center; min-inline-size: var(--manual-toolbar-size); margin-inline-start: auto; margin-block-start: var(--s-1); }
+.manual-references li:has(> button:not([hidden])) { position: relative; min-block-size: calc(var(--manual-toolbar-size) + var(--s-4)); padding-inline-end: calc(var(--manual-toolbar-size) + var(--s-2)); }
+.manual-references .manual-code__copy { position: absolute; inset-block-start: var(--s-2); inset-inline-end: 0; }
 
 /* ---------------------------------------------------------------- section cards: a section's overview,
    and the sub-pages listed under a chapter that has them */
@@ -221,7 +231,6 @@ html.is-preview { --nav: calc(var(--manual-header-height) + var(--manual-preview
 /* ---------------------------------------------------------------- pagination and footer */
 .manual-pagination { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); margin-top: var(--s-8); }
 .manual-pagination a { display: grid; align-content: start; gap: var(--s-1); padding: var(--s-4); border: 1px solid var(--line); border-radius: var(--r-md); overflow-wrap: anywhere; }
-.manual-pagination a:only-child { grid-column: 1 / -1; }
 @media (hover: hover) { .manual-pagination a:hover { border-color: var(--line-strong); background: var(--hover); } }
 .manual-pagination span { display: flex; align-items: center; gap: var(--s-1); color: var(--muted); font-size: var(--t-label); }
 .manual-pagination span svg { width: 0.875rem; height: 0.875rem; }
@@ -241,7 +250,7 @@ html.is-preview { --nav: calc(var(--manual-header-height) + var(--manual-preview
 .manual-start__actions a { display: inline-flex; align-items: center; gap: var(--s-2); height: var(--btn-h); font-size: var(--t-note); font-weight: 500; }
 .manual-start__actions a + a { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--line-strong); }
 @media (hover: hover) { .manual-start__actions a + a:hover { text-decoration-color: currentColor; } }
-.manual-research-note { margin-bottom: var(--s-5); padding: var(--s-3) 0; border-block: 1px solid var(--line); font-size: var(--t-small); line-height: var(--docs-leading); color: var(--muted); }
+.manual-research-note { margin-block: var(--s-5); padding: var(--s-3) 0; border-block: 1px solid var(--line); font-size: var(--t-small); line-height: var(--docs-leading); color: var(--muted); }
 .manual-research-note strong { color: var(--ink); font-weight: 500; }
 .manual-research-note p { margin: var(--s-1) 0 0; }
 .manual-research-note details { margin-top: var(--s-2); }
@@ -275,8 +284,8 @@ html.is-preview { --nav: calc(var(--manual-header-height) + var(--manual-preview
 .manual-drawer { position: fixed; inset: 0 auto 0 0; width: min(22rem, 88vw); height: 100dvh; max-height: none; max-width: none; margin: 0; padding: 0; border: 0; border-right: 1px solid var(--line); color: var(--ink); background: var(--bg); font-family: var(--font-text); }
 .manual-drawer[open] { display: flex; flex-direction: column; }
 .manual-drawer::backdrop { background: color-mix(in oklab, var(--render) 40%, transparent); backdrop-filter: blur(3px); }
-.manual-drawer__head { flex: none; display: flex; align-items: center; justify-content: space-between; padding: var(--s-3) var(--s-5); border-bottom: 1px solid var(--line); font-size: var(--t-small); font-weight: 600; }
-.manual-drawer__body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; flex: 1; padding: var(--s-4) var(--s-3); }
+.manual-drawer__head { flex: none; display: flex; align-items: center; justify-content: space-between; padding: var(--s-3) var(--s-3) var(--s-3) var(--s-5); border-bottom: 1px solid var(--line); font-size: var(--t-small); font-weight: 600; }
+.manual-drawer__body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; scroll-padding-block: var(--s-3); flex: 1; padding: var(--s-4) var(--s-3); }
 /* a finger's targets in the drawer: rows and chevrons 44px; the chevron's mark stays small */
 .manual-drawer__body .manual-nav__row { min-height: 2.75rem; }
 .manual-drawer__body .manual-nav__row > a { display: flex; align-items: center; min-height: 2.75rem; padding-block: var(--s-2); }
@@ -292,7 +301,6 @@ html.is-preview { --nav: calc(var(--manual-header-height) + var(--manual-preview
 
 /* ---------------------------------------------------------------- responsive shell */
 @media (width < 1280px) {
-  .manual-page { grid-template-columns: minmax(0, var(--docs-measure)); }
   .manual-outline { display: none; }
   .manual-page .manual-toc-fold { display: block; }
 }
@@ -336,9 +344,4 @@ html.is-preview { --nav: calc(var(--manual-header-height) + var(--manual-preview
   .manual-cards, .manual-pagination { grid-template-columns: minmax(0, 1fr); }
   .manual-pagination__next { grid-column: auto; }
   .manual-footer > div { flex-basis: 100%; }
-}
-
-@media (max-width: 359px) {
-  .manual-code__head [data-copy-label] { display: none; }
-  .manual-code__tools .manual-code__copy { min-inline-size: var(--manual-toolbar-size); justify-content: center; }
 }
